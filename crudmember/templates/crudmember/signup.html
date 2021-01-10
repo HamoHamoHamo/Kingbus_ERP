@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>회원가입</h1> 
+
+<form method="POST" action="{% url 'crudmember:signup' %}">
+    {% csrf_token %}
+    <p>아이디:</p>
+    <br>
+    <input type="text" name="id">
+    <br>
+    <p>비밀번호:</p>
+    <br>
+    <input type="password" name="password1">
+    <br>
+    <p>비밀번호 확인:</p>
+    <br>
+    <input type="password" name="password2">
+    <br>
+    <br>
+    <input type="submit" value="회원가입">
+</form>
+
+{% endblock %}

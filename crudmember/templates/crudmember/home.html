@@ -1,0 +1,18 @@
+this is home
+
+{% if user.is_authenticated %}
+  <li class="nav-item">
+  <a class="nav-link"><span id="user_name">{{ user.username }}</span>님 반갑습니다!</a>
+  </li>
+
+  <li class="nav-item">
+  <a class="nav-link" href="{% url 'crudmember:logout' %}">logout</a>
+  </li>
+  {% else %}
+  <li class="nav-item">
+  <a class="nav-link" href="{% url 'crudmember:login' %}">Sign in</a>
+  </li>
+  <li class="nav-item">
+  <a class="nav-link" href="{% url 'crudmember:signup' %}">Sign up</a>
+  </li>
+{% endif %}
