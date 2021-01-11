@@ -1,6 +1,10 @@
-this is home
+{% extends 'base.html' %}
+
+{% block content %}
+
 
 {% if user.is_authenticated %}
+  <h1>메인화면</h1>
   <li class="nav-item">
   <a class="nav-link"><span id="user_name">{{ user.username }}</span>님 반갑습니다!</a>
   </li>
@@ -8,11 +12,26 @@ this is home
   <li class="nav-item">
   <a class="nav-link" href="{% url 'crudmember:logout' %}">logout</a>
   </li>
-  {% else %}
-  <li class="nav-item">
-  <a class="nav-link" href="{% url 'crudmember:login' %}">Sign in</a>
-  </li>
-  <li class="nav-item">
-  <a class="nav-link" href="{% url 'crudmember:signup' %}">Sign up</a>
-  </li>
+{% else %}
+  <h1>로그인</h1> 
+  <h2>{{error}}</h2>
+  <form method="POST" action="{% url 'home' %}">
+      {% csrf_token %}
+      <p>아이디:</p>
+      <br>
+      <input type="text" name="username">
+      <br>
+      <p>비밀번호:</p>
+      <br>
+      <input type="password" name="password">
+      <br>
+      <br>
+      <input type="submit" value="로그인">
+  </form>
+  <a class="nav-link" href="{% url 'crudmember:signup' %}">signup</a>
 {% endif %}
+
+
+{% endblock %}
+
+

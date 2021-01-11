@@ -2,20 +2,21 @@
 
 {% block content %}
 <h1>회원가입</h1> 
+{{error}}
 
 <form method="POST" action="{% url 'crudmember:signup' %}">
     {% csrf_token %}
     <p>아이디:</p>
     <br>
-    <input type="text" name="id">
+    <input type="text" name="username" required="required">
     <br>
     <p>비밀번호:</p>
     <br>
-    <input type="password" name="password1">
+    <input type="password" name="password1" required="required">
     <br>
     <p>비밀번호 확인:</p>
     <br>
-    <input type="password" name="password2">
+    <input type="password" name="password2" required="required">
     <br>
     <br>
     <input type="submit" value="회원가입">
