@@ -21,5 +21,5 @@ from crudmember import views as member_view
 urlpatterns = [
     path('', member_view.home, name='home'),
     path('admin/', admin.site.urls),
-    path('crudmember/', include('crudmember.urls')),
+    path('member/', include('crudmember.urls')),
 ]

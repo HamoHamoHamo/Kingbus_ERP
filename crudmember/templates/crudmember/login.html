@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h1>로그인</h1> 
+<h2>{{error}}</h2>
+<form method="POST" action="{% url 'crudmember:login' %}">
+    {% csrf_token %}
+    <p>아이디:</p>
+    <br>
+    <input type="text" name="username" required="required">
+    <br>
+    <p>비밀번호:</p>
+    <br>
+    <input type="password" name="password" required="required">
+    <br>
+    <br>
+    <input type="submit" value="로그인">
+</form>
+<a class="nav-link" href="{% url 'crudmember:signup' %}">signup</a>
+
+{% endblock %}
