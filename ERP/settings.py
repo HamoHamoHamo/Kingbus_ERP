@@ -38,7 +38,15 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
     'crudmember.apps.CrudmemberConfig',
+    'notice.apps.NoticeConfig',
+    'accounting.apps.AccountingConfig',
+    'dispatch.apps.DispatchConfig',
+    'accident.apps.AccidentConfig',
+    'humanresource.apps.HumanresourceConfig',
+    'document.apps.DocumentConfig',
+    'vehicle.apps.VehicleConfig',
 ]
 
 MIDDLEWARE = [
@@ -124,6 +132,7 @@ USE_TZ = False
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
 STATIC_URL = '/static/'
+
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 # 미디어 파일을 관리할 루트 media 디렉터리

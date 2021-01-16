@@ -1,12 +1,124 @@
+{% load static %}
+
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
+
 <body>
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Document</title>
+        <style>
+            .main-menu {
+                background-color: black;
+                color: white;
+                padding: 16px;
+                font-size: 16px;
+                border: none;
+            }
+
+            .main {
+                position: relative;
+                display: inline-block;
+            }
+
+            .main-menu-content {
+                display: none;
+                position: absolute;
+                background-color: #f1f1f1;
+                min-width: 160px;
+                box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+                z-index: 1;
+            }
+
+            .main-menu-content a {
+                color: black;
+                padding: 12px 16px;
+                text-decoration: none;
+                display: block;
+            }
+
+            .main-menu-content a:hover {
+                background-color: #ddd;
+            }
+
+            .main:hover .main-menu-content {
+                display: block;
+            }
+
+            .menu-link {
+                text-decoration: none;
+                color: white;
+            }
+        </style>
+    </head>
+
+    <header>
+        <div class="main">
+            <button class="main-menu"><a href="#" class="menu-link">공지사항</a></button>
+            <div class="main-menu-content">
+                <a href="#">기사님 공지사항</a>
+                <a href="#">사무실 공지사항</a>
+            </div>
+        </div>
+        <div class="main">
+            <button class="main-menu"><a href="#" class="menu-link">경리시스템</a></button>
+            <div class="main-menu-content">
+                <a href="#">급여 관리</a>
+                <a href="#">지출내역</a>
+                <a href="#">수입내역</a>
+            </div>
+        </div>
+        <div class="main">
+            <button class="main-menu"><a href="#" class="menu-link">배차시스템</a></button>
+            <div class="main-menu-content">
+                <a href="#">배차지시서</a>
+                <a href="#">배차스케쥴</a>
+                <a href="#">배차관리</a>
+            </div>
+        </div>
+        <div class="main">
+            <button class="main-menu"><a href="#" class="menu-link">인사관리</a></button>
+            <div class="main-menu-content">
+                <a href="#">인사등록</a>
+                <a href="#">회원 관리</a>
+            </div>
+        </div>
+        <div class="main">
+            <button class="main-menu"><a href="#" class="menu-link">차량 관리</a></button>
+            <div class="main-menu-content">
+                <a href="#">차량현황</a>
+                <a href="#">차량정비</a>
+                <a href="#">정기점검</a>
+            </div>
+        </div>
+        <div class="main">
+            <button class="main-menu"><a href="#" class="menu-link">서류관리</a></button>
+            <div class="main-menu-content">
+                <a href="#">서류목록</a>
+            </div>
+        </div>
+        <div class="main">
+            <button class="main-menu"><a href="#" class="menu-link">사고 관리</a></button>
+            <div class="main-menu-content">
+                <a href="#">사고처리</a>
+                <a href="#">보험처리</a>
+                <a href="#">법률지원</a>
+            </div>
+        </div>
+        <div class="main">
+            <button class="main-menu"><a href="#" class="menu-link">설정</a></button>
+            <div class="main-menu-content">
+                <a href="#">비밀번호 변경</a>
+                <a href="#">개인정보 변경</a>
+            </div>
+        </div>
+        </div>
+    </header>
+
     {% block content %}
     {% endblock %}
 </body>
+
 </html>

@@ -9,4 +9,5 @@ urlpatterns = [
     path('', member_view.home, name='home'),
     path('admin/', admin.site.urls),
     path('member/', include('crudmember.urls')),
+    path('notice/', include('notice.urls')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

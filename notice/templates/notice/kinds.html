@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+    <h1>kinds</h1>
+    <ol>
+        {% for notice in notices %}
+            <li class="notice_title">
+                <a href= "{% url 'notice:detail'  kinds notice.pk %}">{{ notice.title }}</a>
+            </li>
+        {% endfor %}
+    </ol>
+    
+{% endblock %}

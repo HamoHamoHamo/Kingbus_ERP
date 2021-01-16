@@ -15,8 +15,8 @@ class User(models.Model): #장고에서 제공하는 models.Model를 상속받�
     class Meta: #메타 클래스를 이용하여 테이블명 지정
         db_table = 'my_user'
 
-class UserFiles(models.Model):
-    user_id = models.ForeignKey(User, on_delete=models.CASCADE,related_name="user", db_column="user_id", null=True)
+class UserFile(models.Model):
+    user_id = models.ForeignKey(User, on_delete=models.CASCADE,related_name="file", db_column="user_id", null=True)
     file = models.FileField(upload_to='files/', blank=True, null=True)
 
     class Meta:

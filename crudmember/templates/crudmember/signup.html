@@ -1,10 +1,9 @@
-{% extends 'base.html' %}
+{% load static %}
 
-{% block content %}
-<h1>회원가입</h1> 
+<h1>회원가입</h1>
 {{ error }}
 
-<form method="POST" action="{% url 'crudmember:signup' %}">
+<form method="POST" action="{% url 'crudmember:signup' %}" enctype="multipart/form-data">
     {% csrf_token %}
     <p>아이디:</p>
     <br>
@@ -25,9 +24,11 @@
     <p>사진</p>
     <input type="file" name="photo">
     <p>서류 :</p>
-    <input type="file" name="file">
+    <input type="file" name="file" id=user_file >
+    <input type="file" name="file" id=user_file >
+    <input type="file" name="file" id=user_file >
+
     <br>
     <input type="submit" value="회원가입">
 </form>
-
-{% endblock %}
+<script src='/static/js/upload_file.js'></script>

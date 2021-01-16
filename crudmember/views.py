@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.hashers import make_password, check_password
-from .models import User, UserFiles
+from .models import User, UserFile
 
 def home(request):
     user_id = request.session.get('user')
@@ -24,8 +24,8 @@ def signup(request):
         name = request.POST.get('name', None)
         tel = request.POST.get('tel', None)
         photo = request.FILES.get('photo', None)
-        file = request.FILES.get('file', None)
-        
+        files = request.FILES.getlist('file')
+        print ("테스트", request.FILES)
         res_data = {}
         if User.objects.filter(userid=userid).exists(): #아이디 중복체크
             res_data['error'] = '사용중인 아이디입니다.'
@@ -41,11 +41,12 @@ def signup(request):
                 )
             user.save()
 
-            user_file = UserFiles(
-                user_id=get_object_or_404(User, userid=userid),
-                file=file
-            )
-            user_file.save()
+            for upload_file in files:
+                user_file = UserFile(
+                    user_id=get_object_or_404(User, userid=userid),
+                    file=upload_file
+                )
+                user_file.save()
             #auth.login(request, user)
             return render(request, 'crudmember/login.html', res_data)
         return render(request, 'crudmember/signup.html', res_data)

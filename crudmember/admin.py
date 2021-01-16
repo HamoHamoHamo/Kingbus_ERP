@@ -1,8 +1,8 @@
 from django.contrib import admin
-from .models import User, UserFiles
+from .models import User, UserFile
 
 class UserFilesInline(admin.TabularInline):
-    model = UserFiles
+    model = UserFile
 
 class UserAdmin(admin.ModelAdmin):
     list_display = ('id','userid','registered_dttm')
@@ -10,4 +10,4 @@ class UserAdmin(admin.ModelAdmin):
 
 
 admin.site.register(User, UserAdmin)
-admin.site.register(UserFiles)
+admin.site.register(UserFile)
