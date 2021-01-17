@@ -70,6 +70,9 @@ def login(request):
             print("비밀번호다름")
             return render(request, 'crudmember/login.html', res_data)
     else:
+        user_id = request.session.get('user')
+        if user_id:
+            return redirect('home')
         return render(request, 'crudmember/login.html')
 
 

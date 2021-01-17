@@ -1,7 +1,8 @@
 from django.http import Http404, HttpResponse
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.views import generic
 from .models import Notice, NoticeFile, NoticeComment
+from crudmember.models import User
 '''
 class NoticeKindsView(generic.ListView):
     model = Notice
@@ -14,7 +15,7 @@ class NoticeKindsView(generic.ListView):
 def kinds(request, kinds):
     kinds_check(kinds)
     context = {
-        'notices': Notice.objects.all().filter(kinds=kinds),
+        'notices': Notice.objects.all().filter(kinds=kinds).order_by('-pub_date')[:10],
         'kinds':kinds,
     }
     return render(request, 'notice/kinds.html', context)
@@ -27,35 +28,71 @@ def create(request):
         title = request.POST.get('title', None)
         content = request.POST.get('content', None)
         kinds = request.POST.get('kinds', None)
-        files = request.FILES.getlist('file')
-        res_data = {}
-        if User.objects.filter(userid=userid).exists(): #아이디 중복체크
-            res_data['error'] = '사용중인 아이디입니다.'
-        elif password1 != password2:
-            res_data['error'] = "비밀번호가 다릅니다."
-        else:
-            user = User(
-                userid = userid, 
-                password = make_password(password1),
-                name = name,
-                tel = tel,
-                photo = photo
-                )
-            user.save()
-
-            for upload_file in files:
-                user_file = UserFile(
-                    user_id=get_object_or_404(User, userid=userid),
-                    file=upload_file
-                )
-                user_file.save()
-            #auth.login(request, user)
-            return render(request, 'crudmember/login.html', res_data)
-        return render(request, 'crudmember/signup.html', res_data)
+        files = request.FILES.getlist('file', None)
+        
+        user_id = request.session['user']
+        user = User.objects.get(pk=user_id)
+        
+        notice = Notice(
+            creator = user,
+            title = title,
+            content = content,
+            kinds = kinds
+            )
+        notice.save()
+        print("테스트", type(notice))
+        for upload_file in files:
+            notice_file = NoticeFile(
+                notice_id=notice,
+                file=upload_file
+            )
+            notice_file.save()
+        #auth.login(request, user)
+        return redirect('notice:detail', args=(kinds,notice))
     return render(request, 'notice/create.html')
+
+
+class NoticeDetailList(generic.DetailView):
+    template_name = 'notice/detail.html'
+    context_object_name = 'notice'
+    
+    def post(self, request, *args, **kwargs):
+        user_id = request.session['user']
+        user = User.objects.get(pk=user_id)
+        content = request.POST.get('content', None)
+        self.notice_id=self.kwargs['pk']
+        notice = Notice.objects.get(id=self.notice_id)
+        print("테스트",notice)
+        notice_comment = NoticeComment(
+            creator = user,
+            notice_id = notice,
+            content = content,
+        )
+        notice_comment.save()
+        return redirect('notice:detail', args=(self.kwargs['kinds'],self.notice_id))
+
+
+    def get_queryset(self):
+        self.notice_id=self.kwargs['pk']
+        self.notice = get_object_or_404(Notice, id=self.notice_id)
+        print("테스트", self.notice, type(self.notice))
+        return Notice.objects.filter(title=self.notice)
+
+    def get_context_data(self, **kwargs):
+        # 기본 구현을 호출해 context를 가져온다.
+        context = super(NoticeDetailList, self).get_context_data(**kwargs)
+        # 모든 책을 쿼리한 집합을 context 객체에 추가한다.
+        context['notice'] = self.notice
+        context['notice_files'] = NoticeFile.objects.filter(notice_id=self.notice_id)
+        context['notice_comments'] = NoticeComment.objects.filter(notice_id=self.notice_id)
+        return context
+    #paginate_by = 2
+    #한 페이지에 보여주는 객체 리스트의 갯수 지정
+
 
 def detail(request, kinds, question_id):
     kinds_check(kinds)
+
     return render(request, 'notice/detail.html')
 
 def delete(request, kinds, question_id):

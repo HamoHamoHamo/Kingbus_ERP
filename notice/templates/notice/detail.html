@@ -1,1 +1,20 @@
-this is detail
+{% extends 'base.html' %}
+
+{% block content %}
+    <p>제목:{{ notice.title }}</p>
+    <p>내용:{{ notice.content }}</p>
+    <p>작성자:{{ notice.creator }}</p>
+    <p>작성날짜:{{ notice.pub_date }}</p>
+    {% for comment in notice_comments %}
+        <p>댓글작성자:{{ comment.creator }}</p>
+        <p>댓글내용:{{ comment.content }}</p>
+        <p>작성날짜:{{ comment.pub_date }}</p>
+    {% endfor %}
+
+    <form method="POST" action="{% url 'notice:detail' notice.kinds notice.id %}" enctype="multipart/form-data">
+        {% csrf_token %}
+        <p>내용:</p>
+        <textarea name="content"></textarea>
+        <input type="submit" value="등록">
+    
+{% endblock %}

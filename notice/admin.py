@@ -8,7 +8,7 @@ class NoticeCommentInline(admin.TabularInline):
     model = NoticeComment
 
 class NoticeAdmin(admin.ModelAdmin):
-    list_display = ('title','creator','kinds','registered_dttm')
+    list_display = ('title','creator','kinds','pub_date')
     inlines = (NoticeCommentInline, NoticeFileInline, )
 
 

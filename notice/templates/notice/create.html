@@ -5,7 +5,7 @@
     <form method="POST" action="{% url 'notice:create' %}" enctype="multipart/form-data">
         {% csrf_token %}
         <p>제목:</p>
-        <input type="text" name="userid" required="required">
+        <input type="text" name="title" required="required">
         <p>내용:</p>
         <textarea name="content"></textarea>
         <p>종류:</p>
