@@ -1,1 +1,22 @@
-this is create
+{% extends 'base.html' %}
+
+
+{% block content %}
+    <form method="POST" action="{% url 'notice:create' %}" enctype="multipart/form-data">
+        {% csrf_token %}
+        <p>제목:</p>
+        <input type="text" name="userid" required="required">
+        <p>내용:</p>
+        <textarea name="content"></textarea>
+        <p>종류:</p>
+        <label for="office">사무실</label>
+        <input type="radio" name="kinds" id="office" value="office" required="required">
+        <label for="driver">기사님</label>
+        <input type="radio" name="kinds" id="driver" value="driver" required="required">
+        <p>첨부파일</p>
+        <input type="file" name="file">
+        <input type="file" name="file">
+        <input type="file" name="file">
+        <br>
+        <input type="submit" value="등록">
+{% endblock %}

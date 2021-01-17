@@ -25,7 +25,6 @@ def signup(request):
         tel = request.POST.get('tel', None)
         photo = request.FILES.get('photo', None)
         files = request.FILES.getlist('file')
-        print ("테스트", request.FILES)
         res_data = {}
         if User.objects.filter(userid=userid).exists(): #아이디 중복체크
             res_data['error'] = '사용중인 아이디입니다.'
@@ -62,6 +61,7 @@ def login(request):
         user = User.objects.get(userid=login_username)
         if check_password(login_password, user.password):
             request.session['user'] = user.id 
+
                 #세션도 딕셔너리 변수 사용과 똑같이 사용하면 된다.
                 #세션 user라는 key에 방금 로그인한 id를 저장한것.
             return redirect('/')
