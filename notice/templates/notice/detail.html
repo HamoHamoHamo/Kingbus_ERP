@@ -5,10 +5,14 @@
     <p>내용:{{ notice.content }}</p>
     <p>작성자:{{ notice.creator }}</p>
     <p>작성날짜:{{ notice.pub_date }}</p>
+    <br>
+
+    <h2>댓글</h2>
     {% for comment in notice_comments %}
         <p>댓글작성자:{{ comment.creator }}</p>
         <p>댓글내용:{{ comment.content }}</p>
-        <p>작성날짜:{{ comment.pub_date }}</p>
+        <p>작성날짜:{{ comment.pub_date | date:'Y.m.d. H:i:s' }}</p>
+        <br>
     {% endfor %}
 
     <form method="POST" action="{% url 'notice:detail' notice.kinds notice.id %}" enctype="multipart/form-data">
@@ -16,5 +20,6 @@
         <p>내용:</p>
         <textarea name="content"></textarea>
         <input type="submit" value="등록">
-    
-{% endblock %}
+    <button><a href="{% url 'notice:kinds' notice.kinds %}">목록으로</a></button>
+        <h1>{{ notice.kinds }}</h1>
+    {% endblock %}

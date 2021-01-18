@@ -1,0 +1,21 @@
+# Kingbus ERP
+
+Cloning Youtube with VanillaJS and NodeJS
+
+## Pages:
+
+- [x] Home
+- [x] 회원가입
+- [x] 로그인
+- [x] 공지사항
+- [ ] 경리시스템
+- [ ] 배차시스템
+- [ ] 인사관리
+- [ ] 차량관리
+- [ ] 서류관리
+- [ ] 사고관리
+- [ ] 설정
+
+## Memo
+ - 공지사항 조회수 기능 만들기
+ - 
