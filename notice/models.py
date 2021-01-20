@@ -36,3 +36,8 @@ class NoticeComment(models.Model):
 
     class Meta:
         db_table = 'notice_comment'
+
+class NoticeViewCnt(models.Model):
+    notice_id = models.ForeignKey(Notice, on_delete=models.CASCADE, db_column="notice_id", null=False)
+    user_id = models.ForeignKey(User, verbose_name='작성자', db_column="user_id", null=False, on_delete=models.CASCADE)
+    pub_date = models.DateTimeField(auto_now_add=True,verbose_name='조회시간')
