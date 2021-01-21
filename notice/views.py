@@ -107,8 +107,10 @@ class NoticeDetail(generic.DetailView):
                 user_id=self.user,
                 notice_id=self.notice
                 )
-            hits.save()
-        return view_cnt
+            view_cnt.save()
+        
+        cnt = NoticeViewCnt.objects.filter(notice_id=self.notice_id).count()
+        return cnt
 
 
 
