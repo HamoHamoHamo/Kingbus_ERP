@@ -1,5 +1,7 @@
 from django.db import models
 from crudmember.models import User
+from uuid import uuid4
+from datetime import datetime
 
 class Notice(models.Model): #장고에서 제공하는 models.Model를 상속받아야한다.
     creator = models.ForeignKey(User, related_name="user", verbose_name='작성자', db_column="user_id", null=False, on_delete=models.CASCADE)
@@ -16,14 +18,27 @@ class Notice(models.Model): #장고에서 제공하는 models.Model를 상속받
         db_table = 'notice'
 
 class NoticeFile(models.Model):
+    def get_file_path(instance, filename):
+        
+        ymd_path = datetime.now().strftime('%Y/%m/%d')
+        uuid_name = uuid4().hex
+        return '/'.join(['files/', ymd_path, uuid_name])
+
+    def get_file_name(instance, filename):
+        print("파일이름",filename)
+        return(filename)
+
     notice_id = models.ForeignKey(Notice, on_delete=models.CASCADE,related_name="file", db_column="notice_id", null=True)
-    file = models.FileField(upload_to='files/', blank=True, null=True)
+    file = models.FileField(upload_to=get_file_path, blank=True, null=True)
+ #   name = models.CharField(max_length=100,verbose_name='제목', default=get_file_name)
+
+    class Meta:
+        db_table = 'notice_file'
 
     def __str__(self):
         return self.notice_id.title
 
-    class Meta:
-        db_table = 'notice_file'
+
 
 class NoticeComment(models.Model):
     creator = models.ForeignKey(User, related_name="comment", verbose_name='작성자', db_column="user_id", null=False, on_delete=models.CASCADE)

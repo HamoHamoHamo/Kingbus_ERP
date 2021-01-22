@@ -22,6 +22,8 @@
         {% endif %}
     {% endfor %}
 
+    <a href="{{ notice_files.file.url }}" download>{{ notice_files.file }}</a>
+
     <form method="POST" action="{% url 'notice:detail' notice.kinds notice.id %}" enctype="multipart/form-data">
         {% csrf_token %}
         <p>내용:</p>

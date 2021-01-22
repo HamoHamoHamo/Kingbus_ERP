@@ -89,7 +89,7 @@ class NoticeDetail(generic.DetailView):
         context['logged_user'] = self.request.session['user']
         context['view_cnt'] = self.get_view_cnt()
         context['notice'] = self.notice
-        context['notice_files'] = NoticeFile.objects.filter(notice_id=self.notice_id)
+        context['notice_files'] = NoticeFile.objects.get(notice_id=self.notice_id)
         context['notice_comments'] = NoticeComment.objects.filter(notice_id=self.notice_id)
         return context
     #paginate_by = 2
