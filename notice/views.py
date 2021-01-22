@@ -62,7 +62,7 @@ class NoticeDetail(generic.DetailView):
     
     def post(self, request, *args, **kwargs):
         self.user_id = request.session['user']
-        user = User.objects.get(pk=user_id)
+        user = User.objects.get(pk=self.user_id)
         content = request.POST.get('content', None)
         self.notice_id=self.kwargs['pk']
         notice = Notice.objects.get(id=self.notice_id)
@@ -86,6 +86,7 @@ class NoticeDetail(generic.DetailView):
     def get_context_data(self, **kwargs):
         # 기본 구현을 호출해 context를 가져온다.
         context = super(NoticeDetail, self).get_context_data(**kwargs)
+        context['logged_user'] = self.request.session['user']
         context['view_cnt'] = self.get_view_cnt()
         context['notice'] = self.notice
         context['notice_files'] = NoticeFile.objects.filter(notice_id=self.notice_id)
@@ -114,14 +115,20 @@ class NoticeDetail(generic.DetailView):
 
 
 
-def detail(request, kinds, question_id):
+def detail(request, kinds, notice_id):
     kinds_check(kinds)
 
     return render(request, 'notice/detail.html')
 
-def delete(request, kinds, question_id):
+def delete(request, kinds, notice_id):
     kinds_check(kinds)
+    Notice.objects.filter(id=notice_id).delete()
     return redirect('/notice/{0}/'.format(kinds))
+
+def comment_del(request, kinds, notice_id, comment_id):
+    kinds_check(kinds)
+    NoticeComment.objects.filter(id=comment_id).delete()
+    return redirect('/notice/{0}/{1}'.format(kinds, notice_id))
 
 def kinds_check(kinds): # driver 나 office인지 체크
     if kinds != "driver" and kinds != "office":

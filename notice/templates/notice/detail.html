@@ -1,12 +1,15 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <h1>{{ view_cnt }}</h1>
+    <h1>조회수:{{ view_cnt }}</h1>
     <p>제목:{{ notice.title }}</p>
     <p>내용:{{ notice.content }}</p>
     <p>작성자:{{ notice.creator }}</p>
     <p>작성날짜:{{ notice.pub_date }}</p>
     <br>
+    {% if logged_user == notice.creator.id %}
+        <a href="{% url 'notice:delete' notice.kinds notice.id %}">삭제</a>
+    {% endif %}
 
     <h2>댓글</h2>
     {% for comment in notice_comments %}
@@ -14,6 +17,9 @@
         <p>댓글내용:{{ comment.content }}</p>
         <p>작성날짜:{{ comment.pub_date | date:'Y.m.d. H:i:s' }}</p>
         <br>
+        {% if logged_user == notice.creator.id %}
+            <a href="{% url 'notice:comment_del' notice.kinds notice.id comment.id %}">삭제</a>
+        {% endif %}
     {% endfor %}
 
     <form method="POST" action="{% url 'notice:detail' notice.kinds notice.id %}" enctype="multipart/form-data">
