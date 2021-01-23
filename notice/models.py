@@ -22,15 +22,11 @@ class NoticeFile(models.Model):
         
         ymd_path = datetime.now().strftime('%Y/%m/%d')
         uuid_name = uuid4().hex
-        return '/'.join(['files/', ymd_path, uuid_name])
-
-    def get_file_name(instance, filename):
-        print("파일이름",filename)
-        return(filename)
+        return '/'.join(['notice/', ymd_path, uuid_name])
 
     notice_id = models.ForeignKey(Notice, on_delete=models.CASCADE,related_name="file", db_column="notice_id", null=True)
     file = models.FileField(upload_to=get_file_path, blank=True, null=True)
- #   name = models.CharField(max_length=100,verbose_name='제목', default=get_file_name)
+    filename = models.CharField(max_length=64, null=True, verbose_name='첨부파일명')
 
     class Meta:
         db_table = 'notice_file'

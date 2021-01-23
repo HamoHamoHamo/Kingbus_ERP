@@ -1,9 +1,10 @@
+import urllib, os, mimetypes
+from crudmember.models import User
 from django.http import Http404, HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
 from django.views import generic
 from .models import Notice, NoticeFile, NoticeComment, NoticeViewCnt
-from crudmember.models import User
 '''
 class NoticeKindsView(generic.ListView):
     model = Notice
@@ -44,11 +45,11 @@ def create(request):
             kinds = kinds
             )
         notice.save()
-        print("테스트", type(notice.id))
         for upload_file in files:
             notice_file = NoticeFile(
                 notice_id=notice,
-                file=upload_file
+                file=upload_file,
+                filename=upload_file.name,
             )
             notice_file.save()
         #auth.login(request, user)
@@ -89,7 +90,7 @@ class NoticeDetail(generic.DetailView):
         context['logged_user'] = self.request.session['user']
         context['view_cnt'] = self.get_view_cnt()
         context['notice'] = self.notice
-        context['notice_files'] = NoticeFile.objects.get(notice_id=self.notice_id)
+        context['notice_files'] = NoticeFile.objects.filter(notice_id=self.notice_id)
         context['notice_comments'] = NoticeComment.objects.filter(notice_id=self.notice_id)
         return context
     #paginate_by = 2
@@ -117,19 +118,44 @@ class NoticeDetail(generic.DetailView):
 
 def detail(request, kinds, notice_id):
     kinds_check(kinds)
-
     return render(request, 'notice/detail.html')
 
 def delete(request, kinds, notice_id):
     kinds_check(kinds)
-    Notice.objects.filter(id=notice_id).delete()
+    if notice_creator_check(request, notice_id):
+        Notice.objects.filter(id=notice_id).delete()
     return redirect('/notice/{0}/'.format(kinds))
+
+def download(request, kinds, notice_id, file_id):
+    kinds_check(kinds)
+    download_file = get_object_or_404(NoticeFile, pk=file_id)
+    url = download_file.file.url
+    file_url = urllib.parse.unquote(url)
+    if os.path.exists(file_url):
+        with open(file_url, 'rb') as fh:
+            quote_file_url = urllib.parse.quote(notice.filename.encode('utf-8'))
+            response = HttpResponse(fh.read(), content_type=mimetypes.guess_type(file_url)[0])
+            response['Content-Disposition'] = 'attachment;filename*=UTF-8\'\'%s' % quote_file_url
+            return response
+        raise Http404
 
 def comment_del(request, kinds, notice_id, comment_id):
     kinds_check(kinds)
-    NoticeComment.objects.filter(id=comment_id).delete()
+    if comment_creator_check(request, comment_id):
+        NoticeComment.objects.filter(id=comment_id).delete()
     return redirect('/notice/{0}/{1}'.format(kinds, notice_id))
+
+def notice_creator_check(request, notice_id):
+    if request.session['user'] != Notice.objects.get(id=notice_id).creator:
+        raise Http404
+    return True
+
+def comment_creator_check(request, comment_id):
+    if request.session['user'] != NoticeComment.objects.get(id=comment_id).creator:
+        raise Http404
+    return True
 
 def kinds_check(kinds): # driver 나 office인지 체크
     if kinds != "driver" and kinds != "office":
         raise Http404
+    return True

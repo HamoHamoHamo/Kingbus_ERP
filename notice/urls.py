@@ -9,6 +9,7 @@ urlpatterns = [
     path('create/', views.create, name='create'),
     path('<str:kinds>/', views.kinds, name='kinds'),
     path('<str:kinds>/<int:pk>/', views.NoticeDetail.as_view(), name='detail'),
+    path('<str:kinds>/<int:notice_id>/<int:file_id>/', views.download, name='download'),
     path('<str:kinds>/<int:notice_id>/delete/', views.delete, name='delete'),
     path('<str:kinds>/<int:notice_id>/<int:comment_id>/delete/', views.comment_del, name='comment_del'),
 ]
