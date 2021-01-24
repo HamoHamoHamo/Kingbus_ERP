@@ -17,7 +17,7 @@
         <p>댓글내용:{{ comment.content }}</p>
         <p>작성날짜:{{ comment.pub_date | date:'Y.m.d. H:i:s' }}</p>
         <br>
-        {% if logged_user == notice.creator.id %}
+        {% if logged_user == comment.creator.id %}
             <a href="{% url 'notice:comment_del' notice.kinds notice.id comment.id %}">삭제</a>
         {% endif %}
     {% endfor %}

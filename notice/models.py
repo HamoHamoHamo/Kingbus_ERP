@@ -26,7 +26,7 @@ class NoticeFile(models.Model):
 
     notice_id = models.ForeignKey(Notice, on_delete=models.CASCADE,related_name="file", db_column="notice_id", null=True)
     file = models.FileField(upload_to=get_file_path, blank=True, null=True)
-    filename = models.CharField(max_length=64, null=True, verbose_name='첨부파일명')
+    filename = models.CharField(max_length=1024, null=True, verbose_name='첨부파일명')
 
     class Meta:
         db_table = 'notice_file'
