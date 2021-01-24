@@ -30,8 +30,9 @@
     <form method="POST" action="{% url 'notice:detail' notice.kinds notice.id %}" enctype="multipart/form-data">
         {% csrf_token %}
         <p>내용:</p>
-        <textarea name="content"></textarea>
+        <textarea name="content" required="required"></textarea>
         <input type="submit" value="등록">
-    <button><a href="{% url 'notice:kinds' notice.kinds %}">목록으로</a></button>
+    <a href="{% url 'notice:kinds' notice.kinds %}">목록으로</a>
+    <a href="{% url 'notice:edit' notice.kinds notice.id %}">수정하기</a>
         <h1>{{ notice.kinds }}</h1>
     {% endblock %}

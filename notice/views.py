@@ -6,8 +6,9 @@ from django.http import Http404, HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
 from django.views import generic
+from notice.forms import NoticeForm
+from notice.models import Notice, NoticeFile, NoticeComment, NoticeViewCnt
 from ERP.settings import BASE_DIR
-from .models import Notice, NoticeFile, NoticeComment, NoticeViewCnt
 '''
 class NoticeKindsView(generic.ListView):
     model = Notice
@@ -48,16 +49,41 @@ def create(request):
             kinds = kinds
             )
         notice.save()
-        for upload_file in files:
-            notice_file = NoticeFile(
-                notice_id=notice,
-                file=upload_file,
-                filename=upload_file.name,
-            )
-            notice_file.save()
+        notice_file_save(files, notice)
         #auth.login(request, user)
         return redirect(reverse('notice:detail', args=(kinds,notice.id)))
     return render(request, 'notice/create.html')
+
+def edit(request, kinds, notice_id):
+    notice = get_object_or_404(Notice, pk=notice_id)
+
+    if request.method == "GET":
+        print("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx")
+        context = {
+            'notice':notice,
+            'notice_files':NoticeFile.objects.filter(notice_id=notice_id),
+        }
+        return render(request, "notice/edit.html", context )
+    else:
+        upload_file = request.FILES.getlist('file', None)
+
+        notice.title=request.POST.get('title', None)
+        notice.content=request.POST.get('content', None)
+        notice.kinds=request.POST.get('kinds', None)
+        notice.save()
+
+        notice_file_save(upload_file, notice)
+    return redirect('/notice/{0}/{1}'.format(kinds, notice_id))
+
+def notice_file_save(upload_file, notice):
+    for file in upload_file:
+        notice_file = NoticeFile(
+            notice_id=notice,
+            file=file,
+            filename=file.name,
+        )
+        notice_file.save()
+    return
 
 # detail
 class NoticeDetail(generic.DetailView):
@@ -139,27 +165,35 @@ def download(request, kinds, notice_id, file_id):
 def delete(request, kinds, notice_id):
     kinds_check(kinds)
     notice = Notice.objects.get(pk=notice_id)
-    notice_file = notice.file.filter(notice_id=notice_id)
-    if notice_creator_check(request, notice_id):
+    notice_file = notice.file.all()
+    if creator_check(request, notice_id, Notice):
         if notice_file:
             for file in notice_file:
                 os.remove(file.file.path)
         notice.delete()
     return redirect('/notice/{0}/'.format(kinds))
 
+def file_del(request, kinds, notice_id, file_id):
+    kinds_check(kinds)
+    notice = Notice.objects.get(pk=notice_id)
+    file = NoticeFile.objects.get(pk=file_id)
+    os.remove(file.file.path)
+    file.delete()
+    
+    context = {
+        'notice':notice,
+        'notice_files':NoticeFile.objects.filter(notice_id=notice_id),
+    }
+    return render(request, "notice/edit.html", context )
+
 def comment_del(request, kinds, notice_id, comment_id):
     kinds_check(kinds)
-    if comment_creator_check(request, comment_id):
+    if creator_check(request, comment_id, NoticeComment):
         NoticeComment.objects.filter(id=comment_id).delete()
     return redirect('/notice/{0}/{1}'.format(kinds, notice_id))
 
-def notice_creator_check(request, notice_id):
-    if request.session['user'] != Notice.objects.get(id=notice_id).creator.id:
-        raise Http404
-    return True
-
-def comment_creator_check(request, comment_id):
-    if request.session['user'] != NoticeComment.objects.get(id=comment_id).creator.id:
+def creator_check(request, pk, type):
+    if request.session['user'] != type.objects.get(id=pk).creator.id:
         raise Http404
     return True
 
@@ -167,3 +201,4 @@ def kinds_check(kinds): # driver 나 office인지 체크
     if kinds != "driver" and kinds != "office":
         raise Http404
     return True
+

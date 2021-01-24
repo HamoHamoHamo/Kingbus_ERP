@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+
+    {{driver_check}}
+    <form method="POST" action="{% url 'notice:edit' notice.kinds notice.id %}" enctype="multipart/form-data">
+        {% csrf_token %}
+        <p>------------------------------------------------------</p>
+        <p>제목:</p>
+        <input type="text" name="title" required="required" value={{ notice.title }}>
+        <p>내용:</p>
+        <textarea name="content">{{ notice.content }}</textarea>
+        <p>종류:</p>
+        
+        {% if notice.kinds == office %}
+            <input type="radio" name="kinds" id="office" value="office" required="required" checked>
+            <label for="office">사무실</label>
+            <input type="radio" name="kinds" id="driver" value="driver" required="required">
+            <label for="driver">기사님</label>
+        {% else %}
+            <input type="radio" name="kinds" id="office" value="office" required="required">
+            <label for="office">사무실</label>
+            <input type="radio" name="kinds" id="driver" value="driver" required="required" checked>
+            <label for="driver">기사님</label>
+        {% endif %}
+        
+
+        <p>첨부파일</p>
+        {% for this_file in notice_files %}
+            <p>{{ this_file.filename }}</p>
+            <a href="{% url 'notice:file_del' notice.kinds notice.id this_file.id %}">첨부파일 삭제</a>
+        {% endfor %}
+        <input type="file" name="file">
+        <input type="file" name="file">
+        <input type="file" name="file">
+        <br>
+        <input type="submit" value="등록">
+
+{% endblock %}

@@ -4,6 +4,7 @@
 {% block content %}
     <form method="POST" action="{% url 'notice:create' %}" enctype="multipart/form-data">
         {% csrf_token %}
+
         <p>제목:</p>
         <input type="text" name="title" required="required">
         <p>내용:</p>

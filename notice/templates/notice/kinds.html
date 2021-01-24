@@ -1,14 +1,82 @@
 {% extends 'base.html' %}
 
 
+<link rel="stylesheet" href="css/kinds.css" />
+
+
 {% block content %}
-    <h1>{{ kinds }}</h1>
-    <ol>
-        {% for notice in notices %}
-            <li class="notice_title">
-                <a href= "{% url 'notice:detail'  kinds notice.pk %}">{{ notice.title }}</a>
-            </li>
-        {% endfor %}
-    </ol>
-    <a href="{% url 'notice:create' %}">작성하기</a>
+
+<div class="flex">
+    <aside class="aside">
+        <div class="asideBorder">
+            <div class="asideTitle">공지사항
+            </div>
+            <div>
+                <li class="asideLi"><a href="#" class="notice">사무실공지사항</li>
+                <li class="asideLi"><a href="#" class="notice">기사님공지사항</li>
+            </div>
+        </div>
+    </aside>
+    <section class="section">
+        <h2>사무실 공지사항</h2>
+        <div class="dataTbl1">
+            <table summary="공지사항 목록">
+
+                <caption>공지사항</caption>
+                <colgroup>
+                    <col width="8%" />
+                    <col width="*" />
+                    <col width="5%" />
+                    <col width="5%" />
+                    <col width="5%" />
+                    <col width="5%" />
+                </colgroup>
+                <thead>
+                    <th scope="번호" class="th-num">번호</th>
+                    <th scope="제목" class="th-title">제목</th>
+                    <th scope="작성자" class="th-writer">작성자</th>
+                    <th scope="등록일" class="th-date">등록일</th>
+                    <th scope="조회" class="th-visitor">조회</th>
+                </thead>
+
+
+                <tbody>
+                    {% for notice in notices %}
+                        <tr>
+                            <td class="num">{{ forloop.counter }}</td>
+                            <td class="notice-title"><a href="{% url 'notice:detail'  kinds notice.pk %}">{{ notice.title }}</a></td>
+                            <td class="notice-writer"> {{ notice.creator }}</td>
+                            <td class="date"> {{ notice.pub_date }}</td>
+                            <td class="visitor-num"> </td>
+                        </tr>
+                    {% endfor %}
+
+                    <tr>
+                        <td colspan="3"></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                </tbody>
+
+                <tfoot>
+
+                </tfoot>
+            </table>
+            <form>
+                <select class="select">
+                    <option value="none" selected="selected">선택</option>
+                    <option value="제목">제목</option>
+                    <option value="작성자">작성자</option>
+                </select>
+                <input type="text" style="width:350px;">
+                <div class="button-box">
+                    <button>검색</button></div>
+                <div class="wirte"">
+                    <button><a href="{% url 'notice:create' %}">글쓰기</a></button>
+            </form>
+        </div>
+</div>
+
+
 {% endblock %}
