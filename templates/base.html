@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html>
 
@@ -5,8 +6,6 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width">
     <title>Kingbus ERP</title>
-    {% block head %}
-    {% endblock %}
     <style>
         body {
             width: 100vw;
@@ -141,6 +140,8 @@
             height: 80px;
         }
     </style>
+    {% block head %}
+    {% endblock %}
 </head>
 
 <body>

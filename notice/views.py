@@ -58,7 +58,6 @@ def edit(request, kinds, notice_id):
     notice = get_object_or_404(Notice, pk=notice_id)
 
     if request.method == "GET":
-        print("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx")
         context = {
             'notice':notice,
             'notice_files':NoticeFile.objects.filter(notice_id=notice_id),

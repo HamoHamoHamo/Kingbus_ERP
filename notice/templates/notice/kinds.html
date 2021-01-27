@@ -1,7 +1,9 @@
 {% extends 'base.html' %}
+{% load static %}
 
-
-<link rel="stylesheet" href="css/kinds.css" />
+{% block head %}
+<link rel="stylesheet" href="{% static 'css/kinds.css' %}" type="text/css" />
+{% endblock %}
 
 
 {% block content %}
@@ -9,19 +11,22 @@
 <div class="flex">
     <aside class="aside">
         <div class="asideBorder">
-            <div class="asideTitle">공지사항
-            </div>
+            <div class="asideTitle">공지사항</div>
+
             <div>
-                <li class="asideLi"><a href="#" class="notice">사무실공지사항</li>
-                <li class="asideLi"><a href="#" class="notice">기사님공지사항</li>
+                {% with kinds_office="office" %}
+                <li class="asideLi"><a href="{% url 'notice:kinds' kinds_office %}" class="notice">사무실공지사항</a></li>
+                {% endwith %}
+                {% with kinds_driver="driver" %}
+                <li class="asideLi"><a href="{% url 'notice:kinds' kinds_driver %}" class="notice">기사님공지사항</a></li>
+                {% endwith %}
             </div>
         </div>
     </aside>
     <section class="section">
-        <h2>사무실 공지사항</h2>
+        <h2>{{ kinds }} 공지사항</h2>
         <div class="dataTbl1">
             <table summary="공지사항 목록">
-
                 <caption>공지사항</caption>
                 <colgroup>
                     <col width="8%" />
@@ -42,25 +47,16 @@
 
                 <tbody>
                     {% for notice in notices %}
-                        <tr>
-                            <td class="num">{{ forloop.counter }}</td>
-                            <td class="notice-title"><a href="{% url 'notice:detail'  kinds notice.pk %}">{{ notice.title }}</a></td>
-                            <td class="notice-writer"> {{ notice.creator }}</td>
-                            <td class="date"> {{ notice.pub_date }}</td>
-                            <td class="visitor-num"> </td>
-                        </tr>
-                    {% endfor %}
-
                     <tr>
-                        <td colspan="3"></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
+                        <td class="num">{{ forloop.counter }}</td>
+                        <td class="notice-title"><a href="{% url 'notice:detail'  kinds notice.pk %}">{{ notice.title }}</a></td>
+                        <td class="notice-writer"> {{ notice.creator }}</td>
+                        <td class="date"> {{ notice.pub_date | date:'Y.m.d' }}</td>
+                        <td class="visitor-num"> </td>
                     </tr>
+                    {% endfor %}
                 </tbody>
-
                 <tfoot>
-
                 </tfoot>
             </table>
             <form>
@@ -71,8 +67,9 @@
                 </select>
                 <input type="text" style="width:350px;">
                 <div class="button-box">
-                    <button>검색</button></div>
-                <div class="wirte"">
+                    <button>검색</button>
+                </div>
+                <div class="wirte">
                     <button><a href="{% url 'notice:create' %}">글쓰기</a></button>
             </form>
         </div>

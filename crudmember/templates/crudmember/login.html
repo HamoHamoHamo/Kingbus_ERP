@@ -1,5 +1,41 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <title>Kingbus ERP</title>
+    <link href="/static/css/login.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body>
+    <div class="size">
+        <fieldset class="fieldset">
+            <legend class="title"><strong>킹배차</strong></legend>
+            <form method="POST" action="{% url 'crudmember:login' %}">
+                <div class="login_form">
+                    {% csrf_token %}
+                    <div class="login_input">
+                        <input type="text" class='id' name="userid" required="required" placeholder="아이디">
+                        <input type="password" class='pw' name="password" required="required" placeholder="비밀번호">
+                    </div>
+                    <input type="submit" class='loginButton' value="로그인">
+                </div>
+            </form>
+            <ul>
+                <li><a href="#">ID/PW찾기</a></li>
+                <li><a href="{% url 'crudmember:signup' %}">회원가입</a></li>
+            </ul>
+        </fieldset>
+        <script src="script.js"></script>
+</body>
+
+</html>
 
 
+<!--
 <h1>로그인</h1> 
 <h2>{{error}}</h2>
 <form method="POST" action="{% url 'crudmember:login' %}">
@@ -16,3 +52,4 @@
     <input type="submit" value="로그인">
 </form>
 <a class="nav-link" href="{% url 'crudmember:signup' %}">signup</a>
+-->
