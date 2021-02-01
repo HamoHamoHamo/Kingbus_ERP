@@ -1,4 +1,5 @@
 from django.db import models
+from crudmember.models import User
 
 class DispatchConsumer(models.Model):
     name = models.CharField(verbose_name='주문자 이름', max_length=10, null=False)
@@ -8,6 +9,7 @@ class DispatchConsumer(models.Model):
         return self.name
 
 class DispatchOrder(models.Model): #장고에서 제공하는 models.Model를 상속받아야한다.
+    writer = models.ForeignKey(User, on_delete=models.CASCADE, related_name="writer", db_column="writer_id", null=True)
     order_consumer = models.ForeignKey(DispatchConsumer, on_delete=models.CASCADE, related_name="consumer", db_column="consumer_id", null=False)
     bus_cnt = models.IntegerField(verbose_name='버스 대수', null=False)
     price = models.IntegerField(verbose_name='가격', null=False)

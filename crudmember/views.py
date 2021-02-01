@@ -58,7 +58,13 @@ def login(request):
         login_username = request.POST.get('userid', None)
         login_password = request.POST.get('password', None)
         
-        user = User.objects.get(userid=login_username)
+        try:
+            user = User.objects.get(userid=login_username)
+        except Exception as e:
+            print("error", e)
+            res_data['error'] = "아이디/비밀번호가 다릅니다."
+            return render(request, 'crudmember/login.html', res_data)
+            
         if check_password(login_password, user.password):
             request.session['user'] = user.id 
 
