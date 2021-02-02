@@ -54,6 +54,16 @@ def create(request):
         return redirect(reverse('notice:detail', args=(kinds,notice.id)))
     return render(request, 'notice/create.html')
 
+def notice_file_save(upload_file, notice):
+    for file in upload_file:
+        notice_file = NoticeFile(
+            notice_id=notice,
+            file=file,
+            filename=file.name,
+        )
+        notice_file.save()
+    return
+
 def edit(request, kinds, notice_id):
     notice = get_object_or_404(Notice, pk=notice_id)
 
@@ -74,16 +84,21 @@ def edit(request, kinds, notice_id):
         notice_file_save(upload_file, notice)
     return redirect('/notice/{0}/{1}'.format(kinds, notice_id))
 
-def notice_file_save(upload_file, notice):
-    for file in upload_file:
-        notice_file = NoticeFile(
-            notice_id=notice,
-            file=file,
-            filename=file.name,
-        )
-        notice_file.save()
-    return
+### genericview update 테스트
+'''
+class NoticeEdit(generic.UpdateView):
+    model = Notice
+    context_object_name = 'notice'
+    template_name = 'notice/edit.html' 
+    success_url = '/'
 
+    #get object
+    def get_object(self): 
+        notice = get_object_or_404(Notice, pk=self.kwargs['pk']) 
+
+        return notice
+'''
+####################### 테스트        
 # detail
 class NoticeDetail(generic.DetailView):
     template_name = 'notice/detail.html'

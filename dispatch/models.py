@@ -10,7 +10,7 @@ class DispatchConsumer(models.Model):
 
 class DispatchOrder(models.Model): #장고에서 제공하는 models.Model를 상속받아야한다.
     writer = models.ForeignKey(User, on_delete=models.CASCADE, related_name="writer", db_column="writer_id", null=True)
-    order_consumer = models.ForeignKey(DispatchConsumer, on_delete=models.CASCADE, related_name="consumer", db_column="consumer_id", null=False)
+    consumer = models.ForeignKey(DispatchConsumer, on_delete=models.CASCADE, related_name="consumer", db_column="consumer_id", null=False)
     bus_cnt = models.IntegerField(verbose_name='버스 대수', null=False)
     price = models.IntegerField(verbose_name='가격', null=False)
     kinds = models.CharField(verbose_name='왕복or편도', max_length=2, null=False)
@@ -20,8 +20,7 @@ class DispatchOrder(models.Model): #장고에서 제공하는 models.Model를 �
     people_num = models.IntegerField(verbose_name='탑승인원', null=False)
     pub_date = models.DateTimeField(auto_now_add=True, verbose_name='등록시간')
     pay_type = models.CharField(verbose_name='카드or현금', max_length=2, null=False)
-    
-    #저장되는 시점의 시간을 자동으로 삽입해준다.
+    first_departure_date = models.DateTimeField(verbose_name='출발날짜', null=True)
 
     def __str__(self):
         return str(self.id)
@@ -40,4 +39,4 @@ class DispatchRoute(models.Model):
 class DispatchInfo(models.Model):
     order_id = models.ForeignKey(DispatchOrder, on_delete=models.CASCADE, related_name="info_order", db_column="order_id", null=False)
     #bus_id = models.ForeignKey(, on_delete=models.CASCADE, related_name="info_bus_id", db_column="bus_id", null=False)
-    #drive_id = models.ForeignKey(, on_delete=models.CASCADE, related_name="info_driver_id", db_column="driver_id", null=False)
+    #driver_id = models.ForeignKey(, on_delete=models.CASCADE, related_name="info_driver_id", db_column="driver_id", null=False)
