@@ -68,23 +68,40 @@ def createContext(request):
     }
     return context
 
-class OrderDetail(generic.DetailView):
-    template_name = 'dispatch/order_detail.html'
-    context_object_name = 'order'
+class OrderCreate(generic.CreateView):
     model = DispatchOrder
-
-class OrderUpdateView(generic.UpdateView):
-    model = DispatchOrder
+    fields = '__all__'
     context_object_name = 'order' #1
-    form_class = OrderForm
-    template_name = 'dispatch/order_edit.html' #2
+    
+    template_name = 'dispatch/order_create.html' #2
     success_url = '/' #3
-
+    
     #get object
     def get_object(self): 
         order = get_object_or_404(DispatchOrder, pk=self.kwargs['pk']) #4
 
         return order
+
+class OrderDetail(generic.DetailView):
+    template_name = 'dispatch/order_detail.html'
+    context_object_name = 'order'
+    model = DispatchOrder
+
+class OrderUpdate(generic.edit.UpdateView):
+    model = DispatchOrder
+    form_class = OrderForm
+    
+    context_object_name = 'order' #1
+    
+    template_name = 'dispatch/order_edit.html' #2
+    success_url = '/' #3
+    '''
+    #get object
+    def get_object(self): 
+        order = get_object_or_404(DispatchOrder, pk=self.kwargs['pk']) #4
+
+        return order
+        '''
 '''
 def order_edit(request, order_id):
     try:
