@@ -5,12 +5,12 @@
         <label for="{{ field.id_for_label }}">{{ field.label }}</label>
         <input
         type="{{ field.field.widget.input_type }}"
-        class="form-control"
         id="{{ field.id_for_label }}"
         placeholder="{{ field.label }}"
         name="{{ field.name }}"
         />
     </div>
     {% endfor %}
+    <input type="date" name="first_departure_date">
     <input type="submit" value="등록">
 </form>

@@ -5,6 +5,7 @@ from django.views import generic
 
 from .forms import OrderForm
 from .models import DispatchConsumer, DispatchInfo, DispatchOrder, DispatchRoute
+from crudmember.models import User
 
 class DispatchList(generic.ListView):
     template_name = 'dispatch/today.html'
@@ -21,66 +22,52 @@ class OrderList(generic.ListView):
 ######
 def order_create(request):
     if request.method == "POST":
-        create_data = createContext(request)
+        form = OrderForm(request.POST)
+        if form.is_valid():
+            print("테스트",form.cleaned_data['consumer_name'])
+            consumer = DispatchConsumer(
+                name = form.cleaned_data['consumer_name'],
+                tel = form.cleaned_data['consumer_tel'],
+            )
+            consumer.save()
 
-        consumer = DispatchConsumer(
-            name = create_data['consumer_name'],
-            tel = create_data['consumer_tel'],
-        )
-        consumer.save()
-
-        order = DispatchOrder(
-            writer = create_data['writer'],
-            consumer = consumer,
-            bus_cnt = create_data['bus_cnt'],
-            price = create_data['price'],
-            kinds = create_data['kinds'],
-            purpose = create_data['purpose'],
-            bus_type = create_data['bus_type'],
-            requirements = create_data['requirements'],
-            people_num = create_data['people_num'],
-            pub_date = create_data['pub_date'],
-            pay_type = create_data['pay_type'],
-            first_departure_date = create_data['first_departure_date'],
-        )
-        order.save()
-        return redirect(reverse('dispatch:order_detail', args=(order.pk)))
-    return render(request, 'dispatch/order_create.html')
+            order = DispatchOrder(
+                writer = User.objects.get(pk=request.session.get('user')).name,
+                consumer = consumer,
+                bus_cnt = form.cleaned_data['bus_cnt'],
+                price = form.cleaned_data['price'],
+                kinds = form.cleaned_data['kinds'],
+                purpose = form.cleaned_data['purpose'],
+                bus_type = form.cleaned_data['bus_type'],
+                requirements = form.cleaned_data['requirements'],
+                people_num = form.cleaned_data['people_num'],
+                pay_type = form.cleaned_data['pay_type'],
+                first_departure_date = request.POST.get('first_departure_date', None),
+            )
+            order.save()
+            return redirect(reverse('dispatch:order_detail', args=(order.pk)))
+        return redirect('dispatch:order_create')
+    else:
+        context = {
+            'form' : OrderForm(),
+        }
         
+    return render(request, 'dispatch/order_create.html', context)
 
-    return render(request, 'dispatch/order_create.html')
-def createContext(request):
-    context = {    
-        'writer': User.objects.get(pk=request.session['user']),
-        'bus_cnt': request.POST.get('bus_cnt', None),
-        'price': request.POST.get('price', None),
-        'kinds': request.POST.get('kinds', None),
-        'purpose': request.POST.get('purpose', None),
-        'bus_type': request.POST.get('bus_type', None),
-        'requirements': request.POST.get('requirements', None),
-        'people_num': request.POST.get('people_num', None),
-        'pub_date': request.POST.get('pub_date', None),
-        'pay_type': request.POST.get('pay_type', None),
-        'first_departure_date': request.POST.get('first_departure_date', None),
-
-        'consumer_name': request.POST.get('consumer_name', None),
-        'consumer_tel': request.POST.get('consumer_tel', None),
-    }
-    return context
-
-class OrderCreate(generic.CreateView):
+'''
+class OrderCreate(generic.FormView):
     model = DispatchOrder
-    fields = '__all__'
+    form_class = OrderForm
     context_object_name = 'order' #1
     
     template_name = 'dispatch/order_create.html' #2
     success_url = '/' #3
-    
-    #get object
-    def get_object(self): 
-        order = get_object_or_404(DispatchOrder, pk=self.kwargs['pk']) #4
 
-        return order
+    def form_valid(self, form):
+        print("xxxxxxxxxxxxxx")
+        order = form.save()
+        return super().form_valid(form)
+'''
 
 class OrderDetail(generic.DetailView):
     template_name = 'dispatch/order_detail.html'
@@ -95,13 +82,13 @@ class OrderUpdate(generic.edit.UpdateView):
     
     template_name = 'dispatch/order_edit.html' #2
     success_url = '/' #3
-    '''
+
     #get object
     def get_object(self): 
         order = get_object_or_404(DispatchOrder, pk=self.kwargs['pk']) #4
 
         return order
-        '''
+
 '''
 def order_edit(request, order_id):
     try:
