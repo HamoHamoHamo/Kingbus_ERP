@@ -21,6 +21,7 @@ class OrderList(generic.ListView):
 
 ######
 def order_create(request):
+    res_data = {}
     if request.method == "POST":
         form = OrderForm(request.POST)
         if form.is_valid():
@@ -32,7 +33,7 @@ def order_create(request):
             consumer.save()
 
             order = DispatchOrder(
-                writer = User.objects.get(pk=request.session.get('user')).name,
+                writer = User.objects.get(pk=request.session.get('user')),
                 consumer = consumer,
                 bus_cnt = form.cleaned_data['bus_cnt'],
                 price = form.cleaned_data['price'],
@@ -45,7 +46,9 @@ def order_create(request):
                 first_departure_date = request.POST.get('first_departure_date', None),
             )
             order.save()
-            return redirect(reverse('dispatch:order_detail', args=(order.pk)))
+            return redirect(reverse('dispatch:order_detail', args=(order.id,)))
+            #return redirect('/dispatch/order/{0}/'.format(order.id))
+        #form형식에 맞지 않는 POST일때
         return redirect('dispatch:order_create')
     else:
         context = {
