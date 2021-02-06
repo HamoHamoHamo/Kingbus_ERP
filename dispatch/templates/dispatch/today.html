@@ -1,1 +1,8 @@
-this is today
+{% extends 'base.html' %}
+
+{% block content %}
+    {% for d in dispatch_list%}
+        {{d.writer}}
+        
+    {% endfor %}
+{% endblock %}

@@ -7,16 +7,30 @@ from .forms import OrderForm
 from .models import DispatchConsumer, DispatchInfo, DispatchOrder, DispatchRoute
 from crudmember.models import User
 
+from datetime import datetime, timedelta
+
 class DispatchList(generic.ListView):
     template_name = 'dispatch/today.html'
     context_object_name = 'dispatch_list'
 
     def get_queryset(self):
         ''' 어제 오늘 내일 배차지시서 보여줌 '''
+        dispatch_list = []
+        today = datetime.now().day
+        tomorrow = (datetime.now() + timedelta(days=1)).day
+        yesterday = (datetime.now() - timedelta(days=1)).day
+        for order in DispatchOrder.objects.all():
+            day = order.pub_date.day
+            
+            if day == today or day == yesterday or day == tomorrow:
+                dispatch_list.append(order)
+        #프린트 할 수 있게 파일로 만들어 줘야 됨
+        return dispatch_list
+        
 
 class OrderList(generic.ListView):
     template_name = 'dispatch/order.html'
-    context_object_name = 'order_lsit'
+    context_object_name = 'order_list'
     model = DispatchOrder
 
 ######

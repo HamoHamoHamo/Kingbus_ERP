@@ -1,1 +1,8 @@
-order
+{% extends 'base.html' %}
+
+{% block content %}
+    {% for d in order_list%}
+        <p>{{d.pub_date}}</p>
+        
+    {% endfor %}
+{% endblock %}
