@@ -1,1 +1,16 @@
-order_detail
+{% extends 'base.html' %}
+
+{% block content %}
+    <p>작성자 : {{order.writer}}</p>
+    <p>고객 : {{order.consumer}}</p>
+    <p>버스 대수 : {{order.bus_cnt}}</p>
+    <p>가격 : {{order.price}}</p>
+    <p>왕복or편도 : {{order.kinds}}</p>
+    <p>용도 : {{order.purpose}}</p>
+    <p>버스종류 : {{order.bus_type}}</p>
+    <p>요구사항 : {{order.requirements}}</p>
+    <p>탑승인원 : {{order.people_num}}</p>
+    <p>카드or현금 : {{order.pay_type}}</p>
+    <p>출발날짜 : {{order.first_departure_date}}</p>
+    <p>등록날짜 : {{order.pub_date}}</p>
+{% endblock %}

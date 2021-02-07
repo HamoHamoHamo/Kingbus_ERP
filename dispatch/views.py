@@ -9,7 +9,7 @@ from crudmember.models import User
 
 from datetime import datetime, timedelta
 
-class DispatchList(generic.ListView):
+class TodayList(generic.ListView):
     template_name = 'dispatch/today.html'
     context_object_name = 'dispatch_list'
 
@@ -24,7 +24,7 @@ class DispatchList(generic.ListView):
             
             if day == today or day == yesterday or day == tomorrow:
                 dispatch_list.append(order)
-        #프린트 할 수 있게 파일로 만들어 줘야 됨
+        #프린트 할 수 있게 파일로 만들어 줘야 됨 > JS로 프린트 할 수 있게 할 거
         return dispatch_list
         
 
@@ -100,11 +100,6 @@ class OrderUpdate(generic.edit.UpdateView):
     template_name = 'dispatch/order_edit.html' #2
     success_url = '/' #3
 
-    #get object
-    def get_object(self): 
-        order = get_object_or_404(DispatchOrder, pk=self.kwargs['pk']) #4
-
-        return order
 
 '''
 def order_edit(request, order_id):

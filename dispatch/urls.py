@@ -5,7 +5,7 @@ app_name = 'dispatch'
 
 urlpatterns = [
     #path('<str:kinds>/', views.NoticeKindsView.as_view(), name='kinds'),
-    path('today/', views.DispatchList.as_view(), name='today'),
+    path('today/', views.TodayList.as_view(), name='today'),
     path('order/', views.OrderList.as_view(), name='order'),
     path('order/create/', views.order_create, name='order_create'),
     #path('order/create/', views.OrderCreate.as_view(), name='order_create'),

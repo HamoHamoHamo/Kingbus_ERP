@@ -24,13 +24,13 @@ class OrderForm(forms.ModelForm):
           '''  
 
 class OrderForm(forms.Form):
-    bus_cnt = forms.IntegerField()
-    price = forms.IntegerField()
-    kinds = forms.CharField()
-    purpose = forms.CharField()
-    bus_type = forms.CharField()
-    requirements = forms.CharField()
-    people_num = forms.IntegerField()
-    pay_type = forms.CharField()
-    consumer_name = forms.CharField()
-    consumer_tel = forms.IntegerField()
+    bus_cnt = forms.IntegerField(label="버스대수")
+    price = forms.IntegerField(label="가격")
+    kinds = forms.CharField(label="왕복or편도")
+    purpose = forms.CharField(label="용도")
+    bus_type = forms.CharField(label="버스종류")
+    requirements = forms.CharField(label="요구사항")
+    people_num = forms.IntegerField(label="탑승인원")
+    pay_type = forms.CharField(label="카드or현금")
+    consumer_name = forms.CharField(label="고객이름")
+    consumer_tel = forms.IntegerField(label="고객폰번호")

@@ -10,6 +10,7 @@ Cloning Youtube with VanillaJS and NodeJS
 - [x] 공지사항
 - [ ] 경리시스템
 - [ ] 배차시스템
+    - 차량관리 인사관리 끝나면 모델에 있는 bus_id, driver_id 활성화
 - [ ] 인사관리
 - [ ] 차량관리
 - [ ] 서류관리
