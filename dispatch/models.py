@@ -36,7 +36,9 @@ class DispatchRoute(models.Model):
     def __str__(self):
         return str(self.order_id.id)
 
-class DispatchInfo(models.Model):
+class DispatchConnect(models.Model):
     order_id = models.ForeignKey(DispatchOrder, on_delete=models.CASCADE, related_name="info_order", db_column="order_id", null=False)
-    #bus_id = models.ForeignKey(, on_delete=models.CASCADE, related_name="info_bus_id", db_column="bus_id", null=False)
-    #driver_id = models.ForeignKey(, on_delete=models.CASCADE, related_name="info_driver_id", db_column="driver_id", null=False)
+    # 차량관리, 인사관리 완료 후 외래키 작성
+    #bus_id = models.ForeignKey(, on_delete=models.CASCADE, related_name="info_bus_id", db_column="bus_id", null=True)
+    #driver_id = models.ForeignKey(, on_delete=models.CASCADE, related_name="info_driver_id", db_column="driver_id", null=True)
+    check = models.BooleanField(verbose_name="배차완료", null=False)

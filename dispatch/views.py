@@ -4,7 +4,7 @@ from django.urls import reverse
 from django.views import generic
 
 from .forms import OrderForm, ConsumerForm
-from .models import DispatchConsumer, DispatchInfo, DispatchOrder, DispatchRoute
+from .models import DispatchConsumer, DispatchConnect, DispatchOrder, DispatchRoute
 from crudmember.models import User
 
 from datetime import datetime, timedelta
@@ -21,7 +21,7 @@ class TodayList(generic.ListView):
         yesterday = (datetime.now() - timedelta(days=1)).day
         for order in DispatchOrder.objects.all():
             day = order.pub_date.day
-            
+            print(type(order))
             if day == today or day == yesterday or day == tomorrow:
                 dispatch_list.append(order)
         #프린트 할 수 있게 파일로 만들어 줘야 됨 > JS로 프린트 할 수 있게 할 거
@@ -126,7 +126,7 @@ def order_edit(request, pk):
     try:
         order = DispatchOrder.objects.get(pk=pk)
     except Exception as error:
-        print("\n에러:", e)
+        print("\n에러:", error)
         raise 404
 
     if request.method == 'GET':
@@ -143,11 +143,35 @@ def order_edit(request, pk):
         return redirect(reverse('dispatch:order_edit', args=(pk,)))
 
     
-def order_delete(request, order_id):
-    return render(request, 'dispatch/order_edit.html')
+def order_delete(request, pk):
+    order = get_object_or_404(DispatchOrder, pk=pk)
+    print("테스트ㅡㅡ", request.session['user'])
+    if order.writer.pk == request.session['user']:
+        order.consumer.delete()
+        order.delete()
+        return redirect('dispatch:order')
+    return redirect(reverse('dispatch:order_detail', args=(pk,)))
 
-def schedule(request):
-    return render(request, 'dispatch/schedule.html')
+class ScheduleList(generic.ListView):
+    template_name = 'dispatch/schedule.html'
+    context_object_name = 'order_list'
+    model = DispatchOrder
+    
+class ScheduleDetail(generic.ListView):
+    template_name = 'dispatch/schedule_detail.html'
+    context_object_name = 'order'
+    model = DispatchOrder
+
+    def get_queryset(self):
+        ''' 지정한 날짜 배차지시서 보여줌 '''
+        dispatch_list = []
+        date = self.kwargs['date']
+        for order in DispatchOrder.objects.all():
+            order_date = str(order.pub_date)[:10]
+            print(order_date)
+            if date == order_date:
+                dispatch_list.append(order)
+        return dispatch_list
 
 def management(request):
     return render(request, 'dispatch/management.html')

@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import User, UserFile
+from .models import User, UserFile, UserIP
 
 class UserFilesInline(admin.TabularInline):
     model = UserFile
@@ -11,3 +11,4 @@ class UserAdmin(admin.ModelAdmin):
 
 admin.site.register(User, UserAdmin)
 admin.site.register(UserFile)
+admin.site.register(UserIP)

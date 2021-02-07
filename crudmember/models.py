@@ -21,3 +21,6 @@ class UserFile(models.Model):
 
     class Meta:
         db_table = 'user_files'
+
+class UserIP(models.Model):
+    ip = models.CharField(max_length=100, null=False)

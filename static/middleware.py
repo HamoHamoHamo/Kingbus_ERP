@@ -2,7 +2,8 @@ from django.shortcuts import redirect
 from django.conf import settings
 from django.db import connection
 from django.template import Template, Context
-
+from ipware.ip import get_client_ip
+from crudmember.models import UserIP
 
 class LoginCheckMiddleware(object):
     def __init__(self, get_response):
@@ -22,6 +23,20 @@ class LoginCheckMiddleware(object):
         # the view (and later middleware) are called.
         response = self.get_response(request)
         
+        '''
+        # ip 확인
+        ip = get_client_ip(request)
+        if ip is not None:
+            print ("찾았다", ip)
+            try:
+                UserIP.objects.get(ip=ip)
+            except Exception as error:
+                print("\n에러", error)
+                userip=UserIP(ip=ip)
+                userip.save()
+        else:
+            print ("못찾았다")
+        '''
         # 로그인 되어 있지 않은 상태로 check_url에 접속시 로그인 화면으로 이동
         if not 'user' in request.session:
             for i in self.check_url:

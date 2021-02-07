@@ -1,11 +1,11 @@
 from django.contrib import admin
-from .models import DispatchOrder, DispatchConsumer, DispatchRoute, DispatchInfo
+from .models import DispatchOrder, DispatchConsumer, DispatchRoute, DispatchConnect
 
 class DispatchRouteInline(admin.TabularInline):
     model = DispatchRoute
 
 class DispatchInfoInline(admin.TabularInline):
-    model = DispatchInfo
+    model = DispatchConnect
 
 class DispatchOrderInline(admin.TabularInline):
     model = DispatchOrder
@@ -20,5 +20,5 @@ class DispatchOrderAdmin(admin.ModelAdmin):
 
 admin.site.register(DispatchOrder, DispatchOrderAdmin)
 admin.site.register(DispatchRoute)
-admin.site.register(DispatchInfo)
+admin.site.register(DispatchConnect)
 admin.site.register(DispatchConsumer, DispatchConsumerAdmin)

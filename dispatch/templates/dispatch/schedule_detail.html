@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1>schedule_detail</h1>
+    {% for d in order%}
+        {{d.first_departure_date}}
+        
+    {% endfor %}
+{% endblock %}

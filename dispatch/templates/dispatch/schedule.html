@@ -1,1 +1,8 @@
-schedule
+{% extends 'base.html' %}
+
+{% block content %}
+    {% for d in order_list%}
+        <p>{{d.first_departure_date}}</p>
+        
+    {% endfor %}
+{% endblock %}

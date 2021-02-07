@@ -1,7 +1,7 @@
 from django import forms 
 from django.db import models
 
-from .models import DispatchOrder, DispatchConsumer, DispatchRoute, DispatchInfo
+from .models import DispatchOrder, DispatchConsumer, DispatchRoute, DispatchConnect
 
 class OrderForm(forms.ModelForm):
     class Meta:

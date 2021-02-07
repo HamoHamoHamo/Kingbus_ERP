@@ -12,10 +12,10 @@ urlpatterns = [
     path('order/<int:pk>/', views.OrderDetail.as_view(), name='order_detail'),
     path('order/<int:pk>/edit/', views.order_edit, name='order_edit'),
     #path('order/<int:pk>/edit/', views.OrderUpdate.as_view(), name='order_edit'),
-    #path('order/<int:pk>/delete/', views.order_delete, name='order_delete'),
+    path('order/<int:pk>/delete/', views.order_delete, name='order_delete'),
 #
-    #path('schedule/', views.ScheduleList.as_view(), name='schedule'),
-    #path('schedule/<int:date>/', views.ScheduleDetail.as_view(), name='schedule_detail'),
+    path('schedule/', views.ScheduleList.as_view(), name='schedule'),
+    path('schedule/<str:date>/', views.ScheduleDetail.as_view(), name='schedule_detail'),
 
     #path('management/', views.ManagementList.as_view(), name='management'),
     #path('management/<int:pk>/', views.ManagementDetail.as_view(), name='management_detail'),
