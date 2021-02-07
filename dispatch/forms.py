@@ -2,12 +2,11 @@ from django import forms
 from django.db import models
 
 from .models import DispatchOrder, DispatchConsumer, DispatchRoute, DispatchInfo
-'''
+
 class OrderForm(forms.ModelForm):
     class Meta:
         model = DispatchOrder
-        fields = [
-            'consumer', 
+        fields = [ 
             'bus_cnt', 
             'price', 
             'kinds',
@@ -17,12 +16,14 @@ class OrderForm(forms.ModelForm):
             'people_num',
             'pay_type',
             ]
+        '''
         def __init__(self, *args, **kwargs):
             super().__init__(*args, **kwargs)
 
             self.fields['kinds'].widget.attrs.update ({'class': 'something'})
-          '''  
+        '''
 
+'''
 class OrderForm(forms.Form):
     bus_cnt = forms.IntegerField(label="버스대수")
     price = forms.IntegerField(label="가격")
@@ -32,5 +33,15 @@ class OrderForm(forms.Form):
     requirements = forms.CharField(label="요구사항")
     people_num = forms.IntegerField(label="탑승인원")
     pay_type = forms.CharField(label="카드or현금")
-    consumer_name = forms.CharField(label="고객이름")
-    consumer_tel = forms.IntegerField(label="고객폰번호")
+
+
+    def save(self, commit=True):
+        self.instance = DispatchOrder(**self.cleaned_data)
+        if commit:
+            self.instance.save()
+        return self.instance
+'''
+class ConsumerForm(forms.ModelForm):
+    class Meta:
+        model = DispatchConsumer
+        fields = '__all__'

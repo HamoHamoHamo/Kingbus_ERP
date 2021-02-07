@@ -3,7 +3,7 @@ from crudmember.models import User
 
 class DispatchConsumer(models.Model):
     name = models.CharField(verbose_name='주문자 이름', max_length=10, null=False)
-    tel = models.IntegerField(verbose_name='전화번호', null=False)
+    tel = models.CharField(verbose_name='전화번호', max_length=15, null=False)
 
     def __str__(self):
         return self.name
