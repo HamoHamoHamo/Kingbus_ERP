@@ -9,8 +9,8 @@ from crudmember.models import User
 
 from datetime import datetime, timedelta
 
-class TodayList(generic.ListView):
-    template_name = 'dispatch/today.html'
+class DispatchList(generic.ListView):
+    template_name = 'dispatch/dispatch_list.html'
     context_object_name = 'dispatch_list'
 
     def get_queryset(self):
@@ -21,12 +21,14 @@ class TodayList(generic.ListView):
         yesterday = (datetime.now() - timedelta(days=1)).day
         for order in DispatchOrder.objects.all():
             day = order.pub_date.day
-            print(type(order))
             if day == today or day == yesterday or day == tomorrow:
                 dispatch_list.append(order)
         #프린트 할 수 있게 파일로 만들어 줘야 됨 > JS로 프린트 할 수 있게 할 거
         return dispatch_list
-        
+
+class DispatchDetail(generic.DetailView):
+    template_name = 'dispatch/dispatch_detail.html'
+    context_object_name = 'order'
 
 class OrderList(generic.ListView):
     template_name = 'dispatch/order.html'
@@ -167,16 +169,32 @@ class ScheduleDetail(generic.ListView):
         dispatch_list = []
         date = self.kwargs['date']
         for order in DispatchOrder.objects.all():
-            order_date = str(order.pub_date)[:10]
+            order_date = str(order.first_departure_date)[:10]
             print(order_date)
             if date == order_date:
                 dispatch_list.append(order)
         return dispatch_list
 
-def management(request):
-    return render(request, 'dispatch/management.html')
-def management_detail(request, order_id):
-    return render(request, 'dispatch/management_detail.html')
+class ManagementList(generic.ListView):
+    template_name = 'dispatch/management.html'
+    context_object_name = 'order_list'
+    model = DispatchOrder
+
+class ManagementDetail(generic.DetailView):
+    template_name = 'dispatch/management_detail.html'
+    context_object_name = 'order'
+    model = DispatchOrder
+
+    def get_context_data(self, **kwargs):
+        # 기본 구현을 호출해 context를 가져온다.
+        context = super(ManagementDetail, self).get_context_data(**kwargs)
+        order = get_object_or_404(DispatchOrder, pk=self.kwargs['pk'])
+        context['routes'] = DispatchRoute.objects.filter(order_id=order)
+        context['connect'] = DispatchRoute.objects.filter(order_id=order)
+        return context
+
+
+# 차량관리, 인사관리 완료 후 작성
 def management_create(request, order_id):
     return render(request, 'dispatch/management_create.html')
 def management_edit(request, order_id):
