@@ -15,13 +15,17 @@ class OrderForm(forms.ModelForm):
             'requirements',
             'people_num',
             'pay_type',
+            'first_departure_date'
             ]
-        '''
-        def __init__(self, *args, **kwargs):
-            super().__init__(*args, **kwargs)
 
-            self.fields['kinds'].widget.attrs.update ({'class': 'something'})
-        '''
+        widgets = {
+            'first_departure_date': forms.DateTimeInput(attrs={'type': 'date'}),
+        }
+
+class RouteForm(forms.ModelForm):
+    class Meta:
+        model = DispatchRoute
+        fields = '__all__'
 
 '''
 class OrderForm(forms.Form):

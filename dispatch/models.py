@@ -41,4 +41,4 @@ class DispatchConnect(models.Model):
     # 차량관리, 인사관리 완료 후 외래키 작성
     #bus_id = models.ForeignKey(, on_delete=models.CASCADE, related_name="info_bus_id", db_column="bus_id", null=True)
     #driver_id = models.ForeignKey(, on_delete=models.CASCADE, related_name="info_driver_id", db_column="driver_id", null=True)
-    check = models.BooleanField(verbose_name="배차완료", null=False)
+    check = models.BooleanField(verbose_name="배차완료", null=False, default=False)

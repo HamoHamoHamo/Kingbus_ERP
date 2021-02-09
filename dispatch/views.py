@@ -12,9 +12,13 @@ from datetime import datetime, timedelta
 class DispatchList(generic.ListView):
     template_name = 'dispatch/dispatch_list.html'
     context_object_name = 'dispatch_list'
+    paginate_by = 3
+    model = DispatchOrder
+
 
     def get_queryset(self):
-        ''' 어제 오늘 내일 배차지시서 보여줌 '''
+        #어제 오늘 내일 배차지시서 보여줌 / 굳이? 한달치 보여주면?
+        '''
         dispatch_list = []
         today = datetime.now().day
         tomorrow = (datetime.now() + timedelta(days=1)).day
@@ -23,9 +27,47 @@ class DispatchList(generic.ListView):
             day = order.pub_date.day
             if day == today or day == yesterday or day == tomorrow:
                 dispatch_list.append(order)
-        #프린트 할 수 있게 파일로 만들어 줘야 됨 > JS로 프린트 할 수 있게 할 거
+        '''
+        dispatch_list = DispatchOrder.objects.order_by('-id')
+        #프린트 할 수 있게 파일로 만들어 줘야 됨 > JS로 프린트 할 수 있게 할 거        
         return dispatch_list
 
+    # 페이징 처리
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        paginator = context['paginator']
+        page_numbers_range = 5
+        max_index = len(paginator.page_range)
+        print("테스트ㅡㅡ",max_index)
+        page = self.request.GET.get('page')
+        current_page = int(page) if page else 1
+
+        start_index = int((current_page - 1) / page_numbers_range) * page_numbers_range
+        end_index = start_index + page_numbers_range
+        if end_index >= max_index:
+            end_index = max_index
+
+        page_range = paginator.page_range[start_index:end_index]
+        context['page_range'] = page_range
+
+        return context
+
+'''
+    def get_context_data(self, **kwargs):
+        # 기본 구현을 호출해 context를 가져온다.
+        date_range = []
+        month=str(datetime.now())[5:7]
+        this_month = month
+        while month == this_month:
+
+        
+        context = super(DispatchList, self).get_context_data(**kwargs)
+
+
+        context['routes'] = DispatchRoute.objects.all()
+        context['connect'] = DispatchRoute.objects.all()
+        return context
+'''
 class DispatchDetail(generic.DetailView):
     template_name = 'dispatch/dispatch_detail.html'
     context_object_name = 'order'
@@ -68,7 +110,6 @@ def update_order(request, update):
             order = order_form.save(commit=False)
             order.consumer=consumer
             order.writer = User.objects.get(pk=request.session.get('user'))
-            order.first_departure_date = request.POST.get('first_departure_date', None)
             order.save()
             return order
         else:
@@ -88,32 +129,26 @@ def update_order(request, update):
             update.requirements = order_form.cleaned_data['requirements']
             update.people_num = order_form.cleaned_data['people_num']
             update.pay_type = order_form.cleaned_data['pay_type']
-            update.first_departure_date = request.POST.get('first_departure_date', None)
+            update.first_departure_date = order_form.cleaned_data['first_departure_date']
             update.save()
             return update
 
 
     return False
-'''
-class OrderCreate(generic.FormView):
-    model = DispatchOrder
-    form_class = OrderForm
+
+class OrderCreate(generic.edit.CreateView):
     context_object_name = 'order' #1
+    form_class = OrderForm
     
     template_name = 'dispatch/order_create.html' #2
     success_url = '/' #3
 
-    def form_valid(self, form):
-        print("xxxxxxxxxxxxxx")
-        order = form.save()
-        return super().form_valid(form)
-'''
 
 class OrderDetail(generic.DetailView):
     template_name = 'dispatch/order_detail.html'
     context_object_name = 'order'
     model = DispatchOrder
-'''
+
 class OrderUpdate(generic.edit.UpdateView):
     model = DispatchOrder
     form_class = OrderForm
@@ -122,7 +157,8 @@ class OrderUpdate(generic.edit.UpdateView):
     
     template_name = 'dispatch/order_edit.html' #2
     success_url = '/' #3
-'''
+    
+
 
 def order_edit(request, pk):
     try:

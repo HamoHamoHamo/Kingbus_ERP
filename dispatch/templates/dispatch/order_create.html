@@ -3,6 +3,13 @@
 {% block content %}
     <form method="POST" action="">
         {% csrf_token %}
+        {{ form }}
+        <input type="text" name=>
+        <input type="submit" value="등록">
+    </form>
+<!--
+    <form method="POST" action="">
+        {% csrf_token %}
         {% for field in order_form %}
         <div class="form-group">
             <label for="{{ field.id_for_label }}">{{ field.label }}</label>
@@ -25,8 +32,7 @@
             />
         </div>
         {% endfor %}
-        <label for="first_departure_date">출발날짜</label>
-        <input type="date" name="first_departure_date">
         <input type="submit" value="등록">
     </form>
+-->
 {% endblock %}

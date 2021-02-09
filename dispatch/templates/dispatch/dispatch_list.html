@@ -1,11 +1,56 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    {% for d in dispatch_list%}
+    {% for d in dispatch_list %}
         <div>
             <span>고객 이름 : {{ d.consumer.name }}</span>
             <span>전화번호 : {{ d.consumer.tel }}</span>
             <span>출발일 : {{ d.first_departure_date }}</span>
+            
+            {% for route in routes %}
+                <div class="routes">
+                    {% if route.order_id == d %}
+                        <span>출발지 : {{ route.departure }}</span>
+                        <span>출발시간 : {{ route.departure_date }}</span>
+                        <span>도착지 : {{ route.arrival }}</span>
+                        <span>도착시간 : {{ route.arrival_date }}</span>
+                    {% endif %}
+                </div>
+            {% endfor %}
         </div>
     {% endfor %}
+
+<!-- 페이징 처리 -->
+    {% if is_paginated %}
+    <ul class="pagination">
+        {% if page_obj.has_previous %}
+        <li class="page-item">
+            <a class="page-link" href="?page={{ page_obj.previous_page_number }}"
+                tabindex="-1">이전</a>
+        </li>
+        {% else %}
+        <li class="page-item disabled">
+            <a class="page-link" href="#" tabindex="-1">이전</a>
+        </li>
+        {% endif %}
+
+        {% for page in page_range %}
+        <li class="page-item {% if page == page_obj.number %} activate {% endif %}">
+            <a class="page-link" href="?page={{ page }}">{{ page }}</a>
+        </li>
+        {% endfor %}
+
+        {% if page_obj.has_next %}
+        <li class="page-item">
+            <a class="page-link"
+                href="?page={{ page_obj.next_page_number }}">다음</a>
+        </li>
+        {% else %}
+        <li class="page-item disabled">
+            <a class="page-link" href="#">다음</a>
+        </li>
+        {% endif %}
+    </ul>
+    {% endif %}
+
 {% endblock %}

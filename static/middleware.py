@@ -26,6 +26,7 @@ class LoginCheckMiddleware(object):
         
         # ip 확인
         ip = get_client_ip(request)
+        ip=ip[0]
         if ip:
             try:
                 UserIP.objects.get(ip=ip)
