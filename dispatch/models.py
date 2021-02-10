@@ -21,7 +21,6 @@ class DispatchOrder(models.Model): #장고에서 제공하는 models.Model를 �
     pub_date = models.DateTimeField(auto_now_add=True, verbose_name='등록시간')
     pay_type = models.CharField(verbose_name='카드or현금', max_length=2, null=False)
     first_departure_date = models.DateTimeField(verbose_name='출발날짜', null=True)
-
     def __str__(self):
         return str(self.id)
 

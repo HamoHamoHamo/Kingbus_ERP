@@ -68,9 +68,24 @@ class DispatchList(generic.ListView):
         context['connect'] = DispatchRoute.objects.all()
         return context
 '''
-class DispatchDetail(generic.DetailView):
-    template_name = 'dispatch/dispatch_detail.html'
-    context_object_name = 'order'
+class DispatchDateList(generic.ListView):
+    template_name = 'dispatch/dispatch_date.html'
+    context_object_name = 'dispatch'
+
+    def get_queryset(self):
+        dispatch = DispatchOrder.objects.filter(first_departure_date__contains=self.kwargs['date'])
+        return dispatch
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        dispatch = DispatchOrder.objects.filter(first_departure_date__contains=self.kwargs['date'])
+        context['routes'] = []
+        for i in dispatch:
+            context['routes'].append(DispatchRoute.objects.filter(order_id=i))
+        a=context['routes']
+        print("test",a)
+        return context
+
 
 class OrderList(generic.ListView):
     template_name = 'dispatch/order.html'
