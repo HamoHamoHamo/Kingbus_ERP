@@ -82,8 +82,6 @@ class DispatchDateList(generic.ListView):
         context['routes'] = []
         for i in dispatch:
             context['routes'].append(DispatchRoute.objects.filter(order_id=i))
-        a=context['routes']
-        print("test",a)
         return context
 
 

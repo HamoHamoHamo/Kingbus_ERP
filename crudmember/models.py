@@ -24,3 +24,6 @@ class UserFile(models.Model):
 
 class UserIP(models.Model):
     ip = models.CharField(max_length=100, null=False)
+
+    def __str__(self):
+        return self.ip

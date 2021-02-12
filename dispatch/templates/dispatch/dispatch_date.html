@@ -1,22 +1,22 @@
 {% extends 'base.html' %}
 
 {% block content %}
-
-    {% for d in dispatch %}
+    {% for order in dispatch %}
         <div>
-            <span>고객 이름 : {{ d.consumer.name }}</span>
-            <span>전화번호 : {{ d.consumer.tel }}</span>
-            <span>출발일 : {{ d.first_departure_date }}</span>
-            
+            <span>고객 이름 : {{ order.consumer.name }}</span>
+            <span>전화번호 : {{ order.consumer.tel }}</span>
+            <span>출발일 : {{ order.first_departure_date }}</span>
             {% for route in routes %}
-                <div class="routes">
-                    {% if route.order_id == d %}
-                        <span>출발지 : {{ route.departure }}</span>
-                        <span>출발시간 : {{ route.departure_date }}</span>
-                        <span>도착지 : {{ route.arrival }}</span>
-                        <span>도착시간 : {{ route.arrival_date }}</span>
-                    {% endif %}
-                </div>
+                {% for r in route %}                
+                    <div class="routes">
+                        {% if r.order_id == order %}
+                            <span>출발지 : {{ r.departure }}</span>
+                            <span>출발시간 : {{ r.departure_date }}</span>
+                            <span>도착지 : {{ r.arrival }}</span>
+                            <span>도착시간 : {{ r.arrival_date }}</span>
+                        {% endif %}
+                    </div>
+                {% endfor %}
             {% endfor %}
         </div>
     {% endfor %}
