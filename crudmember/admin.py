@@ -8,7 +8,11 @@ class UserAdmin(admin.ModelAdmin):
     list_display = ('id','userid','registered_dttm')
     inlines = (UserFilesInline,)
 
+class UserIPAdmin(admin.ModelAdmin):
+    list_display = ('ip', 'pub_date')
+    
+
 
 admin.site.register(User, UserAdmin)
 admin.site.register(UserFile)
-admin.site.register(UserIP)
+admin.site.register(UserIP, UserIPAdmin)

@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    {% for d in order_list%}
+    {% for d in order_list %}
         <p><a href="{% url 'dispatch:order_detail' d.pk %}">{{ d.pk }}</a></p>
         <!--  보여줄 항목 정하기 -->
     {% endfor %}

@@ -3,24 +3,17 @@
 {% block content %}
     {% for d in dispatch_list %}
         <div>
-            <span>고객 이름 : {{ d.consumer.name }}</span>
-            <span>전화번호 : {{ d.consumer.tel }}</span>
-            <span>출발일 : {{ d.first_departure_date }}</span>
-            
-            {% for route in routes %}
-                <div class="routes">
-                    {% if route.order_id == d %}
-                        <span>출발지 : {{ route.departure }}</span>
-                        <span>출발시간 : {{ route.departure_date }}</span>
-                        <span>도착지 : {{ route.arrival }}</span>
-                        <span>도착시간 : {{ route.arrival_date }}</span>
-                    {% endif %}
-                </div>
-            {% endfor %}
+            <span>날짜 : {{ d.first_departure_date | date:'Y-m-d' }}</span>
+            <a href="{% url 'dispatch:dispatch_detail' d.first_departure_date|date:'Y-m-d' %}">
+                <span>노선별</span>
+            </a>
+            <a href="{% url 'dispatch:dispatch_detail' d.first_departure_date|date:'Y-m-d' %}">
+                <span>호수별</span>
+            </a>
         </div>
     {% endfor %}
 
-<!-- 페이징 처리 -->
+    <!-- 페이징 처리 -->
     {% if is_paginated %}
     <ul class="pagination">
         {% if page_obj.has_previous %}

@@ -12,12 +12,11 @@ from datetime import datetime, timedelta
 class DispatchList(generic.ListView):
     template_name = 'dispatch/dispatch_list.html'
     context_object_name = 'dispatch_list'
-    paginate_by = 3
+    paginate_by = 10
     model = DispatchOrder
 
 
     def get_queryset(self):
-        #어제 오늘 내일 배차지시서 보여줌 / 굳이? 한달치 보여주면?
         '''
         dispatch_list = []
         today = datetime.now().day
@@ -38,7 +37,6 @@ class DispatchList(generic.ListView):
         paginator = context['paginator']
         page_numbers_range = 5
         max_index = len(paginator.page_range)
-        print("테스트ㅡㅡ",max_index)
         page = self.request.GET.get('page')
         current_page = int(page) if page else 1
 
@@ -52,22 +50,7 @@ class DispatchList(generic.ListView):
 
         return context
 
-'''
-    def get_context_data(self, **kwargs):
-        # 기본 구현을 호출해 context를 가져온다.
-        date_range = []
-        month=str(datetime.now())[5:7]
-        this_month = month
-        while month == this_month:
 
-        
-        context = super(DispatchList, self).get_context_data(**kwargs)
-
-
-        context['routes'] = DispatchRoute.objects.all()
-        context['connect'] = DispatchRoute.objects.all()
-        return context
-'''
 class DispatchDateList(generic.ListView):
     template_name = 'dispatch/dispatch_date.html'
     context_object_name = 'dispatch'
@@ -90,7 +73,6 @@ class OrderList(generic.ListView):
     context_object_name = 'order_list'
     model = DispatchOrder
 
-######
 def order_create(request):
     if request.method == "POST":
         #print("teststsestsetst", request.POST, type(request.POST))

@@ -9,7 +9,7 @@ class DispatchConsumer(models.Model):
         return self.name
 
 class DispatchOrder(models.Model): #장고에서 제공하는 models.Model를 상속받아야한다.
-    writer = models.ForeignKey(User, on_delete=models.CASCADE, related_name="writer", db_column="writer_id", null=True)
+    creator = models.ForeignKey(User, on_delete=models.CASCADE, related_name="dispatch_creator", db_column="creator_id", null=True)
     consumer = models.ForeignKey(DispatchConsumer, on_delete=models.CASCADE, related_name="consumer", db_column="consumer_id", null=False)
     bus_cnt = models.IntegerField(verbose_name='버스 대수', null=False)
     price = models.IntegerField(verbose_name='가격', null=False)

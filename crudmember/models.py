@@ -24,6 +24,6 @@ class UserFile(models.Model):
 
 class UserIP(models.Model):
     ip = models.CharField(max_length=100, null=False)
-
+    pub_date = models.DateTimeField(auto_now_add=True,verbose_name='등록시간')
     def __str__(self):
         return self.ip
