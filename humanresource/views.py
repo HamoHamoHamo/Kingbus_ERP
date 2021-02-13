@@ -8,16 +8,52 @@ from .forms import MemberForm, HRForm
 from crudmember.models import User
 
 
-class ManageMemberList(generic.ListView):
-    template_name = 'HR/management_list.html'
+class ManagementList(generic.ListView):
+    template_name = 'HR/management.html'
     context_object_name = 'HR_list'
     model = HR
 
 def HR_create(request):
-    return render(request, 'HR/HR_create.html')
+    context = {}
+    if request.method == "POST":
+        member_id=request.POST.get('member_id', None)
+        HR_form = HRForm(request.POST)
+        if HR_form.is_valid() and member_id:
+            hr = HR_form.save(commit=False)
+            print("테스트ㅡㅡㅡ",hr)
+            hr.member_id = get_object_or_404(Member, pk=member_id)
+            hr.creator = User.objects.get(pk=request.session.get('user'))
+            hr.save()
+            return redirect('HR:management')
+    else:
+        context = {
+            'HR_form' : HRForm(),
+            'members' : Member.objects.all()
+        }
+    return render(request, 'HR/HR_create.html', context)
 
 def HR_edit(request, pk):
-    return render(request, 'HR/HR_edit.html')
+    hr = get_object_or_404(HR, pk=pk)
+
+    if request.method == "POST":
+        member_id=request.POST.get('member_id', None)
+        HR_form = HRForm(request.POST)
+        if HR_form.is_valid() and member_id:
+            edit_hr = HR_form.save(commit=False)
+            print("테스트ㅡㅡㅡ",edit_hr)
+            edit_hr.member_id = get_object_or_404(Member, pk=member_id)
+            edit_hr.creator = User.objects.get(pk=request.session.get('user'))
+            edit_hr.save()
+            hr.delete()
+            return redirect('HR:management')
+    else:
+        context = {
+            'HR_form' : HRForm(instance=hr),
+            'members' : Member.objects.all(),
+            'member_id' : hr.member_id,
+            'start_date' : hr.start_date
+        }
+    return render(request, 'HR/HR_edit.html', context)
 
 def HR_delete(request, pk):
     return render(request, 'HR/HR_create.html')

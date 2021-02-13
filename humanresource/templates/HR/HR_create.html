@@ -1,1 +1,28 @@
 hr_create
+
+<form method="POST" action="">
+    {% csrf_token %}
+    {% for member in members %}
+    <div>
+        <label for="member_input">{{ member.name }}</label>
+        <input type="radio" name="member_id" value="{{ member.pk }}" id= "member_input">
+    </div>
+    {% endfor %}
+    {{ HR_form }}
+    <input type="submit" value="등록">
+</form>
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
+
+<script>
+    // This code activates flatpickr on fields with the 'datetimefield' class when the document has loaded
+    window.addEventListener("DOMContentLoaded", function () {
+        flatpickr(".datetimefield", {
+            enableTime: true,
+            dateFormat: "Y-m-d H:i",
+        });
+    });
+</script>

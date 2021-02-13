@@ -1,1 +1,51 @@
 hr_edit
+
+<form method="POST" action="">
+    {% csrf_token %}
+    {% for member in members %}
+    <div>
+        <label for="member_input">{{ member.name }}</label>
+
+            <input type="radio" name="member_id" value="{{ member.pk }}" id="member_input" 
+            {% if member_id == member %}
+                checked
+            {% endif %}
+            >
+    </div>
+    {% endfor %}
+    {% for field in HR_form %}
+
+    <div class="form-group">
+        <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+        <input
+        type="{{ field.field.widget.input_type }}"
+        id="{{ field.id_for_label }}"
+        placeholder="{{ field.label }}"
+        name="{{ field.name }}"
+        {% if forloop.counter == 3 or forloop.counter == 4 %}
+            class="datetimefield"
+            value="{{ field.value | date:'Y-m-d H:i' }}"
+        {% else %}
+            value="{{ field.value }}"
+        {% endif %}
+        />
+    </div>
+    {% endfor %}
+    <input type="submit" value="등록">
+</form>
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
+
+<script>
+    // This code activates flatpickr on fields with the 'datetimefield' class when the document has loaded
+    window.addEventListener("DOMContentLoaded", function () {
+        flatpickr(".datetimefield", {
+            enableTime: true,
+            dateFormat: "Y-m-d H:i",
+        });
+    });
+</script>

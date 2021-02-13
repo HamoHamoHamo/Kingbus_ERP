@@ -102,7 +102,7 @@ def update_order(request, update):
             )
             consumer.save()
 
-            order = order_form.save(commit=False)
+            order = order_form.save(commit=False) #commit 설정을 해줘야 되나? >> 값 불러오는 용도라 저장은 안하려고 False해줌
             order.consumer=consumer
             order.writer = User.objects.get(pk=request.session.get('user'))
             order.save()
@@ -156,11 +156,7 @@ class OrderUpdate(generic.edit.UpdateView):
 
 
 def order_edit(request, pk):
-    try:
-        order = DispatchOrder.objects.get(pk=pk)
-    except Exception as error:
-        print("\n에러:", error)
-        raise 404
+    order = get_object_or_404(DispatchOrder, pk=pk)
 
     if request.method == 'GET':
         context = {
@@ -170,8 +166,8 @@ def order_edit(request, pk):
         }
         return render(request, 'dispatch/order_edit.html', context)
     elif request.method == 'POST':
-        order = update_order(request, order)
-        if order:
+        order_edit = update_order(request, order)
+        if order_edit:
             return redirect(reverse('dispatch:order_detail', args=(pk,)))
         return redirect(reverse('dispatch:order_edit', args=(pk,)))
 

@@ -1,0 +1,10 @@
+management
+
+{% for hr in HR_list %}
+<div>
+    <span>이름 : {{ hr.member_id.name }}</span>
+    <span>종류 : {{ hr.hr_type }}</span>
+    <span>사유 : {{ hr.reason }}</span>
+    <span>날짜 : {{ hr.start_date }} ~ {{ hr.finish_date }} </span>
+</div>
+{% endfor %}

@@ -13,11 +13,12 @@ class HRForm(forms.ModelForm):
     class Meta:
         model = HR
         fields = [
-            'member_id',
             'hr_type',
             'reason',
-            'date',
+            'start_date',
+            'finish_date',
         ]
         widgets = {
-            'date': forms.DateTimeInput(attrs={'type': 'date'}),
+            'start_date': forms.DateTimeInput(format='%Y-%m-%d %H:%M', attrs={'class':'datetimefield'}),
+            'finish_date': forms.DateTimeInput(format='%Y-%m-%d %H:%M', attrs={'class':'datetimefield'}),
         }

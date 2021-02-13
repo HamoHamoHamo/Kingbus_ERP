@@ -18,8 +18,9 @@ class HR(models.Model):
     member_id = models.ForeignKey(Member, on_delete=models.CASCADE, related_name="hr_member", db_column="member_id", null=False)
     hr_type = models.CharField(verbose_name="종류", max_length=10, null=False)
     reason = models.CharField(verbose_name="사유", max_length=100, null=False)
-    date = models.DateTimeField(verbose_name="날짜", null=False)
-    pub_date = models.DateTimeField(verbose_name="등록날짜", null=False)
+    start_date = models.DateTimeField(verbose_name="시작날짜", null=False)
+    finish_date = models.DateTimeField(verbose_name="종료날짜", null=False)
+    pub_date = models.DateTimeField(verbose_name="등록날짜",auto_now_add=True, null=False)
     creator = models.ForeignKey(User, on_delete=models.CASCADE, related_name="creator", db_column="creator_id", null=True)
 
 class MemberDocument(models.Model):
