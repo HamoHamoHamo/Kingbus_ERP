@@ -56,7 +56,6 @@ def HR_edit(request, pk):
             'HR_form' : HRForm(instance=hr),
             'members' : Member.objects.all(),
             'member_id' : hr.member_id,
-            'start_date' : hr.start_date
         }
     return render(request, 'HR/HR_edit.html', context)
 
@@ -67,17 +66,53 @@ def HR_delete(request, pk):
         hr.delete()
     return redirect('HR:management')
 
+class MemberList(generic.ListView):
+    template_name = 'HR/member_list.html'
+    context_object_name = 'member_list'
+    model = Member
+
 class MemberDetail(generic.DetailView):
     template_name = 'HR/member_detail.html'
     context_object_name = 'member'
     model = Member
-
+    
 def member_create(request):
-    return render(request, 'HR/member_create.html')
+    context = {}
+    if request.method == "POST":
+        member_form = MemberForm(request.POST)
+        if member_form.is_valid():
+            member_form.save()
+            return redirect('HR:member')
+    else:
+        context = {
+            'member_form' : MemberForm(),
+        }
+    return render(request, 'HR/member_create.html', context)
 
 def member_edit(request, pk):
-    return render(request, 'HR/member_edit.html')
+    member = get_object_or_404(Member, pk=pk)
+
+    if request.method == "POST":
+        member_form = MemberForm(request.POST)
+        if member_form.is_valid():
+            edit_member = member_form.save(commit=False)
+            #print("테스트ㅡㅡㅡ",edit_member.id) id는 입력값이 없기 때문에 None으로 나옴
+            member.delete()
+            edit_member.id = pk
+            edit_member.save()
+            return redirect('HR:member')
+    else:
+        context = {
+            'member_form' : MemberForm(instance=member),
+        }
+    return render(request, 'HR/member_edit.html', context)
 
 def member_delete(request, pk):
-    return render(request, 'HR/member_create.html')
+    member = get_object_or_404(Member, pk=pk)
+    # 권한 확인 필요
+    if User.objects.get(pk=request.session['user']).authority == "관리자":
+        member.delete()
+    else:
+        print("권한이 없습니다.")
+    return redirect('HR:member')
 

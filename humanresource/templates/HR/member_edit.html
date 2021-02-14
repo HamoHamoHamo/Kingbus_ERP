@@ -1,1 +1,39 @@
 member_edit
+
+<form method="POST" action="">
+    {% csrf_token %}
+    {% for member in member_form %}
+        <div class="form-group">
+            <label for="{{ member.id_for_label }}">{{ member.label }}</label>
+            <input
+            type="{{ member.member.widget.input_type }}"
+            id="{{ member.id_for_label }}"
+            placeholder="{{ member.label }}"
+            name="{{ member.name }}"
+            
+            {% if forloop.counter == 7 or forloop.counter == 8 %}
+                class="datetimefield"
+                value="{{ member.value | date:'Y-m-d' }}"
+            {% else %}
+                value="{{ member.value }}"
+            {% endif %}
+            />
+        </div>
+    {% endfor %}
+    <input type="submit" value="등록">
+</form>
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
+
+<script>
+    // This code activates flatpickr on fields with the 'datetimefield' class when the document has loaded
+    window.addEventListener("DOMContentLoaded", function () {
+        flatpickr(".datetimefield", {
+            enableTime: true,
+            dateFormat: "Y-m-d",
+        });
+    });
+</script>

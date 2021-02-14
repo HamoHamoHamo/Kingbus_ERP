@@ -14,6 +14,10 @@ class Member(models.Model):
     #bus_id = models.CharField(verbose_name='이름', max_length=10, null=False)
     check = models.CharField(verbose_name='운행판정표', max_length=50, null=False)
 
+    def __str__(self):
+        return self.name
+
+
 class HR(models.Model):
     member_id = models.ForeignKey(Member, on_delete=models.CASCADE, related_name="hr_member", db_column="member_id", null=False)
     hr_type = models.CharField(verbose_name="종류", max_length=10, null=False)

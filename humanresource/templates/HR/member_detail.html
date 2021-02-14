@@ -1,1 +1,12 @@
 member_detail
+
+<p>이름 : {{ member.name }}</p>
+<p>권한 : {{ member.authority }}</p>
+<p>업무 : {{ member.role }}</p>
+<p>주민번호 : {{ member.person_id }}</p>
+<p>주소 : {{ member.address }}</p>
+<p>전화번호 : {{ member.phone_num }}</p>
+<p>입사일 : {{ member.entering_date | date:'Y-m-d' }}</p>
+<p>퇴사일 : {{ member.resignation_date | date:'Y-m-d' }}</p>
+<p>면허번호 : {{ member.license_num }}</p>
+<p>운행판정표 : {{ member.check }}</p>

@@ -8,6 +8,11 @@ class MemberForm(forms.ModelForm):
         model = Member
         fields = '__all__'
 
+        widgets = {
+            'entering_date': forms.DateTimeInput(format='%Y-%m-%d', attrs={'class':'datetimefield'}),
+            'resignation_date': forms.DateTimeInput(format='%Y-%m-%d', attrs={'class':'datetimefield'}),
+        }
+
 
 class HRForm(forms.ModelForm):
     class Meta:

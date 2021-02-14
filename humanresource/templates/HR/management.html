@@ -9,12 +9,12 @@ management
     <span>작성자 : {{ hr.creator }}</span>
 </div>
 <button type="button" onclick="location.href='{% url 'HR:HR_edit' hr.pk %}'">수정</button>
-<button type="button" onclick="del()">삭제</button>
+<button type="button" onclick="del({{hr.pk}})">삭제</button>
 <script>
-    function del() {
+    function del(pk) {
         let result = confirm("정말 삭제하시겠습니까??")
         if (result) {    //확인
-            location.href='{% url "HR:HR_delete" hr.pk %}';
+            location.href = pk + '/delete/';
         }
     }
 </script>

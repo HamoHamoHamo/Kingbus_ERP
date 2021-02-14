@@ -9,9 +9,10 @@ urlpatterns = [
     path('management/<int:pk>/edit/', views.HR_edit, name='HR_edit'),
     path('management/<int:pk>/delete/', views.HR_delete, name='HR_delete'),
 
+    path('member/', views.MemberList.as_view(), name='member'),
     path('member/create/', views.member_create, name='member_create'),
     path('member/<int:pk>/', views.MemberDetail.as_view(), name='member_detail'),
-    path('member/<int:pk>/edit', views.member_edit, name='member_edit'),
-    path('member/<int:pk>/delete', views.member_delete, name='member_delete'),
+    path('member/<int:pk>/edit/', views.member_edit, name='member_edit'),
+    path('member/<int:pk>/delete/', views.member_delete, name='member_delete'),
 
 ]
