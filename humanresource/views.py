@@ -1,17 +1,21 @@
+from crudmember.models import User
 from django.http import Http404, HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
-from django.urls import reverse
+from django.urls import reverse, reverse_lazy
 from django.views import generic
 
-from .models import Member, MemberDocument, HR
 from .forms import MemberForm, HRForm
-from crudmember.models import User
+from .models import Member, MemberDocument, HR
 
 
 class ManagementList(generic.ListView):
     template_name = 'HR/management.html'
     context_object_name = 'HR_list'
     model = HR
+
+    def get_queryset(self):
+        HR_list = HR.objects.order_by('-start_date')
+        return HR_list
 
 def HR_create(request):
     context = {}
@@ -40,11 +44,12 @@ def HR_edit(request, pk):
         HR_form = HRForm(request.POST)
         if HR_form.is_valid() and member_id:
             edit_hr = HR_form.save(commit=False)
-            print("테스트ㅡㅡㅡ",edit_hr)
+            #print("테스트ㅡㅡㅡ",edit_hr.id) id는 입력값이 없기 때문에 None으로 나옴
             edit_hr.member_id = get_object_or_404(Member, pk=member_id)
             edit_hr.creator = User.objects.get(pk=request.session.get('user'))
-            edit_hr.save()
             hr.delete()
+            edit_hr.id = pk
+            edit_hr.save()
             return redirect('HR:management')
     else:
         context = {
@@ -56,7 +61,11 @@ def HR_edit(request, pk):
     return render(request, 'HR/HR_edit.html', context)
 
 def HR_delete(request, pk):
-    return render(request, 'HR/HR_create.html')
+    hr = get_object_or_404(HR, pk=pk)
+    # 권한 확인 필요
+    if User.objects.get(pk=request.session['user']).authority == "관리자":
+        hr.delete()
+    return redirect('HR:management')
 
 class MemberDetail(generic.DetailView):
     template_name = 'HR/member_detail.html'

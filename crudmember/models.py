@@ -4,8 +4,9 @@ class User(models.Model): #장고에서 제공하는 models.Model를 상속받�
     userid = models.CharField(max_length=64,verbose_name = '사용자id', null=True)
     name = models.CharField(max_length=10, verbose_name = '이름', null=True)
     password = models.CharField(max_length=255,verbose_name = '비밀번호')
-    tel = models.IntegerField(verbose_name = '폰 번호', null=True)
+    tel = models.IntegerField(verbose_name ='폰 번호', null=True)
     photo = models.ImageField(upload_to='images/',blank=True, null=True)
+    authority = models.CharField(verbose_name ='권한', max_length=3, null=True)
     registered_dttm = models.DateTimeField(auto_now_add=True,verbose_name='등록시간')
     #저장되는 시점의 시간을 자동으로 삽입해준다.
 

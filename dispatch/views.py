@@ -175,7 +175,7 @@ def order_edit(request, pk):
 def order_delete(request, pk):
     order = get_object_or_404(DispatchOrder, pk=pk)
     print("테스트ㅡㅡ", request.session['user'])
-    if order.writer.pk == request.session['user']:
+    if order.writer.pk == request.session['user']: # ?? 작성자만 지울 수 있게 하나?
         order.consumer.delete()
         order.delete()
         return redirect('dispatch:order')

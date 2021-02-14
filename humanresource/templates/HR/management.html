@@ -2,9 +2,21 @@ management
 
 {% for hr in HR_list %}
 <div>
-    <span>이름 : {{ hr.member_id.name }}</span>
+    <span>이름 : <a href="#">{{ hr.member_id.name }}</a></span>
     <span>종류 : {{ hr.hr_type }}</span>
     <span>사유 : {{ hr.reason }}</span>
-    <span>날짜 : {{ hr.start_date }} ~ {{ hr.finish_date }} </span>
+    <span>날짜 : {{ hr.start_date | date:'Y-m-d h:i' }} ~ {{ hr.finish_date | date:'Y-m-d h:i' }} </span>
+    <span>작성자 : {{ hr.creator }}</span>
 </div>
+<button type="button" onclick="location.href='{% url 'HR:HR_edit' hr.pk %}'">수정</button>
+<button type="button" onclick="del()">삭제</button>
+<script>
+    function del() {
+        let result = confirm("정말 삭제하시겠습니까??")
+        if (result) {    //확인
+            location.href='{% url "HR:HR_delete" hr.pk %}';
+        }
+    }
+</script>
 {% endfor %}
+
