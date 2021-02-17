@@ -25,7 +25,13 @@ class OrderForm(forms.ModelForm):
 class RouteForm(forms.ModelForm):
     class Meta:
         model = DispatchRoute
-        fields = '__all__'
+        fields = [
+            'order_id',
+            'departure',
+            'departure_date',
+            'arrival',
+            'arrival_date',
+        ]
 
 '''
 class OrderForm(forms.Form):

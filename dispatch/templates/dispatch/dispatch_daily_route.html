@@ -1,15 +1,23 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    {% for d in dispatch_list %}
+    {% for order in dispatch %}
         <div>
-            <span>날짜 : {{ d.first_departure_date | date:'Y-m-d' }}</span>
-            <a href="{% url 'dispatch:dispatch_daily_route' d.first_departure_date|date:'Y-m-d' %}">
-                <span>노선별</span>
-            </a>
-            <a href="{% url 'dispatch:dispatch_daily_bus' d.first_departure_date|date:'Y-m-d' %}">
-                <span>호수별</span>
-            </a>
+            <span>고객 이름 : {{ order.consumer.name }}</span>
+            <span>전화번호 : {{ order.consumer.tel }}</span>
+            <span>출발일 : {{ order.first_departure_date }}</span>
+            {% for route in routes %}
+                {% for r in route %}                
+                    <div class="routes">
+                        {% if r.order_id == order %}
+                            <span>출발지 : {{ r.departure }}</span>
+                            <span>출발시간 : {{ r.departure_date }}</span>
+                            <span>도착지 : {{ r.arrival }}</span>
+                            <span>도착시간 : {{ r.arrival_date }}</span>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+            {% endfor %}
         </div>
     {% endfor %}
 

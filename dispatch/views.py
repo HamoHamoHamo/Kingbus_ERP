@@ -50,9 +50,26 @@ class DispatchList(generic.ListView):
 
         return context
 
+# 날짜별-노선별 배차지시서 
+class DispatchDailyRouteList(generic.ListView):
+    template_name = 'dispatch/dispatch_daily_route.html'
+    context_object_name = 'dispatch'
 
-class DispatchDateList(generic.ListView):
-    template_name = 'dispatch/dispatch_date.html'
+    def get_queryset(self):
+        dispatch = DispatchOrder.objects.filter(first_departure_date__contains=self.kwargs['date'])
+        return dispatch
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        dispatch = DispatchOrder.objects.filter(first_departure_date__contains=self.kwargs['date'])
+        context['routes'] = []
+        for i in dispatch:
+            context['routes'].append(DispatchRoute.objects.filter(order_id=i))
+        return context
+
+# 날짜별-차량별 배차지시서
+class DispatchDailyBusList(generic.ListView):
+    template_name = 'dispatch/dispatch_daily_bus.html'
     context_object_name = 'dispatch'
 
     def get_queryset(self):
