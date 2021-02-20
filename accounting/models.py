@@ -1,6 +1,6 @@
-from django.db import models
 from crudmember.models import User
 from dispatch.models import DispatchOrder
+from django.db import models
 from humanresource.models import Member
 
 class Salary(models.Model):

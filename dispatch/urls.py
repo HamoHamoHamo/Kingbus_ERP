@@ -21,7 +21,7 @@ urlpatterns = [
     #path('management/<int:pk>/create/', views.management_create, name='management_create'),
     #path('management/<int:pk>/edit/', views.management_edit, name='management_edit'),
 
-    path('<str:date>/route', views.DispatchDailyRouteList.as_view(), name='dispatch_daily_route'),
-    path('<str:date>/bus', views.DispatchDailyBusList.as_view(), name='dispatch_daily_bus'),
+    path('<str:date>/route/', views.DispatchDailyRouteList.as_view(), name='dispatch_daily_route'),
+    path('<str:date>/bus/', views.DispatchDailyBusList.as_view(), name='dispatch_daily_bus'),
 
 ]
