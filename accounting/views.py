@@ -1,46 +1,137 @@
 from crudmember.models import User
+from humanresource.models import Member
 from django.http import Http404, HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse, reverse_lazy
 from django.views import generic
-
-from .models import Salary, Outlay, Collect, Income
+from .forms import MonthlySalaryForm, DailySalaryForm, OutlayForm, CollectForm, IncomeForm
+from .models import MonthlySalary, DailySalary, Outlay, Collect, Income
+import datetime
 
 #지출
 class OutlayList(generic.ListView):
-    temeplate_name = 'accounting/outlay_list.html'
+    template_name = 'accounting/outlay_list.html'
     context_object_name = 'outlay_list'
     model = Outlay
 
-def outlay_create(request):
+    def get_queryset(self):
+        outlay_list = []
+        month = str(datetime.datetime.now())[:7]
+        #outlay_list = Outlay.objects.filter(outlay_date=)
+        for outlay in Outlay.objects.order_by('-outlay_date'):
+            if str(outlay.outlay_date)[:7] == month:
+                outlay_list.append(outlay)
 
-    return render(request, 'accounting/outlay_create.html')
+        return outlay_list
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        salary = 0
+        welfare = 0
+        company = 0
+        car = 0
+        total = 0
+        other = 0
+        
+        for outlay in context['outlay_list']:
+            #print("테스트 비용", outlay.price)
+            total += outlay.price
+            if outlay.kinds == '복리후생':
+                welfare += outlay.price
+            elif outlay.kinds == '급여':
+                salary += outlay.price
+            elif outlay.kinds == '차량비용':
+                car += outlay.price
+            elif outlay.kinds == '운영비용':
+                company += outlay.price
+            else:
+                other += outlay.price
+
+        #print("테스트", salary, car, welfare, company)
+        context['salary'] = salary
+        context['car'] = car
+        context['welfare'] = welfare
+        context['company'] = company
+        context['total'] = total
+        context['other'] = other
+
+        return context
+
+def outlay_create(request):
+    context = {}
+    if request.method == "POST":
+        creator = get_object_or_404(User, pk=request.session.get('user'))
+        
+        outlay_form = OutlayForm(request.POST)
+        if outlay_form.is_valid():
+            outlay = outlay_form.save(commit=False)
+            outlay.creator = creator
+            outlay.save()
+            return redirect('accounting:outlay_list')
+    else:
+        context = {
+            'outlay_form' : OutlayForm(),
+        }
+    return render(request, 'accounting/outlay_create.html', context)
 
 class OutlayDetail(generic.DetailView):
-    temeplate_name = 'accounting/outlay_detail.html'
+    template_name = 'accounting/outlay_detail.html'
     context_object_name = 'outlay'
     model = Outlay
 
 def outlay_delete(request, pk):
-    return render(request, 'accounting/outlay_detail.html')
+    outlay = get_object_or_404(Outlay, pk=pk)
+    if User.objects.get(pk=request.session['user']).authority == "관리자":
+        outlay.delete()
+    return redirect('accounting:outlay_list')
 
 def outlay_edit(request, pk):
-    return render(request, 'accounting/outlay_edit.html')
+    outlay = get_object_or_404(Outlay, pk=pk)
+    context = {}
+    if request.method == "POST":
+        if User.objects.get(pk=request.session['user']).authority == "관리자":
+            creator = get_object_or_404(User, pk=request.session.get('user'))
+            outlay_form = OutlayForm(request.POST)
+            if outlay_form.is_valid():
+                edit_outlay = outlay_form.save(commit=False)
+                edit_outlay.creator = creator
+                outlay.delete()
+                edit_outlay.id = pk
+                edit_outlay.save()
+                return redirect('accounting:outlay_list')
+    else:
+        context = {
+            'outlay_form' : OutlayForm(instance=outlay),
+        }
+    return render(request, 'accounting/outlay_edit.html', context)
 
 #급여
 class SalaryList(generic.ListView):
-    temeplate_name = 'accounting/salary_list.html'
+    template_name = 'accounting/salary_list.html'
     context_object_name = 'salary_list'
-    model = Salary
+    model = MonthlySalary
+
+    def get_queryset(self):
+        salary_list = []
+        month = str(datetime.datetime.now())[:7]
+        #salary_list = salary.objects.filter(payment_date=)
+        for salary in MonthSalary.objects.order_by('-payment_date'):
+            if str(salary.payment_date)[:7] == month:
+                salary_list.append(salary)
+
+        return salary_list
+    
+
+
 
 def salary_create(request):
 
     return render(request, 'accounting/salary_create.html')
 
 class SalaryDetail(generic.DetailView):
-    temeplate_name = 'accounting/salary_detail.html'
+    template_name = 'accounting/salary_detail.html'
     context_object_name = 'salary'
-    model = Salary
+    model = MonthlySalary
 
 def salary_delete(request, pk):
 
@@ -52,7 +143,7 @@ def salary_edit(request, pk):
 
 #수입
 class IncomeList(generic.ListView):
-    temeplate_name = 'accounting/income_list.html'
+    template_name = 'accounting/income_list.html'
     context_object_name = 'income_list'
     model = Income
 
@@ -61,7 +152,7 @@ def income_create(request):
     return render(request, 'accounting/income_create.html')
 
 class IncomeDetail(generic.DetailView):
-    temeplate_name = 'accounting/income_detail.html'
+    template_name = 'accounting/income_detail.html'
     context_object_name = 'income'
     model = Income
 
@@ -75,12 +166,12 @@ def income_edit(request, pk):
 
 #수금
 class CollectList(generic.ListView):
-    temeplate_name = 'accounting/collect_list.html'
+    template_name = 'accounting/collect_list.html'
     context_object_name = 'collect_list'
     model = Collect
 
 class CollectDetail(generic.DetailView):
-    temeplate_name = 'accounting/collect_detail.html'
+    template_name = 'accounting/collect_detail.html'
     context_object_name = 'collect'
     model = Collect
 

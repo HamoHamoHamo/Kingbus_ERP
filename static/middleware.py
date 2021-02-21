@@ -28,14 +28,22 @@ class LoginCheckMiddleware(object):
         ip = get_client_ip(request)
         ip=ip[0]
         if ip:
+            if ip != "59.29.60.206":
+                print(ip)
+
             try:
                 UserIP.objects.get(ip=ip)
             except Exception as error:
                 print("\nip저장", error)
                 userip=UserIP(ip=ip)
                 userip.save()
+            
+            
+
         else:
             print ("못찾았다")
+
+            
         
         # 로그인 되어 있지 않은 상태로 check_url에 접속시 로그인 화면으로 이동
         if not 'user' in request.session:

@@ -39,7 +39,7 @@ def create(request):
         kinds = request.POST.get('kinds', None)
         files = request.FILES.getlist('file', None)
         
-        user_id = request.session['user']
+        user_id = request.session.get('user')
         user = User.objects.get(pk=user_id)
         
         notice = Notice(
@@ -105,7 +105,7 @@ class NoticeDetail(generic.DetailView):
     context_object_name = 'notice'
     
     def post(self, request, *args, **kwargs):
-        self.user_id = request.session['user']
+        self.user_id = request.session.get('user')
         user = User.objects.get(pk=self.user_id)
         content = request.POST.get('content', None)
         self.notice_id=self.kwargs['pk']
@@ -120,8 +120,7 @@ class NoticeDetail(generic.DetailView):
 
 
     def get_queryset(self):
-        self.user_id = self.request.session['user']
-        self.user = User.objects.get(pk=self.user_id)
+        self.user = User.objects.get(pk=self.request.session.get('user'))
         self.notice_id=self.kwargs['pk']
         self.notice = get_object_or_404(Notice, id=self.notice_id)
         return Notice.objects.filter(title=self.notice)
@@ -129,7 +128,7 @@ class NoticeDetail(generic.DetailView):
     def get_context_data(self, **kwargs):
         # 기본 구현을 호출해 context를 가져온다.
         context = super(NoticeDetail, self).get_context_data(**kwargs)
-        context['logged_user'] = self.request.session['user']
+        context['logged_user'] = self.request.session.get('user')
         context['view_cnt'] = self.get_view_cnt()
         context['notice'] = self.notice
         context['notice_files'] = NoticeFile.objects.filter(notice_id=self.notice_id)
@@ -207,7 +206,7 @@ def comment_del(request, kinds, notice_id, comment_id):
     return redirect('/notice/{0}/{1}'.format(kinds, notice_id))
 
 def creator_check(request, pk, type):
-    if request.session['user'] != type.objects.get(id=pk).creator.id:
+    if request.session.get('user') != type.objects.get(id=pk).creator.id:
         raise Http404
     return True
 

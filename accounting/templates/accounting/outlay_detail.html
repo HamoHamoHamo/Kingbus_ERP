@@ -1,1 +1,8 @@
 outlay detail
+
+<p>지급구분 : {{ outlay.kinds }}</p>
+<p>적요 : {{ outlay.brief }}</p>
+<p>지출금액 : {{ outlay.price }}</p>
+<p>지출일자 : {{ outlay.outlay_date }}</p>
+<p>작성자 : {{ outlay.creator.name }}</p>
+<p>작성시간 : {{ outlay.pub_date | date:'Y-m-d'}}</p>

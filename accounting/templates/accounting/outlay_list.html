@@ -1,1 +1,19 @@
 outlay list
+
+{% for outlay in outlay_list %}
+    <p>{{ outlay.kinds }}</p>
+    <p>{{ outlay.salary_id }}</p>
+    <p>{{ outlay.brief }}</p>
+    <p>지출금액 : {{ outlay.price }}</p>
+    <p>지출일 : {{ outlay.outlay_date }}</p>
+    <p>{{ outlay.creator }}</p>
+    <p>{{ outlay.pub_date }}</p>
+    <br>
+{% endfor %}
+
+<p>급여 : {{ salary }}</p>
+<p>차량비용 : {{ car }}</p>
+<p>복리후생 : {{ welfare }}</p>
+<p>운영비용 : {{ company }}</p>
+<p>기타 : {{ other }}</p>
+<p>총합 : {{ total }}</p>
