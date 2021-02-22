@@ -1,5 +1,12 @@
 salary list
-
-{% for member in salary_list %}
-    <p>{{member.name}}</p>
+<br>
+{% for salary in salary_list %}
+    <span>번호 :{{ forloop.counter }}</span>
+    <span>이름 : {{salary.member_id.name}}</span>
+    <span>기본급 : {{salary.base}}</span>
+    <span>상여금 : {{salary.bonus}}</span>
+    <span>추가금 : {{salary.additional}}</span>
+    <span>공제금 : {{salary.deductible}}</span>
+    <span>총금액 : {{salary.total}}</span>
+    <br>
 {% endfor %}

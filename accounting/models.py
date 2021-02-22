@@ -3,13 +3,6 @@ from dispatch.models import DispatchOrder, DispatchConnect
 from django.db import models
 from humanresource.models import Member
 
-class DailySalary(models.Model):
-    bonus = models.IntegerField(verbose_name='상여금', null=False)
-    additional = models.IntegerField(verbose_name='추가금', null=False)
-    dispatch_id = models.ForeignKey(DispatchConnect, on_delete=models.SET_NULL, related_name="salary_daily_dispatch", db_column="dispatch_id", null=True)
-    creator = models.ForeignKey(User, on_delete=models.SET_NULL, related_name="salary_daily_user", db_column="user_id", null=True)
-    pub_date = models.DateTimeField(verbose_name='작성시간', auto_now_add=True, null=False)
-
 class MonthlySalary(models.Model):
     member_id = models.ForeignKey(Member, on_delete=models.SET_NULL, related_name="salary_member", db_column="member_id", null=True)
     base = models.IntegerField(verbose_name='기본급', null=False)
@@ -20,11 +13,21 @@ class MonthlySalary(models.Model):
     payment_date = models.DateField(verbose_name='지급일', null=False)
     creator = models.ForeignKey(User, on_delete=models.SET_NULL, related_name="salary_user", db_column="user_id", null=True)
     pub_date = models.DateTimeField(verbose_name='작성시간', auto_now_add=True, null=False)
-    daily_salary = models.ForeignKey(DailySalary, on_delete=models.CASCADE, related_name="salary_daily", db_column="daily_id", null=True)
 
     def __str__(self):
         return self.member_id.name
 
+class DailySalary(models.Model):
+    bonus = models.IntegerField(verbose_name='상여금', null=False)
+    additional = models.IntegerField(verbose_name='추가금', null=False)
+    dispatch_id = models.ForeignKey(DispatchConnect, on_delete=models.SET_NULL, related_name="salary_daily_dispatch", db_column="dispatch_id", null=True)
+    creator = models.ForeignKey(User, on_delete=models.SET_NULL, related_name="salary_daily_user", db_column="user_id", null=True)
+    pub_date = models.DateTimeField(verbose_name='작성시간', auto_now_add=True, null=False)
+    monthly_salary = models.ForeignKey(MonthlySalary, on_delete=models.CASCADE, related_name="salary_monthly", db_column="monthly_id", null=False)
+
+    def __str__(self):
+        return self.monthly_salary.member_id.name
+        
 class Outlay(models.Model):
     kinds = models.CharField(verbose_name='지급구분', max_length=10, null=False)
     salary_id = models.ForeignKey(MonthlySalary, on_delete=models.CASCADE, related_name="outlay_salary", db_column="salary_id" ,null=True, blank=True)

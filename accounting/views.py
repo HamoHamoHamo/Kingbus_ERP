@@ -115,14 +115,11 @@ class SalaryList(generic.ListView):
         salary_list = []
         month = str(datetime.datetime.now())[:7]
         #salary_list = salary.objects.filter(payment_date=)
-        for salary in MonthSalary.objects.order_by('-payment_date'):
+        for salary in MonthlySalary.objects.order_by('-payment_date'):
             if str(salary.payment_date)[:7] == month:
                 salary_list.append(salary)
 
         return salary_list
-    
-
-
 
 def salary_create(request):
 
