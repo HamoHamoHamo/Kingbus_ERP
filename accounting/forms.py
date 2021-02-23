@@ -12,10 +12,10 @@ class MonthlySalaryForm(forms.ModelForm):
             'additional',
             'deductible',
             'total',
-            'payment_date',
+            'payment_month',
         ]
         widgets = {
-            'payment_date': forms.DateInput(format='%Y-%m-%d', attrs={'class':'datefield'}),
+            'payment_month': forms.DateInput(format='%Y-%m', attrs={'class':'datefield'}),
         }
 
 class DailySalaryForm(forms.ModelForm):
@@ -24,7 +24,7 @@ class DailySalaryForm(forms.ModelForm):
         fields = [
             'bonus',
             'additional',
-            'dispatch_id',
+            #'dispatch_id',
         ]
 
 class OutlayForm(forms.ModelForm):

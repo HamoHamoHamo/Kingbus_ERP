@@ -1,1 +1,13 @@
-salary create
+<p>salary create</p>
+
+
+<form action='', method='POST'>
+    {% csrf_token %}
+    {% for member in member_list %}
+        <span>번호 :{{ member.pk }}</span>
+        <span>이름 : {{member.name}}</span>
+        {{daily_salary}}
+        <br>
+    {% endfor %}
+    <input type="submit" value="등록">
+</form>

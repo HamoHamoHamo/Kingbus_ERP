@@ -113,17 +113,57 @@ class SalaryList(generic.ListView):
 
     def get_queryset(self):
         salary_list = []
+        member_list = Member.objects.order_by('pk')
         month = str(datetime.datetime.now())[:7]
-        #salary_list = salary.objects.filter(payment_date=)
-        for salary in MonthlySalary.objects.order_by('-payment_date'):
-            if str(salary.payment_date)[:7] == month:
-                salary_list.append(salary)
-
+        #salary_list = salary.objects.filter(payment_month=)
+        for member in member_list:
+            for salary in member.salary_monthly.all():
+                if str(salary.payment_month)[:7] == month:
+                    salary_list.append(salary)
         return salary_list
 
 def salary_create(request):
+    if request.method == "POST":
+        daily_salary_form = DailySalaryForm(request.POST)
+        if daily_salary_form.is_valid():
+            bonus_list = request.POST.getlist('bonus')
+            additional_list = request.POST.getlist('additional')
+            cnt = 0
+            month = str(datetime.datetime.now())[:7]
+            check = False
 
-    return render(request, 'accounting/salary_create.html')
+            for member in Member.objects.order_by('pk'):
+                for salary in member.salary_monthly.all():
+                    if str(salary.payment_month)[:7] == month:
+                        check = True
+                if check = False:
+                    monthly = MonthlySalary(
+                        member_id = member,
+                        base=0,
+                        bonus=0,
+                        additional=0,
+                        deductible=0,
+                        total=0,
+                        payment_month=datetime.datetime.now()
+                        creator=get_object_or_404(User, pk=request.session.get('user')),
+                    )
+                    monthly.save()
+
+                daily = DailySalary(
+                    bonus=bonus_list[cnt],
+                    additional=additional_list[cnt],
+                    creator=get_object_or_404(User, pk=request.session.get('user')),
+                    
+                )
+
+
+
+    else:
+        context = {
+            'daily_salary' : DailySalaryForm(),
+            'member_list' : Member.objects.order_by('pk')
+        }
+    return render(request, 'accounting/salary_create.html', context)
 
 class SalaryDetail(generic.DetailView):
     template_name = 'accounting/salary_detail.html'
