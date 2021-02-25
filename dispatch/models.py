@@ -1,5 +1,6 @@
 from django.db import models
 from crudmember.models import User
+from humanresource.models import Member
 
 class DispatchConsumer(models.Model):
     name = models.CharField(verbose_name='주문자 이름', max_length=10, null=False)
@@ -20,9 +21,10 @@ class DispatchOrder(models.Model): #장고에서 제공하는 models.Model를 �
     people_num = models.IntegerField(verbose_name='탑승인원', null=False)
     pub_date = models.DateTimeField(auto_now_add=True, verbose_name='등록시간')
     pay_type = models.CharField(verbose_name='카드or현금', max_length=2, null=False)
-    first_departure_date = models.DateTimeField(verbose_name='출발날짜', null=True)
+    first_departure_date = models.DateField(verbose_name='출발날짜', null=True)
+    brief = models.CharField(verbose_name="적요", max_length=50, null=False, default=str(first_departure_date))
     def __str__(self):
-        return str(self.id)
+        return self.brief
 
 class DispatchRoute(models.Model):
     order_id = models.ForeignKey(DispatchOrder, on_delete=models.CASCADE, related_name="route_order", db_column="order_id", null=False)
@@ -39,5 +41,5 @@ class DispatchConnect(models.Model):
     order_id = models.ForeignKey(DispatchOrder, on_delete=models.CASCADE, related_name="info_order", db_column="order_id", null=False)
     # 차량관리, 인사관리 완료 후 외래키 작성
     #bus_id = models.ForeignKey(, on_delete=models.CASCADE, related_name="info_bus_id", db_column="bus_id", null=True)
-    #driver_id = models.ForeignKey(, on_delete=models.CASCADE, related_name="info_driver_id", db_column="driver_id", null=True)
+    driver_id = models.ForeignKey(Member, on_delete=models.SET_NULL, related_name="info_driver_id", db_column="driver_id", null=True)
     check = models.BooleanField(verbose_name="배차완료", null=False, default=False)

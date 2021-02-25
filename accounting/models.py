@@ -2,6 +2,7 @@ from crudmember.models import User
 from dispatch.models import DispatchOrder, DispatchConnect
 from django.db import models
 from humanresource.models import Member
+import datetime
 
 class MonthlySalary(models.Model):
     member_id = models.ForeignKey(Member, on_delete=models.SET_NULL, related_name="salary_monthly", db_column="member_id", null=True)
@@ -22,9 +23,10 @@ class DailySalary(models.Model):
     additional = models.IntegerField(verbose_name='추가금', null=False, blank=True)
     dispatch_id = models.ForeignKey(DispatchConnect, on_delete=models.SET_NULL, related_name="salary_daily_dispatch", db_column="dispatch_id", null=True)
     creator = models.ForeignKey(User, on_delete=models.SET_NULL, related_name="salary_daily_user", db_column="user_id", null=True)
+    date = models.DateField(verbose_name='작성시간', null=False, default=datetime.datetime.now)
     pub_date = models.DateTimeField(verbose_name='작성시간', auto_now_add=True, null=False)
     monthly_salary = models.ForeignKey(MonthlySalary, on_delete=models.CASCADE, related_name="salary_daily", db_column="monthly_id", null=False)
-
+    order_id = models.ForeignKey(DispatchOrder, on_delete=models.CASCADE, related_name="salary_daily_order", db_column="order_id", null=True)
     def __str__(self):
         return self.monthly_salary.member_id.name
         

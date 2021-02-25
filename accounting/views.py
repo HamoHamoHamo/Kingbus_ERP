@@ -1,5 +1,6 @@
 from crudmember.models import User
 from humanresource.models import Member
+from dispatch.models import DispatchOrder
 from django.http import Http404, HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse, reverse_lazy
@@ -124,44 +125,55 @@ class SalaryList(generic.ListView):
 
 def salary_create(request):
     if request.method == "POST":
-        daily_salary_form = DailySalaryForm(request.POST)
-        if daily_salary_form.is_valid():
-            bonus_list = request.POST.getlist('bonus')
-            additional_list = request.POST.getlist('additional')
-            cnt = 0
-            month = str(datetime.datetime.now())[:7]
-            check = False
+        bonus_list = request.POST.getlist('bonus')
+        additional_list = request.POST.getlist('additional')
+        order_list = request.POST.getlist('order_id')
 
-            for member in Member.objects.order_by('pk'):
-                for salary in member.salary_monthly.all():
-                    if str(salary.payment_month)[:7] == month:
-                        check = True
-                if check = False:
-                    monthly = MonthlySalary(
-                        member_id = member,
-                        base=0,
-                        bonus=0,
-                        additional=0,
-                        deductible=0,
-                        total=0,
-                        payment_month=datetime.datetime.now()
-                        creator=get_object_or_404(User, pk=request.session.get('user')),
-                    )
-                    monthly.save()
+        cnt = 0
+        month = str(datetime.datetime.now())[:7]
+        login_user = get_object_or_404(User, pk=request.session.get('user'))
 
-                daily = DailySalary(
-                    bonus=bonus_list[cnt],
-                    additional=additional_list[cnt],
-                    creator=get_object_or_404(User, pk=request.session.get('user')),
-                    
+        for member in Member.objects.order_by('pk'):
+            #lamda? 를 쓰면 더 간략하게 쓸 수 있을듯
+            monthly = None
+            # 만약 이번달 급여가 db에 없으면 이번달 급여를 모든 항목 0으로 넣어서 만듬
+            for salary in member.salary_monthly.all():
+                if str(salary.payment_month)[:7] == month:
+                    monthly = salary
+            if not monthly:
+                monthly = MonthlySalary(
+                    member_id = member,
+                    base=0,
+                    bonus=0,
+                    additional=0,
+                    deductible=0,
+                    total=0,
+                    payment_month=datetime.datetime.now(),
+                    creator=login_user,
                 )
+                monthly.save()
 
-
+            daily = DailySalary(
+                bonus=bonus_list[cnt],
+                additional=additional_list[cnt],
+                creator=login_user,
+                date=request.POST.get('date'),
+                order_id=DispatchOrder.objects.get(brief=order_list[cnt]),
+                monthly_salary=monthly,
+            )
+            cnt += 1
+            daily.save()
+            monthly.bonus = int(monthly.bonus) + int(daily.bonus)
+            monthly.additional = int(monthly.additional) + int(daily.additional)
+            monthly.save()
+        return redirect('accounting:salary_list')
 
     else:
         context = {
             'daily_salary' : DailySalaryForm(),
-            'member_list' : Member.objects.order_by('pk')
+            'member_list' : Member.objects.order_by('pk'),
+            'today' : str(datetime.datetime.now())[:10],
+            'daily_order' : DispatchOrder.objects.filter(first_departure_date=str(datetime.datetime.now())[:10])
         }
     return render(request, 'accounting/salary_create.html', context)
 
@@ -169,6 +181,11 @@ class SalaryDetail(generic.DetailView):
     template_name = 'accounting/salary_detail.html'
     context_object_name = 'salary'
     model = MonthlySalary
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['']
+
 
 def salary_delete(request, pk):
 

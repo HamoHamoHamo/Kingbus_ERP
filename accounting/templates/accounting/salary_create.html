@@ -1,8 +1,14 @@
 <p>salary create</p>
 
 
+<form action='', method='GET'>
+    <input type="submit" class="datefield" value="{{ today }}" name="date">
+    <input type="submit" value="날짜변경">
+</form>
+
 <form action='', method='POST'>
     {% csrf_token %}
+    <br>
     {% for member in member_list %}
         <span>번호 :{{ member.pk }}</span>
         <span>이름 : {{member.name}}</span>
@@ -11,3 +17,17 @@
     {% endfor %}
     <input type="submit" value="등록">
 </form>
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
+<script>
+    // This code activates flatpickr on fields with the 'datetimefield' class when the document has loaded
+    window.addEventListener("DOMContentLoaded", function () {
+        flatpickr(".datefield", {
+            enableTime: false,
+            dateFormat: "Y-m-d",
+        });
+    });
+</script>
