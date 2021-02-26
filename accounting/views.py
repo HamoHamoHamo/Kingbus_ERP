@@ -119,12 +119,14 @@ class SalaryList(generic.ListView):
         #salary_list = salary.objects.filter(payment_month=)
         for member in member_list:
             for salary in member.salary_monthly.all():
-                if str(salary.payment_month)[:7] == month:
+                if salary.payment_month == month:
                     salary_list.append(salary)
         return salary_list
 
 def salary_create(request):
     if request.method == "POST":
+        remove = DailySalary.objects.filter(date=request.POST.get('date'))
+        print("remove", remove)
         bonus_list = request.POST.getlist('bonus')
         additional_list = request.POST.getlist('additional')
         order_list = request.POST.getlist('order_id')
@@ -138,7 +140,7 @@ def salary_create(request):
             monthly = None
             # 만약 이번달 급여가 db에 없으면 이번달 급여를 모든 항목 0으로 넣어서 만듬
             for salary in member.salary_monthly.all():
-                if str(salary.payment_month)[:7] == month:
+                if salary.payment_month == month:
                     monthly = salary
             if not monthly:
                 monthly = MonthlySalary(
@@ -148,7 +150,6 @@ def salary_create(request):
                     additional=0,
                     deductible=0,
                     total=0,
-                    payment_month=datetime.datetime.now(),
                     creator=login_user,
                 )
                 monthly.save()
@@ -158,7 +159,7 @@ def salary_create(request):
                 additional=additional_list[cnt],
                 creator=login_user,
                 date=request.POST.get('date'),
-                order_id=DispatchOrder.objects.get(brief=order_list[cnt]),
+                order_id=DispatchOrder.objects.get(pk=order_list[cnt]),
                 monthly_salary=monthly,
             )
             cnt += 1
@@ -166,6 +167,18 @@ def salary_create(request):
             monthly.bonus = int(monthly.bonus) + int(daily.bonus)
             monthly.additional = int(monthly.additional) + int(daily.additional)
             monthly.save()
+
+
+            monthly = member.salary_monthly.get(payment_month=month)
+            '''
+            for daily in remove:
+                if daily in monthly.salary_daily.all():
+                    print("테스트", daily)
+                    monthly.bonus = int(monthly.bonus) - int(daily.bonus)
+                    monthly.additional = int(monthly.additional) - int(daily.additional)
+                    monthly.save()                    
+                    daily.delete()
+            ''' 
         return redirect('accounting:salary_list')
 
     else:

@@ -1,18 +1,17 @@
 <p>salary create</p>
 
 
-<form action='', method='GET'>
-    <input type="submit" class="datefield" value="{{ today }}" name="date">
-    <input type="submit" value="날짜변경">
-</form>
 
 <form action='', method='POST'>
     {% csrf_token %}
+    <input type="text" class="datefield" value="{{ today }}" name="date">
     <br>
     {% for member in member_list %}
         <span>번호 :{{ member.pk }}</span>
         <span>이름 : {{member.name}}</span>
         {{daily_salary}}
+        <!--form 을 여러개 추가 할 수 있어야됨 지금은 하나밖에 안됨-->
+        <!--자바스크립트로 추가하기-->
         <br>
     {% endfor %}
     <input type="submit" value="등록">

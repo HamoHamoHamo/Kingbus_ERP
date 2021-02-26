@@ -11,7 +11,7 @@ class MonthlySalary(models.Model):
     additional = models.IntegerField(verbose_name='추가금', null=False)
     deductible = models.IntegerField(verbose_name='공제금', null=False)
     total = models.IntegerField(verbose_name='총금액', null=False)
-    payment_month = models.DateField(verbose_name='지급월', null=False)
+    payment_month = models.CharField(verbose_name='지급월', null=False,max_length=7, default=str(datetime.datetime.now())[:7])
     creator = models.ForeignKey(User, on_delete=models.SET_NULL, related_name="salary_user", db_column="user_id", null=True)
     pub_date = models.DateTimeField(verbose_name='작성시간', auto_now_add=True, null=False)
 
@@ -26,7 +26,7 @@ class DailySalary(models.Model):
     date = models.DateField(verbose_name='작성시간', null=False, default=datetime.datetime.now)
     pub_date = models.DateTimeField(verbose_name='작성시간', auto_now_add=True, null=False)
     monthly_salary = models.ForeignKey(MonthlySalary, on_delete=models.CASCADE, related_name="salary_daily", db_column="monthly_id", null=False)
-    order_id = models.ForeignKey(DispatchOrder, on_delete=models.CASCADE, related_name="salary_daily_order", db_column="order_id", null=True)
+    order_id = models.ForeignKey(DispatchOrder, on_delete=models.CASCADE, related_name="salary_daily_order", db_column="order_id", null=True, blank=True)
     def __str__(self):
         return self.monthly_salary.member_id.name
         
