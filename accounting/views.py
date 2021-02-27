@@ -124,9 +124,10 @@ class SalaryList(generic.ListView):
         return salary_list
 
 def salary_create(request):
+    get_date = request.GET.get('date')
     if request.method == "POST":
-        remove = DailySalary.objects.filter(date=request.POST.get('date'))
-        print("remove", remove)
+        remove = DailySalary.objects.filter(date=get_date)
+        print("remove", len(remove))
         bonus_list = request.POST.getlist('bonus')
         additional_list = request.POST.getlist('additional')
         order_list = request.POST.getlist('order_id')
@@ -135,13 +136,18 @@ def salary_create(request):
         month = str(datetime.datetime.now())[:7]
         login_user = get_object_or_404(User, pk=request.session.get('user'))
 
+        # 만약 POST에서 에러가 나면 값은 저장안되고 이전값만 다 지워질 수 있음
+        for r in remove:
+            print("테스트", r)
+            r.delete()
+        
         for member in Member.objects.order_by('pk'):
             #lamda? 를 쓰면 더 간략하게 쓸 수 있을듯
             monthly = None
-            # 만약 이번달 급여가 db에 없으면 이번달 급여를 모든 항목 0으로 넣어서 만듬
             for salary in member.salary_monthly.all():
                 if salary.payment_month == month:
                     monthly = salary
+            # 만약 이번달 급여가 db에 없으면 이번달 급여를 모든 항목 0으로 넣어서 만듬
             if not monthly:
                 monthly = MonthlySalary(
                     member_id = member,
@@ -158,34 +164,51 @@ def salary_create(request):
                 bonus=bonus_list[cnt],
                 additional=additional_list[cnt],
                 creator=login_user,
-                date=request.POST.get('date'),
+                date=get_date,
                 order_id=DispatchOrder.objects.get(pk=order_list[cnt]),
                 monthly_salary=monthly,
             )
             cnt += 1
             daily.save()
-            monthly.bonus = int(monthly.bonus) + int(daily.bonus)
-            monthly.additional = int(monthly.additional) + int(daily.additional)
+
+            
+            monthly.bonus = 0
+            monthly.additional = 0
+            monthly.total = 0
+            for daily in monthly.salary_daily.all():
+                monthly.bonus = int(monthly.bonus) + int(daily.bonus)
+                monthly.additional = int(monthly.additional) + int(daily.additional)
+            monthly.total = monthly.bonus + monthly.additional
             monthly.save()
-
-
-            monthly = member.salary_monthly.get(payment_month=month)
+        
+        
+        
             '''
             for daily in remove:
+                print("ㅁㅇㅇㅁ", daily, len(remove))
                 if daily in monthly.salary_daily.all():
-                    print("테스트", daily)
+                    print("테스트", daily, member.name)
                     monthly.bonus = int(monthly.bonus) - int(daily.bonus)
                     monthly.additional = int(monthly.additional) - int(daily.additional)
                     monthly.save()                    
                     daily.delete()
-            ''' 
+            print("for끝")
+            '''
         return redirect('accounting:salary_list')
 
     else:
+        
+        daily_salary = DailySalary.objects.filter(date=get_date)
+        daily_form = []
+        for salary in daily_salary:
+            form = DailySalaryForm(instance=salary)
+            daily_form.append(form)
+
         context = {
-            'daily_salary' : DailySalaryForm(),
+            'daily_form' : daily_form,
+            'daily_salary' : daily_salary,
             'member_list' : Member.objects.order_by('pk'),
-            'today' : str(datetime.datetime.now())[:10],
+            'date' : get_date,
             'daily_order' : DispatchOrder.objects.filter(first_departure_date=str(datetime.datetime.now())[:10])
         }
     return render(request, 'accounting/salary_create.html', context)

@@ -21,9 +21,8 @@ class MonthlySalary(models.Model):
 class DailySalary(models.Model):
     bonus = models.IntegerField(verbose_name='상여금', null=False, blank=True)
     additional = models.IntegerField(verbose_name='추가금', null=False, blank=True)
-    dispatch_id = models.ForeignKey(DispatchConnect, on_delete=models.SET_NULL, related_name="salary_daily_dispatch", db_column="dispatch_id", null=True)
     creator = models.ForeignKey(User, on_delete=models.SET_NULL, related_name="salary_daily_user", db_column="user_id", null=True)
-    date = models.DateField(verbose_name='작성시간', null=False, default=datetime.datetime.now)
+    date = models.CharField(verbose_name='날짜', null=False, max_length=10, default=datetime.datetime.now)
     pub_date = models.DateTimeField(verbose_name='작성시간', auto_now_add=True, null=False)
     monthly_salary = models.ForeignKey(MonthlySalary, on_delete=models.CASCADE, related_name="salary_daily", db_column="monthly_id", null=False)
     order_id = models.ForeignKey(DispatchOrder, on_delete=models.CASCADE, related_name="salary_daily_order", db_column="order_id", null=True, blank=True)
