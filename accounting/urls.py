@@ -13,9 +13,8 @@ urlpatterns = [
     path('outlay/salary/', views.SalaryList.as_view(), name='salary_list'),
     path('outlay/salary/create/', views.salary_create, name='salary_create'),
     path('outlay/salary/<int:pk>/', views.SalaryDetail.as_view(), name='salary_detail'),
-    path('outlay/salary/<int:pk>/delete/', views.salary_delete, name='salary_delete'),
-    path('outlay/salary/<int:pk>/edit/', views.salary_edit, name='salary_edit'),
-
+    #path('outlay/salary/<int:pk>/delete/', views.salary_delete, name='salary_delete'),
+    #path('outlay/salary/<int:pk>/edit/', views.salary_edit, name='salary_edit'),
 
     path('income/', views.IncomeList.as_view(), name='income_list'),
     path('income/create/', views.income_create, name='income_create'),

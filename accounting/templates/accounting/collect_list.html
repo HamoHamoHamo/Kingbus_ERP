@@ -1,1 +1,16 @@
 collect list
+
+{% for collect in check %}
+    <p>{{ collect.connect_id }}</p>
+    <p>{{ collect.brief }}</p>
+    <p>{{ collect.collect_date }}</p>
+    <p>수입금액 : {{ collect.connect_id.order_id.price }}</p>
+    <p>수입일 : {{ collect.collect_date }}</p>
+    <p>{{ collect.creator }}</p>
+    <p>{{ collect.pub_date }}</p>
+    <br>
+{% endfor %}
+
+<p>수금 : {{ collect }}</p>
+<p>기타 : {{ other }}</p>
+<p>총합 : {{ total }}</p>

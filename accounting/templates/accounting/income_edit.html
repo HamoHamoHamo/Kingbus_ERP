@@ -1,1 +1,21 @@
 income edit
+
+<form method="POST" action="" >
+    {% csrf_token %}
+    {{ income_form}}
+    <input type="submit" value="등록">
+</form>
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
+<script>
+    // This code activates flatpickr on fields with the 'datetimefield' class when the document has loaded
+    window.addEventListener("DOMContentLoaded", function () {
+        flatpickr(".datefield", {
+            enableTime: false,
+            dateFormat: "Y-m-d",
+        });
+    });
+</script>

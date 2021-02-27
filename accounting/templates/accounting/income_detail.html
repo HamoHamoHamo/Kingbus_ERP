@@ -1,1 +1,8 @@
 income detail
+
+<p>지급구분 : {{ income.kinds }}</p>
+<p>적요 : {{ income.brief }}</p>
+<p>수입금액 : {{ income.price }}</p>
+<p>수입일자 : {{ income.income_date }}</p>
+<p>작성자 : {{ income.creator.name }}</p>
+<p>작성시간 : {{ income.pub_date | date:'Y-m-d'}}</p>

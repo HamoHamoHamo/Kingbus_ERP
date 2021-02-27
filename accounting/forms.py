@@ -59,8 +59,6 @@ class IncomeForm(forms.ModelForm):
     class Meta:
         model = Income
         fields = [
-            'kinds',
-            'collect_id',
             'brief',
             'price',
             'income_date',

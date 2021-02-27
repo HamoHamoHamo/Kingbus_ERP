@@ -20,9 +20,8 @@ class OutlayList(generic.ListView):
         month = str(datetime.datetime.now())[:7]
         #outlay_list = Outlay.objects.filter(outlay_date=)
         for outlay in Outlay.objects.order_by('-outlay_date'):
-            if str(outlay.outlay_date)[:7] == month:
+            if outlay.outlay_date[:7] == month:
                 outlay_list.append(outlay)
-
         return outlay_list
 
     def get_context_data(self, **kwargs):
@@ -39,14 +38,15 @@ class OutlayList(generic.ListView):
             total += outlay.price
             if outlay.kinds == '복리후생':
                 welfare += outlay.price
-            elif outlay.kinds == '급여':
-                salary += outlay.price
             elif outlay.kinds == '차량비용':
                 car += outlay.price
             elif outlay.kinds == '운영비용':
                 company += outlay.price
             else:
                 other += outlay.price
+        
+        for monthly in MonthlySalary.objects.filter(payment_month=str(datetime.datetime.now())[:7]):
+            salary += monthly.total
 
         #print("테스트", salary, car, welfare, company)
         context['salary'] = salary
@@ -197,7 +197,8 @@ def salary_create(request):
         return redirect('accounting:salary_list')
 
     else:
-        
+        if not get_date:
+            get_date=str(datetime.datetime.now())[:10]
         daily_salary = DailySalary.objects.filter(date=get_date)
         daily_form = []
         for salary in daily_salary:
@@ -205,6 +206,7 @@ def salary_create(request):
             daily_form.append(form)
 
         context = {
+            'form' : DailySalaryForm,
             'daily_form' : daily_form,
             'daily_salary' : daily_salary,
             'member_list' : Member.objects.order_by('pk'),
@@ -215,21 +217,25 @@ def salary_create(request):
 
 class SalaryDetail(generic.DetailView):
     template_name = 'accounting/salary_detail.html'
-    context_object_name = 'salary'
-    model = MonthlySalary
-
+    context_object_name = 'member'
+    model = Member
+    
     def get_context_data(self, **kwargs):
+        month = str(datetime.datetime.now())[:7]
         context = super().get_context_data(**kwargs)
-        context['']
+        context['daily_salary'] = Member.objects.get(pk=self.kwargs['pk']).salary_monthly.get(payment_month=month).salary_daily.all()
+        
+        return context
 
-
+'''
 def salary_delete(request, pk):
-
+    # delete를 따로 안만들고 create에서 0으로 수정하게
     return render(request, 'accounting/salary_detail.html')
 
 def salary_edit(request, pk):
-
+    # edit도 따로 안만들고 create에서 edit기능 통합 사용
     return render(request, 'accounting/salary_edit.html')
+'''
 
 #수입
 class IncomeList(generic.ListView):
@@ -237,9 +243,50 @@ class IncomeList(generic.ListView):
     context_object_name = 'income_list'
     model = Income
 
-def income_create(request):
+    def get_queryset(self):
+        income_list = []
+        month = str(datetime.datetime.now())[:7]
+        #income_list = income.objects.filter(income_date=)
+        for income in Income.objects.order_by('-income_date'):
+            if income.income_date[:7] == month:
+                income_list.append(income)
+        return income_list
 
-    return render(request, 'accounting/income_create.html')
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        collect = 0
+        other = 0
+
+        for income in context['income_list']:
+            #print("테스트 비용", outlay.price)
+            if income.kinds == '수금':
+                collect += income.price
+            elif income.kinds == '기타':
+                other += income.price
+        total = other + collect
+
+        #print("테스트", salary, car, welfare, company)
+        context['collect'] = collect
+        context['other'] = other
+        context['total'] = total
+        return context
+
+def income_create(request):
+    context = {}
+    if request.method == "POST":
+        creator = get_object_or_404(User, pk=request.session.get('user'))
+        
+        income_form = IncomeForm(request.POST)
+        if income_form.is_valid():
+            income = income_form.save(commit=False)
+            income.creator = creator
+            income.save()
+            return redirect('accounting:income_list')
+    else:
+        context = {
+            'income_form' : IncomeForm(),
+        }
+    return render(request, 'accounting/income_create.html', context)
 
 class IncomeDetail(generic.DetailView):
     template_name = 'accounting/income_detail.html'
@@ -247,18 +294,50 @@ class IncomeDetail(generic.DetailView):
     model = Income
 
 def income_delete(request, pk):
-
-    return render(request, 'accounting/income_detail.html')
+    income = get_object_or_404(Income, pk=pk)
+    if User.objects.get(pk=request.session['user']).authority == "관리자":
+        income.delete()    
+    return render(request, 'accounting/income_list.html')
 
 def income_edit(request, pk):
-
-    return render(request, 'accounting/income_edit.html')
+    income = get_object_or_404(Income, pk=pk)
+    context = {}
+    if request.method == "POST":
+        if User.objects.get(pk=request.session['user']).authority == "관리자":
+            creator = get_object_or_404(User, pk=request.session.get('user'))
+            income_form = IncomeForm(request.POST)
+            if income_form.is_valid():
+                edit_income = income_form.save(commit=False)
+                edit_income.creator = creator
+                income.delete()
+                edit_income.id = pk
+                edit_income.save()
+                return redirect('accounting:income_list')
+    else:
+        context = {
+            'income_form' : IncomeForm(instance=income),
+        }
+    return render(request, 'accounting/income_edit.html', context)
 
 #수금
 class CollectList(generic.ListView):
     template_name = 'accounting/collect_list.html'
     context_object_name = 'collect_list'
     model = Collect
+
+    def get_queryset(self):
+        collect_list = []
+        month = str(datetime.datetime.now())[:7]
+        for collect in Collect.objects.order_by('-collect_date'):
+            if collect.collect_date[:7] == month:
+                collect_list.append(collect)
+        return collect_list
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['check'] = context['collect_list'].filter(check=True)
+        context['nocheck'] = context['collect_list'].filter(check=False)
+        return context
 
 class CollectDetail(generic.DetailView):
     template_name = 'accounting/collect_detail.html'

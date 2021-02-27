@@ -1,1 +1,11 @@
 salary detail
+<br>
+<p>이름 : {{member.name}}</p>
+{% for salary in daily_salary %}
+    
+    <span>날짜  : {{ salary.date }}</span>
+    <span>상여금 : {{ salary.bonus}}</span>
+    <span>추가금 : {{ salary.bonus}}</span>
+    <span><a href="{% url 'dispatch:order_detail' salary.order_id.pk %}">주문</a> : {{ salary.order_id}}</span>
+    <br>
+{% endfor %}
