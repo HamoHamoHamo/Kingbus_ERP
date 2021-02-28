@@ -1,6 +1,6 @@
 from crudmember.models import User
 from humanresource.models import Member
-from dispatch.models import DispatchOrder
+from dispatch.models import DispatchOrder, DispatchConnect
 from django.http import Http404, HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse, reverse_lazy
@@ -125,12 +125,14 @@ class SalaryList(generic.ListView):
 
 def salary_create(request):
     get_date = request.GET.get('date')
+    if not get_date:
+        get_date=str(datetime.datetime.now())[:10]
     if request.method == "POST":
         remove = DailySalary.objects.filter(date=get_date)
         print("remove", len(remove))
         bonus_list = request.POST.getlist('bonus')
         additional_list = request.POST.getlist('additional')
-        order_list = request.POST.getlist('order_id')
+        connect_list = request.POST.getlist('connect_id')
 
         cnt = 0
         month = str(datetime.datetime.now())[:7]
@@ -165,7 +167,7 @@ def salary_create(request):
                 additional=additional_list[cnt],
                 creator=login_user,
                 date=get_date,
-                order_id=DispatchOrder.objects.get(pk=order_list[cnt]),
+                connect_id=DispatchConnect.objects.get(pk=connect_list[cnt]),
                 monthly_salary=monthly,
             )
             cnt += 1
@@ -196,9 +198,9 @@ def salary_create(request):
             '''
         return redirect('accounting:salary_list')
 
-    else:
-        if not get_date:
-            get_date=str(datetime.datetime.now())[:10]
+    elif request.method == 'GET':
+        print("날짜확인", get_date)
+       
         daily_salary = DailySalary.objects.filter(date=get_date)
         daily_form = []
         for salary in daily_salary:

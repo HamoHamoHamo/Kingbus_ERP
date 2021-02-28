@@ -25,7 +25,7 @@ class DailySalary(models.Model):
     date = models.CharField(verbose_name='날짜', null=False, max_length=10, default=datetime.datetime.now)
     pub_date = models.DateTimeField(verbose_name='작성시간', auto_now_add=True, null=False)
     monthly_salary = models.ForeignKey(MonthlySalary, on_delete=models.CASCADE, related_name="salary_daily", db_column="monthly_id", null=False)
-    order_id = models.ForeignKey(DispatchOrder, on_delete=models.CASCADE, related_name="salary_daily_order", db_column="order_id", null=True, blank=True)
+    connect_id = models.ForeignKey(DispatchConnect, on_delete=models.CASCADE, related_name="salary_daily_connect", db_column="connect_id", null=True, blank=True)
     def __str__(self):
         return self.monthly_salary.member_id.name
         

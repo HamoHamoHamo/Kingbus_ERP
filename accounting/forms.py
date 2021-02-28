@@ -24,7 +24,7 @@ class DailySalaryForm(forms.ModelForm):
         fields = [
             'bonus',
             'additional',
-            'order_id',
+            'connect_id',
         ]
 
 class OutlayForm(forms.ModelForm):
