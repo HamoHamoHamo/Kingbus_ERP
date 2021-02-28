@@ -328,15 +328,18 @@ class CollectList(generic.ListView):
     def get_queryset(self):
         collect_list = []
         month = str(datetime.datetime.now())[:7]
-        for collect in Collect.objects.order_by('-collect_date'):
-            if collect.collect_date[:7] == month:
-                collect_list.append(collect)
+        for order in DispatchOrder.objects.order_by('-first_departure_date'):
+            if order.first_departure_date[:7] == month:
+                for connect in order.info_order.all():
+                    collect_list.append(connect.collect_connect.get(connect_id=connect))
         return collect_list
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['check'] = context['collect_list'].filter(check=True)
-        context['nocheck'] = context['collect_list'].filter(check=False)
+        context['check'] = [i for i in context['collect_list'] if i.check==True]
+        #print("테스트", context['check'])
+        context['nocheck'] = [i for i in context['collect_list'] if i.check==False]
+        #print("테스트 nocheck", context['check'])
         return context
 
 class CollectDetail(generic.DetailView):
@@ -344,6 +347,35 @@ class CollectDetail(generic.DetailView):
     context_object_name = 'collect'
     model = Collect
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['order'] = context['collect'].connect_id.order_id
+        context['connect'] = context['collect'].connect_id
+        return context
+        
 def collect_edit(request, pk):
+    collect = get_object_or_404(Collect, pk=pk)
+    context = {}
+    if request.method == 'POST':
+        if User.objects.get(pk=request.session['user']).authority == "관리자":
+            collect_form = CollectForm(request.POST)
+            if collect_form.is_valid():
+                edit_collect = collect_form.save(commit=False)
+                edit_collect.connect_id = collect.connect_id
+                edit_collect.creator = collect.creator
+                edit_collect.pub_date = collect.pub_date
+                collect.delete()
+                edit_collect.id = pk
+                edit_collect.save()
+                return redirect(reverse('accounting:collect_detail', args=(pk,)))
+            else:
+                return redirect(reverse('accounting:collect_edit', args=(pk,)))
+    elif request.method == "GET":
+        context = {
+            'collect_form' : CollectForm(instance=collect)
+        }
+        return render(request, 'accounting/collect_edit.html', context)
 
-    return render(request, 'accounting/collect_edit.html')
+
+
+   

@@ -21,7 +21,7 @@ class DispatchOrder(models.Model): #장고에서 제공하는 models.Model를 �
     people_num = models.IntegerField(verbose_name='탑승인원', null=False)
     pub_date = models.DateTimeField(auto_now_add=True, verbose_name='등록시간')
     pay_type = models.CharField(verbose_name='카드or현금', max_length=2, null=False)
-    first_departure_date = models.DateField(verbose_name='출발날짜', null=True)
+    first_departure_date = models.CharField(verbose_name='출발날짜', max_length=10, null=True)
     brief = models.CharField(verbose_name="적요", max_length=50, null=False, default=str(first_departure_date))
     def __str__(self):
         return self.brief
@@ -29,9 +29,9 @@ class DispatchOrder(models.Model): #장고에서 제공하는 models.Model를 �
 class DispatchRoute(models.Model):
     order_id = models.ForeignKey(DispatchOrder, on_delete=models.CASCADE, related_name="route_order", db_column="order_id", null=False)
     departure = models.CharField(verbose_name='출발지', max_length=50, null=False)
-    departure_date = models.DateTimeField(verbose_name='출발시간', null=False)
+    departure_date = models.CharField(verbose_name='출발시간', max_length=16, null=False)
     arrival = models.CharField(verbose_name='도착지', max_length=50, null=False)
-    arrival_date = models.DateTimeField(verbose_name='도착시간', null=False)
+    arrival_date = models.CharField(verbose_name='도착시간', max_length=16, null=False)
     boarding_place = models.CharField(verbose_name='승차장소', max_length=50, null=True)
 
     def __str__(self):

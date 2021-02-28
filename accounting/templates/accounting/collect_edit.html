@@ -1,1 +1,12 @@
 collect edit
+
+<form action="" method=POST>
+    {% csrf_token %}
+    <p>{{ collect.connect_id }}</p>
+    <p>{{ collect.brief }}</p>
+    <p>수입금액 : {{ collect.connect_id.order_id.price }}</p>
+    <p>수입일 : {{ collect.collect_date }}</p>
+    {{ collect_form }}
+    <input type="submit" value="수정">
+</form>
+<br>
