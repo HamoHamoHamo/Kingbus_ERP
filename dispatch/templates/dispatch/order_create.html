@@ -1,13 +1,16 @@
 {% extends 'base.html' %}
 
 {% block content %}
+<!--
     <form method="POST" action="">
         {% csrf_token %}
-        {{ form }}
+        {{ order_form }}
+        <br>
+        {{ consumer_form }}
         <input type="text" name=>
         <input type="submit" value="등록">
     </form>
-<!--
+-->
     <form method="POST" action="">
         {% csrf_token %}
         {% for field in order_form %}
@@ -34,5 +37,5 @@
         {% endfor %}
         <input type="submit" value="등록">
     </form>
--->
+
 {% endblock %}

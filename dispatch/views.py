@@ -4,7 +4,7 @@ from django.urls import reverse
 from django.views import generic
 
 from .forms import OrderForm, ConsumerForm
-from .models import DispatchConsumer, DispatchConnect, DispatchOrder, DispatchRoute
+from .models import DispatchConsumer, DispatchConnect, DispatchOrder
 from crudmember.models import User
 
 from datetime import datetime, timedelta
@@ -92,6 +92,7 @@ class OrderList(generic.ListView):
 
 def order_create(request):
     if request.method == "POST":
+        creator = get_object_or_404(User, pk=request.session.get('user'))
         #print("teststsestsetst", request.POST, type(request.POST))
         update = 'create'
         order = update_order(request, update)
@@ -141,7 +142,7 @@ def update_order(request, update):
             update.requirements = order_form.cleaned_data['requirements']
             update.people_num = order_form.cleaned_data['people_num']
             update.pay_type = order_form.cleaned_data['pay_type']
-            update.first_departure_date = order_form.cleaned_data['first_departure_date']
+            update.departure_date = order_form.cleaned_data['departure_date']
             update.save()
             return update
 
@@ -213,7 +214,7 @@ class ScheduleDetail(generic.ListView):
         dispatch_list = []
         date = self.kwargs['date']
         for order in DispatchOrder.objects.all():
-            order_date = str(order.first_departure_date)[:10]
+            order_date = str(order.departure_date)[:10]
             print(order_date)
             if date == order_date:
                 dispatch_list.append(order)

@@ -1,7 +1,7 @@
 from django import forms 
 from django.db import models
 
-from .models import DispatchOrder, DispatchConsumer, DispatchRoute, DispatchConnect
+from .models import DispatchOrder, DispatchConsumer, DispatchConnect
 
 class OrderForm(forms.ModelForm):
     class Meta:
@@ -15,13 +15,17 @@ class OrderForm(forms.ModelForm):
             'requirements',
             'people_num',
             'pay_type',
-            'first_departure_date'
+            'departure',
+            'departure_date',
+            'arrival',
+            'arrival_date',
             ]
 
         widgets = {
-            'first_departure_date': forms.DateTimeInput(attrs={'type': 'date'}),
+            'departure_date': forms.DateTimeInput(attrs={'type': 'date'}),
         }
 
+'''
 class RouteForm(forms.ModelForm):
     class Meta:
         model = DispatchRoute
@@ -33,7 +37,7 @@ class RouteForm(forms.ModelForm):
             'arrival_date',
         ]
 
-'''
+
 class OrderForm(forms.Form):
     bus_cnt = forms.IntegerField(label="버스대수")
     price = forms.IntegerField(label="가격")

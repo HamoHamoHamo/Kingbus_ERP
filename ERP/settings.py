@@ -14,7 +14,8 @@ import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
-BASE_DIR = Path(__file__).resolve().parent.parent
+#BASE_DIR = Path(__file__).resolve().parent.parent
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
 # Quick-start development settings - unsuitable for production
@@ -26,7 +27,7 @@ SECRET_KEY = 'e(*orav*+$pt@f#+%ugfl=rqj77yv8_y^0*vxb+*tzlsv9$kxb'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -90,7 +91,7 @@ DATABASES = {
         'NAME': 'erp',
         'USER': 'hamo',
         'PASSWORD': '1404',
-        'HOST' : 'localhost',
+        'HOST' : '127.0.0.1',
         'PORT' : '3306',
     }
 }
@@ -133,8 +134,10 @@ USE_TZ = False
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
 STATIC_URL = '/static/'
-STATIC_DIR = [
-    os.path.join(BASE_DIR, 'static'),
+STATIC_DIR = os.path.join(BASE_DIR, 'static'),
+#STATICFILES_FINDERS = ['django.contrib.staticfiles.finders.FileSystemFinder',]
+STATICFILES_DIRS=[
+    os.path.join(BASE_DIR,'crudmember','static')
 ]
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 

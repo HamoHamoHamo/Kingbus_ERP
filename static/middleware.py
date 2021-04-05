@@ -28,7 +28,7 @@ class LoginCheckMiddleware(object):
         ip = get_client_ip(request)
         ip=ip[0]
         if ip:
-            if ip != "59.29.60.206":
+            if ip != "59.29.60.206" and ip != '115.40.25.236':
                 print(ip)
 
             try:

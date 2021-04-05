@@ -1,8 +1,5 @@
 from django.contrib import admin
-from .models import DispatchOrder, DispatchConsumer, DispatchRoute, DispatchConnect
-
-class DispatchRouteInline(admin.TabularInline):
-    model = DispatchRoute
+from .models import DispatchOrder, DispatchConsumer, DispatchConnect
 
 class DispatchInfoInline(admin.TabularInline):
     model = DispatchConnect
@@ -15,10 +12,9 @@ class DispatchConsumerAdmin(admin.ModelAdmin):
 
 class DispatchOrderAdmin(admin.ModelAdmin):
     #list_display = ('title','creator','kinds','pub_date')
-    inlines = (DispatchInfoInline, DispatchRouteInline,)
+    inlines = (DispatchInfoInline,)
 
 
 admin.site.register(DispatchOrder, DispatchOrderAdmin)
-admin.site.register(DispatchRoute)
 admin.site.register(DispatchConnect)
 admin.site.register(DispatchConsumer, DispatchConsumerAdmin)
