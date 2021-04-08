@@ -91,6 +91,7 @@ class OrderList(generic.ListView):
     model = DispatchOrder
 
 def order_create(request):
+    '''
     if request.method == "POST":
         creator = get_object_or_404(User, pk=request.session.get('user'))
         #print("teststsestsetst", request.POST, type(request.POST))
@@ -101,6 +102,21 @@ def order_create(request):
             #return redirect('/dispatch/order/{0}/'.format(order.id))
         #form형식에 맞지 않는 POST일때
         return redirect('dispatch:order_create')
+    '''
+    context = {}
+    if request.method == "POST":
+        creator = get_object_or_404(User, pk=request.session.get('user'))
+        order_form = OrderForm(request.POST)
+        consumer_form = ConsumerForm(request.POST)        
+        if order_form.is_valid() and consumer_form.is_valid():
+            order = order_form.save(commit=False)
+            order.creator = creator
+            print(order)
+            order.save()
+            consumer = consumer_form.save(commit=False)
+            consumer.save()
+            
+            return redirect('accounting:outlay_list')
     else:
         context = {
             'order_form' : OrderForm(),
@@ -108,6 +124,7 @@ def order_create(request):
         }
         
     return render(request, 'dispatch/order_create.html', context)
+
 
 def update_order(request, update):
     order_form = OrderForm(request.POST)

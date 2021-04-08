@@ -19,10 +19,12 @@ class OrderForm(forms.ModelForm):
             'departure_date',
             'arrival',
             'arrival_date',
+            'stopover',
             ]
 
         widgets = {
-            'departure_date': forms.DateTimeInput(attrs={'type': 'date'}),
+            'departure_date': forms.DateInput(format='%Y-%m-%d H:i', attrs={'class':'datetimefield'}),
+            'arrival_date': forms.DateInput(format='%Y-%m-%d H:i', attrs={'class':'datetimefield'}),
         }
 
 '''

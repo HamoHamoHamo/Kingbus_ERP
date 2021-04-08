@@ -1,16 +1,16 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<!--
+
     <form method="POST" action="">
         {% csrf_token %}
         {{ order_form }}
         <br>
         {{ consumer_form }}
-        <input type="text" name=>
+
         <input type="submit" value="등록">
     </form>
--->
+<!--
     <form method="POST" action="">
         {% csrf_token %}
         {% for field in order_form %}
@@ -38,4 +38,19 @@
         <input type="submit" value="등록">
     </form>
 
+-->
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
+<script>
+    // This code activates flatpickr on fields with the 'datetimefield' class when the document has loaded
+    window.addEventListener("DOMContentLoaded", function () {
+        flatpickr(".datetimefield", {
+            enableTime: true,
+            dateFormat: "Y-m-d H:i",
+        });
+    });
+</script>
 {% endblock %}
