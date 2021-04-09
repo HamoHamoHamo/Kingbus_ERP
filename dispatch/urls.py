@@ -9,8 +9,8 @@ urlpatterns = [
     path('order/create/', views.order_create, name='order_create'),
     #path('order/create/', views.OrderCreate.as_view(), name='order_create'),
     path('order/<int:pk>/', views.OrderDetail.as_view(), name='order_detail'),
-    #path('order/<int:pk>/edit/', views.order_edit, name='order_edit'),
-    path('order/<int:pk>/edit/', views.OrderUpdate.as_view(), name='order_edit'),
+    path('order/<int:pk>/edit/', views.order_edit, name='order_edit'),
+    #path('order/<int:pk>/edit/', views.OrderUpdate.as_view(), name='order_edit'),
     path('order/<int:pk>/delete/', views.order_delete, name='order_delete'),
 
     path('schedule/', views.ScheduleList.as_view(), name='schedule'),

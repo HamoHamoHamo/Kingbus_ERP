@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <p>작성자 : {{order.writer}}</p>
+    <p>작성자 : {{order.creator.name}}</p>
     <p>고객 이름: {{order.consumer.name}}</p>
     <p>고객 전화번호: {{order.consumer.tel}}</p>
     <p>버스 대수 : {{order.bus_cnt}}</p>

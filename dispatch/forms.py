@@ -20,6 +20,7 @@ class OrderForm(forms.ModelForm):
             'arrival',
             'arrival_date',
             'stopover',
+            'brief'
             ]
 
         widgets = {

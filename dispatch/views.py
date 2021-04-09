@@ -91,32 +91,20 @@ class OrderList(generic.ListView):
     model = DispatchOrder
 
 def order_create(request):
-    '''
-    if request.method == "POST":
-        creator = get_object_or_404(User, pk=request.session.get('user'))
-        #print("teststsestsetst", request.POST, type(request.POST))
-        update = 'create'
-        order = update_order(request, update)
-        if order:
-            return redirect(reverse('dispatch:order_detail', args=(order.id,)))
-            #return redirect('/dispatch/order/{0}/'.format(order.id))
-        #form형식에 맞지 않는 POST일때
-        return redirect('dispatch:order_create')
-    '''
     context = {}
     if request.method == "POST":
         creator = get_object_or_404(User, pk=request.session.get('user'))
         order_form = OrderForm(request.POST)
         consumer_form = ConsumerForm(request.POST)        
         if order_form.is_valid() and consumer_form.is_valid():
-            order = order_form.save(commit=False)
-            order.creator = creator
-            print(order)
-            order.save()
             consumer = consumer_form.save(commit=False)
             consumer.save()
+            order = order_form.save(commit=False)
+            order.creator = creator
+            order.consumer = consumer
+            order.save()
             
-            return redirect('accounting:outlay_list')
+            return redirect('dispatch:order')
     else:
         context = {
             'order_form' : OrderForm(),
@@ -125,47 +113,7 @@ def order_create(request):
         
     return render(request, 'dispatch/order_create.html', context)
 
-
-def update_order(request, update):
-    order_form = OrderForm(request.POST)
-    consumer_form = ConsumerForm(request.POST)
-    if order_form.is_valid() and consumer_form.is_valid():
-        if update == 'create':
-            consumer = DispatchConsumer(
-                name = consumer_form.cleaned_data['name'],
-                tel = consumer_form.cleaned_data['tel'],
-            )
-            consumer.save()
-
-            order = order_form.save(commit=False) #commit 설정을 해줘야 되나? >> 값 불러오는 용도라 저장은 안하려고 False해줌
-            order.consumer=consumer
-            order.writer = User.objects.get(pk=request.session.get('user'))
-            order.save()
-            return order
-        else:
-            update.consumer.name = consumer_form.cleaned_data['name']
-            update.consumer.tel = consumer_form.cleaned_data['tel']
-            update.consumer.save()
-
-            update.writer = User.objects.get(pk=request.session.get('user'))
-            update.consumer = update.consumer
-            
-
-            update.bus_cnt = order_form.cleaned_data['bus_cnt']
-            update.price = order_form.cleaned_data['price']
-            update.kinds = order_form.cleaned_data['kinds']
-            update.purpose = order_form.cleaned_data['purpose']
-            update.bus_type = order_form.cleaned_data['bus_type']
-            update.requirements = order_form.cleaned_data['requirements']
-            update.people_num = order_form.cleaned_data['people_num']
-            update.pay_type = order_form.cleaned_data['pay_type']
-            update.departure_date = order_form.cleaned_data['departure_date']
-            update.save()
-            return update
-
-
-    return False
-
+'''
 class OrderCreate(generic.edit.CreateView):
     context_object_name = 'order' #1
     form_class = OrderForm
@@ -173,12 +121,12 @@ class OrderCreate(generic.edit.CreateView):
     template_name = 'dispatch/order_create.html' #2
     success_url = '/' #3
 
-
+'''
 class OrderDetail(generic.DetailView):
     template_name = 'dispatch/order_detail.html'
     context_object_name = 'order'
     model = DispatchOrder
-
+'''
 class OrderUpdate(generic.edit.UpdateView):
     model = DispatchOrder
     form_class = OrderForm
@@ -187,24 +135,42 @@ class OrderUpdate(generic.edit.UpdateView):
     
     template_name = 'dispatch/order_edit.html' #2
     success_url = '/' #3
-    
+'''
 
 
 def order_edit(request, pk):
     order = get_object_or_404(DispatchOrder, pk=pk)
+    consumer = order.consumer
 
-    if request.method == 'GET':
+    if request.method == 'POST':
+        if User.objects.get(pk=request.session['user']).authority == "관리자":
+            creator = get_object_or_404(User, pk=request.session.get('user'))
+            order_form = OrderForm(request.POST)
+            consumer_form = ConsumerForm(request.POST)        
+            if order_form.is_valid() and consumer_form.is_valid():
+                edit_consumer = consumer_form.save(commit=False)
+                consumer.delete()
+                edit_consumer.id = pk
+                edit_consumer.save()
+                edit_order = order_form.save(commit=False)
+                edit_order.creator = creator
+                edit_order.consumer = edit_consumer
+                order.delete()
+                edit_order.id = pk
+                edit_order.save()
+            return redirect(reverse('dispatch:order_detail', args=(pk,)))
+            '''
+            order_edit = update_order(request, order)
+            if order_edit:
+                return redirect(reverse('dispatch:order_detail', args=(pk,)))
+            return redirect(reverse('dispatch:order_edit', args=(pk,)))
+            '''
+    else:
         context = {
             'order_form' : OrderForm(instance=order),
-            'consumer_form' : ConsumerForm(instance=order.consumer),
-            'order' : order,
+            'consumer_form' : ConsumerForm(instance=consumer),            
         }
         return render(request, 'dispatch/order_edit.html', context)
-    elif request.method == 'POST':
-        order_edit = update_order(request, order)
-        if order_edit:
-            return redirect(reverse('dispatch:order_detail', args=(pk,)))
-        return redirect(reverse('dispatch:order_edit', args=(pk,)))
 
     
 def order_delete(request, pk):
