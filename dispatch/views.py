@@ -3,7 +3,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
 from django.views import generic
 
-from .forms import OrderForm, ConsumerForm
+from .forms import OrderForm, ConsumerForm, RouteForm
 from .models import DispatchConsumer, DispatchConnect, DispatchOrder
 from crudmember.models import User
 
@@ -56,17 +56,16 @@ class DispatchDailyRouteList(generic.ListView):
     context_object_name = 'dispatch'
 
     def get_queryset(self):
-        dispatch = DispatchOrder.objects.filter(first_departure_date__contains=self.kwargs['date'])
+        dispatch = DispatchOrder.objects.filter(departure_date__contains=self.kwargs['date'])
         return dispatch
-
+'''
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        dispatch = DispatchOrder.objects.filter(first_departure_date__contains=self.kwargs['date'])
+        dispatch = DispatchOrder.objects.filter(departure_date__contains=self.kwargs['date'])
         context['routes'] = []
-        for i in dispatch:
-            context['routes'].append(DispatchRoute.objects.filter(order_id=i))
+        
         return context
-
+'''
 # 날짜별-차량별 배차지시서
 class DispatchDailyBusList(generic.ListView):
     template_name = 'dispatch/dispatch_daily_bus.html'
@@ -95,80 +94,66 @@ def order_create(request):
     if request.method == "POST":
         creator = get_object_or_404(User, pk=request.session.get('user'))
         order_form = OrderForm(request.POST)
+        route_form = RouteForm(request.POST)
         consumer_form = ConsumerForm(request.POST)        
         if order_form.is_valid() and consumer_form.is_valid():
             consumer = consumer_form.save(commit=False)
             consumer.save()
+            route = route_form.save(commit=False)
+            route.save()
             order = order_form.save(commit=False)
             order.creator = creator
             order.consumer = consumer
+            order.route = route
             order.save()
             
             return redirect('dispatch:order')
     else:
         context = {
             'order_form' : OrderForm(),
+            'route_form' : RouteForm(),
             'consumer_form' : ConsumerForm(),
         }
         
     return render(request, 'dispatch/order_create.html', context)
 
-'''
-class OrderCreate(generic.edit.CreateView):
-    context_object_name = 'order' #1
-    form_class = OrderForm
-    
-    template_name = 'dispatch/order_create.html' #2
-    success_url = '/' #3
-
-'''
 class OrderDetail(generic.DetailView):
     template_name = 'dispatch/order_detail.html'
     context_object_name = 'order'
     model = DispatchOrder
-'''
-class OrderUpdate(generic.edit.UpdateView):
-    model = DispatchOrder
-    form_class = OrderForm
-    
-    context_object_name = 'order' #1
-    
-    template_name = 'dispatch/order_edit.html' #2
-    success_url = '/' #3
-'''
-
 
 def order_edit(request, pk):
     order = get_object_or_404(DispatchOrder, pk=pk)
     consumer = order.consumer
+    route = order.route
 
     if request.method == 'POST':
         if User.objects.get(pk=request.session['user']).authority == "관리자":
             creator = get_object_or_404(User, pk=request.session.get('user'))
             order_form = OrderForm(request.POST)
-            consumer_form = ConsumerForm(request.POST)        
+            consumer_form = ConsumerForm(request.POST)
+            route_form = RouteForm(request.POST)
             if order_form.is_valid() and consumer_form.is_valid():
                 edit_consumer = consumer_form.save(commit=False)
                 consumer.delete()
-                edit_consumer.id = pk
                 edit_consumer.save()
+                edit_route = route_form.save(commit=False)
+                route.delete()
+                edit_route.save()
                 edit_order = order_form.save(commit=False)
                 edit_order.creator = creator
                 edit_order.consumer = edit_consumer
+                edit_order.route = edit_route
                 order.delete()
                 edit_order.id = pk
                 edit_order.save()
             return redirect(reverse('dispatch:order_detail', args=(pk,)))
-            '''
-            order_edit = update_order(request, order)
-            if order_edit:
-                return redirect(reverse('dispatch:order_detail', args=(pk,)))
-            return redirect(reverse('dispatch:order_edit', args=(pk,)))
-            '''
+
     else:
         context = {
             'order_form' : OrderForm(instance=order),
-            'consumer_form' : ConsumerForm(instance=consumer),            
+            'consumer_form' : ConsumerForm(instance=consumer),
+            'route_form' : RouteForm(instance=route),            
         }
         return render(request, 'dispatch/order_edit.html', context)
 
