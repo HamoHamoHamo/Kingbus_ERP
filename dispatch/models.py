@@ -33,7 +33,8 @@ class DispatchOrder(models.Model): #장고에서 제공하는 models.Model를 �
     pay_type = models.CharField(verbose_name='카드or현금', max_length=2, null=False)
     departure_date = models.CharField(verbose_name='출발시간', max_length=16, null=False)
     arrival_date = models.CharField(verbose_name='도착시간', max_length=16, null=False)
-
+    check = models.BooleanField(verbose_name="배차완료", null=False, default=False)
+    
     def __str__(self):
         return self.departure_date
 
@@ -42,4 +43,4 @@ class DispatchConnect(models.Model):
     # 차량관리, 인사관리 완료 후 외래키 작성
     #bus_id = models.ForeignKey(, on_delete=models.SET_NULL, related_name="info_bus_id", db_column="bus_id", null=True)
     driver_id = models.ForeignKey(Member, on_delete=models.SET_NULL, related_name="info_driver_id", db_column="driver_id", null=True)
-    check = models.BooleanField(verbose_name="배차완료", null=False, default=False)
+    

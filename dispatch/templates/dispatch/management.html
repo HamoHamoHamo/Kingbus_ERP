@@ -1,1 +1,8 @@
-management
+{% extends 'base.html' %}
+
+{% block content %}
+    <p>배차 필요한 주문</p>
+    {% for order in order_list %}
+        <a href="{% url 'dispatch:management_detail' order.pk %}"><p>출발날짜 : {{ order.departure_date }}</p></a>
+    {% endfor %}
+{% endblock %}

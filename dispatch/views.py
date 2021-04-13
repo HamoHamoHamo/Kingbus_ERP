@@ -148,7 +148,6 @@ def order_edit(request, pk):
                 edit_order.id = pk
                 edit_order.save()
             return redirect(reverse('dispatch:order_detail', args=(pk,)))
-
     else:
         context = {
             'order_form' : OrderForm(instance=order),
@@ -157,12 +156,12 @@ def order_edit(request, pk):
         }
         return render(request, 'dispatch/order_edit.html', context)
 
-    
 def order_delete(request, pk):
     order = get_object_or_404(DispatchOrder, pk=pk)
     print("테스트ㅡㅡ", request.session['user'])
-    if order.writer.pk == request.session['user']: # ?? 작성자만 지울 수 있게 하나?
+    if order.creator.pk == request.session['user']: # ?? 작성자만 지울 수 있게 하나?
         order.consumer.delete()
+        order.route.delete()
         order.delete()
         return redirect('dispatch:order')
     return redirect(reverse('dispatch:order_detail', args=(pk,)))
@@ -193,11 +192,17 @@ class ManagementList(generic.ListView):
     context_object_name = 'order_list'
     model = DispatchOrder
 
+    def get_queryset(self):
+        order = DispatchOrder.objects.filter(check=False)
+        return order
+    
+
 class ManagementDetail(generic.DetailView):
     template_name = 'dispatch/management_detail.html'
     context_object_name = 'order'
     model = DispatchOrder
 
+'''
     def get_context_data(self, **kwargs):
         # 기본 구현을 호출해 context를 가져온다.
         context = super(ManagementDetail, self).get_context_data(**kwargs)
@@ -205,7 +210,7 @@ class ManagementDetail(generic.DetailView):
         context['routes'] = DispatchRoute.objects.filter(order_id=order)
         context['connect'] = DispatchRoute.objects.filter(order_id=order)
         return context
-
+'''
 
 # 차량관리, 인사관리 완료 후 작성
 def management_create(request, order_id):

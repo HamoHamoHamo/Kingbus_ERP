@@ -1,1 +1,24 @@
-management_detail
+{% extends 'base.html' %}
+
+{% block content %}
+    <p>배차 필요한 주문</p>
+    <p>작성자 : {{ order.creator }}</p> 
+    <p>고객 이름 : {{ order.consumer.name }}</p> 
+    <p>고객 전화번호 : {{ order.consumer.tel }}</p> 
+    <p>노선이름 : {{ order.route.route_name }}</p> 
+    <p>출발지 : {{ order.route.departure }}</p> 
+    <p>목적지 : {{ order.route.arrival }}</p>
+    <p>경유지 : {{ order.route.stopover }}</p> 
+    <p>버스 대수 : {{ order.bus_cnt }}</p> 
+    <p>가격 : {{ order.price }}</p> 
+    <p>왕복or편도 : {{ order.kinds }}</p> 
+    <p>목적 : {{ order.purpose }}</p> 
+    <p>버스종류 : {{ order.bus_type }}</p> 
+    <p>요구사항 : {{ order.requirements }}</p> 
+    <p>탑승인원 : {{ order.people_num }}</p> 
+    <p>등록시간 : {{ order.pub_date }}</p> 
+    <p>카드or현금 : {{ order.pay_type }}</p> 
+    <p>출발날짜 : {{ order.departure_date }}</p> 
+    <p>도착날짜 : {{ order.arrival_date }}</p> 
+    <p>배차여부 : {{ order.check }}</p> 
+{% endblock %}

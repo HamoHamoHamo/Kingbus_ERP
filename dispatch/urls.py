@@ -21,8 +21,7 @@ urlpatterns = [
 
     path('management/', views.ManagementList.as_view(), name='management'),
     path('management/<int:pk>/', views.ManagementDetail.as_view(), name='management_detail'),
+    
     #path('management/<int:pk>/create/', views.management_create, name='management_create'),
     #path('management/<int:pk>/edit/', views.management_edit, name='management_edit'),
-
-
 ]
