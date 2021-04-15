@@ -21,4 +21,14 @@
     <p>출발날짜 : {{ order.departure_date }}</p> 
     <p>도착날짜 : {{ order.arrival_date }}</p> 
     <p>배차여부 : {{ order.check }}</p> 
+    <br>
+    <p>배차</p>
+    {% for connect in connects %}
+        <p>기사 : {{ connect.driver_id.name }}</p>
+        <p>버스 : {{ connect.bus_id.vehicle_num }}</p>
+    {% endfor %}
+    {% for i in manage_form %}
+        {{ i }}
+    {% endfor %}
+
 {% endblock %}

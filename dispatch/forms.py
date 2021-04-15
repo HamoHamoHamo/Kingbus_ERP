@@ -33,7 +33,13 @@ class RouteForm(forms.ModelForm):
             'stopover',
             'route_name',
         ]
-
+class ConnectForm(forms.ModelForm):
+    class Meta:
+        model = DispatchConnect
+        fields = [
+            'bus_id',
+            'driver_id',
+        ]
 '''
 class OrderForm(forms.Form):
     bus_cnt = forms.IntegerField(label="버스대수")

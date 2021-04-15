@@ -3,11 +3,11 @@
 {% block content %}
     {% for d in dispatch_list %}
         <div>
-            <span>날짜 : {{ d.first_departure_date }}</span>
-            <a href="{% url 'dispatch:dispatch_daily_route' d.first_departure_date %}">
+            <span>날짜 : {{ d.departure_date }}</span>
+            <a href="{% url 'dispatch:dispatch_daily_route' d.departure_date %}">
                 <span>노선별</span>
             </a>
-            <a href="{% url 'dispatch:dispatch_daily_bus' d.first_departure_date %}">
+            <a href="{% url 'dispatch:dispatch_daily_bus' d.departure_date %}">
                 <span>호수별</span>
             </a>
         </div>

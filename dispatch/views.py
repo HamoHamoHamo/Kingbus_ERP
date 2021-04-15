@@ -3,7 +3,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
 from django.views import generic
 
-from .forms import OrderForm, ConsumerForm, RouteForm
+from .forms import OrderForm, ConsumerForm, RouteForm, ConnectForm
 from .models import DispatchConsumer, DispatchConnect, DispatchOrder
 from crudmember.models import User
 
@@ -122,6 +122,14 @@ class OrderDetail(generic.DetailView):
     context_object_name = 'order'
     model = DispatchOrder
 
+    def get_context_data(self, **kwargs):
+        # 기본 구현을 호출해 context를 가져온다.
+        context = super(OrderDetail, self).get_context_data(**kwargs)
+        order = get_object_or_404(DispatchOrder, pk=self.kwargs['pk'])
+        context['connects'] = order.info_order.all()
+
+        return context
+
 def order_edit(request, pk):
     order = get_object_or_404(DispatchOrder, pk=pk)
     consumer = order.consumer
@@ -191,29 +199,76 @@ class ManagementList(generic.ListView):
     template_name = 'dispatch/management.html'
     context_object_name = 'order_list'
     model = DispatchOrder
-
+    '''
     def get_queryset(self):
         order = DispatchOrder.objects.filter(check=False)
         return order
-    
+    '''
+    def get_context_data(self, **kwargs):
+        # 기본 구현을 호출해 context를 가져온다.
+        context = super(ManagementList, self).get_context_data(**kwargs)
+        context['check_order'] = DispatchOrder.objects.filter(check=True)
+        context['not_check_order'] = DispatchOrder.objects.filter(check=False)
+        return context
 
 class ManagementDetail(generic.DetailView):
     template_name = 'dispatch/management_detail.html'
     context_object_name = 'order'
     model = DispatchOrder
 
-'''
+
     def get_context_data(self, **kwargs):
         # 기본 구현을 호출해 context를 가져온다.
         context = super(ManagementDetail, self).get_context_data(**kwargs)
         order = get_object_or_404(DispatchOrder, pk=self.kwargs['pk'])
-        context['routes'] = DispatchRoute.objects.filter(order_id=order)
-        context['connect'] = DispatchRoute.objects.filter(order_id=order)
+        context['connects'] = order.info_order.all()
+        context['manage_form'] = []
+        
+        for i in context['connects']:
+            context['manage_form'].append(ConnectForm(instance=i))
         return context
-'''
 
-# 차량관리, 인사관리 완료 후 작성
-def management_create(request, order_id):
-    return render(request, 'dispatch/management_create.html')
-def management_edit(request, order_id):
-    return render(request, 'dispatch/management_edit.html')
+
+def management_create(request, pk):
+    context = {}
+    order = get_object_or_404(DispatchOrder, pk=pk)
+
+    if request.method == "POST":
+        creator = get_object_or_404(User, pk=request.session.get('user'))
+        connect_form = ConnectForm(request.POST)
+        if connect_form.is_valid():
+            connect = connect_form.save(commit=False)
+            connect.creator=creator
+            connect.order_id=order
+            connect.save()
+            return redirect(reverse('dispatch:order_detail',args=(pk,)))
+    else:
+        context = {
+            'order' : order,
+            'connect_form' : ConnectForm(),
+        }
+    return render(request, 'dispatch/management_create.html', context)
+
+
+def management_edit(request, pk, c_pk):
+    context = {}
+    connect = get_object_or_404(DispatchConnect, pk=c_pk)
+    order = connect.order_id
+
+    if request.method == "POST":
+        if User.objects.get(pk=request.session['user']).authority == "관리자":
+            creator = get_object_or_404(User, pk=request.session.get('user'))
+            connect_form = ConnectForm(request.POST)
+            if connect_form.is_valid():
+                edit_connect = connect_form.save(commit=False)
+                edit_connect.pk = c_pk
+                edit_connect.order_id = order
+                connect.delete()
+                edit_connect.save()
+                return redirect(reverse('dispatch:order_detail',args=(pk,)))
+    else:
+        context = {
+            'order' : order,
+            'connect_form' : ConnectForm(instance=connect),
+        }
+    return render(request, 'dispatch/management_create.html', context)

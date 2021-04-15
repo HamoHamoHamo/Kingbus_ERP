@@ -2,7 +2,11 @@
 
 {% block content %}
     <p>배차 필요한 주문</p>
-    {% for order in order_list %}
+    {% for order in not_check_order %}
+        <a href="{% url 'dispatch:management_detail' order.pk %}"><p>출발날짜 : {{ order.departure_date }}</p></a>
+    {% endfor %}
+    <p>배차 완료된 주문</p>
+    {% for order in check_order %}
         <a href="{% url 'dispatch:management_detail' order.pk %}"><p>출발날짜 : {{ order.departure_date }}</p></a>
     {% endfor %}
 {% endblock %}

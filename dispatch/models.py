@@ -1,6 +1,7 @@
 from django.db import models
 from crudmember.models import User
 from humanresource.models import Member
+from vehicle.models import Vehicle
 
 class DispatchConsumer(models.Model):
     name = models.CharField(verbose_name='주문자 이름', max_length=10, null=False)
@@ -39,8 +40,8 @@ class DispatchOrder(models.Model): #장고에서 제공하는 models.Model를 �
         return self.departure_date
 
 class DispatchConnect(models.Model):
+    creator = models.ForeignKey(User, on_delete=models.CASCADE, related_name="connect_creator", db_column="creator_id", null=True)
     order_id = models.ForeignKey(DispatchOrder, on_delete=models.CASCADE, related_name="info_order", db_column="order_id", null=False)
-    # 차량관리, 인사관리 완료 후 외래키 작성
-    #bus_id = models.ForeignKey(, on_delete=models.SET_NULL, related_name="info_bus_id", db_column="bus_id", null=True)
+    bus_id = models.ForeignKey(Vehicle, on_delete=models.SET_NULL, related_name="info_bus_id", db_column="bus_id", null=True)
     driver_id = models.ForeignKey(Member, on_delete=models.SET_NULL, related_name="info_driver_id", db_column="driver_id", null=True)
     
