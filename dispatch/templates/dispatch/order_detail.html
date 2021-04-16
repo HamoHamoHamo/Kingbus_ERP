@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 
 {% block content %}
+    <a href="{% url 'dispatch:order_delete' order.id %}">삭제</a>
     <p>작성자 : {{ order.creator }}</p> 
     <p>고객 이름 : {{ order.consumer.name }}</p> 
     <p>고객 전화번호 : {{ order.consumer.tel }}</p> 
@@ -25,6 +26,7 @@
         <p>기사 : {{ connect.driver_id.name }}</p>
         <p>버스 : {{ connect.bus_id.vehicle_num }}</p>
         <a href="{% url 'dispatch:management_edit' order.id connect.id %}">수정</a>
+        <a href="{% url 'dispatch:management_delete' order.id connect.id %}">삭제</a>
     {% endfor %}
 
     <a href="{% url 'dispatch:management_create' order.id %}">배차</a>

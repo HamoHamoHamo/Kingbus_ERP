@@ -16,8 +16,8 @@ class DispatchList(generic.ListView):
     model = DispatchOrder
 
 
+    '''
     def get_queryset(self):
-        '''
         dispatch_list = []
         today = datetime.now().day
         tomorrow = (datetime.now() + timedelta(days=1)).day
@@ -26,10 +26,10 @@ class DispatchList(generic.ListView):
             day = order.pub_date.day
             if day == today or day == yesterday or day == tomorrow:
                 dispatch_list.append(order)
-        '''
         dispatch_list = DispatchOrder.objects.order_by('-id')
         #프린트 할 수 있게 파일로 만들어 줘야 됨 > JS로 프린트 할 수 있게 할 거        
         return dispatch_list
+    '''
 
     # 페이징 처리
     def get_context_data(self, **kwargs):
@@ -44,10 +44,15 @@ class DispatchList(generic.ListView):
         end_index = start_index + page_numbers_range
         if end_index >= max_index:
             end_index = max_index
-
         page_range = paginator.page_range[start_index:end_index]
         context['page_range'] = page_range
-
+        #페이징 끝
+        
+        context['order_list'] = DispatchOrder.objects.filter(check=True).order_by('-departure_date')
+        date = []
+        for order in context['order_list']:
+            date.append(order.departure_date[:10])
+        context['date'] = set(date)
         return context
 
 # 날짜별-노선별 배차지시서 
@@ -56,33 +61,17 @@ class DispatchDailyRouteList(generic.ListView):
     context_object_name = 'dispatch'
 
     def get_queryset(self):
-        dispatch = DispatchOrder.objects.filter(departure_date__contains=self.kwargs['date'])
+        dispatch = DispatchOrder.objects.filter(departure_date__contains=self.kwargs['date']).filter(check=True)
         return dispatch
-'''
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        dispatch = DispatchOrder.objects.filter(departure_date__contains=self.kwargs['date'])
-        context['routes'] = []
-        
-        return context
-'''
+
 # 날짜별-차량별 배차지시서
 class DispatchDailyBusList(generic.ListView):
     template_name = 'dispatch/dispatch_daily_bus.html'
     context_object_name = 'dispatch'
 
     def get_queryset(self):
-        dispatch = DispatchOrder.objects.filter(first_departure_date__contains=self.kwargs['date'])
+        dispatch = DispatchOrder.objects.filter(departure_date__contains=self.kwargs['date']).filter(check=True)
         return dispatch
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        dispatch = DispatchOrder.objects.filter(first_departure_date__contains=self.kwargs['date'])
-        context['routes'] = []
-        for i in dispatch:
-            context['routes'].append(DispatchRoute.objects.filter(order_id=i))
-        return context
-
 
 class OrderList(generic.ListView):
     template_name = 'dispatch/order.html'
@@ -167,9 +156,9 @@ def order_edit(request, pk):
 def order_delete(request, pk):
     order = get_object_or_404(DispatchOrder, pk=pk)
     print("테스트ㅡㅡ", request.session['user'])
-    if order.creator.pk == request.session['user']: # ?? 작성자만 지울 수 있게 하나?
-        order.consumer.delete()
-        order.route.delete()
+    if order.creator.pk == request.session['user'] or User.objects.get(pk=request.session['user']).authority == "관리자": # ?? 작성자만 지울 수 있게 하나?
+        if order.info_order.all():
+            order.info_order.all().delete()
         order.delete()
         return redirect('dispatch:order')
     return redirect(reverse('dispatch:order_detail', args=(pk,)))
@@ -272,3 +261,10 @@ def management_edit(request, pk, c_pk):
             'connect_form' : ConnectForm(instance=connect),
         }
     return render(request, 'dispatch/management_create.html', context)
+
+def management_delete(request, pk, c_pk):
+    connect = get_object_or_404(DispatchConnect, pk=c_pk)
+    order = get_object_or_404(DispatchOrder, pk=pk)
+    if order.creator.pk == request.session['user'] or User.objects.get(pk=request.session['user']).authority == "관리자": # ?? 작성자만 지울 수 있게 하나?
+        connect.delete()
+    return redirect(reverse('dispatch:order_detail', args=(pk,)))
