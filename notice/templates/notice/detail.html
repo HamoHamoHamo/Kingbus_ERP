@@ -5,7 +5,7 @@
     <p>제목:{{ notice.title }}</p>
     <p>내용:{{ notice.content }}</p>
     <p>작성자:{{ notice.creator }}</p>
-    <p>작성날짜:{{ notice.pub_date | date:'Y.m.d' }}</p>
+    <p>작성날짜:{{ notice.pub_date | date:'Y.m.d H:s' }}</p>
     <br>
     {% if logged_user == notice.creator.id %}
         <a href="{% url 'notice:delete' notice.kinds notice.id %}">삭제</a>

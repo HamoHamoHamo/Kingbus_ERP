@@ -13,4 +13,5 @@ urlpatterns = [
     path('dispatch/', include('dispatch.urls')),
     path('HR/', include('humanresource.urls')),
     path('accounting/', include('accounting.urls')),
+    path('document/', include('document.urls')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

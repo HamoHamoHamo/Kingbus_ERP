@@ -4,7 +4,7 @@ from uuid import uuid4
 from datetime import datetime
 
 class Notice(models.Model): #장고에서 제공하는 models.Model를 상속받아야한다.
-    creator = models.ForeignKey(User, related_name="user", verbose_name='작성자', db_column="user_id", null=False, on_delete=models.CASCADE)
+    creator = models.ForeignKey(User, related_name="notice_user", verbose_name='작성자', db_column="user_id", null=False, on_delete=models.CASCADE)
     title = models.CharField(max_length=64, verbose_name='제목', null=False)
     content = models.TextField(max_length=3000, verbose_name='내용', null=False)
     kinds = models.CharField(max_length=10, verbose_name='종류', null=True)
@@ -24,7 +24,7 @@ class NoticeFile(models.Model):
         uuid_name = uuid4().hex
         return '/'.join(['notice/', ymd_path, uuid_name])
 
-    notice_id = models.ForeignKey(Notice, on_delete=models.CASCADE,related_name="file", db_column="notice_id", null=True)
+    notice_id = models.ForeignKey(Notice, on_delete=models.CASCADE,related_name="notice_file", db_column="notice_id", null=True)
     file = models.FileField(upload_to=get_file_path, blank=True, null=True)
     filename = models.CharField(max_length=1024, null=True, verbose_name='첨부파일명')
 

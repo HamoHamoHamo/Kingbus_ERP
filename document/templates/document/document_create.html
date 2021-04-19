@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+    <form method="POST" action="{% url 'document:document_create' %}" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ document_form }}    
+        <br>
+        <p>첨부파일</p>
+        <input type="file" name="file">
+        <input type="file" name="file">
+        <input type="file" name="file">
+        <br>
+        <input type="submit" value="등록">
+{% endblock %}

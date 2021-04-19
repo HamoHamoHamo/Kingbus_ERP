@@ -103,6 +103,7 @@ class NoticeEdit(generic.UpdateView):
 class NoticeDetail(generic.DetailView):
     template_name = 'notice/detail.html'
     context_object_name = 'notice'
+    model = Notice
     
     def post(self, request, *args, **kwargs):
         self.user_id = request.session.get('user')
@@ -178,7 +179,7 @@ def download(request, kinds, notice_id, file_id):
 def delete(request, kinds, notice_id):
     kinds_check(kinds)
     notice = Notice.objects.get(pk=notice_id)
-    notice_file = notice.file.all()
+    notice_file = notice.notice_file.all()
     if creator_check(request, notice_id, Notice):
         if notice_file:
             for file in notice_file:

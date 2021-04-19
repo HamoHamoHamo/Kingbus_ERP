@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <p>제목:{{ document.title }}</p>
+    <p>내용:{{ document.content }}</p>
+    <p>작성자:{{ document.creator }}</p>
+    <p>작성날짜:{{ document.pub_date | date:'Y.m.d H:s' }}</p>
+
+
+    <h2>파일</h2>
+    {% for this_file in document_files %}
+        <p>{{ this_file.filename }} <a href="{% url 'document:document_download' document.id this_file.id %}">다운로드</a></p>
+    {% endfor %}
+{% endblock %}
