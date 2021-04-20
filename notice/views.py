@@ -190,15 +190,15 @@ def delete(request, kinds, notice_id):
 def file_del(request, kinds, notice_id, file_id):
     kinds_check(kinds)
     notice = Notice.objects.get(pk=notice_id)
-    file = NoticeFile.objects.get(pk=file_id)
-    os.remove(file.file.path)
-    file.delete()
+    notice_file = NoticeFile.objects.get(pk=file_id)
+    os.remove(notice_file.file.path)
+    notice_file.delete()
     
     context = {
         'notice':notice,
         'notice_files':NoticeFile.objects.filter(notice_id=notice_id),
     }
-    return render(request, "notice/edit.html", context )
+    return redirect(reverse('notice:edit', args=(kinds, notice_id,)))
 
 def comment_del(request, kinds, notice_id, comment_id):
     kinds_check(kinds)

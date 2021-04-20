@@ -135,14 +135,14 @@ def document_delete(request, pk):
 
 def file_delete(request, pk, file_id):
     document = get_object_or_404(Document, pk=pk)
-    file = DocumentFile.objects.get(pk=file_id)
-    os.remove(file.file.path)
-    file.delete()
+    document_file = DocumentFile.objects.get(pk=file_id)
+    os.remove(document_file.file.path)
+    document_file.delete()
     
     context = {
         'document' : document,
         'document_form' : DocumentForm(instance=document),
         'document_files' : DocumentFile.objects.filter(document_id=document),
     }
-    return render(request, "document/edit.html", context )
+    return redirect(reverse('document:document_edit', args=(pk,)))
 
