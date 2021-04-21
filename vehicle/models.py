@@ -15,3 +15,40 @@ class Vehicle(models.Model):
     def __str__(self):
         return self.vehicle_num
 
+    class Meta: #메타 클래스를 이용하여 테이블명 지정
+        db_table = 'vehicle'
+
+class VehicleInsurance(models.Model):
+    vehicle_id = models.ForeignKey(Vehicle, on_delete=models.CASCADE, db_column="vehicle_id", null=False)
+    insurance_date = models.CharField(max_length=10, null=False, verbose_name='보험일자')
+    insurance_price = models.CharField(verbose_name='금액', max_length=20, null=False)
+    insurance_comp = models.CharField(verbose_name='보험회사', max_length=50, null=False)
+    expiration_date = models.CharField(max_length=10, null=False, verbose_name='만료일자')
+    
+    def __str__(self):
+        return self.vehicle_id
+    
+    class Meta:
+        db_table = 'vehicle_insurance'
+
+class VehicleCheck(models.Model):
+    vehicle_id = models.ForeignKey(Vehicle, on_delete=models.CASCADE, db_column="vehicle_id", null=False)
+    check_date = models.CharField(verbose_name='점검날짜', max_length=50, null=False)
+    check_detail = models.CharField(verbose_name='점검내용', max_length=500, null=False)
+    
+    def __str__(self):
+        return self.check_date
+    
+    class Meta:
+        db_table = 'vehicle_check'
+    
+class VehicleDocument(models.Model):
+    vehicle_id = models.ForeignKey(Vehicle, on_delete=models.CASCADE, db_column="vehicle_id", null=False)
+    vehicle_file = models.FileField(upload_to='vehicle/', blank=True, null=True)
+    check_id = models.ForeignKey(VehicleCheck, on_delete=models.CASCADE, db_column="check_id", null=True)
+    
+    def __str__(self):
+        return self.vehicle_id
+    
+    class Meta:
+        db_table = 'vehicle_document'

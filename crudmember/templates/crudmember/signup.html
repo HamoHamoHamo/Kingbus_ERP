@@ -1,34 +1,253 @@
 {% load static %}
-
-<h1>회원가입</h1>
-{{ error }}
-
-<form method="POST" action="{% url 'crudmember:signup' %}" enctype="multipart/form-data">
+<!DOCTYPE html>
+<html>
+ <head>
+   <meta charset="utf-8">
+   <meta name="viewport" content="width=device-width">
+   <title>repl.it</title>
+   <link href="style.css" rel="stylesheet" type="text/css" />
+   <style>
+       body{
+ background-color: #ececec59;
+ margin: 0;
+}
+.gridRow{
+ display: grid;
+ grid-template-rows: 1fr 9fr;
+ height: 1400px;
+}
+.grid{
+ display: grid;
+ grid-template-columns: 3fr 4fr 3fr;
+}
+.sideLogo{
+ color: white;
+ font-size:200px;
+ transform: rotate(90deg);
+ width:200px;
+ margin-top:430px;
+}
+.sideBG{
+}
+.flex{
+ display: flex;
+ margin-bottom: 20px;
+}
+.logo{
+color: #cf1b1b;
+font-size: 60px;
+text-align: center;
+margin-top: 10px;
+}
+a{
+ text-decoration: none;
+}
+.underLine{
+ border-bottom: 2px solid #b41515;
+ width: 300px;
+ margin-left: 231px;
+ height: 100px;
+ margin-top: 20px;
+ margin-bottom: 50px;
+}
+.box{
+ padding-left: 149px;
+}
+ 
+.name{
+ width: 140px;
+ height: 30px;
+ font-size: 16px;
+ margin-right:0.5px;
+ margin-left: 5px;
+ 
+}
+.putin{
+ width: 460px;
+ height: 46px;
+ z-index: 10;
+}
+.day0{
+ display: inline;
+ width: 140px;
+ margin-right:10px;
+ height: 46px;
+}
+.day1{
+ display: inline;
+ width: 144px;
+ margin-right:10px;
+ height: 52px;
+ background-color: white;
+}
+.day2{
+ display: inline;
+ width: 140px;
+ height: 46px;
+}
+.address{
+ display: block;
+ width: 460px;
+ height: 52px;
+ background-color: rgba(255, 255, 255, 0);
+ margin-top: -52px;
+ position: absolute;
+ z-index: 100;
+}
+ 
+.select{
+ width: 307px;
+ border: 1px solid grey;
+ background-color: white;
+}
+ 
+.file{
+ width: 207px;
+}
+ 
+.button{
+ width: 350px;
+ height: 70px;
+ border-radius: 25px;
+ border: 1px solid #b41515;
+ background-color: #b41515;
+ color: white;
+ font-size: 40px;
+ margin-left: 65px;
+ margin-top: 35px;
+ margin-bottom: 40px;
+ text-align: center;
+}
+.size{
+ height: 52px;
+}
+.choise{
+ width: 460px;
+ height: 46px;
+ background-color: white;
+}
+.nonmargin{
+ margin-top:0;
+}
+ 
+.flex{
+ margin-top:40px;
+ margin-bottom:0;
+}
+.explanation{
+ color: #cf1b1b;
+ width: 300px;
+ text-align: center;
+ font-size: 22px;
+ margin-top:20px;
+}
+.nav{
+ display: flex;
+ margin-left: -75px;
+ border: 1px solid #b41515;
+ width: 600px;
+ padding:10px;
+ background-color: #b41515;
+ border-radius: 50px 10px 50px 10px;
+ margin-top:15px;
+}
+#page{
+ font-size: 18px;
+ margin-left: 50px;
+ padding-top:2px;
+}
+#page0{
+ font-size: 18px;
+ margin-left: 50px;
+ height:27px;
+}
+.page1{
+color: grey;
+}
+.page2{
+ color: white;
+}
+.page3{
+ color: grey;
+}
+   </style>
+ </head>
+ <body>
+    {{ error }}
+   <div class="grid">
+   <div class="sideBG">
+   </div>
+   <div class="gridRow">
+   <div class="underLine"><a href="{% url 'crudmember:login' %}"><div class="logo">킹배차</div></a>
+   <div class="explanation">킹배차 회원가입 절차</div>
+   </div>
+   <div class="box">
+   <div class="nav">
+     <div id="page" class="page1">약관동의</div>
+     <div id="page0" class="page1">></div>
+     <div id="page" class="page2">회원정보입력</div>
+     <div id="page0" class="page2">></div>
+     <div id="page" class="page3">가입완료</div>
+   </div>
+   <form method="POST" action="{% url 'crudmember:signup' %}" enctype="multipart/form-data">
     {% csrf_token %}
-    <p>아이디:</p>
-    <br>
-    <input type="text" name="userid" required="required">
-    <br>
-    <p>비밀번호:</p>
-    <br>
-    <input type="password" name="password1" required="required">
-    <br>
-    <p>비밀번호 확인:</p>
-    <br>
-    <input type="password" name="password2" required="required">
-    <br>
-    <p>성명 :</p>
-    <input type="text" name="name" required="required">
-    <p>휴대폰 번호 :</p>
-    <input type="tel" name="tel" required="required">
-    <p>사진</p>
-    <input type="file" name="photo">
-    <p>서류 :</p>
-    <input type="file" name="file" id=user_file >
-    <input type="file" name="file" id=user_file >
-    <input type="file" name="file" id=user_file >
+   <div class="name"><h4>이름</h4></div><input type="text" name="name" class="putin"><br>
+   <div class="name"><h4>아이디</h4></div><input type="text" name="userid" class="putin"><br>
+   <div class="name"><h4>비밀번호</h4></div><input type="password" name="password1" class="putin"><br>
+   <div class="name"><h4>비밀번호확인</h4></div><input type="password" name="password2" class="putin"><br>
+  
+   <p>휴대폰 번호 :</p>
+   <input type="tel" name="tel" required="required">
 
-    <br>
-    <input type="submit" value="회원가입">
-</form>
-<script src='/static/js/upload_file.js'></script>
+   <div class="name"><h4>생년월일</h4></div>
+     <input type="text" class="day0">
+   <select class="day1">
+     <option value="0">월</option>
+     <option value="1">1</option>
+     <option value="2">2</option>
+     <option value="3">3</option>
+     <option value="4">4</option>
+     <option value="5">5</option>
+     <option value="6">6</option>
+     <option value="7">7</option>
+     <option value="8">8</option>
+     <option value="9">9</option>
+     <option value="10">10</option>
+     <option value="11">11</option>
+     <option value="12">12</option>
+   </select>
+   <input type="text" class="day2"><br>
+   <div class="name"><h4>성별</h4></div>
+   <select class="choise">
+     <option value="00">성별</option>
+     <option value="01">남성</option>
+     <option value="02">여성</option>
+     <option value="03">선택안함</option>
+   </select>
+   <div class="name"><h4>주소선택</h4></div>
+   <input type="text" class="putin" readonly><a href="#" class="address"></a><br>
+   <div class="name"><h4>담당부서</h4></div>
+   <select class="choise">
+     <option value="0">담당부서</option>
+     <option value="1">정규기사</option>
+     <option value="2">지입기사</option>
+     <option value="3">용역</option>
+     <option value="4">정비사</option>
+     <option value="5">사무직</option>
+   </select><br>
+   <div class="flex"><div class="name"><h4 class="nonmargin">사진</h4></div><input type="file" name="photo" class="file"></div><br>
+   <div class="flex"><div class="name"><h4 class="nonmargin">이력서첨부</h4></div><input type="file" name="file" id=user_file class="file"></div><br>
+   <div class="flex"><div class="name"><h4 class="nonmargin">검사지첨부</h4></div><input type="file" name="file" id=user_file class="file"></div><br>
+   <div class="flex"><div class="name"><h4 class="nonmargin">프로필첨부</h4></div><input type="file" name="file" id=user_file class="file"></div><br>
+   <input type="submit" value="회원가입" class="button">
+   
+   </form>
+   </div>
+  
+   </div><div class="sideBG"></div></div>
+
+   <script src='/static/js/upload_file.js'></script>
+
+   <script src="script.js"></script>
+ </body>
+</html>

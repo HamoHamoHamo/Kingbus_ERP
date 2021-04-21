@@ -1,15 +1,25 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block content %}
 
-  <li class="nav-item">
-    <span id="user_name">{{ name }}</span>님 반갑습니다!
-  </li>
+<div class="main_box">
+    <aside>
+    </aside>
 
-  <li class="nav-item">
-  <a class="nav-link" href="{% url 'crudmember:logout' %}">logout</a>
-  </li>
+    <section>
 
-{% endblock %}
+      <div class="mainpage_section_image_box">
+      <img src="{% static 'images/킹버스.png' %}" alt="킹킹이" class="mainpage_image1">
+      <div class="mainpage_section_contents_box">
+        <div class="mainpage_section_contents_text">
+          <div class="mainpage_section_contents_font1"> 이런 느낌으로</div><br>
+          <div class="mainpage_section_contents_font2">어떤 문구가 적당한 길이로 들어가면 좋을거 같은데...</div>
+        </div>
+      </div>
+      </div>
 
-
+    </section>
+  </div>
+  
+{% endblock content %}

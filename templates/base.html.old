@@ -1,0 +1,110 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <title>Kingbus ERP</title>
+    <link href="{% static 'css/basic_form.css' %}" rel="stylesheet" type="text/css" />
+    <link href="{% static 'css/main_page.css' %}" rel="stylesheet" type="text/css" />
+  </head>
+  <body>
+<div class="header_background">
+   <header>
+    <img src="{% static 'images/캐릭터.png' %}" alt="킹킹이" class="kingkingyi">
+    <div class="main_title"><a href="/" class="main_title_link">킹버스erp</a></div>
+    <!--<div class="login_check"><a href="/member/login" class="login_check_font_a"><div class="login_check_font">로그인</div></a></div>-->
+    <div class="login_check"><span id="user_name">{{ name }}</span>님 반갑습니다! <a class="nav-link" href="{% url 'crudmember:logout' %}">logout</a></div>
+
+
+    <div class="nav_form">
+
+      <div class="nav_box">
+        <div class="nav_menu">
+          <a href="/notice" class="nav_menu-link">공지사항</a>
+        </div>
+        <div class="sub_menu">
+          <a href="/notice/driver" class="sub_menu_link">기사님 공지사항</a>
+          <a href="/notice/office" class="sub_menu_link">사무실 공지사항</a>
+        </div>
+      </div>
+
+      <div class="nav_box">
+        <div class="nav_menu">
+          <a href="#" class="nav_menu-link">경리시스템</a>
+        </div>
+        <div class="sub_menu">
+          <a href="#" class="sub_menu_link">장부관리</a>
+          <a href="#" class="sub_menu_link">급여관리</a>
+        </div>
+      </div>
+
+      <div class="nav_box">
+        <div class="nav_menu">
+          <a href="#" class="nav_menu-link">배차시스템</a>
+        </div>
+        <div class="sub_menu">
+          <a href="#" class="sub_menu_link">배차지시서</a>
+          <a href="#" class="sub_menu_link">배차스케줄</a>
+          <a href="#" class="sub_menu_link">배차관리</a>
+        </div>
+      </div> 
+
+      <div class="nav_box">
+        <div class="nav_menu">
+          <a href="#" class="nav_menu-link">인사관리</a>
+        </div>
+        <div class="sub_menu">
+          <a href="#" class="sub_menu_link">인사등록</a>
+          <a href="#" class="sub_menu_link">회원관리</a>
+        </div>
+      </div>
+
+      <div class="nav_box">
+        <div class="nav_menu">
+          <a href="#" class="nav_menu-link">차량관리</a>
+        </div>
+        <div class="sub_menu">
+          <a href="#" class="sub_menu_link">차량정보</a>
+        </div>
+      </div>
+
+      <div class="nav_box">
+        <div class="nav_menu">
+          <a href="#" class="nav_menu-link">서류관리</a>
+        </div>
+        <div class="sub_menu">
+          <a href="#" class="sub_menu_link">서류목록</a>
+        </div>
+      </div>
+
+      <div class="nav_box">
+        <div class="nav_menu">
+          <a href="#" class="nav_menu-link">사고관리</a>
+        </div>
+        <div class="sub_menu">
+          <a href="#" class="sub_menu_link">사고처리</a>
+          <a href="#" class="sub_menu_link">보험처리</a>
+          <a href="#" class="sub_menu_link">법률지원</a>
+        </div>
+      </div>
+
+      <div class="nav_box">
+        <div class="nav_menu">
+          <a href="#" class="nav_menu-link">설정</a>
+        </div>
+        <div class="sub_menu">
+          <a href="#" class="sub_menu_link">개인정보변경</a>
+          <a href="#" class="sub_menu_link">비밀번호변경</a>
+        </div>
+      </div>
+
+    </div>
+  </header>
+</div>
+
+  {% block content %}
+  {% endblock %}
+
+  </body>
+</html>

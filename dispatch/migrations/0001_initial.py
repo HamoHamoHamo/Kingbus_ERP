@@ -9,7 +9,6 @@ class Migration(migrations.Migration):
     initial = True
 
     dependencies = [
-        ('crudmember', '0001_initial'),
         ('humanresource', '0001_initial'),
         ('vehicle', '0001_initial'),
     ]

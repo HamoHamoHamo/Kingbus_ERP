@@ -21,7 +21,6 @@ os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'ERP.settings')
 application = get_wsgi_application()
 
 
-
 '''
 import os
 import sys

@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+  <li class="nav-item">
+    <span id="user_name">{{ name }}</span>님 반갑습니다!
+  </li>
+
+  <li class="nav-item">
+  <a class="nav-link" href="{% url 'crudmember:logout' %}">logout</a>
+  </li>
+
+{% endblock %}
+
+

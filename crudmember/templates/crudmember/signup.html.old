@@ -1,0 +1,34 @@
+{% load static %}
+
+<h1>회원가입</h1>
+{{ error }}
+
+<form method="POST" action="{% url 'crudmember:signup' %}" enctype="multipart/form-data">
+    {% csrf_token %}
+    <p>아이디:</p>
+    <br>
+    <input type="text" name="userid" required="required">
+    <br>
+    <p>비밀번호:</p>
+    <br>
+    <input type="password" name="password1" required="required">
+    <br>
+    <p>비밀번호 확인:</p>
+    <br>
+    <input type="password" name="password2" required="required">
+    <br>
+    <p>성명 :</p>
+    <input type="text" name="name" required="required">
+    <p>휴대폰 번호 :</p>
+    <input type="tel" name="tel" required="required">
+    <p>사진</p>
+    <input type="file" name="photo">
+    <p>서류 :</p>
+    <input type="file" name="file" id=user_file >
+    <input type="file" name="file" id=user_file >
+    <input type="file" name="file" id=user_file >
+
+    <br>
+    <input type="submit" value="회원가입">
+</form>
+<script src='/static/js/upload_file.js'></script>

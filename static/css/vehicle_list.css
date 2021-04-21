@@ -1,0 +1,128 @@
+.page_name_vehicle_information{
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+  .vehicle_information_head_line{
+    width: 1290px;
+    height: 53px;
+    border-radius: 5px 5px 0 0;
+    background-color: #B41515;
+    color: white;
+    font-size: 33px;
+    padding-top: 7px;
+    padding-left: 10px;
+  }
+  .vehicle_information_select_line{
+    width: 1296px;
+    height: 81px;
+    border: 2px solid #B41515;
+    display: flex;
+  }
+  .vehicle_information_information_box{
+    border: 1px solid black;
+    width: 1298px;
+    height: 838px;
+    overflow-y: scroll; 
+  }
+  #vehicle_information_select{
+    width: 150px;
+    height: 30px;
+    border: 1px solid #B41515;
+    border-radius: 8px;
+    color: #B41515;
+    margin-top: 25px;
+    font-size: 20px;
+    text-align: center;
+    text-align-last: center;
+  }
+  .vehicle_information_car_number{
+    margin-left: 25px;
+    margin-right: 50px;
+  }
+  .vehicle_information_car_number_box_link{
+    color: black;
+    cursor: pointer;
+  }
+  .vehicle_information_driver_name{
+    margin-right: 50px;
+  }
+  .vehicle_information_belong{
+    width: 150px;
+    height: 30px;
+    border: 1px solid #B41515;
+    border-radius: 8px;
+    color: #B41515;
+    margin-top: 25px;
+    font-size: 20px;
+    text-align: center;
+    text-align-last: center;
+    margin-left: 38px;
+    margin-right: 88px;
+  }
+  .vehicle_information_using{
+    margin-right: 29px;
+  }
+  .vehicle_information_checking_box{
+    border: 1px solid #B41515;
+    border-radius: 8px;
+    width: 392px;
+    height: 40px;
+    margin-top: 20px;
+  }
+  
+  .vehicle_information_type{
+    width: 150px;
+    height: 30px;
+    border: 1px solid #B41515;
+    border-radius: 8px;
+    color: #B41515;
+    margin: 5px 50px 0 22px;
+    font-size: 20px;
+    text-align: center;
+    text-align-last: center;
+  }
+  .vehicle_information_check{
+    width: 150px;
+    height: 30px;
+    border: 1px solid #B41515;
+    border-radius: 8px;
+    color: #B41515;
+    margin-top: 5px;
+    font-size: 20px;
+    text-align: center;
+    text-align-last: center;
+  }
+  .vehicle_information_information_line{
+    display: flex;
+  }
+  #vehicle_information_information_box{
+    width: 198px;
+    height: 45px;
+    border: 1px solid grey;
+    text-align: center;
+    font-size: 24px;
+    padding-top: 13px;
+  }
+  .vehicle_information_belong_box{
+    width: 298px;
+    height: 45px;
+    border: 1px solid grey;
+    text-align: center;
+    font-size: 24px;
+    padding-top: 13px;
+  }
+  
+  .vehicle_information_create_button{
+    width: 215px;
+    height: 53px;
+    background-color: #B41515 ;
+    border-radius: 33px;
+    color: white;
+    font-size: 30px;
+    font-weight: bold;
+    padding-left: 85px;
+    padding-top: 12px;
+    margin-top: 30px;
+    margin-left: 500px;
+  }

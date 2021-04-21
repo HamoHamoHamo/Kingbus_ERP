@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <form method="POST" action="{% url 'vehicle:vehicle_create' %}">
+        {% csrf_token %}
+        {{ vehicle_form }}
+        {{ insurance_form }}
+    <input type="submit" value="등록">
+
+{% endblock %}

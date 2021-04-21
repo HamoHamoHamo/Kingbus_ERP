@@ -10,7 +10,6 @@ class Migration(migrations.Migration):
     initial = True
 
     dependencies = [
-        ('crudmember', '0001_initial'),
         ('humanresource', '0001_initial'),
         ('dispatch', '0001_initial'),
     ]
@@ -40,8 +39,8 @@ class Migration(migrations.Migration):
                 ('total', models.IntegerField(verbose_name='총금액')),
                 ('payment_month', models.CharField(default='2021-04', max_length=7, verbose_name='지급월')),
                 ('pub_date', models.DateTimeField(auto_now_add=True, verbose_name='작성시간')),
-                ('creator', models.ForeignKey(db_column='user_id', null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='salary_user', to='crudmember.user')),
-                ('member_id', models.ForeignKey(db_column='member_id', null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='salary_monthly', to='humanresource.member')),
+                ('creator', models.ForeignKey(db_column='user_id', null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='salary_user', to='crudmember.User')),
+                ('member_id', models.ForeignKey(db_column='member_id', null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='salary_monthly', to='humanresource.Member')),
             ],
         ),
         migrations.CreateModel(
@@ -53,8 +52,8 @@ class Migration(migrations.Migration):
                 ('price', models.IntegerField(verbose_name='지출금액')),
                 ('outlay_date', models.CharField(max_length=10, verbose_name='지출일자')),
                 ('pub_date', models.DateTimeField(auto_now_add=True, verbose_name='작성시간')),
-                ('creator', models.ForeignKey(db_column='user_id', null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='outlay_user', to='crudmember.user')),
-                ('salary_id', models.ForeignKey(blank=True, db_column='salary_id', null=True, on_delete=django.db.models.deletion.CASCADE, related_name='outlay_salary', to='accounting.monthlysalary')),
+                ('creator', models.ForeignKey(db_column='user_id', null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='outlay_user', to='crudmember.User')),
+                ('salary_id', models.ForeignKey(blank=True, db_column='salary_id', null=True, on_delete=django.db.models.deletion.CASCADE, related_name='outlay_salary', to='accounting.MonthlySalary')),
             ],
         ),
         migrations.CreateModel(

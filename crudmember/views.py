@@ -13,6 +13,8 @@ def home(request):
         return render(request, 'crudmember/home.html', context)
     return redirect('crudmember:login')
 
+def signup_terms(request):
+    return render(request, 'crudmember/signup_terms.html')
 
 def signup(request):
     if request.method == "GET":

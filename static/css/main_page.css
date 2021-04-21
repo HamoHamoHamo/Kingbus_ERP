@@ -1,0 +1,24 @@
+
+.mainpage_section_image_box{
+    margin-left: 100px;
+    margin-top:80px;
+    width: 1600px;
+    display: flex;
+  }
+  .mainpage_section_contents_box{
+    width: 1025px;
+    height: 252px;
+    margin-top :130px;
+  }
+  .mainpage_section_contents_text{
+    margin-top: 40px;
+  }
+  .mainpage_section_contents_font1{
+    font-size: 80px;
+  }
+  .mainpage_section_contents_font2{
+    font-size: 45px;
+  }
+  .mainpage_image1{
+    width: 575px;
+  }

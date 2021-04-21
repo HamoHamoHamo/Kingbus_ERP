@@ -1,0 +1,156 @@
+.vehicle_create_head_line{
+    display: flex;
+    width: 1066px;
+    height: 40px;
+    background-color: #C84343;
+    padding: 10px 0 0 40px;
+    margin-bottom: 15px;
+    }
+    .vehicle_create_head_line_title{
+    color: white;
+    font-size: 22px;
+    font-weight: bold;
+    }
+    .vehicle_create_head_line_save_button{
+    width:80px;
+    height: 30px;
+    margin-left: 870px;
+    background-color: white;
+    color: #B41515;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    box-shadow: 1px 1px grey;
+    }
+    
+    #vehicle_create_categorie_title{
+      width: 198px;
+      height: 48px;
+      background-color: #B41515;
+      font-size:  22px;
+      text-align: center;
+      color: white;
+    }
+    .vehicle_create_categorie_title{
+      border-bottom: 2px solid white;
+      font-size:  22px;
+      text-align: center;
+      color: white;
+    }
+    .vehicle_create_categorie_title_1st_line{
+      border: 1px solid #B41515;
+      border-bottom: 2px solid white;
+      font-size:  22px;
+      text-align: center;
+      color: white;
+    }
+    #vehicle_create_categorie_contents{
+      width: 348px;
+      height: 46px;
+      border-top: 1px solid #B41515;
+      border-bottom: 1px solid #B41515;
+      border-right: 1px solid #B41515;
+    }
+    .vehicle_create_categorie_contents_1st_line{
+      width: 348px;
+      height: 46px;
+      border-top: 2px solid #B41515;
+      border-bottom: 1px solid #B41515;
+      border-right: 1px solid #B41515;
+    }
+    .vehicle_create_categorie_contents_last_line{
+      width: 348px;
+      height: 46px;
+      border-top: 1px solid #B41515;
+      border-bottom: 2px solid #B41515;
+      border-right: 1px solid #B41515;
+    }
+    #vehicle_create_table{
+      border-spacing:0;
+    }
+    .vehicle_create_table1{
+      margin-bottom: 20px;
+    }
+    .vehicle_create_table2{
+      margin-bottom: 20px;
+    }
+    .vehicle_create_last_box_categorie_title{
+      width: 200px;
+      height: 47px;
+      border-top: 2px solid #B41515;
+      border-bottom: 1px solid white;
+      background-color: #B41515;
+      font-size:  22px;
+      text-align: center;
+      color: white;
+    }
+    .vehicle_create_last_box_categorie_contents{
+      width: 900px;
+      height: 47px;
+      border-top: 2px solid #B41515;
+      border-bottom: 2px solid #B41515;
+      border-right: 1px solid #B41515;
+    }
+    .vehicle_create_last_box_categorie_title2{
+      width: 200px;
+      height: 47px;
+      border-top: 1px solid white;
+      border-bottom: 1px solid white;
+      background-color: #B41515;
+      font-size:  22px;
+      text-align: center;
+      color: white;
+    }
+    .vehicle_create_last_box_categorie_contents2{
+      width: 900px;
+      height: 47px;
+      border-top: 1px solid white;
+      border-bottom: 2px solid #B41515;
+      border-right: 1px solid #B41515;
+    }
+    .vehicle_create_last_box_categorie_title3{
+      width: 200px;
+      height: 47px;
+      border-top: 1px solid white;
+      border-bottom: 1px solid #B41515;
+      background-color: #B41515;
+      font-size:  22px;
+      text-align: center;
+      color: white;
+    }
+    .vehicle_create_last_box_categorie_contents3{
+      width: 347px;
+      height: 47px;
+      border-top: 1px solid white;
+      border-bottom: 2px solid #B41515;
+      border-right: 1px solid #B41515;
+    }
+    .vehicle_create_file_button{
+      width: 80px;
+      margin-left: 250px;
+    }
+    .vehicle_create_last_box_categorie_title4{
+      width: 200px;
+      height: 47px;
+      border-right: 1px solid #B41515;
+      background-color: #B41515;
+      font-size:  22px;
+      text-align: center;
+      color: white;
+    }
+    #vehicle_create_last_box_categorie_contents_daytoday{
+      display: flex;
+    }
+    
+    .vehicle_create_go_information_page_button{
+      width: 200px;
+      height: 41px;
+      color: white;
+      text-align: center;
+      font-size: 26px;
+      border-radius: 30px;
+      background-color: #B41515;
+      margin-top: 30px;
+      padding-top: 4px;
+      margin-left: 900px;
+    }

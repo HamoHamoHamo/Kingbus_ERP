@@ -1,0 +1,30 @@
+3
+
+�~(`K�@s`ddlmZddlmZddlmZddlmZmZddl	m
+Z
+ddlmZGdd�de
+�Zd	S)
+�)�redirect)�settings)�
+connection)�Template�Context)�
+get_client_ip)�UserIPc@seZdZdd�Zdd�ZdS)�LoginCheckMiddlewarecCs||_dddddddg|_dS)Nz/noticez/accountingz	/dispatchz/hrz/vehiclez	/documentz	/accident)�get_response�	check_url)�selfr
+�r
+�./home/Kingbus/Kingbus_ERP/static/middleware.py�__init__	szLoginCheckMiddleware.__init__cCs�|j|�}t|�}|d}|rrytjj|d�Wqztk
+rn}z"td|�t|d�}|j�WYdd}~XqzXntd�d|jkr�x"|j	D]}|j
+j|�r�td�Sq�W|S)Nr)�ipu	
+ip저장u못찾았다�userzcrudmember:login)
+r
+rr�objects�get�	Exception�print�save�sessionr�	path_info�
+startswithr)r�request�responser�error�userip�ir
+r
+r�__call__s 
+
+
+
+zLoginCheckMiddleware.__call__N)�__name__�
+__module__�__qualname__rrr
+r
+r
+rr	sr	N)�django.shortcutsr�django.confr�	django.dbr�django.templaterrZ	ipware.iprZcrudmember.modelsr�objectr	r
+r
+r
+r�<module>s
