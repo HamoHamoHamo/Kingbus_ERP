@@ -51,61 +51,60 @@
 
       <div class="nav_box">
         <div class="nav_menu">
-          <a href="/notice" class="nav_menu-link">공지사항</a>
+          <span class="nav_menu-link">공지사항</span>
         </div>
         <div class="sub_menu">
-          <a href="/notice/driver" class="sub_menu_link">기사님 공지사항</a>
-          <a href="/notice/office" class="sub_menu_link">사무실 공지사항</a>
+          <a href="{% url 'notice:kinds' 'driver' %}" class="sub_menu_link">기사님 공지사항</a>
+          <a href="{% url 'notice:kinds' 'office' %}" class="sub_menu_link">사무실 공지사항</a>
         </div>
       </div>
 
       <div class="nav_box">
         <div class="nav_menu">
-          <a href="/accounting/outlay" class="nav_menu-link">경리시스템</a>
+          <span class="nav_menu-link">경리시스템</span>
         </div>
         <div class="sub_menu">
-          <a href="/accounting/income" class="sub_menu_link">수입관리</a>
-          <a href="#" class="sub_menu_link">지출관리</a>
+          <a href="{% url 'accounting:income_list' %}" class="sub_menu_link">수입관리</a>
+          <a href="{% url 'accounting:outlay_list' %}" class="sub_menu_link">지출관리</a>
         </div>
       </div>
 
       <div class="nav_box">
         <div class="nav_menu">
-          <a href="#" class="nav_menu-link">배차시스템</a>
+          <span class="nav_menu-link">배차시스템</span>
         </div>
         <div class="sub_menu">
-          <a href="#" class="sub_menu_link">배차지시서</a>
+          <a href="{% url 'dispatch:dispatch_list' %}" class="sub_menu_link">배차지시서</a>
           <a href="#" class="sub_menu_link">배차스케줄</a>
-          <a href="#" class="sub_menu_link">배차관리</a>
-          <a href="#" class="sub_menu_link">배차주문</a>
+          <a href="{% url 'dispatch:order' %}" class="sub_menu_link">배차주문</a>
         </div>
       </div>
 
       <div class="nav_box">
         <div class="nav_menu">
-          <a href="/HR/management" class="nav_menu-link">인사관리</a>
+          <span class="nav_menu-link">인사</span>
         </div>
         <div class="sub_menu">
-          <a href="/HR/management/create" class="sub_menu_link">인사등록</a>
-          <a href="/HR/member" class="sub_menu_link">회원관리</a>
+          <a href="{% url 'HR:management' %}" class="sub_menu_link">인사관리</a>
+          <a href="{% url 'HR:member' %}" class="sub_menu_link">회원관리</a>
         </div>
       </div>
 
       <div class="nav_box">
         <div class="nav_menu">
-          <a href="/vehicle" class="nav_menu-link">차량관리</a>
+          <span class="nav_menu-link">차량</span>
         </div>
         <div class="sub_menu">
-          <a href="/vehicle" class="sub_menu_link">차량정보</a>
+          <a href="{% url 'vehicle:vehicle_list' %}" class="sub_menu_link">차량관리</a>
         </div>
       </div>
 
       <div class="nav_box">
         <div class="nav_menu">
-          <a href="#" class="nav_menu-link">서류관리</a>
+          <span class="nav_menu-link">서류</span>
         </div>
         <div class="sub_menu">
-          <a href="#" class="sub_menu_link">서류목록</a>
+          <a href="{% url 'document:document_list' %}" class="sub_menu_link">서류관리</a>
         </div>
       </div>
 
