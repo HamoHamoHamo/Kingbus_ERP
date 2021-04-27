@@ -17,6 +17,7 @@ class OrderForm(forms.ModelForm):
             'pay_type',
             'departure_date',
             'arrival_date',
+            'routine',
             ]
 
         widgets = {
@@ -27,12 +28,8 @@ class OrderForm(forms.ModelForm):
 class RouteForm(forms.ModelForm):
     class Meta:
         model = DispatchRoute
-        fields = [
-            'departure',
-            'arrival',
-            'stopover',
-            'route_name',
-        ]
+        fields = '__all__'
+
 class ConnectForm(forms.ModelForm):
     class Meta:
         model = DispatchConnect

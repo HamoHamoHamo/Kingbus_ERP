@@ -54,19 +54,22 @@ class DocumentDetail(generic.DetailView):
 
 def download(request, pk, file_id):
     download_file = get_object_or_404(DocumentFile, pk=file_id)
-    url = download_file.file.url
-    root = str(BASE_DIR)+url
-    print("\n테스트\n", root)
+    if download_file.document_id == Document.objects.get(pk=pk):
+        url = download_file.file.url
+        root = str(BASE_DIR)+url
+        print("\n테스트\n", root)
 
-    if os.path.exists(root):
-        with open(root, 'rb') as fh:
-            quote_file_url = urllib.parse.quote(download_file.filename.encode('utf-8'))
-            response = HttpResponse(fh.read(), content_type=mimetypes.guess_type(url)[0])
-            response['Content-Disposition'] = 'attachment;filename*=UTF-8\'\'%s' % quote_file_url
-            return response
-        raise Http404
+        if os.path.exists(root):
+            with open(root, 'rb') as fh:
+                quote_file_url = urllib.parse.quote(download_file.filename.encode('utf-8'))
+                response = HttpResponse(fh.read(), content_type=mimetypes.guess_type(url)[0])
+                response['Content-Disposition'] = 'attachment;filename*=UTF-8\'\'%s' % quote_file_url
+                return response
+            raise Http404
+        else:
+            print("에러")
+            raise Http404
     else:
-        print("에러")
         raise Http404
 
 def document_create(request):
@@ -145,4 +148,4 @@ def file_delete(request, pk, file_id):
         'document_files' : DocumentFile.objects.filter(document_id=document),
     }
     return redirect(reverse('document:document_edit', args=(pk,)))
-
+    

@@ -161,19 +161,22 @@ class NoticeDetail(generic.DetailView):
 def download(request, kinds, notice_id, file_id):
     kinds_check(kinds)
     download_file = get_object_or_404(NoticeFile, pk=file_id)
-    url = download_file.file.url
-    root = str(BASE_DIR)+url
-    print("\n테스트\n", root)
+    if download_file.notice_id == Notice.objects.get(pk=notice_id):
+        url = download_file.file.url
+        root = str(BASE_DIR)+url
+        print("\n테스트\n", root)
 
-    if os.path.exists(root):
-        with open(root, 'rb') as fh:
-            quote_file_url = urllib.parse.quote(download_file.filename.encode('utf-8'))
-            response = HttpResponse(fh.read(), content_type=mimetypes.guess_type(url)[0])
-            response['Content-Disposition'] = 'attachment;filename*=UTF-8\'\'%s' % quote_file_url
-            return response
-        raise Http404
+        if os.path.exists(root):
+            with open(root, 'rb') as fh:
+                quote_file_url = urllib.parse.quote(download_file.filename.encode('utf-8'))
+                response = HttpResponse(fh.read(), content_type=mimetypes.guess_type(url)[0])
+                response['Content-Disposition'] = 'attachment;filename*=UTF-8\'\'%s' % quote_file_url
+                return response
+            raise Http404
+        else:
+            print("에러")
+            raise Http404
     else:
-        print("에러")
         raise Http404
 
 def delete(request, kinds, notice_id):

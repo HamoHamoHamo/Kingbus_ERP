@@ -11,135 +11,106 @@
     {% endblock %}
   </head>
   <body>
-<div class="header_background">
-  <header>
-    <img src="{% static 'images/캐릭터.png' %}" alt="킹킹이" class="kingkingyi">
-    <div class="main_title"><a href="/" class="main_title_link">킹버스erp</a></div>
-    <div class="basic_header_profile_form">
-      <input type="image" class="basic_header_profile_image">
-      <div class="login_check">
-        <span id="user_name">{{ name }}</span>님 반갑습니다!
+    <div class="header_background">
+      <div class="header_head">
+        <div class="header_character">
+          <img src="{% static 'images/캐릭터.png' %}" alt="킹킹이" class="kingkingyi">
+        </div>
+        <div class="main_title"><a href="/" class="main_title_link">킹버스 ERP</a></div>
+        <div class="basic_header_profile_form">
+          <span class="profile_form_word"><a class="profile_detail_link" href="profile">{{ name }}</a>님 반갑습니다!</span>
+        </div>
       </div>
-      <button class="basic_header_profile_button">
-        <img src="images/down_button.png" alt="button" class="basic_header_profile_button_image">
-      </button>
-    </div>
+      <div class="nav_form">
 
-    <div class="profile_underbox_form">
-      <div class="profile_underbox_form_display">
-
-        <div class="profile_underbox_left_box">
-          <div class="profile_detail_page">프로필 상세보기</div>
-          <div class="profile_underbox_left_box_under-box" >
-            <a href="setting_change_profile.html" class="profile_underbox_change_profile_link_color">
-              <div class="profile_underbox_change_profile"><ul><li>프로필 변경</li></ul></div>
-            </a>
-            <a href="setting_change_pw.html" class="profile_underbox_change_profile_link_color">
-              <div class="profile_underbox_change_password"><ul><li>비밀번호 변경</li></ul></div>
-            </a>
+        <div class="nav_box">
+          <div class="nav_menu">
+            <span class="nav_menu-link">공지사항</span>
+          </div>
+          <div class="sub_menu">
+            <a href="{% url 'notice:kinds' 'driver' %}" class="sub_menu_link">기사님 공지사항</a>
+            <a href="{% url 'notice:kinds' 'office' %}" class="sub_menu_link">사무실 공지사항</a>
           </div>
         </div>
 
-        <div class="profile_underbox_right_box">
-          <div class="profile_underbox_loguot_button"><a class="nav-link" href="{% url 'crudmember:logout' %}">로그아웃</a></div>
+        <div class="nav_box">
+          <div class="nav_menu">
+            <span class="nav_menu-link">경리시스템</span>
+          </div>
+          <div class="sub_menu">
+            <a href="{% url 'accounting:income_list' %}" class="sub_menu_link">수입관리</a>
+            <a href="{% url 'accounting:outlay_list' %}" class="sub_menu_link">지출관리</a>
+          </div>
         </div>
 
+        <div class="nav_box">
+          <div class="nav_menu">
+            <span class="nav_menu-link">배차시스템</span>
+          </div>
+          <div class="sub_menu">
+            <a href="{% url 'dispatch:dispatch_list' %}" class="sub_menu_link">배차지시서</a>
+            <a href="#" class="sub_menu_link">배차스케줄</a>
+            <a href="{% url 'dispatch:order' %}" class="sub_menu_link">배차주문</a>
+          </div>
+        </div>
+
+        <div class="nav_box">
+          <div class="nav_menu">
+            <span class="nav_menu-link">인사</span>
+          </div>
+          <div class="sub_menu">
+            <a href="{% url 'HR:management' %}" class="sub_menu_link">인사관리</a>
+            <a href="{% url 'HR:member' %}" class="sub_menu_link">회원관리</a>
+          </div>
+        </div>
+
+        <div class="nav_box">
+          <div class="nav_menu">
+            <span class="nav_menu-link">차량</span>
+          </div>
+          <div class="sub_menu">
+            <a href="{% url 'vehicle:vehicle_list' %}" class="sub_menu_link">차량관리</a>
+          </div>
+        </div>
+
+        <div class="nav_box">
+          <div class="nav_menu">
+            <span class="nav_menu-link">서류</span>
+          </div>
+          <div class="sub_menu">
+            <a href="{% url 'document:document_list' %}" class="sub_menu_link">서류관리</a>
+          </div>
+        </div>
+
+        <div class="nav_box">
+          <div class="nav_menu">
+            <a href="#" class="nav_menu-link">사고관리</a>
+          </div>
+          <div class="sub_menu">
+            <a href="#" class="sub_menu_link">사고처리</a>
+            <a href="#" class="sub_menu_link">보험처리</a>
+            <a href="#" class="sub_menu_link">법률지원</a>
+          </div>
+        </div>
+
+        <div class="nav_box">
+          <div class="nav_menu">
+            <a href="#" class="nav_menu-link">기타</a>
+          </div>
+          <div class="sub_menu">
+            <a href="#" class="sub_menu_link">단문전송</a>
+            <a href="#" class="sub_menu_link">홈페이지</a>
+          </div>
+        </div>
       </div>
     </div>
-
-    <div class="nav_form">
-
-      <div class="nav_box">
-        <div class="nav_menu">
-          <span class="nav_menu-link">공지사항</span>
-        </div>
-        <div class="sub_menu">
-          <a href="{% url 'notice:kinds' 'driver' %}" class="sub_menu_link">기사님 공지사항</a>
-          <a href="{% url 'notice:kinds' 'office' %}" class="sub_menu_link">사무실 공지사항</a>
-        </div>
-      </div>
-
-      <div class="nav_box">
-        <div class="nav_menu">
-          <span class="nav_menu-link">경리시스템</span>
-        </div>
-        <div class="sub_menu">
-          <a href="{% url 'accounting:income_list' %}" class="sub_menu_link">수입관리</a>
-          <a href="{% url 'accounting:outlay_list' %}" class="sub_menu_link">지출관리</a>
-        </div>
-      </div>
-
-      <div class="nav_box">
-        <div class="nav_menu">
-          <span class="nav_menu-link">배차시스템</span>
-        </div>
-        <div class="sub_menu">
-          <a href="{% url 'dispatch:dispatch_list' %}" class="sub_menu_link">배차지시서</a>
-          <a href="#" class="sub_menu_link">배차스케줄</a>
-          <a href="{% url 'dispatch:order' %}" class="sub_menu_link">배차주문</a>
-        </div>
-      </div>
-
-      <div class="nav_box">
-        <div class="nav_menu">
-          <span class="nav_menu-link">인사</span>
-        </div>
-        <div class="sub_menu">
-          <a href="{% url 'HR:management' %}" class="sub_menu_link">인사관리</a>
-          <a href="{% url 'HR:member' %}" class="sub_menu_link">회원관리</a>
-        </div>
-      </div>
-
-      <div class="nav_box">
-        <div class="nav_menu">
-          <span class="nav_menu-link">차량</span>
-        </div>
-        <div class="sub_menu">
-          <a href="{% url 'vehicle:vehicle_list' %}" class="sub_menu_link">차량관리</a>
-        </div>
-      </div>
-
-      <div class="nav_box">
-        <div class="nav_menu">
-          <span class="nav_menu-link">서류</span>
-        </div>
-        <div class="sub_menu">
-          <a href="{% url 'document:document_list' %}" class="sub_menu_link">서류관리</a>
-        </div>
-      </div>
-
-      <div class="nav_box">
-        <div class="nav_menu">
-          <a href="#" class="nav_menu-link">사고관리</a>
-        </div>
-        <div class="sub_menu">
-          <a href="#" class="sub_menu_link">사고처리</a>
-          <a href="#" class="sub_menu_link">보험처리</a>
-          <a href="#" class="sub_menu_link">법률지원</a>
-        </div>
-      </div>
-
-      <div class="nav_box">
-        <div class="nav_menu">
-          <a href="#" class="nav_menu-link">기타</a>
-        </div>
-        <div class="sub_menu">
-          <a href="#" class="sub_menu_link">단문전송</a>
-          <a href="#" class="sub_menu_link">홈페이지</a>
-        </div>
-      </div>
-
-    </div>
-  </header>
-</div>
-
-{% block content %}
-{% endblock %}
+    {% block content %}
+    {% endblock %}
 
     <script
-  src="https://code.jquery.com/jquery-3.2.1.js"
-  integrity="sha256-DZAnKJ/6XZ9si04Hgrsxu/8s717jcIzLy3oi35EouyE="
-  crossorigin="anonymous"></script>
-    <script src="{% static 'js/main_header_login_downbutton.js'%}"></script>
+    src="https://code.jquery.com/jquery-3.2.1.js"
+    integrity="sha256-DZAnKJ/6XZ9si04Hgrsxu/8s717jcIzLy3oi35EouyE="
+    crossorigin="anonymous"></script>
+      <script src="{% static 'js/main_header_login_downbutton.js'%}"></script>
   </body>
 </html>

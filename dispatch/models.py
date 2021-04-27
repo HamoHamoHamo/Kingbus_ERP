@@ -6,6 +6,7 @@ from vehicle.models import Vehicle
 class DispatchConsumer(models.Model):
     name = models.CharField(verbose_name='주문자 이름', max_length=10, null=False)
     tel = models.CharField(verbose_name='전화번호', max_length=15, null=False)
+    company = models.CharField(verbose_name='거래처', max_length=20, null=True, blank=True)
 
     def __str__(self):
         return self.name
@@ -35,6 +36,7 @@ class DispatchOrder(models.Model): #장고에서 제공하는 models.Model를 �
     departure_date = models.CharField(verbose_name='출발시간', max_length=16, null=False)
     arrival_date = models.CharField(verbose_name='도착시간', max_length=16, null=False)
     check = models.BooleanField(verbose_name="배차완료", null=False, default=False)
+    routine = models.BooleanField(verbose_name="정기배차", null=False, default=False)
     
     def __str__(self):
         return self.departure_date
@@ -44,4 +46,3 @@ class DispatchConnect(models.Model):
     order_id = models.ForeignKey(DispatchOrder, on_delete=models.CASCADE, related_name="info_order", db_column="order_id", null=False)
     bus_id = models.ForeignKey(Vehicle, on_delete=models.SET_NULL, related_name="info_bus_id", db_column="bus_id", null=True)
     driver_id = models.ForeignKey(Member, on_delete=models.SET_NULL, related_name="info_driver_id", db_column="driver_id", null=True)
-    
