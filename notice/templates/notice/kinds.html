@@ -2,77 +2,91 @@
 {% load static %}
 
 {% block head %}
-<link rel="stylesheet" href="{% static 'css/kinds.css' %}" type="text/css" />
+<link rel="stylesheet" href="{% static 'css/notice_kinds.css' %}" type="text/css" />
 {% endblock %}
 
 
 {% block content %}
+<div class="main_box">
+    <aside>
+        <div class="aside_box">
+            <div class="aside_title">
+                <div class="aside_title_font">공지사항</div>
+            </div>
+            <div id="aside_contents"><a href="notice_driver.html" class="aside_contents_link">-기사님 공지사항</a></div>
+            <div id="aside_contents" class="aside_contents_thispage"><a href="notice_office.html"
+                    class="aside_contents_link">-사무실 공지사항</a></div>
+    </aside>
 
-<div class="flex">
-    <aside class="aside">
-        <div class="asideBorder">
-            <div class="asideTitle">공지사항</div>
+    <section class="section">
+        <div class="notice_section_box">
+            <div class="top_box">
+                <div class="top_box_title">사무실 공지사항</div>
+                <div class="top_box_selectANDsearch">
+                    <div class="top_box_select_box">
+                        <select class="top_box_select">
+                            <option>제목</option>
+                            <option>작성자</option>
+                        </select>
+                    </div>
+                    <input type="text" class="top_box_input_text">
+                    <input type="button" class="top_box_button">
+                </div>
+            </div>
 
-            <div>
-                {% with kinds_office="office" %}
-                <li class="asideLi"><a href="{% url 'notice:kinds' kinds_office %}" class="notice">사무실공지사항</a></li>
-                {% endwith %}
-                {% with kinds_driver="driver" %}
-                <li class="asideLi"><a href="{% url 'notice:kinds' kinds_driver %}" class="notice">기사님공지사항</a></li>
-                {% endwith %}
+            <div class="mid_box">
+                <div class="table_header">
+                    <div class="mid_box_table_header_number">번호</div>
+                    <div class="mid_box_table_header_title">제목</div>
+                    <div class="mid_box_table_header_creater">작성자</div>
+                    <div class="mid_box_table_header_day">등록일</div>
+                    <div class="mid_box_table_header_viewer">조회</div>
+                </div>
+                <div class="table_contents">
+                    <div class="mid_box_table_contents_number">1</div>
+                    <a href="notice_detail_office.html" class="mid_box_table_contents_title_link">
+                        <div class="mid_box_table_contents_title">첫번째 공지사항(The First Notice)</div>
+                    </a>
+                    <div class="mid_box_table_contents_creater">이도울</div>
+                    <div class="mid_box_table_contents_day">2021-02-17</div>
+                    <div class="mid_box_table_contents_viewer">0</div>
+                </div>
+                <div class="table_contents">
+                </div>
+                <div class="table_contents">
+                </div>
+                <div class="table_contents">
+                </div>
+                <div class="table_contents">
+                </div>
+                <div class="table_contents">
+                </div>
+                <div class="table_contents">
+                </div>
+                <div class="table_contents">
+                </div>
+                <div class="table_contents">
+                </div>
+                <div class="table_contents">
+                </div>
+            </div>
+
+            <div class="bottom_box">
+                <div class="bottom_box_pageform">
+                    <input type="button" class="bottom_box_left_button_double">
+                    <input type="button" class="bottom_box_left_button_one">
+                    <div class="bottom_box_page_left">1</div>
+                    <div class="bottom_box_page">2</div>
+                    <div class="bottom_box_page">3</div>
+                    <div class="bottom_box_page">4</div>
+                    <div class="bottom_box_page_right">5</div>
+                    <input type="button" class="bottom_box_right_button_one">
+                    <input type="button" class="bottom_box_right_button_double">
+                </div>
+                <a href="notice_create_office.html" class="bottom_box_create_button"></a>
             </div>
         </div>
-    </aside>
-    <section class="section">
-        <h2>{{ kinds }} 공지사항</h2>
-        <div class="dataTbl1">
-            <table summary="공지사항 목록">
-                <caption>공지사항</caption>
-                <colgroup>
-                    <col width="8%" />
-                    <col width="*" />
-                    <col width="5%" />
-                    <col width="5%" />
-                    <col width="5%" />
-                    <col width="5%" />
-                </colgroup>
-                <thead>
-                    <th scope="번호" class="th-num">번호</th>
-                    <th scope="제목" class="th-title">제목</th>
-                    <th scope="작성자" class="th-writer">작성자</th>
-                    <th scope="등록일" class="th-date">등록일</th>
-                    <th scope="조회" class="th-visitor">조회</th>
-                </thead>
-
-
-                <tbody>
-                    {% for notice in notices %}
-                    <tr>
-                        <td class="num">{{ forloop.counter }}</td>
-                        <td class="notice-title"><a href="{% url 'notice:detail'  kinds notice.pk %}">{{ notice.title }}</a></td>
-                        <td class="notice-writer"> {{ notice.creator }}</td>
-                        <td class="date"> {{ notice.pub_date | date:'Y.m.d' }}</td>
-                        <td class="visitor-num"> </td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-                <tfoot>
-                </tfoot>
-            </table>
-            <form>
-                <select class="select">
-                    <option value="none" selected="selected">선택</option>
-                    <option value="제목">제목</option>
-                    <option value="작성자">작성자</option>
-                </select>
-                <input type="text" style="width:350px;">
-                <div class="button-box">
-                    <button>검색</button>
-                </div>
-                <div class="wirte">
-                    <button><a href="{% url 'notice:create' %}">글쓰기</a></button>
-            </form>
-        </div>
+    </section>
 </div>
 
 

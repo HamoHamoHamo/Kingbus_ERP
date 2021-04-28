@@ -29,12 +29,12 @@ a{
 }
 
 .header_character{
-  margin-left: 8rem;
+  margin-left: 16rem;
 }
 
 .kingkingyi{
-  width: 11.5rem;
-  height: 11.5rem;
+  width: 10rem;
+  height: 10rem;
 }
 .main_title{
   display:flex;
@@ -42,6 +42,7 @@ a{
   color: white;
   margin-left: 3rem;
   width: 40rem;
+  font-weight: bold;
 }
 .main_title_link{
   font-size: 5rem;
@@ -51,7 +52,7 @@ a{
   align-items: center;
   position: absolute;
   right: 0;
-  margin-right: 9rem;
+  margin-right: 17rem;
 }
 .profile_detail_link{
   font-size: 3rem;
@@ -66,26 +67,22 @@ a{
   justify-content: center;
   margin-top: 2rem;
 }
-.nav_box{
-  display: inline-block;
-  position: relative;
-  padding: none;
-}
+
 .nav_menu{
-  width: 17rem;
-  height: 3.2rem;
-  padding-top: 0.8rem;
+  width: 15rem;
   background-color: white;
   color: #b41515;
-  font-size: 2rem;
+  font-size: 2.3rem;
   text-align: center;
   border-right: 0.1rem solid#b41515;
+  padding: 0.5rem 0 0.5rem 0;
 }
+
 .nav_menu-link{
   color:#b41515;
 }
 .sub_menu{
-  width: 17rem;
+  width: 15rem;
   position: absolute;
   display: none;
   background-color: #f1f1f1;
@@ -113,7 +110,7 @@ display: block;
 
 .aside_box{
   margin-top: 15rem;
-  margin-left: 6.4rem;
+  margin-left: 2rem;
   width: 18.5rem;
   height: 62rem;
   border: 0.5rem solid#2d2d2d;
@@ -121,12 +118,12 @@ display: block;
 }
 .aside_title{
   width: 18.5rem;
-  height: 3.5rem;
+  height: 2rem;
   margin-left: -0.5rem;
   margin-top: -0.5rem;
-  padding-top: 1.5rem;
-  padding-bottom: 0.5rem;
-  font-size: 3rem;
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+  font-size: 2rem;
   border: 0.5rem solid #2d2d2d;
   border-radius: 5rem 1rem 0rem 0rem;
   background-color:#2d2d2d;
@@ -138,13 +135,9 @@ display: block;
 #aside_contents{
   text-align: right;
   margin: 1.5rem 1.5rem 0rem 0rem;
-  font-size: 1.6rem;
+  font-size: 1.7rem;
 }
 .aside_contents_link{
   color: black;
-}
 
-.section{
-  margin-top: 15rem;
-  margin-left: 12rem;
 }
