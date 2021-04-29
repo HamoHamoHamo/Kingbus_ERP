@@ -13,42 +13,44 @@ body{
 .top_box{
   display: flex;
   height: 6rem;
+  align-items: center;
 }
+
 .top_box_title{
-  font-size: 2rem;
-  margin-top: 2.6rem;
+  font-size: 2.5rem;
   font-weight: bold;
-  width: 30rem;
-  margin-right: 10rem;
+  margin-right: 34rem;
 }
+
 .top_box_selectANDsearch{
   display: flex;
 }
+.top_box_selectANDsearch{
+  align-items: center;
+}
 
 .top_box_select_box{
-  margin-right: 3rem;
+  margin-right: 2rem;
 }
 .top_box_select{
   width: 8rem;
-  height: 3.5rem;
+  height: 4rem;
   border: 0.1rem solid #B41515;
   border-radius: 0.5rem;
-
-  color: #B41515;
+  padding: 0.5rem;
   font-size: 1.7rem;
 }
 .top_box_input_text{
-  width: 45rem;
-  height: 3.5rem;
+  width: 30rem;
+  height: 3.8rem;
   border: 0.1rem solid #B41515;
+  border-radius: 0.5rem;
+  font-display: #B41515;
 }
-.top_box_button{
-  background: url("/images/button_img.png") no-repeat;
-  width: 4rem;
-  height: 3.5rem;
-  border: none;
-  margin-left: 2rem;
-  cursor: pointer;
+
+.top_box_search_button{
+  position: absolute;
+  font-size: 2rem;
 }
 
 .table_header{
