@@ -17,21 +17,46 @@ class NoticeKindsView(generic.ListView):
 
     #paginate_by = 2
     #한 페이지에 보여주는 객체 리스트의 갯수 지정
-'''
-def home(request):
-    return render(request, 'notice/home.html')
 
-def kinds(request, kinds):
-    kinds_check(kinds)
-    context = {
-        'notices': Notice.objects.all().filter(kinds=kinds).order_by('-pub_date')[:10],
-        'kinds':kinds,
-    }
-    return render(request, 'notice/kinds.html', context)
+'''
+
+class NoticeKindsView(generic.ListView):
+    template_name = 'notice/kinds.html'
+    context_object_name = 'notices'
+    paginate_by = 10
+    model = Notice
+
+    def get_queryset(self):
+        kinds_check(self.kwargs['kinds'])
+        notices = Notice.objects.all().filter(kinds=self.kwargs['kinds']).order_by('-pub_date')
+        return notices
+
+    # 페이징 처리
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        paginator = context['paginator']
+        page_numbers_range = 5
+        max_index = len(paginator.page_range)
+        page = self.request.GET.get('page')
+        current_page = int(page) if page else 1
+
+        start_index = int((current_page - 1) / page_numbers_range) * page_numbers_range
+        end_index = start_index + page_numbers_range
+        if end_index >= max_index:
+            end_index = max_index
+        page_range = paginator.page_range[start_index:end_index]
+        context['page_range'] = page_range
+        context['current_page'] = current_page
+        context['kinds'] = self.kwargs['kinds']
+        context['name'] = get_object_or_404(User, pk=self.request.session.get('user')).name
+        return context
 
 def create(request):
+    context={
+        'name': get_object_or_404(User, pk=request.session.get('user')).name,
+        }
     if request.method == "GET":
-        return render(request, 'notice/create.html')
+        return render(request, 'notice/create.html', context)
 
     elif request.method == 'POST':
         title = request.POST.get('title', None)
@@ -46,13 +71,14 @@ def create(request):
             creator = user,
             title = title,
             content = content,
-            kinds = kinds
+            kinds = kinds,
+            num = Notice.objects.filter(kinds=kinds).count() + 1
             )
         notice.save()
         notice_file_save(files, notice)
         #auth.login(request, user)
         return redirect(reverse('notice:detail', args=(kinds,notice.id)))
-    return render(request, 'notice/create.html')
+    return render(request, 'notice/create.html', context)
 
 def notice_file_save(upload_file, notice):
     for file in upload_file:
@@ -154,8 +180,11 @@ class NoticeDetail(generic.DetailView):
                 notice_id=self.notice
                 )
             view_cnt.save()
-        
+
         cnt = NoticeViewCnt.objects.filter(notice_id=self.notice_id).count()
+        notice = Notice.objects.get(pk=self.notice_id)
+        notice.view_cnt = cnt
+        notice.save()
         return cnt
 
 def download(request, kinds, notice_id, file_id):
@@ -188,6 +217,11 @@ def delete(request, kinds, notice_id):
             for file in notice_file:
                 os.remove(file.file.path)
         notice.delete()
+
+        edit_num = Notice.objects.filter(id__gt = notice_id)
+        for sort_num in edit_num:
+            sort_num.num = sort_num.num-1
+            sort_num.save()
     return redirect('/notice/{0}/'.format(kinds))
 
 def file_del(request, kinds, notice_id, file_id):

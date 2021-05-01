@@ -1,6 +1,7 @@
-body{
-  height: 180rem;
+a{
+  color: black;
 }
+
 .notice_section_box{
   width: 100rem;
 }
@@ -13,179 +14,131 @@ body{
 .top_box{
   display: flex;
   height: 6rem;
-  align-items: center;
+  width: 110rem;
+  align-items: flex-end;
+  margin-bottom: 2rem;
 }
 
 .top_box_title{
   font-size: 2.5rem;
   font-weight: bold;
-  margin-right: 34rem;
+  margin-right: 40rem;
 }
 
 .top_box_selectANDsearch{
   display: flex;
-}
-.top_box_selectANDsearch{
   align-items: center;
+  position: relative;
+  right: -13rem;
 }
 
 .top_box_select_box{
-  margin-right: 2rem;
+  margin-right: 1.5rem;
 }
 .top_box_select{
   width: 8rem;
-  height: 4rem;
+  height: 3rem;
   border: 0.1rem solid #B41515;
   border-radius: 0.5rem;
   padding: 0.5rem;
   font-size: 1.7rem;
 }
 .top_box_input_text{
-  width: 30rem;
-  height: 3.8rem;
+  padding: 0.2rem 1rem 0.2rem 1rem;
+  width: 25rem;
+  height: 2.6rem;
   border: 0.1rem solid #B41515;
   border-radius: 0.5rem;
   font-display: #B41515;
 }
 
 .top_box_search_button{
+  background: url("/static/images/search_button.png") no-repeat;
   position: absolute;
-  font-size: 2rem;
+  right: 0.1rem;
+  top: 0.4rem;
+  width: 3rem;
+  height: 3rem;
+  border: none;
+}
+
+.top_box_search_button:focus{
+  outline: none;
+}
+
+.top_box_search_button:hover{
+  cursor: pointer;
+}
+
+.mid_box{
+  margin-top: 1rem;
+  width: 110rem;
 }
 
 .table_header{
   display: flex;
-  border-top: 0.2rem solid #B41515;
-  border-bottom: 0.2rem solid #B41515;
-  
+  border-top: 0.3rem solid #B41515;
+  border-bottom: 0.3rem solid #B41515;
   height: 3rem;
-  font-size: 2.2rem;
-  padding-top: 0.9rem;
-  padding-bottom: 0.9rem;
+  font-size: 2rem;
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+  align-items: center;
+  font-weight: bold;
+  text-align: center;
 }
 .mid_box_table_header_number{
   width: 10rem;
-  text-align: center;
+
 }
 .mid_box_table_header_title{
-  width: 75rem;
-  text-align: center;
-  cursor: pointer;
+  width: 55rem;
+
 }
-.mid_box_table_header_creater{
+.mid_box_table_header_creator{
   width: 15rem;
-  text-align: center;
+
 }
 .mid_box_table_header_day{
   width: 20rem;
-  text-align: center;
 }
 .mid_box_table_header_viewer{
   width: 10rem;
-  text-align: center;
+
 }
 
 .table_contents{
   display: flex;
-  border-bottom: 0.2rem solid grey;
-  
-  height: 3rem;
-  font-size: 2.2rem;
-  padding-top: 0.9rem;
-  padding-bottom: 0.9rem;
+  border-bottom: 0.1rem solid grey;
+  align-items: center;
+  text-align: center;
+  height: 2.5rem;
+  font-size: 1.6rem;
+  padding-top: 1.2rem;
+  padding-bottom: 1.2rem;
 }
 .mid_box_table_contents_number{
   width: 10rem;
-  text-align: center;
 }
-.mid_box_table_contents_title_link{
-  color: black;
-}
+
 .mid_box_table_contents_title{
-  width: 75rem;
-  text-align: center;
+  width: 55rem;
 }
-.mid_box_table_contents_creater{
+.mid_box_table_contents_creator{
   width: 15rem;
-  text-align: center;
+  
 }
 .mid_box_table_contents_day{
   width: 20rem;
-  text-align: center;
 }
 .mid_box_table_contents_viewer{
   width: 10rem;
-  text-align: center;
 }
 
 .bottom_box{
-  display: flex;
-  margin-top: 5rem;
-}
-.bottom_box_pageform{
-  display: flex;
-  height: 2.3rem;
-}
-.bottom_box_left_button_double{
-  background: url("/images/left_button_double.png") no-repeat;
-  width: 1.5rem;
-  height: 1.5rem;
-  border: none;
-  margin-top:.5rem;
-  margin-right: 1rem;
-  margin-left: 50rem;
-  cursor: pointer;
-}
-.bottom_box_left_button_one{
-  background: url("/images/left_button_one.png") no-repeat;
-  width: 1.5rem;
-  height: 1.5rem;
-  border: none;
-  margin-top: 0.5rem;
-  cursor: pointer;
-}
-.bottom_box_page_left{
-  border-right: 0.2rem solid #B41515;
-  font-size: 1.7rem;
-  margin-right: 1.4rem;
-  padding-right: 1.4rem;
-  margin-left: 2rem;
-}
-.bottom_box_page{
-  border-right: 0.2rem solid #B41515;
-  font-size: 1.7rem;
-  margin-right: 1.4rem;
-  padding-right: 1.4rem;
-}
-.bottom_box_page_right{
-  font-size: 1.7rem;
-  margin-right: 2rem;
-}
-.bottom_box_right_button_one{
-  background: url("/images/right_button_one.png") no-repeat;
-  width: 1.5rem;
-  height: 1.5rem;
-  border: none;
-  margin-top:.5rem;
-  cursor: pointer;
-}
-.bottom_box_right_button_double{
-  background: url("/images/right_button_double.png") no-repeat;
-  width: 1.5rem;
-  height: 1.5rem;
-  border: none;
-  margin-top:.5rem;
-  margin-left: 1rem;
-  margin-right: 46rem;
-  cursor: pointer;
-}
-.bottom_box_create_button{
-  background: url("/images/create_button.png") no-repeat;
-  width: 10rem;
-  height: 4rem;
-  border: none;
-  cursor: pointer;
-  margin-top: -0.85rem;
+
+  margin-top: 3rem;
+  margin-bottom: 3rem;
 }
 
 .aside_contents_thispage{
