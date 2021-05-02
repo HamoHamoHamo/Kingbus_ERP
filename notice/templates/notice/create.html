@@ -6,71 +6,79 @@
 {% endblock %}
 
 {% block content %}
-    <div class="main_box">
-        <aside>
+<div class="main_box">
+    <aside>
         <div class="aside_box">
-        <div class="aside_title">
-            <div class="aside_title_font">공지사항</div>
+            <div class="aside_title">
+                <div class="aside_title_font">공지사항</div>
+            </div>
+            <div class="aside_contents"><a href="notice_driver.html" class="aside_contents_link">기사님 공지사항</a></div>
+            <div class="aside_contents"><a href="notice_driver.html" class="aside_contents_link">사무실 공지사항</a></div>
+            <div class="aside_contents aside_contents_thispage"><a href="notice_driver.html"
+                    class="aside_contents_link">공지사항 작성</a></div>
         </div>
-        <div class="aside_contents"><a href="notice_driver.html" class="aside_contents_link">기사님 공지사항</a></div>
-        <div class="aside_contents"><a href="notice_driver.html" class="aside_contents_link">사무실 공지사항</a></div>
-        <div class="aside_contents aside_contents_thispage"><a href="notice_driver.html" class="aside_contents_link">공지사항 작성</a></div>
-        </div>
-        </aside>
+    </aside>
 
-        <section class="main_section">
+    <section class="main_section">
         <div class="notice_section_box">
             <div class="top_box">
-            <div class="top_box_title">공지사항 작성</div>
-        </div>
+                <div class="top_box_title">공지사항 작성</div>
+            </div>
 
-        <div class="mid_box">
-            <div class="mid_box_first_line">
-            <div class="mid_box_front_box">제목</div>
-            <div class="mid_box_input_title">
-                <input type="text" class="mid_box_input_title_box" placeholder="여기에 제목을 입력하세요.">
-            </div>
-            </div>
-            <div class="mid_box_second_line">
-            <div class="mid_box_front_box">작성자</div>
-            <div class="mid_box_second_line_input"><input type="text" class="mid_box_input_creater_box" placeholder="이름을 입력하세요."></div>
-            <div class="mid_box_front_box">첨부파일</div>
-            <div class="mid_box_second_line_input">
-                <div class="mid_box_second_line_input_filebox">
-                <label for="mid_box_second_line_input_file_lable">파일선택</label>
-                <input type="file" id="mid_box_second_line_input_file_lable">
+            <div class="mid_box">
+                <div class="mid_box_create-first_line">
+                    <div class="mid_box_create-title">제목</div>
+                    <input type="text" class="mid_box_input_title_box" placeholder="제목을 입력하세요">
+                    <select name="kinds" class="mid_box_input_select" required>
+                            <option value="" class="mid_box_select_option">종류</option>
+                            <option value="driver" class="mid_box_select_option">기사님</option>
+                            <option value="office" class="mid_box_select_option">사무실</option>
+                    </select>
+                </div>
+                <div class="mid_box_second_line">
+                    <div class="mid_box_create-title">첨부파일</div>
+                    <div class="mid_box_second_line_input">
+                        <div class="mid_box_input_filebox">
+                            <input class="mid_box_upload-name" value="파일을 선택하세요" disabled="disabled">
+                            <label for="mid_box_input_file">파일선택</label>
+                            <input type="file" id="mid_box_input_file" class="upload-hidden">
+                        </div>
+                    </div>
+                </div>
+                <div class="mid_box_textarea">
+                    <textarea name="" id="" cols="30" rows="10" class="mid_box_textarea_input"
+                        placeholder="내용을 입력하세요"></textarea>
                 </div>
             </div>
+
+            <div class="bottom_box">
+                <a href="notice_office.html" class="notice_create_upload">작성완료</a>
             </div>
-            <div class="mid_box_textarea">
-            <textarea name="" id="" cols="30" rows="10" class="mid_box_textarea_input" placeholder="내용을 입력하세요"></textarea> 
-            </div>
         </div>
+    </section>
+</div>
 
-        <div class="bottom_box">
-            <a href="notice_office.html" class="notice_create_upload">작성완료</a>
-        </div>
-        </div>
-        </section>
-    </div>
+<form method="POST" action="{% url 'notice:create' %}" enctype="multipart/form-data">
+    {% csrf_token %}
 
-    <form method="POST" action="{% url 'notice:create' %}" enctype="multipart/form-data">
-        {% csrf_token %}
+    <p>제목:</p>
+    <input type="text" name="title" required="required">
+    <p>내용:</p>
+    <textarea name="content"></textarea>
+    <p>종류:</p>
+    <label for="office">사무실</label>
+    <input type="radio" name="kinds" id="office" value="office" required="required">
+    <label for="driver">기사님</label>
+    <input type="radio" name="kinds" id="driver" value="driver" required="required">
+    <p>첨부파일</p>
+    <input type="file" name="file">
+    <input type="file" name="file">
+    <input type="file" name="file">
+    <br>
+    <input type="submit" value="등록">
+</form>
+{% endblock %}
 
-        <p>제목:</p>
-        <input type="text" name="title" required="required">
-        <p>내용:</p>
-        <textarea name="content"></textarea>
-        <p>종류:</p>
-        <label for="office">사무실</label>
-        <input type="radio" name="kinds" id="office" value="office" required="required">
-        <label for="driver">기사님</label>
-        <input type="radio" name="kinds" id="driver" value="driver" required="required">
-        <p>첨부파일</p>
-        <input type="file" name="file">
-        <input type="file" name="file">
-        <input type="file" name="file">
-        <br>
-        <input type="submit" value="등록">
-    </form>
+{% block script %}
+<script src="{% static 'js/notice_create.js'%}"></script>
 {% endblock %}

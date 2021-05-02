@@ -2,12 +2,6 @@ a{
   color: black;
 }
 
-.notice_section_box{
-  width: 100rem;
-}
-
-
-
 .top_box_selectANDsearch{
   display: flex;
   align-items: center;
@@ -53,10 +47,6 @@ a{
   cursor: pointer;
 }
 
-.mid_box{
-  margin-top: 1rem;
-  width: 110rem;
-}
 
 .table_header{
   display: flex;
