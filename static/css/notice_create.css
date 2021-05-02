@@ -1,0 +1,100 @@
+.mid_box_first_line{
+    display: flex;
+    }
+    .mid_box_front_box{
+      width: 200px;
+      height: 40px;
+      background-color: #B41515;
+      color: white;
+      font-size: 22px;
+      font-weight: bold;
+      text-align: center;
+      padding-top: 10px;
+      border-bottom: 2px solid white;
+    }
+    .mid_box_input_title{
+    width: 1150px;
+    height: 48px;
+    border-top: 2px solid #B41515;
+    border-bottom: 2px solid #B41515;
+    }
+    .mid_box_input_title_box{
+      width: 1060px;
+      height: 38px;
+      border: none;
+      outline: none;
+      padding-left: 45px;
+      font-size: 20px;
+      padding-top: 8px;
+    }
+    
+    .mid_box_second_line{
+      display: flex;
+    }
+    .mid_box_second_line_input{
+      width: 475px;
+      height: 48px;
+      border-bottom: 2px solid #B41515;
+    }
+    .mid_box_input_creater_box{
+      width: 385px;
+      height: 38px;
+      border: none;
+      outline: none;
+      padding-left: 45px;
+      font-size: 20px;
+      padding-top: 8px;
+    }
+    .mid_box_second_line_input_filebox label{
+      position: relative;
+      display: inline-block;
+      width: 80px;
+      height: 29px;
+      border: 1px solid #B41515;
+      border-radius: 10px;
+      background-color: #B41515;
+      color: white;
+      text-align: center;
+      padding-top: 5px;
+      margin-top: 7px;
+      margin-left: 10px; 
+      z-index: 10;
+    }
+    .mid_box_second_line_input_filebox input[type="file"]{
+      position: absolute;
+      top: 465px;
+      left: 1273px;
+      outline: none;
+      z-index: 1;
+    }
+    
+    .mid_box_textarea{
+      width: 1350px;
+      height: 450px;
+      border-bottom: 2px solid grey;
+    }
+    .mid_box_textarea_input{
+      width: 1300px;
+      height: 400px;
+      border: none;
+      outline: none;
+      padding: 25px;
+      font-size: 25px;
+      resize:none;
+    }
+    
+    .notice_create_upload{
+      width: 300px;
+      height: 57px;
+      border: none;
+      cursor: pointer;
+      margin-left: 1240px;
+      background-color: #B41515;
+      font-size: 35px;
+      font-weight: bold;
+      text-align: center;
+      color: white;
+      margin-left: 480px;
+      border-radius: 34px;
+      padding-top: 8px;
+    }

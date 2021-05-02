@@ -6,24 +6,7 @@ a{
   width: 100rem;
 }
 
-.section{
-  margin-top: 12rem;
-  margin-left: 7rem;
-}
 
-.top_box{
-  display: flex;
-  height: 6rem;
-  width: 110rem;
-  align-items: flex-end;
-  margin-bottom: 2rem;
-}
-
-.top_box_title{
-  font-size: 2.5rem;
-  font-weight: bold;
-  margin-right: 40rem;
-}
 
 .top_box_selectANDsearch{
   display: flex;
@@ -139,8 +122,4 @@ a{
 
   margin-top: 3rem;
   margin-bottom: 3rem;
-}
-
-.aside_contents_thispage{
-  font-weight: bold;
 }

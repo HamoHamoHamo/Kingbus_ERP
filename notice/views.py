@@ -26,9 +26,26 @@ class NoticeKindsView(generic.ListView):
     paginate_by = 10
     model = Notice
 
+    def search_result(self, request, kinds):
+        if request.GET.get('search', None):
+            selector = request.GET.get('top_box_selector', None)
+            search = request.GET.get('search', None)
+            if  selector == 'title':
+                notices = Notice.objects.filter(title__contains=search).filter(kinds=kinds).order_by('-pub_date')
+            elif selector == "creator":
+                creator = User.objects.get(name=search)
+                notices = Notice.objects.filter(creator=creator).filter(kinds=kinds).order_by('-pub_date')
+            else:
+                raise Http404()
+            return notices
+        else:
+            return None
+
     def get_queryset(self):
-        kinds_check(self.kwargs['kinds'])
-        notices = Notice.objects.all().filter(kinds=self.kwargs['kinds']).order_by('-pub_date')
+        notices = self.search_result(self.request, self.kwargs['kinds'])
+        if notices is None:
+            kinds_check(self.kwargs['kinds'])
+            notices = Notice.objects.all().filter(kinds=self.kwargs['kinds']).order_by('-pub_date')
         return notices
 
     # 페이징 처리
@@ -49,6 +66,8 @@ class NoticeKindsView(generic.ListView):
         context['current_page'] = current_page
         context['kinds'] = self.kwargs['kinds']
         context['name'] = get_object_or_404(User, pk=self.request.session.get('user')).name
+        context['searched'] = self.request.GET.get('search', '')
+        context['selector'] = self.request.GET.get('top_box_selector', 'title')
         return context
 
 def create(request):

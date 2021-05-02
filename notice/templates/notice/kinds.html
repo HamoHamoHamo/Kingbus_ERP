@@ -2,7 +2,7 @@
 {% load static %}
 
 {% block head %}
-<link rel="stylesheet" href="{% static 'css/notice_kinds.css' %}" type="text/css" />
+<link rel="stylesheet" href="{% static 'css/notice.css' %}" type="text/css" />
 {% endblock %}
 
 
@@ -13,28 +13,38 @@
             <div class="aside_title">
                 <div class="aside_title_font">공지사항</div>
             </div>
-            <div id="aside_contents">
-                <a href="notice_driver.html" class="aside_contents_link">-기사님 공지사항</a>
+            <div class="aside_contents{% if kinds == 'driver' %} aside_contents_thispage {% endif %} ">
+                <a href="{% url 'notice:kinds' 'driver' %}" class="aside_contents_link">기사님 공지사항</a>
             </div>
-            <div id="aside_contents" class="aside_contents_thispage">
-                <a href="notice_office.html" class="aside_contents_link">-사무실 공지사항</a>
+            
+            <div class="aside_contents{% if kinds == 'office' %} aside_contents_thispage {% endif %} ">
+                <a href="{% url 'notice:kinds' 'office' %}" class="aside_contents_link">사무실 공지사항</a>
+            </div>
+
+            <div class="aside_contents">
+                <a href="{% url 'notice:create' %}" class="aside_contents_link">공지사항 작성</a>
             </div>
     </aside>
 
-    <section class="section">
+    <section class="main_section">
         <div class="notice_section_box">
             <div class="top_box">
-                <div class="top_box_title">사무실 공지사항</div>
+                {% if kinds == "office" %}
+                    <div class="top_box_title">사무실 공지사항</div>
+                {% elif kinds == "driver" %}
+                    <div class="top_box_title">기사님 공지사항</div>
+                {% endif %}
+
                 <div class="top_box_selectANDsearch">
                     <div class="top_box_select_box">
-                        <select class="top_box_select">
-                            <option>제목</option>
-                            <option>작성자</option>
+                        <select class="top_box_select" name="top_box_selector" form=top_box-form>
+                            <option value="title" {% if selector == 'title' %} selected {% endif %}>제목</option>
+                            <option value="creator" {% if selector == 'creator' %} selected {% endif %}>작성자</option>
                         </select>
                     </div>
                     <div class="top_box_search">
-                        <form method="GET" action="">
-                            <input type="text" class="top_box_input_text">
+                        <form method="GET" action="" id=top_box-form>
+                            <input type="text" class="top_box_input_text" name="search" value={{ searched }}>
                             <input type="submit" value="" class="top_box_search_button">
                         </form>
                     </div>
@@ -57,7 +67,7 @@
                             <a href="{% url 'notice:detail' kinds notice.id %}" class="mid_box_table_contents_title_link">{{notice.title}}</a>
                         </div>
                         <div class="mid_box_table_contents_creator">{{notice.creator}}</div>
-                        <div class="mid_box_table_contents_day">{{notice.pub_date | date:'Y.m.d'}}</div>
+                        <div class="mid_box_table_contents_day">{{notice.pub_date | date:'Y.m.d H:s'}}</div>
                         <div class="mid_box_table_contents_viewer">{{notice.view_cnt}}</div>
                     </div>
                 {% endfor %}
@@ -77,11 +87,10 @@
                         <a class="page-link" href="#" tabindex="-1">이전</a>
                     </div>
                     {% endif %}
-
                     {% for page in page_range %}
-                    <div class="page-item {% if page == page_obj.number %} page-activate {% endif %}">
-                        <a class="page-link" href="?page={{ page }}">{{ page }}</a>
-                    </div>
+                        <div class="page-item {% if page == page_obj.number %} page-activate {% endif %}">
+                            <a class="page-link" href="?page={{ page }}">{{ page }}</a>
+                        </div>      
                     {% endfor %}
 
                     {% if page_obj.has_next %}

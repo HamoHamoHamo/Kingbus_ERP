@@ -1,0 +1,19 @@
+@import "notice_create.css";
+@import "notice_kinds.css";
+
+
+
+.top_box{
+    display: flex;
+    height: 6rem;
+    width: 110rem;
+    align-items: flex-end;
+    margin-bottom: 2rem;
+}
+  
+
+.top_box_title{
+    font-size: 2.5rem;
+    font-weight: bold;
+    margin-right: 40rem;
+}
