@@ -4,7 +4,7 @@
 }
 .mid_box_create-title{
   display: flex;
-  width: 20rem;
+  width: 15rem;
   height: 4.8rem;
   background-color: #B41515;
   color: white;
@@ -14,7 +14,6 @@
   font-weight: bold;
   justify-content: center;
   align-items: center;
-
 }
 ::placeholder{
   font-size: 2rem;
@@ -116,17 +115,17 @@
 
 .mid_box_textarea{
   width: 110rem;
+  margin-top: 2rem;
 }
 .mid_box_textarea_input{
   width: 104.8rem;
   height: 40rem;
-  border: none;
-  outline: none;
   padding: 2.5rem;
   font-size: 2.5rem;
-  resize:none;
   border: 0.1rem solid grey;
-  border-top: none;
+  overflow: auto;
+  white-space: normal;
+  overflow-wrap: break-word;
 }
 
 .mid_box_submit{
@@ -144,12 +143,8 @@
   font-size: 2rem;
   font-weight: bold;
   text-align: center;
-  color: white;
+  color: whitesmoke;
   border-radius: 0.5rem;
   margin-top: 0.5rem;
 }
 
-.create_bottom_box{
-  margin-top: 10rem;
-  height: 20rem;
-}

@@ -1,15 +1,92 @@
 {% extends 'base.html' %}
+{% load static %}
+
+{% block head %}
+<link rel="stylesheet" href="{% static 'css/notice.css' %}" type="text/css" />
+{% endblock %}
 
 {% block content %}
+<div class="main_box">
+    <aside>
+        <div class="aside_box">
+            <div class="aside_title">
+                <div class="aside_title_font">공지사항</div>
+            </div>
+            <div class="aside_contents">
+                <a href="{% url 'notice:kinds' 'driver' %}" class="aside_contents_link">기사님 공지사항</a>
+            </div>
+            
+            <div class="aside_contents">
+                <a href="{% url 'notice:kinds' 'office' %}" class="aside_contents_link">사무실 공지사항</a>
+            </div>
+
+            <div class="aside_contents">
+                <a href="{% url 'notice:create' %}" class="aside_contents_link">공지사항 작성</a>
+            </div>
+    </aside>
+
+    <section class="main_section">
+        <div class="notice_section_box">
+            <div class="top_box">
+                <div class="top_box_title">
+                    {% if notice.kinds == 'office' %} 사무실 {% elif notice.kinds == 'driver' %} 기사님 {% endif %} 공지사항
+                </div>
+            </div>
+
+            <div class="mid_box">
+
+                <div class="mid_box_create-first_line">
+                    <div class="mid_box_create-title detail_mid_box">제목</div>
+                    <div class="detail_mid_box-title_box">
+                        {{notice.title}}
+                    </div>
+                </div>
+                <div class="detail_mid_box_mid">
+                    <div class="mid_box_create-title detail_mid_box">작성시간</div>
+                    <div class="detail_mid_box_mid-text">{{notice.pub_date | date:'Y.m.d. H:i:s'}}</div>
+                    <div class="mid_box_create-title detail_mid_box">작성자</div>
+                    <div class="detail_mid_box_mid-text">{{notice.creator}}</div>
+                    <div class="mid_box_create-title detail_mid_box">조회수</div>
+                    <div class="detail_mid_box_mid-text">{{notice.view_cnt}}</div>
+                    
+                </div>
+                <div class="mid_box_second_line">
+                    <div class="mid_box_create-title detail_mid_box">첨부파일</div>
+                    <div class="detail_filebox">
+                        {% for this_file in notice_files %}
+                                <a href="{% url 'notice:download' notice.kinds notice.id this_file.id %}">{{ this_file.filename }}</a>
+                        {% endfor %}
+                    </div>
+                </div>
+                <div class="mid_box_textarea">
+                    <div class="mid_box_textarea_input">
+                        {{notice.content}}
+                    </div>
+                </div>
+            </div>
+
+            <div class="bottom_box detail_bottom_box">
+                {% if logged_user == notice.creator.id %}
+                    <div class="detail_bottom-button">
+                        <a href="{% url 'notice:edit' notice.kinds notice.id %}">수정</a>    
+                    </div>
+                    <div class="detail_bottom-button">                            
+                        <a href="{% url 'notice:delete' notice.kinds notice.id %}">삭제</a>
+                    </div>
+                {% endif %}
+            </div>
+
+        </div>
+    </section>
+</div>
+
     <h1>조회수:{{ view_cnt }}</h1>
     <p>제목:{{ notice.title }}</p>
     <p>내용:{{ notice.content }}</p>
     <p>작성자:{{ notice.creator }}</p>
     <p>작성날짜:{{ notice.pub_date | date:'Y.m.d H:s' }}</p>
     <br>
-    {% if logged_user == notice.creator.id %}
-        <a href="{% url 'notice:delete' notice.kinds notice.id %}">삭제</a>
-    {% endif %}
+    
 
     <h2>댓글</h2>
     {% for comment in notice_comments %}

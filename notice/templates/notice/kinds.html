@@ -74,37 +74,39 @@
             </div>
 
             <div class="bottom_box">
-                <!-- 페이징 처리 -->
-                {% if is_paginated %}
-                <div class="pagination">
-                    {% if page_obj.has_previous %}
-                    <div class="page-item page-pre">
-                        <a class="page-link" href="?page={{ page_obj.previous_page_number }}"
-                            tabindex="-1">이전</a>
-                    </div>
-                    {% else %}
-                    <div class="page-item page-pre disabled">
-                        <a class="page-link" href="#" tabindex="-1">이전</a>
-                    </div>
-                    {% endif %}
-                    {% for page in page_range %}
-                        <div class="page-item {% if page == page_obj.number %} page-activate {% endif %}">
-                            <a class="page-link" href="?page={{ page }}">{{ page }}</a>
-                        </div>      
-                    {% endfor %}
+                <div class="kinds_bottom_box">
+                    <!-- 페이징 처리 -->
+                    {% if is_paginated %}
+                    <div class="pagination">
+                        {% if page_obj.has_previous %}
+                        <div class="page-item page-pre">
+                            <a class="page-link" href="?page={{ page_obj.previous_page_number }}"
+                                tabindex="-1">이전</a>
+                        </div>
+                        {% else %}
+                        <div class="page-item page-pre disabled">
+                            <a class="page-link" href="#" tabindex="-1">이전</a>
+                        </div>
+                        {% endif %}
+                        {% for page in page_range %}
+                            <div class="page-item {% if page == page_obj.number %} page-activate {% endif %}">
+                                <a class="page-link" href="?page={{ page }}">{{ page }}</a>
+                            </div>      
+                        {% endfor %}
 
-                    {% if page_obj.has_next %}
-                    <div class="page-item">
-                        <a class="page-link page-next"
-                            href="?page={{ page_obj.next_page_number }}">다음</a>
-                    </div>
-                    {% else %}
-                    <div class="page-item page-next disabled">
-                        <a class="page-link" href="#">다음</a>
+                        {% if page_obj.has_next %}
+                        <div class="page-item">
+                            <a class="page-link page-next"
+                                href="?page={{ page_obj.next_page_number }}">다음</a>
+                        </div>
+                        {% else %}
+                        <div class="page-item page-next disabled">
+                            <a class="page-link" href="#">다음</a>
+                        </div>
+                        {% endif %}
                     </div>
                     {% endif %}
                 </div>
-                {% endif %}
             </div>
         </div>
     </section>

@@ -1,0 +1,90 @@
+.detail_mid_box-title_box{
+    padding: 1rem;
+    height: 2.8rem;
+    width: 92.9rem;
+    border: none;
+    border-top: 0.1rem solid #B41515;
+    border-right: 0.1rem solid #B41515;
+    font-size: 2rem;
+    line-height: 2.8rem;
+}
+
+.mid_box_create-first_line .detail_mid_box{
+    border-bottom: none;
+}
+.mid_box_second_line .detail_mid_box{
+    border-top: none;
+}
+
+.detail_mid_box_mid{
+    display: flex;
+    align-items: center;
+}
+
+.detail_mid_box_mid-text{
+    height: 4.8rem;
+    font-size: 2rem;
+    line-height: 4.8rem;
+    border-top: 0.1rem solid #B41515;
+    border-bottom: 0.1rem solid #B41515;
+    
+}
+
+.detail_filebox{
+    overflow:scroll;
+    height: 2.8rem;
+    width: 92.9rem;
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    padding: 1rem;
+    border: 0.1rem solid #B41515;
+    border-left: none;
+    border-top: none;
+}
+
+.detail_filebox a{
+    margin-bottom: 0.5rem;
+    color: black;
+    font-size: 2rem;
+}
+
+
+
+.detail_textcontent{
+    width: 104.8rem;
+    height: 40rem;
+    border: none;
+    outline: none;
+    padding: 2.5rem;
+    font-size: 2.5rem;
+    resize:none;
+    border: 0.1rem solid grey;
+    border-top: none;
+}
+
+.detail_bottom_box{
+    position: relative;
+}
+
+.detail_bottom-button:first-child{
+    right: 7rem;
+}
+
+.detail_bottom-button{
+    margin-top: 0.5rem;
+    position: absolute;
+    right: 0;
+    height: 3rem;
+    width: 6rem;
+    background-color: #B41515;
+    text-align: center;
+    line-height: 3rem;
+    border-radius: 0.5rem;
+}
+
+.detail_bottom-button a{
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: whitesmoke;
+}

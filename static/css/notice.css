@@ -1,5 +1,6 @@
 @import "notice_create.css";
 @import "notice_kinds.css";
+@import "notice_detail.css";
 
 .top_box{
     display: flex;
@@ -21,3 +22,7 @@
 .mid_box{
     margin-top: 1rem;
   }
+
+.bottom_box{
+    height: 20rem;
+}
