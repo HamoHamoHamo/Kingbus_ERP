@@ -96,7 +96,7 @@ def create(request):
         notice.save()
         notice_file_save(files, notice)
         #auth.login(request, user)
-        return redirect(reverse('notice:detail', args=(kinds,notice.id)))
+        return redirect(reverse('notice:kinds', args=(kinds,)))
     return render(request, 'notice/create.html', context)
 
 def notice_file_save(upload_file, notice):
