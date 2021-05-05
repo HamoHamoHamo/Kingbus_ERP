@@ -7,6 +7,7 @@
     border-right: 0.1rem solid #B41515;
     font-size: 2rem;
     line-height: 2.8rem;
+    text-align: center;
 }
 
 .mid_box_create-first_line .detail_mid_box{
@@ -22,12 +23,20 @@
 }
 
 .detail_mid_box_mid-text{
-    height: 4.8rem;
-    font-size: 2rem;
+    height: 2.8rem;
+    padding: 1rem;
+    font-size: 1.5rem;
     line-height: 4.8rem;
     border-top: 0.1rem solid #B41515;
     border-bottom: 0.1rem solid #B41515;
-    
+    text-align: center;
+    line-height: 2.8rem;
+    width: 23rem;
+}
+
+.detail_mid_box_mid div:nth-child(6){
+    width: 12.9rem;
+    border-right: 0.1rem solid #B41515;
 }
 
 .detail_filebox{
@@ -50,21 +59,10 @@
 }
 
 
-
-.detail_textcontent{
-    width: 104.8rem;
-    height: 40rem;
-    border: none;
-    outline: none;
-    padding: 2.5rem;
-    font-size: 2.5rem;
-    resize:none;
-    border: 0.1rem solid grey;
-    border-top: none;
-}
-
-.detail_bottom_box{
+.detail_edit_box{
     position: relative;
+    margin-top: 1rem;
+    height: 4rem;
 }
 
 .detail_bottom-button:first-child{
@@ -87,4 +85,120 @@
     font-size: 1.5rem;
     font-weight: bold;
     color: whitesmoke;
+}
+
+.detail_bottom_box{
+    margin-top: 7rem;
+    margin-bottom: 20rem;
+}
+
+.detail_bottom-comment{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.detail_bottom-comment_title{
+    font-size: 2.5rem;
+    font-weight: bold;
+    text-align: start;
+    width: 100rem;
+    margin-bottom: 2rem;
+}
+
+.detail_bottom-comment_box:nth-child(2){
+    border-top: 0.1rem solid gray;
+}
+
+.detail_bottom-comment_box{
+    width: 92rem;
+    border-bottom: 0.1rem solid gray;
+    padding: 3rem 4rem 3rem 4rem;
+}
+
+.detail_bottom-comment_box_creator{
+    font-size: 2.5rem;
+    margin-bottom: 2rem;
+}
+
+.detail_bottom-comment_box_content{
+    font-size: 2rem;
+    opacity: 0.8;
+    margin-bottom: 1rem;
+    height: 4.5rem;
+    overflow:hidden;
+    height:auto;
+    overflow-wrap: break-word;
+    white-space: pre-line;
+}
+
+.detail_bottom-comment_box_bottom{
+    display: flex;
+    position: relative;
+}
+.detail_bottom-comment_box_bottom a{
+    position: absolute;
+    right: 2rem;
+    font-size: 1.3rem;
+}
+
+.detail_bottom-comment_box_date{
+    font-size: 1.3rem;
+    color: gray;
+}
+
+.detail_bottom-comment_create{
+    margin-top: 5rem;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    align-items: center;
+    justify-content: center;
+    width: 100rem;
+    height: 18rem;
+    border: 0.1rem solid gray;
+}
+
+.detail_bottom-comment_name{
+    width: 20rem;
+    font-size: 2.2rem;
+    margin-right: 72rem;
+    margin-bottom: 2rem;
+}
+
+.detail_bottom-comment form{
+    display: flex;
+    flex-direction: column;
+}
+
+.detail_bottom-comment_input{
+    resize: none;
+    width: 87.7rem;
+    padding: 1.5rem 2rem 0rem 2rem;
+    border: none;
+    font-size: 2rem;
+    height: 4rem ;
+}
+
+.detail_bottom-comment_input:focus{
+    outline: 0.2rem solid black;
+}
+
+.detail_bottom-comment_submit{
+    margin-left: 85.9rem;
+    margin-top: 2rem;
+    height: 3rem;
+    width: 6rem;
+    background-color: #B41515;
+    border-radius: 0.5rem;
+    line-height: 3rem;
+    padding: 0 0 0 0;
+    border: none;
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: whitesmoke;
+}
+
+.detail_bottom-comment_submit:hover{
+    cursor: pointer;
 }

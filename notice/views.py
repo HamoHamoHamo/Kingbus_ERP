@@ -174,7 +174,7 @@ class NoticeDetail(generic.DetailView):
     def get_context_data(self, **kwargs):
         # 기본 구현을 호출해 context를 가져온다.
         context = super(NoticeDetail, self).get_context_data(**kwargs)
-        context['logged_user'] = self.request.session.get('user')
+        context['logged_user'] = get_object_or_404(User, pk=self.request.session.get('user'))
         context['view_cnt'] = self.get_view_cnt()
         context['notice'] = self.notice
         context['notice_files'] = NoticeFile.objects.filter(notice_id=self.notice_id)

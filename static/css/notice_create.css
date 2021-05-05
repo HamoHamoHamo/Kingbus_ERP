@@ -118,14 +118,19 @@
   margin-top: 2rem;
 }
 .mid_box_textarea_input{
-  width: 104.8rem;
+  width: 104.6rem;
   height: 40rem;
   padding: 2.5rem;
   font-size: 2.5rem;
-  border: 0.1rem solid grey;
+  border: 0.2rem solid grey;
   overflow: auto;
-  white-space: normal;
+  white-space: pre-line;
   overflow-wrap: break-word;
+  resize: none;
+}
+
+:focus{
+  outline: none;
 }
 
 .mid_box_submit{

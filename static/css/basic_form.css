@@ -60,9 +60,14 @@ a {
 html{
   font-size: 62.5%;
 }
-body{
+body,th,td,input,select,textarea,button {
   font-family: "Open Sans", sans-serif;
   margin: 0rem;
+  font-size: 100%;
+}
+
+input{
+  font-family: "Open Sans", sans-serif;
 }
 
 a{

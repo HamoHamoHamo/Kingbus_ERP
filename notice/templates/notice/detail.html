@@ -42,10 +42,10 @@
                     </div>
                 </div>
                 <div class="detail_mid_box_mid">
-                    <div class="mid_box_create-title detail_mid_box">작성시간</div>
-                    <div class="detail_mid_box_mid-text">{{notice.pub_date | date:'Y.m.d. H:i:s'}}</div>
                     <div class="mid_box_create-title detail_mid_box">작성자</div>
                     <div class="detail_mid_box_mid-text">{{notice.creator}}</div>
+                    <div class="mid_box_create-title detail_mid_box">작성시간</div>
+                    <div class="detail_mid_box_mid-text">{{notice.pub_date | date:'Y.m.d. H:i:s'}}</div>
                     <div class="mid_box_create-title detail_mid_box">조회수</div>
                     <div class="detail_mid_box_mid-text">{{notice.view_cnt}}</div>
                     
@@ -63,53 +63,49 @@
                         {{notice.content}}
                     </div>
                 </div>
+                <div class="detail_edit_box">
+                    {% if logged_user == notice.creator.id %}
+                        <div class="detail_bottom-button">
+                            <a href="{% url 'notice:edit' notice.kinds notice.id %}">수정</a>    
+                        </div>
+                        <div class="detail_bottom-button">                            
+                            <a href="{% url 'notice:delete' notice.kinds notice.id %}">삭제</a>
+                        </div>
+                    {% endif %}
+                </div>
             </div>
 
-            <div class="bottom_box detail_bottom_box">
-                {% if logged_user == notice.creator.id %}
-                    <div class="detail_bottom-button">
-                        <a href="{% url 'notice:edit' notice.kinds notice.id %}">수정</a>    
+            <div class="detail_bottom_box">
+                <div class="detail_bottom-comment">
+                    
+                    <div class="detail_bottom-comment_title">댓글</div>
+                        {% for comment in notice_comments %}
+                            <div class="detail_bottom-comment_box">
+                                <div class="detail_bottom-comment_box_creator">{{ comment.creator }}</div>
+                                <div class="detail_bottom-comment_box_content">{{ comment.content }}</div>
+                                <div class="detail_bottom-comment_box_bottom">
+                                    <div class="detail_bottom-comment_box_date">{{ comment.pub_date | date:'Y.m.d H:i:s' }}</div>
+                                        {% if logged_user == comment.creator %}
+                                            <a href="{% url 'notice:comment_del' notice.kinds notice.id comment.id %}">삭제</a>
+                                        {% endif %}
+                                </div>
+                            </div>
+                        {% endfor %}
+
+                    
+                    <div class="detail_bottom-comment_create">
+                        <div class="detail_bottom-comment_name">{{ logged_user.name }}</div>
+                        <form method="POST" action="{% url 'notice:detail' notice.kinds notice.id %}" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            <textarea class="detail_bottom-comment_input" name="content" required="required" placeholder="댓글을 입력하세요"></textarea>
+                            <input class="detail_bottom-comment_submit" type="submit" value="등록" required>
+                        </form>
+                        </div>
                     </div>
-                    <div class="detail_bottom-button">                            
-                        <a href="{% url 'notice:delete' notice.kinds notice.id %}">삭제</a>
-                    </div>
-                {% endif %}
+                </div>
             </div>
 
         </div>
     </section>
 </div>
-
-    <h1>조회수:{{ view_cnt }}</h1>
-    <p>제목:{{ notice.title }}</p>
-    <p>내용:{{ notice.content }}</p>
-    <p>작성자:{{ notice.creator }}</p>
-    <p>작성날짜:{{ notice.pub_date | date:'Y.m.d H:s' }}</p>
-    <br>
-    
-
-    <h2>댓글</h2>
-    {% for comment in notice_comments %}
-        <p>댓글작성자:{{ comment.creator }}</p>
-        <p>댓글내용:{{ comment.content }}</p>
-        <p>작성날짜:{{ comment.pub_date | date:'Y.m.d. H:i:s' }}</p>
-        <br>
-        {% if logged_user == comment.creator.id %}
-            <a href="{% url 'notice:comment_del' notice.kinds notice.id comment.id %}">삭제</a>
-        {% endif %}
-    {% endfor %}
-
-    <h2>파일</h2>
-    {% for this_file in notice_files %}
-        <p>{{ this_file.filename }} <a href="{% url 'notice:download' notice.kinds notice.id this_file.id %}">다운로드</a></p>
-    {% endfor %}
-
-    <form method="POST" action="{% url 'notice:detail' notice.kinds notice.id %}" enctype="multipart/form-data">
-        {% csrf_token %}
-        <p>내용:</p>
-        <textarea name="content" required="required"></textarea>
-        <input type="submit" value="등록">
-    <a href="{% url 'notice:kinds' notice.kinds %}">목록으로</a>
-    <a href="{% url 'notice:edit' notice.kinds notice.id %}">수정하기</a>
-        <h1>{{ notice.kinds }}</h1>
-    {% endblock %}
+{% endblock %}

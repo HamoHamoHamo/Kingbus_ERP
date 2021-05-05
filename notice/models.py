@@ -41,7 +41,7 @@ class NoticeFile(models.Model):
 class NoticeComment(models.Model):
     creator = models.ForeignKey(User, related_name="comment", verbose_name='작성자', db_column="user_id", null=False, on_delete=models.CASCADE)
     notice_id = models.ForeignKey(Notice, on_delete=models.CASCADE, related_name="comment_user", db_column="notice_id", null=True)
-    content = models.CharField(max_length=200, verbose_name="댓글내용", null=False)
+    content = models.TextField(max_length=200, verbose_name="댓글내용", null=False)
     pub_date = models.DateTimeField(auto_now_add=True,verbose_name='등록시간')
 
     def __str__(self):
