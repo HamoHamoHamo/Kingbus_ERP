@@ -65,7 +65,7 @@ class NoticeKindsView(generic.ListView):
         context['page_range'] = page_range
         context['current_page'] = current_page
         context['kinds'] = self.kwargs['kinds']
-        context['name'] = get_object_or_404(User, pk=self.request.session.get('user')).name
+        context['logged_user'] = get_object_or_404(User, pk=self.request.session.get('user'))
         context['searched'] = self.request.GET.get('search', '')
         context['selector'] = self.request.GET.get('top_box_selector', 'title')
         return context
@@ -75,6 +75,7 @@ def create(request):
         'name': get_object_or_404(User, pk=request.session.get('user')).name,
         }
     if request.method == "GET":
+        context['logged_user'] = get_object_or_404(User, pk=request.session.get('user'))
         return render(request, 'notice/create.html', context)
 
     elif request.method == 'POST':
@@ -117,6 +118,7 @@ def edit(request, kinds, notice_id):
             'notice':notice,
             'notice_files':NoticeFile.objects.filter(notice_id=notice_id),
         }
+        context['logged_user'] = get_object_or_404(User, pk=request.session.get('user'))
         return render(request, "notice/edit.html", context )
     else:
         upload_file = request.FILES.getlist('file', None)

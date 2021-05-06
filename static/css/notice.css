@@ -1,6 +1,7 @@
 @import "notice_create.css";
 @import "notice_kinds.css";
 @import "notice_detail.css";
+@import "notice_edit.css";
 
 .top_box{
     display: flex;

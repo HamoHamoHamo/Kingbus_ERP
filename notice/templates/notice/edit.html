@@ -1,7 +1,80 @@
 {% extends 'base.html' %}
+{% load static %}
+
+{% block head %}
+<link rel="stylesheet" href="{% static 'css/notice.css' %}" type="text/css" />
+{% endblock %}
 
 {% block content %}
+<div class="main_box">
+    <aside>
+        <div class="aside_box">
+            <div class="aside_title">
+                <div class="aside_title_font">공지사항</div>
+            </div>
+            <div class="aside_contents">
+                <a href="{% url 'notice:kinds' 'driver' %}" class="aside_contents_link">기사님 공지사항</a>
+            </div>
+            
+            <div class="aside_contents">
+                <a href="{% url 'notice:kinds' 'office' %}" class="aside_contents_link">사무실 공지사항</a>
+            </div>
 
+            <div class="aside_contents">
+                <a href="{% url 'notice:create' %}" class="aside_contents_link">공지사항 작성</a>
+            </div>
+    </aside>
+
+    <section class="main_section">
+        <div class="notice_section_box">
+            <div class="top_box">
+                <div class="top_box_title">공지사항 작성</div>
+            </div>
+
+            <div class="mid_box">
+                <form method="POST" action="" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="mid_box_create-first_line">
+                        <div class="mid_box_create-title">제목</div>
+                        <input type="text" name="title" required class="mid_box_input_title_box" placeholder="제목을 입력하세요" value={{notice.title}}>
+                        <select name="kinds" class="mid_box_input_select" required>
+                                <option value="" class="mid_box_select_option">종류</option>
+                                <option value="driver" class="mid_box_select_option" {% if notice.kinds == 'driver' %} selected {% endif %}>기사님</option>
+                                <option value="office" class="mid_box_select_option" {% if notice.kinds == 'office' %} selected {% endif %}>사무실</option>
+                        </select>
+                    </div>
+                    <div class="mid_box_second_line">
+                        <div class="mid_box_create-title">첨부파일</div>
+                        <div class="mid_box_second_line_input edit_mid_box_second_line">
+                            <div class="edit_mid_box_input_filebox mid_box_input_filebox">
+                                {% for this_file in notice_files %}
+                                    <div class="edit_mid_box-uploaded_box">
+                                        <div class="edit_mid_box-uploaded_filename"> {{ this_file.filename }}</div>
+                                        <a class="edit_mid_box-file_delete" href="{% url 'notice:file_del' notice.kinds notice.id this_file.id %}">삭제</a>
+                                    </div>
+                                {% endfor %}
+                                <input class="mid_box_upload-name edit_mid_box_upload-name" disabled="disabled">
+                                <label for="mid_box_input_file" class="mid_box_input_file_label">파일선택</label>
+                                <input type="file" name="file" id="mid_box_input_file" class="upload-hidden" multiple>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mid_box_textarea">
+                        <textarea name="content" cols="30" rows="10" class="mid_box_textarea_input"
+                            placeholder="내용을 입력하세요" required>{{notice.content}}</textarea>
+                    </div>
+                    <div class="mid_box_submit">
+                        <input type="submit" class="notice_create_upload" value="작성완료">
+                    </div>
+                </form>
+            </div>
+
+            <div class="bottom_box">
+            </div>
+
+        </div>
+    </section>
+</div>
 
     {{driver_check}}
     <form method="POST" action="{% url 'notice:edit' notice.kinds notice.id %}" enctype="multipart/form-data">
@@ -37,4 +110,8 @@
         <br>
         <input type="submit" value="등록">
 
+{% endblock %}
+
+{% block script %}
+<script src="{% static 'js/notice_create.js'%}"></script>
 {% endblock %}
