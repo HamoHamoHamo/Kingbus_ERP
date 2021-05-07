@@ -1,0 +1,89 @@
+.header_background{
+    background-color:#b41515;
+    padding-bottom: 1rem;
+    padding-top: 1rem;
+    margin-top: 0rem;
+  
+  }
+  
+  .header_head{
+    display: flex;
+    text-align: center;
+    align-items: flex-end;
+  }
+  
+  .header_character{
+    margin-left: 16rem;
+  }
+  
+  .kingkingyi{
+    width: 10rem;
+    height: 10rem;
+  }
+  .main_title{
+    display:flex;
+    text-align: center;
+    color: white;
+    margin-left: 3rem;
+    width: 40rem;
+    font-weight: bold;
+  }
+  .main_title_link{
+    font-size: 5rem;
+    color: white;
+  }
+  .basic_header_profile_form{
+    align-items: center;
+    position: absolute;
+    right: 0;
+    margin-right: 17rem;
+  }
+  .profile_detail_link{
+    font-size: 3rem;
+    color:white;
+  }
+  .profile_form_word{
+    font-size: 2rem;
+  }
+  
+  .nav_form{
+    display: flex;
+    justify-content: center;
+    margin-top: 2rem;
+  }
+  
+  .nav_menu{
+    width: 15rem;
+    background-color: white;
+    color: #b41515;
+    font-size: 2.3rem;
+    text-align: center;
+    border-right: 0.1rem solid#b41515;
+    padding: 0.5rem 0 0.5rem 0;
+  }
+  
+  .nav_menu-link{
+    color:#b41515;
+  }
+  .sub_menu{
+    width: 15rem;
+    position: absolute;
+    display: none;
+    background-color: #f1f1f1;
+    box-shadow: 0rem 0.8rem 1.6rem 0rem rgba(0,0,0,0.2);
+    z-index: 1;
+  }
+  .sub_menu_link{
+    color: black;
+    display: block;
+    height: 3rem;
+    padding-top: 1rem;
+    text-align: center;
+  }
+  
+  .nav_box:hover .sub_menu{
+  display: block;
+  }
+  .sub_menu a:hover{
+    background-color: #ddd;
+  }

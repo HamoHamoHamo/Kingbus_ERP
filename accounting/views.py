@@ -213,7 +213,7 @@ def salary_create(request):
             'daily_salary' : daily_salary,
             'member_list' : Member.objects.order_by('pk'),
             'date' : get_date,
-            'daily_order' : DispatchOrder.objects.filter(first_departure_date=str(datetime.datetime.now())[:10])
+            #'daily_order' : DispatchOrder.objects.filter(first_departure_date=str(datetime.datetime.now())[:10])
         }
     return render(request, 'accounting/salary_create.html', context)
 

@@ -1,0 +1,23 @@
+
+.pagination{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.4rem;
+  }
+  
+  .page-link{
+    margin-right: 1rem;
+  }
+  
+  .page-pre{
+    margin-right: 3rem;
+  }
+  
+  .page-next{
+    margin-left: 3rem;
+  }
+  
+  .page-activate{
+    font-weight: bold;
+  }

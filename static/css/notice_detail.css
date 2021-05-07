@@ -33,6 +33,10 @@
     width: 23rem;
 }
 
+.detail_mid_box_mid-text:nth-child(2){
+    font-size: 2rem;
+}
+
 .detail_mid_box_mid div:nth-child(6){
     width: 12.9rem;
     border-right: 0.1rem solid #B41515;
@@ -113,6 +117,7 @@
     width: 92rem;
     border-bottom: 0.1rem solid gray;
     padding: 3rem 4rem 3rem 4rem;
+    background-color: whitesmoke;
 }
 
 .detail_bottom-comment_box_creator{
