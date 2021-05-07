@@ -55,6 +55,16 @@ class OutlayList(generic.ListView):
         context['company'] = company
         context['total'] = total
         context['other'] = other
+        year = []
+        now_year = int(str(datetime.datetime.now())[:4])
+        for i in range(20):
+            if i <11:
+                year.append(now_year - i)
+            else:
+                year.append(now_year + i-10)
+        context['option_year'] = sorted(year)
+        context['year'] = now_year
+        context['month'] = int(str(datetime.datetime.now())[5:7])
 
         return context
 

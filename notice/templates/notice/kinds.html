@@ -2,7 +2,7 @@
 {% load static %}
 
 {% block head %}
-<link rel="stylesheet" href="{% static 'css/notice.css' %}" type="text/css" />
+<link rel="stylesheet" href="{% static 'css/notice/notice.css' %}" type="text/css" />
 {% endblock %}
 
 
@@ -24,91 +24,91 @@
             <div class="aside_contents">
                 <a href="{% url 'notice:create' %}" class="aside_contents_link">공지사항 작성</a>
             </div>
+        </div>
     </aside>
 
     <section class="main_section">
-        <div class="notice_section_box">
-            <div class="top_box">
-                {% if kinds == "office" %}
-                    <div class="top_box_title">사무실 공지사항</div>
-                {% elif kinds == "driver" %}
-                    <div class="top_box_title">기사님 공지사항</div>
-                {% endif %}
+        <div class="top_box">
+            {% if kinds == "office" %}
+                <div class="top_box_title">사무실 공지사항</div>
+            {% elif kinds == "driver" %}
+                <div class="top_box_title">기사님 공지사항</div>
+            {% endif %}
 
-                <div class="top_box_selectANDsearch">
-                    <div class="top_box_select_box">
-                        <select class="top_box_select" name="top_box_selector" form=top_box-form>
-                            <option value="title" {% if selector == 'title' %} selected {% endif %}>제목</option>
-                            <option value="creator" {% if selector == 'creator' %} selected {% endif %}>작성자</option>
-                        </select>
-                    </div>
-                    <div class="top_box_search">
-                        <form method="GET" action="" id=top_box-form>
-                            <input type="text" class="top_box_input_text" name="search" value={{ searched }}>
-                            <input type="submit" value="" class="top_box_search_button">
-                        </form>
-                    </div>
+            <div class="top_box_selectANDsearch">
+                <div class="top_box_select_box">
+                    <select class="top_box_select" name="top_box_selector" form=top_box-form>
+                        <option value="title" {% if selector == 'title' %} selected {% endif %}>제목</option>
+                        <option value="creator" {% if selector == 'creator' %} selected {% endif %}>작성자</option>
+                    </select>
                 </div>
-            </div>
-
-            <div class="mid_box">
-                <div class="table_header">
-                    <div class="mid_box_table_header_number">번호</div>
-                    <div class="mid_box_table_header_title">제목</div>
-                    <div class="mid_box_table_header_creator">작성자</div>
-                    <div class="mid_box_table_header_day">등록일</div>
-                    <div class="mid_box_table_header_viewer">조회</div>
-                </div>
-                {% for notice in notices %}
-                    <div class="table_contents">
-
-                        <div class="mid_box_table_contents_number">{{notice.num}}</div>
-                        <div class="mid_box_table_contents_title">
-                            <a href="{% url 'notice:detail' kinds notice.id %}" class="mid_box_table_contents_title_link">{{notice.title}}</a>
-                        </div>
-                        <div class="mid_box_table_contents_creator">{{notice.creator}}</div>
-                        <div class="mid_box_table_contents_day">{{notice.pub_date | date:'Y.m.d H:s'}}</div>
-                        <div class="mid_box_table_contents_viewer">{{notice.view_cnt}}</div>
-                    </div>
-                {% endfor %}
-            </div>
-
-            <div class="bottom_box">
-                <div class="kinds_bottom_box">
-                    <!-- 페이징 처리 -->
-                    {% if is_paginated %}
-                    <div class="pagination">
-                        {% if page_obj.has_previous %}
-                        <div class="page-item page-pre">
-                            <a class="page-link" href="?page={{ page_obj.previous_page_number }}"
-                                tabindex="-1">이전</a>
-                        </div>
-                        {% else %}
-                        <div class="page-item page-pre disabled">
-                            <a class="page-link" href="#" tabindex="-1">이전</a>
-                        </div>
-                        {% endif %}
-                        {% for page in page_range %}
-                            <div class="page-item {% if page == page_obj.number %} page-activate {% endif %}">
-                                <a class="page-link" href="?page={{ page }}">{{ page }}</a>
-                            </div>      
-                        {% endfor %}
-
-                        {% if page_obj.has_next %}
-                        <div class="page-item">
-                            <a class="page-link page-next"
-                                href="?page={{ page_obj.next_page_number }}">다음</a>
-                        </div>
-                        {% else %}
-                        <div class="page-item page-next disabled">
-                            <a class="page-link" href="#">다음</a>
-                        </div>
-                        {% endif %}
-                    </div>
-                    {% endif %}
+                <div class="top_box_search">
+                    <form method="GET" action="" id=top_box-form>
+                        <input type="text" class="top_box_input_text" name="search" value={{ searched }}>
+                        <input type="submit" value="" class="top_box_search_button">
+                    </form>
                 </div>
             </div>
         </div>
+
+        <div class="mid_box">
+            <div class="table_header">
+                <div class="mid_box_table_header_number">번호</div>
+                <div class="mid_box_table_header_title">제목</div>
+                <div class="mid_box_table_header_creator">작성자</div>
+                <div class="mid_box_table_header_day">등록일</div>
+                <div class="mid_box_table_header_viewer">조회</div>
+            </div>
+            {% for notice in notices %}
+                <div class="table_contents">
+
+                    <div class="mid_box_table_contents_number">{{notice.num}}</div>
+                    <div class="mid_box_table_contents_title">
+                        <a href="{% url 'notice:detail' kinds notice.id %}" class="mid_box_table_contents_title_link">{{notice.title}}</a>
+                    </div>
+                    <div class="mid_box_table_contents_creator">{{notice.creator}}</div>
+                    <div class="mid_box_table_contents_day">{{notice.pub_date | date:'Y.m.d H:s'}}</div>
+                    <div class="mid_box_table_contents_viewer">{{notice.view_cnt}}</div>
+                </div>
+            {% endfor %}
+        </div>
+
+        <div class="bottom_box">
+            <div class="kinds_bottom_box">
+                <!-- 페이징 처리 -->
+                {% if is_paginated %}
+                <div class="pagination">
+                    {% if page_obj.has_previous %}
+                    <div class="page-item page-pre">
+                        <a class="page-link" href="?page={{ page_obj.previous_page_number }}"
+                            tabindex="-1">이전</a>
+                    </div>
+                    {% else %}
+                    <div class="page-item page-pre disabled">
+                        <a class="page-link" href="#" tabindex="-1">이전</a>
+                    </div>
+                    {% endif %}
+                    {% for page in page_range %}
+                        <div class="page-item {% if page == page_obj.number %} page-activate {% endif %}">
+                            <a class="page-link" href="?page={{ page }}">{{ page }}</a>
+                        </div>      
+                    {% endfor %}
+
+                    {% if page_obj.has_next %}
+                    <div class="page-item">
+                        <a class="page-link page-next"
+                            href="?page={{ page_obj.next_page_number }}">다음</a>
+                    </div>
+                    {% else %}
+                    <div class="page-item page-next disabled">
+                        <a class="page-link" href="#">다음</a>
+                    </div>
+                    {% endif %}
+                </div>
+                {% endif %}
+            </div>
+        </div>
+
     </section>
 </div>
 

@@ -1,23 +1,24 @@
 
 .main_box{
-    display: flex;
-  }
-  
-  .main_section{
-    margin-top: 12rem;
-    margin-left: 7rem;
-  }
-  
-  .top_box{
-    display: flex;
-    height: 6rem;
-    width: 110rem;
-    align-items: flex-end;
-    margin-bottom: 2rem;
-  }
-  
-  .top_box_title{
-    font-size: 2.5rem;
-    font-weight: bold;
-    margin-right: 40rem;
-  }
+  display: flex;
+}
+
+.main_section{
+  margin-top: 12rem;
+  margin-left: 7rem;
+  width: 110rem;
+}
+
+.top_box{
+  display: flex;
+  height: 6rem;
+  width: 110rem;
+  align-items: flex-end;
+  margin-bottom: 2rem;
+  position: relative;
+}
+
+.top_box_title{
+  font-size: 2.5rem;
+  font-weight: bold;
+}
