@@ -32,6 +32,9 @@
   margin-top: 0.4rem;
 }
 
+.accounting_outlay_search_button:hover{
+  cursor:pointer;
+}
 
 .outlay_list__mid_box_head{
   width: 109.4rem;

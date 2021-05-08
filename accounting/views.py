@@ -16,13 +16,16 @@ class OutlayList(generic.ListView):
     model = Outlay
 
     def get_queryset(self):
-        outlay_list = []
-        month = str(datetime.datetime.now())[:7]
+        selected_year = self.request.GET.get('year', None)
+        selected_month = self.request.GET.get('month', None)
+        if selected_year is None and selected_month is None:
+            month = str(datetime.datetime.now())[:7]
+        else:
+            month = selected_year +"-" + selected_month
         #outlay_list = Outlay.objects.filter(outlay_date=)
-        for outlay in Outlay.objects.order_by('-outlay_date'):
-            if outlay.outlay_date[:7] == month:
-                outlay_list.append(outlay)
+        outlay_list = Outlay.objects.filter(outlay_date__startswith=month)
         return outlay_list
+        
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -32,18 +35,49 @@ class OutlayList(generic.ListView):
         car = 0
         total = 0
         other = 0
-        
-        for outlay in context['outlay_list']:
-            #print("테스트 비용", outlay.price)
-            total += outlay.price
-            if outlay.kinds == '복리후생':
-                welfare += outlay.price
-            elif outlay.kinds == '차량비용':
-                car += outlay.price
-            elif outlay.kinds == '운영비용':
-                company += outlay.price
+
+        context['daily_list'] = []
+
+        for i in range(1,32):
+            daily_price = {}
+            if i < 10:
+                date = "0" + str(i)
             else:
-                other += outlay.price
+                date = str(i)
+            daily_outlay = context['outlay_list'].filter(outlay_date__endswith=date)
+            daily_total = 0
+            daily_car = 0
+            daily_welfare = 0
+            daily_company = 0
+            daily_other = 0
+
+            for outlay in daily_outlay:
+                total += outlay.price
+
+                daily_price['date'] = date
+                daily_total += outlay.price
+
+                #print("테스트 비용", outlay.price)
+                if outlay.kinds == '복리후생':
+                    welfare += outlay.price
+                    daily_welfare += outlay.price
+                elif outlay.kinds == '차량':
+                    car += outlay.price
+                    daily_car += outlay.price
+                elif outlay.kinds == '운영':
+                    company += outlay.price
+                    daily_company += outlay.price
+                else:
+                    other += outlay.price
+                    daily_other += outlay.price
+
+            daily_price['car'] = daily_car
+            daily_price['other'] = daily_other
+            daily_price['welfare'] = daily_welfare
+            daily_price['company'] = daily_company
+            daily_price['total'] = daily_total
+            context['daily_list'].append(daily_price)
+            
         
         for monthly in MonthlySalary.objects.filter(payment_month=str(datetime.datetime.now())[:7]):
             salary += monthly.total
@@ -55,8 +89,10 @@ class OutlayList(generic.ListView):
         context['company'] = company
         context['total'] = total
         context['other'] = other
-        year = []
-        now_year = int(str(datetime.datetime.now())[:4])
+
+        print("teeeeeeeeeeeeee",context)
+        year = []  # 년도 selector 옵션값 배열
+        now_year = int(str(datetime.datetime.now())[:4])  
         for i in range(20):
             if i <11:
                 year.append(now_year - i)
@@ -65,6 +101,8 @@ class OutlayList(generic.ListView):
         context['option_year'] = sorted(year)
         context['year'] = now_year
         context['month'] = int(str(datetime.datetime.now())[5:7])
+        context['selected_year'] = int(self.request.GET.get('year', context['year']))
+        context['selected_month'] = int(self.request.GET.get('month', context['month']))
 
         return context
 

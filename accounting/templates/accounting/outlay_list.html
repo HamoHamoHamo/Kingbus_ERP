@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load custom_tags %}
 
 {% block head %}
     <link href="{% static 'css/accounting/accounting.css' %}" rel="stylesheet" type="text/css">
@@ -24,17 +25,19 @@
 
     <section class="main_section">
         <div class="top_box">
-            <div class="top_box_title">{{month}}월 지출현황</div>
+            <div class="top_box_title">{{selected_month}}월 지출현황</div>
             <div class="accounting_top_select">
                 <form action="" class="accounting_outlay_search_form">
                     <select name="year" class="accounting_outlay_search_date">
+                        <option></option>
                         {% for i in option_year %}
-                            <option value="{{i}}" {% if i == year %} selected {% endif %}>{{i}}년</option>
+                            <option value="{{i}}" {% if i == selected_year %} selected {% endif %}>{{i}}년</option>
                         {% endfor %}
                     </select>
                     <select name="month" class="accounting_outlay_search_date">
+                        <option></option>
                         {% for i in "x"|rjust:"12" %}
-                            <option value="{{forloop.counter}}" {% if forloop.counter == month %} selected {% endif %}>{{forloop.counter}}월</option>
+                            <option value="{% if forloop.counter < 10 %}0{% endif %}{{forloop.counter}}" {% if forloop.counter == selected_month %} selected {% endif %}>{{forloop.counter}}월</option>
                         {% endfor %}
                     </select>
                     <input type="submit" class="accounting_outlay_search_button" value="">
@@ -78,15 +81,18 @@
             <div class="mid_box_table">기타</div>
             <div class="mid_box_table">총 지출</div>
         </div>
-        {% for outlay in outlay_list %}
-            <div class="mid_box-table_content">
-                <div class="mid_box_table">{{ outlay.outlay_date }}</div>
-                <div class="mid_box_table">{% if outlay.kinds == "차량" %} {{outlay.price}} {% endif %}</div>
-                <div class="mid_box_table">{% if outlay.kinds == "복리후생" %} {{outlay.price}} {% endif %}</div>
-                <div class="mid_box_table">{% if outlay.kinds == "운영" %} {{outlay.price}} {% endif %}</div>
-                <div class="mid_box_table">{% if outlay.kinds == "기타" %} {{outlay.price}} {% endif %}</div>
-                <div class="mid_box_table"></div>
-            </div>
+
+        {% for outlay in daily_list %}
+            {% if outlay.date %}
+                <div class="mid_box-table_content">
+                    <div class="mid_box_table">{{ outlay.date }}</div>
+                    <div class="mid_box_table">{{ outlay.car }}</div>
+                    <div class="mid_box_table">{{ outlay.welfare }}</div>
+                    <div class="mid_box_table">{{ outlay.company }}</div>
+                    <div class="mid_box_table">{{ outlay.other }}</div>
+                    <div class="mid_box_table">{{ outlay.total}}</div>
+                </div>
+            {% endif %}
         {% endfor %}
     </section>
 
