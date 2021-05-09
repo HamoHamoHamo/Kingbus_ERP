@@ -70,6 +70,7 @@ def login(request):
             
         if check_password(login_password, user.password):
             request.session['user'] = user.id 
+            request.session['name'] = user.name
 
                 #세션도 딕셔너리 변수 사용과 똑같이 사용하면 된다.
                 #세션 user라는 key에 방금 로그인한 id를 저장한것.
@@ -87,4 +88,5 @@ def login(request):
 
 def logout(request):
     request.session.pop('user')
+    request.session.pop('name')
     return redirect('/')

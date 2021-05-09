@@ -62,7 +62,7 @@
                     <div class="mid_box_textarea_input">{{notice.content}}</div>
                 </div>
                 <div class="detail_edit_box">
-                    {% if logged_user == notice.creator.id %}
+                    {% if request.session.user == notice.creator.id %}
                         <div class="detail_bottom-button">
                             <a href="{% url 'notice:edit' notice.kinds notice.id %}">수정</a>    
                         </div>
@@ -83,16 +83,15 @@
                                 <div class="detail_bottom-comment_box_content">{{ comment.content }}</div>
                                 <div class="detail_bottom-comment_box_bottom">
                                     <div class="detail_bottom-comment_box_date">{{ comment.pub_date | date:'Y.m.d H:i:s' }}</div>
-                                        {% if logged_user == comment.creator %}
+                                        {% if request.session.user == comment.creator.id %}
                                             <a href="{% url 'notice:comment_del' notice.kinds notice.id comment.id %}">삭제</a>
                                         {% endif %}
                                 </div>
                             </div>
                         {% endfor %}
-
                     
                     <div class="detail_bottom-comment_create">
-                        <div class="detail_bottom-comment_name">{{ logged_user.name }}</div>
+                        <div class="detail_bottom-comment_name">{{ request.session.name }}</div>
                         <form method="POST" action="{% url 'notice:detail' notice.kinds notice.id %}" enctype="multipart/form-data">
                             {% csrf_token %}
                             <textarea class="detail_bottom-comment_input" name="content" required="required" placeholder="댓글을 입력하세요"></textarea>

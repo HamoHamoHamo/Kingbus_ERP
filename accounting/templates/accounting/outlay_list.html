@@ -3,7 +3,7 @@
 {% load custom_tags %}
 
 {% block head %}
-    <link href="{% static 'css/accounting/accounting.css' %}" rel="stylesheet" type="text/css">
+    <link href="{% static 'css/accounting/outlay.css' %}" rel="stylesheet" type="text/css">
 {% endblock %}
 
 {% block content %}
@@ -15,29 +15,38 @@
                 <div class="aside_title_font">경리</div>
             </div>
             <div class="aside_contents">
-                <a href="notice_driver.html">수입관리</a>
+                <a href="{% url 'accounting:income_list' %}">수입현황</a>
             </div>
             <div class="aside_contents aside_contents_thispage">
-                <a href="notice_driver.html">지출관리</a>
+                <a href="{% url 'accounting:outlay_list' %}">지출현황</a>
+            </div>
+            <div class="aside_contents">
+                <a href="{% url 'accounting:outlay_create' %}">지출작성</a>
+            </div>
+            <div class="aside_contents">
+                <a href="{% url 'accounting:salary_list' %}">급여현황</a>
+            </div>
+            <div class="aside_contents">
+                <a href="{% url 'accounting:salary_create' %}">급여작성</a>
             </div>
         </div>
     </aside>
 
     <section class="main_section">
         <div class="top_box">
-            <div class="top_box_title">{{selected_month}}월 지출현황</div>
+            <div class="top_box_title">{{str_selected_year}}년 {{str_selected_month}}월 지출현황</div>
             <div class="accounting_top_select">
                 <form action="" class="accounting_outlay_search_form">
                     <select name="year" class="accounting_outlay_search_date">
                         <option></option>
                         {% for i in option_year %}
-                            <option value="{{i}}" {% if i == selected_year %} selected {% endif %}>{{i}}년</option>
+                            <option value="{{i}}" {% if i == int_selected_year %} selected {% endif %}>{{i}}년</option>
                         {% endfor %}
                     </select>
                     <select name="month" class="accounting_outlay_search_date">
                         <option></option>
                         {% for i in "x"|rjust:"12" %}
-                            <option value="{% if forloop.counter < 10 %}0{% endif %}{{forloop.counter}}" {% if forloop.counter == selected_month %} selected {% endif %}>{{forloop.counter}}월</option>
+                            <option value="{% if forloop.counter < 10 %}0{% endif %}{{forloop.counter}}" {% if forloop.counter == int_selected_month %} selected {% endif %}>{{forloop.counter}}월</option>
                         {% endfor %}
                     </select>
                     <input type="submit" class="accounting_outlay_search_button" value="">
@@ -84,124 +93,21 @@
 
         {% for outlay in daily_list %}
             {% if outlay.date %}
-                <div class="mid_box-table_content">
-                    <div class="mid_box_table">{{ outlay.date }}</div>
-                    <div class="mid_box_table">{{ outlay.car }}</div>
-                    <div class="mid_box_table">{{ outlay.welfare }}</div>
-                    <div class="mid_box_table">{{ outlay.company }}</div>
-                    <div class="mid_box_table">{{ outlay.other }}</div>
-                    <div class="mid_box_table">{{ outlay.total}}</div>
-                </div>
+                {% with date=str_selected_year|add:"-"|add:str_selected_month|add:"-"|add:outlay.date %}
+                <a href="{% url 'accounting:outlay_detail_list' date %}">
+                {% endwith %}                    
+                    <div class="mid_box-table_content">    
+                        <div class="mid_box_table">{{ outlay.date }}</div>
+                        <div class="mid_box_table">{{ outlay.car }}</div>
+                        <div class="mid_box_table">{{ outlay.welfare }}</div>
+                        <div class="mid_box_table">{{ outlay.company }}</div>
+                        <div class="mid_box_table">{{ outlay.other }}</div>
+                        <div class="mid_box_table">{{ outlay.total}}</div>
+                    </div>
+                </a>
             {% endif %}
         {% endfor %}
     </section>
 
-
-<!--*********************************        
-        <div class="accounting_outlay_top_select">
-            <form action="" class="accounting_outlay_search_form">
-                <input type="text" class="accounting_outlay_search_year">
-                <select name="" id="" class="accounting_outlay_search_month">
-                    <option>1월</option>
-                    <option>2월</option>
-                    <option>3월</option>
-                    <option>4월</option>
-                    <option>5월</option>
-                    <option>6월</option>
-                    <option>7월</option>
-                    <option>8월</option>
-                    <option>9월</option>
-                    <option>10월</option>
-                    <option>11월</option>
-                    <option>12월</option>
-                </select>
-                <input type="button" class="accounting_outlay_search_button">
-            </form>
-            <a href="accounting_outlay_information_create_welfare.html">
-                <div class="accounting_outlay_create_button">추가하기</div>
-            </a>
-        </div>
-
-        <div class="accounting_outlay_information_main_form">
-            <div class="accounting_outlay_information_head_line">
-                <div class="accounting_outlay_information_head_line_categori">
-                    <div class="accounting_outlay_information_head_line_categori_title">급여</div>
-                    <div class="accounting_outlay_information_head_line_categori_value">+250,000,000</div>
-                </div>
-
-                <div class="accounting_outlay_information_head_line_categori">
-                    <div class="accounting_outlay_information_head_line_categori_title">복지관련지출</div>
-                    <div class="accounting_outlay_information_head_line_categori_value">+250,000,000</div>
-                </div>
-
-                <div class="accounting_outlay_information_head_line_categori">
-                    <div class="accounting_outlay_information_head_line_categori_title">차량관련지출</div>
-                    <div class="accounting_outlay_information_head_line_categori_value">+250,000,000</div>
-                </div>
-
-                <div class="accounting_outlay_information_head_line_categori">
-                    <div class="accounting_outlay_information_head_line_categori_title">운영관련지출</div>
-                    <div class="accounting_outlay_information_head_line_categori_value">+250,000,000</div>
-                </div>
-
-                <div class="accounting_outlay_information_head_line_categori">
-                    <div class="accounting_outlay_information_head_line_categori_title_total">총 지출</div>
-                    <div class="accounting_outlay_information_head_line_categori_value">+250,000,000</div>
-                </div>
-            </div>
-
-            <div class="accounting_outlay_information_main_information_box">
-                <div class="accounting_outlay_information_main_information_categori_section">
-                    <div class="accounting_outlay_information_main_information_day">날짜
-                    </div>
-                    <div class="accounting_outlay_information_main_information_categori">복지관련지출</div>
-                    <div class="accounting_outlay_information_main_information_categori">차량관련지출</div>
-                    <div class="accounting_outlay_information_main_information_categori">운영관련지출</div>
-                    <div class="accounting_outlay_information_main_information_categori">총 지출</div>
-                    <div class="accounting_outlay_information_main_information_black_box"></div>
-                </div>
-                <div class="accounting_outlay_information_main_information_information_form">
-                    <div class="accounting_outlay_information_main_information_information_box">
-                        <div class="accounting_outlay_information_main_information_information_day">1일</div>
-                        <div class="accounting_outlay_information_main_information_information_value">+250,000,000</div>
-                        <div class="accounting_outlay_information_main_information_information_value">+250,000,000</div>
-                        <div class="accounting_outlay_information_main_information_information_value">+250,000,000</div>
-                        <div class="accounting_outlay_information_main_information_information_value_total">+250,000,000
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <a href="accounting_outlay_information_welfare.html">
-            <div class="accounting_outlay_information_detail_button">상세보기</div>
-        </a>
-    </section>
-    <a href="accounting_outlay_information_day.html">
-        <div>skfWKquf</div>
-    </a>
-</div>
--->
-<script src="https://code.jquery.com/jquery-3.2.1.js" integrity="sha256-DZAnKJ/6XZ9si04Hgrsxu/8s717jcIzLy3oi35EouyE="
-    crossorigin="anonymous"></script>
-<script src="{% static 'js/accounting_outlay_information_modify.js' %}"></script>
-
-{% for outlay in outlay_list %}
-<p>{{ outlay.kinds }}</p>
-<p>{{ outlay.salary_id }}</p>
-<p>{{ outlay.brief }}</p>
-<p>지출금액 : {{ outlay.price }}</p>
-<p>지출일 : {{ outlay.outlay_date }}</p>
-<p>{{ outlay.creator }}</p>
-<p>{{ outlay.pub_date }}</p>
-<br>
-{% endfor %}
-
-<p>급여 : {{ salary }}</p>
-<p>차량비용 : {{ car }}</p>
-<p>복리후생 : {{ welfare }}</p>
-<p>운영비용 : {{ company }}</p>
-<p>기타 : {{ other }}</p>
-<p>총합 : {{ total }}</p>
 
 {% endblock %}

@@ -90,7 +90,6 @@ class OutlayList(generic.ListView):
         context['total'] = total
         context['other'] = other
 
-        print("teeeeeeeeeeeeee",context)
         year = []  # 년도 selector 옵션값 배열
         now_year = int(str(datetime.datetime.now())[:4])  
         for i in range(20):
@@ -99,10 +98,12 @@ class OutlayList(generic.ListView):
             else:
                 year.append(now_year + i-10)
         context['option_year'] = sorted(year)
-        context['year'] = now_year
-        context['month'] = int(str(datetime.datetime.now())[5:7])
-        context['selected_year'] = int(self.request.GET.get('year', context['year']))
-        context['selected_month'] = int(self.request.GET.get('month', context['month']))
+        context['year'] = str(datetime.datetime.now())[:4]
+        context['month'] = str(datetime.datetime.now())[5:7]
+        context['int_selected_year'] = int(self.request.GET.get('year', context['year']))
+        context['int_selected_month'] = int(self.request.GET.get('month', context['month']))
+        context['str_selected_year'] = str(self.request.GET.get('year', context['year']))
+        context['str_selected_month'] = str(self.request.GET.get('month', context['month']))
 
         return context
 
@@ -123,10 +124,41 @@ def outlay_create(request):
         }
     return render(request, 'accounting/outlay_create.html', context)
 
-class OutlayDetail(generic.DetailView):
+class OutlayDetailList(generic.ListView):
     template_name = 'accounting/outlay_detail.html'
     context_object_name = 'outlay'
     model = Outlay
+
+    def get_queryset(self):
+        outlay = Outlay.objects.filter(outlay_date=self.kwargs['date'])
+        return outlay
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['date'] = self.kwargs['date']
+
+
+        context['total'] = 0
+        context['car'] = 0
+        context['welfare'] = 0
+        context['company'] = 0
+        context['other'] = 0
+
+        for outlay in context['outlay']:
+            context['total'] += outlay.price
+            #print("테스트 비용", outlay.price)
+            if outlay.kinds == '복리후생':
+                context['welfare'] += outlay.price
+            elif outlay.kinds == '차량':
+                context['car'] += outlay.price
+            elif outlay.kinds == '운영':
+                context['company'] += outlay.price
+            else:
+                context['other'] += outlay.price
+
+        return context
+
+
 
 def outlay_delete(request, pk):
     outlay = get_object_or_404(Outlay, pk=pk)

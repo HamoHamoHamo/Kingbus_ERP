@@ -65,7 +65,7 @@ class NoticeKindsView(generic.ListView):
         context['page_range'] = page_range
         context['current_page'] = current_page
         context['kinds'] = self.kwargs['kinds']
-        context['logged_user'] = get_object_or_404(User, pk=self.request.session.get('user'))
+        
         context['searched'] = self.request.GET.get('search', '')
         context['selector'] = self.request.GET.get('top_box_selector', 'title')
         return context
@@ -75,7 +75,7 @@ def create(request):
         'name': get_object_or_404(User, pk=request.session.get('user')).name,
         }
     if request.method == "GET":
-        context['logged_user'] = get_object_or_404(User, pk=request.session.get('user'))
+        
         return render(request, 'notice/create.html', context)
 
     elif request.method == 'POST':
@@ -118,7 +118,7 @@ def edit(request, kinds, notice_id):
             'notice':notice,
             'notice_files':NoticeFile.objects.filter(notice_id=notice_id),
         }
-        context['logged_user'] = get_object_or_404(User, pk=request.session.get('user'))
+        
         return render(request, "notice/edit.html", context )
     else:
         upload_file = request.FILES.getlist('file', None)
@@ -176,7 +176,7 @@ class NoticeDetail(generic.DetailView):
     def get_context_data(self, **kwargs):
         # 기본 구현을 호출해 context를 가져온다.
         context = super(NoticeDetail, self).get_context_data(**kwargs)
-        context['logged_user'] = get_object_or_404(User, pk=self.request.session.get('user'))
+        
         context['view_cnt'] = self.get_view_cnt()
         context['notice'] = self.notice
         context['notice_files'] = NoticeFile.objects.filter(notice_id=self.notice_id)
