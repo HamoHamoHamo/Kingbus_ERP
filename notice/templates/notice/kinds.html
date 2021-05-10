@@ -67,7 +67,7 @@
                         <a href="{% url 'notice:detail' kinds notice.id %}" class="mid_box_table_contents_title_link">{{notice.title}}</a>
                     </div>
                     <div class="mid_box_table_contents_creator">{{notice.creator}}</div>
-                    <div class="mid_box_table_contents_day">{{notice.pub_date | date:'Y.m.d H:s'}}</div>
+                    <div class="mid_box_table_contents_day">{{notice.pub_date | date:'Y.m.d H:i'}}</div>
                     <div class="mid_box_table_contents_viewer">{{notice.view_cnt}}</div>
                 </div>
             {% endfor %}

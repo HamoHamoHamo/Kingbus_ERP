@@ -82,7 +82,7 @@
                             <div class="outlay_detail_mid_kinds__contents_box__content">{{i.price}}</div>
                             <div class="outlay_detail_mid_kinds__contents_box__content">{{i.brief}}</div>
                             <div class="outlay_detail_mid_kinds__contents_box__content">{{i.creator}}</div>
-                            <div class="outlay_detail_mid_kinds__contents_box__content">{{i.pub_date | date:'Y.m.d H:s'}}</div>
+                            <div class="outlay_detail_mid_kinds__contents_box__content">{{i.pub_date | date:'Y.m.d H:i'}}</div>
                             <div class="outlay_detail_mid_kinds__contents_box__content">
                                 <a href="{% url 'accounting:outlay_edit' i.id %}">수정</a>
                                 <span>/</span>
@@ -109,7 +109,7 @@
                             <div class="outlay_detail_mid_kinds__contents_box__content">{{i.price}}</div>
                             <div class="outlay_detail_mid_kinds__contents_box__content">{{i.brief}}</div>
                             <div class="outlay_detail_mid_kinds__contents_box__content">{{i.creator}}</div>
-                            <div class="outlay_detail_mid_kinds__contents_box__content">{{i.pub_date | date:'Y.m.d H:s'}}</div>
+                            <div class="outlay_detail_mid_kinds__contents_box__content">{{i.pub_date | date:'Y.m.d H:i'}}</div>
                             <div class="outlay_detail_mid_kinds__contents_box__content">
                                 <a href="{% url 'accounting:outlay_edit' i.id %}">수정</a>
                                 <span>/</span>
@@ -135,7 +135,7 @@
                             <div class="outlay_detail_mid_kinds__contents_box__content">{{i.price}}</div>
                             <div class="outlay_detail_mid_kinds__contents_box__content">{{i.brief}}</div>
                             <div class="outlay_detail_mid_kinds__contents_box__content">{{i.creator}}</div>
-                            <div class="outlay_detail_mid_kinds__contents_box__content">{{i.pub_date | date:'Y.m.d H:s'}}</div>
+                            <div class="outlay_detail_mid_kinds__contents_box__content">{{i.pub_date | date:'Y.m.d H:i'}}</div>
                             <div class="outlay_detail_mid_kinds__contents_box__content">
                                 <a href="{% url 'accounting:outlay_edit' i.id %}">수정</a>
                                 <span>/</span>
@@ -161,7 +161,7 @@
                             <div class="outlay_detail_mid_kinds__contents_box__content">{{i.price}}</div>
                             <div class="outlay_detail_mid_kinds__contents_box__content">{{i.brief}}</div>
                             <div class="outlay_detail_mid_kinds__contents_box__content">{{i.creator}}</div>
-                            <div class="outlay_detail_mid_kinds__contents_box__content">{{i.pub_date | date:'Y.m.d H:s'}}</div>
+                            <div class="outlay_detail_mid_kinds__contents_box__content">{{ i.pub_date | date:'Y.m.d H:i' }}</div>
                             <div class="outlay_detail_mid_kinds__contents_box__content">
                                 <a href="{% url 'accounting:outlay_edit' i.id %}">수정</a>
                                 <span>/</span>

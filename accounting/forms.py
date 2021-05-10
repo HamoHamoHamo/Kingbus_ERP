@@ -39,7 +39,7 @@ class OutlayForm(forms.ModelForm):
             'outlay_date',
         ]
         widgets = {
-            'outlay_date': forms.DateInput(format='%Y-%m-%d', attrs={'class':'datefield'}),
+            'outlay_date': forms.DateInput(format='%Y-%m-%d', attrs={'class':'datefield', 'type':'date'}),
         }
 
 class CollectForm(forms.ModelForm):
