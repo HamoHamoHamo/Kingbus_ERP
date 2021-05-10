@@ -182,7 +182,7 @@ def outlay_edit(request, pk):
                 return redirect('accounting:outlay_list')
     else:
         context = {
-            'outlay_form' : OutlayForm(instance=outlay),
+            'outlay' : outlay,
         }
     return render(request, 'accounting/outlay_edit.html', context)
 

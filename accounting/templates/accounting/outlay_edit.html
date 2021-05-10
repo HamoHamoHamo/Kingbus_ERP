@@ -1,21 +1,75 @@
-outlay edit
-
-<form method="POST" action="" >
-    {% csrf_token %}
-    {{ outlay_form}}
-    <input type="submit" value="등록">
-</form>
+{% extends 'base.html' %}
+{% load static %}
 
 
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
-<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+{% block head %}
+    <link href="{% static 'css/accounting/outlay.css' %}" rel="stylesheet" type="text/css">
+{% endblock %}
 
-<script>
-    // This code activates flatpickr on fields with the 'datetimefield' class when the document has loaded
-    window.addEventListener("DOMContentLoaded", function () {
-        flatpickr(".datefield", {
-            enableTime: false,
-            dateFormat: "Y-m-d",
-        });
-    });
-</script>
+{% block content %}
+
+<div class="main_box outlay_detaillist__main_box">
+    <aside>
+        <div class="aside_box">
+            <div class="aside_title">
+                <div class="aside_title_font">경리</div>
+            </div>
+            <div class="aside_contents">
+                <a href="{% url 'accounting:income_list' %}">수입현황</a>
+            </div>
+            <div class="aside_contents">
+                <a href="{% url 'accounting:outlay_list' %}">지출현황</a>
+            </div>
+            <div class="aside_contents">
+                <a href="{% url 'accounting:outlay_create' %}">지출작성</a>
+            </div>
+            <div class="aside_contents">
+                <a href="{% url 'accounting:salary_list' %}">급여현황</a>
+            </div>
+            <div class="aside_contents">
+                <a href="{% url 'accounting:salary_create' %}">급여작성</a>
+            </div>
+        </div>
+    </aside>
+
+    <section class="main_section">
+        <div class="top_box">
+            <div class="top_box_title">지출 수정</div>
+        </div>
+        <div class="outlay_create__mid_box">
+            <div class="outlay_create__mid_box__header">
+                <div class="outlay_create__mid_box__header_title">지급구분</div>
+                <div class="outlay_create__mid_box__header_title">적요</div>
+                <div class="outlay_create__mid_box__header_title">금액</div>
+                <div class="outlay_create__mid_box__header_title">날짜</div>
+            </div>
+            <form method="POST" action="" >
+                <div class="outlay_create__mid_box__content">
+                    {% csrf_token %}
+                    <div class="outlay_create__mid_box__content_box">
+                        <select name="kinds" class="outlay_create__mid_box__content_kinds" required>
+                            <option></option>
+                            <option {% if outlay.kinds == "차량" %} selected {% endif %} value="차량">차량관련</option>
+                            <option {% if outlay.kinds == "복리후생" %} selected {% endif %} value="복리후생">복리후생관련</option>
+                            <option {% if outlay.kinds == "운영" %} selected {% endif %} value="운영">운영관련</option>
+                            <option {% if outlay.kinds == "기타" %} selected {% endif %} value="기타">기타</option>
+                        </select>
+                    </div>
+                    <div class="outlay_create__mid_box__content_box">
+                        <input type="text" name="brief" class="outlay_create__mid_box__content_brief" required value="{{outlay.brief}}">
+                    </div>
+                    <div class="outlay_create__mid_box__content_box">
+                        <input type="number" name="price" class="outlay_create__mid_box__content_price" required value="{{outlay.price}}">원
+                    </div>
+                    <div class="outlay_create__mid_box__content_box">
+                        <input type="date" name="outlay_date" class="outlay_create__mid_box__content_date" required value="{{outlay.outlay_date}}">
+                    </div>
+                </div>
+                <input type="submit" value="등록" class="outlay_create_submit">
+            </form>
+                
+        </div>
+        <div class="outlay_create_blank"></div>
+    </section>
+{% endblock %}
+
