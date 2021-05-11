@@ -1,43 +1,115 @@
-<p>salary create</p>
+{% extends 'base.html' %}
+{% load static %}
+{% load custom_tags %}
 
-<form action="" method="GET">
-    <input type="text" class="datefield" name="date" value="{{ date }}">
-    <input type="submit" value="변경">
-</form>
+{% block head %}
+    <link href="{% static 'css/accounting/outlay.css' %}" rel="stylesheet" type="text/css">
+{% endblock %}
 
-<form action='', method='POST'>
-    {% csrf_token %}
-    {% if daily_form|length == 0 %}
-        {% for member in member_list %}
-            <span>번호 : {{ member.pk }}</span>
-            <span>이름 : {{ member.name }}</span>
-            {{ form }}
+{% block content %}
+
+<div class="main_box">
+    <aside>
+        <div class="aside_box">
+            <div class="aside_title">
+                <div class="aside_title_font">경리</div>
+            </div>
+            <div class="aside_contents">
+                <a href="{% url 'accounting:income_list' %}">수입현황</a>
+            </div>
+            <div class="aside_contents">
+                <a href="{% url 'accounting:outlay_list' %}">지출현황</a>
+            </div>
+            <div class="aside_contents">
+                <a href="{% url 'accounting:outlay_create' %}">지출작성</a>
+            </div>
+            <div class="aside_contents">
+                <a href="{% url 'accounting:salary_list' %}">급여현황</a>
+            </div>
+            <div class="aside_contents aside_contents_thispage">
+                <a href="{% url 'accounting:salary_create' %}">급여작성</a>
+            </div>
+        </div>
+    </aside>
+
+    <section class="main_section">
+        <div class="top_box">
+            <div class="top_box_title">{{date}} 급여작성</div>
+            <div class="accounting_top_select">
+                <form action="" class="accounting_outlay_search_form">
+                    <input type="date" name="date" value="{{date}}">
+                    
+                    <input type="submit" class="accounting_outlay_search_button" value="">
+                </form>
+            </div>
+        </div>
+        <div class="mid_box">
+                <div class="outlay_detail_mid_content__header">
+                    <div class="salary_create__mid_box__header_title">이름</div>
+                    <div class="salary_create__mid_box__header_title">기본급</div>
+                    <div class="salary_create__mid_box__header_title">공제금</div>
+                    <div class="salary_create__mid_box__header_title salary_create__mid_box__header_title_color">상여금</div>
+                    <div class="salary_create__mid_box__header_title salary_create__mid_box__header_title_color">추가금</div>
+                    <div class="salary_create__mid_box__header_title salary_create__mid_box__header_title_color">상여 + 추가</div>
+                </div>
+
+                <form method="POST" action="" class="salary_create_form">
+                    {% csrf_token %}
+                    {% for member in member_list %}
+                    <div class="outlay_detail_mid_kinds__content_box salary_create_content_box">
+                        <div class="salary_create__mid_box__content">
+                            <div class="salary_create__mid_box__content_input">{% if member.monthly_salary.member_id.name %}{{member.monthly_salary.member_id.name}} {% else %} {{member.name}} {% endif %} </div>
+                        </div>
+                        <div class="salary_create__mid_box__content">
+                            <input type="number" name="base" class="salary_create__mid_box__content_input" value="{{member.monthly_salary.base}}">원
+                        </div>
+                        <div class="salary_create__mid_box__content">
+                            <input type="number" name="deductible" class="salary_create__mid_box__content_input" value="{{member.monthly_salary.deductible}}">원
+                        </div>
+                        <div class="salary_create__mid_box__content">
+                            <input type="number" name="bonus" class="salary_create__mid_box__content_input" value="{{member.bonus}}">원
+                        </div>
+                        <div class="salary_create__mid_box__content">
+                            <input type="number" name="additional" class="salary_create__mid_box__content_input" value="{{member.additional}}">원
+                        </div>
+                        <div class="salary_create__mid_box__content">
+                            <div class="salary_create__mid_box__content_input">{{member.total}}</div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                    <input type="submit" class="outlay_create_submit">
+                </form>
+        </div>
+    </section>
+
+
+    <form action='', method='POST'>
+        {% csrf_token %}
+        {% if daily_form|length == 0 %}
+            {% for member in member_list %}
+                <span>번호 : {{ member.pk }}</span>
+                <span>이름 : {{ member.name }}</span>
+                {{ form }}
+                <br>
+            {% endfor %}
+        {% else %}
+    
+        {% for daily in daily_form %}
+            <span>번호 : {{ daily.instance.monthly_salary.member_id.pk }}</span>
+            <span>이름 : {{ daily.instance.monthly_salary.member_id.name }}</span>
+            {{ daily }}
             <br>
         {% endfor %}
-    {% else %}
-
-    {% for daily in daily_form %}
-        <span>번호 : {{ daily.instance.monthly_salary.member_id.pk }}</span>
-        <span>이름 : {{ daily.instance.monthly_salary.member_id.name }}</span>
-        {{ daily }}
-        <br>
-    {% endfor %}
-    <!--form 을 여러개 추가 할 수 있어야됨 지금은 하나밖에 안됨-->
-    <!--자바스크립트로 추가하기-->
-    {% endif %}
-    <input type="submit" value="등록">
-</form>
+        <!--form 을 여러개 추가 할 수 있어야됨 지금은 하나밖에 안됨-->
+        <!--자바스크립트로 추가하기-->
+        {% endif %}
+        <input type="submit" value="등록">
+    </form>
+    
 
 
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
-<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 
-<script>
-    // This code activates flatpickr on fields with the 'datetimefield' class when the document has loaded
-    window.addEventListener("DOMContentLoaded", function () {
-        flatpickr(".datefield", {
-            enableTime: false,
-            dateFormat: "Y-m-d",
-        });
-    });
-</script>
+
+
+{% endblock %}
+    

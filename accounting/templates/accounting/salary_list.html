@@ -1,12 +1,90 @@
-salary list
-<br>
-{% for salary in salary_list %}
-    <span>번호 :{{ salary.member_id.pk }}</span>
-    <span><a href="{% url 'accounting:salary_detail' salary.member_id.pk %}">이름</a> : {{salary.member_id.name}}</span>
-    <span>기본급 : {{salary.base}}</span>
-    <span>상여금 : {{salary.bonus}}</span>
-    <span>추가금 : {{salary.additional}}</span>
-    <span>공제금 : {{salary.deductible}}</span>
-    <span>총금액 : {{salary.total}}</span>
-    <br>
-{% endfor %}
+{% extends 'base.html' %}
+{% load static %}
+{% load custom_tags %}
+
+{% block head %}
+    <link href="{% static 'css/accounting/outlay.css' %}" rel="stylesheet" type="text/css">
+{% endblock %}
+
+{% block content %}
+
+<div class="main_box">
+    <aside>
+        <div class="aside_box">
+            <div class="aside_title">
+                <div class="aside_title_font">경리</div>
+            </div>
+            <div class="aside_contents">
+                <a href="{% url 'accounting:income_list' %}">수입현황</a>
+            </div>
+            <div class="aside_contents">
+                <a href="{% url 'accounting:outlay_list' %}">지출현황</a>
+            </div>
+            <div class="aside_contents">
+                <a href="{% url 'accounting:outlay_create' %}">지출작성</a>
+            </div>
+            <div class="aside_contents aside_contents_thispage">
+                <a href="{% url 'accounting:salary_list' %}">급여현황</a>
+            </div>
+            <div class="aside_contents">
+                <a href="{% url 'accounting:salary_create' %}">급여작성</a>
+            </div>
+        </div>
+    </aside>
+
+    <section class="main_section">
+        <div class="top_box">
+            <div class="top_box_title">{{selected_year}}년 {{selected_month}}월 급여현황</div>
+            <div class="accounting_top_select">
+                <form action="" class="accounting_outlay_search_form">
+                    <select name="year" class="accounting_outlay_search_date">
+                        <option></option>
+                        <option value="2021" {% if 2021 == int_selected_year %} selected {% endif %}>2021년</option>
+                        <option value="2022" {% if 2022 == int_selected_year %} selected {% endif %}>2022년</option>
+                        <option value="2023" {% if 2023 == int_selected_year %} selected {% endif %}>2023년</option>
+                        <option value="2024" {% if 2024 == int_selected_year %} selected {% endif %}>2024년</option>
+                        <option value="2025" {% if 2025 == int_selected_year %} selected {% endif %}>2025년</option>
+
+                    </select>
+                    <select name="month" class="accounting_outlay_search_date">
+                        <option></option>
+                        {% for i in "x"|rjust:"12" %}
+                            <option value="{% if forloop.counter < 10 %}0{% endif %}{{forloop.counter}}" {% if forloop.counter == int_selected_month %} selected {% endif %}>{{forloop.counter}}월</option>
+                        {% endfor %}
+                    </select>
+                    <input type="submit" class="accounting_outlay_search_button" value="">
+                </form>
+            </div>
+        </div>
+        <div class="mid_box">
+                <div class="outlay_detail_mid_content__header">
+                    <div class="salary_list__mid_box__header_title">이름</div>
+                    <div class="salary_list__mid_box__header_title">기본급</div>
+                    <div class="salary_list__mid_box__header_title">공제금</div>
+                    <div class="salary_list__mid_box__header_title">상여금</div>
+                    <div class="salary_list__mid_box__header_title">추가금</div>
+                    <div class="salary_list__mid_box__header_title">총 금액</div>
+                </div>
+
+                {% for salary in salary_list %}
+                    <div class="outlay_detail_mid_kinds__content_box">
+                        <div class="salary_list__mid_box__content">{{salary.member_id.name}}</div>
+                        <div class="salary_list__mid_box__content">{{salary.base}}</div>
+                        <div class="salary_list__mid_box__content">{{salary.deductible}}</div>
+                        <div class="salary_list__mid_box__content">{{salary.bonus}}</div>
+                        <div class="salary_list__mid_box__content">{{salary.additional}}</div>
+                        <div class="salary_list__mid_box__content">{{salary.total}}</div>
+                    </div>
+                {% endfor %}
+
+        </div>
+    </section>
+
+
+
+
+
+
+
+{% endblock %}
+    

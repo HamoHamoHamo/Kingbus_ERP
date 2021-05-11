@@ -21,6 +21,7 @@ class MonthlySalary(models.Model):
 class DailySalary(models.Model):
     bonus = models.IntegerField(verbose_name='상여금', null=False, blank=True)
     additional = models.IntegerField(verbose_name='추가금', null=False, blank=True)
+    total = models.IntegerField(verbose_name='총금액', null=False, blank=True)
     creator = models.ForeignKey(User, on_delete=models.SET_NULL, related_name="salary_daily_user", db_column="user_id", null=True)
     date = models.CharField(verbose_name='날짜', null=False, max_length=10, default=datetime.datetime.now)
     pub_date = models.DateTimeField(verbose_name='작성시간', auto_now_add=True, null=False)

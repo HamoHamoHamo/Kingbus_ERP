@@ -193,15 +193,22 @@ class SalaryList(generic.ListView):
     model = MonthlySalary
 
     def get_queryset(self):
-        salary_list = []
-        member_list = Member.objects.order_by('pk')
-        month = str(datetime.datetime.now())[:7]
-        #salary_list = salary.objects.filter(payment_month=)
-        for member in member_list:
-            for salary in member.salary_monthly.all():
-                if salary.payment_month == month:
-                    salary_list.append(salary)
+        self.selected_year = self.request.GET.get('year', str(datetime.datetime.now())[:4])
+        self.selected_month = self.request.GET.get('month', str(datetime.datetime.now())[5:7])
+        
+        month = self.selected_year +"-" + self.selected_month
+        
+        salary_list = MonthlySalary.objects.filter(payment_month__startswith=month)
         return salary_list
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['selected_year'] = self.selected_year
+        context['selected_month'] = self.selected_month
+        context['int_selected_year'] = int(self.selected_year)
+        context['int_selected_month'] = int(self.selected_month)
+        
+        return context
 
 def salary_create(request):
     get_date = request.GET.get('date')
@@ -210,27 +217,28 @@ def salary_create(request):
     if request.method == "POST":
         remove = DailySalary.objects.filter(date=get_date)
         print("remove", len(remove))
+        base_list = request.POST.getlist('base')
+        deductible_list = request.POST.getlist('deductible')
         bonus_list = request.POST.getlist('bonus')
         additional_list = request.POST.getlist('additional')
-        connect_list = request.POST.getlist('connect_id')
+        #connect_list = request.POST.getlist('connect_id')
 
         cnt = 0
-        month = str(datetime.datetime.now())[:7]
+        month = get_date[:7]
         login_user = get_object_or_404(User, pk=request.session.get('user'))
 
         # 만약 POST에서 에러가 나면 값은 저장안되고 이전값만 다 지워질 수 있음
         for r in remove:
             print("테스트", r)
             r.delete()
-        
+            
         for member in Member.objects.order_by('pk'):
-            #lamda? 를 쓰면 더 간략하게 쓸 수 있을듯
-            monthly = None
-            for salary in member.salary_monthly.all():
-                if salary.payment_month == month:
-                    monthly = salary
-            # 만약 이번달 급여가 db에 없으면 이번달 급여를 모든 항목 0으로 넣어서 만듬
-            if not monthly:
+            try:
+                monthly = member.salary_monthly.get(payment_month__startswith=month)
+                print("aaaaaaaaaaaaaaaaaaaaaaaaa", monthly)
+
+            except Exception as e:
+                # 만약 이번달 급여가 db에 없으면 이번달 급여를 모든 항목 0으로 넣어서 만듬
                 monthly = MonthlySalary(
                     member_id = member,
                     base=0,
@@ -238,18 +246,35 @@ def salary_create(request):
                     additional=0,
                     deductible=0,
                     total=0,
+                    payment_month=month,
                     creator=login_user,
                 )
                 monthly.save()
 
+            if base_list[cnt]:
+                monthly.base = int(base_list[cnt])
+            if deductible_list[cnt]:                
+                monthly.deductible = int(deductible_list[cnt])
+
+            monthly.save()
+
+            try:
+                daily_bonus = int(bonus_list[cnt])
+                daily_additional = int(additional_list[cnt])
+            except:
+                daily_bonus=0
+                daily_additional=0
+
             daily = DailySalary(
-                bonus=bonus_list[cnt],
-                additional=additional_list[cnt],
+                bonus=daily_bonus,
+                additional=daily_additional,
                 creator=login_user,
                 date=get_date,
-                connect_id=DispatchConnect.objects.get(pk=connect_list[cnt]),
                 monthly_salary=monthly,
+                total=daily_bonus + daily_additional
             )
+            #if connect_list[cnt]:
+            #    daily.connect_id=DispatchConnect.objects.get(pk=connect_list[cnt])
             cnt += 1
             daily.save()
 
@@ -257,10 +282,11 @@ def salary_create(request):
             monthly.bonus = 0
             monthly.additional = 0
             monthly.total = 0
+            monthly.save()
             for daily in monthly.salary_daily.all():
                 monthly.bonus = int(monthly.bonus) + int(daily.bonus)
                 monthly.additional = int(monthly.additional) + int(daily.additional)
-            monthly.total = monthly.bonus + monthly.additional
+            monthly.total = monthly.bonus + monthly.additional + monthly.base - monthly.deductible
             monthly.save()
         
         
@@ -279,20 +305,20 @@ def salary_create(request):
         return redirect('accounting:salary_list')
 
     elif request.method == 'GET':
-        print("날짜확인", get_date)
-       
-        daily_salary = DailySalary.objects.filter(date=get_date)
-        daily_form = []
-        for salary in daily_salary:
-            form = DailySalaryForm(instance=salary)
-            daily_form.append(form)
+        member_list = []
+        for member in Member.objects.order_by('pk'):
+            try:
+                monthly = MonthlySalary.objects.filter(payment_month=get_date[:7]).get(member_id=member)
+                #print("ttttttttttttttttttttttttttttt", monthly.base)
+                daily = DailySalary.objects.filter(date=get_date).get(monthly_salary=monthly)
+            except Exception as e:
+                daily = member
+            #print("aaaaaaaaaaaaaaaaaaaaaaaaaaaaa", daily)
+            member_list.append(daily)
 
         context = {
-            'form' : DailySalaryForm,
-            'daily_form' : daily_form,
-            'daily_salary' : daily_salary,
-            'member_list' : Member.objects.order_by('pk'),
             'date' : get_date,
+            'member_list' : member_list
             #'daily_order' : DispatchOrder.objects.filter(first_departure_date=str(datetime.datetime.now())[:10])
         }
     return render(request, 'accounting/salary_create.html', context)

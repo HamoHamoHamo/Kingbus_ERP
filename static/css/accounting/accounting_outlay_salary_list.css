@@ -1,0 +1,21 @@
+.salary_list__mid_box__header_title{
+    text-align: center;
+    width: 20rem;
+}
+.salary_list__mid_box__header_title:nth-child(1){
+    width: 10rem;
+}
+
+.salary_list__mid_box__content{
+    width:20rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    font-size: 1.5rem;
+}
+
+.salary_list__mid_box__content:nth-child(1){
+    width: 10rem;
+    
+}
