@@ -8,13 +8,13 @@ Cloning Youtube with VanillaJS and NodeJS
 - [x] 회원가입
 - [x] 로그인
 - [x] 공지사항
-- [ ] 경리시스템
+- [x] 경리시스템
     - 차량관리 끝나면 모델에 있는 vehicle_id 활성화
-- [ ] 배차시스템
+- [x] 배차시스템
     - 차량관리 인사관리 끝나면 모델에 있는 bus_id, driver_id 활성화
 - [x] 인사관리
 - [ ] 차량관리
-- [ ] 서류관리
+- [x] 서류관리
 - [ ] 사고관리
 - [ ] 설정
 
@@ -22,3 +22,4 @@ Cloning Youtube with VanillaJS and NodeJS
  - paginate 구현
  - 삭제나 수정할때 권한 확인
  - admin페이지 crudmember-user 에서 비밀번호 안 보이게 하기
+ - 급여에서 공제항목 세분화

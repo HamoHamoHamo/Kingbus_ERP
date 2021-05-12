@@ -67,16 +67,17 @@
                 </div>
 
                 {% for salary in salary_list %}
-                    <div class="outlay_detail_mid_kinds__content_box">
-                        <div class="salary_list__mid_box__content">{{salary.member_id.name}}</div>
-                        <div class="salary_list__mid_box__content">{{salary.base}}</div>
-                        <div class="salary_list__mid_box__content">{{salary.deductible}}</div>
-                        <div class="salary_list__mid_box__content">{{salary.bonus}}</div>
-                        <div class="salary_list__mid_box__content">{{salary.additional}}</div>
-                        <div class="salary_list__mid_box__content">{{salary.total}}</div>
-                    </div>
+                    <a href="/accounting/outlay/salary/{{salary.member_id.pk}}/?year={{selected_year}}&month={{selected_month}}">
+                        <div class="outlay_detail_mid_kinds__content_box">                        
+                            <div class="salary_list__mid_box__content">{{salary.member_id.name}}</div>                        
+                            <div class="salary_list__mid_box__content">{{salary.base}}</div>
+                            <div class="salary_list__mid_box__content">{{salary.deductible}}</div>
+                            <div class="salary_list__mid_box__content">{{salary.bonus}}</div>
+                            <div class="salary_list__mid_box__content">{{salary.additional}}</div>
+                            <div class="salary_list__mid_box__content">{{salary.total}}</div>
+                        </div>
+                    </a>
                 {% endfor %}
-
         </div>
     </section>
 

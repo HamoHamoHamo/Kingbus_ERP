@@ -97,7 +97,7 @@
                 <a href="{% url 'accounting:outlay_detail_list' date %}">
                 {% endwith %}                    
                     <div class="mid_box-table_content">    
-                        <div class="mid_box_table">{{ outlay.date }}</div>
+                        <div class="mid_box_table">{{str_selected_year}}년 {{str_selected_month}}월 {{ outlay.date }}일</div>
                         <div class="mid_box_table">{{ outlay.car }}</div>
                         <div class="mid_box_table">{{ outlay.welfare }}</div>
                         <div class="mid_box_table">{{ outlay.company }}</div>

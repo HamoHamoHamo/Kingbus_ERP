@@ -1,11 +1,11 @@
 from crudmember.models import User
 from humanresource.models import Member
 from dispatch.models import DispatchOrder, DispatchConnect
-from django.http import Http404, HttpResponse
+from django.http import Http404, HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse, reverse_lazy
 from django.views import generic
-from .forms import MonthlySalaryForm, DailySalaryForm, OutlayForm, CollectForm, IncomeForm
+from .forms import OutlayForm, CollectForm, IncomeForm
 from .models import MonthlySalary, DailySalary, Outlay, Collect, Income
 import datetime
 
@@ -217,10 +217,9 @@ def salary_create(request):
     if request.method == "POST":
         remove = DailySalary.objects.filter(date=get_date)
         print("remove", len(remove))
-        base_list = request.POST.getlist('base')
-        deductible_list = request.POST.getlist('deductible')
         bonus_list = request.POST.getlist('bonus')
         additional_list = request.POST.getlist('additional')
+        remark_list = request.POST.getlist('remark')
         #connect_list = request.POST.getlist('connect_id')
 
         cnt = 0
@@ -251,13 +250,6 @@ def salary_create(request):
                 )
                 monthly.save()
 
-            if base_list[cnt]:
-                monthly.base = int(base_list[cnt])
-            if deductible_list[cnt]:                
-                monthly.deductible = int(deductible_list[cnt])
-
-            monthly.save()
-
             try:
                 daily_bonus = int(bonus_list[cnt])
                 daily_additional = int(additional_list[cnt])
@@ -268,6 +260,7 @@ def salary_create(request):
             daily = DailySalary(
                 bonus=daily_bonus,
                 additional=daily_additional,
+                remark=remark_list[cnt],
                 creator=login_user,
                 date=get_date,
                 monthly_salary=monthly,
@@ -328,13 +321,60 @@ class SalaryDetail(generic.DetailView):
     context_object_name = 'member'
     model = Member
     
+    def get_queryset(self):
+        self.selected_year = self.request.GET.get('year', None)
+        self.selected_month = self.request.GET.get('month', None)
+
+        if self.selected_month is None and self.selected_year is None:
+            self.month = str(datetime.datetime.now())[:7]
+            self.selected_year = str(datetime.datetime.now())[:4]
+            self.selected_month = str(datetime.datetime.now())[5:7]
+        else:
+            self.month = str(self.selected_year) + "-" + str(self.selected_month)
+
+        return super().get_queryset()
+
     def get_context_data(self, **kwargs):
-        month = str(datetime.datetime.now())[:7]
         context = super().get_context_data(**kwargs)
-        context['daily_salary'] = Member.objects.get(pk=self.kwargs['pk']).salary_monthly.get(payment_month=month).salary_daily.all()
+        bonus = 0
+        additional = 0
+
+        monthly = MonthlySalary.objects.filter(member_id=context['member']).get(payment_month=self.month)
+        daily = DailySalary.objects.filter(monthly_salary=monthly)
+
+        for i in daily:
+            bonus += i.bonus
+            additional += i.additional
         
+        context['selected_year'] = self.selected_year
+        context['selected_month'] = self.selected_month
+        context['int_selected_month'] = int(self.selected_month)
+        context['bonus'] = bonus
+        context['additional'] = additional
+        context['monthly_salary'] = monthly
+        context['daily_salary'] = Member.objects.get(pk=self.kwargs['pk']).salary_monthly.get(payment_month=self.month).salary_daily.all()
         return context
 
+    def post(self, request, *args, **kwargs):
+        self.get_queryset()
+        print("aaaaaaaaaaaaaa", self.month)
+        monthly = MonthlySalary.objects.filter(member_id=Member.objects.get(pk=kwargs['pk'])).get(payment_month=self.month)
+        print("wwwwwwwwwwwwwwww",request.POST.get('gukmin',0))
+
+        monthly.gukmin = request.POST.get('gukmin',0)
+        monthly.gungang = request.POST.get('gungang',0)
+        monthly.zanggi = request.POST.get('zanggi',0)
+        monthly.goyong = request.POST.get('goyong',0)
+        monthly.income_tax = request.POST.get('income_tax',0)
+        monthly.resident_tax = request.POST.get('resident_tax',0)
+        monthly.deductible = int(monthly.gukmin) + int(monthly.gungang) + int(monthly.zanggi) + int(monthly.goyong) + int(monthly.income_tax) + int(monthly.resident_tax)
+        monthly.total = monthly.base + monthly.bonus + monthly.additional - monthly.deductible
+        monthly.save()
+        
+        url='/accounting/outlay/salary/{0}/?year={1}&month={2}'.format(kwargs['pk'], self.selected_year, self.selected_month)
+        print("bbbbbbbbbbbbbb", url)
+
+        return redirect(url)
 '''
 def salary_delete(request, pk):
     # delete를 따로 안만들고 create에서 0으로 수정하게
