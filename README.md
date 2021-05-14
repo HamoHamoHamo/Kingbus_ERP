@@ -22,4 +22,4 @@ Cloning Youtube with VanillaJS and NodeJS
  - paginate 구현
  - 삭제나 수정할때 권한 확인
  - admin페이지 crudmember-user 에서 비밀번호 안 보이게 하기
- - 급여에서 공제항목 세분화
+ - 경리 수입 부분 프론트 + 필요한 항목 확인 필요

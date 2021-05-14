@@ -1,6 +1,5 @@
 {% extends 'base.html' %}
 {% load static %}
-{% load custom_tags %}
 
 {% block head %}
     <link href="{% static 'css/accounting/outlay.css' %}" rel="stylesheet" type="text/css">
@@ -38,13 +37,9 @@
             <div class="accounting_top_select">
                 <form action="" class="accounting_outlay_search_form">
                     <select name="year" class="accounting_outlay_search_date">
-                        <option></option>
-                        <option value="2021" {% if 2021 == int_selected_year %} selected {% endif %}>2021년</option>
-                        <option value="2022" {% if 2022 == int_selected_year %} selected {% endif %}>2022년</option>
-                        <option value="2023" {% if 2023 == int_selected_year %} selected {% endif %}>2023년</option>
-                        <option value="2024" {% if 2024 == int_selected_year %} selected {% endif %}>2024년</option>
-                        <option value="2025" {% if 2025 == int_selected_year %} selected {% endif %}>2025년</option>
-
+                        {% for i in option_year %}
+                            <option value="{{i}}" {% if i == int_selected_year %} selected {% endif %}>{{i}}년</option>
+                        {% endfor %}
                     </select>
                     <select name="month" class="accounting_outlay_search_date">
                         <option></option>

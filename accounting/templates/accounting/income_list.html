@@ -1,4 +1,100 @@
-income list
+{% extends 'base.html' %}
+{% load static %}
+
+{% block head %}
+    <link href="{% static 'css/accounting/income.css' %}" rel="stylesheet" type="text/css">
+{% endblock %}
+
+{% block content %}
+
+<div class="main_box">
+    <aside>
+        <div class="aside_box">
+            <div class="aside_title">
+                <div class="aside_title_font">경리</div>
+            </div>
+            <div class="aside_contents aside_contents_thispage">
+                <a href="{% url 'accounting:income_list' %}">수입현황</a>
+            </div>
+            <div class="aside_contents">
+                <a href="{% url 'accounting:outlay_list' %}">지출현황</a>
+            </div>
+            <div class="aside_contents">
+                <a href="{% url 'accounting:outlay_create' %}">지출작성</a>
+            </div>
+            <div class="aside_contents">
+                <a href="{% url 'accounting:salary_list' %}">급여현황</a>
+            </div>
+            <div class="aside_contents">
+                <a href="{% url 'accounting:salary_create' %}">급여작성</a>
+            </div>
+        </div>
+    </aside>
+
+    <section class="main_section">
+        <div class="top_box">
+            <div class="top_box_title">{{int_selected_year}}년 {{int_selected_month}}월 수입현황</div>
+            <div class="accounting_top_select">
+                <form action="" class="accounting_income_search_form">
+                    <select name="year" class="accounting_income_search_date">
+                        <option></option>
+                        {% for i in option_year %}
+                            <option value="{{i}}" {% if i == int_selected_year %} selected {% endif %}>{{i}}년</option>
+                        {% endfor %}
+                    </select>
+                    <select name="month" class="accounting_income_search_date">
+                        <option></option>
+                        {% for i in "x"|rjust:"12" %}
+                            <option value="{% if forloop.counter < 10 %}0{% endif %}{{forloop.counter}}" {% if forloop.counter == int_selected_month %} selected {% endif %}>{{forloop.counter}}월</option>
+                        {% endfor %}
+                    </select>
+                    <input type="submit" class="accounting_income_search_button" value="">
+                </form>
+            </div>
+        </div>
+        <div class="mid_box">
+            <div class="income_list__mid_box_head">
+                <div class="income_list__mid_box_head__box">
+                    <div class="income_list__mid_box_head__box_title">수금</div>
+                    <div class="income_list__mid_box_head__box_value">{{collect}}</div>
+                </div>
+                <div class="income_list__mid_box_head__box">
+                    <div class="income_list__mid_box_head__box_title">기타</div>
+                    <div class="income_list__mid_box_head__box_value">{{other}}</div>
+                </div>
+                <div class="income_list__mid_box_head__box">
+                    <div class="income_list__mid_box_head__box_title">총 수입</div>
+                    <div class="income_list__mid_box_head__box_value">{{total}}</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="mid_box-table_header">
+            <div class="mid_box_table">날짜</div>
+            <div class="mid_box_table">수금</div>
+            <div class="mid_box_table">기타</div>
+            <div class="mid_box_table">총 수입</div>
+        </div>
+
+        {% for income in daily_list %}
+            {% if income.date %}
+                {% with date=str_selected_year|add:"-"|add:str_selected_month|add:"-"|add:income.date %}
+                <a href="{% url 'accounting:income_detail' date %}">
+                {% endwith %}                    
+                    <div class="mid_box-table_content">    
+                        <div class="mid_box_table">{{str_selected_year}}년 {{str_selected_month}}월 {{ income.date }}일</div>
+                        <div class="mid_box_table">{{ income.collect }}</div>
+                        <div class="mid_box_table">{{ income.other }}</div>
+                        <div class="mid_box_table">{{ income.total}}</div>
+                    </div>
+                </a>
+            {% endif %}
+        {% endfor %}
+        <div class="blank"></div>
+    </section>
+
+
+{% endblock %}
 
 {% for income in income_list %}
     <p>{{ income.kinds }}</p>

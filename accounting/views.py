@@ -92,18 +92,16 @@ class OutlayList(generic.ListView):
 
         year = []  # 년도 selector 옵션값 배열
         now_year = int(str(datetime.datetime.now())[:4])  
-        for i in range(20):
-            if i <11:
+        for i in range(10):
+            if i <6:
                 year.append(now_year - i)
             else:
-                year.append(now_year + i-10)
+                year.append(now_year + i-5)
         context['option_year'] = sorted(year)
-        context['year'] = str(datetime.datetime.now())[:4]
-        context['month'] = str(datetime.datetime.now())[5:7]
-        context['int_selected_year'] = int(self.request.GET.get('year', context['year']))
-        context['int_selected_month'] = int(self.request.GET.get('month', context['month']))
-        context['str_selected_year'] = str(self.request.GET.get('year', context['year']))
-        context['str_selected_month'] = str(self.request.GET.get('month', context['month']))
+        context['int_selected_year'] = int(self.request.GET.get('year', str(datetime.datetime.now())[:4]))
+        context['int_selected_month'] = int(self.request.GET.get('month', str(datetime.datetime.now())[5:7]))
+        context['str_selected_year'] = str(self.request.GET.get('year', str(datetime.datetime.now())[:4]))
+        context['str_selected_month'] = str(self.request.GET.get('month', str(datetime.datetime.now())[5:7]))
 
         return context
 
@@ -203,6 +201,14 @@ class SalaryList(generic.ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        year = []  # 년도 selector 옵션값 배열
+        now_year = int(str(datetime.datetime.now())[:4])  
+        for i in range(10):
+            if i <6:
+                year.append(now_year - i)
+            else:
+                year.append(now_year + i-5)
+        context['option_year'] = sorted(year)
         context['selected_year'] = self.selected_year
         context['selected_month'] = self.selected_month
         context['int_selected_year'] = int(self.selected_year)
@@ -392,28 +398,63 @@ class IncomeList(generic.ListView):
     model = Income
 
     def get_queryset(self):
-        income_list = []
-        month = str(datetime.datetime.now())[:7]
-        #income_list = income.objects.filter(income_date=)
-        for income in Income.objects.order_by('-income_date'):
-            if income.income_date[:7] == month:
-                income_list.append(income)
+        self.selected_year = self.request.GET.get('year', str(datetime.datetime.now())[:4])
+        self.selected_month = self.request.GET.get('month', str(datetime.datetime.now())[5:7])
+        
+        month = self.selected_year +"-" + self.selected_month
+        income_list = Income.objects.filter(income_date__startswith=month)
         return income_list
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+
+        context['daily_list'] = []
         collect = 0
         other = 0
+        total = 0
 
-        for income in context['income_list']:
-            #print("테스트 비용", outlay.price)
-            if income.kinds == '수금':
-                collect += income.price
-            elif income.kinds == '기타':
-                other += income.price
-        total = other + collect
+        for i in range(1,32):
+            daily_price = {}
+            if i < 10:
+                date = "0" + str(i)
+            else:
+                date = str(i)
+            daily_income = context['income_list'].filter(income_date__endswith=date)
+            daily_total = 0
+            daily_collect = 0
+            daily_other = 0
 
-        #print("테스트", salary, car, welfare, company)
+            for income in daily_income:
+                total += income.price
+                daily_price['date'] = date
+                daily_total += income.price
+
+                if income.kinds == '수금':
+                    collect += income.price
+                    daily_collect += income.price
+                elif income.kinds == '기타':
+                    other += income.price
+                    daily_other += income.price
+
+            daily_price['collect'] = daily_collect
+            daily_price['other'] = daily_other
+            daily_price['total'] = daily_total
+            context['daily_list'].append(daily_price)
+
+        year = []  # 년도 selector 옵션값 배열
+        now_year = int(str(datetime.datetime.now())[:4])  
+        for i in range(10):
+            if i <6:
+                year.append(now_year - i)
+            else:
+                year.append(now_year + i-5)
+        context['option_year'] = sorted(year)
+        context['selected_year'] = self.selected_year
+        context['selected_month'] = self.selected_month
+        context['int_selected_year'] = int(self.selected_year)
+        context['int_selected_month'] = int(self.selected_month)
+        context['str_selected_year'] = str(self.selected_year)
+        context['str_selected_month'] = str(self.selected_month)
         context['collect'] = collect
         context['other'] = other
         context['total'] = total

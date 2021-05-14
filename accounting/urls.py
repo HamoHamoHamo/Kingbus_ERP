@@ -20,11 +20,12 @@ urlpatterns = [
 
     path('income/', views.IncomeList.as_view(), name='income_list'),
     path('income/create/', views.income_create, name='income_create'),
-    path('income/<int:pk>/', views.IncomeDetail.as_view(), name='income_detail'),
     path('income/<int:pk>/delete/', views.income_delete, name='income_delete'),
     path('income/<int:pk>/edit/', views.income_edit, name='income_edit'),
 
     path('income/collect/', views.CollectList.as_view(), name='collect_list'),
     path('income/collect/<int:pk>/', views.CollectDetail.as_view(), name='collect_detail'),
     path('income/collect/<int:pk>/edit', views.collect_edit, name='collect_edit'),
+    
+    path('income/<str:pk>/', views.IncomeDetail.as_view(), name='income_detail'),
 ]

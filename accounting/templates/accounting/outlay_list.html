@@ -1,6 +1,5 @@
 {% extends 'base.html' %}
 {% load static %}
-{% load custom_tags %}
 
 {% block head %}
     <link href="{% static 'css/accounting/outlay.css' %}" rel="stylesheet" type="text/css">
@@ -38,7 +37,6 @@
             <div class="accounting_top_select">
                 <form action="" class="accounting_outlay_search_form">
                     <select name="year" class="accounting_outlay_search_date">
-                        <option></option>
                         {% for i in option_year %}
                             <option value="{{i}}" {% if i == int_selected_year %} selected {% endif %}>{{i}}년</option>
                         {% endfor %}

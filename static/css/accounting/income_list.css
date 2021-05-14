@@ -1,0 +1,108 @@
+.income_list__mid_box_head{
+    width: 109.4rem;
+    height: 9.4rem;
+    border: 0.3rem solid #B41515;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 0.5rem;
+}
+
+.income_list__mid_box_head__box{
+    width: 35rem;
+    height: 10rem;
+    border-right: 0.3rem solid #B41515;
+
+}
+
+.income_list__mid_box_head__box:last-child{
+    width: 40rem;
+    margin-right: 0;
+    border-right: none;
+}
+
+.income_list__mid_box_head__box_title{
+    font-size: 2rem;
+    font-weight: bold;
+    text-align: center;
+    height: 5rem;
+    line-height: 5rem;
+}
+
+.income_list__mid_box_head__box_value{
+    font-size: 1.7rem;
+    font-weight: bold;
+    text-align: center;
+    height: 4.8rem;
+    line-height: 4.8rem;
+    border-top: 0.2rem solid #B41515;
+}
+
+.accounting_top_select{
+    display: flex;
+    position: absolute;
+    right: 0rem;
+}
+.accounting_income_search_form{
+  width: 20rem;
+  height: 4rem;
+  border: 0.1rem solid #B41515;
+  border-radius: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.accounting_income_search_date{
+  border: 0.1rem solid #B41515;
+  color: #B41515;
+  width: 6.3rem;
+  height: 2.5rem;
+  text-align: center;
+  margin-right: 0.5rem;
+  vertical-align:middle;
+  font-size: 1.3rem;
+}
+
+.accounting_income_search_button{
+  background: url("/static/images/search_button.png") no-repeat;
+  width: 3rem;
+  height: 3rem;
+  border: none;
+  margin-left: 1.5rem;
+  margin-top: 0.4rem;
+}
+
+.accounting_income_search_button:hover{
+  cursor:pointer;
+}
+
+
+.mid_box-table_header{
+    margin-top: 5rem;
+    display: flex;
+    border-top: 0.3rem solid #B41515;
+    border-bottom: 0.3rem solid #B41515;
+    height: 3rem;
+    font-size: 2rem;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+    align-items: center;
+    font-weight: bold;
+    text-align: center;
+}
+  
+.mid_box_table{
+    width:27.5rem;
+}
+
+  
+.mid_box-table_content{
+    display: flex;
+    border-bottom: 0.1rem solid grey;
+    align-items: center;
+    text-align: center;
+    height: 2.5rem;
+    font-size: 1.6rem;
+    padding-top: 1.2rem;
+    padding-bottom: 1.2rem;
+}
