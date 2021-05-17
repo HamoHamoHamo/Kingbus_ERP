@@ -33,8 +33,12 @@ class NoticeKindsView(generic.ListView):
             if  selector == 'title':
                 notices = Notice.objects.filter(title__contains=search).filter(kinds=kinds).order_by('-pub_date')
             elif selector == "creator":
-                creator = User.objects.get(name=search)
-                notices = Notice.objects.filter(creator=creator).filter(kinds=kinds).order_by('-pub_date')
+                try:
+                    creator = User.objects.get(name=search)
+                    notices = Notice.objects.filter(creator=creator).filter(kinds=kinds).order_by('-pub_date')
+                except:
+                    creator = None
+                    notices = Notice.objects.filter(creator=creator).filter(kinds=kinds).order_by('-pub_date')
             else:
                 raise Http404()
             return notices
