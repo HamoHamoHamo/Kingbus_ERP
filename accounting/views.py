@@ -477,10 +477,33 @@ def income_create(request):
         }
     return render(request, 'accounting/income_create.html', context)
 
-class IncomeDetail(generic.DetailView):
+class IncomeDetail(generic.ListView):
     template_name = 'accounting/income_detail.html'
     context_object_name = 'income'
     model = Income
+
+    def get_queryset(self):
+        income = Income.objects.filter(income_date=self.kwargs['date'])
+        return income
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['date'] = self.kwargs['date']
+
+
+        context['total'] = 0
+        context['collect'] = 0
+        context['other'] = 0
+
+        for income in context['income']:
+            context['total'] += income.price
+            #print("테스트 비용", income.price)
+            if income.kinds == '수금':
+                context['collect'] += income.price
+            else:
+                context['other'] += income.price
+
+        return context
 
 def income_delete(request, pk):
     income = get_object_or_404(Income, pk=pk)

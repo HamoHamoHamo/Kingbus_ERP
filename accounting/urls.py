@@ -27,5 +27,5 @@ urlpatterns = [
     path('income/collect/<int:pk>/', views.CollectDetail.as_view(), name='collect_detail'),
     path('income/collect/<int:pk>/edit', views.collect_edit, name='collect_edit'),
     
-    path('income/<str:pk>/', views.IncomeDetail.as_view(), name='income_detail'),
+    path('income/<str:date>/', views.IncomeDetail.as_view(), name='income_detail'),
 ]

@@ -1,4 +1,124 @@
-income detail
+{% extends 'base.html' %}
+{% load static %}
+
+
+{% block head %}
+    <link href="{% static 'css/accounting/income.css' %}" rel="stylesheet" type="text/css">
+{% endblock %}
+
+{% block content %}
+
+<div class="main_box outlay_detaillist__main_box">
+    <aside>
+        <div class="aside_box">
+            <div class="aside_title">
+                <div class="aside_title_font">경리</div>
+            </div>
+            <div class="aside_contents aside_contents_thispage">
+                <a href="{% url 'accounting:income_list' %}">수입현황</a>
+            </div>
+            <div class="aside_contents">
+                <a href="{% url 'accounting:income_create' %}">수입작성</a>
+            </div>
+            <div class="aside_contents">
+                <a href="{% url 'accounting:collect_list' %}">수금현황</a>
+            </div>
+            <div class="aside_contents">
+                <a href="{% url 'accounting:outlay_list' %}">지출현황</a>
+            </div>
+            <div class="aside_contents">
+                <a href="{% url 'accounting:outlay_create' %}">지출작성</a>
+            </div>
+            <div class="aside_contents">
+                <a href="{% url 'accounting:salary_list' %}">급여현황</a>
+            </div>
+            <div class="aside_contents">
+                <a href="{% url 'accounting:salary_create' %}">급여작성</a>
+            </div>
+        </div>
+    </aside>
+
+    <section class="main_section">
+        <div class="top_box">
+            <div class="top_box_title">{{ date.0 }}{{ date.1 }}{{ date.2 }}{{ date.3 }}년 {{date.5}}{{date.6}}월 {{date.8}}{{date.9}}일 수입현황</div>
+        </div>
+        <div class="outlay_detail__mid_box">
+            <div class="income_list__mid_box_head">
+                <div class="income_list__mid_box_head__box">
+                    <div class="income_list__mid_box_head__box_title">수금</div>
+                    <div class="income_list__mid_box_head__box_value">{{collect}}</div>
+                </div>
+                <div class="income_list__mid_box_head__box">
+                    <div class="income_list__mid_box_head__box_title">기타</div>
+                    <div class="income_list__mid_box_head__box_value">{{other}}</div>
+                </div>
+                <div class="income_list__mid_box_head__box">
+                    <div class="income_list__mid_box_head__box_title">총 수입</div>
+                    <div class="income_list__mid_box_head__box_value">{{total}}</div>
+                </div>
+            </div>
+
+
+
+            <div class="income_detail__mid_content">
+                <div class="income_detail_mid_content__title">수금관련 지출</div>
+                <div class="income_detail_mid_content__header">
+                    <div class="income_detail_mid_content__header_title">지출금액</div>
+                    <div class="income_detail_mid_content__header_title">적요</div>
+                    <div class="income_detail_mid_content__header_title">작성자</div>
+                    <div class="income_detail_mid_content__header_title">작성시간</div>
+                    <div class="income_detail_mid_content__header_title">수정/삭제</div>
+                </div>
+                
+                {% for i in income %}
+                    {% if i.kinds == "수금" %}
+                        <div class="income_detail_mid_kinds__content_box">
+                            <div class="income_detail_mid_kinds__contents_box__content">{{i.price}}</div>
+                            <div class="income_detail_mid_kinds__contents_box__content">{{i.brief}}</div>
+                            <div class="income_detail_mid_kinds__contents_box__content">{{i.creator}}</div>
+                            <div class="income_detail_mid_kinds__contents_box__content">{{i.pub_date | date:'Y.m.d H:i'}}</div>
+                            <div class="income_detail_mid_kinds__contents_box__content">
+                                <a href="{% url 'accounting:income_edit' i.id %}">수정</a>
+                                <span>/</span>
+                                <a href="{% url 'accounting:income_delete' i.id %}">삭제</a>
+                            </div>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            </div>       
+            
+            <div class="income_detail__mid_content">
+                <div class="income_detail_mid_content__title">기타 지출</div>
+                <div class="income_detail_mid_content__header">
+                    <div class="income_detail_mid_content__header_title">지출금액</div>
+                    <div class="income_detail_mid_content__header_title">적요</div>
+                    <div class="income_detail_mid_content__header_title">작성자</div>
+                    <div class="income_detail_mid_content__header_title">작성시간</div>
+                    <div class="income_detail_mid_content__header_title">수정/삭제</div>
+                </div>
+                
+                {% for i in income %}
+                    {% if i.kinds == "기타" %}
+                        <div class="income_detail_mid_kinds__content_box">
+                            <div class="income_detail_mid_kinds__contents_box__content">{{i.price}}</div>
+                            <div class="income_detail_mid_kinds__contents_box__content">{{i.brief}}</div>
+                            <div class="income_detail_mid_kinds__contents_box__content">{{i.creator}}</div>
+                            <div class="income_detail_mid_kinds__contents_box__content">{{ i.pub_date | date:'Y.m.d H:i' }}</div>
+                            <div class="income_detail_mid_kinds__contents_box__content">
+                                <a href="{% url 'accounting:income_edit' i.id %}">수정</a>
+                                <span>/</span>
+                                <a href="{% url 'accounting:income_delete' i.id %}">삭제</a>
+                            </div>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            </div>       
+        </div>
+        <div class="blank"></div>
+    </section>
+
+
+{% endblock %}
 
 <p>지급구분 : {{ income.kinds }}</p>
 <p>적요 : {{ income.brief }}</p>
