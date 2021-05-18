@@ -88,7 +88,49 @@ def HR_delete(request, pk):
 class MemberList(generic.ListView):
     template_name = 'HR/member_list.html'
     context_object_name = 'member_list'
+    paginate_by = 10
     model = Member
+
+
+    def get_queryset(self):
+        search = self.request.GET.get('search', None)
+        if search:
+            selector = self.request.GET.get('top_box_selector', None)    
+            if  selector == 'name':
+                member = Member.objects.filter(name__startswith=search)
+                print("aaaaaaaa", member)
+            elif selector == "role":
+                member = Member.objects.filter(role=search)
+            elif selector == "phone":
+                member = Member.objects.filter(phone_num=search)
+            elif selector == "address":
+                member = Member.objects.filter(address__startswith=search)
+            else:
+                raise Http404()
+            return member
+        else:
+            return super().get_queryset()
+
+    # 페이징 처리
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        paginator = context['paginator']
+        page_numbers_range = 5
+        max_index = len(paginator.page_range)
+        page = self.request.GET.get('page')
+        current_page = int(page) if page else 1
+
+        start_index = int((current_page - 1) / page_numbers_range) * page_numbers_range
+        end_index = start_index + page_numbers_range
+        if end_index >= max_index:
+            end_index = max_index
+        page_range = paginator.page_range[start_index:end_index]
+        context['page_range'] = page_range
+        context['current_page'] = current_page
+
+        context['searched'] = self.request.GET.get('search', '')
+        context['selector'] = self.request.GET.get('top_box_selector', 'name')
+        return context
 
 class MemberDetail(generic.DetailView):
     template_name = 'HR/member_detail.html'

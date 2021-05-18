@@ -1,4 +1,118 @@
-memberlist
+{% extends 'base.html' %}
+{% load static %}
+
+{% block head %}
+    <link href="{% static 'css/hr/member.css' %}" rel="stylesheet" type="text/css">
+{% endblock %}
+
+{% block content %}
+
+<div class="main_box">
+    <aside>
+        <div class="aside_box">
+            <div class="aside_title">
+                <div class="aside_title_font">인사</div>
+            </div>
+            <div class="aside_contents aside_contents_thispage">
+                <a href="{% url 'HR:member' %}">직원관리</a>
+            </div>
+            <div class="aside_contents">
+                <a href="{% url 'HR:member_create' %}">직원작성</a>
+            </div>
+            <div class="aside_contents">
+                <a href="{% url 'HR:management' %}">인사관리</a>
+            </div>
+            <div class="aside_contents">
+                <a href="{% url 'HR:HR_create' %}">인사작성</a>
+            </div>
+            
+        </div>
+    </aside>
+
+    <section class="main_section">
+        <div class="top_box">
+            <div class="top_box_title">직원관리</div>
+
+            <div class="top_box__select_search">
+                <div class="top_box_select_box">
+                    <select class="top_box_select" name="top_box_selector" form=top_box-form>
+                        <option value="name" {% if selector == 'name' %} selected {% endif %}>이름</option>
+                        <option value="role" {% if selector == 'role' %} selected {% endif %}>업무</option>
+                        <option value="phone" {% if selector == 'phone' %} selected {% endif %}>전화번호</option>
+                        <option value="address" {% if selector == 'address' %} selected {% endif %}>주소</option>
+                    </select>
+                </div>
+                <div class="top_box_search">
+                    <form method="GET" action="" id=top_box-form>
+                        <input type="text" class="top_box_input_text" name="search" value={{ searched }}>
+                        <input type="submit" value="" class="top_box_search_button">
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="mid_box">
+            <div class="table_header">
+                <div class="mid_box_table_header">번호</div>
+                <div class="mid_box_table_header">이름</div>
+                <div class="mid_box_table_header">업무</div>
+                <div class="mid_box_table_header">전화번호</div>
+                <div class="mid_box_table_header">주소</div>
+            </div>
+            {% for member in member_list %}
+                <a href="" class="mid_box_table_contents">
+                    <div class="table_contents">
+                        <div class="mid_box_table_contents">{{member.id}}</div>
+                        <div class="mid_box_table_contents">{{member.name}}</div>
+                        <div class="mid_box_table_contents">{{member.role}}</div>
+                        <div class="mid_box_table_contents">{{member.phone_num}}</div>
+                        <div class="mid_box_table_contents">{{member.address}}</div>
+                    </div>
+                </a>
+            {% endfor %}
+        </div>
+
+        <div class="bottom_box">
+            <div class="kinds_bottom_box">
+                <!-- 페이징 처리 -->
+                {% if is_paginated %}
+                <div class="pagination">
+                    {% if page_obj.has_previous %}
+                    <div class="page-item page-pre">
+                        <a class="page-link" href="?top_box_selector={{selector}}&search={{searched}}&page={{ page_obj.previous_page_number }}"
+                            tabindex="-1">이전</a>
+                    </div>
+                    {% else %}
+                    <div class="page-item page-pre disabled">
+                        <a class="page-link" href="#" tabindex="-1">이전</a>
+                    </div>
+                    {% endif %}
+                    {% for page in page_range %}
+                        <div class="page-item {% if page == page_obj.number %} page-activate {% endif %}">
+                            <a class="page-link" href="?top_box_selector={{selector}}&search={{searched}}&page={{ page }}">{{ page }}</a>
+                        </div>      
+                    {% endfor %}
+
+                    {% if page_obj.has_next %}
+                    <div class="page-item">
+                        <a class="page-link page-next"
+                            href="?top_box_selector={{selector}}&search={{searched}}&page={{ page_obj.next_page_number }}">다음</a>
+                    </div>
+                    {% else %}
+                    <div class="page-item page-next disabled">
+                        <a class="page-link" href="#">다음</a>
+                    </div>
+                    {% endif %}
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </section>
+
+
+{% endblock %}
+
+
 
 {% for member in member_list %}
     <p>이름 : {{ member.name }}</p>

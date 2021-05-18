@@ -23,3 +23,4 @@ Cloning Youtube with VanillaJS and NodeJS
  - 삭제나 수정할때 권한 확인
  - admin페이지 crudmember-user 에서 비밀번호 안 보이게 하기
  - 경리 수입 부분 프론트 + 필요한 항목 확인 필요
+ - 경리 수금 부분 배차부분 프론트 작업 후 수정

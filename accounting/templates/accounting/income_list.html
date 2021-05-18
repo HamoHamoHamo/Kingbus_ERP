@@ -101,18 +101,3 @@
 
 
 {% endblock %}
-
-{% for income in income_list %}
-    <p>{{ income.kinds }}</p>
-    <p>{{ income.collect_id }}</p>
-    <p>{{ income.brief }}</p>
-    <p>수입금액 : {{ income.price }}</p>
-    <p>수입일 : {{ income.income_date }}</p>
-    <p>{{ income.creator }}</p>
-    <p>{{ income.pub_date }}</p>
-    <br>
-{% endfor %}
-
-<p>수금 : {{ collect }}</p>
-<p>기타 : {{ other }}</p>
-<p>총합 : {{ total }}</p>
