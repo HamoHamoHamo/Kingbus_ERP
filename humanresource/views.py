@@ -146,7 +146,7 @@ def member_create(request):
             return redirect('HR:member')
     else:
         context = {
-            'member_form' : MemberForm(),
+            'member_form' : MemberForm(request.POST),
         }
     return render(request, 'HR/member_create.html', context)
 

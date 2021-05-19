@@ -9,8 +9,8 @@ class MemberForm(forms.ModelForm):
         fields = '__all__'
 
         widgets = {
-            'entering_date': forms.DateTimeInput(format='%Y-%m-%d', attrs={'class':'datetimefield'}),
-            'resignation_date': forms.DateTimeInput(format='%Y-%m-%d', attrs={'class':'datetimefield'}),
+            'entering_date': forms.DateTimeInput(format='%Y-%m-%d', attrs={'class':'datefield'}),
+            'resignation_date': forms.DateTimeInput(format='%Y-%m-%d', attrs={'class':'datefield'}),
         }
 
 

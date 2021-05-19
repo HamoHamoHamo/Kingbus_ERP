@@ -60,3 +60,11 @@ body,th,td,input,select,textarea,button {
   margin: 0rem;
   font-size: 100%;
 }
+
+/* input number 화살표 제거 */
+input[type='number']::-webkit-inner-spin-button,
+input[type='number']::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+       -moz-appearance: none;
+            appearance: none;
+}

@@ -5,14 +5,15 @@ class Member(models.Model):
     name = models.CharField(verbose_name='이름', max_length=10, null=False)
     authority = models.CharField(verbose_name='권한', max_length=10, null=False)
     role = models.CharField(verbose_name='업무', max_length=10, null=False)
-    person_id = models.IntegerField(verbose_name='주민번호', null=False)
+    person_id1 = models.IntegerField(verbose_name='주민번호 앞자리', null=False)
+    person_id2 = models.IntegerField(verbose_name='주민번호 뒷자리', null=False)
     address = models.CharField(verbose_name='주소', max_length=50, null=False)
     phone_num = models.IntegerField(verbose_name='전화번호', null=False)
-    entering_date = models.DateField(verbose_name='입사일', null=False)
-    resignation_date = models.DateField(verbose_name='퇴사일', null=False)
-    license_num = models.CharField(verbose_name='면허번호', max_length=30, null=False)
+    entering_date = models.CharField(verbose_name='입사일', max_length=10, null=False, blank=True)
+    resignation_date = models.CharField(verbose_name='퇴사일', max_length=10, null=False, blank=True)
+    license_num = models.CharField(verbose_name='면허번호', max_length=30, null=False, blank=True)
     #bus_id = models.CharField(verbose_name='이름', max_length=10, null=False)
-    check = models.CharField(verbose_name='운행판정표', max_length=50, null=False)
+    check = models.CharField(verbose_name='운행판정표', max_length=50, null=False, blank=True)
 
     def __str__(self):
         return self.name

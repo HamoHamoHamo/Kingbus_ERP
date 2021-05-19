@@ -17,15 +17,14 @@
                 <a href="{% url 'HR:member' %}">직원관리</a>
             </div>
             <div class="aside_contents">
-                <a href="{% url 'HR:member_create' %}">직원작성</a>
+                <a href="{% url 'HR:member_create' %}">직원등록</a>
             </div>
             <div class="aside_contents">
                 <a href="{% url 'HR:management' %}">인사관리</a>
             </div>
             <div class="aside_contents">
-                <a href="{% url 'HR:HR_create' %}">인사작성</a>
+                <a href="{% url 'HR:HR_create' %}">인사등록</a>
             </div>
-            
         </div>
     </aside>
 
@@ -60,7 +59,7 @@
                 <div class="mid_box_table_header">주소</div>
             </div>
             {% for member in member_list %}
-                <a href="" class="mid_box_table_contents">
+                <a href="{% url 'HR:member_detail' member.id %}" class="mid_box_table_contents">
                     <div class="table_contents">
                         <div class="mid_box_table_contents">{{member.id}}</div>
                         <div class="mid_box_table_contents">{{member.name}}</div>
