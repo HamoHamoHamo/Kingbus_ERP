@@ -1,39 +1,101 @@
-member_edit
+{% extends 'base.html' %}
+{% load static %}
 
-<form method="POST" action="">
-    {% csrf_token %}
-    {% for member in member_form %}
-        <div class="form-group">
-            <label for="{{ member.id_for_label }}">{{ member.label }}</label>
-            <input
-            type="{{ member.member.widget.input_type }}"
-            id="{{ member.id_for_label }}"
-            placeholder="{{ member.label }}"
-            name="{{ member.name }}"
-            
-            {% if forloop.counter == 7 or forloop.counter == 8 %}
-                class="datetimefield"
-                value="{{ member.value | date:'Y-m-d' }}"
-            {% else %}
-                value="{{ member.value }}"
-            {% endif %}
-            />
+
+{% block head %}
+    <link href="{% static 'css/hr/member.css' %}" rel="stylesheet" type="text/css">
+{% endblock %}
+
+{% block content %}
+
+<div class="main_box outlay_detaillist__main_box">
+    <aside>
+        <div class="aside_box">
+            <div class="aside_title">
+                <div class="aside_title_font">인사</div>
+            </div>
+            <div class="aside_contents">
+                <a href="{% url 'HR:member' %}">직원관리</a>
+            </div>
+            <div class="aside_contents">
+                <a href="{% url 'HR:member_create' %}">직원등록</a>
+            </div>
+            <div class="aside_contents">
+                <a href="{% url 'HR:management' %}">인사관리</a>
+            </div>
+            <div class="aside_contents">
+                <a href="{% url 'HR:HR_create' %}">인사등록</a>
+            </div>
         </div>
-    {% endfor %}
-    <input type="submit" value="등록">
-</form>
+    </aside>
 
+    <section class="main_section">
+        <div class="top_box">
+            <div class="top_box_title">직원 정보 수정</div>
+        </div>
+        <div class="member_create__mid_box">
+            <form method="POST" action="">
+                {% csrf_token %}
+                <div class="member_create__mid_box__border">
+                    <div class="member_create__mid_box__content_box">
+                        <div class="member_create__mid_box__content_box_content_box_first">
+                            <div class="member_create__mid_box__content_box__content_header">이름</div>
+                            <input type="text" name="name" class="member_create__mid_box__content_box__content" value="{{member.name}}">
+                        </div>
+                        <div class="member_create__mid_box__content_box_content_box">
+                            <div class="member_create__mid_box__content_box__content_header">주민번호</div>
+                            <input type="number" name="person_id1" class="member_create__mid_box__content_box__content input_person_id" oninput='handleOnInput(this, 6)' value="{{member.person_id1}}">
+                            <input type="number" name="person_id2" class="member_create__mid_box__content_box__content input_person_id" oninput='handleOnInput(this, 7)' value="{{member.person_id2}}">
+                        </div>
+                    </div>
+                    <div class="member_create__mid_box__content_box">
+                        <div class="member_create__mid_box__content_box_content_box_first">
+                            <div class="member_create__mid_box__content_box__content_header">업무</div>
+                            <input type="text" name="role" class="member_create__mid_box__content_box__content" value="{{member.role}}">
+                        </div>
+                        <div class="member_create__mid_box__content_box_content_box">
+                            <div class="member_create__mid_box__content_box__content_header">전화번호</div>
+                            <input type="number" name="phone_num" class="member_create__mid_box__content_box__content" oninput='handleOnInput(this, 11)' value="{{member.phone_num}}">
+                        </div>
+                    </div>
+                    <div class="member_create__mid_box__content_box">
+                        <div class="member_create__mid_box__content_box_content_box_address">
+                            <div class="member_create__mid_box__content_box__content_header">주소</div>
+                            <input type="text" name="address" class="member_create__mid_box__content_box__content_address" value="{{member.address}}">
+                        </div>
+                    </div>
+                    <div class="member_create__mid_box__content_box">
+                        <div class="member_create__mid_box__content_box_content_box_first">
+                            <div class="member_create__mid_box__content_box__content_header">권한</div>
+                            <input type="text" name="authority" class="member_create__mid_box__content_box__content" value="{{member.authority}}">
+                        </div>
+                        <div class="member_create__mid_box__content_box_content_box">
+                            <div class="member_create__mid_box__content_box__content_header">입사일</div>
+                            <input type="date" name="entering_date" class="member_create__mid_box__content_box__content input_date" value="{{member.entering_date}}">
+                        </div>
+                    </div>
+                    <div class="member_create__mid_box__content_box">
+                        <div class="member_create__mid_box__content_box_content_box_first">
+                            <div class="member_create__mid_box__content_box__content_header">면허번호</div>
+                            <input type="text" name="license_num" class="member_create__mid_box__content_box__content" value="{{member.license_num}}">
+                        </div>
+                        <div class="member_create__mid_box__content_box_content_box">
+                            <div class="member_create__mid_box__content_box__content_header">운행판정표</div>
+                            <input type="text" name="check" class="member_create__mid_box__content_box__content input_date" value="{{member.check}}">
+                        </div>
+                    </div>
+                    <input type="submit" class="member_create_submit" value="등록">
+                </div>
+            </form>
+        </div>
+        <div class="blank"></div>
+    </section>
 
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
-<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-
-
-<script>
-    // This code activates flatpickr on fields with the 'datetimefield' class when the document has loaded
-    window.addEventListener("DOMContentLoaded", function () {
-        flatpickr(".datetimefield", {
-            enableTime: true,
-            dateFormat: "Y-m-d",
-        });
-    });
-</script>
+    <script>
+        function handleOnInput(el, maxlength) {
+            if(el.value.length > maxlength)  {
+                el.value = el.value.substr(0, maxlength);
+            }
+        }
+    </script>
+{% endblock %}

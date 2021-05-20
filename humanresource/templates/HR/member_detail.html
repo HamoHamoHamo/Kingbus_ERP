@@ -1,4 +1,123 @@
-member_detail
+{% extends 'base.html' %}
+{% load static %}
+
+
+{% block head %}
+    <link href="{% static 'css/hr/member.css' %}" rel="stylesheet" type="text/css">
+{% endblock %}
+
+{% block content %}
+
+<div class="main_box outlay_detaillist__main_box">
+    <aside>
+        <div class="aside_box">
+            <div class="aside_title">
+                <div class="aside_title_font">인사</div>
+            </div>
+            <div class="aside_contents">
+                <a href="{% url 'HR:member' %}">직원관리</a>
+            </div>
+            <div class="aside_contents">
+                <a href="{% url 'HR:member_create' %}">직원등록</a>
+            </div>
+            <div class="aside_contents">
+                <a href="{% url 'HR:management' %}">인사관리</a>
+            </div>
+            <div class="aside_contents">
+                <a href="{% url 'HR:HR_create' %}">인사등록</a>
+            </div>
+        </div>
+    </aside>
+
+    <section class="main_section">
+        <div class="top_box">
+            <div class="top_box_title">직원 상세</div>
+        </div>
+        <div class="mid_box">
+            <div class="table_header member_detail__table_header">
+                <div class="member_detail__mid_box_table_header">이름</div>
+                <div class="member_detail__mid_box_table_header">업무</div>
+                <div class="member_detail__mid_box_table_header">전화번호</div>
+                <div class="member_detail__mid_box_table_header">주민번호</div>
+                <div class="member_detail__mid_box_table_header">주소</div>
+            </div>
+            <div class="table_contents member_detail__table_contents">
+                <div class="member_detail__mid_box_table_contents_first">{{member.name}}</div>
+                <div class="member_detail__mid_box_table_contents_first">{{member.role}}</div>
+                <div class="member_detail__mid_box_table_contents_first">{{member.phone_num}}</div>
+                <div class="member_detail__mid_box_table_contents_first">{{member.person_id1}}-{{member.person_id2}}</div>
+                <div class="member_detail__mid_box_table_contents_first">{{member.address}}</div>
+            </div>
+
+
+            <div class="table_header member_detail__table_contents_header">
+                <div class="member_detail__table_contents__table_header">입사일</div>
+                <div class="member_detail__table_contents__table_header">퇴사일</div>
+                <div class="member_detail__table_contents__table_header">면허번호</div>
+                <div class="member_detail__table_contents__table_header">운행판정표</div>
+            </div>
+            <div class="table_contents member_detail__contents">
+                <div class="member_detail__mid_box_table_contents">{{member.entering_date}}</div>
+                <div class="member_detail__mid_box_table_contents">{{member.resignation_date}}</div>
+                <div class="member_detail__mid_box_table_contents">{{member.license_num}}</div>
+                <div class="member_detail__mid_box_table_contents">{{member.check}}</div>
+            </div>
+        </div>
+        <div class="member_detail__mid_header__box">
+            <div class="member_detail__mid_table_header">인사 목록</div>
+            <div class="accounting_top_select">
+                <form action="" class="member_detail__search_form">
+                    <select name="year" class="member_detail__search_date">
+                        <option></option>
+                        {% for i in option_year %}
+                            
+                            <option value="{{i}}" {% if i == int_selected_year %} selected {% endif %}>{{i}}년</option>
+                        {% endfor %}
+                    </select>
+                    <select name="month" class="member_detail__search_date">
+                        <option></option>
+                        {% for i in "x"|rjust:"12" %}
+                            <option value="{% if forloop.counter < 10 %}0{% endif %}{{forloop.counter}}" {% if forloop.counter == int_selected_month %} selected {% endif %}>{{forloop.counter}}월</option>
+                        {% endfor %}
+                    </select>
+                    <input type="submit" class="member_detail__search_button" value="">
+                </form>
+            </div>
+        </div>
+        <div class="table_header">
+            <div class="member_detail__mid_table_header__text">번호</div>
+            <div class="member_detail__mid_table_header__text">종류</div>
+            <div class="member_detail__mid_table_header__text">내용</div>
+            <div class="member_detail__mid_table_header__text">시작날짜</div>
+            <div class="member_detail__mid_table_header__text">종료날짜</div>
+            <div class="member_detail__mid_table_header__text">등록자</div>
+        </div>
+        <div class="member_detail__table_contents_box">
+            {% for i in hr %}
+                <div class="table_contents">
+                    <div class="member_detail__mid_table_content__text">{{forloop.counter}}</div>
+                    <div class="member_detail__mid_table_content__text">{{i.hr_type}}</div>
+                    <div class="member_detail__mid_table_content__text">{{i.reason}}</div>
+                    <div class="member_detail__mid_table_content__text">{{i.start_date}}</div>
+                    <div class="member_detail__mid_table_content__text">{{i.finish_date}}</div>
+                    <div class="member_detail__mid_table_content__text">{{i.creator.name}}</div>
+                </div>
+            {% endfor %}
+        </div>
+
+        <div class="blank"></div>
+    </section>
+    
+                
+
+    <script>
+        function handleOnInput(el, maxlength) {
+            if(el.value.length > maxlength)  {
+                el.value = el.value.substr(0, maxlength);
+            }
+        }
+    </script>
+{% endblock %}
 
 <p>이름 : {{ member.name }}</p>
 <p>권한 : {{ member.authority }}</p>

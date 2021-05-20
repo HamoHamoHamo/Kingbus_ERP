@@ -3,9 +3,11 @@ from django.http import Http404, HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse, reverse_lazy
 from django.views import generic
+import datetime
 
 from .forms import MemberForm, HRForm
 from .models import Member, MemberDocument, HR
+from utill.decorator import option_year_deco
 
 
 class ManagementList(generic.ListView):
@@ -137,6 +139,21 @@ class MemberDetail(generic.DetailView):
     context_object_name = 'member'
     model = Member
     
+    @option_year_deco
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['selected_year'] = self.request.GET.get('year', "")
+        context['selected_month'] = self.request.GET.get('month', "")
+        month = context['selected_year'] +"-" + context['selected_month']
+        try:
+            context['int_selected_year'] = int(context['selected_year'])
+            context['int_selected_month'] = int(context['selected_month'])
+            context['hr'] = HR.objects.filter(member_id=context['member']).filter(start_date__startswith=month).order_by("finish_date", "start_date")
+        except Exception as e:
+            print(e)
+            context['hr'] = HR.objects.filter(member_id=context['member']).order_by("finish_date", "start_date")
+        return context
+
 def member_create(request):
     context = {}
     if request.method == "POST":
@@ -164,7 +181,7 @@ def member_edit(request, pk):
             return redirect('HR:member')
     else:
         context = {
-            'member_form' : MemberForm(instance=member),
+            'member' : member
         }
     return render(request, 'HR/member_edit.html', context)
 

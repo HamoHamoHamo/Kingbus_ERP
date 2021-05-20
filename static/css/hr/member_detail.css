@@ -1,0 +1,127 @@
+.member_detail__table_contents_header{
+    margin-top: 5rem;
+    border-bottom: 0.1rem solid #b41515;
+    border-left: 0.3rem solid #b41515;
+    border-right: 0.3rem solid #b41515;
+}
+
+.member_detail__table_contents__table_header{
+    width: 27.5rem;
+}
+
+.member_detail__mid_box_table_contents{
+    width: 27.5rem;
+}
+
+.member_detail__table_header{
+    border-bottom: 0.1rem solid #b41515;
+    border-left: 0.3rem solid #b41515;
+    border-right: 0.3rem solid #b41515;
+}
+
+.member_detail__table_contents,
+.member_detail__contents{
+    border-bottom: 0.3rem solid #b41515;
+    border-left: 0.3rem solid #b41515;
+    border-right: 0.3rem solid #b41515;
+}
+
+.member_detail__mid_box_table_header{
+    width: 26.7rem;
+}
+
+.member_detail__mid_box_table_header:nth-child(1),
+.member_detail__mid_box_table_header:nth-child(2){
+    width: 15rem;
+}
+
+.member_detail__mid_box_table_contents_first{
+    width: 26.7rem;
+}
+
+.member_detail__mid_box_table_contents_first:nth-child(1),
+.member_detail__mid_box_table_contents_first:nth-child(2){
+    width: 15rem;
+}
+
+
+
+.member_detail__mid_header__box{
+    display: flex;
+    margin-top: 8rem;
+    margin-bottom: 2rem;
+    position: relative;
+    align-items: flex-end;
+}
+.accounting_top_select{
+    display: flex;
+    position: absolute;
+    right: 0rem;
+}
+.member_detail__search_form{
+  width: 20rem;
+  height: 4rem;
+  border: 0.1rem solid #B41515;
+  border-radius: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.member_detail__search_date{
+  border: 0.1rem solid #B41515;
+  color: #B41515;
+  width: 6.3rem;
+  height: 2.5rem;
+  text-align: center;
+  margin-right: 0.5rem;
+  vertical-align:middle;
+  font-size: 1.3rem;
+}
+
+.member_detail__search_button{
+  background: url("/static/images/search_button.png") no-repeat;
+  width: 3rem;
+  height: 3rem;
+  border: none;
+  margin-left: 1.5rem;
+  margin-top: 0.4rem;
+}
+
+.member_detail__search_button:hover{
+  cursor:pointer;
+}
+
+
+.member_detail__mid_table_header{
+    font-size: 2rem;
+    font-weight: bold;
+}
+
+.member_detail__mid_table_header__text{
+    width: 17.5rem;
+}
+
+.member_detail__mid_table_header__text:nth-child(3){
+    width: 30rem;
+}
+
+.member_detail__mid_table_header__text:nth-child(1){
+    width: 10rem;
+}
+
+.member_detail__table_contents_box{
+    height: 25rem;
+    overflow:scroll;
+}
+
+.member_detail__mid_table_content__text{
+    width: 17.5rem;
+}
+
+.member_detail__mid_table_content__text:nth-child(3){
+    width: 30rem;
+}
+
+.member_detail__mid_table_content__text:nth-child(1){
+    width: 10rem;
+}

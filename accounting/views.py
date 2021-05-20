@@ -9,6 +9,8 @@ from .forms import OutlayForm, CollectForm, IncomeForm
 from .models import MonthlySalary, DailySalary, Outlay, Collect, Income
 import datetime
 
+from utill.decorator import option_year_deco
+
 #지출
 class OutlayList(generic.ListView):
     template_name = 'accounting/outlay_list.html'
@@ -199,16 +201,10 @@ class SalaryList(generic.ListView):
         salary_list = MonthlySalary.objects.filter(payment_month__startswith=month)
         return salary_list
 
+    @option_year_deco
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        year = []  # 년도 selector 옵션값 배열
-        now_year = int(str(datetime.datetime.now())[:4])  
-        for i in range(10):
-            if i <6:
-                year.append(now_year - i)
-            else:
-                year.append(now_year + i-5)
-        context['option_year'] = sorted(year)
+        
         context['selected_year'] = self.selected_year
         context['selected_month'] = self.selected_month
         context['int_selected_year'] = int(self.selected_year)
@@ -340,6 +336,7 @@ class SalaryDetail(generic.DetailView):
 
         return super().get_queryset()
 
+    @option_year_deco
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         bonus = 0
@@ -354,6 +351,7 @@ class SalaryDetail(generic.DetailView):
         
         context['selected_year'] = self.selected_year
         context['selected_month'] = self.selected_month
+        context['int_selected_year'] = int(self.selected_year)
         context['int_selected_month'] = int(self.selected_month)
         context['bonus'] = bonus
         context['additional'] = additional
@@ -405,6 +403,7 @@ class IncomeList(generic.ListView):
         income_list = Income.objects.filter(income_date__startswith=month)
         return income_list
 
+    @option_year_deco
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 
@@ -440,7 +439,8 @@ class IncomeList(generic.ListView):
             daily_price['other'] = daily_other
             daily_price['total'] = daily_total
             context['daily_list'].append(daily_price)
-
+        '''
+        # 데코레이터로 넣어줌
         year = []  # 년도 selector 옵션값 배열
         now_year = int(str(datetime.datetime.now())[:4])  
         for i in range(10):
@@ -449,12 +449,11 @@ class IncomeList(generic.ListView):
             else:
                 year.append(now_year + i-5)
         context['option_year'] = sorted(year)
+        '''
         context['selected_year'] = self.selected_year
         context['selected_month'] = self.selected_month
         context['int_selected_year'] = int(self.selected_year)
         context['int_selected_month'] = int(self.selected_month)
-        context['str_selected_year'] = str(self.selected_year)
-        context['str_selected_month'] = str(self.selected_month)
         context['collect'] = collect
         context['other'] = other
         context['total'] = total

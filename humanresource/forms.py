@@ -23,7 +23,4 @@ class HRForm(forms.ModelForm):
             'start_date',
             'finish_date',
         ]
-        widgets = {
-            'start_date': forms.DateTimeInput(format='%Y-%m-%d %H:%M', attrs={'class':'datetimefield'}),
-            'finish_date': forms.DateTimeInput(format='%Y-%m-%d %H:%M', attrs={'class':'datetimefield'}),
-        }
+        

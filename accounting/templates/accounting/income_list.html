@@ -84,11 +84,11 @@
 
         {% for income in daily_list %}
             {% if income.date %}
-                {% with date=str_selected_year|add:"-"|add:str_selected_month|add:"-"|add:income.date %}
+                {% with date=selected_year|add:"-"|add:selected_month|add:"-"|add:income.date %}
                 <a href="{% url 'accounting:income_detail' date %}">
                 {% endwith %}                    
                     <div class="mid_box-table_content">    
-                        <div class="mid_box_table">{{str_selected_year}}년 {{str_selected_month}}월 {{ income.date }}일</div>
+                        <div class="mid_box_table">{{selected_year}}년 {{selected_month}}월 {{ income.date }}일</div>
                         <div class="mid_box_table">{{ income.collect }}</div>
                         <div class="mid_box_table">{{ income.other }}</div>
                         <div class="mid_box_table">{{ income.total}}</div>
