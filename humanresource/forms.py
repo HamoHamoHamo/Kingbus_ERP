@@ -6,7 +6,17 @@ from .models import Member, MemberDocument, HR
 class MemberForm(forms.ModelForm):
     class Meta:
         model = Member
-        fields = '__all__'
+        fields = [
+            'name',
+            'role',
+            'person_id1',
+            'person_id2',
+            'address',
+            'phone_num',
+            'entering_date',
+            'license_num',
+            'check',
+        ]
 
         widgets = {
             'entering_date': forms.DateTimeInput(format='%Y-%m-%d', attrs={'class':'datefield'}),

@@ -19,7 +19,7 @@ class Member(models.Model):
 
 
 class HR(models.Model):
-    member_id = models.ForeignKey(Member, on_delete=models.CASCADE, related_name="hr_member", db_column="member_id", null=False)
+    member_id = models.ForeignKey(Member, on_delete=models.SET_NULL, related_name="hr_member", db_column="member_id", null=True)
     hr_type = models.CharField(verbose_name="종류", max_length=10, null=False)
     reason = models.CharField(verbose_name="내용", max_length=100, null=False)
     start_date = models.CharField(verbose_name="시작날짜", max_length=10,  null=False)

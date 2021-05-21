@@ -1,0 +1,103 @@
+.hr_list__mid_table_header{
+    font-size: 2.5rem;
+    font-weight: bold;
+}
+
+.hr_top_select{
+    display: flex;
+    position: absolute;
+    right: 0rem;
+}
+
+.hr_list__search_form{
+    width: 20rem;
+    height: 4rem;
+    border: 0.1rem solid #B41515;
+    border-radius: 0.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.hr_list__search_date{
+    border: 0.1rem solid #B41515;
+    color: #B41515;
+    width: 6.3rem;
+    height: 2.5rem;
+    text-align: center;
+    margin-right: 0.5rem;
+    vertical-align:middle;
+    font-size: 1.3rem;
+}
+  
+.hr_list__search_button{
+    background: url("/static/images/search_button.png") no-repeat;
+    width: 3rem;
+    height: 3rem;
+    border: none;
+    margin-left: 1.5rem;
+    margin-top: 0.4rem;
+}
+  
+.hr_list__search_button:hover{
+    cursor:pointer;
+}
+  
+.table_header{
+    display: flex;
+    border-top: 0.3rem solid #B41515;
+    border-bottom: 0.3rem solid #B41515;
+    height: 3rem;
+    font-size: 2rem;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+    align-items: center;
+    font-weight: bold;
+    text-align: center;
+}
+
+
+.member_detail__mid_table_header__text{
+    width: 15rem;
+}
+
+.member_detail__mid_table_header__text:nth-child(4){
+    width: 25rem;
+}
+
+.member_detail__mid_table_header__text:nth-child(1){
+    width: 10rem;
+}
+
+.table_contents{
+    display: flex;
+    border-bottom: 0.1rem solid grey;
+    align-items: center;
+    text-align: center;
+    height: 2.5rem;
+    font-size: 1.6rem;
+    padding-top: 1.2rem;
+    padding-bottom: 1.2rem;
+}
+
+.member_detail__mid_table_content__text{
+    width: 15rem;
+}
+
+.member_detail__mid_table_content__text:nth-child(4){
+    width: 25rem;
+}
+
+.member_detail__mid_table_content__text_num{
+    width: 10rem;
+}
+
+
+
+
+
+
+
+.paging_bottom_box{
+    margin-top: 3rem;
+    margin-bottom: 3rem;
+}

@@ -98,11 +98,11 @@
 }
 
 .member_detail__mid_table_header__text{
-    width: 17.5rem;
+    width: 15rem;
 }
 
-.member_detail__mid_table_header__text:nth-child(3){
-    width: 30rem;
+.member_detail__mid_table_header__text:nth-child(4){
+    width: 25rem;
 }
 
 .member_detail__mid_table_header__text:nth-child(1){
@@ -115,11 +115,11 @@
 }
 
 .member_detail__mid_table_content__text{
-    width: 17.5rem;
+    width: 15rem;
 }
 
-.member_detail__mid_table_content__text:nth-child(3){
-    width: 30rem;
+.member_detail__mid_table_content__text:nth-child(4){
+    width: 25rem;
 }
 
 .member_detail__mid_table_content__text:nth-child(1){

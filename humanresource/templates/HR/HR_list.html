@@ -1,0 +1,211 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block head %}
+    <link href="{% static 'css/hr/hr.css' %}" rel="stylesheet" type="text/css">
+{% endblock %}
+
+{% block content %}
+
+<div class="main_box">
+    <aside>
+        <div class="aside_box">
+            <div class="aside_title">
+                <div class="aside_title_font">인사</div>
+            </div>
+            <div class="aside_contents">
+                <a href="{% url 'HR:member' %}">직원관리</a>
+            </div>
+            <div class="aside_contents">
+                <a href="{% url 'HR:member_create' %}">직원등록</a>
+            </div>
+            <div class="aside_contents aside_contents_thispage">
+                <a href="{% url 'HR:management' %}">인사관리</a>
+            </div>
+            <div class="aside_contents">
+                <a href="{% url 'HR:HR_create' %}">인사등록</a>
+            </div>
+        </div>
+    </aside>
+
+    <section class="main_section">
+        <div class="top_box">
+            <div class="hr_list__mid_table_header">인사 목록</div>
+            <div class="hr_top_select">
+                <form action="" class="hr_list__search_form">
+                    <select name="year" class="hr_list__search_date">
+                        <option></option>
+                        {% for i in option_year %}
+                            
+                            <option value="{{i}}" {% if i == int_selected_year %} selected {% endif %}>{{i}}년</option>
+                        {% endfor %}
+                    </select>
+                    <select name="month" class="hr_list__search_date">
+                        <option></option>
+                        {% for i in "x"|rjust:"12" %}
+                            <option value="{% if forloop.counter < 10 %}0{% endif %}{{forloop.counter}}" {% if forloop.counter == int_selected_month %} selected {% endif %}>{{forloop.counter}}월</option>
+                        {% endfor %}
+                    </select>
+                    <input type="submit" class="hr_list__search_button" value="">
+                </form>
+            </div>
+        </div>
+
+        <div class="table_header">
+            <div class="member_detail__mid_table_header__text">번호</div>
+            <div class="member_detail__mid_table_header__text">이름</div>
+            <div class="member_detail__mid_table_header__text">종류</div>
+            <div class="member_detail__mid_table_header__text">내용</div>
+            <div class="member_detail__mid_table_header__text">시작날짜</div>
+            <div class="member_detail__mid_table_header__text">종료날짜</div>
+            <div class="member_detail__mid_table_header__text">등록자</div>
+        </div>
+        <div class="member_detail__table_contents_box">
+            {% for i in HR_list %}
+                <div class="table_contents">
+
+                    <div class="member_detail__mid_table_content__text_num">
+                        {% if request.GET.page %}
+                            {% widthratio 10 1 request.GET.page as page %}
+                            {{ page|add:-10|add:forloop.counter }}
+                        {% else %}
+                            {{ forloop.counter }}
+                        {% endif %}
+                    </div>
+                    <a href="{% url 'HR:member_detail' i.member_id.id %}">
+                        <div class="member_detail__mid_table_content__text">{{i.member_id.name}}</div>
+                    </a>
+                    <div class="member_detail__mid_table_content__text">{{i.hr_type}}</div>
+                    <div class="member_detail__mid_table_content__text">{{i.reason}}</div>
+                    <div class="member_detail__mid_table_content__text">{{i.start_date}}</div>
+                    <div class="member_detail__mid_table_content__text">{{i.finish_date}}</div>
+                    <div class="member_detail__mid_table_content__text">{{i.creator.name}}</div>
+                </div>
+            {% endfor %}
+        </div>
+        <div class="bottom_box">
+            <div class="paging_bottom_box">
+                <!-- 페이징 처리 -->
+                {% if is_paginated %}
+                <div class="pagination">
+                    {% if page_obj.has_previous %}
+                    <div class="page-item page-pre">
+                        <a class="page-link" href="?year={{selected_year}}&month={{selected_month}}&page={{ page_obj.previous_page_number }}"
+                            tabindex="-1">이전</a>
+                    </div>
+                    {% else %}
+                    <div class="page-item page-pre disabled">
+                        <a class="page-link" href="#" tabindex="-1">이전</a>
+                    </div>
+                    {% endif %}
+                    {% for page in page_range %}
+                        <div class="page-item {% if page == page_obj.number %} page-activate {% endif %}">
+                            <a class="page-link" href="?year={{selected_year}}&month={{selected_month}}&page={{ page }}">{{ page }}</a>
+                        </div>      
+                    {% endfor %}
+
+                    {% if page_obj.has_next %}
+                    <div class="page-item">
+                        <a class="page-link page-next"
+                            href="?year={{selected_year}}&month={{selected_month}}&page={{ page_obj.next_page_number }}">다음</a>
+                    </div>
+                    {% else %}
+                    <div class="page-item page-next disabled">
+                        <a class="page-link" href="#">다음</a>
+                    </div>
+                    {% endif %}
+                </div>
+                {% endif %}
+            </div>
+        </div>
+            
+    </section>
+
+
+{% endblock %}
+
+
+
+{% for member in member_list %}
+    <p>이름 : {{ member.name }}</p>
+    <button type="button" onclick="location.href='{% url 'HR:member_edit' member.pk %}'">수정</button>
+    <button type="button" onclick="del({{member.pk}})">삭제</button>
+    <script>
+        function del(pk) {
+            let result = confirm("정말 삭제하시겠습니까??")
+            if (result) {    //확인
+                location.href = pk + '/delete/';
+            }
+        }
+    </script>
+
+{% endfor %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+{% for hr in HR_list %}
+<div>
+    <span>이름 : <a href="#">{{ hr.member_id.name }}</a></span>
+    <span>종류 : {{ hr.hr_type }}</span>
+    <span>사유 : {{ hr.reason }}</span>
+    <span>날짜 : {{ hr.start_date | date:'Y-m-d h:i' }} ~ {{ hr.finish_date | date:'Y-m-d h:i' }} </span>
+    <span>작성자 : {{ hr.creator }}</span>
+</div>
+<button type="button" onclick="location.href='{% url 'HR:HR_edit' hr.pk %}'">수정</button>
+<button type="button" onclick="del({{hr.pk}})">삭제</button>
+<script>
+    function del(pk) {
+        let result = confirm("정말 삭제하시겠습니까??")
+        if (result) {    //확인
+            location.href = pk + '/delete/';
+        }
+    }
+</script>
+{% endfor %}
+
+<!-- 페이징 처리 -->
+{% if is_paginated %}
+<ul class="pagination">
+    {% if page_obj.has_previous %}
+    <li class="page-item">
+        <a class="page-link" href="?page={{ page_obj.previous_page_number }}"
+            tabindex="-1">이전</a>
+    </li>
+    {% else %}
+    <li class="page-item disabled">
+        <a class="page-link" href="#" tabindex="-1">이전</a>
+    </li>
+    {% endif %}
+
+    {% for page in page_range %}
+    <li class="page-item {% if page == page_obj.number %} activate {% endif %}">
+        <a class="page-link" href="?page={{ page }}">{{ page }}</a>
+    </li>
+    {% endfor %}
+
+    {% if page_obj.has_next %}
+    <li class="page-item">
+        <a class="page-link"
+            href="?page={{ page_obj.next_page_number }}">다음</a>
+    </li>
+    {% else %}
+    <li class="page-item disabled">
+        <a class="page-link" href="#">다음</a>
+    </li>
+    {% endif %}
+</ul>
+{% endif %}
+

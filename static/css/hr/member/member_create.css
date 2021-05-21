@@ -49,6 +49,10 @@
     margin-right: 2rem;
 }
 
+.member_create__mid_box__content_box_content_box_blank{
+    width: 22.1rem;
+}
+
 .member_create__mid_box__content_box_content_box_address{
     width: 46.2rem;
     margin-right: none;
@@ -84,6 +88,9 @@
     margin-bottom: 5rem;
 }
 
+.member_create_submit:hover{
+    cursor: pointer;
+}
 .blank{
     height: 10rem;
 }

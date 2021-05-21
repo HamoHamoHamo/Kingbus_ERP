@@ -11,15 +11,23 @@ from utill.decorator import option_year_deco
 
 
 class ManagementList(generic.ListView):
-    template_name = 'HR/management.html'
+    template_name = 'HR/HR_list.html'
     context_object_name = 'HR_list'
     model = HR
     paginate_by = 10
 
     def get_queryset(self):
-        HR_list = HR.objects.order_by('-start_date')
+        self.selected_year = self.request.GET.get('year', "")
+        self.selected_month = self.request.GET.get('month', "")
+        
+        if self.selected_year and self.selected_month:
+            month = self.selected_year +"-" + self.selected_month
+            HR_list = HR.objects.filter(start_date__startswith=month).order_by('start_date')
+        else:
+            HR_list = HR.objects.order_by('start_date')
         return HR_list
     
+    @option_year_deco
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         paginator = context['paginator']
@@ -36,6 +44,13 @@ class ManagementList(generic.ListView):
         page_range = paginator.page_range[start_index:end_index]
         context['page_range'] = page_range
 
+        context['selected_year'] = self.selected_year
+        context['selected_month'] = self.selected_month
+        try:
+            context['int_selected_year'] = int(self.selected_year)
+            context['int_selected_month'] = int(self.selected_month)
+        except Exception as e:
+            print(e)
         return context
 
 def HR_create(request):
@@ -173,11 +188,18 @@ def member_edit(request, pk):
     if request.method == "POST":
         member_form = MemberForm(request.POST)
         if member_form.is_valid():
-            edit_member = member_form.save(commit=False)
-            #print("테스트ㅡㅡㅡ",edit_member.id) id는 입력값이 없기 때문에 None으로 나옴
-            member.delete()
-            edit_member.id = pk
-            edit_member.save()
+            
+            member.name = member_form.cleaned_data['name']
+            member.role = member_form.cleaned_data['role']
+            member.person_id1 = member_form.cleaned_data['person_id1']
+            member.person_id2 = member_form.cleaned_data['person_id2']
+            member.address = member_form.cleaned_data['address']
+            member.phone_num = member_form.cleaned_data['phone_num']
+            member.entering_date = member_form.cleaned_data['entering_date']
+            member.resignation_date = member_form.cleaned_data['resignation_date']
+            member.license_num = member_form.cleaned_data['license_num']
+            member.check = member_form.cleaned_data['check']
+            member.save()
             return redirect('HR:member')
     else:
         context = {

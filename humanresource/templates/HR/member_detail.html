@@ -86,6 +86,7 @@
         </div>
         <div class="table_header">
             <div class="member_detail__mid_table_header__text">번호</div>
+            <div class="member_detail__mid_table_header__text">이름</div>
             <div class="member_detail__mid_table_header__text">종류</div>
             <div class="member_detail__mid_table_header__text">내용</div>
             <div class="member_detail__mid_table_header__text">시작날짜</div>
@@ -96,6 +97,7 @@
             {% for i in hr %}
                 <div class="table_contents">
                     <div class="member_detail__mid_table_content__text">{{forloop.counter}}</div>
+                    <div class="member_detail__mid_table_content__text">{{i.member_id.name}}</div>
                     <div class="member_detail__mid_table_content__text">{{i.hr_type}}</div>
                     <div class="member_detail__mid_table_content__text">{{i.reason}}</div>
                     <div class="member_detail__mid_table_content__text">{{i.start_date}}</div>
@@ -118,14 +120,3 @@
         }
     </script>
 {% endblock %}
-
-<p>이름 : {{ member.name }}</p>
-<p>권한 : {{ member.authority }}</p>
-<p>업무 : {{ member.role }}</p>
-<p>주민번호 : {{ member.person_id }}</p>
-<p>주소 : {{ member.address }}</p>
-<p>전화번호 : {{ member.phone_num }}</p>
-<p>입사일 : {{ member.entering_date | date:'Y-m-d' }}</p>
-<p>퇴사일 : {{ member.resignation_date | date:'Y-m-d' }}</p>
-<p>면허번호 : {{ member.license_num }}</p>
-<p>운행판정표 : {{ member.check }}</p>

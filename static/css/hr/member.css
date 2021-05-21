@@ -1,3 +1,3 @@
-@import "member_list.css";
-@import "member_create.css";
-@import "member_detail.css";
+@import "member/member_list.css";
+@import "member/member_create.css";
+@import "member/member_detail.css";
