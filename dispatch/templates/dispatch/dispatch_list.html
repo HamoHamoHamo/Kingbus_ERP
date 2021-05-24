@@ -1,6 +1,126 @@
 {% extends 'base.html' %}
+{% load static %}
+
+{% block head %}
+    <link href="{% static 'css/dispatch/dispatch_list.css' %}" rel="stylesheet" type="text/css">
+{% endblock %}
 
 {% block content %}
+
+<div class="main_box">
+    <aside>
+        <div class="aside_box">
+            <div class="aside_title">
+                <div class="aside_title_font">배차</div>
+            </div>
+            <div class="aside_contents aside_contents_thispage">
+                <a href="{% url 'dispatch:dispatch_list' %}">배차지시서</a>
+            </div>
+            <div class="aside_contents">
+                <a href="">배차스케줄</a>
+            </div>
+            <div class="aside_contents">
+                <a href="{% url 'dispatch:order_create' %}">주문 작성</a>
+            </div>
+        </div>
+    </aside>
+    <section class="main_section">
+        <div class="top_box">
+            <div class="dispatch_list__mid_table_header">배차지시서</div>
+            <div class="dispatch_top_select">
+                <form action="" class="dispatch_list__search_form">
+                    <select name="year" class="dispatch_list__search_date">
+                        <option></option>
+                        {% for i in option_year %}
+                            
+                            <option value="{{i}}" {% if i == int_selected_year %} selected {% endif %}>{{i}}년</option>
+                        {% endfor %}
+                    </select>
+                    <select name="month" class="dispatch_list__search_date">
+                        <option></option>
+                        {% for i in "x"|rjust:"12" %}
+                            <option value="{% if forloop.counter < 10 %}0{% endif %}{{forloop.counter}}" {% if forloop.counter == int_selected_month %} selected {% endif %}>{{forloop.counter}}월</option>
+                        {% endfor %}
+                    </select>
+                    <input type="submit" class="dispatch_list__search_button" value="">
+                </form>
+            </div>
+        </div>
+
+        <div class="table_header">
+            <div class="member_detail__mid_table_header__text_first">날짜</div>
+            <div class="member_detail__mid_table_header__text">노선별</div>
+            <div class="member_detail__mid_table_header__text">호선별</div>
+        </div>
+        <div class="member_detail__table_contents_box">
+            {% for i in dispatch_list %}
+                <div class="table_contents">
+                    <div class="member_detail__mid_table_content__text_first">{{selected_year}}년 {{selected_month}}월 {{i.departure_date.8}}{{i.departure_date.9}}일</div>
+                    <div class="member_detail__mid_table_content__text">
+                        <a href="{% url 'dispatch:dispatch_daily_route' i.departure_date %}">노선별</a>
+                    </div>
+                    <div class="member_detail__mid_table_content__text">
+                        <a href="{% url 'dispatch:dispatch_daily_bus' i.departure_date %}">호수별</a>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+        <div class="bottom_box">
+            <div class="paging_bottom_box">
+                <!-- 페이징 처리 -->
+                {% if is_paginated %}
+                <div class="pagination">
+                    {% if page_obj.has_previous %}
+                    <div class="page-item page-pre">
+                        <a class="page-link" href="?year={{selected_year}}&month={{selected_month}}&page={{ page_obj.previous_page_number }}"
+                            tabindex="-1">이전</a>
+                    </div>
+                    {% else %}
+                    <div class="page-item page-pre disabled">
+                        <a class="page-link" href="#" tabindex="-1">이전</a>
+                    </div>
+                    {% endif %}
+                    {% for page in page_range %}
+                        <div class="page-item {% if page == page_obj.number %} page-activate {% endif %}">
+                            <a class="page-link" href="?year={{selected_year}}&month={{selected_month}}&page={{ page }}">{{ page }}</a>
+                        </div>      
+                    {% endfor %}
+
+                    {% if page_obj.has_next %}
+                    <div class="page-item">
+                        <a class="page-link page-next"
+                            href="?year={{selected_year}}&month={{selected_month}}&page={{ page_obj.next_page_number }}">다음</a>
+                    </div>
+                    {% else %}
+                    <div class="page-item page-next disabled">
+                        <a class="page-link" href="#">다음</a>
+                    </div>
+                    {% endif %}
+                </div>
+                {% endif %}
+            </div>
+        </div>
+            
+    </section>
+
+
+{% endblock %}
+
+{% block script %}
+    <script>
+        function del(url) {
+            let result = confirm("정말 삭제하시겠습니까??")
+            if (result) {    //확인
+                location.href = url;
+            }
+        }
+    </script>
+{% endblock %}
+
+
+
+
+
     {% for d in date %}
         <div>
             <span>날짜 : {{ d }}</span>
@@ -12,38 +132,3 @@
             </a>
         </div>
     {% endfor %}
-
-    <!-- 페이징 처리 -->
-    {% if is_paginated %}
-    <ul class="pagination">
-        {% if page_obj.has_previous %}
-        <li class="page-item">
-            <a class="page-link" href="?page={{ page_obj.previous_page_number }}"
-                tabindex="-1">이전</a>
-        </li>
-        {% else %}
-        <li class="page-item disabled">
-            <a class="page-link" href="#" tabindex="-1">이전</a>
-        </li>
-        {% endif %}
-
-        {% for page in page_range %}
-        <li class="page-item {% if page == page_obj.number %} activate {% endif %}">
-            <a class="page-link" href="?page={{ page }}">{{ page }}</a>
-        </li>
-        {% endfor %}
-
-        {% if page_obj.has_next %}
-        <li class="page-item">
-            <a class="page-link"
-                href="?page={{ page_obj.next_page_number }}">다음</a>
-        </li>
-        {% else %}
-        <li class="page-item disabled">
-            <a class="page-link" href="#">다음</a>
-        </li>
-        {% endif %}
-    </ul>
-    {% endif %}
-
-{% endblock %}

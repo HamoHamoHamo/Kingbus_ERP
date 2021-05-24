@@ -6,6 +6,7 @@ from django.views import generic
 from .forms import OrderForm, ConsumerForm, RouteForm, ConnectForm
 from .models import DispatchConsumer, DispatchConnect, DispatchOrder
 from crudmember.models import User
+from utill.decorator import option_year_deco
 
 from datetime import datetime, timedelta
 
@@ -16,22 +17,17 @@ class DispatchList(generic.ListView):
     model = DispatchOrder
 
 
-    '''
+    
     def get_queryset(self):
-        dispatch_list = []
-        today = datetime.now().day
-        tomorrow = (datetime.now() + timedelta(days=1)).day
-        yesterday = (datetime.now() - timedelta(days=1)).day
-        for order in DispatchOrder.objects.all():
-            day = order.pub_date.day
-            if day == today or day == yesterday or day == tomorrow:
-                dispatch_list.append(order)
-        dispatch_list = DispatchOrder.objects.order_by('-id')
-        #프린트 할 수 있게 파일로 만들어 줘야 됨 > JS로 프린트 할 수 있게 할 거        
+        self.selected_year = self.request.GET.get('year', str(datetime.now())[:4])
+        self.selected_month = self.request.GET.get('month', str(datetime.now())[5:7])
+        
+        month = self.selected_year +"-" + self.selected_month
+        dispatch_list = DispatchOrder.objects.filter(check=True).filter(departure_date__startswith=month).order_by('-departure_date')
         return dispatch_list
-    '''
-
+    
     # 페이징 처리
+    @option_year_deco
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         paginator = context['paginator']
@@ -48,11 +44,16 @@ class DispatchList(generic.ListView):
         context['page_range'] = page_range
         #페이징 끝
         
-        context['order_list'] = DispatchOrder.objects.filter(check=True).order_by('-departure_date')
+        
         date = []
-        for order in context['order_list']:
+        for order in context['dispatch_list']:
             date.append(order.departure_date[:10])
-        context['date'] = set(date)
+
+        context['date'] = set(date) #중복값 제거
+        context['selected_year'] = self.selected_year
+        context['selected_month'] = self.selected_month
+        context['int_selected_year'] = int(self.selected_year)
+        context['int_selected_month'] = int(self.selected_month)
         return context
 
 # 날짜별-노선별 배차지시서 

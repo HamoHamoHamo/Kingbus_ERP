@@ -119,10 +119,6 @@
 {% endblock %}
 
 
-
-{% for member in member_list %}
-    <p>이름 : {{ member.name }}</p>
-    <button type="button" onclick="location.href='{% url 'HR:member_edit' member.pk %}'">수정</button>
     <button type="button" onclick="del({{member.pk}})">삭제</button>
     <script>
         function del(pk) {
@@ -132,5 +128,3 @@
             }
         }
     </script>
-
-{% endfor %}
