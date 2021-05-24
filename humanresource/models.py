@@ -4,10 +4,10 @@ from crudmember.models import User
 class Member(models.Model):
     name = models.CharField(verbose_name='이름', max_length=10, null=False)
     role = models.CharField(verbose_name='업무', max_length=10, null=False)
-    person_id1 = models.IntegerField(verbose_name='주민번호 앞자리', null=False)
-    person_id2 = models.IntegerField(verbose_name='주민번호 뒷자리', null=False)
+    person_id1 = models.CharField(verbose_name='주민번호 앞자리', max_length=6, null=False)
+    person_id2 = models.CharField(verbose_name='주민번호 뒷자리', max_length=7, null=False)
     address = models.CharField(verbose_name='주소', max_length=50, null=False)
-    phone_num = models.IntegerField(verbose_name='전화번호', null=False)
+    phone_num = models.CharField(verbose_name='전화번호', max_length=11, null=False)
     entering_date = models.CharField(verbose_name='입사일', max_length=10, null=False, blank=True)
     resignation_date = models.CharField(verbose_name='퇴사일', max_length=10, null=False, blank=True)
     license_num = models.CharField(verbose_name='면허번호', max_length=30, null=False, blank=True)

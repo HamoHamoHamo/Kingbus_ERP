@@ -69,7 +69,7 @@ def login(request):
             return render(request, 'crudmember/login.html', res_data)
             
         if check_password(login_password, user.password):
-            request.session['user'] = user.id 
+            request.session['user'] = user.id
             request.session['name'] = user.name
 
                 #세션도 딕셔너리 변수 사용과 똑같이 사용하면 된다.

@@ -3,9 +3,11 @@ from django.http import Http404, HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse, reverse_lazy
 from django.views import generic
+from django.contrib import messages
+
 import datetime
 
-from .forms import MemberForm, HRForm
+from .forms import MemberForm, HRForm, MemberEditForm
 from .models import Member, MemberDocument, HR
 from utill.decorator import option_year_deco
 
@@ -22,9 +24,9 @@ class ManagementList(generic.ListView):
         
         if self.selected_year and self.selected_month:
             month = self.selected_year +"-" + self.selected_month
-            HR_list = HR.objects.filter(start_date__startswith=month).order_by('start_date')
+            HR_list = HR.objects.filter(start_date__startswith=month).order_by('-start_date')
         else:
-            HR_list = HR.objects.order_by('start_date')
+            HR_list = HR.objects.order_by('-start_date')
         return HR_list
     
     @option_year_deco
@@ -61,10 +63,23 @@ def HR_create(request):
         if HR_form.is_valid() and member_id:
             hr = HR_form.save(commit=False)
             print("테스트ㅡㅡㅡ",hr)
-            hr.member_id = get_object_or_404(Member, pk=member_id)
-            hr.creator = User.objects.get(pk=request.session.get('user'))
-            hr.save()
+            try:
+                hr.member_id = Member.objects.get(pk=member_id)
+                hr.creator = User.objects.get(pk=request.session.get('user'))
+                hr.save()
+            except Exception as e:
+                print(e)
+                raise Http404
             return redirect('HR:management')
+        else:
+            for msg in HR_form.errors:
+                messages.error(request, f"{msg}: {HR_form.errors[msg]}")
+            context = {
+                'HR_form' : HRForm(),
+                'members' : Member.objects.all()
+            }
+            return render(request, 'HR/HR_create.html', context)
+
     else:
         context = {
             'HR_form' : HRForm(),
@@ -89,7 +104,7 @@ def HR_edit(request, pk):
             return redirect('HR:management')
     else:
         context = {
-            'HR_form' : HRForm(instance=hr),
+            'hr' : hr,
             'members' : Member.objects.all(),
             'member_id' : hr.member_id,
         }
@@ -186,7 +201,7 @@ def member_edit(request, pk):
     member = get_object_or_404(Member, pk=pk)
 
     if request.method == "POST":
-        member_form = MemberForm(request.POST)
+        member_form = MemberEditForm(request.POST)
         if member_form.is_valid():
             
             member.name = member_form.cleaned_data['name']

@@ -59,6 +59,7 @@
             <div class="member_detail__mid_table_header__text">시작날짜</div>
             <div class="member_detail__mid_table_header__text">종료날짜</div>
             <div class="member_detail__mid_table_header__text">등록자</div>
+            <div class="member_detail__mid_table_header__text">수정/삭제</div>
         </div>
         <div class="member_detail__table_contents_box">
             {% for i in HR_list %}
@@ -75,11 +76,15 @@
                     <a href="{% url 'HR:member_detail' i.member_id.id %}">
                         <div class="member_detail__mid_table_content__text">{{i.member_id.name}}</div>
                     </a>
-                    <div class="member_detail__mid_table_content__text">{{i.hr_type}}</div>
+                    <div class="member_detail__mid_table_content__text_num">{{i.hr_type}}</div>
                     <div class="member_detail__mid_table_content__text">{{i.reason}}</div>
                     <div class="member_detail__mid_table_content__text">{{i.start_date}}</div>
                     <div class="member_detail__mid_table_content__text">{{i.finish_date}}</div>
                     <div class="member_detail__mid_table_content__text">{{i.creator.name}}</div>
+                    <div class="member_detail__mid_table_content__text">
+                        <a href="{% url 'HR:HR_edit' i.id %}">수정</a>
+                        <a href="javascript:del('{% url 'HR:HR_delete' i.id %}')">삭제</a>
+                    </div>
                 </div>
             {% endfor %}
         </div>
@@ -124,88 +129,13 @@
 
 {% endblock %}
 
-
-
-{% for member in member_list %}
-    <p>이름 : {{ member.name }}</p>
-    <button type="button" onclick="location.href='{% url 'HR:member_edit' member.pk %}'">수정</button>
-    <button type="button" onclick="del({{member.pk}})">삭제</button>
+{% block script %}
     <script>
-        function del(pk) {
+        function del(url) {
             let result = confirm("정말 삭제하시겠습니까??")
             if (result) {    //확인
-                location.href = pk + '/delete/';
+                location.href = url;
             }
         }
     </script>
-
-{% endfor %}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-{% for hr in HR_list %}
-<div>
-    <span>이름 : <a href="#">{{ hr.member_id.name }}</a></span>
-    <span>종류 : {{ hr.hr_type }}</span>
-    <span>사유 : {{ hr.reason }}</span>
-    <span>날짜 : {{ hr.start_date | date:'Y-m-d h:i' }} ~ {{ hr.finish_date | date:'Y-m-d h:i' }} </span>
-    <span>작성자 : {{ hr.creator }}</span>
-</div>
-<button type="button" onclick="location.href='{% url 'HR:HR_edit' hr.pk %}'">수정</button>
-<button type="button" onclick="del({{hr.pk}})">삭제</button>
-<script>
-    function del(pk) {
-        let result = confirm("정말 삭제하시겠습니까??")
-        if (result) {    //확인
-            location.href = pk + '/delete/';
-        }
-    }
-</script>
-{% endfor %}
-
-<!-- 페이징 처리 -->
-{% if is_paginated %}
-<ul class="pagination">
-    {% if page_obj.has_previous %}
-    <li class="page-item">
-        <a class="page-link" href="?page={{ page_obj.previous_page_number }}"
-            tabindex="-1">이전</a>
-    </li>
-    {% else %}
-    <li class="page-item disabled">
-        <a class="page-link" href="#" tabindex="-1">이전</a>
-    </li>
-    {% endif %}
-
-    {% for page in page_range %}
-    <li class="page-item {% if page == page_obj.number %} activate {% endif %}">
-        <a class="page-link" href="?page={{ page }}">{{ page }}</a>
-    </li>
-    {% endfor %}
-
-    {% if page_obj.has_next %}
-    <li class="page-item">
-        <a class="page-link"
-            href="?page={{ page_obj.next_page_number }}">다음</a>
-    </li>
-    {% else %}
-    <li class="page-item disabled">
-        <a class="page-link" href="#">다음</a>
-    </li>
-    {% endif %}
-</ul>
-{% endif %}
-
+{% endblock %}

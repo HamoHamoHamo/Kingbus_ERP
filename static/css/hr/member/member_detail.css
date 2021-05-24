@@ -48,7 +48,7 @@
 
 .member_detail__mid_header__box{
     display: flex;
-    margin-top: 8rem;
+    margin-top: 10rem;
     margin-bottom: 2rem;
     position: relative;
     align-items: flex-end;
@@ -119,9 +119,38 @@
 }
 
 .member_detail__mid_table_content__text:nth-child(4){
+    display: flex;
+    justify-content: center;
+    align-items: center;
     width: 25rem;
+    height: 4rem;
+    overflow: auto;
 }
 
 .member_detail__mid_table_content__text:nth-child(1){
     width: 10rem;
+}
+
+.member_detail__mid_box{
+    position: relative;
+}
+
+.member_detail__edit_button{
+    position: absolute;
+    right: 7rem;
+    width: 6rem;
+    height: 3rem;
+    margin-top: 1rem;
+    border: 0.1rem solid #b41515;
+    background-color: #b41515;
+    color: white;
+    font-size: 1.5rem;
+    font-weight: bold;
+    border-radius: 0.5rem;
+    text-align: center;
+    line-height: 3rem;
+}
+
+.delete_button{
+    right: 0;
 }

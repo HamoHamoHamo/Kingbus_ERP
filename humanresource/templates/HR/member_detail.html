@@ -33,7 +33,7 @@
         <div class="top_box">
             <div class="top_box_title">직원 상세</div>
         </div>
-        <div class="mid_box">
+        <div class="mid_box member_detail__mid_box">
             <div class="table_header member_detail__table_header">
                 <div class="member_detail__mid_box_table_header">이름</div>
                 <div class="member_detail__mid_box_table_header">업무</div>
@@ -62,6 +62,13 @@
                 <div class="member_detail__mid_box_table_contents">{{member.license_num}}</div>
                 <div class="member_detail__mid_box_table_contents">{{member.check}}</div>
             </div>
+
+            <a href="{% url 'HR:member_edit' member.id %}">
+                <div class="member_detail__edit_button">수정</div>
+            </a>
+            <a href="javascript:del('{% url 'HR:member_delete' member.id %}');">
+                <div class="member_detail__edit_button delete_button">삭제</div>
+            </a>
         </div>
         <div class="member_detail__mid_header__box">
             <div class="member_detail__mid_table_header">인사 목록</div>
@@ -116,6 +123,17 @@
         function handleOnInput(el, maxlength) {
             if(el.value.length > maxlength)  {
                 el.value = el.value.substr(0, maxlength);
+            }
+        }
+    </script>
+{% endblock %}
+
+{% block script %}
+    <script>
+        function del(url) {
+            let result = confirm("정말 삭제하시겠습니까??")
+            if (result) {    //확인
+                location.href = url;
             }
         }
     </script>

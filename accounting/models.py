@@ -5,7 +5,7 @@ from humanresource.models import Member
 import datetime
 
 class MonthlySalary(models.Model):
-    member_id = models.ForeignKey(Member, on_delete=models.SET_NULL, related_name="salary_monthly", db_column="member_id", null=True)
+    member_id = models.ForeignKey(Member, on_delete=models.CASCADE, related_name="salary_monthly", db_column="member_id", null=True)
     base = models.IntegerField(verbose_name='기본급', null=False)
     bonus = models.IntegerField(verbose_name='상여금', null=False)
     additional = models.IntegerField(verbose_name='추가금', null=False)
@@ -20,7 +20,6 @@ class MonthlySalary(models.Model):
     payment_month = models.CharField(verbose_name='지급월', null=False,max_length=7, default=str(datetime.datetime.now())[:7])
     creator = models.ForeignKey(User, on_delete=models.SET_NULL, related_name="salary_user", db_column="user_id", null=True)
     pub_date = models.DateTimeField(verbose_name='작성시간', auto_now_add=True, null=False)
-
     def __str__(self):
         return self.member_id.name
 

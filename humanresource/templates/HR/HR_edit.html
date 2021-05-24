@@ -1,51 +1,86 @@
-hr_edit
-
-<form method="POST" action="">
-    {% csrf_token %}
-    {% for member in members %}
-    <div>
-        <label for="member_input">{{ member.name }}</label>
-
-            <input type="radio" name="member_id" value="{{ member.pk }}" id="member_input" 
-            {% if member_id == member %}
-                checked
-            {% endif %}
-            >
-    </div>
-    {% endfor %}
-    {% for field in HR_form %}
-
-    <div class="form-group">
-        <label for="{{ field.id_for_label }}">{{ field.label }}</label>
-        <input
-        type="{{ field.field.widget.input_type }}"
-        id="{{ field.id_for_label }}"
-        placeholder="{{ field.label }}"
-        name="{{ field.name }}"
-        {% if forloop.counter == 3 or forloop.counter == 4 %}
-            class="datetimefield"
-            value="{{ field.value | date:'Y-m-d H:i' }}"
-        {% else %}
-            value="{{ field.value }}"
-        {% endif %}
-        />
-    </div>
-    {% endfor %}
-    <input type="submit" value="등록">
-</form>
+{% extends 'base.html' %}
+{% load static %}
 
 
+{% block head %}
+    <link href="{% static 'css/hr/hr.css' %}" rel="stylesheet" type="text/css">
+{% endblock %}
 
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
-<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+{% block content %}
+
+<div class="main_box outlay_detaillist__main_box">
+    <aside>
+        <div class="aside_box">
+            <div class="aside_title">
+                <div class="aside_title_font">인사</div>
+            </div>
+            <div class="aside_contents">
+                <a href="{% url 'HR:member' %}">직원관리</a>
+            </div>
+            <div class="aside_contents">
+                <a href="{% url 'HR:member_create' %}">직원등록</a>
+            </div>
+            <div class="aside_contents">
+                <a href="{% url 'HR:management' %}">인사관리</a>
+            </div>
+            <div class="aside_contents">
+                <a href="{% url 'HR:HR_create' %}">인사등록</a>
+            </div>
+        </div>
+    </aside>
+
+    <section class="main_section">
+        <div class="top_box">
+            <div class="hr_list__mid_table_header">인사 등록</div>
+        </div>
 
 
-<script>
-    // This code activates flatpickr on fields with the 'datetimefield' class when the document has loaded
-    window.addEventListener("DOMContentLoaded", function () {
-        flatpickr(".datetimefield", {
-            enableTime: true,
-            dateFormat: "Y-m-d H:i",
-        });
-    });
-</script>
+        <div class="hr_create__mid_box">
+            <div class="hr_create__mid_box__header">
+                <div class="hr_create__mid_box__header_title">직원</div>
+                <div class="hr_create__mid_box__header_title">종류</div>
+                <div class="hr_create__mid_box__header_title">내용</div>
+                <div class="hr_create__mid_box__header_title">시작날짜</div>
+                <div class="hr_create__mid_box__header_title">종료날짜</div>
+            </div>
+            <form method="POST" action="" >
+                <div class="hr_create__mid_box__content">
+                    {% csrf_token %}
+                    <div class="hr_create__mid_box__content_box">
+                        <select name="member_id" class="hr_create__mid_box__content_kinds" required>
+                            <option></option>
+                            {% for member in members %}
+                                <option value="{{member.id}}" {% if member == member_id %} selected {% endif %}>{{member.name}}</option>
+                            {% endfor %} 
+                        </select>
+                    </div>
+                    <div class="hr_create__mid_box__content_box">
+                        <select name="hr_type" class="hr_create__mid_box__content_kinds" required>
+                            <option></option>
+                            <option {% if hr.hr_type == "연차" %} selected {% endif %} value="연차">연차</option>
+                            <option {% if hr.hr_type == "월차" %} selected {% endif %} value="월차">월차</option>
+                            <option {% if hr.hr_type == "신규교육" %} selected {% endif %} value="신규교육">신규교육</option>
+                            <option {% if hr.hr_type == "지각" %} selected {% endif %} value="지각">지각</option>
+                            <option {% if hr.hr_type == "조퇴" %} selected {% endif %} value="조퇴">조퇴</option>
+                            <option {% if hr.hr_type == "결근" %} selected {% endif %} value="결근">결근</option>
+                            <option {% if hr.hr_type == "휴가" %} selected {% endif %} value="휴가">휴가</option>
+                            <option {% if hr.hr_type == "기타" %} selected {% endif %} value="기타">기타</option>
+                        </select>
+                    </div>
+                    <div class="hr_create__mid_box__content_box hr_create__mid_box__content_box_content">
+                        <input type="text" name="reason" class="hr_create__mid_box__content_content" required value="{{hr.reason}}">
+                    </div>
+                    <div class="hr_create__mid_box__content_box">
+                        <input type="date" name="start_date" class="hr_create__mid_box__content_date" required value="{{hr.start_date}}">
+                    </div>
+                    <div class="hr_create__mid_box__content_box">
+                        <input type="date" name="finish_date" class="hr_create__mid_box__content_date" required value="{{hr.finish_date}}">
+                    </div>
+                </div>
+                <input type="submit" value="등록" class="hr_create_submit">
+            </form>
+            
+        <div class="blank"></div>
+    </section>
+    
+{% endblock %}

@@ -61,7 +61,14 @@
             {% for member in member_list %}
                 <a href="{% url 'HR:member_detail' member.id %}" class="mid_box_table_contents">
                     <div class="table_contents">
-                        <div class="mid_box_table_contents">{{member.id}}</div>
+                        <div class="mid_box_table_contents">
+                            {% if request.GET.page %}
+                                {% widthratio 10 1 request.GET.page as page %}
+                                {{ page|add:-10|add:forloop.counter }}
+                            {% else %}
+                                {{ forloop.counter }}
+                            {% endif %}
+                        </div>
                         <div class="mid_box_table_contents">{{member.name}}</div>
                         <div class="mid_box_table_contents">{{member.role}}</div>
                         <div class="mid_box_table_contents">{{member.phone_num}}</div>

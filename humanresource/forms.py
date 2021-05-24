@@ -23,6 +23,10 @@ class MemberForm(forms.ModelForm):
             'resignation_date': forms.DateTimeInput(format='%Y-%m-%d', attrs={'class':'datefield'}),
         }
 
+class MemberEditForm(forms.ModelForm):
+    class Meta:
+        model = Member
+        fields = '__all__'
 
 class HRForm(forms.ModelForm):
     class Meta:

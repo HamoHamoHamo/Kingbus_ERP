@@ -1,28 +1,87 @@
-hr_create
-
-<form method="POST" action="">
-    {% csrf_token %}
-    {% for member in members %}
-    <div>
-        <label for="member_input">{{ member.name }}</label>
-        <input type="radio" name="member_id" value="{{ member.pk }}" id= "member_input">
-    </div>
-    {% endfor %}
-    {{ HR_form }}
-    <input type="submit" value="등록">
-</form>
+{% extends 'base.html' %}
+{% load static %}
 
 
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
-<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+{% block head %}
+    <link href="{% static 'css/hr/hr.css' %}" rel="stylesheet" type="text/css">
+{% endblock %}
+
+{% block content %}
+
+<div class="main_box outlay_detaillist__main_box">
+    <aside>
+        <div class="aside_box">
+            <div class="aside_title">
+                <div class="aside_title_font">인사</div>
+            </div>
+            <div class="aside_contents">
+                <a href="{% url 'HR:member' %}">직원관리</a>
+            </div>
+            <div class="aside_contents">
+                <a href="{% url 'HR:member_create' %}">직원등록</a>
+            </div>
+            <div class="aside_contents">
+                <a href="{% url 'HR:management' %}">인사관리</a>
+            </div>
+            <div class="aside_contents">
+                <a href="{% url 'HR:HR_create' %}">인사등록</a>
+            </div>
+        </div>
+    </aside>
+
+    <section class="main_section">
+        <div class="top_box">
+            <div class="hr_list__mid_table_header">인사 등록</div>
+        </div>
 
 
-<script>
-    // This code activates flatpickr on fields with the 'datetimefield' class when the document has loaded
-    window.addEventListener("DOMContentLoaded", function () {
-        flatpickr(".datetimefield", {
-            enableTime: true,
-            dateFormat: "Y-m-d H:i",
-        });
-    });
-</script>
+        <div class="hr_create__mid_box">
+            <div class="hr_create__mid_box__header">
+                <div class="hr_create__mid_box__header_title">직원</div>
+                <div class="hr_create__mid_box__header_title">종류</div>
+                <div class="hr_create__mid_box__header_title">내용</div>
+                <div class="hr_create__mid_box__header_title">시작날짜</div>
+                <div class="hr_create__mid_box__header_title">종료날짜</div>
+            </div>
+            <form method="POST" action="" >
+                <div class="hr_create__mid_box__content">
+                    {% csrf_token %}
+                    <div class="hr_create__mid_box__content_box">
+                        <select name="member_id" class="hr_create__mid_box__content_kinds" required>
+                            <option></option>
+                            {% for member in members %}
+                                <option value="{{member.id}}">{{member.name}}</option>
+                            {% endfor %} 
+                        </select>
+                    </div>
+                    <div class="hr_create__mid_box__content_box">
+                        <select name="hr_type" class="hr_create__mid_box__content_kinds" required>
+                            <option></option>
+                            <option value="연차">연차</option>
+                            <option value="월차">월차</option>
+                            <option value="신규교육">신규교육</option>
+                            <option value="지각">지각</option>
+                            <option value="조퇴">조퇴</option>
+                            <option value="결근">결근</option>
+                            <option value="휴가">휴가</option>
+                            <option value="기타">기타</option>
+                        </select>
+                    </div>
+                    <div class="hr_create__mid_box__content_box hr_create__mid_box__content_box_content">
+                        <input type="text" name="reason" class="hr_create__mid_box__content_content" required>
+                    </div>
+                    <div class="hr_create__mid_box__content_box">
+                        <input type="date" name="start_date" class="hr_create__mid_box__content_date" required>
+                    </div>
+                    <div class="hr_create__mid_box__content_box">
+                        <input type="date" name="finish_date" class="hr_create__mid_box__content_date" required>
+                    </div>
+                </div>
+                <input type="submit" value="등록" class="hr_create_submit">
+            </form>
+            
+        <div class="blank"></div>
+    </section>
+    
+{% endblock %}
+
