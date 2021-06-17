@@ -36,7 +36,7 @@ class DispatchOrder(models.Model): #장고에서 제공하는 models.Model를 �
     departure_date = models.CharField(verbose_name='출발시간', max_length=16, null=False)
     arrival_date = models.CharField(verbose_name='도착시간', max_length=16, null=False)
     check = models.BooleanField(verbose_name="배차완료", null=False, default=False)
-    routine = models.BooleanField(verbose_name="정기배차", null=False, default=False)
+    regularly = models.BooleanField(verbose_name="정기배차", null=False, default=False)
     
     def __str__(self):
         return self.departure_date

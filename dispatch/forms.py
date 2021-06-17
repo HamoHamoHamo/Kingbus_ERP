@@ -17,7 +17,7 @@ class OrderForm(forms.ModelForm):
             'pay_type',
             'departure_date',
             'arrival_date',
-            'routine',
+            'regularly',
             ]
 
         widgets = {
