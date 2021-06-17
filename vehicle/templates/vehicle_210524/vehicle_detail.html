@@ -35,7 +35,7 @@
           <tr id="vehicle_create_table_font">
             <td id="vehicle_create_categorie_title" class="vehicle_create_categorie_title_1st_line">차량번호</td>
             <td class="vehicle_create_categorie_contents_1st_line">
-              <input type="text" name="vehicle_num" value="{{ vehicle_num }}">
+              <input type="text" name="vehicle_num" value="{{ vehicle.vehicle_num }}">
             </td>
             <td id="vehicle_create_categorie_title" class="vehicle_create_categorie_title_1st_line">사용여부</td>
             <td class="vehicle_create_categorie_contents_1st_line">
@@ -177,17 +177,8 @@
 
 <h1>vehicle detail</h1>
 
-    <form method="POST" action="" enctype="multipart/form-data">
-        {% csrf_token %}
-        {{ vehicle_form.as_p }}
-        {{ insurance_form.as_p }}
-        {% for files in file %}
-        <a href="{% url 'vehicle:vehicle_file_download' vehicle.pk files.pk %}">{{ files.filename }}</a><a href="{% url 'vehicle:vehicle_file_del' vehicle.pk files.pk %}"> <<삭제</a><br>
-        {% endfor %}
-        <input type="file" name="file"><br>
-        <input type="file" name="file"><br>
-        <input type="file" name="file"><br>
-        <input type="submit" value="등록">
-    </form>
+<p>차량번호 : {{ vehicle_detail }}</p>
+{{form.as_p}}
+
 
 {% endblock %}

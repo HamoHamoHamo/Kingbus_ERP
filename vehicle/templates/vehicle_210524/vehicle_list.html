@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block head %}
+<link rel="stylesheet" href="{% static 'css/vehicle_list.css' %}  " type="text/css" />
+{% endblock %}
+
+{% block content %}
+<div class="main_box">
+  <aside>
+    <div class="aside_box">
+    <div class="aside_title">
+      <div class="aside_title_font">배차시스템</div>
+    </div>
+    <div id="aside_contents" class="aside_contents_thispage"><a href="notice_driver.html" class="aside_contents_link">-배차지시서</a></div>
+    <div id="aside_contents"><a href="notice_driver.html" class="aside_contents_link">-배차스케줄</a></div>
+    <div id="aside_contents"><a href="notice_driver.html" class="aside_contents_link">-배차관리</a></div>
+  </div>
+  </aside>
+
+  <section class="section">
+      <div class="page_name_vehicle_information">차량목록</div>
+      <div class="vehicle_information_head_line">차량확인</div>
+      <div class="vehicle_information_select_line">
+        <select id="vehicle_information_select" class="vehicle_information_car_number">
+          <option>차량번호</option>
+        </select>
+        <select id="vehicle_information_select" class="vehicle_information_driver_name">
+          <option>기사이름</option>
+        </select>
+        <select class="vehicle_information_belong">
+          <option>소속</option>
+        </select>
+        <select id="vehicle_information_select" class="vehicle_information_using">
+          <option>사용여부</option>
+        </select>
+        <div class="vehicle_information_checking_box">
+          <select class="vehicle_information_type">
+            <option>보험만료</option>
+            <option>검사유효기간</option>
+            <option>정기정검기록</option>
+          </select>
+          <select class="vehicle_information_check">
+            <option>확인</option>
+            <option>미확인</option>
+          </select>
+        </div>
+      </div>
+      <div class="vehicle_information_information_box">
+        {% for vehicle in vehicle %}
+        <div class="vehicle_information_information_line">
+          <div id="vehicle_information_information_box" class="vehicle_information_car_number_box"><a href="{% url 'vehicle:vehicle_detail' vehicle.pk %}" class="vehicle_information_car_number_box_link">{{ vehicle.vehicle_num }}</a></div>
+          <div id="vehicle_information_information_box" class="vehicle_information_driver_name_box">{{ vehicle.driver }}</div>
+          <div class="vehicle_information_belong_box">{{ vehicle.group }}</div>
+          <div id="vehicle_information_information_box" class="vehicle_information_using_box">{{ vehicle.use }}</div>
+          <div id="vehicle_information_information_box" class="vehicle_information_type_box">보험만료</div>
+          <div id="vehicle_information_information_box" class="vehicle_information_check_box">확인</div>
+        </div>
+        {% endfor %}
+      </div>
+    <a href="{% url 'vehicle:vehicle_create' %}"><div class="vehicle_information_create_button">차량등록</div></a>
+    </div>
+  </section>
+</div>
+
+
+{% endblock %}

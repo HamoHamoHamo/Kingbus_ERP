@@ -1,7 +1,8 @@
 from django import forms
 from . import models
 
-class VehicleDetailForm(forms.ModelForm):    
+
+class VehicleDetailForm(forms.ModelForm):
     class Meta:
         model = models.Vehicle#, models.Vehicle_insurance, models.Vehicle_document
         fields = '__all__'
@@ -19,3 +20,9 @@ class VehicleInsuranceForm(forms.ModelForm):
             'insurance_date': forms.DateInput(format='%Y-%m-%d', attrs={'class':'datefield'}),
             'expiration_date': forms.DateInput(format='%Y-%m-%d', attrs={'class':'datefield'}),
         }
+
+
+class VehicleDocumentForm(forms.ModelForm):
+    class Meta:
+        model = models.VehicleDocument
+        fields = '__all__'

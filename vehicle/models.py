@@ -1,6 +1,8 @@
 from django.db import models
 from crudmember.models import User
 from humanresource.models import Member
+from datetime import datetime
+from uuid import uuid4
 
 class Vehicle(models.Model):
     vehicle_num = models.CharField(verbose_name='차량번호', max_length=15, null=False)
@@ -12,8 +14,7 @@ class Vehicle(models.Model):
     use = models.BooleanField(verbose_name='사용여부', default=False)
     passenger_num = models.IntegerField(verbose_name='승차인원', null=False)
 
-    def __str__(self):
-        return self.vehicle_num
+
 
     class Meta: #메타 클래스를 이용하여 테이블명 지정
         db_table = 'vehicle'
@@ -26,7 +27,7 @@ class VehicleInsurance(models.Model):
     expiration_date = models.CharField(max_length=10, null=False, verbose_name='만료일자')
     
     def __str__(self):
-        return self.vehicle_id
+        return self.vehicle_id.vehicle_num
     
     class Meta:
         db_table = 'vehicle_insurance'
@@ -37,18 +38,22 @@ class VehicleCheck(models.Model):
     check_detail = models.CharField(verbose_name='점검내용', max_length=500, null=False)
     
     def __str__(self):
-        return self.check_date
+        return self.vehicle_id.vehicle_num
     
     class Meta:
         db_table = 'vehicle_check'
     
 class VehicleDocument(models.Model):
-    vehicle_id = models.ForeignKey(Vehicle, on_delete=models.CASCADE, db_column="vehicle_id", null=False)
-    vehicle_file = models.FileField(upload_to='vehicle/', blank=True, null=True)
-    check_id = models.ForeignKey(VehicleCheck, on_delete=models.CASCADE, db_column="check_id", null=True)
+    def get_file_path(instance, filename):
+        
+        ymd_path = datetime.now().strftime('%Y/%m/%d')
+        uuid_name = uuid4().hex
+        return '/'.join(['document/', ymd_path, uuid_name])
     
-    def __str__(self):
-        return self.vehicle_id
+    vehicle_id = models.ForeignKey(Vehicle, on_delete=models.CASCADE, db_column="vehicle_id", null=False)
+    vehicle_file = models.FileField(upload_to=get_file_path, blank=True, null=True)
+    filename = models.CharField(max_length=1024, null=True, verbose_name='첨부파일명')
+    check_id = models.ForeignKey(VehicleCheck, on_delete=models.CASCADE, db_column="check_id", null=True)
     
     class Meta:
         db_table = 'vehicle_document'
