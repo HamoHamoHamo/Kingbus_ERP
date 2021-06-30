@@ -30,13 +30,13 @@ class DispatchOrder(models.Model): #장고에서 제공하는 models.Model를 �
     purpose = models.CharField(verbose_name='용도', max_length=30, blank=True)
     bus_type = models.CharField(verbose_name='버스종류', max_length=20, blank=True)
     requirements = models.CharField(verbose_name='요구사항', max_length=100, blank=True)
-    people_num = models.IntegerField(verbose_name='탑승인원', null=False)
-    pub_date = models.DateTimeField(auto_now_add=True, verbose_name='등록시간')
-    pay_type = models.CharField(verbose_name='카드or현금', max_length=2, null=False)
+    #people_num = models.IntegerField(verbose_name='탑승인원', null=False)
+    #pay_type = models.CharField(verbose_name='카드or현금', max_length=2, null=False)
     departure_date = models.CharField(verbose_name='출발시간', max_length=16, null=False)
     arrival_date = models.CharField(verbose_name='도착시간', max_length=16, null=False)
     check = models.BooleanField(verbose_name="배차완료", null=False, default=False)
     regularly = models.BooleanField(verbose_name="정기배차", null=False, default=False)
+    pub_date = models.DateTimeField(auto_now_add=True, verbose_name='등록시간')
     
     def __str__(self):
         return self.departure_date

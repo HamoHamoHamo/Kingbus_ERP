@@ -13,8 +13,6 @@ class OrderForm(forms.ModelForm):
             'purpose',
             'bus_type',
             'requirements',
-            'people_num',
-            'pay_type',
             'departure_date',
             'arrival_date',
             'regularly',

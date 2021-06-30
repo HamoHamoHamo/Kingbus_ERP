@@ -274,7 +274,7 @@ def management_delete(request, pk, c_pk):
 ##############################################
 
 class RegularlyOrderList(generic.ListView):
-    template_name = 'dispatch/dispatch_list.html'
+    template_name = 'dispatch/regularly_order_list.html'
     context_object_name = 'dispatch_list'
     paginate_by = 10
     model = DispatchOrder
@@ -283,13 +283,24 @@ class RegularlyOrderList(generic.ListView):
         dispatch_list = DispatchOrder.objects.filter(regularly=True)
         return dispatch_list
 
-def regulary_order_create(request):
+    def get_context_data(self, **kwargs):
+        context = super(ManagementDetail, self).get_context_data(**kwargs)
+        context['order_form'] = OrderForm()
+        context['route_form'] = RouteForm()
+        context['consumer_form'] = ConsumerForm()
+
+        return context
+
+    def post(self, request, *args, **kwargs):
+        return redirect('dispatch:regularly_order_create')
+
+def regularly_order_create(request):
     context = {}
     if request.method == "POST":
         creator = get_object_or_404(User, pk=request.session.get('user'))
         order_form = OrderForm(request.POST)
         route_form = RouteForm(request.POST)
-        consumer_form = ConsumerForm(request.POST)        
+        consumer_form = ConsumerForm(request.POST)
         if order_form.is_valid() and consumer_form.is_valid():
             consumer = consumer_form.save(commit=False)
             consumer.save()
@@ -301,7 +312,7 @@ def regulary_order_create(request):
             order.route = route
             order.save()
             
-            return redirect('dispatch:order')
+            return redirect('dispatch:regularly')
     else:
         context = {
             'order_form' : OrderForm(),
@@ -309,10 +320,10 @@ def regulary_order_create(request):
             'consumer_form' : ConsumerForm(),
         }
         
-    return render(request, 'dispatch/order_create.html', context)
+    return render(request, 'dispatch/regularly_order_create.html', context)
 
 class RegularlyOrderDetail(generic.DetailView):
-    template_name = 'dispatch/order_detail.html'
+    template_name = 'dispatch/regularly_order_detail.html'
     context_object_name = 'order'
     model = DispatchOrder
 
@@ -349,14 +360,14 @@ def regularly_order_edit(request, pk):
                 order.delete()
                 edit_order.id = pk
                 edit_order.save()
-            return redirect(reverse('dispatch:order_detail', args=(pk,)))
+            return redirect(reverse('dispatch:regularly_order_detail', args=(pk,)))
     else:
         context = {
             'order_form' : OrderForm(instance=order),
             'consumer_form' : ConsumerForm(instance=consumer),
             'route_form' : RouteForm(instance=route),            
         }
-        return render(request, 'dispatch/order_edit.html', context)
+        return render(request, 'dispatch/regularly_order_edit.html', context)
 
 def regularly_order_delete(request, pk):
     order = get_object_or_404(DispatchOrder, pk=pk)
@@ -365,8 +376,44 @@ def regularly_order_delete(request, pk):
         if order.info_order.all():
             order.info_order.all().delete()
         order.delete()
-        return redirect('dispatch:order')
-    return redirect(reverse('dispatch:order_detail', args=(pk,)))
+        return redirect('dispatch:regularly')
+    return redirect(reverse('dispatch:regularly_order_detail', args=(pk,)))
+
+def regularly_order_group_create(request, pk):
+    context = {}
+    order = get_object_or_404(DispatchOrder, pk=pk)
+
+    if request.method == "POST":
+        print("POST")
+    else:
+        context = {
+            'order' : order,
+            'connect_form' : ConnectForm(),
+        }
+    return render(request, 'dispatch/regularly_order_group_create.html', context)
+
+def regularly_order_group_edit(request, pk):
+    context = {}
+    order = get_object_or_404(DispatchOrder, pk=pk)
+
+    if request.method == "POST":
+        print("POST")
+    else:
+        context = {
+            'order' : order,
+            'connect_form' : ConnectForm(),
+        }
+    return render(request, 'dispatch/regularly_order_group_edit.html', context)
+
+def regularly_order_group_delete(request, pk):
+    order = get_object_or_404(DispatchOrder, pk=pk)
+    print("테스트ㅡㅡ", request.session['user'])
+    if order.creator.pk == request.session['user'] or User.objects.get(pk=request.session['user']).authority == "관리자": # ?? 작성자만 지울 수 있게 하나?
+        if order.info_order.all():
+            order.info_order.all().delete()
+        order.delete()
+        return redirect('dispatch:regularly')
+    return redirect(reverse('dispatch:regularly_order_group_create', args=(pk,)))
 
 
 def regularly_order_management_create(request, pk):
@@ -381,13 +428,13 @@ def regularly_order_management_create(request, pk):
             connect.creator=creator
             connect.order_id=order
             connect.save()
-            return redirect(reverse('dispatch:order_detail',args=(pk,)))
+            return redirect(reverse('dispatch:regularly_order_detail',args=(pk,)))
     else:
         context = {
             'order' : order,
             'connect_form' : ConnectForm(),
         }
-    return render(request, 'dispatch/management_create.html', context)
+    return render(request, 'dispatch/regularly_order_management_create.html', context)
 
 
 def regularly_order_management_edit(request, pk, c_pk):
@@ -405,17 +452,17 @@ def regularly_order_management_edit(request, pk, c_pk):
                 edit_connect.order_id = order
                 connect.delete()
                 edit_connect.save()
-                return redirect(reverse('dispatch:order_detail',args=(pk,)))
+                return redirect(reverse('dispatch:regularly_order_detail',args=(pk,)))
     else:
         context = {
             'order' : order,
             'connect_form' : ConnectForm(instance=connect),
         }
-    return render(request, 'dispatch/management_create.html', context)
+    return render(request, 'dispatch/regularly_order_management_create.html', context)
 
 def regularly_order_management_delete(request, pk, c_pk):
     connect = get_object_or_404(DispatchConnect, pk=c_pk)
     order = get_object_or_404(DispatchOrder, pk=pk)
     if order.creator.pk == request.session['user'] or User.objects.get(pk=request.session['user']).authority == "관리자": # ?? 작성자만 지울 수 있게 하나?
         connect.delete()
-    return redirect(reverse('dispatch:order_detail', args=(pk,)))
+    return redirect(reverse('dispatch:regularly_order_detail', args=(pk,)))
