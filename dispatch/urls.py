@@ -15,13 +15,14 @@ urlpatterns = [
     #path('order/management/<int:pk>/<int:c_pk>/edit/', views.management_edit, name='management_edit'),
     #path('order/management/<int:pk>/<int:c_pk>/delete/', views.management_delete, name='management_delete'),
 
-    path('regularly/create/', views.RegularlyOrderList.as_view(), name='regularly_order_create'),
+    path('regularly/', views.RegularlyOrderList.as_view(), name='regularly_order_list'),
+    path('regularly/create/', views.regularly_order_create, name='regularly_order_create'),
     path('regularly/<int:pk>/edit/', views.regularly_order_edit, name='regularly_order_edit'),
     path('regularly/<int:pk>/delete/', views.regularly_order_delete, name='regularly_order_delete'),
     
-    path('regularly/management/group/create', views.regularly_order_group_create, name='regularly_order_group_create'),
-    path('regularly/management/group/<int:pk>/edit', views.regularly_order_group_edit, name='regularly_order_group_edit'),
-    path('regularly/management/group/<int:pk>/delete', views.regularly_order_group_delete, name='regularly_order_group_delete'),
+    path('regularly/management/group/create/', views.regularly_order_group_create, name='regularly_order_group_create'),
+    path('regularly/management/group/<int:pk>/edit/', views.regularly_order_group_edit, name='regularly_order_group_edit'),
+    path('regularly/management/group/<int:pk>/delete/', views.regularly_order_group_delete, name='regularly_order_group_delete'),
 
     path('regularly/management/<int:pk>/create/', views.regularly_order_management_create, name='regularly_order_management_create'),
     path('regularly/management/<int:pk>/<int:c_pk>/edit/', views.regularly_order_management_edit, name='regularly_order_management_edit'),

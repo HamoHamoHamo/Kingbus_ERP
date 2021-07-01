@@ -6,6 +6,12 @@ from vehicle.models import Vehicle
 class DispatchConsumer(models.Model):
     name = models.CharField(verbose_name='주문자 이름', max_length=10, null=False)
     tel = models.CharField(verbose_name='전화번호', max_length=15, null=False)
+    
+    def __str__(self):
+        return self.name
+
+class RegularlyGroup(models.Model):
+    name = models.CharField(verbose_name='그룹 이름', max_length=30, null=False)
     company = models.CharField(verbose_name='거래처', max_length=20, null=True, blank=True)
 
     def __str__(self):
@@ -16,6 +22,7 @@ class DispatchRoute(models.Model):
     arrival = models.CharField(verbose_name='도착지', max_length=50, null=False)
     stopover = models.CharField(verbose_name='경유지', max_length=100, null=True, blank=True)
     route_name = models.CharField(verbose_name="노선명", max_length=50, null=False)
+    regularly_group = models.ForeignKey(RegularlyGroup, on_delete=models.SET_NULL, related_name="regularly_route", db_column="group_id", null=True)
 
     def __str__(self):
         return self.route_name

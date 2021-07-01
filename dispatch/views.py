@@ -270,9 +270,6 @@ def management_delete(request, pk, c_pk):
     return redirect(reverse('dispatch:order_detail', args=(pk,)))
 
 
-
-##############################################
-
 class RegularlyOrderList(generic.ListView):
     template_name = 'dispatch/regularly_order_list.html'
     context_object_name = 'dispatch_list'
@@ -284,15 +281,26 @@ class RegularlyOrderList(generic.ListView):
         return dispatch_list
 
     def get_context_data(self, **kwargs):
-        context = super(ManagementDetail, self).get_context_data(**kwargs)
-        context['order_form'] = OrderForm()
-        context['route_form'] = RouteForm()
-        context['consumer_form'] = ConsumerForm()
+        context = super().get_context_data(**kwargs)
+        paginator = context['paginator']
+        page_numbers_range = 5
+        max_index = len(paginator.page_range)
+        page = self.request.GET.get('page')
+        current_page = int(page) if page else 1
+
+        start_index = int((current_page - 1) / page_numbers_range) * page_numbers_range
+        end_index = start_index + page_numbers_range
+        if end_index >= max_index:
+            end_index = max_index
+        page_range = paginator.page_range[start_index:end_index]
+        context['page_range'] = page_range
+        #페이징 끝
 
         return context
 
-    def post(self, request, *args, **kwargs):
-        return redirect('dispatch:regularly_order_create')
+
+###########################################
+
 
 def regularly_order_create(request):
     context = {}
