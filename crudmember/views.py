@@ -1,6 +1,9 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.hashers import make_password, check_password
+from django.contrib.auth import login
 from .models import User, UserFile
+from string import ascii_lowercase
+from random import choice
 
 
 def home(request):
@@ -90,3 +93,65 @@ def logout(request):
     request.session.pop('user')
     request.session.pop('name')
     return redirect('/')
+
+
+def profile(request):
+    res_data = {}
+    if request.method == 'GET':
+        return render(request, 'crudmember/profile.html')
+    if request.method == 'POST':
+        # user_id = request.session.get('user')
+        # 비밀번호 변경폼
+        if 'cngpw' in request.POST:
+            user = User.objects.get(pk=request.session.get('user'))
+            oldpw = request.POST.get('old_password', None)
+            if check_password(oldpw, user.password):
+                newpw = request.POST.get('new_password1', None)
+                newpw2 = request.POST.get('new_password2', None)
+                if newpw == newpw2:
+                    if len(newpw) >= 4:
+                        user.password = make_password(newpw)
+                        user.save()
+                        # login(request, user)
+                    else:
+                        res_data['error'] = "길이 너무 짧음"
+                        return render(request, 'crudmember/profile.html', res_data)
+                else:
+                    res_data['error'] = "1,2틀림"
+                    return render(request, 'crudmember/profile.html', res_data)
+            else:
+                res_data['error'] = "old비번틀림"
+                return render(request, 'crudmember/profile.html', res_data)
+        return redirect('home')
+
+
+def passwordfinder(request):
+    res_data={}
+    if request.method == 'GET':
+        return render(request, 'crudmember/passwordfinder.html')  # return redirect('passwordfinder')
+    if request.method == 'POST':
+        if 'findpw' in request.POST:
+            userid = request.POST.get('userid', None)
+            name = request.POST.get('name', None)
+            tel = request.POST.get('tel', None)
+            try:
+                user = User.objects.get(userid = userid)
+            except Exception:
+                res_data['error'] = "아이디없음"
+                return render(request, 'crudmember/passwordfinder.html', res_data)
+            if user.name == name:
+                if str(user.tel) == tel:  # tel을 숫자로받아야함 (임시)
+                    result = ""    # 난수생성해서 비번초기화하기
+                    for i in range(4):
+                        result += choice(ascii_lowercase)
+                    user.password = make_password(result)
+                    user.save()
+                    res_data['error'] = "비밀번호 초기화 완료 : " + result
+                    return render(request, 'crudmember/passwordfinder.html', res_data)
+                else:
+                    res_data['error'] = "번호없음"
+                    return render(request, 'crudmember/passwordfinder.html', res_data)
+            else:
+                res_data['error'] = "이름없음"
+                return render(request, 'crudmember/passwordfinder.html', res_data)
+
