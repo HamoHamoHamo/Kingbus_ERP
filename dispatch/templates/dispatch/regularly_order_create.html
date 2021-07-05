@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+    <form method="POST" action="">
+        {% csrf_token %}
+        {{ order_form }}
+        <br>
+        {{ consumer_form }}
+        <br>
+        {{ route_form }}
+
+        <input type="submit" value="등록">
+    </form>
+<!--
+    <form method="POST" action="">
+        {% csrf_token %}
+        {% for field in order_form %}
+        <div class="form-group">
+            <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+            <input
+            type="{{ field.field.widget.input_type }}"
+            id="{{ field.id_for_label }}"
+            placeholder="{{ field.label }}"
+            name="{{ field.name }}"
+            />
+        </div>
+        {% endfor %}
+        {% for field in consumer_form %}
+        <div class="form-group">
+            <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+            <input
+            type="{{ field.field.widget.input_type }}"
+            id="{{ field.id_for_label }}"
+            placeholder="{{ field.label }}"
+            name="{{ field.name }}"
+            />
+        </div>
+        {% endfor %}
+        <input type="submit" value="등록">
+    </form>
+
+-->
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
+<script>
+    // This code activates flatpickr on fields with the 'datetimefield' class when the document has loaded
+    window.addEventListener("DOMContentLoaded", function () {
+        flatpickr(".datetimefield", {
+            enableTime: true,
+            dateFormat: "Y-m-d H:i",
+        });
+    });
+</script>
+{% endblock %}

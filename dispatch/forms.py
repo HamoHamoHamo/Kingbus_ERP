@@ -3,6 +3,24 @@ from django.db import models
 
 from .models import DispatchOrder, DispatchConsumer, DispatchConnect, DispatchRoute
 
+class RegularlyOrderForm(forms.ModelForm):
+    class Meta:
+        model = DispatchOrder
+        fields = [ 
+            'bus_cnt', 
+            'price', 
+            'purpose',
+            'bus_type',
+            'requirements',
+            'departure_date',
+            'arrival_date',
+            ]
+
+        widgets = {
+            'departure_date': forms.DateInput(format='%Y-%m-%d H:i', attrs={'class':'datetimefield'}),
+            'arrival_date': forms.DateInput(format='%Y-%m-%d H:i', attrs={'class':'datetimefield'}),
+        }
+
 class OrderForm(forms.ModelForm):
     class Meta:
         model = DispatchOrder
@@ -13,11 +31,9 @@ class OrderForm(forms.ModelForm):
             'purpose',
             'bus_type',
             'requirements',
-            'people_num',
-            'pay_type',
             'departure_date',
             'arrival_date',
-            'routine',
+            'regularly',
             ]
 
         widgets = {
