@@ -12,25 +12,14 @@ class DispatchConsumer(models.Model):
 
 class RegularlyGroup(models.Model):
     name = models.CharField(verbose_name='그룹 이름', max_length=30, null=False)
-    company = models.CharField(verbose_name='거래처', max_length=20, null=True, blank=True)
+    company = models.CharField(verbose_name='거래처', max_length=20, null=False, blank=True)
 
     def __str__(self):
         return self.name
 
-class DispatchRoute(models.Model):
-    departure = models.CharField(verbose_name='출발지', max_length=50, null=False)
-    arrival = models.CharField(verbose_name='도착지', max_length=50, null=False)
-    stopover = models.CharField(verbose_name='경유지', max_length=100, null=True, blank=True)
-    route_name = models.CharField(verbose_name="노선명", max_length=50, null=False)
-    regularly_group = models.ForeignKey(RegularlyGroup, on_delete=models.SET_NULL, related_name="regularly_route", db_column="group_id", null=True)
-
-    def __str__(self):
-        return self.route_name
-
 class DispatchOrder(models.Model): #장고에서 제공하는 models.Model를 상속받아야한다.
     creator = models.ForeignKey(User, on_delete=models.CASCADE, related_name="dispatch_creator", db_column="creator_id", null=True)
     consumer = models.ForeignKey(DispatchConsumer, on_delete=models.SET_NULL, related_name="consumer", db_column="consumer_id", null=True)
-    route = models.ForeignKey(DispatchRoute, on_delete=models.SET_NULL, related_name="route", db_column='route_id', null=True)
     bus_cnt = models.IntegerField(verbose_name='버스 대수', null=False)
     price = models.IntegerField(verbose_name='가격', null=False)
     kinds = models.CharField(verbose_name='왕복or편도', max_length=2, null=False)
@@ -39,6 +28,11 @@ class DispatchOrder(models.Model): #장고에서 제공하는 models.Model를 �
     requirements = models.CharField(verbose_name='요구사항', max_length=100, blank=True)
     #people_num = models.IntegerField(verbose_name='탑승인원', null=False)
     #pay_type = models.CharField(verbose_name='카드or현금', max_length=2, null=False)
+    departure = models.CharField(verbose_name='출발지', max_length=50, null=False)
+    arrival = models.CharField(verbose_name='도착지', max_length=50, null=False)
+    stopover = models.CharField(verbose_name='경유지', max_length=100, null=False, blank=True)
+    route_name = models.CharField(verbose_name="노선명", max_length=50, null=False, blank=True)
+    regularly_group = models.ForeignKey(RegularlyGroup, on_delete=models.SET_NULL, related_name="regularly_route", db_column="group_id", null=True, blank=True)
     departure_date = models.CharField(verbose_name='출발시간', max_length=16, null=False)
     arrival_date = models.CharField(verbose_name='도착시간', max_length=16, null=False)
     check = models.BooleanField(verbose_name="배차완료", null=False, default=False)

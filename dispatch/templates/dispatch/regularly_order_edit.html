@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+    <form method="POST" action="">
+        {% csrf_token %}
+        {{ order_form }}
+        <br>
+        {{ consumer_form }}
+        <br>
+        {{ route_form }}
+
+        <input type="submit" value="등록">
+    </form>
+
+{% endblock %}
