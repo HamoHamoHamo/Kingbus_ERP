@@ -1,7 +1,7 @@
 from django import forms 
 from django.db import models
 
-from .models import DispatchOrder, DispatchConsumer, DispatchConnect, DispatchRoute
+from .models import DispatchOrder, DispatchConsumer, DispatchConnect
 
 class RegularlyOrderForm(forms.ModelForm):
     class Meta:
@@ -12,13 +12,18 @@ class RegularlyOrderForm(forms.ModelForm):
             'purpose',
             'bus_type',
             'requirements',
+            'departure',
+            'arrival',
+            'stopover',
+            'route_name',
+            'regularly_group',
             'departure_date',
             'arrival_date',
             ]
 
         widgets = {
-            'departure_date': forms.DateInput(format='%Y-%m-%d H:i', attrs={'class':'datetimefield'}),
-            'arrival_date': forms.DateInput(format='%Y-%m-%d H:i', attrs={'class':'datetimefield'}),
+            'departure_date': forms.DateInput(format='%Y-%m-%d H:i', attrs={'type':'datetime-local'}),
+            'arrival_date': forms.DateInput(format='%Y-%m-%d H:i', attrs={'type':'datetime-local'}),
         }
 
 class OrderForm(forms.ModelForm):
@@ -31,20 +36,21 @@ class OrderForm(forms.ModelForm):
             'purpose',
             'bus_type',
             'requirements',
+            'departure',
+            'arrival',
+            'stopover',
+            'route_name',
+            'regularly_group',
             'departure_date',
             'arrival_date',
             'regularly',
             ]
 
         widgets = {
-            'departure_date': forms.DateInput(format='%Y-%m-%d H:i', attrs={'class':'datetimefield'}),
-            'arrival_date': forms.DateInput(format='%Y-%m-%d H:i', attrs={'class':'datetimefield'}),
+            'departure_date': forms.DateInput(format='%Y-%m-%d H:i', attrs={'type':'datetime-local'}),
+            'arrival_date': forms.DateInput(format='%Y-%m-%d H:i', attrs={'type':'datetime-local'}),
         }
 
-class RouteForm(forms.ModelForm):
-    class Meta:
-        model = DispatchRoute
-        fields = '__all__'
 
 class ConnectForm(forms.ModelForm):
     class Meta:

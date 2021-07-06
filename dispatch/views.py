@@ -3,7 +3,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
 from django.views import generic
 
-from .forms import OrderForm, ConsumerForm, RouteForm, ConnectForm
+from .forms import OrderForm, ConsumerForm, ConnectForm, RegularlyOrderForm
 from .models import DispatchConsumer, DispatchConnect, DispatchOrder
 from crudmember.models import User
 from utill.decorator import option_year_deco
@@ -83,24 +83,19 @@ def order_create(request):
     if request.method == "POST":
         creator = get_object_or_404(User, pk=request.session.get('user'))
         order_form = OrderForm(request.POST)
-        route_form = RouteForm(request.POST)
         consumer_form = ConsumerForm(request.POST)        
         if order_form.is_valid() and consumer_form.is_valid():
             consumer = consumer_form.save(commit=False)
             consumer.save()
-            route = route_form.save(commit=False)
-            route.save()
             order = order_form.save(commit=False)
             order.creator = creator
             order.consumer = consumer
-            order.route = route
             order.save()
             
             return redirect('dispatch:order')
     else:
         context = {
             'order_form' : OrderForm(),
-            'route_form' : RouteForm(),
             'consumer_form' : ConsumerForm(),
         }
         
@@ -122,25 +117,19 @@ class OrderDetail(generic.DetailView):
 def order_edit(request, pk):
     order = get_object_or_404(DispatchOrder, pk=pk)
     consumer = order.consumer
-    route = order.route
 
     if request.method == 'POST':
         if User.objects.get(pk=request.session['user']).authority == "관리자":
             creator = get_object_or_404(User, pk=request.session.get('user'))
             order_form = OrderForm(request.POST)
             consumer_form = ConsumerForm(request.POST)
-            route_form = RouteForm(request.POST)
             if order_form.is_valid() and consumer_form.is_valid():
                 edit_consumer = consumer_form.save(commit=False)
                 consumer.delete()
                 edit_consumer.save()
-                edit_route = route_form.save(commit=False)
-                route.delete()
-                edit_route.save()
                 edit_order = order_form.save(commit=False)
                 edit_order.creator = creator
                 edit_order.consumer = edit_consumer
-                edit_order.route = edit_route
                 order.delete()
                 edit_order.id = pk
                 edit_order.save()
@@ -148,8 +137,7 @@ def order_edit(request, pk):
     else:
         context = {
             'order_form' : OrderForm(instance=order),
-            'consumer_form' : ConsumerForm(instance=consumer),
-            'route_form' : RouteForm(instance=route),            
+            'consumer_form' : ConsumerForm(instance=consumer),         
         }
         return render(request, 'dispatch/order_edit.html', context)
 
@@ -269,6 +257,7 @@ def management_delete(request, pk, c_pk):
         connect.delete()
     return redirect(reverse('dispatch:order_detail', args=(pk,)))
 
+#######
 
 class RegularlyOrderList(generic.ListView):
     template_name = 'dispatch/regularly_order_list.html'
@@ -299,81 +288,58 @@ class RegularlyOrderList(generic.ListView):
         return context
 
 
-###########################################
-
 
 def regularly_order_create(request):
     context = {}
     if request.method == "POST":
         creator = get_object_or_404(User, pk=request.session.get('user'))
-        order_form = OrderForm(request.POST)
-        route_form = RouteForm(request.POST)
+        order_form = RegularlyOrderForm(request.POST)
         consumer_form = ConsumerForm(request.POST)
         if order_form.is_valid() and consumer_form.is_valid():
             consumer = consumer_form.save(commit=False)
             consumer.save()
-            route = route_form.save(commit=False)
-            route.save()
             order = order_form.save(commit=False)
             order.creator = creator
             order.consumer = consumer
-            order.route = route
+            order.regularly = True
             order.save()
             
-            return redirect('dispatch:regularly')
+            return redirect('dispatch:regularly_order_create')
     else:
         context = {
-            'order_form' : OrderForm(),
-            'route_form' : RouteForm(),
+            'order_form' : RegularlyOrderForm(),
             'consumer_form' : ConsumerForm(),
         }
         
     return render(request, 'dispatch/regularly_order_create.html', context)
 
-class RegularlyOrderDetail(generic.DetailView):
-    template_name = 'dispatch/regularly_order_detail.html'
-    context_object_name = 'order'
-    model = DispatchOrder
 
-    def get_context_data(self, **kwargs):
-        # 기본 구현을 호출해 context를 가져온다.
-        context = super(OrderDetail, self).get_context_data(**kwargs)
-        order = get_object_or_404(DispatchOrder, pk=self.kwargs['pk'])
-        context['connects'] = order.info_order.all()
-
-        return context
+###########################################
 
 def regularly_order_edit(request, pk):
     order = get_object_or_404(DispatchOrder, pk=pk)
     consumer = order.consumer
-    route = order.route
 
     if request.method == 'POST':
-        if User.objects.get(pk=request.session['user']).authority == "관리자":
-            creator = get_object_or_404(User, pk=request.session.get('user'))
-            order_form = OrderForm(request.POST)
+        creator = get_object_or_404(User, pk=request.session.get('user'))
+        if User.objects.get(pk=request.session['user']).authority == "관리자" or order.creator == creator:
+            order_form = RegularlyOrderForm(request.POST)
             consumer_form = ConsumerForm(request.POST)
-            route_form = RouteForm(request.POST)
             if order_form.is_valid() and consumer_form.is_valid():
                 edit_consumer = consumer_form.save(commit=False)
                 consumer.delete()
                 edit_consumer.save()
-                edit_route = route_form.save(commit=False)
-                route.delete()
-                edit_route.save()
                 edit_order = order_form.save(commit=False)
                 edit_order.creator = creator
                 edit_order.consumer = edit_consumer
-                edit_order.route = edit_route
                 order.delete()
                 edit_order.id = pk
                 edit_order.save()
-            return redirect(reverse('dispatch:regularly_order_detail', args=(pk,)))
+                return redirect('dispatch:regularly_order_create')
     else:
         context = {
-            'order_form' : OrderForm(instance=order),
+            'order_form' : RegularlyOrderForm(instance=order),
             'consumer_form' : ConsumerForm(instance=consumer),
-            'route_form' : RouteForm(instance=route),            
         }
         return render(request, 'dispatch/regularly_order_edit.html', context)
 
