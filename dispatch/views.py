@@ -4,7 +4,7 @@ from django.urls import reverse
 from django.views import generic
 
 from .forms import OrderForm, ConsumerForm, ConnectForm, RegularlyOrderForm
-from .models import DispatchConsumer, DispatchConnect, DispatchOrder
+from .models import DispatchConsumer, DispatchConnect, DispatchOrder, RegularlyGroup
 from crudmember.models import User
 from utill.decorator import option_year_deco
 
@@ -333,6 +333,7 @@ def regularly_order_edit(request, pk):
                 edit_order.creator = creator
                 edit_order.consumer = edit_consumer
                 order.delete()
+                edit_order.regularly = True
                 edit_order.id = pk
                 edit_order.save()
                 return redirect('dispatch:regularly_order_create')
@@ -350,21 +351,50 @@ def regularly_order_delete(request, pk):
         if order.info_order.all():
             order.info_order.all().delete()
         order.delete()
-        return redirect('dispatch:regularly')
-    return redirect(reverse('dispatch:regularly_order_detail', args=(pk,)))
+        return redirect('dispatch:regularly_order_list')
+    return redirect(reverse('dispatch:regularly_order_list', args=(pk,)))
 
-def regularly_order_group_create(request, pk):
-    context = {}
-    order = get_object_or_404(DispatchOrder, pk=pk)
 
-    if request.method == "POST":
-        print("POST")
-    else:
-        context = {
-            'order' : order,
-            'connect_form' : ConnectForm(),
-        }
-    return render(request, 'dispatch/regularly_order_group_create.html', context)
+#####
+class RegularlyOrderGroup(generic.ListView):
+    template_name = 'dispatch/regularly_order_group_create.html'
+    context_object_name = 'routes'
+    model = DispatchOrder
+
+    def get_queryset(self):
+        route_list = DispatchOrder.objects.filter(regularly=True).order_by('-regularly_group')
+        return route_list
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['no_group_route'] = DispatchOrder.objects.filter(regularly=True).filter(regularly_group=None)
+
+        return context
+
+    def post(self, request, *args, **kwargs):
+        """
+        셀렉트 박스로 그룹 선택해서 그룹에 추가, 
+        만약 그룹을 새로 만드려면 맨밑에 그룹추가 선택하면 그룹이름이랑 업체명 인풋 생김
+        """
+        
+        group_pk = request.POST.get('group')
+        if group_pk:
+            group = get_object_or_404(RegularlyGroup, pk=group_pk)
+        else:
+            group = RegularlyGroup(
+                name = request.POST.get('name'),
+                company = request.POST.get('company')
+            )
+            group.save()
+        routes = request.POST.getlist('route')
+
+        for i in routes:
+            route = get_object_or_404(DispatchOrder, pk=i)
+            route.regularly_group = group
+            route.save()
+        
+        return redirect('dispatch:regularly_order_group_create')
+
 
 def regularly_order_group_edit(request, pk):
     context = {}

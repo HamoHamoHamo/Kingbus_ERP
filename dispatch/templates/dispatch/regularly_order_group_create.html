@@ -1,0 +1,18 @@
+<form method="POST" action="">
+    {% csrf_token %}
+    <input name="name">
+    <input name="company">
+    <br>
+    {% for i in routes %}
+        {{ i.pk }}
+        {{ i.arrival_date }}
+        {{ i.creator }}
+        {{ i.bus_cnt }}
+        {{ i.regularly_group }}
+    <br> 
+    <input type="checkbox" name="route" value="{{i.pk}}">
+    <br>
+    {% endfor %}
+
+    <input type="submit" value="등록">
+</form>
