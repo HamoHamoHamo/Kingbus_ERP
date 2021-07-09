@@ -355,9 +355,8 @@ def regularly_order_delete(request, pk):
     return redirect(reverse('dispatch:regularly_order_list', args=(pk,)))
 
 
-#####
 class RegularlyOrderGroup(generic.ListView):
-    template_name = 'dispatch/regularly_order_group_create.html'
+    template_name = 'dispatch/regularly_order_group.html'
     context_object_name = 'routes'
     model = DispatchOrder
 
@@ -368,34 +367,48 @@ class RegularlyOrderGroup(generic.ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['no_group_route'] = DispatchOrder.objects.filter(regularly=True).filter(regularly_group=None)
+        context['group_list'] = RegularlyGroup.objects.all()
 
         return context
 
     def post(self, request, *args, **kwargs):
         """
+        그룹 추가하는 인풋 하나 따로 만들어서 그룹 추가해서 셀렉트 박스에 보여주기
+        """
+        group = RegularlyGroup(
+            name = request.POST.get('name'),
+            company = request.POST.get('company')
+        )
+        group.save()
+        
+        return redirect('dispatch:regularly_order_group')
+#####
+
+def regularly_order_group_create(request):
+        """
         셀렉트 박스로 그룹 선택해서 그룹에 추가, 
         만약 그룹을 새로 만드려면 맨밑에 그룹추가 선택하면 그룹이름이랑 업체명 인풋 생김
         """
-        
-        group_pk = request.POST.get('group')
-        if group_pk:
-            group = get_object_or_404(RegularlyGroup, pk=group_pk)
+        if request.method == "POST":
+            group_pk = request.POST.get('group')
+            routes = request.POST.getlist('route')
+            if group_pk:
+                group = get_object_or_404(RegularlyGroup, pk=group_pk)
+
+                for i in routes:
+                    route = get_object_or_404(DispatchOrder, pk=i)
+                    route.regularly_group = group
+                    route.save()
+            
+            else:
+                for i in routes:
+                    route = get_object_or_404(DispatchOrder, pk=i)
+                    route.regularly_group = None
+                    route.save()
+            return redirect('dispatch:regularly_order_group')    
         else:
-            group = RegularlyGroup(
-                name = request.POST.get('name'),
-                company = request.POST.get('company')
-            )
-            group.save()
-        routes = request.POST.getlist('route')
-
-        for i in routes:
-            route = get_object_or_404(DispatchOrder, pk=i)
-            route.regularly_group = group
-            route.save()
+            raise Http404
         
-        return redirect('dispatch:regularly_order_group_create')
-
-
 def regularly_order_group_edit(request, pk):
     context = {}
     order = get_object_or_404(DispatchOrder, pk=pk)

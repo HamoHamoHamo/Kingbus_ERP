@@ -3,7 +3,13 @@
     <input name="name">
     <input name="company">
     <br>
+    <input type="submit" value="등록">
+</form>
+
+<form method="POST" action="{% url 'dispatch:regularly_order_group_create' %}">
+    {% csrf_token %}
     {% for i in routes %}
+        
         {{ i.pk }}
         {{ i.arrival_date }}
         {{ i.creator }}
@@ -13,6 +19,13 @@
     <input type="checkbox" name="route" value="{{i.pk}}">
     <br>
     {% endfor %}
-
+    <select name="group">
+        <option></option>
+        {% for group in group_list %}
+            <option value="{{group.pk}}">{{group.name}}</option>
+        {% endfor %}
+    </select>
     <input type="submit" value="등록">
-</form>
+</form>    
+
+    
