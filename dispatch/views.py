@@ -392,47 +392,20 @@ def regularly_order_group_create(request):
         if request.method == "POST":
             group_pk = request.POST.get('group')
             routes = request.POST.getlist('route')
-            if group_pk:
+            if group_pk == "none":
+                group = None    
+            else:
                 group = get_object_or_404(RegularlyGroup, pk=group_pk)
 
-                for i in routes:
-                    route = get_object_or_404(DispatchOrder, pk=i)
-                    route.regularly_group = group
-                    route.save()
-            
-            else:
-                for i in routes:
-                    route = get_object_or_404(DispatchOrder, pk=i)
-                    route.regularly_group = None
-                    route.save()
+            for i in routes:
+                route = get_object_or_404(DispatchOrder, pk=i)
+                route.regularly_group = group
+                route.save()
             return redirect('dispatch:regularly_order_group')    
         else:
             raise Http404
-        
-def regularly_order_group_edit(request, pk):
-    context = {}
-    order = get_object_or_404(DispatchOrder, pk=pk)
 
-    if request.method == "POST":
-        print("POST")
-    else:
-        context = {
-            'order' : order,
-            'connect_form' : ConnectForm(),
-        }
-    return render(request, 'dispatch/regularly_order_group_edit.html', context)
-
-def regularly_order_group_delete(request, pk):
-    order = get_object_or_404(DispatchOrder, pk=pk)
-    print("테스트ㅡㅡ", request.session['user'])
-    if order.creator.pk == request.session['user'] or User.objects.get(pk=request.session['user']).authority == "관리자": # ?? 작성자만 지울 수 있게 하나?
-        if order.info_order.all():
-            order.info_order.all().delete()
-        order.delete()
-        return redirect('dispatch:regularly')
-    return redirect(reverse('dispatch:regularly_order_group_create', args=(pk,)))
-
-
+  
 def regularly_order_management_create(request, pk):
     context = {}
     order = get_object_or_404(DispatchOrder, pk=pk)

@@ -22,6 +22,7 @@ class DispatchOrder(models.Model): #장고에서 제공하는 models.Model를 �
     consumer = models.ForeignKey(DispatchConsumer, on_delete=models.SET_NULL, related_name="consumer", db_column="consumer_id", null=True)
     bus_cnt = models.IntegerField(verbose_name='버스 대수', null=False)
     price = models.IntegerField(verbose_name='가격', null=False)
+    driver_allowance = models.IntegerField(verbose_name='기사수당', null=True)
     kinds = models.CharField(verbose_name='왕복or편도', max_length=2, null=False)
     purpose = models.CharField(verbose_name='용도', max_length=30, blank=True)
     bus_type = models.CharField(verbose_name='버스종류', max_length=20, blank=True)

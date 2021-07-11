@@ -13,14 +13,17 @@
         {{ i.pk }}
         {{ i.arrival_date }}
         {{ i.creator }}
-        {{ i.bus_cnt }}
-        {{ i.regularly_group }}
+        버스 {{ i.bus_cnt }}
+        {% if i.regularly_group != None %}
+            그룹 {{ i.regularly_group }}
+        {% endif %}
     <br> 
-    <input type="checkbox" name="route" value="{{i.pk}}">
+    <input type="checkbox" name="route" value="{{i.pk}}"> 
     <br>
     {% endfor %}
+
     <select name="group">
-        <option></option>
+        <option value="none">그룹삭제</option>
         {% for group in group_list %}
             <option value="{{group.pk}}">{{group.name}}</option>
         {% endfor %}

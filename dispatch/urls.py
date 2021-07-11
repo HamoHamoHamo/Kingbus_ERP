@@ -22,8 +22,8 @@ urlpatterns = [
     
     path('regularly/group/', views.RegularlyOrderGroup.as_view(), name='regularly_order_group'),
     path('regularly/group/create/', views.regularly_order_group_create, name='regularly_order_group_create'),
-    path('regularly/group/<int:pk>/edit/', views.regularly_order_group_edit, name='regularly_order_group_edit'),
-    path('regularly/group/<int:pk>/delete/', views.regularly_order_group_delete, name='regularly_order_group_delete'),
+    #path('regularly/group/<int:pk>/delete/', views.regularly_order_group_delete, name='regularly_order_group_delete'),
+    #path('regularly/group/<int:pk>/edit/', views.regularly_order_group_edit, name='regularly_order_group_edit'),
 
     path('regularly/management/<int:pk>/create/', views.regularly_order_management_create, name='regularly_order_management_create'),
     path('regularly/management/<int:pk>/<int:c_pk>/edit/', views.regularly_order_management_edit, name='regularly_order_management_edit'),
