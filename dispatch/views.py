@@ -382,7 +382,7 @@ class RegularlyOrderGroup(generic.ListView):
         group.save()
         
         return redirect('dispatch:regularly_order_group')
-#####
+
 
 def regularly_order_group_create(request):
         """
@@ -405,54 +405,87 @@ def regularly_order_group_create(request):
         else:
             raise Http404
 
-  
-def regularly_order_management_create(request, pk):
-    context = {}
-    order = get_object_or_404(DispatchOrder, pk=pk)
+#####
 
-    if request.method == "POST":
-        creator = get_object_or_404(User, pk=request.session.get('user'))
-        connect_form = ConnectForm(request.POST)
-        if connect_form.is_valid():
-            connect = connect_form.save(commit=False)
-            connect.creator=creator
-            connect.order_id=order
-            connect.save()
-            return redirect(reverse('dispatch:regularly_order_detail',args=(pk,)))
-    else:
-        context = {
-            'order' : order,
-            'connect_form' : ConnectForm(),
-        }
-    return render(request, 'dispatch/regularly_order_management_create.html', context)
+class RegularlyOrderManagement(generic.ListView):
+    template_name = 'dispatch/regularly_order_management.html'
+    context_object_name = 'routes'
+    model = DispatchOrder
+    
+    date = ""
+    driver_list = []
+    bus_list = []
+    route_list = []
 
+    def get_queryset(self):
+        
+        group = self.request.GET.get('group')
+        if group:
+            route_list = DispatchOrder.objects.filter(regularly_group=group)
+        else:
+            route_list = DispatchOrder.objects.filter(regularly=True)
+        
+        return route_list
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        
+        try:
+            context['group'] = int(self.request.GET.get('group'))
+        except TypeError:
+            context['group'] = 0
+        
+        context['date'] = self.request.GET.get('date')
+        if not context['date']:
+            context['date'] = str(datetime.now())[:10]
+    
+        context['group_list'] = RegularlyGroup.objects.all()
+        
+        
+        copy_date = self.request.GET.get('copy')
+        if copy_date:
+            connect_date = copy_date
+            context['copy'] = copy_date
+        else:
+            connect_date = context['date']
 
-def regularly_order_management_edit(request, pk, c_pk):
-    context = {}
-    connect = get_object_or_404(DispatchConnect, pk=c_pk)
-    order = connect.order_id
+        connect_bus_list = []
+        connect_driver_list = []
 
-    if request.method == "POST":
-        if User.objects.get(pk=request.session['user']).authority == "관리자":
-            creator = get_object_or_404(User, pk=request.session.get('user'))
-            connect_form = ConnectForm(request.POST)
-            if connect_form.is_valid():
-                edit_connect = connect_form.save(commit=False)
-                edit_connect.pk = c_pk
-                edit_connect.order_id = order
-                connect.delete()
-                edit_connect.save()
-                return redirect(reverse('dispatch:regularly_order_detail',args=(pk,)))
-    else:
-        context = {
-            'order' : order,
-            'connect_form' : ConnectForm(instance=connect),
-        }
-    return render(request, 'dispatch/regularly_order_management_create.html', context)
+        for route in context['routes']:
+            try:
+                connect_bus_list.append(route.info_order.filter(date=connect_date)[0].bus_id.vehicle_num)
+            except IndexError:
+                connect_bus_list.append('')
 
-def regularly_order_management_delete(request, pk, c_pk):
-    connect = get_object_or_404(DispatchConnect, pk=c_pk)
-    order = get_object_or_404(DispatchOrder, pk=pk)
-    if order.creator.pk == request.session['user'] or User.objects.get(pk=request.session['user']).authority == "관리자": # ?? 작성자만 지울 수 있게 하나?
-        connect.delete()
-    return redirect(reverse('dispatch:regularly_order_detail', args=(pk,)))
+            try:
+                connect_driver_list.append(route.info_order.filter(date=connect_date)[0].driver_id.name)
+            except IndexError:
+                connect_driver_list.append('')
+
+        context['connect_bus_list'] = connect_bus_list
+        context['connect_driver_list'] = connect_driver_list
+
+        __class__.bus_list = context['connect_bus_list']
+        __class__.driver_list = context['connect_driver_list']
+        __class__.date = context['date']
+        __class__.route_list = context['routes']
+
+        return context
+
+    def post(self, request, *args, **kwargs):
+        post_bus_list = request.POST.getlist('vehicle', [])
+        post_driver_list = request.POST.getlist('driver', [])
+        # 외래키라서 값을 셀렉트로 넘겨줘야됨 수정 필요
+        bus_list = __class__.bus_list
+        driver_list = __class__.driver_list
+        print("bus_list, driver_list 클래스변수",bus_list, driver_list)
+        
+        # 원래 있던 값이랑 비교해서 db에 추가해주기
+        cnt = 0
+        for bus, driver in zip(post_bus_list, post_driver_list):
+            if bus != bus_list[cnt]:
+                pre_connect = DispatchConnect.objects.filter(order_id=__class__.route_list[cnt]).filter(date=__class__.date)
+                print("tttttttttttttttt",pre_connect)
+
+        return redirect('dispatch:regularly_order_management')

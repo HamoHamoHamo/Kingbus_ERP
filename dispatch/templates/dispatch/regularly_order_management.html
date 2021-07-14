@@ -1,0 +1,42 @@
+{% load custom_tags %}
+
+<form action='' method="GET">
+    <select name='group'>
+        <option value="all">전체</option>
+        {% for i in group_list %}
+            <option value={{i.pk}} {% if group == i.pk %} selected {% endif %}>
+                {{i.name}}
+                {{i.pk}} 
+            </option>
+        {% endfor %}
+    </select>
+    {{ group }}
+    <input type="date" name="date" value="{{date}}">
+    <input type="date" name="copy">
+    <input type="submit" value="조회">
+    {% if copy %} <span>{{copy}}에서 불러옴</span> {% endif %}
+</form>
+<p>그룹명
+    노선명
+    차량번호
+    운전자
+    출발시간
+    도착시간
+</p>
+
+<form action='' method="POST">
+    {% csrf_token %}
+    {% for i in routes %}
+        <br>
+        <span> {{ i.regularly_group.name }}</span>
+        <span> {{ i.route_name }}</span>
+        <input name='vehicle' {% if connect_bus_list %} value="{{ connect_bus_list | index:forloop.counter0 }}" {% endif %}>
+        <input name='driver'{% if connect_driver_list %} value="{{connect_driver_list | index:forloop.counter0}}" {% endif %}>
+        <span></span>
+        <span> {{ i.departure_date }}</span>
+        <span> {{ i.arrival_date }}</span>
+
+    {% endfor %}
+    <br>
+    <input type="submit" value="저장">
+</form>

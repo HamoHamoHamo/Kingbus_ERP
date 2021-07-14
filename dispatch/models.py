@@ -43,8 +43,10 @@ class DispatchOrder(models.Model): #장고에서 제공하는 models.Model를 �
     def __str__(self):
         return self.departure_date
 
+
 class DispatchConnect(models.Model):
     creator = models.ForeignKey(User, on_delete=models.CASCADE, related_name="connect_creator", db_column="creator_id", null=True)
     order_id = models.ForeignKey(DispatchOrder, on_delete=models.CASCADE, related_name="info_order", db_column="order_id", null=False)
     bus_id = models.ForeignKey(Vehicle, on_delete=models.SET_NULL, related_name="info_bus_id", db_column="bus_id", null=True)
     driver_id = models.ForeignKey(Member, on_delete=models.SET_NULL, related_name="info_driver_id", db_column="driver_id", null=True)
+    date = models.CharField(verbose_name='날짜', max_length=10, null=False)
