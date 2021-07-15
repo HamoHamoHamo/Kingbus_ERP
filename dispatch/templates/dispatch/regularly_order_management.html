@@ -2,7 +2,7 @@
 
 <form action='' method="GET">
     <select name='group'>
-        <option value="all">전체</option>
+        <option value=''>전체</option>
         {% for i in group_list %}
             <option value={{i.pk}} {% if group == i.pk %} selected {% endif %}>
                 {{i.name}}
@@ -27,15 +27,44 @@
 <form action='' method="POST">
     {% csrf_token %}
     {% for i in routes %}
+        {% with icnt=forloop.counter0 %}
         <br>
         <span> {{ i.regularly_group.name }}</span>
         <span> {{ i.route_name }}</span>
-        <input name='vehicle' {% if connect_bus_list %} value="{{ connect_bus_list | index:forloop.counter0 }}" {% endif %}>
-        <input name='driver'{% if connect_driver_list %} value="{{connect_driver_list | index:forloop.counter0}}" {% endif %}>
+        <select name=vehicle>
+            <option></option>
+            {% for b in bus %}
+                {% if copy %}
+                    <option value="{{b.pk}}" {% if connect_bus_list_copy|index:icnt == b.vehicle_num  %} selected {% endif %}>
+                        {{b.vehicle_num}}
+                    </option>
+                {% else %}
+                    <option value="{{b.pk}}" {% if connect_bus_list|index:icnt == b.vehicle_num  %} selected {% endif %}>
+                        {{b.vehicle_num}}
+                    </option>
+                {% endif %}
+            {% endfor %}
+        </select>
+        <select name=driver>
+            <option></option>
+            {% for b in bus %}                
+                {% if copy %}
+                    <option value="{{b.pk}}" {% if connect_driver_list_copy|index:icnt == b.driver.name  %} selected {% endif %}>
+                        {{b.driver.name}}
+                    </option>
+                {% else %}
+                    <option value="{{b.driver.pk}}" {% if connect_driver_list|index:icnt == b.driver.name  %} selected {% endif %}>
+                        {{b.driver.name}}
+                    </option>
+                {% endif %}
+            {% endfor %}
+        </select>
+        <span>{% if connect_bus_list %} 인풋: {{ connect_bus_list | index:forloop.counter0 }} {% endif %}</span> 
+        <span>{% if connect_driver_list %} 인풋: {{connect_driver_list | index:forloop.counter0}} {% endif %}</span> 
         <span></span>
         <span> {{ i.departure_date }}</span>
         <span> {{ i.arrival_date }}</span>
-
+        {% endwith %}
     {% endfor %}
     <br>
     <input type="submit" value="저장">

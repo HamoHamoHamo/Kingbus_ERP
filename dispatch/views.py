@@ -6,9 +6,12 @@ from django.views import generic
 from .forms import OrderForm, ConsumerForm, ConnectForm, RegularlyOrderForm
 from .models import DispatchConsumer, DispatchConnect, DispatchOrder, RegularlyGroup
 from crudmember.models import User
-from utill.decorator import option_year_deco
+from humanresource.models import Member
+from vehicle.models import Vehicle
+
 
 from datetime import datetime, timedelta
+from utill.decorator import option_year_deco
 
 class DispatchList(generic.ListView):
     template_name = 'dispatch/dispatch_list.html'
@@ -432,7 +435,7 @@ class RegularlyOrderManagement(generic.ListView):
         
         try:
             context['group'] = int(self.request.GET.get('group'))
-        except TypeError:
+        except:
             context['group'] = 0
         
         context['date'] = self.request.GET.get('date')
@@ -444,10 +447,26 @@ class RegularlyOrderManagement(generic.ListView):
         
         copy_date = self.request.GET.get('copy')
         if copy_date:
-            connect_date = copy_date
+            connect_date_copy = copy_date
             context['copy'] = copy_date
-        else:
-            connect_date = context['date']
+
+            connect_bus_list_copy = []
+            connect_driver_list_copy = []
+            for route in context['routes']:
+                try:
+                    connect_bus_list_copy.append(route.info_order.filter(date=connect_date_copy)[0].bus_id.vehicle_num)
+                except:
+                    connect_bus_list_copy.append('')
+
+                try:
+                    connect_driver_list_copy.append(route.info_order.filter(date=connect_date_copy)[0].driver_id.name)
+                except:
+                    connect_driver_list_copy.append('')
+
+            context['connect_bus_list_copy'] = connect_bus_list_copy
+            context['connect_driver_list_copy'] = connect_driver_list_copy
+        
+        connect_date = context['date']
 
         connect_bus_list = []
         connect_driver_list = []
@@ -455,14 +474,15 @@ class RegularlyOrderManagement(generic.ListView):
         for route in context['routes']:
             try:
                 connect_bus_list.append(route.info_order.filter(date=connect_date)[0].bus_id.vehicle_num)
-            except IndexError:
+            except:
                 connect_bus_list.append('')
 
             try:
                 connect_driver_list.append(route.info_order.filter(date=connect_date)[0].driver_id.name)
-            except IndexError:
+            except:
                 connect_driver_list.append('')
 
+        context['bus'] = Vehicle.objects.filter(use=True)
         context['connect_bus_list'] = connect_bus_list
         context['connect_driver_list'] = connect_driver_list
 
@@ -470,6 +490,8 @@ class RegularlyOrderManagement(generic.ListView):
         __class__.driver_list = context['connect_driver_list']
         __class__.date = context['date']
         __class__.route_list = context['routes']
+
+        print("checkccccccccccccc", __class__.bus_list)
 
         return context
 
@@ -479,13 +501,54 @@ class RegularlyOrderManagement(generic.ListView):
         # 외래키라서 값을 셀렉트로 넘겨줘야됨 수정 필요
         bus_list = __class__.bus_list
         driver_list = __class__.driver_list
-        print("bus_list, driver_list 클래스변수",bus_list, driver_list)
-        
+        print("bus_list",bus_list,"driver_list 클래스변수", driver_list)
+        print("post bus", post_bus_list, "post driver", post_driver_list)
         # 원래 있던 값이랑 비교해서 db에 추가해주기
         cnt = 0
-        for bus, driver in zip(post_bus_list, post_driver_list):
-            if bus != bus_list[cnt]:
-                pre_connect = DispatchConnect.objects.filter(order_id=__class__.route_list[cnt]).filter(date=__class__.date)
-                print("tttttttttttttttt",pre_connect)
+        for b, d in zip(post_bus_list, post_driver_list):
+            #######################################################################################
+            # 추가사항 - 버스나 기사 둘중에 한개 비워놓으면 작성안됨 버스 선택하면 자동으로 연결된 기사 선택되게 해주기
+            try:
+                bus = Vehicle.objects.filter(pk=b)[0]
+                bus_num = bus.vehicle_num
+                driver = Member.objects.filter(pk=d)[0]
+                driver_name = driver.name
+            except Exception as e:
+                print("ERROR", e)
+                bus = None
+                driver = None
+                bus_num = ''
+                driver_name = ''
+            
+            print("bus",bus_num, "bus_list",bus_list[cnt])
+            if bus_num != bus_list[cnt]:
+                try:
+                    pre_connect = DispatchConnect.objects.filter(order_id=__class__.route_list[cnt]).get(date=__class__.date)
+                    pre_connect.bus_id = bus
+                    pre_connect.save()
+                except Exception as e:
+                    print("EEEEEEEEEEEEEEEEEEEEEEERRRRRRRRRRRRRRRRRR bus", e)
+                    connect = DispatchConnect(
+                        creator = get_object_or_404(User, pk=self.request.session['user']),
+                        order_id =__class__.route_list[cnt],
+                        bus_id = bus,
+                        date = __class__.date
+                    )
+                    connect.save()
 
+            if driver_name != driver_list[cnt]:
+                try:
+                    pre_connect = DispatchConnect.objects.filter(order_id=__class__.route_list[cnt]).get(date=__class__.date)
+                    pre_connect.driver_id = driver
+                    pre_connect.save()
+                except Exception as e:
+                    print("EEEEEEEEEEEEEEEEEEEEEEERRRRRRRRRRRRRRRRRR dr", e)
+                    connect = DispatchConnect(
+                        creator = get_object_or_404(User, pk=self.request.session['user']),
+                        order_id =__class__.route_list[cnt],
+                        driver_id = driver,
+                        date = __class__.date
+                    )
+                    connect.save()
+            cnt += 1
         return redirect('dispatch:regularly_order_management')
