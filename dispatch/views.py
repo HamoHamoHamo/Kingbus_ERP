@@ -9,7 +9,6 @@ from crudmember.models import User
 from humanresource.models import Member
 from vehicle.models import Vehicle
 
-
 from datetime import datetime, timedelta
 from utill.decorator import option_year_deco
 
@@ -19,13 +18,12 @@ class DispatchList(generic.ListView):
     paginate_by = 10
     model = DispatchOrder
 
-    
     def get_queryset(self):
         self.selected_year = self.request.GET.get('year', str(datetime.now())[:4])
         self.selected_month = self.request.GET.get('month', str(datetime.now())[5:7])
         
         month = self.selected_year +"-" + self.selected_month
-        dispatch_list = DispatchOrder.objects.filter(check=True).filter(departure_date__startswith=month).order_by('-departure_date')
+        dispatch_list = DispatchOrder.objects.filter(departure_date__startswith=month).order_by('-departure_date')
         return dispatch_list
     
     # 페이징 처리
@@ -64,8 +62,13 @@ class DispatchDailyRouteList(generic.ListView):
     context_object_name = 'dispatch'
 
     def get_queryset(self):
-        dispatch = DispatchOrder.objects.filter(departure_date__contains=self.kwargs['date']).filter(check=True)
+        dispatch = DispatchOrder.objects.filter(departure_date__contains=self.kwargs['date'])
         return dispatch
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['regularly_dispatch'] = DispatchConnect.objects.filter(date=self.kwargs['date'])
+        return context
 
 # 날짜별-차량별 배차지시서
 class DispatchDailyBusList(generic.ListView):
@@ -73,8 +76,13 @@ class DispatchDailyBusList(generic.ListView):
     context_object_name = 'dispatch'
 
     def get_queryset(self):
-        dispatch = DispatchOrder.objects.filter(departure_date__contains=self.kwargs['date']).filter(check=True)
+        dispatch = DispatchOrder.objects.filter(departure_date__contains=self.kwargs['date'])
         return dispatch
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['regularly_dispatch'] = DispatchConnect.objects.filter(date=self.kwargs['date'])
+        return context
 
 class OrderList(generic.ListView):
     template_name = 'dispatch/order.html'
