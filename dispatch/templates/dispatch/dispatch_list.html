@@ -53,14 +53,14 @@
             <div class="member_detail__mid_table_header__text">호선별</div>
         </div>
         <div class="member_detail__table_contents_box">
-            {% for i in dispatch_list %}
+            {% for i in date %}
                 <div class="table_contents">
-                    <div class="member_detail__mid_table_content__text_first">{{selected_year}}년 {{selected_month}}월 {{i.departure_date.8}}{{i.departure_date.9}}일</div>
+                    <div class="member_detail__mid_table_content__text_first">{{i}}</div>
                     <div class="member_detail__mid_table_content__text">
-                        <a href="{% url 'dispatch:dispatch_daily_route' i.departure_date %}">노선별</a>
+                        <a href="{% url 'dispatch:dispatch_daily_route' i %}">노선별</a>
                     </div>
                     <div class="member_detail__mid_table_content__text">
-                        <a href="{% url 'dispatch:dispatch_daily_bus' i.departure_date %}">호수별</a>
+                        <a href="{% url 'dispatch:dispatch_daily_bus' i %}">호수별</a>
                     </div>
                 </div>
             {% endfor %}

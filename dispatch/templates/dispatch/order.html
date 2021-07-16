@@ -1,8 +1,19 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    {% for d in order_list %}
-        <p><a href="{% url 'dispatch:order_detail' d.pk %}">{{ d.pk }}</a></p>
-        <!--  보여줄 항목 정하기 -->
-    {% endfor %}
+    {{ order_form }}
+    {{ connect_form }}
+    {{ consumer_form }}
+    
+
+    <form action='' method="GET">
+        {% for d in order_list %}
+            <p>
+                <span>{{d}}</span>
+                <input type="radio" name="order_info" value="{{d.pk}}">
+            </p>
+            <!--  보여줄 항목 정하기 -->
+        {% endfor %}
+        <input type='submit' value="조회">
+    </form>
 {% endblock %}

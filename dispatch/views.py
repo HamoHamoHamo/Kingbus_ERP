@@ -62,7 +62,7 @@ class DispatchDailyRouteList(generic.ListView):
     context_object_name = 'dispatch'
 
     def get_queryset(self):
-        dispatch = DispatchOrder.objects.filter(departure_date__contains=self.kwargs['date'])
+        dispatch = DispatchOrder.objects.filter(regularly=False).filter(departure_date__contains=self.kwargs['date'])
         return dispatch
 
     def get_context_data(self, **kwargs):
@@ -76,7 +76,7 @@ class DispatchDailyBusList(generic.ListView):
     context_object_name = 'dispatch'
 
     def get_queryset(self):
-        dispatch = DispatchOrder.objects.filter(departure_date__contains=self.kwargs['date'])
+        dispatch = DispatchOrder.objects.filter(regularly=False).filter(departure_date__contains=self.kwargs['date'])
         return dispatch
 
     def get_context_data(self, **kwargs):
@@ -88,6 +88,28 @@ class OrderList(generic.ListView):
     template_name = 'dispatch/order.html'
     context_object_name = 'order_list'
     model = DispatchOrder
+
+    def get_queryset(self):
+        order_list = DispatchOrder.objects.filter(regularly=False)
+        return order_list
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        #라디오버튼으로 들어온값 넣어서 폼에 띄워주기
+        order_pk = self.request.GET.get('order_info')
+
+        if order_pk:
+            order_info = DispatchOrder.objects.get(pk=order_pk)
+            context['order_info'] = order_info
+            context['order_form'] = OrderForm(instance=order_info)
+        else:
+            context['order_form'] = OrderForm()
+
+        
+        context['connect_form'] = ConnectForm()
+        context['consumer_form'] = ConsumerForm()
+        return context
 
 def order_create(request):
     context = {}
@@ -105,10 +127,7 @@ def order_create(request):
             
             return redirect('dispatch:order')
     else:
-        context = {
-            'order_form' : OrderForm(),
-            'consumer_form' : ConsumerForm(),
-        }
+        raise Http404
         
     return render(request, 'dispatch/order_create.html', context)
 
