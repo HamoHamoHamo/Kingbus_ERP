@@ -9,4 +9,5 @@ urlpatterns = [
     path('logout/', views.logout, name='logout'),
     path('find_password/', views.passwordfinder, name='passwordfinder'),
     path('profile/', views.profile, name='profile'),
+    path('find_password/<str:uid64>/<str:token>/', views.pwchangeauth, name='pwchangeauth'),
 ]

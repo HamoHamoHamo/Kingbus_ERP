@@ -1,9 +1,18 @@
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import render, redirect, HttpResponse, get_object_or_404
 from django.contrib.auth.hashers import make_password, check_password
 from django.contrib.auth import login
 from .models import User, UserFile
+
 from string import ascii_lowercase
 from random import choice
+
+from django.contrib.sites.shortcuts import get_current_site
+from django.template.loader import render_to_string
+from django.utils.http import urlsafe_base64_encode,urlsafe_base64_decode
+from django.utils.encoding import force_bytes
+from django.core.mail import EmailMessage
+from .tokens import account_activation_token
+from django.utils.encoding import force_bytes, force_text
 
 
 def home(request):
@@ -154,4 +163,59 @@ def passwordfinder(request):
             else:
                 res_data['error'] = "이름없음"
                 return render(request, 'crudmember/passwordfinder.html', res_data)
+            
+        if 'sendemail' in request.POST:
+            userid = request.POST.get('userid', None)
+            useremail = request.POST.get('useremail', None)
+            try:
+                user = User.objects.get(userid = userid)
+            except Exception:
+                res_data['error'] = "아이디없음"
+                return render(request, 'crudmember/passwordfinder.html', res_data)
+            current_site = get_current_site(request)
+            message = render_to_string('crudmember/user_passwordfinder_email.html', {
+                'user': user,
+                'domain': current_site.domain,
+                'uid': urlsafe_base64_encode(force_bytes(user.pk)).encode().decode(),
+                'token': account_activation_token.make_token(user),
+            })
+            mail_subject = "패스워드 변경 메일입니다."
+            user_toemail = useremail
+            email = EmailMessage(mail_subject, message, to=[user_toemail])
+            email.send()
+            return HttpResponse(
+                '<div style="font-size: 40px; width: 100%; height:100%; display:flex; text-align:center; '
+                'justify-content: center; align-items: center;">'
+                '입력하신 이메일<span>로 인증 링크가 전송되었습니다.</span>'
+                '</div>'
+            )
+            return redirect('home')
 
+
+def pwchangeauth(request, uid64, token):
+
+    uid = force_text(urlsafe_base64_decode(uid64))
+    user = User.objects.get(pk=uid)
+
+    if user is not None and account_activation_token.check_token(user, token):
+        res_data = {}
+        if request.method == 'GET':
+            return render(request, 'crudmember/passwordchangeauth.html')
+            # return redirect('home')
+        if request.method == 'POST':
+            newpw = request.POST.get('new_password1', None)
+            newpw2 = request.POST.get('new_password2', None)
+            if newpw == newpw2:
+                if len(newpw) >= 4:
+                    user.password = make_password(newpw)
+                    user.save()
+                    # login(request, user)
+                else:
+                    res_data['error'] = "길이 너무 짧음"
+                    return render(request, 'crudmemeber/passwordchangeauth.html', res_data)
+            else:
+                res_data['error'] = "1,2틀림"
+                return render(request, 'crudmemeber/passwordchangeauth.html', res_data)
+        return redirect('home')
+    else:
+        return HttpResponse('비정상적인 접근입니다.')
