@@ -1,6 +1,6 @@
 regularly
 
-{{ dispatch_list }}
 {% for i in dispatch_list %}
-    {{ i.creator }}
+    {{ i.pk }}
+    <a href="{% url 'dispatch:regularly_order_delete' i.pk %}">delete</a>
 {% endfor %}
