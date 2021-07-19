@@ -1,16 +1,35 @@
 {% extends 'base.html' %}
 
 {% block content %}
+    <h1>일반</h1>
     {% for order in dispatch %}
         <div>
             <p>고객 이름 : {{ order.consumer.name }}</p>
             <p>전화번호 : {{ order.consumer.tel }}</p>
             <p>출발시간 : {{ order.departure_date }}</p>
             <p>도착시간 : {{ order.arrival_date }}</p>
-            <p>노선명 : {{ order.route.route_name }}</p>
-            <p>출발지 : {{ order.route.departure }}</p>
-            <p>도착지 : {{ order.route.arrival }}</p>
-            <p>경유지 : {{ order.route.stopover }}</p>
+            <p>노선명 : {{ order.route_name }}</p>
+            <p>출발지 : {{ order.departure }}</p>
+            <p>도착지 : {{ order.arrival }}</p>
+            <p>경유지 : {{ order.stopover }}</p>
+            <br>
+        </div>
+    {% endfor %}
+
+    <h3>정기</h3> 
+    {% for order in regularly_dispatch %}
+        <div>
+            <p>고객 이름 : {{ order.order_id.consumer.name }}</p>
+            <p>전화번호 : {{ order.order_id.consumer.tel }}</p>
+            <p>출발시간 : {{ order.order_id.departure_date }}</p>
+            <p>도착시간 : {{ order.order_id.arrival_date }}</p>
+            <p>노선명 : {{ order.order_id.route_name }}</p>
+            <p>출발지 : {{ order.order_id.departure }}</p>
+            <p>도착지 : {{ order.order_id.arrival }}</p>
+            <p>경유지 : {{ order.order_id.stopover }}</p>
+            <p>버스 : {{ order.bus_id.vehicle_num }}</p>
+            <p>기사 : {{ order.driver_id.name }}</p>
+            
             <br>
         </div>
     {% endfor %}

@@ -8,6 +8,7 @@ class RegularlyOrderForm(forms.ModelForm):
         model = DispatchOrder
         fields = [ 
             'bus_cnt', 
+            'driver_allowance',
             'price', 
             'purpose',
             'bus_type',
@@ -31,6 +32,7 @@ class OrderForm(forms.ModelForm):
         model = DispatchOrder
         fields = [ 
             'bus_cnt', 
+            'driver_allowance',
             'price', 
             'kinds',
             'purpose',
