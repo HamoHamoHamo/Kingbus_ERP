@@ -1,0 +1,227 @@
+#hr_hr__main_contents{
+    height: 17rem;
+}
+#hr_hr_create_main_contents{
+  height: 22.5rem;
+}
+#hr_hr_main_contents__list{
+  position: relative;
+  height: calc( 100% - (1vh * 4.13));
+}
+.hr_list_contents_box_header{
+    display: flex;
+}
+#hr_header_serch_tool_label__name{
+    width: 5rem;
+}
+#hr_header_serch_tool_label__work{
+    width: 5rem;
+}
+.hr_list_contents_box_header_list{
+    width: 88rem;
+    margin-top: 0.4rem;
+    margin-right: 2rem;
+}
+#InputContainerHrCreate{
+  width: calc(100% - 90rem);
+  height: 26.6rem;
+}
+#hr_hr_contents_box__input_box{
+    width: 160rem;
+    border-radius: 0;
+    height: 13rem;
+}
+.hr_hr_list__name{
+    width: 10rem;
+}
+.hr_hr_list__tel{
+    width: 18rem;
+}
+.hr_hr_list__cord{
+  width: 18rem;
+}
+.hr_hr_list__work{
+    width: 20rem;
+}
+.hr_hr_list__address{
+    width: 40rem;
+}
+#list_table_cell__hr_hr_list_header{
+    height: 23rem;
+}
+#hr_hr_contents_box__input_cell__dd{
+    width: 23rem;
+}
+#hr_hr_contents_box__input_cell__dt{
+    width: 9rem;
+}
+#hr_hr_contents_box__input_cell__dd_textarea{
+    width: 23rem;
+    margin: 0 0 0.6rem 2rem;
+}
+#inputInputBoxInputTextarea{
+    width: calc(100% - 5rem);
+    height: 7.5rem;  
+    resize: none;
+}
+#hr_hr_serch_tool_button{
+    margin-left: 28rem;
+}
+#hr_hr_serch_tool_input__date{
+    width: 14rem;
+    margin-right: 1.2rem;
+}
+.table_scroll_box{
+    width: 100%;
+    height: calc(100% - 7.4rem);
+    overflow-x: scroll;
+    overflow-y: hidden;
+}
+.hr_hr_list__kategori{
+    width: 12rem;
+}
+.hr_hr_list__contents{
+    width: 26rem;
+}
+.hr_hr_list__stert{
+    width: 12rem;
+}
+.hr_hr_list__end{
+    width: 12rem;
+}
+#hr_hr_list_table_cell__header{
+    margin-top: 1.6rem;
+    width: 100%;
+}
+#hr_popup_tabel_header{
+  width: 100%;
+}
+#list_table_cell__hr_hr_list{
+    width: 100%;
+}
+#list_table_cell__hr_hr_list_popup{
+  width: 100%;
+  height: calc( 100% - 3.6rem);
+  overflow-y: scroll;
+}
+#list_table_cell__hr_hr_list_popup::-webkit-scrollbar {
+  display: none;
+}
+.hrEmployeePopup{
+  width: calc(100% - 5rem);
+  height: 2.6rem;
+  background-color: #D6D6D6;
+  border: 0.1rem solid black;
+  border-radius: 0.5rem;
+  outline: none;
+  padding-left: 1rem;
+}
+.modal{
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: none;
+}
+.hrPopupBackground{
+  width: 100vw;
+  height: 100vh;
+  background-color: black;
+  opacity: 0.2;
+}
+.hrPopup{
+  position: absolute;
+  top: 25%;
+  left: calc(55.725% - ((100vw - (1vw * 11.45)) / 4));
+  width: calc((100vw - (1vw * 11.45)) / 2);
+  height: 50%;
+  background-color: white;
+  opacity: 1;
+  border-radius: 0.3rem;
+  box-shadow: 0 19px 38px rgba(0,0,0,0.30), 0 15px 12px rgba(0,0,0,0.22);
+  border: 0.1rem solid black;
+}
+#serch_tool_cell_hr_popup{
+  position: relative;
+  width: 100%;
+  border-radius: 0.3rem 0.3rem 0 0;
+  margin-top: 0;
+  height: 4.6rem;
+}
+.popup_table{
+  border: 0.1rem solid black;
+  width: 100%;
+  height: calc( 100% - 4.6rem);
+}
+#hr_hr_serch_tool_label__work{
+  width: 9rem;
+}
+.closePopupButton{
+  position: absolute;
+  top: calc(( 100% - 3.6rem)/2);
+  left: calc( 100% - 3.26rem);
+  padding-top: 0;
+  color: #B41515;
+  border: none;
+  background-color: white;
+  font-size: 2.8rem;
+  font-weight: bold;
+  cursor: pointer;
+}
+#InputContainerHrList{
+  height: 13rem;
+}
+#inputCellHeightHrListContents{
+  height: calc(100% / 3 * 2);
+}
+#inputInputBoxInputHrContentsList{
+  height: 5.2rem;
+}
+#inputInputBoxInputHrListSelect{
+  width: calc(100% - 4rem);
+}
+#inputCellHeightHrContents{
+  height: 80%;
+}
+#inputInputBoxTextareaHrContents{
+  height: 100%;
+}
+#inputInputBoxInputTextareaHrContents{
+  height: 100%;
+}
+#contents_box_cell_hr_list{
+  height: 22.55rem
+}
+#hrHrList{
+  margin-top: 2rem;
+  height: calc(100% - (1vh*3.92) - 30.55rem);
+}
+.list_table_cell__hr_hr_list_form{
+  height: 100%;
+}
+.inputBoxHrCreate{
+  width: calc(100%/2);
+  height: calc(100% - 1rem);
+  border-right: 0.1rem solid grey;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  padding: 0.5rem 0 0.5rem 0;
+}
+.inputBoxHrCreateLast{
+  width: calc(100%/2);
+  height: calc(100% - 1rem);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  padding: 0.5rem 0 0.5rem 0;
+}
+.hrHrcontentsBox{
+  margin-top: 2rem;
+  height: calc( 100% - ((1vh * 8.05) + 28.5rem) )
+}
+#contents_box_cell_hr_create{
+  height: calc( (1vh * 4.13) + 22.5rem );
+}
+.hrHrcontentsBoxListForm{
+  height: calc( 100% - 5.2rem);
+}

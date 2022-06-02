@@ -1,0 +1,44 @@
+.salary_create__mid_box__header_title{
+    width: 20rem;
+    text-align: center;
+}
+.salary_create__mid_box__header_title:nth-child(5){
+    width: 30rem;
+    text-align: center;
+}
+
+.salary_create_form{
+    position: relative;
+}
+
+.salary_create__mid_box__header_title_color{
+    background-color: rgb(240,240,240);
+    height: 5rem;
+    line-height: 5rem;
+}
+
+.salary_create_content_box{
+    align-items: center;
+}
+.salary_create__mid_box__content{
+    width: 20rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 2.5rem;
+    font-size: 1.5rem;
+}
+
+.salary_create__mid_box__content:nth-child(5){
+    width: 30rem;
+}
+
+.salary_create__mid_box__content_input{
+    text-align: center;
+
+    width: 7rem;
+}
+
+.salary_create__mid_box__content_input_text{
+    width: 20rem;
+}

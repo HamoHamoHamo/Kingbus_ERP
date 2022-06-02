@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block subPagecss %}
+<link rel="stylesheet" href="{% static 'css/homepage/trp.css' %}">
+{% endblock %}
+
+{% block subPageContent %}
+
+<div class="SecondContentsBox">
+  <img src="{% static 'images/TRPWebMainSeconed.png' %}">
+  <div class="SecondContentsCell">
+    <span>TRP란?</span>
+    <span> ERP(전사적 자원 관리 소프트웨어)를<br>
+      교통(Transportation)에 특화시켜<br>
+      전세버스회사의 배차, 인사, 경리, 차량을<br>
+      웹상에서 쉽고 빠르게 처리할 수 있는<br>
+      배차&자원관리 프로그램입니다.
+    </span>
+  </div>
+</div>
+
+<div class="subIntroCell">
+  <div class="subIntroCellTitle">용어설명</div>
+  <ul>
+    <li class="subIntroCellContents">
+      TRP는 전사적 자원 관리 ERP(Enterprise Resource Planning)에 Enterprise(기업)대신
+      Transportation(교통)을 더하여 만들어졌습니다.
+    </li>
+  </ul>
+  <div class="subIntroCellInforgraphic">
+    <img src="{% static 'images/trpNaming.png' %}">
+  </div>
+</div>
+
+<div class="subIntroCell">
+  <div class="subIntroCellTitle">역할</div>
+  <ul>
+    <li class="subIntroCellContents">
+      전세버스회사의 업무인 배차, 인사, 경리, 차량관리를 하나의 시스템에서 관리할 수 있고 그로인해 자연스럽게 데이터들이 축적되어 회사 운영에 있어서도<br> 큰 도움을 주는 프로그램입니다.
+    </li>
+    <li class="subIntroCellContents">
+      웹상에서 데이터를 처리해 주기 때문에 기존에 필요했던 paperwork를 크게 줄이고 빠르게 일을 처리할 수 있습니다.
+    </li>
+    <li class="subIntroCellContents">
+      또한 킹버스, 드라이버앱과 연동이 가능하여 회사에 배정된 배차를 확인, 관리하고 기사님들에게 배정된 배차현황과 공지사항을 전파를 하는 등 다양한 연계서비스를 통해 확장성을 가지는 프로그램입니다.
+    </li>
+  </ul>
+</div>
+
+<div class="subIntroCell">
+  <div class="subIntroCellTitle">특장점</div>
+  <ul>
+    <li class="subIntroCellContents">
+      실무형 배차관리, 다양한 서비스연계, WEB기반의 서비스 제공, 고객맞춤형 프로그램 등 다양한 특장점을 가지고 있습니다.
+    </li>
+  </ul>
+  <div class="subIntroCellInforgraphic">
+    <img src="{% static 'images/trpServiceInforgraphic.png' %}">
+  </div>
+</div>
+
+{% endblock %}

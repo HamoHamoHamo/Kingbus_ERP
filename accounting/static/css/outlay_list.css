@@ -1,0 +1,210 @@
+.accounting_outlay_top_select{
+    display: flex;
+    margin-top: 30px;
+    margin-left: 60px;
+  }
+  .accounting_outlay_search_form{
+    width: 295px;
+    height: 50px;
+    border: 1px solid #B41515;
+    border-radius: 10px;
+    margin-top: 5px;
+  }
+  .accounting_outlay_search_year{
+    border: 1px solid #B41515;
+    color: #B41515;
+    width: 100px;
+    height: 30px;
+    text-align: center;
+    margin-left: 7px;
+    vertical-align:middle;
+  }
+  .accounting_outlay_search_month{
+    border: 1px solid #B41515;
+    color: #B41515;
+    width: 80px;
+    height: 30px;
+    margin-left: 15px;
+    border-radius: 8px;
+    text-align: center;
+    text-align-last: center;
+  }
+  .accounting_outlay_search_button{
+    background: url("/images/돋보기.png") no-repeat;
+    width: 50px;
+    height: 50px;
+    border: none;
+    margin-left: 15px;
+    vertical-align:middle;
+  }
+  .accounting_outlay_create_button{
+    width: 200px;
+    height: 45px;
+    border: 1px solid #B41515;
+    border-radius: 15px;
+    background-color: white;
+    color: #B41515;
+    font-size: 25px;
+    padding-top: 15px;
+    text-align: center;
+    margin-left: 796px;
+  }
+  
+  .accounting_outlay_information_head_line{
+    width: 1400px;
+    height: 185px;
+    border: 3px solid #B41515;
+    border-radius: 90px 90px 0 10px;
+    margin-top: 20px;
+    display: flex;
+    margin-left: 30px;
+  }
+  .accounting_outlay_information_head_line_categori{
+    margin-left: 65px;
+    margin-top: 24px;
+  }
+  .accounting_outlay_information_head_line_categori_title{
+    width: 200px;
+    height: 48px;
+    border: 2px solid #B41515;
+    border-radius: 30px;
+    color: #B41515;
+    text-align: center;
+    font-size: 25px;
+    font-weight: bold;
+    padding-top: 22px;
+    position: relative;
+    z-index: 10;
+    background-color: white;
+  }
+  .accounting_outlay_information_head_line_categori_title_total{
+    width: 200px;
+    height: 48px;
+    border: 2px solid #B41515;
+    border-radius: 30px;
+    color: white;
+    text-align: center;
+    font-size: 25px;
+    font-weight: bold;
+    padding-top: 22px;
+    position: relative;
+    z-index: 10;
+    background-color: #B41515;
+  }
+  .accounting_outlay_information_head_line_categori_value{
+    width: 200px;
+    height: 55px;
+    border: 2px solid #B41515;
+    border-radius: 30px;
+    color: #F35915;
+    text-align: center;
+    font-size: 25px;
+    font-weight: bold;
+    padding-top: 45px;
+    margin-top: -35px;
+    position: absolute;
+    z-index: 1;
+    background-color: white;
+  }
+  
+  .accounting_outlay_information_main_information_box{
+    width: 1400px;
+    height: 800px;
+    border: 3px solid #B41515;
+    margin-left: 30px;
+    border-radius: 30px 0 0 0;
+  }
+  .accounting_outlay_information_main_information_categori_section{
+    display: flex;
+  }
+  .accounting_outlay_information_main_information_day{
+    width: 250px;
+    height: 54px;
+    background-color: #B41515;
+    color: white;
+    text-align: center;
+    font-size: 25px;
+    font-weight: bold;
+    border-radius:  30px 0 0 0;
+    margin-left: -2px;
+    margin-top: -2px;
+    padding-top: 26px;
+  }
+  .accounting_outlay_information_main_information_categori{
+    width: 281.5px;
+    height: 52px;
+    border: 1px solid #B41515;
+    margin-top: -2px;
+    text-align: center;
+    font-size: 25px;
+    font-weight: bold;
+    color: #B41515;
+    padding-top: 26px;
+  }
+  .accounting_outlay_information_main_information_black_box{
+    width: 18px;
+    height: 80px;
+    background-color: #B41515;
+    margin-top: -2px;
+  }
+  .accounting_outlay_information_main_information_information_form{
+    width: 1400px;
+    height: 720px;
+    overflow-y: scroll;
+  }
+  .accounting_outlay_information_main_information_information_box{
+    display: flex;
+    border: 2px solid black;
+    margin-left: -1px;
+    margin-top:1px; 
+  }
+  .accounting_outlay_information_main_information_information_day{
+    width: 250px;
+    height: 45px;
+    background-color: #B41515;
+    color: white;
+    text-align: center;
+    font-size: 25px;
+    font-weight: bold;
+    margin-left: -2px;
+    padding-top: 15px;
+  }
+  .accounting_outlay_information_main_information_information_value{
+    width: 250px;
+    height: 41px;
+    border: 1px solid #B41515;
+    text-align: center;
+    font-size: 25px;
+    font-weight: bold;
+    color: #F35915;
+    padding-top: 7px;
+    border-radius: 34px;
+    margin-top: 4px;
+    margin-left: 25px;
+  }
+  .accounting_outlay_information_main_information_information_value_total{
+    width: 250px;
+    height: 41px;
+    border: 1px solid #B41515;
+    text-align: center;
+    font-size: 25px;
+    font-weight: bold;
+    color: #B41515;
+    padding-top: 7px;
+    border-radius: 34px;
+    margin-top: 4px;
+    margin-left: 25px;
+  }
+  
+  .accounting_outlay_information_detail_button{
+    width: 300px;
+    height: 80px;
+    background-color: #B41515;
+    border-radius: 30px;
+    font-size: 40px;
+    color: white;
+    text-align: center;
+    padding-top: 20px;
+    margin-left: 1100px;
+    margin-top: 30px;
+  }

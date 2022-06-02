@@ -1,0 +1,80 @@
+#dispatch_order__main_contents{
+    height: calc(100% - (1vh * 4.13));
+}
+.dispatch_order_list_list{
+    width: 100%;
+    margin-top: 2rem;
+    height: calc(100% - 9.4rem);
+}
+#dispatch_order_list_table_cell__header{
+    margin-top: 0;
+    width: 210rem;
+}
+#dispatch_order_list_table_cell_contents{
+    width: 100%;
+    height: calc(100% - 3.6rem);
+}
+#nav_cell_dispatch_list{
+    width: 18rem;
+    border-radius: 0.5rem 0 0 0.5rem;
+}
+#nav_cell_dispatch_regularly{
+    width: 18rem;
+}
+#nav_cell_dispatch_order{
+    width: 18rem;
+}
+#nav_cell_dispatch_schedule{
+    width: 18rem;
+}
+#nav_cell_dispatch_document{
+  width: 18rem;
+  border-radius: 0 0.5rem 0.5rem 0;
+}
+.dispatch_order_list_td_num{
+  width: 4vw;
+}
+.dispatch_order_list_td_date{
+    width: 16vw;
+}
+.dispatch_order_list_td_work{
+    width: 30vw;
+}
+.dispatch_order_list_td_vehicle_num{
+    width: 4vw;
+}
+.dispatch_order_list_td_reservation_payment{
+    width: 8vw;
+}
+.dispatch_order_list_td_bonus{
+    width: 8vw;
+}
+.dispatch_order_list_td_reference{
+    width: 18vw;
+}
+.dispatch_order_list_td_driverAndVehicleNumber{ 
+    width: 12vw
+}
+
+
+#dispatchOrdersearchToolTextL{
+  margin-left: 2rem;
+  margin-right: 2rem;
+}
+#dispatchOrdersearchToolTextR{
+  margin-left: 2rem;
+}
+#dispatchOrderButton{
+  margin-left: 2rem;
+}
+#contentsBoxCellDispatchOrderList{
+  height: 100%;
+}
+#dispatchOrderListTableAutoBox{
+  max-height: calc(100% - 5.2rem);
+}
+#dispatchOrderListRoutName{
+  width: 26rem;
+  margin-left: 2rem;
+}
+

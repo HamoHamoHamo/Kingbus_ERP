@@ -1,0 +1,124 @@
+#nav_cell_vehicle_list{
+  width: 18rem;
+  border-radius: 0.5rem 0 0 0.5rem;
+}
+#nav_cell_vehicle_create{
+  width: 18rem;
+  border-radius: 0 0.5rem 0.5rem 0;
+}
+#vehicle_list_serch_tool_label__name{
+  width: 9rem;
+}
+#vehicle_list_serch_tool_label__date{
+  width: 11rem;
+}
+#vehicle_list_serch_tool_input__name_margin_right{
+  margin-right: 1rem;
+}
+#vehicle_list_use_button{
+  width: 14rem;
+  height: 2.6rem;
+  border: 0.1rem solid #B41515;
+  background-color: white;
+  color: #B41515;
+}
+#vehicle_list_insurance_button{
+  width: 9rem;
+  height: 2.35rem;
+  border: 0.1rem solid #B41515;
+  background-color: white;
+  color: #B41515;
+  text-align: center;
+  padding-top: 0.25rem;
+}
+.vehicle_list__name_check{
+  width: 6vw;
+}
+.vehicle_list__name_vehicle_kinds{
+  width: 10vw;
+}
+.vehicle_list__name_vehicle_num{
+  width: 6vw;
+}
+.vehicle_list__name_driver{
+  width: 6vw;
+}
+.vehicle_list__name_creater{
+  width: 8vw;
+}
+.vehicle_list__name_seats{
+  width: 6vw;
+}
+.vehicle_list__name_vehicle_old{
+  width: 6vw;
+}
+.vehicle_list__name_create_date{
+  width: 8vw;
+}
+.vehicle_list__name_use{
+  width: 8vw;
+}
+.vehicle_list__name_test{
+  width: 24vw;
+}
+.vehicle_list__name_vehicle_lisence{
+  width: 12vw;
+}
+.vehicle_list__name_use_extra{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: calc(60% - 0.2rem);
+  height: 80%;
+  border: 0.1rem solid #B41515;
+  border-radius: 0.3rem;
+  margin-left: 20%;
+}
+.vehivle_list_tavle_box{
+  width: 100%;
+  height: calc(100% - 9.4rem);
+  margin-top: 2rem;
+}
+#vehicle_list_table_cell__header{
+  width: 100%;
+}
+#list_table_cell__vehicle_list{
+  width: 100%;
+  height: 100%;
+}
+#list_table_cell__vehicle_list>.list_table_cell__tbody{
+  width: 100%;
+  height: 100%;
+}
+#vehicle_list__main_contents{
+  height: calc(100% - (1vh*4.13));
+}
+.vehicle_list__name_use_button{
+  width: 6rem;
+  height: 1.9rem;
+  border: 0.1rem solid #B41515;
+  border-radius: 0.3rem;
+  text-align: center;
+  font-weight: bold;
+  padding-top: 0.1rem;
+  cursor: pointer;
+}
+
+.vehicle_list__cursor:hover {
+  cursor: pointer;
+}
+
+.vehicle_list__checkbox_label {
+  width: 10rem;
+  height: 3rem;
+  position: absolute;
+}
+.list_table_cell__vehicle_list_form{
+  width: 100%;
+  height: calc(100% - 3.6rem);
+  position: relative;
+}
+#vehicleListDeletButton{
+  left: calc(100% - 6.6rem);
+  top: calc(( 13.8rem + (( (1vh * 4.13) - 2.8rem) / 2 ) ) * -1);
+}

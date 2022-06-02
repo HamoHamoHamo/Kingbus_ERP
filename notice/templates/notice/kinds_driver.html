@@ -1,0 +1,78 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block head %}
+<link rel="stylesheet" href="{% static 'css/notice/notice.css' %}" type="text/css" />
+{% endblock %}
+
+
+{% block content %}
+
+<div class="trp_main__contents">
+  <div class="trp_main__contents_position">
+
+
+    <ul class="notice_nav">
+      <li class="notice_nav__kinds" id="notice_nav__kinds_driver">
+        <a href="{% url 'notice:kinds' " driver" %}">기사님 공지사항</a>
+      </li>
+      <li class="notice_nav__kinds" id="notice_nav__kinds_office">
+        <a href="{% url 'notice:kinds' " office" %}">사무실 공지사항</a>
+      </li>
+    </ul>
+
+
+    <div class="notice_contents_kinds_driver">
+      <div class="notice_contents_kinds_driver__main_box__header">
+        기사님 공지사항
+      </div>
+      <div class="notice_contents_kinds_driver__main_contents">
+        <form action="">
+          <div class="notice_contents_kinds_driver__main_box__serchingbar">
+            <select name="" id="" class="notice_contents_kinds_driver__main_box__serchingbar__select">
+              <option>제목</option>
+              <option>작성자</option>
+            </select>
+            <input type="text" class="notice_contents_kinds_driver__main_box__serchingbar__input">
+            <button class="notice_contents_kinds_driver__main_box__serchingbar__button">검색</button>
+          </div>
+        </form>
+        <table class="notice_contents_kinds_driver__main_box__list">
+          <thead class="notice_contents_kinds_driver__main_box__list__thead">
+            <tr>
+              <td class="notice_contents_kinds_driver__main_box__list__thead__num">번호</td>
+              <td class="notice_contents_kinds_driver__main_box__list__thead__title">제목</td>
+              <td class="notice_contents_kinds_driver__main_box__list__thead__creater">작성자</td>
+              <td class="notice_contents_kinds_driver__main_box__list__thead__date">등록일</td>
+              <td class="notice_contents_kinds_driver__main_box__list__thead__lookup">조회</td>
+            </tr>
+          </thead>
+          <tbody class="notice_contents_kinds_driver__main_box__list__boody">
+            <tr class="notice_contents_kinds_driver__main_box__list__boody_oddnumber">
+              <td class="notice_contents_kinds_driver__main_box__list__thead__num">1</td>
+              <td class="notice_contents_kinds_driver__main_box__list__thead__title">첫번째 공지사항</td>
+              <td class="notice_contents_kinds_driver__main_box__list__thead__creater">이도울</td>
+              <td class="notice_contents_kinds_driver__main_box__list__thead__date">21.10.02</td>
+              <td class="notice_contents_kinds_driver__main_box__list__thead__lookup">02</td>
+            </tr>
+            <tr class="notice_contents_kinds_driver__main_box__list__boody_evennumber">
+              <td class="notice_contents_kinds_driver__main_box__list__thead__num">2</td>
+              <td class="notice_contents_kinds_driver__main_box__list__thead__title">두번째 공지사항</td>
+              <td class="notice_contents_kinds_driver__main_box__list__thead__creater">이도울</td>
+              <td class="notice_contents_kinds_driver__main_box__list__thead__date">21.10.02</td>
+              <td class="notice_contents_kinds_driver__main_box__list__thead__lookup">02</td>
+            </tr>
+          </tbody>
+        </table>
+
+      </div>
+      <div class="notice_contents_kinds_driver__page_box">
+        <div class="notice_contents_kinds_driver__page_box__paging"></div>
+        <input type="text" class="notice_contents_kinds_driver__page_box__button" value="글쓰기">
+      </div>
+    </div>
+
+  </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,29 @@
+#regularly_order_management_top_main_contents_box_left{
+    margin-left: 0;
+    margin-right: 2rem;
+    height: 18rem;
+}
+.dispatch_regularly_order_management_td_routename{
+    width: 57.8rem;
+}
+.dispatch_regularly_order_management_td_driver{
+    width: 15rem;
+}
+.dispatch_regularly_order_management_td_vehicle_num{
+    width: 15rem;
+}
+.dispatch_regularly_order_management_driver{
+    width: 22.2rem;
+}
+.dispatch_regularly_order_management_management_tool{
+    display: flex;
+    flex-direction: column;
+}
+.dispatch_regularly_order_management_management_tool_option{
+    display: flex;
+}
+#dispatch_regularly_order_management_serch_tool_button{
+    width: 42.8rem;
+    margin-top: 1rem; 
+    margin-left: 2.8rem;
+}

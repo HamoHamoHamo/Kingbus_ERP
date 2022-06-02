@@ -1,0 +1,163 @@
+.SecondContentsBox{
+  margin-bottom: 16rem;
+}
+.SecondContentsBox img{
+  width: 70.1rem;
+  height: 39.7rem;
+}
+.subIntroCell{
+  margin-top: 8rem;
+}
+.subIntroCell{
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+}
+.subIntroCellTitle{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  margin-bottom: 0.6rem;
+  font-size: 2.8rem;
+  color: #1E1D31;
+}
+.subIntroCellContents{
+  font-size: 2rem;
+  list-style: square;
+}
+.subIntroCellInforgraphic{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 75.4rem;
+  margin-top: 6rem;
+}
+.questionBox{
+  display: flex;
+  width: 100%;
+  height: 6.4rem;
+  margin-top: 1.8rem;
+}
+.questionCell{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 39rem;
+  height: 100%;
+}
+#questionCellEmail{
+  width: 51.6rem;
+}
+.questionCell img{
+  width: 4rem;
+  height: 4rem;
+}
+.questionCell div{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  font-size: 2.6rem;
+}
+
+.checkListBox{
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  margin-top: 1.6rem;
+}
+.checkListCell{
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 13rem;
+}
+.checkListCellQ{
+  display: flex;
+  align-items: center;
+  width: calc(100% - 1.6rem);
+  height: 5rem;
+  padding-left: 1.6rem;
+  border: 0.1rem solid #9A9A9A;
+  border-radius: 0.3rem 0.3rem 0 0;
+  background-color: white;
+}
+.checkListCellQ span{
+  margin-right: 1.2rem;
+  font-size: 2.2rem;
+  font-weight: bold;
+  color: #B41515;
+}
+.checkListCellQ div{
+  font-size: 2.2rem;
+  font-weight: bold;
+}
+.checkListCellA{
+  display: flex;
+  align-items: center;
+  width: calc(100% - 1.6rem);
+  height: 8rem;
+  padding-left: 1.6rem;
+  margin-top: -0.1rem;
+  border: 0.1rem solid #9A9A9A;
+  border-radius: 0 0 0.3rem 0.3rem;
+  background-color: #F8F8F8;
+}
+.checkListCellA span{
+  margin-right: 1.2rem;
+  font-size: 2rem;
+  color: #B41515;
+}
+.checkListCellA div{
+  font-size: 2rem;
+}
+#gapToTop{
+  margin-top: 13rem;
+}
+
+.wayToJoinBox{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  height: 10rem;
+  margin-top: 2rem;
+}
+.wayToJoinCell{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 16rem;
+  height: 100%;
+  border-radius: 0.8rem;
+  background-color: #B41515;
+  color: white;
+  font-size: 2.2rem;
+  text-align: center;
+}
+.wayToJoinarrow{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.wayToJoinarrow div:nth-child(1){
+  width: 1rem;
+  height: 1rem;
+  border-radius: 100%;
+  background-color:#B41515;
+}
+.wayToJoinarrow div:nth-child(2){
+  width: 0;
+  height: 0;
+  border-bottom: 1.8rem solid transparent;
+  border-top: 1.8rem solid transparent;
+  border-left: 1.4rem solid #B41515;
+  border-right: 1.4rem solid transparent;
+  border-radius: 0.3rem;
+  margin-left: 0.2rem;
+}
+.pageTitle{
+  font-size: 4rem;
+  font-weight: bold;
+}

@@ -1,0 +1,129 @@
+/*notice_kinds*/
+#contentsBoxCellNoticeKinds{
+  height: calc(100% - 7rem);
+}
+#noticeKindsButton{
+  margin-left: 2rem;
+}
+#noticeKindsSearchToolSelect{
+  width: 12rem;
+  margin-left: 0.2rem;
+}
+#noticeKindsSearchToolText{
+  width: 24rem;
+  margin-left: 2rem;
+}
+#noticeKindsTableBox{
+  width: 100%;
+  height: calc(100% - 3.6rem);
+}
+
+
+
+#nav_cell_notice_kinds_driver{
+  width: 18rem;
+  border-radius: 0.5rem 0 0 0.5rem;
+}
+#nav_cell_notice_kinds_office{
+  width: 18rem;
+  border-radius: 0 0.5rem 0.5rem 0;
+}
+#notice_kinds_serch_tool_input__work{
+  width: 10rem;
+}
+#notice_kinds_serch_tool_input__name{
+  width: 35rem;
+}
+.mid_box_input_select{
+  margin-left: 2rem;
+}
+.notice_kinds_list__num{
+  width: 6%;
+}
+.notice_kinds_list__title{
+  width: 65%;
+}
+.notice_kinds_list__name{
+  width: 10%
+}
+.notice_kinds_list__date{
+  width: 13%;
+}
+.notice_kinds_list__views{
+  width: 6%;
+}
+
+.notice_contents_kinds_driver__page_box{
+  display: flex;
+  width: 100%;
+  height: 5rem;
+  border: 0.1rem solid #1E1D31;
+  background-color: white;
+  border-radius:0.3rem;
+  margin-top: 2rem;
+}
+.notice_contents_kinds_driver__page_box__paging{
+  width: 100%;
+  height: 5rem;
+  display: flex;
+  justify-content: center;
+}
+.notice_contents_kinds_driver__page_box__button{
+  width: 12rem;
+  height: 3.1rem;
+  border: none;
+  border-radius: 0.3rem;
+  background-color: #B41515;
+  outline: none;
+  cursor: pointer;
+  color: white;
+  text-align: center;
+  font-size: 2.2rem;
+  font-weight: bold;
+  padding-top: 0.3rem;
+}
+.notice_contents_kinds_driver__page_box__button_margin{
+  margin-left: 86.6rem;
+}
+#notice_kinds__main_contents{
+  height: calc( 100% - (1vh*4.13) - 7.2rem );
+}
+#buttonWrithing{
+  width: 8.6rem;
+  position: absolute;
+}
+#aWriting{
+  width: 5%;
+  height: calc(1vh * 2.6);
+}
+#list_table_cell__notice_kinds_list{
+  width: 100%;
+  height: calc( 100% - 5.6rem);
+  overflow: hidden;
+}
+.contents_box_header_notice_create{
+  width: 5%;
+  height: calc(1vh * 2.6);
+}
+#list_table_cell__tbody__tr_notice{
+  height: 4.2rem;
+}
+.noticeCreateButton{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  background-color: #B41515;
+  color: white;
+  border-radius: 0.3rem;
+  outline: none;
+  cursor: pointer;
+  font-size: 1.6rem;
+}
+#contents_box_header_notice_kinds{
+  display: flex;
+  justify-content: space-between;
+  width: calc( 100% - 3.8rem );
+  padding-right: 2rem;
+}

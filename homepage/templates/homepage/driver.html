@@ -1,0 +1,154 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block subPagecss %}
+<link rel="stylesheet" href="{% static 'css/homepage/driver.css' %}">
+<link rel="stylesheet" href="{% static 'css/homepage/kingbus.css' %}">
+{% endblock %}
+
+{% block subPageContent %}
+
+<div class="SecondContentsBox">
+  <img src="{% static 'images/kingbusDriverLogo.png' %}">
+  <div class="SecondContentsCell">
+    <span>드라이버</span>
+    <span>
+      드라이버앱은 기사님들을 위해 개발한 어플로 기사님들의 일정, 급여, 배차등을 확인/관리할 수 있도록 하는 어플입니다. 
+운행/차량관리에 도움이 되도록 주유소, 정비소, 네비게이션 기능등을 제공하고, 배차담당자의 공지사항을 전송하는등 기사님과 원활한 커뮤니케이션을 보조하는 어플입니다.       
+
+    </span>
+  </div>
+</div>
+
+<div class="subIntroCell">
+  <div class="subIntroCellTitle">드라이버 특장점</div>
+  <ul>
+    <li class="subIntroCellContents">
+      기사님들의 일정, 급여관리, 배차등을 확인/관리가 가능합니다.
+    </li>
+    <li class="subIntroCellContents">
+      정비소, 주유소, 네비게이션등 주행, 차량관리에 필요한 부가기능을 지원합니다.
+    </li>
+    <li class="subIntroCellContents">
+      배차담당자의 공지사항, 배차정보등을 실시간으로 전송할 수 있습니다.
+    </li>
+    <li class="subIntroCellContents">
+      등록된 기사님의 정보로 전송하여 보안이 확실하고 기사인과의 개별 공지에 유리합니다.
+    </li>
+  </ul>
+</div>
+
+<div class="subIntroCell">
+  <div class="subIntroCellTitle">회사개요</div>
+  <table class="subIntroCellTable">
+    <tbody>
+      <tr class="subIntroCellTr">
+        <td class="tableDashedBorder">
+          <div class="circleOut">
+            <div class="circleIn"></div>
+          </div>
+        </td>
+        <td class="tableDashedBorder">기업명</td>
+        <td class="tableDashedBorder">킹버스</td>
+      </tr>
+      <tr class="subIntroCellTr">
+        <td class="tableDashedBorder">
+          <div class="circleOut">
+            <div class="circleIn"></div>
+          </div>
+        </td>
+        <td class="tableDashedBorder">대표</td>
+        <td class="tableDashedBorder">김형주</td>
+      </tr>
+      <tr class="subIntroCellTr">
+        <td class="tableDashedBorder">
+          <div class="circleOut">
+            <div class="circleIn"></div>
+          </div>
+        </td>
+        <td class="tableDashedBorder">설립일</td>
+        <td class="tableDashedBorder">2019.03.28</td>
+      </tr>
+      <tr class="subIntroCellTr">
+        <td class="tableDashedBorder">
+          <div class="circleOut">
+            <div class="circleIn"></div>
+          </div>
+        </td>
+        <td class="tableDashedBorder">업태</td>
+        <td class="tableDashedBorder">서비스업</td>
+      </tr>
+      <tr class="subIntroCellTr">
+        <td class="tableDashedBorder">
+          <div class="circleOut">
+            <div class="circleIn"></div>
+          </div>
+        </td>
+        <td class="tableDashedBorder">업종</td>
+        <td class="tableDashedBorder">전세버스 알선 및 중계</td>
+      </tr>
+      <tr class="subIntroCellTr">
+        <td class="tableDashedBorder">
+          <div class="circleOut">
+            <div class="circleIn"></div>
+          </div>
+        </td>
+        <td class="tableDashedBorder">연락처</td>
+        <td class="tableDashedBorder">1522-9821</td>
+      </tr>
+      <tr class="subIntroCellTr">
+        <td class="tableLast tableLast">
+          <div class="circleOut">
+            <div class="circleIn"></div>
+          </div>
+        </td>
+        <td class="tableLast">소재지</td>
+        <td class="tableLast">수원시 권선구 매송고색로 804번길 190 (1층 킹버스)</td>
+      </tr>
+    </tbody>
+  </table>
+
+</div>
+
+<div class="subIntroCell">
+  <div class="subIntroCellTitle">기업구조</div>
+  <div class="companyStructureBox">
+    <div class="companyStructureCell">
+      <div class="companyStructureTitle">
+        <img src="{% static 'images/TRPdocment.png' %}">
+        기획팀
+      </div>
+      <div class="companyStructurecontents">서비스기획</div>
+      <div class="companyStructurecontents">사업기획</div>
+      <div class="companyStructurecontents">마케팅기힉</div>
+      <div class="companyStructurecontents">제휴</div>
+      <div class="companyStructureBackLine"></div>
+    </div>
+
+    <div class="companyStructureCell">
+      <div class="companyStructureTitle">        
+        <img src="{% static 'images/TRPtool.png' %}">
+        개발팀
+      </div>
+      <div class="companyStructurecontents">디자인</div>
+      <div class="companyStructurecontents">웹프론트개발</div>
+      <div class="companyStructurecontents">웹백개발</div>
+      <div class="companyStructurecontents">앱개발</div>
+      <div class="companyStructurecontents">서버구축/관리</div>
+      <div class="companyStructureBackLine"></div>
+    </div>
+
+    <div class="companyStructureCell">
+      <div class="companyStructureTitle">        
+        <img src="{% static 'images/TRPrun.png' %}">
+        운용팀
+      </div>
+      <div class="companyStructurecontents">마케팅</div>
+      <div class="companyStructurecontents">서비스관리</div>
+      <div class="companyStructurecontents">고객응대</div>
+      <div class="companyStructureBackLine"></div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

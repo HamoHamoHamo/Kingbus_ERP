@@ -1,0 +1,80 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <title>trp</title>
+    <link href="{% static 'css/crudmember/signup_terms.css' %}" rel="stylesheet" type="text/css" />
+    <link href="{% static 'css/crudmember/welcome.css' %}" rel="stylesheet" type="text/css" />
+    <link href="{% static 'css/setting/setting.css' %}" rel="stylesheet" type="text/css" />
+    <link href="{% static 'css/signup_base.css' %}" rel="stylesheet" type="text/css" />
+    
+  </head>
+
+  <body>
+
+    <div class="signup">
+      <div class="signupHeader">
+        <span class="signupHeaderTitle">
+          기사회원가입
+        </span>
+        <div class="progressbar">
+          <div class="progressBg">
+            <div class="progress"></div>
+          </div>
+          <div class="stepCell">
+            <div class="stepCircle"></div>
+            <span class="stepName">약관동의</span>
+          </div>
+          <div class="stepCell">
+            <div class="stepCircle"></div>
+            <span class="stepName">정보입력</span>
+          </div>
+          <div class="stepCell">
+            <div class="stepCircle"></div>
+            <span class="stepName">가입완료</span>
+          </div>
+        </div>
+      </div>
+      <div class="signupSection"></div>
+      <div class="signupFooter">
+      </div>
+    </div>
+  
+    <!-- <div class="signupHeader">
+      <div class="signupHeaderPage">가입완료</div>
+      <div class="signupNavBox">
+        <div class="signupNav">01약관동의</div>
+        <div class="signupNav">02정보입력</div>
+        <div class="signupNav" id="signupNavPage">03가입완료</div>
+      </div>
+    </div>
+  
+    <div class="signupMain">
+      <div class="signupWelcomBorderTop">
+        <div class="signupWelcomBorderTopLeft"></div>
+        <div class="signupWelcomBorderTopRight"></div>
+      </div>
+      <div class="signupWelcomContent">
+        <input type="image" src="{% static 'images/킹킹이_경례.png' %}" class="signupWelcomContentsIcon">
+        <div class="signupWelcomBorderTopTextDone">가입이 완료되었습니다.</div>
+        <div class="signupWelcomBorderTopTextLogin">서비스를 이용하시려면 로그인을 진행해 주세요</div>
+      </div>
+      <div class="signupWelcomBorderBottom">
+        <div class="signupWelcomBorderBottomLeft"></div>
+        <div class="signupWelcomBorderBottomRight"></div>
+      </div>
+    </div>
+  
+      <div class="termsCenterBox">
+        <a href="{% url 'crudmember:login' %}">
+          <div class="finishTOSignup">로그인</div>
+        </a>
+      </div> -->
+  
+    <script src="script.js"></script>
+  </body>
+
+</html>

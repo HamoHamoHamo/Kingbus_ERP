@@ -1,0 +1,219 @@
+#mgtCreateMainContens{
+    height: calc(100% - (1vh * 4.13));
+}
+.mgtCreateContainer{
+    display: flex;
+    width: 100%;
+    height: calc(100% - 4rem);
+    justify-content: space-between;
+    margin-top: 2rem;
+}
+.mgtCreaterBox{
+    width: 86rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: white;
+    border :0.1rem;
+}
+.mgtCreatSchduleTableBox{
+  width: calc(100% - 88rem);
+}
+.mgtCreaterBoxTitle{
+    margin-top: 1rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 82rem;
+    height: 4rem;
+    font-size: 2.4rem;
+    font-weight: 600;
+    border: 0.16rem solid black;
+}
+.mgtCreaterBoxDispatchTool{
+    width: 82rem;
+    height: 6rem;
+    background-color: #D6D6D6;
+    border-radius: 0.3rem;
+    display: flex;
+    align-items: center;
+    margin-top: 1rem;
+    margin-bottom: 2rem;
+}
+#mgtCreaterBoxDispatchToolDriver{
+    width: 9rem;
+}
+#mgtCreaterBoxDispatchToolBus{
+    width: 5rem;
+}
+#mgtCreaterBoxDispatchToolDate{
+    width: 5rem;
+}
+#mgtCreaterBoxDispatchToolDriverInput{
+    width: 8rem;
+}
+#mgtCreaterBoxDispatchToolBusInput{
+    width: 8rem;
+}
+
+.mgtCreateDispatchForm{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.mgtCreateDispatchTable{
+    border-spacing: 0px;
+    border-style: none;
+    padding: 0px;
+    width: 81.2rem;
+}
+.mgtCreateDispatchTableTr{
+    display: flex;
+    margin-top: -0.1rem;
+}
+.mgtCreateDispatchTableTd{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.6rem;
+    border-spacing: 0px;
+    border-style: none;
+    padding: 0px;
+    margin-left: -0.1rem;
+}
+.mgtCreateDispatchTableTd > div{
+    border: 0.1rem solid black;
+    width: 11.6rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.mgtCreateDispatchTableTdweeks{
+    height: 3.6rem;
+}
+.mgtCreateDispatchTableTdDate{
+    height: 3.6rem;
+    font-weight: bold;
+    margin-top: -0.1rem;
+}
+.mgtCreateDispatchTableTdDriver{
+    height: 3.2rem;
+    margin-top: -0.1rem;
+}
+.mgtCreateDispatchDriverCheck{
+    display: none;
+}
+.mgtCreateDispatchDriverCheckLabel{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 11.2rem;
+    height: 3.2rem;
+    border-radius: 0.3rem;
+    font-size: 1.8rem;
+    font-weight: bold;
+}
+.mgtCreateDispatchDriverCheck:checked + .mgtCreateDispatchDriverCheckLabel{
+    background-color: #2E15B4;
+    color: white;
+}
+
+.mgtCreateDispatchButton{
+    margin-top: 2rem;
+    width: 8rem;
+    height: 3.6rem;
+    font-size: 2rem;
+    border-radius: 0.3rem;
+    background-color: #B41515;
+    color: white;
+    border : none;
+    outline: none;
+}
+.mgtCreateSchduleTableTdRoute{    
+    padding: 0;
+    width: 36%;
+    font-size: 1.8rem;
+    color: white;
+    background-color: #1E1D31;
+    text-align: center;
+}
+.mgtCreateSchduleTableTdRouteHeader{
+    width: 28%;
+    padding: 0;
+}
+
+.mgtCreateSchduleTableTd{
+    padding: 0;
+    width: 8%;
+    font-size: 1.8rem;
+    color: white;
+    background-color: #1E1D31;
+    text-align: center;
+    border-right: none;
+}
+.mgtCreateSchduleTableTd_nonetime{
+  width: 4%;
+  padding: 0;
+}
+.mgtCreateSchduleTableTdBlank{    
+    padding: 0;
+    width: 8%;
+    font-size: 1.8rem;
+    color: white;
+    background-color: white;
+    text-align: center;
+    border: 0.1rem solid black;
+    border-right: none;
+}
+.mgtCreateSchduleTableTdRouteSelect{
+    width: 18rem;
+    height: 3.4rem;
+    font-size: 1.8rem;
+    outline: none;
+    text-align-last: center;
+    text-align: center;
+}
+#mgtTableRelative{
+    position: relative;
+}
+.tdMgt{
+  position: absolute;
+  display: flex;
+  width:72rem;
+  height: 3rem;
+  width: 100%;
+  left: 0;
+  top: 0;
+  padding: 0;
+}
+#serch_tool_cell_mgt_detail{
+  margin-bottom: 2rem;
+  margin-top: 0;
+}
+
+.list_table_cell {
+    display: table;
+    width: 100%;
+}
+
+
+
+#mgtDetailcontentsBoxCell{
+  height: 100%;
+}
+#mgtDetailContentsBoxContents{
+  display: flex;
+  justify-content: space-between;
+}
+#mgtDetailTableBox{
+  height: calc(100% - 9.4rem);
+  margin-top: 0;
+}
+#mgtDetailList_table_cell{
+  max-height: calc(100% - 9.4rem);
+}
+#mgtDetailSearchToolSelect{
+  width: 12rem;
+  margin-left: 2rem;
+}

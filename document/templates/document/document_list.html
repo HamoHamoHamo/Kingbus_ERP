@@ -1,0 +1,134 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block head %}
+    <link href="{% static 'css/document.css' %}" rel="stylesheet" type="text/css"/>
+    <link
+        href="{% static 'css/dispatch/dispatch_list.css' %}"
+        rel="stylesheet"
+        type="text/css"/>
+{% endblock %}
+
+{% block content-header %}
+<div class="HeaderTitle">
+  <div class="HeaderTitleIcorn">
+    <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="#FFFFFF">
+      <path d="M0 0h24v24H0z" fill="none" />
+      <path
+        d="M4 16c0 .88.39 1.67 1 2.22V20c0 .55.45 1 1 1h1c.55 0 1-.45 1-1v-1h8v1c0 .55.45 1 1 1h1c.55 0 1-.45 1-1v-1.78c.61-.55 1-1.34 1-2.22V6c0-3.5-3.58-4-8-4s-8 .5-8 4v10zm3.5 1c-.83 0-1.5-.67-1.5-1.5S6.67 14 7.5 14s1.5.67 1.5 1.5S8.33 17 7.5 17zm9 0c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zm1.5-6H6V6h12v5z" />
+    </svg>
+  </div>          
+  <!-- 페이지별 Title 변경 -->
+  배차시스템
+</div>
+{% endblock %}
+
+{% block content %}
+    <!--trp_main__contents-->
+    <div class="trp_main__contents_container">
+        <div class="trp_main__contents_box">
+
+    <!--trp nav-->
+    <ul class="nav">
+      <li class="navList navFirst">
+        <a href="{% url 'dispatch:dispatch_list' %}">배차지시서</a>
+      </li>
+      <div class="navListOpenbox">
+        <li class="navList">
+          <a href="{% url 'dispatch:regularly_order_list' %}">정기주문관리</a>
+        </li>
+        <ul class="navListDepth2">
+          <li class="navListDepth2Li">
+            <a href="{% url 'dispatch:regularly_order_group' %}">그룹지정</a>
+          </li>
+          <li class="navListDepth2Li navDepth2Last">
+            <a href="{% url 'dispatch:regularly_order_create' %}">노선등록</a>
+          </li>
+        </ul>
+      </div> 
+      <div class="navListOpenbox">
+        <li class="navList">
+          <a href="{% url 'dispatch:order' %}">일반주문관리</a>
+        </li>
+        <ul class="navListDepth2">
+          <li class="navListDepth2Li navDepth2Last">
+            <a href="{% url 'dispatch:order_create' %}">노선등록</a>
+          </li>
+        </ul>
+      </div> 
+      <li class="navList">
+        <a href="{% url 'dispatch:mgt' %}">배차스케줄</a>
+      </li>
+      <li class="navList navLast">
+        <a href="{% url 'document:document_list' %}">서류함</a>
+      </li>
+    </ul>
+
+          
+      <div class="contents_box_cell">
+
+        <div class="contents_box_header">
+            서류관리
+        </div>
+        <div class="contents_box" id="dispatch_list__main_contents">
+
+            <!--serch_tool-->
+            <div class="serch_tool_cell">
+                <form action="">
+                  <input type="date" class="serch_tool_input">~
+                  <input type="date" class="serch_tool_input">
+                        <button class="serch_tool_button">검색</button>
+                    </form>
+                </div>
+                
+                    <!--list-->
+                    <table class="list_table_cell" id="list_table_cell__header">
+                        <thead class="list_table_cell__header__thead">
+                            <tr>
+                                <td class="dispatch_document_number">번호</td>
+                                <td class="dispatch_document_drivetime">운행시간</td>
+                                <td class="dispatch_document_rout">경로</td>
+                                <td class="dispatch_document_reference">참조사항</td>
+                                <td class="dispatch_document_dispatch">배차</td>
+                                <td class="dispatch_document_use">용도</td>
+                                <td class="dispatch_document_document">서류</td>
+                            </tr> 
+                        </thead>
+                    </table>
+                    <table class="list_table_cell" id="list_table_cell__dispatch_list">
+                        <tbody class="list_table_cell__tbody">
+                            <tr class="list_table_cell__tbody__tr">
+                              <td class="dispatch_document_number">번호</td>
+                                <td class="dispatch_document_drivetime">운행시간</td>
+                                <td class="dispatch_document_rout">경로</td>
+                                <td class="dispatch_document_reference">참조사항</td>
+                                <td class="dispatch_document_dispatch">배차</td>
+                                <td class="dispatch_document_use">용도</td>
+                                <td class="dispatch_document_document">
+                                  <ul class="openDocumentBox">
+                                    <li class="openDocumentCell">
+                                        <span class="openDocument">등록증</span>
+                                        <span class="openDocument">등록증</span>
+                                        <span class="openDocument">등록증</span>
+                                        <span class="openDocument">등록증</span>
+                                    </li>
+                                    <li class="openDocumentCell">
+                                        <span class="openDocument">등록증</span>
+                                        <span class="openDocument">등록증</span>
+                                        <span class="openDocument">등록증</span>
+                                        <span class="openDocument">등록증</span>
+                                    </li>
+                                  </ul>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                </div>
+
+                
+            </div>
+
+        </div>
+    </div>
+{% endblock %}

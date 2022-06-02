@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <form method="POST" action="" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ document_form }}    
+        <br>
+        <p>첨부파일</p>
+        {% for this_file in document_files %}
+            <p>{{ this_file.filename }}</p>
+            <a href="{% url 'document:file_delete' document.id this_file.id %}">첨부파일 삭제</a>
+        {% endfor %}
+        <input type="file" name="file" value=>
+        <input type="file" name="file">
+        <input type="file" name="file">
+        <br>
+        <input type="submit" value="등록">
+{% endblock %}

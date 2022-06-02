@@ -1,0 +1,266 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta property="og:title" content="TRP" />
+  <meta property="og:description" content="배차시스템과 ERP 시스템의 결합 TRP!" />
+  <meta property="og:image" content="{% static 'images/TRPLogoNew.png' %}" />
+  <link rel="stylesheet" href="{% static 'css/homepage/home.css' %}">
+  <title>TRP</title>
+</head>
+
+<body>
+
+  <div class="fullCoverClickBgs"></div>
+
+  <!--header-->
+  <header>
+    <div class="header">
+
+      <a href="{% url 'homepage:homepage' %}">
+        <div class="logoCell">TRP</div>
+      </a>
+
+      <div class="navConteiner">
+        <ul class="navListUl">
+          <li class="navListLi">
+            <div class="navListLiMain">TRP특징</div>
+            <ul class="navListUlSub">
+              <a href="{% url 'homepage:trp' %}">
+                <li class="navListLlSub">TRP란?</li>
+              </a>
+              <a href="{% url 'homepage:dispatch' %}">
+                <li class="navListLlSub">배차관리</li>
+              </a>
+              <a href="{% url 'homepage:servicelink' %}">
+                <li class="navListLlSub">서비스 연계</li>
+              </a>
+              <a href="{% url 'homepage:web' %}">
+                <li class="navListLlSub">WEB기반</li>
+              </a>
+              <a href="{% url 'homepage:customizing' %}">
+                <li class="navListLlSub">고객맞춤</li>
+              </a>
+            </ul>
+          </li>
+          <li class="navListLi">
+            <div class="navListLiMain">회사소개</div>
+            <ul class="navListUlSub">
+              <a href="{% url 'homepage:kingbus' %}">
+                <li class="navListLlSub">킹버스</li>
+              </a>
+              <a href="{% url 'homepage:driver' %}">
+                <li class="navListLlSub">드라이버</li>
+              </a>
+            </ul>
+          </li>
+          <li class="navListLi">
+            <div class="navListLiMain">가입하기</div>
+            <ul class="navListUlSub">
+              <a href="{% url 'homepage:check' %}">
+                <li class="navListLlSub">가입전 확인사항</li>
+              </a>
+              <a href="{% url 'homepage:consulting' %}">
+                <li class="navListLlSub">상담</li>
+              </a>
+              <a href="{% url 'homepage:payment' %}">
+                <li class="navListLlSub">가입하기</li>
+              </a>
+            </ul>
+          </li>
+        </ul>
+      </div>
+
+      <div>
+        <img src="{% static 'images/TRPHembuger.png' %}">
+      </div>
+      <div class="hembugerMenuSide"></div>
+      <div class="hembugerMenu">
+        <ul class="hembugerUl">
+          <li class="hembugerLl">
+            <div>TRP특징</div>
+            <ul class="hembugerSubUl">
+
+              <a href="{% url 'homepage:trp' %}">
+                <li>TRP란</li>
+              </a>
+              <a href="{% url 'homepage:dispatch' %}">
+                <li>배차관리</li>
+              </a>
+              <a href="{% url 'homepage:servicelink' %}">
+                <li>서비스 연계</li>
+              </a>
+              <a href="{% url 'homepage:web' %}">
+                <li>WEB기반</li>
+              </a>
+              <a href="{% url 'homepage:customizing' %}">
+                <li>고객맞춤</li>
+              </a>
+            </ul>
+          </li>
+          <li class="hembugerLl">
+            <div>회사소개</div>
+            <ul class="hembugerSubUl">
+              <a href="{% url 'homepage:kingbus' %}">
+                <li>킹버스</li>
+              </a>
+              <a href="{% url 'homepage:driver' %}">
+                <li>드라이버</li>
+              </a>
+            </ul>
+          </li>
+          <li class="hembugerLl">
+            <div>가입하기</div>
+            <ul class="hembugerSubUl">
+              <a href="{% url 'homepage:check' %}">
+                <li>가입전 확인사항</li>
+              </a>
+              <a href="{% url 'homepage:consulting' %}">
+                <li>상담</li>
+              </a>
+              <a href="{% url 'homepage:payment' %}">
+                <li>가입하기</li>
+              </a>
+            </ul>
+          </li>
+        </ul>
+      </div>
+
+    </div>
+  </header>
+
+  <!--firstContents-->
+  <div class="firstContentsBox">
+    <div class="firstContentsBoxCover"></div>
+    <img src="{% static 'images/TRPWebMainFirst.png' %}">
+    <div class="firstContentsBoxText">
+      <span>TRP - 새로운 개념의 배차관리</span>
+      <span>전사적 자원관리 시스템과 배차시스템이 결합한 교통업무시스템</span>
+
+      <li class="navListLiTRP">
+        <a href="{% url 'home' %}">
+          <div class="TRPaddress">TRP바로가기</div>
+        </a>
+      </li>
+    </div>
+  </div>
+
+  <!--seconedContents-->
+  <div class="SecondContentsContainer">
+
+    <div class="SecondContentsBox">
+      <img src="{% static 'images/TRPWebMainSeconed.png' %}">
+      <div class="SecondContentsCell">
+        <span>TRP란?</span>
+        <span> ERP(전사적 자원 관리 소프트웨어)를<br>
+          교통(Transportation)에 특화시켜<br>
+          전세버스회사의 배차, 인사, 경리, 차량을<br>
+          웹상에서 쉽고 빠르게 처리할 수 있는<br>
+          배차&자원관리 프로그램입니다.
+        </span>
+      </div>
+    </div>
+
+    <div class="SecondContentsBoxSub">
+      <div class="SecondContentsCellSub">
+        <span>인사관리</span>
+        <img src="{% static 'images/TRPWebMainSecondHr.png' %}">
+      </div>
+      <div class="SecondContentsCellSub">
+        <span>차량관리</span>
+        <img src="{% static 'images/TRPWebMainSecondVehicle.png' %}">
+      </div>
+      <div class="SecondContentsCellSub">
+        <span>재무/회계관리</span>
+        <img src="{% static 'images/TRPWebMainSecondAccount.png' %}">
+      </div>
+    </div>
+
+  </div>
+
+  <!--thirdContents-->
+  <div class="overFlowHidden">
+    <div class="thirdContentsContainer">
+      <img src="{% static 'images/TRPFrontMainThird.png' %}">
+      <div class="thirdContentsContainerBox">
+        <img src="{% static 'images/TRPWebMainInforgraphic.png' %}">
+        <p>
+          <span>TRP프로그램</span>과 <span>연계서비스</span>를 사용하여<br>
+          전세버스의 <span>미래</span>를 체험해 보세요!
+        </p>
+      </div>
+    </div>
+  </div>
+
+
+  <!--fourthContents-->
+  <div class="fourthContentsContainer">
+    <img src="{% static 'images/TRPWebMainFourth.png' %}">
+    <div class="fourthContentsBox" id="fourthContentsBoxTop">
+      <div class="fourthContentsCell">
+        <span>업계 최고의 </span>
+        <span class="fontImpact">배차시스템</span>
+        <span> 도입</span><br>
+      </div>
+      <div class="fourthContentsCell">
+        <span class="fontImpact">Web기반</span>
+        <span> 높은 접근성</span><br>
+      </div>
+      <div class="fourthContentsCell">
+        <span>주기적이고 간편한 </span>
+        <span class="fontImpact">업그레이드</span>
+      </div>
+    </div>
+    <div class="fourthContentsBox" id="fourthContentsBoxBottom">
+      <div class="fourthContentsCell">
+        <span class="fontImpact">고객맞춤 </span>
+        <span> 커스터마이징 제공</span>
+      </div>
+      <div class="fourthContentsCell">
+        <span>목적에 맞는 </span>
+        <span class="fontImpact">기능추가</span>
+        <span>로 효율up!</span>
+      </div>
+    </div>
+
+    <div class="fourthContentsBoxPrice">
+      <div class="fourthContentsBoxPriceBlock">
+        <span>각격은 상담후 책정</span>
+        <a href="{% url 'homepage:payment' %}">
+          <div class="fourthContentsBoxPriceBlockBtn">가격정책 ▶</div>
+        </a>
+      </div>
+      <span>배차,공지, 차량,인사,재무,회계 전부 사용</span>
+    </div>
+    <div class="fourthContentsBoxQuestion">
+      <div class="fourthContentsBoxQuestionBlock">
+        <a href="{% url 'homepage:consulting' %}">
+          <div class="fourthContentsBoxQuestionBlockBtn">가격상담 ▶</div>
+        </a>
+        <a href="{% url 'homepage:check' %}">
+          <div class="fourthContentsBoxQuestionBlockBtn">기타문의 ▶</div>
+        </a>
+      </div>
+      <div class="fourthContentsBoxQuestionText">전화상담 1522-9821</div>
+    </div>
+  </div>
+
+  </div>
+
+  <!--footerContents-->
+  <footer>
+    <div>대표자명 : 김형주</div>
+    <div>주소 : 수원시 권선구 매송고색로 804번길 190 (1층 킹버스)</div>
+    <div>이메일 : kingbus7111@gmail.com</div>
+    <div>고객센터 : 1522-9821</div>
+    <div>사업자번호 : 287-49-00474</div>
+  </footer>
+
+  <script src="{% static 'js/homepage/script.js' %}"></script>
+</body>
+
+</html>

@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block subPagecss %}
+<link rel="stylesheet" href="{% static 'css/homepage/web.css' %}">
+{% endblock %}
+
+{% block subPageContent %}
+
+<div class="SecondContentsBox">
+  <img src="{% static 'images/browserimg.png' %}">
+  <div class="SecondContentsCell">
+    <span>WEB기반</span>
+    <span>
+      프로그램을 구매했는데 setup 파일 받고 설치 기다리느라 고생하셨던 적 많으시죠?
+      TRP는 타 서비스들과는 다르게 설치형 프로그램이 아닌 WEB기반 서비스 입니다.
+      번거롭게 프로그램을 설치하며 기다릴 필요 없이 지금 즉시 사용 가능합니다.
+    </span>
+  </div>
+</div>
+
+<div class="subIntroCell">
+  <div class="subIntroCellTitle">WEB기반의 장점</div>
+  <ul>
+    <li class="subIntroCellContents">
+      언제 어디서나 서비스 이용이 가능하고 서비스에 가입하는 즉시 사용이 가능합니다.
+    </li>
+    <li class="subIntroCellContents">
+      서류가 필요할때 web기반의 범용성으로 서비스에 컴퓨터에 저장된 문서를 바로 추가, 수정 할 수 있습니다.
+    </li>
+    <li class="subIntroCellContents">
+      서버에서 업그레이드가 이루어져 직접 대면하거나 따로 시간을 가지지 않아도 주기적인 업데이트가 가능합니다.
+    </li>
+    <li class="subIntroCellContents">
+      별도의 프로그램을 사용하지 않고 평소 사용하는 브라우저에서 작동하기 때문에 쉽게 익히고 적응할 수 있습니다.
+    </li>
+    <li class="subIntroCellContents">
+      웹 특유의 빠른 반응성으로 평소 다른 업무를 진행할때처럼  정보의 업로드가 빠르게 이루어집니다. 
+    </li>
+  </ul>
+</div>
+
+{% endblock %}
