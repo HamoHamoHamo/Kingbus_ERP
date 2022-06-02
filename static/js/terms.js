@@ -24,8 +24,23 @@ function allChecking() {
 termsCehck[0].addEventListener("change", checkingTop)
 
 function checkingTop(){
-  if(allCheck.checked && allCheck[1].checked){
+  if(!allCheck.checked && termsCehck[1].checked){
+    allCheck.checked = true
+  }else if(allCheck.checked && termsCehck[1].checked){
+    allCheck.checked = false
+  }
+}
 
+
+
+// checkedBottom
+termsCehck[1].addEventListener("change", checkingTop)
+
+function checkingTop(){
+  if(!allCheck.checked && termsCehck[0].checked){
+    allCheck.checked = true
+  }else if(allCheck.checked && termsCehck[0].checked){
+    allCheck.checked = false
   }
 }
 
