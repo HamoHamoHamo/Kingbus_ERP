@@ -1,0 +1,222 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>TRP</title>
+  <link href="{% static 'css/setting/setting.css' %}" rel="stylesheet" type="text/css" />
+  <link href="{% static 'css/base.css' %}" rel="stylesheet" type="text/css" />
+  <link rel="shortcut icon" href="{% static 'images/tilteIcon.png' %}">
+  {% block head %}
+  {% endblock %}
+</head>
+
+<body>
+
+  <div class="trp">
+
+
+    <!--sidemenu-->
+    <div class="Sidemenu">
+
+
+
+      <!--sidemenuLogo-->
+      <div class="logoBox">
+        <a href="http://kingbuserp.link/">
+          <img src="{% static 'images/TRPlogo.png' %}" alt="">
+        </a>
+      </div>
+
+
+
+
+
+      <!--sideMenuNav-->
+      <div class="sideMenuNav">
+        <ul class="sideMenuNav1">
+          <div class="nav1Box">
+            <li class="nav1BoxMenu">
+              <img src="{% static 'images/calendar.png' %}" alt="일정 아이콘">
+              <a href="" class="nonDepth2Menu">일정</a>
+            </li>
+          </div>
+          <div class="nav1Box">
+            <li class="nav1BoxMenu nav1BoxMenuHaveDepth2">
+              <img src="{% static 'images/notice.png' %}" alt="공지사항 아이콘">
+              <div>공지사항</div>
+              <img src="{% static 'images/navArrow.png' %}" alt="메뉴 열림 아이콘">
+            </li>
+            <div class="sideMenuNav2Box">
+              <ul class="sideMenuNav2">
+                <a href="{% url 'notice:kinds' 'driver' %}" class="sideMenuNav2Link">
+                  <li class="sideMenuNav2Menu">기사님 공지사항</li>
+                </a>
+                <a href="{% url 'notice:kinds' 'office' %}" class="sideMenuNav2Link">
+                  <li class="sideMenuNav2Menu">사무실 공지사항</li>
+                </a>
+              </ul>
+            </div>
+          </div>
+          <div class="nav1Box">
+            <li class="nav1BoxMenu nav1BoxMenuHaveDepth2">
+              <img src="{% static 'images/dispatchSystem.png' %}" alt="배차시스템 아이콘">
+              <div>배차시스템</div>
+              <img src="{% static 'images/navArrow.png' %}" alt="메뉴 열림 아이콘">
+            </li>
+            <div class="sideMenuNav2Box">
+              <ul class="sideMenuNav2">
+                <a href="" class="sideMenuNav2Link">
+                  <li class="sideMenuNav2Menu">출/퇴근배차</li>
+                </a>
+                <a href="" class="sideMenuNav2Link">
+                  <li class="sideMenuNav2Menu">출/퇴근 노서관리</li>
+                </a>
+                <a href="" class="sideMenuNav2Link">
+                  <li class="sideMenuNav2Menu">일반주문배차</li>
+                </a>
+                <a href="" class="sideMenuNav2Link">
+                  <li class="sideMenuNav2Menu">배차일정</li>
+                </a>
+                <a href="" class="sideMenuNav2Link">
+                  <li class="sideMenuNav2Menu">서류함</li>
+                </a>
+              </ul>
+            </div>
+          </div>
+          <div class="nav1Box">
+            <li class="nav1BoxMenu nav1BoxMenuHaveDepth2">
+              <img src="{% static 'images/HRManagement.png' %}" alt="인사관리 아이콘">
+              <div>인사관리</div>
+              <img src="{% static 'images/navArrow.png' %}" alt="메뉴 열림 아이콘">
+            </li>
+            <div class="sideMenuNav2Box">
+              <ul class="sideMenuNav2">
+                <a href="" class="sideMenuNav2Link">
+                  <li class="sideMenuNav2Menu">직원관리</li>
+                </a>
+                <a href="" class="sideMenuNav2Link">
+                  <li class="sideMenuNav2Menu">근태관리</li>
+                </a>
+              </ul>
+            </div>
+          </div>
+          <div class="nav1Box">
+            <li class="nav1BoxMenu nav1BoxMenuHaveDepth2">
+              <img src="{% static 'images/accountingSystem.png' %}" alt="경리시스템 아이콘">
+              <div>경리시스템</div>
+              <img src="{% static 'images/navArrow.png' %}" alt="메뉴 열림 아이콘">
+            </li>
+            <div class="sideMenuNav2Box">
+              <ul class="sideMenuNav2">
+                <a href="" class="sideMenuNav2Link">
+                  <li class="sideMenuNav2Menu">급여관리</li>
+                </a>
+                <a href="" class="sideMenuNav2Link">
+                  <li class="sideMenuNav2Menu">수입현황</li>
+                </a>
+                <a href="" class="sideMenuNav2Link">
+                  <li class="sideMenuNav2Menu">수금관리</li>
+                </a>
+              </ul>
+            </div>
+          </div>
+          <div class="nav1Box">
+            <li class="nav1BoxMenu nav1BoxMenuHaveDepth2">
+              <img src="{% static 'images/vehicleManagement.png' %}" alt="차량관리 아이콘">
+              <div>차량관리</div>
+              <img src="{% static 'images/navArrow.png' %}" alt="메뉴 열림 아이콘">
+            </li>
+            <div class="sideMenuNav2Box">
+              <ul class="sideMenuNav2">
+                <a href="" class="sideMenuNav2Link">
+                  <li class="sideMenuNav2Menu">차량목록</li>
+                </a>
+                <a href="" class="sideMenuNav2Link">
+                  <li class="sideMenuNav2Menu">차량관리</li>
+                </a>
+              </ul>
+            </div>
+          </div>
+        </ul>
+      </div>
+
+
+    </div>
+
+
+    <!--trp main container-->
+    <div class="MainContainer">
+
+
+      <!--trp header-->
+      <div class="Header">
+
+        <!--trp HeaderTitle-->
+        {% block content-header %}{% endblock %}
+
+        <!--trp HeaderProfile-->
+        <div class="profile">
+          <span class="userName">{{ request.session.name }}</span>
+          <div>
+            <span>님</span>
+            <img src="{% static 'images/profileArrow.png' %}" alt="아래 화살표 아이콘">
+          </div>
+        </div>
+
+        <div class="profileBox">
+          <div class="profileMenuCell">
+            <a href="">
+              <img src="{% static 'images/createUserIcon.png' %}" alt="설정 아이콘">
+              <span class="profileMenuName">사용자 생성</span>
+            </a>
+          </div>
+          <div class="profileMenuCell">
+            <a href="">
+              <img src="{% static 'images/passwordIcon.png' %}" alt="비밀번호 변경">
+              <span class="profileMenuName">비밀번호 변경</span>
+            </a>
+          </div>
+          <div class="profileMenuCell">
+            <a href="{% url 'crudmember:logout' %}">
+              <img src="{% static 'images/logoutIcon.png' %}" alt="로그아웃">
+              <span class="profileMenuName">로그아웃</span>
+            </a>
+          </div>
+        </div>
+        
+
+
+
+      </div>
+
+
+      <!--trp contents container-->
+      <div class="ContentsContainerRocate">
+        <div class="ContentsContainer">
+
+          <!--trp nav-->
+          {% block content-nav %}
+          {% endblock %}
+
+          <div class="contentsBox">
+            {% block content %}
+            {% endblock %}
+          </div>
+        </div>
+
+      </div>
+
+
+    </div>
+
+  </div>
+  <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+  <script src="{% static 'js/sideNavMenu.js' %}"></script>
+  <script src="{% static 'js/profile.js' %}"></script>
+  {% block script %}{% endblock %}
+</body>
+
+</html>

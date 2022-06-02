@@ -1,0 +1,52 @@
+#inputCellHeightFYIInOrderCreate{
+  height: calc(100%/6*5);
+}
+#inputCellHeightFYIInOrderCreate>.inputInputBox{
+  height: 100%;
+  display: flex;
+  align-items: center;
+}
+#inputCellHeightFYIInOrderCreate>.inputInputBox>.inputInputBoxInput{
+  height: 80%;
+}
+#contentsBoxCellDispatchOrderCreate{
+  height: 43.5rem;
+}
+#contentsBoxCellDispatchOrderCreateList{
+  height: calc(100% - 43.5rem);
+}
+#InputContainerOrderCreate{
+  height: 31rem;
+  margin-top: 0;
+}
+#dispatchOrderCreateListTableAutoBox{
+  height: (100% - 5.2rem);
+}
+#dispatchOrderCreateListList_table_cell{
+  max-height: calc(100% - 5.2rem);
+}
+#dispatchOrderCreateListSearchToolText{
+  width: 30rem;
+  margin-left: 2rem;
+}
+#dispatchOrderCreateListSearchToolSelect{
+  width: 18rem;
+  margin-left: 2rem;
+}
+#dispatchOrderCreateListButtonSearch{
+  margin-left: 2rem;
+}
+.dispatchOrderCreateListDeletForm{
+  position: relative;
+}
+#dispatchOrderCreateListButtonDelet{
+  position: absolute;
+  right: 2rem;
+  top: -11.1rem;
+}
+#dispatchOrderCreateButton{
+  position: absolute;
+  right: 2rem; 
+}
+
+

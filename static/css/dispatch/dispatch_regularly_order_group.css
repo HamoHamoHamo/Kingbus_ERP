@@ -1,0 +1,256 @@
+#contentsBoxCellreguarlyOrderGroup{
+  height: calc(45% - 1rem);
+  min-height: 33rem;
+}
+#contentsBoxCellreguarlyOrderListDetail{
+  height:  calc(55% - 1rem);
+  min-height: 42rem;
+  margin-top: 2rem;
+}
+#regularlyOrderGroupDetailSearchToolLabelTitle{
+  width: 8rem;
+}
+#regularlyOrderGroupDetailSearchToolText{
+  width: 28rem;
+  margin-left: 2rem;
+}
+#regularlyOrderGroupDetailSearchToolLabelKinds{
+  width: 8rem;
+}
+#regularlyOrderGroupDetailSearchToolDate{
+  margin-left: 2rem;
+}
+#reguarlyOrderGroupButton1{
+  position: absolute;  
+  top: 0.3rem;
+  right: 0.3rem;
+}
+#reguarlyOrderGroupButton2{
+  position: absolute;
+  top: 0.3rem;
+  right: 0.3rem;
+}
+#reguarlyOrderGroupButton3{
+  position: absolute;
+  top: 0.3rem;
+  right: 0.3rem;
+}
+#reguarlyOrderGroupButton4{
+  position: absolute;
+  top: -6.9rem;
+  right: 9.3rem;
+}
+
+
+
+
+.regularly_order_group_top_main_contents_box{
+    display: flex;
+    justify-content: space-between;
+    height: calc(100% - 2rem);
+}
+#regularly_order_group_serch_tool_cell{
+    width: 49.8rem;
+    margin-top: 0;
+}
+
+.dispatch_regularly_order_group_td_group_create{
+    width: 100vw;
+}
+.dispatch_regularly_order_group_td_group{
+  width: 100vw;
+}
+.dispatch_regularly_order_group_td_title{
+    width: 100%;
+}
+.dispatch_regularly_order_group_td_edit_button{
+    width: 8.3rem;
+}
+.dispatch_regularly_order_group_td_delet_button{
+    width: 8.3rem;
+}
+.dispatch_regularly_order_group_td_check{
+    width: 10vw;
+}
+.dispatch_regularly_order_group_td_num{
+    width: 10vw;
+}
+.dispatch_regularly_order_group_td_routename{
+    width: 80vw;
+}
+.dispatch_regularly_order_group_td_routname{
+  width: 100vw;
+}
+#regularly_order_group_serch_tool_button{
+    margin-left: 0;
+}
+.regularly_order_group_top_main_contents_box_right{
+  width: calc( (100% - 4rem) / 17 * 7);
+}
+
+.regularly_order_group_top_main_contents_box_left{
+    width: calc( (100% - 4rem) / 17 * 3);
+}
+
+#regularly_order_group_serch_tool_input__name{
+    width: 38rem;
+}
+#dispatch_regularly_order_group_list__main_contents{
+    height: 34rem;
+}
+#dispatch_regularly_order_group_contents_box_header{
+    margin-top: 2rem;
+}
+#dispatch_dispatch_regularly_order_group_under_list__main_contents{
+    height: calc( 100% - (1vh*8.26) - 34rem);
+}
+#regularly_order_group_serch_tool_label__route_name{
+    width: 9rem;
+}
+#regularly_order_create_serch_tool_label__driving_type{
+    width: 9rem;
+}
+#regularlyOrderGroupDetailEnrollment{
+  width: 5%;
+  height: 2.4rem;
+  left: calc(100% - 9rem);
+  top: 0.6rem;
+  min-width: 8rem;
+}
+#regularlyOrderGroupDetailEnrollmentEnrollment{
+  width: 5%;
+  height: 2.4rem;
+  left: calc(100% - 18rem);
+  top: 0.6rem;
+  min-width: 8rem;
+}
+#regularlyOrderGroupDetailEnrollmentDelet{
+  width: 5%;
+  height: 2.4rem;
+  left: calc(100% - 9rem);
+  top: -6.6rem;
+  min-width: 8rem;
+}
+.group__create_box__background {
+    height: calc(100% - 3.6rem);
+    width: 100%;
+    background-color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    position: relative;
+}
+.group__list_box__background {
+    height: calc(100% - 3.6rem);    
+    background-color: white;
+} 
+.group__create_box {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 100%;
+    height: calc((100% - 6rem) / 2);
+}
+.group__create_box>dt{
+    padding-left: 4rem;
+    padding-bottom: 1rem;
+}
+.contents_box__input_cell__dd__input__group {
+    width: 20rem;
+}
+.regularly_order_group_create_botton_rocate{
+  position: relative;
+  width: 100%;
+  height: calc(100% - 1.6rem);
+}
+.regularly_order_group_create_botton_rocate_enrollment{
+  position: relative;
+  width: 100%;
+  height: calc(100% - 1.6rem);
+}
+.regularly_order_group_create_botton_rocate_delet{
+  position: relative;
+  width: 100%;
+  height: calc(100% - 7.2rem);
+}
+.regularly_order_group_create_botton{
+  position: absolute;
+  top: 0.4rem;
+  width: 6rem;
+  height: 2.8rem;
+  cursor: pointer;
+  background-color: #B41515;
+  color: white;
+  font-size: 1.6rem;
+  font-weight: bold;
+  border: none;
+  border-radius: 0.3rem;
+  margin: 0 2rem 0 2rem;
+}
+#regularly_order_group_create_botton_create{
+  left: 21.6rem;
+}
+#regularly_order_group_create_botton_list{
+  left: 56.2rem;
+}
+#regularly_order_group_create_botton_routlist{
+  left: 52.9rem;
+}
+
+.dispatch_regularly_order_group_list_td_check{
+  width: 10vw;
+}
+.dispatch_regularly_order_group_list_td_group{
+  width: 50vw;
+}
+.dispatch_regularly_order_group_list_td_company{
+  width: 40vw;
+}
+#create_list_create_enrollment{
+  width: 5%;
+  height: 2.4rem;
+  left: calc(100% - 9rem);
+  top: 0.6rem;
+  min-width: 8rem;
+}
+.dispatch_regularly_order_grop_list_td_check{
+  width: 6vw;
+}
+.dispatch_regularly_order_grop_list_td_num{
+  width: 6vw;
+}
+.dispatch_regularly_order_grop_list_td_routename{
+  width: 34vw;
+}
+.dispatch_regularly_order_grop_list_td_date{
+  width: 10vw;
+}
+.dispatch_regularly_order_grop_list_td_drivingtime{
+  width: 8vw;
+}
+.dispatch_regularly_order_grop_list_td_cost{
+  width: 8vw;
+}
+.dispatch_regularly_order_grop_list_td_money{
+  width: 8vw;
+}
+.dispatch_regularly_order_grop_list_td_moreinformation{
+  width: 20vw;
+}
+#dispatchREgularlyOrderGroupTableAutoBox{
+  height: calc(100% - 3.6rem);
+}
+#dispatchREgularlyOrderGroupRightTableAutoBox{
+  height: calc(100% - 7.2rem);
+}
+#dispatchREgularlyOrderGroupDetailTableAutoBox{
+  height: calc(100% - 3.6rem);
+}
+#list_table_cell__dispatch_regularly_order_group_list_right{
+  max-height: calc(100% - 7.2rem);
+}
+#OrderDeleteButton{
+  position: absolute;
+  top: 0.3rem;
+  right: 9.3rem;
+}

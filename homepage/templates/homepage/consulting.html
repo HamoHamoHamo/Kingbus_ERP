@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block subPagecss %}
+<link rel="stylesheet" href="{% static 'css/homepage/payment.css' %}">
+{% endblock %}
+
+{% block subPageContent %}
+
+<div class="pageTitle">상담하기</div>
+
+<div class="subIntroCell" id="comingSoonMargin">
+  <div class="subIntroCellTitle">기능추가</div>
+  <div class="joinPriceBox">
+    <div>준비중인 서비스입니다.</div>
+  </div>
+</div>
+
+{% endblock %}

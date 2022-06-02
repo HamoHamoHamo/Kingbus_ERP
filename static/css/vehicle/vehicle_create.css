@@ -1,0 +1,65 @@
+#vehicle_create_insurance{
+  margin-top: 2rem;
+}
+#nav_cell_vehicle_list{
+  width: 18rem;
+  border-radius: 0.5rem 0 0 0.5rem;
+}
+#nav_cell_vehicle_create{
+  width: 18rem;
+  border-radius: 0 0.5rem 0.5rem 0;
+}
+#vehicle_create__main_contents{
+  height: 31rem;
+}
+#vehicle_create_insurance__main_contents{
+  height: calc(100% - (1vh*8.26) - 3.3rem);
+}
+#vehicle_create_contents_box__input_box{
+  height: 25.4rem;
+}
+#vehicle_create_contents_box__input_cell{
+  border: none;
+}
+#vehicle_create_serch_tool_button{
+  margin-left: 154rem;
+  margin-top: 2rem;
+}
+#vehicle_create_contents_box__input_cell_wide{
+  width: 55rem;
+  border: none;
+}
+#contents_box__input_cell__dt_wide{
+  width: 15rem;
+}
+#contents_box__input_cell__dd__input_twiceA{
+  width: 12.6rem;
+  margin-right: 1rem;
+}
+#contents_box__input_cell__dd__input_twiceB{
+  width: 12.6rem;
+}
+#InputContainerVehicleCreate{
+  height: 27rem;
+}
+.inputInputBoxInputSelect{
+  width: calc(100% - 4rem);
+  height: 2.6rem;
+  background-color: #D6D6D6;
+  border: none;
+  border-radius: 0.5rem;
+  outline: none;
+  padding-left: 1rem;
+}
+.inputCell{
+  height: calc(100% / 5);
+}
+#inputCellHeightTest{
+  height: calc(100% / 5 * 2);
+}
+#inputCellHeightReguarly{
+  height: calc(100% / 5 * 2);
+}
+#vehicleCreateEnrollment{
+  left: calc(100% - 8.6rem);
+}

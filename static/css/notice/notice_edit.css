@@ -1,0 +1,29 @@
+.edit_mid_box_input_filebox{
+  overflow: auto;
+  overflow-wrap: break-word;
+  flex-direction: column;
+  padding-left: 1rem;
+  height: 4.9rem;
+}
+
+.edit_mid_box-uploaded_box{
+  display: flex;
+  align-items: center;
+  position: relative;
+  width: 80rem;
+}
+
+.edit_mid_box-uploaded_filename{
+  color: black;
+  font-size: 2rem;
+}
+
+.edit_mid_box-file_delete{
+  position: absolute;
+  right: 1rem;
+  font-size: 1.2rem;
+}
+
+.edit_mid_box_upload-name{
+  padding: 0;
+}

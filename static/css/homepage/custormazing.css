@@ -1,0 +1,53 @@
+.SecondContentsBox{
+  margin-bottom: 16rem;
+}
+
+.subIntroCell{
+  margin-top: 8rem;
+}
+.subIntroCell{
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+}
+.subIntroCellTitle{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  margin-bottom: 0.6rem;
+  font-size: 2.8rem;
+  color: #1E1D31;
+}
+.subIntroCellContents{
+  font-size: 2rem;
+  list-style: square;
+}
+.subIntroCellInforgraphic{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 75.4rem;
+  margin-top: 6rem;
+}
+.subIntroCellQuickMenuForm{
+  display: flex;
+  width: 86rem;
+  height: 14.1rem;
+  margin-top: 3rem;
+}
+#subIntroCellInforgraphicTip{
+  margin-top: 0;
+}
+.subIntroCellQuickMenuFormBtn{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 10.6rem;
+  height: 14.1rem;
+  border-radius: 0 2rem 2rem 0;
+  font-size: 2rem;
+  color: white;
+  background-color: #B41515;
+  cursor: pointer;
+}

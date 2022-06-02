@@ -1,0 +1,7 @@
+*.log
+*.pot
+*.pyc
+__pycache__/
+media
+migrations
+my_settings.py

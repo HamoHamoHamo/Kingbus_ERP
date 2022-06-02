@@ -1,0 +1,92 @@
+.salary_detail__mid_box_head__box{
+    width: 40rem;
+    border-right: 0.3rem solid #B41515;
+    height: 10rem;
+}
+
+.salary_detail__mid_box_head__box:nth-child(3){
+    border-right: none;
+}
+
+.salary_detail__mid_content__box{
+    border: 0.3rem solid black;
+    border-radius: 0.5rem;
+}
+
+.salary_detail__mid_content__header{
+    background-color: whitesmoke;
+    height: 4rem;
+    border-bottom: 0.3rem solid black;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.8rem;
+    font-weight: bold;
+}
+
+.salary_detail__mid__header_title{
+    width: 55rem;
+    height: 4.5rem;
+    line-height: 4.5rem;
+    text-align: center;
+}
+
+.salary_detail__mid__header_title:first-child{
+    border-right: 0.2rem solid black;
+}
+
+.salary_detail__mid_content__content_box{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-top: 0.2rem solid black;
+}
+
+.salary_detail__mid_content__content_box:nth-child(2){
+    border-top: none;
+}
+
+.salary_detail__mid_content__content_box:nth-child(11){
+    height: 0.2rem;
+}
+
+.salary_detail__mid_content__content_box__content{
+    width: 27.3rem;
+    height: 4rem;
+    border-right: 0.2rem solid black;
+    font-size: 1.5rem;
+    text-align: center;
+    line-height: 4rem;
+    font-weight: bold;
+    align-items: center;
+}
+
+.salary_detail__mid_content__content_box__content:last-child{
+    border-right: none;
+}
+
+.salary_detail_mid_content__header{
+    margin-top: 2rem;
+}
+
+.salary_create__mid__mid_title{
+    font-size: 1.8rem;
+    font-weight: bold;
+    margin-top: 7rem;
+}
+
+.salary_detail__mid_content__content_box__input{
+    width: 20rem;
+    text-align: center;
+    font-size:1.5rem;
+    margin-left: 1rem;
+}
+
+.salary_detail__mid_content__content_box__content_total{
+    font-size: 2rem;
+
+}
+
+.salary_detail_form{
+    position: relative;
+}

@@ -1,0 +1,136 @@
+#dispatch_schedule__main_contents{
+    height: calc(100% - (1vh*4.13));
+}
+#nav_cell_dispatch_list{
+    width: 18rem;
+    border-radius: 0.5rem 0 0 0.5rem;
+}
+#nav_cell_dispatch_regularly{
+    width: 18rem;
+}
+#nav_cell_dispatch_order{
+    width: 18rem;
+}
+#nav_cell_dispatch_schedule{
+    width: 18rem;
+}
+#nav_cell_dispatch_document{
+  width: 18rem;
+  border-radius: 0 0.5rem 0.5rem 0;
+}
+
+#dispatch_schedule_serch_tool_label__date{
+    width: 5rem;
+}
+#dispatch_schedule_serch_tool_label__dreiver{
+    width: 5rem;
+}
+#dispatch_schedule_serch_tool_label__vehicle_num{
+    width: 9rem;
+}
+#dispatch_schedule_serch_tool_input__date{
+    width: 20rem;
+}
+#dispatch_schedule_serch_tool_input__driver{
+    width: 20rem;
+}
+#dispatch_schedule_serch_tool_input__vehicle_num{
+    width: 20rem;
+}
+.dispatch_order_list_td_hour{
+    width: 3%;
+    padding: 0;
+}
+.dispatch_order_list_td_hour_nonetime{
+  width: 1.5%;
+  padding: 0;
+}
+#dispatch_order_list_td_hour_blank_first{  
+  border-right: 0.1rem solid black;
+  border-top: 0.1rem solid black;
+  height: 2.9rem;
+}
+.dispatch_order_list_td_hour_blank{
+    border-right: 0.1rem solid black;
+    border-top: 0.1rem solid black;
+    width: calc(3% - 0.1rem);
+    height: 2.9rem;
+    padding: 0;
+}
+#dispatch_order_list_td_hour_nonetime_blanck{
+  background-color: #1E1D31;
+}
+.dispatch_order_list_td_route{
+  width: 26.5%;
+  padding: 0;
+}
+#dispatch_order_list_td_background{
+    background-color: #1E1D31;
+    color: white;
+    width: 28%;
+    padding: 0;
+    position: relative;
+    z-index: 10 ;
+}
+
+#dispatch_order_list_td_background>a{
+  max-width: 99%;
+}
+#dispatch_achedule_css_table_cell__header{
+    margin-top: 2rem;
+    width: 100%;
+    display: table;
+}
+#mgtTableRelative{
+  position: relative;
+}
+.tdMgt{
+  position: absolute;
+  display: flex;
+  height: 3.2rem;
+  width: 100%;
+  left: 0;
+  top: 0;
+  padding: 0;
+}
+.mgtTableAbsoluteTdRegularly{
+  background-color: cornflowerblue;
+  position: absolute;
+  top: 0.5rem;
+  height: 2.2rem;
+  padding: 0;
+  
+}
+.mgtTableAbsoluteTdOrder{
+  background-color: crimson;
+  position: absolute;
+  top: 0.5rem;
+  height: 2.2rem;
+  padding: 0;
+}
+
+#dispatch_order_list_table_cell_contents{
+  width: 100%;
+  max-height: calc(100% - 9.2rem);
+}
+
+#contentsBoxCellDispatchMgt{
+  height: 100%;
+}
+#contentsBoxContentsMgt{
+  height: calc(100% - 4rem);
+}
+#mgtSearchToolSelect{
+  width: 20rem;
+  margin-left: 2rem;
+}
+#mgtSerch_tool_input{
+  width: 16rem;
+}
+#mgtButton{
+  margin-left: 2rem;
+}
+#mgtTableBox{
+  height: calc(100% - 9.2rem);
+  margin-top: 0;
+}

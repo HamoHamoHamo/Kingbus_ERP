@@ -1,0 +1,152 @@
+  /**/
+  .signupSignupInputBox{
+    margin-bottom: 3rem;
+  }
+  .signupSignupInputCell{
+    display: flex;
+    align-items: center;
+    margin-bottom: 1rem;
+  }
+  .signupSignupInputCellIcon{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 4.2rem;
+    height: 4.2rem;
+    border: 0.12rem solid #707070;
+    background-color: white;
+    border-radius: 0.1rem 0 0 0.1rem;
+  }
+  .signupSignupInputCellInput{
+    margin-left: -0.1rem;
+    width: calc( 60rem - 4.44rem );
+    height: 4rem;
+    outline: none;
+    font-size: 1.6rem;
+    padding-left: 1rem;
+    border: 0.12rem solid #707070;
+    border-radius: 0 0.1rem 0.1rem 0;
+  }
+  #phoneNumber{
+    width: calc(40rem - 4.44rem);
+  }
+  .getCordnumber{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 12rem;
+    height: 3rem;
+    margin-left: 3.6rem;
+    border: 0.12rem solid #707070;
+    border-radius: 0.3rem;
+    background-color: white;
+    font-size: 1.5rem;
+    background-color: #DEDEDE;
+    box-shadow: 0.1rem 0.1rem 0.3rem rgba(0,0,0,0.12), 0 0.1rem 0.2rem rgba(0,0,0,0.24);
+    cursor: pointer;
+  }
+  #signupSignupInputCellInputEmail{
+    width: calc(60rem - 18.44rem);
+    border-radius: 0;
+  }
+  .signupSignupInputCellselect{
+    width: 14.1rem;
+    border-radius: 0 0.1rem 0.1rem 0;
+    border: 0.12rem solid #707070;
+    margin-left: -0.1rem;
+    outline: none;
+    height: 4.44rem;
+    text-align-last: center;
+    text-align: center;
+  }
+  .signupSignupInputBox{
+    margin-top: 1.4rem;    
+  }
+  .cordnumberInformationBox{
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+    width: 100%;
+    height: 12rem;
+    background-color: #d5d5d5;
+    margin-bottom: 1rem;
+  }
+  .cordnumberInformationCell{
+    display: flex;
+    align-items: center;
+    width: 100%;
+    height: 5rem;
+  }
+  .cordnumberInformationCellTime{
+    width: 36%;
+    height: 4rem;
+    padding-top: 0.6rem;
+    padding-right: 2rem;
+    text-align: right;
+    font-size: 1.4rem;
+    color: #B41515;
+  }
+  .cordnumberInformationCellinput{
+    width: 64%;
+    height: 4rem;
+    padding-left: 1rem;
+    margin-right: 0.6rem;
+    border: 0.12rem solid #707070;
+    border-radius: 0 0.1rem 0.1rem 0;
+    font-size: 1.6rem;
+    outline: none;
+  }
+  .cordnumberMoreInformation{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 5rem;
+    text-align: center;
+    font-size: 1.6rem;
+    margin-bottom: 0.6rem;
+  }
+  .hidden{
+    display: none;
+  }
+  .flex{
+    display: flex;
+  }
+
+  #signupId{
+    width: calc(40rem - 4.44rem);
+  }
+  #signupIdBtton{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 12rem;
+    height: 3rem;
+    margin-left: 3.6rem;
+    border: 0.12rem solid #707070;
+    border-radius: 0.3rem;
+    background-color: white;
+    font-size: 1.5rem;
+    background-color: #DEDEDE;
+    box-shadow: 0.1rem 0.1rem 0.3rem rgba(0,0,0,0.12), 0 0.1rem 0.2rem rgba(0,0,0,0.24);
+    cursor: pointer;
+  }
+
+  .top{
+    height: 2rem;
+  }
+  .low{
+    height: 0.6rem;
+  }
+
+.signupAlertBox{
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  width: 100%;
+  margin-top: -0.7rem;
+  margin-bottom: 1.2rem;  
+  padding-left: 5.4rem;
+  font-size: 1.2rem;
+  color: #CF3131;
+}
