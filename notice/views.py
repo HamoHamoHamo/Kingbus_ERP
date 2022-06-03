@@ -23,7 +23,7 @@ class NoticeKindsView(generic.ListView):
 class NoticeKindsView(generic.ListView):
     template_name = 'notice/kinds.html'
     context_object_name = 'notices'
-    paginate_by = 20
+    paginate_by = 10
     model = Notice
 
     def search_result(self, request, kinds):
@@ -244,7 +244,7 @@ def delete(request, kinds, notice_id):
         for sort_num in edit_num:
             sort_num.num = sort_num.num-1
             sort_num.save()
-    return redirect('/notice/{0}/'.format(kinds))
+    return redirect('/notice/{0}'.format(kinds))
 
 def file_del(request, kinds, notice_id, file_id):
     kinds_check(kinds)

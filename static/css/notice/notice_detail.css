@@ -1,264 +1,298 @@
-#contentsBoxCellNoticeDetail{
-  height: 100%;
-}
-.noticeDetailUL{
+.creteHeader {
   display: flex;
-}
-#noticeDetailSearchToolText{
-  display: flex;
-  align-items: center;
-  width: 28rem;
-  margin-left: 2rem;
-  border: none;
-  font-size: 1.6rem;
-}
-#noticeDetailSearchToolFile{
-  display: flex;
-  align-items: center;
-  width: 28rem;
-  margin-left: 2rem;
-  border: none;
-  font-size: 1.6rem;
-}
-#noticeDetailTextareaBasicForm{
-  height: calc((100% - 11.6rem) / 2);
-  font-size: 1.6rem;
-  background-color: white;
-}
-.noticeDetailDelet{
-  position: absolute;
-  top: 0.3rem;
-  right: 0.3rem;
-}
-.noticeDetailEdit{
-  position: absolute;
-  top: 0.3rem;
-  right: 9.3rem;
-}
-#noticeDetailSearchToolLabelTitle{
-  width: 5rem;
-}
-#noticeDetailsearchToolFile{
-  margin-top: 2rem;
-}
-#noticeDetailSearchToolLabelcreater{
-  width: 6rem;
-}
-#noticeDetailSearchToolLabeldate{
-  width: 6rem;
-}
-#noticeDetailSearchToolLabelview{
-  width: 6rem;
-}
-#noticeDetailSearchToolcreater{
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 12rem;
-  margin-left: 2rem;
-  padding-right: 3rem;
-  border: none;
-  font-size: 1.6rem;
-}
-#noticeDetailSearchTooldate{
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 17rem;
-  margin-left: 2rem;
-  padding-right: 3rem;
-  border: none;
-  font-size: 1.6rem;
-}
-#noticeDetailSearchToolview{
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 3rem;
-  margin-left: 2rem;
-  padding-right: 3rem;
-  border: none;
-  font-size: 1.6rem;
-}
-.searchToolRight{
-  position: absolute;
-  right: 0;
-  display: flex;
-}
-#noticeDetailSearchTool{
-  position: relative;
-}
-.notice_detail_list_pagenation_prev>a{
-  color: black;
-}
-
-#noticeContentsBoxContents{
-  height: calc(100% - 17.3rem);
-}
-.rocateTop{
-  top: 0.2rem;
-}
-
-
-
-.notice_detail_chat_Box {
-  width: calc(100% - 0.2rem);
-  height: calc((100% - 7.8rem) / 2 - 7.7rem);
-  border: 0.1rem solid black;
-  margin-top: 2rem;
-  display: flex;
-}
-.notice_detail_chat_Box_load {
-  width: calc((100% - 0.1rem)/5*3);
-  height: 100%;
-  border-right: 0.1rem solid black;
-  overflow-y: scroll;
-}
-
-
-.notice_detail_file {
-    width: 26rem;
-    height: 2.4rem;
-    border: none;
-    outline: none;
-    background-color: #D6D6D6;
-    border-radius: 0.3rem;
-    padding-left: 1rem;
-    margin-left: 1rem;
-    list-style: none;
-    margin-right: 2rem;
-}
-.serch_tool_cell > ul {
-    padding: 0;
-}
-.notice_detail_title {
-    display: flex;
-    align-items: center;
-    font-size: 1.8rem;;
-    width: 32rem;
-    height: 2.4rem;
-    border: none;
-    background-color: #D6D6D6;
-    border-radius: 0.3rem;
-    padding-left: 1rem;
-    margin-left: 1rem;
-    margin-right: 2rem;
-}
-.notice_detail_textarea {
-    font-size: 1.8rem;
-    background-color: white;
-    border: 0.1rem solid black;
-    padding: 1rem;
-    margin-top: 2rem;
-    resize: none;
-    width: calc(100% - 2rem);
-    height: calc(100% - 42rem);
-    outline: none;
-}
-#notice_detail__main_contents {
-    height: calc(100% - (1vh*4.13));
-}
-
-
-.notice_detail_chat_Box_create {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-end;
-    justify-content: space-between;
-    width: calc(100% - 4rem);
-    height: calc(100% - 4rem);
-    background-color: white;
-    padding: 2rem;
-}
-.notice_detail_chat_Box_create_form{
-  width: 40%;
-}
-.notice_detail_chat_Box_load_cell {
-    width: 100%;
-    height: 7rem;
-    background-color: white;
-    border-collapse: separate;
-    border-spacing: 0;
-    border-bottom: 0.2rem solid black;
-}
-.notice_detail_chat_Box_load_cell_intormation {
-    height: 2.4rem;
-    background-color: white;
-    font-size: 1.4rem;
-}
-.notice_detail_chat_Box_load_cell_intormation > td {
-    padding: 0.6rem 1rem 0 2rem;
-}
-.notice_detail_chat_Box_load_cell_contents {
-    font-size: 1.6rem;
-    height: 2rem;
-}
-.notice_detail_chat_Box_load_cell_contents > td {
-    padding: 0 1rem 1rem 2rem;
-}
-.notice_detail_chat_textarea{
-  width: calc(100% - 4rem);
-  height: 17rem;
-  resize: none;
-  padding: 1rem;
-  font-size: 1.6rem;
-}
-#notice_detail_chat_button{
-  margin-left: 50rem;
-  margin-top: 0;
-}
-.notice_detail_chat_Box_load_cell_button{
-  width: 1.4rem;
-  height: 1.4rem;
-  border-radius: 0.2rem;
-}
-#notice_detail_chat_Box_load_cell_button_edit{
-  background-color: #B41515;
-}
-
-.notice_detail_list_pagenation{
+  flex-direction: column;
+  justify-content: space-between;
   width: 100%;
+  height: 15rem;
+}
+
+.inputCell {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  height: 2.5rem;
+}
+
+.inputCellFile {
+  align-items: flex-start;
   height: 6.5rem;
-  background-color: white;
-  border: 0.1rem solid black;
-  border-radius: 0.3rem;
-  margin-top: 1.6rem;
-  border-collapse: separate;
-  border-spacing: 0;
+}
+
+.inputName {
+  width: 7rem;
+  padding-left: 1rem;
   font-size: 1.6rem;
+  font-weight: 500;
+  color: #191919;
 }
-.notice_detail_list_pagenation_prev{
-  border-bottom: 0.1rem solid black;
-  border-right: 0.1rem solid black;
-  height: 3rem;
+
+.noticeTitle {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  width: calc(100% - 12rem);
+  height: 2.3rem;
+  padding-left: 1rem;
+  font-size: 1.6rem;
+  color: #191919;
+  cursor: default;
 }
-#notice_detail_list_pagenation_prev_button{
-  width: 5%;
-  padding-left: 3rem;
-  font-weight: bold;
+
+.noticeFile {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  width: calc(100% - 13rem);
+  height: 4.3rem;
+  padding: 1rem;
 }
-#notice_detail_list_pagenation_prev_title{
-  width: 82%;
-  padding-left: 3rem;
+.fileBox{
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  align-items: center;
+  width: calc(100% - 13rem);
 }
-#notice_detail_list_pagenation_next_button{
-  width: 5%;
-  padding-left: 3rem;
-  border-bottom: none;
-  font-weight: bold;
+.fileLink{
+  font-size: 1.6rem;
+  color: #191919;
+  text-decoration: underline;
+  margin-right: 1rem;
 }
-#notice_detail_list_pagenation_next_title{
-  width: 82%;
-  padding-left: 3rem;
-  border-bottom: none;
+.radiobox {
+  display: flex;
+  align-items: center;
+  width: calc(100% - 11rem);
 }
-.notice_detail_list_pagenation_back_button{
-  background-color: #B41515;
-  color: white;
-  text-align: center;
-  font-size: 1.8rem;
+
+.radiobox input {
+  width: 1.6rem;
+  height: 1.6rem;
+  margin: 0.3rem 1rem 0 0;
+  border: 0.1rem solid #D2D2D2;
   cursor: pointer;
 }
-.notice_detail_list_pagenation_back_button>a{
+
+.radiobox label {
+  font-size: 1.6rem;
+  color: #191919;
+  margin-right: 2rem;
+  cursor: pointer;
+}
+
+.noticeTextarea {
+  height: auto;
+  min-height: 40rem;
+  padding: 1rem;
+  margin: 2rem 0;
+  border: 0.1rem solid #D2D2D2;
+  border-radius: 0.3rem;
+  cursor: default;
+}
+
+.createBtnBox {
+  display: flex;
+  justify-content: flex-end;
+  width: 100%;
+  height: 2.5rem;
+  margin-bottom: 2rem;
+}
+
+.createBtnBox form {
+  width: 6.5rem;
+  margin-left: 1rem;
+}
+
+.deleteBtn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 6.5rem;
+  height: 2.5rem;
+  padding: 0;
+  margin: 0;
+  border: none;
+  border-radius: 0.3rem;
+  background-color: #444444;
+  font-size: 1.4rem;
   color: white;
+  cursor: pointer;
+}
+
+.editBtn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 6.5rem;
+  height: 2.5rem;
+  padding: 0;
+  margin: 0;
+  border: none;
+  border-radius: 0.3rem;
+  background-color: #0069D9;
+  font-size: 1.4rem;
+  color: white;
+  cursor: pointer;
+}
+
+
+
+
+
+/*commentArea*/
+.commentArea,
+.commentCreateArea {
+  width: calc(100% - 2rem);
+  height: auto;
+  padding: 1rem 1rem 0 1rem;
+  margin-top: 2rem;
+  background-color: white;
+  border: 0.1rem solid #CDCDCE;
+  border-radius: 0.3rem;
+  box-shadow: 0 0.2rem 0.4rem rgba(0, 0, 0, 0.16);
+}
+
+.commentArea form {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: auto;
+}
+
+.commentTitle {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  width: 100%;
+  height: 2rem;
+  padding-bottom: 0.4rem;
+  font-size: 1.6rem;
+  color: #191919;
+  border-bottom: 0.1rem solid #CDCDCE;
+}
+
+.commentTitle span {
+  margin-left: 0.6rem;
+}
+
+.commentBox {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  width: 100%;
+  height: auto;
+  min-height: 6rem;
+  padding: 0.4rem 0 1rem 1rem;
+  border-bottom: 0.1rem solid #CDCDCE;
+  box-sizing: border-box;
+}
+
+.commentArea form div:nth-last-child(1) {
+  border: none;
+}
+
+.commentUserDataCell {
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-end;
+  width: 100%;
+  height: 2rem;
+}
+
+.commentUserTitle {
+  font-size: 1.4rem;
+  font-weight: 500;
+  color: #191919;
+  margin-right: 0.6rem;
+}
+
+.commentCreateDate {
+  font-size: 1.2rem;
+  color: #444444;
+  margin-right: 0.6rem;
+}
+
+.commentDeleteBtn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 4rem;
+  height: 1.6rem;
+  border: 0.1rem solid #CDCDCE;
+  border-radius: 0.2rem;
+  box-sizing: border-box;
+  background-color: white;
+  font-size: 1.1rem;
+  line-height: 1.5rem;
+  color: red;
+  cursor: pointer;
+}
+
+.commentContents {
+  font-size: 1.5rem;
+  color: #191919;
+}
+
+
+
+
+
+
+/*commentCreateArea*/
+.commentCreateArea {
+  height: 18rem;
+}
+
+.commentCreateArea form {
+  width: 100%;
+  height: 100%;
+}
+
+.commentCreateTitle {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  width: 100%;
+  height: 2rem;
+  padding-bottom: 0.4rem;
+  font-size: 1.6rem;
+  color: #191919;
+  border-bottom: 0.1rem solid #CDCDCE;
+}
+
+.commentCreateBox {
+  display: flex;
+  justify-content: space-between;
+  height: 10rem;
+  margin: 1rem 0;
+}
+
+.commentCreateGuide {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 10rem;
+  height: 10rem;
+  border: 0.1rem solid #CDCDCE;
+  border-radius: 0.2rem;
+  box-sizing: border-box;
+  font-size: 1.6rem;
+  color: #191919;
+}
+
+.commentCreateBox textarea {
+  width: calc(100% - 12rem);
+  height: 100%;
+  padding: 1rem;
+  border: 0.1rem solid #CDCDCE;
+  border-radius: 0.2rem;
+  box-sizing: border-box;
+  outline: none;
+  resize: none;
+}
+
+.commentCreateBtnCell {
+  display: flex;
+  justify-content: flex-end;
 }

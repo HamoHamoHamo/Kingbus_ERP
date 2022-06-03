@@ -1,12 +1,12 @@
 from crudmember.models import User
 from humanresource.models import Member
-from dispatch.models import DispatchOrder, DispatchConnect
+from dispatch.models import DispatchOrder
 from django.http import Http404, HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse, reverse_lazy
 from django.views import generic
-from .forms import OutlayForm, CollectForm, IncomeForm
-from .models import Salary, Outlay, Collect, Income
+# from .forms import OutlayForm, CollectForm, IncomeForm
+from .models import Salary, Income
 import datetime
 
 from utill.decorator import option_year_deco

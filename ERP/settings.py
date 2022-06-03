@@ -32,54 +32,6 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
-#로그 저장인데 넣으니까 장고가 안켜짐
-'''
-LOGGING = {
-    'version': 1,
-    'disable_existing_loggers': False,
-    'formatters': {
-        'fileFormat': {
-            'format': '[%(asctime)s] %(levelname)s [%(name)s:%(lineno)s] %(message)s',
-            'datefmt': '%d/%b/%Y %H:%M:%S'
-        },
-        'django.server': {
-            '()': 'django.utils.log.ServerFormatter',
-            'format': '[{server_time}] {message}',
-            'style': '{',
-        },
-    },
-    'handlers': {
-        'file': {
-            'level': 'DEBUG',
-            'class': 'logging.FileHandler',
-            'filename': join(BASE_DIR, 'logs/logfile.log'),
-            'formatter': 'fileFormat'
-        },
-        'console': {
-            'level': 'DEBUG',
-            'class': 'logging.StreamHandler',
-        },
-        'django.server': {
-            'level': 'INFO',
-            'class': 'logging.StreamHandler',
-            'formatter': 'django.server',
-        },
-
-    },
-    'loggers': {
-        'post': {
-            'handlers': ['file', 'console','django.server'],
-            'level': 'DEBUG',
-        },
-        
-        'django.db.backends': {
-            'handlers': ['file', 'console'],
-            'level': 'DEBUG',
-        },
-    }
-}
-'''
-# Application definition
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -89,15 +41,14 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
-    'crudmember.apps.CrudmemberConfig',
-    'notice.apps.NoticeConfig',
-    'accounting.apps.AccountingConfig',
-    'dispatch.apps.DispatchConfig',
-    'accident.apps.AccidentConfig',
-    'humanresource.apps.HumanresourceConfig',
-    'document.apps.DocumentConfig',
-    'vehicle.apps.VehicleConfig',
-    'homepage',
+    # 'crudmember.apps.CrudmemberConfig',
+    # 'notice.apps.NoticeConfig',
+    # 'accounting.apps.AccountingConfig',
+    # 'dispatch.apps.DispatchConfig',
+    # 'accident.apps.AccidentConfig',
+    # 'humanresource.apps.HumanresourceConfig',
+    # 'vehicle.apps.VehicleConfig',
+    # 'homepage',
 ]
 
 MIDDLEWARE = [
@@ -181,7 +132,6 @@ STATICFILES_DIRS=[
     os.path.join(BASE_DIR,'crudmember','static'),
     os.path.join(BASE_DIR,'accounting','static'),
     os.path.join(BASE_DIR,'dispatch','static'),
-    os.path.join(BASE_DIR,'document','static'),
     os.path.join(BASE_DIR,'humanresource','static'),
     os.path.join(BASE_DIR,'vehicle','static'),
     os.path.join(BASE_DIR,'notice','static'),

@@ -2,48 +2,65 @@
 <!DOCTYPE html>
 <html>
 
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width">
-    <title>trp</title>
-    <link href="{% static 'css/crudmember/signup_terms.css' %}" rel="stylesheet" type="text/css" />
-    <link href="{% static 'css/crudmember/welcome.css' %}" rel="stylesheet" type="text/css" />
-    <link href="{% static 'css/setting/setting.css' %}" rel="stylesheet" type="text/css" />
-    <link href="{% static 'css/signup_base.css' %}" rel="stylesheet" type="text/css" />
-    
-  </head>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>trp</title>
+  <link href="{% static 'css/crudmember/signupBase.css' %}" rel="stylesheet" type="text/css" />
+  <link href="{% static 'css/crudmember/welcome.css' %}" rel="stylesheet" type="text/css" />
+  <link href="{% static 'css/setting/setting.css' %}" rel="stylesheet" type="text/css" />
 
-  <body>
+</head>
 
-    <div class="signup">
-      <div class="signupHeader">
-        <span class="signupHeaderTitle">
-          기사회원가입
-        </span>
-        <div class="progressbar">
-          <div class="progressBg">
-            <div class="progress"></div>
-          </div>
-          <div class="stepCell">
-            <div class="stepCircle"></div>
-            <span class="stepName">약관동의</span>
-          </div>
-          <div class="stepCell">
-            <div class="stepCircle"></div>
-            <span class="stepName">정보입력</span>
-          </div>
-          <div class="stepCell">
-            <div class="stepCircle"></div>
-            <span class="stepName">가입완료</span>
-          </div>
+<body>
+
+  <div class="signup">
+    <div class="signupHeader">
+      <span class="signupHeaderTitle">
+        관리자 회원가입
+      </span>
+      <div class="progressbar">
+        <div class="progressBg">
+          <div class="progress"></div>
+        </div>
+        <div class="stepCell">
+          <div class="stepCircle stepCircleColor"></div>
+          <span class="stepName">약관동의</span>
+        </div>
+        <div class="stepCell">
+          <div class="stepCircle stepCircleColor"></div>
+          <span class="stepName">정보입력</span>
+        </div>
+        <div class="stepCell">
+          <div class="stepCircle stepCircleColor"></div>
+          <span class="stepName">가입완료</span>
         </div>
       </div>
-      <div class="signupSection"></div>
-      <div class="signupFooter">
-      </div>
     </div>
-  
-    <!-- <div class="signupHeader">
+
+    <div class="signupSection">
+      <img src="{% static 'images/welcomeCheck.png' %}" alt="가입완료 아이콘">
+      <div class="welconText">
+        TRP
+        <span>회원가입이 완료</span>
+        되었습니다.
+      </div>
+      <span class="Nextinformation">
+        회사코드와 아이디/비밀번호를 입력하여 로그인한 후 TRP기능을 이용하실 수 있습니다.
+      </span>
+    </div>
+
+    <div class="signupFooter">
+      <a href="{% url 'home' %}">
+        <div class="nextStepBtn">
+          로그인하러가기
+        </div>
+      </a>
+    </div>
+
+  </div>
+
+  <!-- <div class="signupHeader">
       <div class="signupHeaderPage">가입완료</div>
       <div class="signupNavBox">
         <div class="signupNav">01약관동의</div>
@@ -73,8 +90,8 @@
           <div class="finishTOSignup">로그인</div>
         </a>
       </div> -->
-  
-    <script src="script.js"></script>
-  </body>
+
+  <script src="script.js"></script>
+</body>
 
 </html>

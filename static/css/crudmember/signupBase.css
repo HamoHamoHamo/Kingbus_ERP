@@ -3,7 +3,7 @@ body {
   justify-content: center;
   align-items: center;
   width: 100vw;
-  height: 100vh;
+  height: auto;
   background-color: #F5F5F5;
   font-family: 'Noto Sans CJK KR';
 }
@@ -15,10 +15,10 @@ body {
   width: 102.4rem;
   min-height: 56rem;
   height: auto;
+  margin: 8rem 0 12rem 0;
   box-shadow: 0 0.2rem 0.4rem rgba(0, 0, 0, 0.16);
   background-color: white;
 }
-
 
 
 
@@ -67,6 +67,12 @@ body {
   transform: translate(-50%, 0);
 }
 
+.progress {
+  width: 0;
+  height: 100%;
+  background-color: #0069D9;
+}
+
 .stepCell {
   z-index: 1;
   display: flex;
@@ -91,10 +97,49 @@ body {
   color: #191919;
 }
 
+
+
+/*section*/
+.signupSection {
+  display: flex;
+  flex-direction: column;
+  width: 75rem;
+  margin-top: 3rem;
+  margin-bottom: 2rem;
+}
+
+
+
+/*footer*/
 .signupFooter {
   display: flex;
   justify-content: center;
   width: 100%;
   height: 4rem;
   margin-bottom: 2rem;
+}
+
+.signupFooter a, .nextStepBtn{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 11.6rem;
+  height: 4rem;
+  font-size: 1.4rem;
+  color: white;
+  margin: 0 1rem;
+}
+
+.signupFooter a:nth-child(1) {
+  background-color: #D2D2D2;
+}
+
+.nextStepBtn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #0069D9;
+  border: none;
+  outline: none;
+  cursor: pointer;
 }

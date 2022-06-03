@@ -1,0 +1,28 @@
+.pagination{
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  font-size: 1.4rem;
+}
+
+.page-link{
+  margin-right: 1rem;
+}
+
+.page-pre{
+  margin-right: 3rem;
+  font-weight: bold;
+}
+
+.page-next{
+  margin-left: 3rem;
+  font-weight: bold;
+}
+.page-item{
+  font-size: 1.6rem;
+  font-family: 'Noto Sans CJK KR';
+}
+.page-activate{
+  color: #0069D9;
+  font-weight: bold;
+}

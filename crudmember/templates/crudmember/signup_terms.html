@@ -7,6 +7,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width">
   <title>약관동의</title>
+  <link href="{% static 'css/crudmember/signupBase.css' %}" rel="stylesheet" type="text/css" />
   <link href="{% static 'css/crudmember/signup_terms.css' %}" rel="stylesheet" type="text/css" />
   <link href="{% static 'css/setting/setting.css' %}" rel="stylesheet" type="text/css" />
   <link href="{% static 'css/crudmember/signupBase.css' %}" rel="stylesheet" type="text/css" />
@@ -19,7 +20,7 @@
 
     <div class="signupHeader">
       <span class="signupHeaderTitle">
-        기사회원가입
+        관리자 회원가입
       </span>
       <div class="progressbar">
         <div class="progressBg">
@@ -40,7 +41,8 @@
       </div>
     </div>
 
-    <form action="{% url 'crudmember:signup' %}">
+    <form method="POST" action="{% url 'crudmember:signup' %}">
+      {%csrf_token%}
       <div class="signupSection">
 
         <div class="allcheck">
@@ -336,14 +338,12 @@
         <a href="{% url 'home' %}">
           <div class="turnBackBtn">이전</div>
         </a>
-        <a href="">
-          <input type="submit" value="다음" class="nextStepBtn">
-        </a>
+        <input type="submit" value="다음" class="nextStepBtn">
       </div>
     </form>
   </div>
 
-  <script src="{% static 'js/terms.js' %}"></script>
+  <script src="{% static 'js/crudmember/terms.js' %}"></script>
 </body>
 
 </html>
