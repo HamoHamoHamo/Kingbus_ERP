@@ -10,8 +10,7 @@
   flex-direction: column;
   justify-content: space-between;
   width: 100%;
-  height: auto;
-  min-height: 18.5rem;
+  height: 20rem;
 }
 
 .inputCell {
@@ -24,8 +23,7 @@
 
 .inputCellFile {
   align-items: flex-start;
-  min-height: 11rem;
-  height: auto;
+  height: 13rem;
 }
 
 .inputName {
@@ -47,21 +45,23 @@
   height: 2.3rem;
   padding-left: 1rem;
 }
-.fileEditer{
+
+.fileEditer {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   width: calc(100% - 13rem);
-  min-height: 11rem;
-  height: auto;
+  height: 13rem;
 }
+
 .inputCell input[type=file] {
   width: calc(100% - 2rem);
   height: 4.3rem;
   padding: 1rem;
   margin-bottom: 1rem;
 }
-.createdFileBox{
+
+.createdFileBox {
   display: flex;
   flex-wrap: wrap;
   justify-content: flex-start;
@@ -72,10 +72,28 @@
   border: 0.1rem solid #D2D2D2;
   border-radius: 0.3rem;
 }
-.createdFileBox span{
+
+.createdFileCell{
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+.createdFileCell span {
   font-size: 1.4rem;
   color: #191919;
+  margin-right: 0.4rem;
+  text-decoration: underline;
 }
+
+.createdFileCell a {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.4rem;
+  color: red;
+  margin-right: 1.6rem;
+}
+
 .radiobox {
   display: flex;
   align-items: center;

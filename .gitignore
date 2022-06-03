@@ -5,4 +5,5 @@ __pycache__/
 media
 migrations
 my_settings.py
-.venv
+.venv/
+.vscode/

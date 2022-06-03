@@ -3,7 +3,7 @@
   flex-direction: column;
   justify-content: space-between;
   width: 100%;
-  height: 15rem;
+  height: auto;
 }
 
 .inputCell {
@@ -12,11 +12,13 @@
   align-items: center;
   width: 100%;
   height: 2.5rem;
+  margin-bottom: 2rem;
 }
 
 .inputCellFile {
   align-items: flex-start;
   height: 6.5rem;
+  margin-bottom: 0;
 }
 
 .inputName {
@@ -31,9 +33,8 @@
   display: flex;
   justify-content: flex-start;
   align-items: center;
-  width: calc(100% - 12rem);
+  width: calc(100% - 13rem);
   height: 2.3rem;
-  padding-left: 1rem;
   font-size: 1.6rem;
   color: #191919;
   cursor: default;
@@ -63,7 +64,7 @@
 .radiobox {
   display: flex;
   align-items: center;
-  width: calc(100% - 11rem);
+  width: calc(100% - 13rem);
 }
 
 .radiobox input {
