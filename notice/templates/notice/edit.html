@@ -35,9 +35,12 @@
           <input type="file" name="file" value={{file.filename}} multiple>
           <div class="createdFileBox">
             {% for file in notice_files %}
-            <span>{{file.filename}}</span>
-            {% if request.session.user == notice.creator.id %}<a
-              href="{% url 'notice:file_del' notice.kinds notice.id file.id %}">삭제</a> {% endif %}
+            <div class="createdFileCell">
+              <span>{{file.filename}}</span>
+              {% if request.session.user == notice.creator.id %}
+              <a href="{% url 'notice:file_del' notice.kinds notice.id file.id %}">삭제</a>
+              {% endif %}
+            </div>
             {% endfor %}
           </div>
         </div>
@@ -45,7 +48,7 @@
     </div>
     <textarea name="content" required></textarea>
     <div class="createBtnBox">
-      <input type="submit" value="등록" class="createBtn">
+      <input type="submit" value="저장" class="createBtn">
     </div>
   </form>
 </div>
