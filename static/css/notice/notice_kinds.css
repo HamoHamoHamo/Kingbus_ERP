@@ -1,129 +1,124 @@
-/*notice_kinds*/
-#contentsBoxCellNoticeKinds{
-  height: calc(100% - 7rem);
-}
-#noticeKindsButton{
-  margin-left: 2rem;
-}
-#noticeKindsSearchToolSelect{
-  width: 12rem;
-  margin-left: 0.2rem;
-}
-#noticeKindsSearchToolText{
-  width: 24rem;
-  margin-left: 2rem;
-}
-#noticeKindsTableBox{
-  width: 100%;
-  height: calc(100% - 3.6rem);
-}
-
-
-
-#nav_cell_notice_kinds_driver{
-  width: 18rem;
-  border-radius: 0.5rem 0 0 0.5rem;
-}
-#nav_cell_notice_kinds_office{
-  width: 18rem;
-  border-radius: 0 0.5rem 0.5rem 0;
-}
-#notice_kinds_serch_tool_input__work{
-  width: 10rem;
-}
-#notice_kinds_serch_tool_input__name{
-  width: 35rem;
-}
-.mid_box_input_select{
-  margin-left: 2rem;
-}
-.notice_kinds_list__num{
-  width: 6%;
-}
-.notice_kinds_list__title{
-  width: 65%;
-}
-.notice_kinds_list__name{
-  width: 10%
-}
-.notice_kinds_list__date{
-  width: 13%;
-}
-.notice_kinds_list__views{
-  width: 6%;
-}
-
-.notice_contents_kinds_driver__page_box{
+.tableForm {
   display: flex;
+  flex-direction: column;
   width: 100%;
-  height: 5rem;
-  border: 0.1rem solid #1E1D31;
+  height: auto;
+}
+
+table {
   background-color: white;
-  border-radius:0.3rem;
-  margin-top: 2rem;
+  font-family: "Noto Sans CJK KR";
+  border-spacing: 0;
 }
-.notice_contents_kinds_driver__page_box__paging{
-  width: 100%;
-  height: 5rem;
-  display: flex;
-  justify-content: center;
+
+
+
+
+/*tableHead*/
+.tableHead {
+  width: calc(100% - 0.2rem);
+  height: 4.8rem;
+  border: 0.1rem solid #CDCDCE;
+  border-radius: 0.5rem 0.5rem 0 0;
 }
-.notice_contents_kinds_driver__page_box__button{
-  width: 12rem;
-  height: 3.1rem;
-  border: none;
-  border-radius: 0.3rem;
-  background-color: #B41515;
-  outline: none;
-  cursor: pointer;
-  color: white;
-  text-align: center;
-  font-size: 2.2rem;
-  font-weight: bold;
-  padding-top: 0.3rem;
-}
-.notice_contents_kinds_driver__page_box__button_margin{
-  margin-left: 86.6rem;
-}
-#notice_kinds__main_contents{
-  height: calc( 100% - (1vh*4.13) - 7.2rem );
-}
-#buttonWrithing{
-  width: 8.6rem;
-  position: absolute;
-}
-#aWriting{
-  width: 5%;
-  height: calc(1vh * 2.6);
-}
-#list_table_cell__notice_kinds_list{
-  width: 100%;
-  height: calc( 100% - 5.6rem);
-  overflow: hidden;
-}
-.contents_box_header_notice_create{
-  width: 5%;
-  height: calc(1vh * 2.6);
-}
-#list_table_cell__tbody__tr_notice{
-  height: 4.2rem;
-}
-.noticeCreateButton{
-  display: flex;
-  justify-content: center;
-  align-items: center;
+
+.tableHead thead {
   width: 100%;
   height: 100%;
-  background-color: #B41515;
-  color: white;
-  border-radius: 0.3rem;
-  outline: none;
-  cursor: pointer;
-  font-size: 1.6rem;
 }
-#contents_box_header_notice_kinds{
+
+.tableHead tr {
+  width: 100%;
+  height: 100%;
+  align-items: center;
+  border: none;
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: #7A7A7A;
+}
+
+.tableBody {
+  width: calc(100% - 0.2rem);
+  height: 64em;
+  margin-top: -0.1rem;
+  border: 0.1rem solid #CDCDCE
+}
+
+.tableBody::-webkit-scrollbar {
+  width: 0.6rem;
+}
+
+.tableBody::-webkit-scrollbar-thumb {
+  height: 17%;
+  background-color: grey;
+  border-radius: 10px;
+}
+
+.tableBody::-webkit-scrollbar-track {
+  background-color: #dbdada;
+}
+
+tbody {
+  width: 100%;
+  height: 100%;
+}
+
+table tr {
   display: flex;
-  justify-content: space-between;
-  width: calc( 100% - 3.8rem );
-  padding-right: 2rem;
+  width: 100%;
+  height: 6.4rem;
+  border-bottom: 0.1rem solid #CDCDCE;
+}
+
+table tr:nth-child(10) {
+  border-bottom: none;
+}
+table tr:nth-child(odd) {
+  background-color: white;
+}
+
+table tr:nth-child(even) {
+  background-color: #EFEFEF;
+}
+
+table td {
+  display: flex;
+  align-items: center;
+}
+
+.tableBody td {
+  font-size: 1.4rem;
+  color: #191919;
+}
+
+td:nth-child(1) {
+  display: flex;
+  justify-content: center;
+  width: 6%;
+}
+
+td:nth-child(2) {
+  width: 8%;
+}
+
+td:nth-child(3) {
+  width: 56%;
+}
+
+td:nth-child(4) {
+  width: 10%;
+}
+
+td:nth-child(5) {
+  width: 12%;
+}
+
+td:nth-child(6) {
+  width: 8%;
+}
+
+.checkbox {
+  width: 2rem;
+  height: 2rem;
+  cursor: pointer;
 }

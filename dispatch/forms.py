@@ -1,7 +1,7 @@
 from django import forms 
 from django.db import models
 
-from .models import DispatchOrder, DispatchConnect
+from .models import DispatchOrder, DispatchOrderConnect
 
 class OrderForm(forms.ModelForm):
     class Meta:
@@ -57,7 +57,7 @@ class OrderForm(forms.ModelForm):
 
 class ConnectForm(forms.ModelForm):
     class Meta:
-        model = DispatchConnect
+        model = DispatchOrderConnect
         fields = [
             'bus_id',
             'driver_id',

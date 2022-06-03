@@ -1,27 +1,25 @@
 .signupSection {
-  display: flex;
-  flex-direction: column;
-  width: 75rem;
   height: 60rem;
-  margin-top: 3rem;
-  margin-bottom: 2rem;
 }
 
 .allcheck {
   display: flex;
   align-items: flex-end;
   width: 100%;
+  cursor: pointer;
 }
 
 .allcheck input {
   width: 1.8rem;
   height: 1.8rem;
   margin-right: 0.8rem;
+  cursor: pointer;
 }
 
 .allcheck label {
   font-size: 1.6rem;
   color: #191919;
+  cursor: pointer;
 }
 
 .terms {
@@ -56,42 +54,18 @@
   justify-content: flex-end;
   width: 100%;
   margin-top: 1.2rem;
+  cursor: pointer;
 }
 
 .checkBox input {
   width: 1.8rem;
   height: 1.8rem;
   margin-right: 0.8rem;
+  cursor: pointer;
 }
 
 .checkBox label {
   font-size: 1.6rem;
   color: #191919;
-}
-
-.signupFooter a{
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 11.6rem;
-  height: 4rem;
-  font-size: 1.4rem;
-  color: white;
-  margin: 0 1rem;
-}
-.signupFooter a:nth-child(1){
-  background-color: #D2D2D2;
-}
-.nextStepBtn{
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  height: 100%;
-  font-size: 1.4rem;
-  color: white;
-  background-color: #0069D9;
-  border: none;
-  outline: none;
   cursor: pointer;
 }

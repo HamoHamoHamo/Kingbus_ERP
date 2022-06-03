@@ -5,6 +5,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width">
+  <!-- <meta http-equiv="Cache-Control" content="private, no-cache, no-store, max-age=0, must-revalidate"> -->
   <title>TRP</title>
   <link href="{% static 'css/setting/setting.css' %}" rel="stylesheet" type="text/css" />
   <link href="{% static 'css/base.css' %}" rel="stylesheet" type="text/css" />
@@ -143,7 +144,6 @@
         </ul>
       </div>
 
-
     </div>
 
 
@@ -186,7 +186,7 @@
             </a>
           </div>
         </div>
-        
+
 
 
 
@@ -194,26 +194,14 @@
 
 
       <!--trp contents container-->
-      <div class="ContentsContainerRocate">
-        <div class="ContentsContainer">
-
-          <!--trp nav-->
-          {% block content-nav %}
-          {% endblock %}
-
-          <div class="contentsBox">
-            {% block content %}
-            {% endblock %}
-          </div>
-        </div>
-
+      <div class="mainContentsCentainer">
+        {% block content %}
+        {% endblock %}
       </div>
-
 
     </div>
 
   </div>
-  <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
   <script src="{% static 'js/sideNavMenu.js' %}"></script>
   <script src="{% static 'js/profile.js' %}"></script>
   {% block script %}{% endblock %}

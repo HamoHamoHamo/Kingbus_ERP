@@ -2,15 +2,3 @@
 @import "notice_kinds.css";
 @import "notice_detail.css";
 @import "notice_edit.css";
-
-.notice_section_box{
-    width: 110rem;
-}
-  
-.mid_box{
-    margin-top: 1rem;
-  }
-
-.bottom_box{
-    height: 20rem;
-}

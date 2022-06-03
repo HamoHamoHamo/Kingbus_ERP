@@ -1,11 +1,12 @@
 const profile = document.querySelector(".profile")
 const profileBox = document.querySelector(".profileBox")
 const Sidemenu = document.querySelector(".Sidemenu")
-const ContentsContainerRocate = document.querySelector(".ContentsContainerRocate")
+const mainContentsCentainer = document.querySelector(".mainContentsCentainer")
+
 
 profile.addEventListener("click", openProfile)
 Sidemenu.addEventListener("click", closeProfile1)
-ContentsContainerRocate.addEventListener("click", closeProfile2)
+mainContentsCentainer.addEventListener("click", closeProfile2)
 
 
 let profileCount = 0;
@@ -21,11 +22,9 @@ function openProfile() {
 }
 
 function closeProfile1() {
-  console.log("click")
   profileBox.style.display = "none"
 }
 
 function closeProfile2() {
-  console.log("click")
   profileBox.style.display = "none"
 }
