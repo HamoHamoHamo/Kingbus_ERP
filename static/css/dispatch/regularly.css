@@ -1,16 +1,36 @@
-.tableForm {
+.searchTool{
+  width: 96rem;
+}
+.routeFilterBox{
   display: flex;
-  flex-direction: column;
-  width: 100%;
-  height: auto;
+  justify-content: space-between;
+  align-items: center;
+  width: 38rem;
+  height: 100%;
+  margin-left: 2rem;
+  margin-right: 4rem;
 }
-
-table {
-  background-color: white;
-  font-family: "Noto Sans CJK KR";
-  border-spacing: 0;
+.routeFilterBox input{
+  width: 18rem;
 }
-
+.dateFilterBox{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 37rem;
+  height: 100%;
+  margin-right: 2rem;
+}
+.dateFilterBox span{
+  font-size: 1.6rem;
+  margin-right: 1rem;
+}
+.dateFilterBox input{
+  width: 15rem;
+}
+.searchTool input[type=submit]{
+  background-color: #444444;
+}
 
 
 
@@ -86,38 +106,59 @@ table td {
   align-items: center;
 }
 
+table a {
+  color: #0069D9;
+}
+
+table td span {
+  padding: 0.3rem 1.6rem;
+  background-color: #0069D9;
+  color: white;
+  border-radius: 0.2rem;
+  cursor: pointer;
+}
+
 .tableBody td {
   font-size: 1.4rem;
   color: #191919;
 }
 
 td:nth-child(1) {
-  display: flex;
-  justify-content: center;
-  width: 6%;
+  width: 14%;
+  padding-left: 1%;
 }
 
 td:nth-child(2) {
-  width: 8%;
+  width: 30%;
+  word-break: keep-all;
 }
 
 td:nth-child(3) {
-  width: 56%;
+  display: flex;
+  justify-content: center;
+  width: 4%;
 }
 
 td:nth-child(4) {
-  width: 10%;
+  width: 8%;
 }
 
 td:nth-child(5) {
-  width: 12%;
+  width: 7%;
 }
 
 td:nth-child(6) {
   display: flex;
   justify-content: center;
   width: 6%;
-  padding-right: 2%;
+}
+td:nth-child(7) {
+  width: 9%;
+}
+td:nth-child(8) {
+  width: 20%;
+  padding-right: 1%;
+  word-break: keep-all;
 }
 
 .checkbox {

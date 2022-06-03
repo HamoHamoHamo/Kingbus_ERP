@@ -1,1 +1,169 @@
-regularly
+{% extends 'base.html' %}
+{% load static %}
+{% block head %}
+<meta http-equiv="Cache-Control" content="private, no-cache, no-store, max-age=0, must-revalidate">
+
+<link rel="stylesheet" href="{% static 'css/dispatch/regularly.css' %}" type="text/css" />
+<link rel="stylesheet" href="{% static 'css/pagination.css' %}" type="text/css" />
+{% endblock %}
+
+{% block content-header %}
+<div class="HeaderTitle">
+  출/퇴근배차
+</div>
+{% endblock %}
+
+{% block content %}
+
+
+
+
+<div class="searchAreaBox">
+  <form action="">
+    <div class="searchTool">
+      <span class="searchName">노선검색</span>
+      <div class="routeFilterBox">
+        <input type="text" class="inputModules" list="groupFilter" placeholder="그룹이름">
+        <datalist id="groupFilter">
+          <option value="그룹이름"></option>
+          <option value="항목1"></option>
+        </datalist>
+        <input type="text" class="inputModules" list="routeFilter" placeholder="노선이름">
+        <datalist id="routeFilter">
+          <option value="노선이름"></option>
+          <option value="항목1"></option>
+        </datalist>
+      </div>
+      <div class="dateFilterBox">
+        <span>기간</span>
+        <input type="date" class="inputModules">~
+        <input type="date" class="inputModules">
+      </div>
+      <input type="submit" value="검색" class="btnModules">
+    </div>
+  </form>
+</div>
+
+
+
+
+
+<div class="contentsAreaBox">
+  <table class="tableHead">
+    <thead>
+      <tr class="headerLine">
+        <td>그룹</td>
+        <td>노선이름</td>
+        <td>순번</td>
+        <td>운행시간</td>
+        <td>운행요일</td>
+        <td>출/퇴근</td>
+        <td>배차차량</td>
+        <td>참조사항</td>
+      </tr>
+    </thead>
+  </table>
+
+  <table class="tableBody">
+    <tbody>
+      <tr>
+        <td>한국쓰리엠 출근</td>
+        <td>
+          <a href="">
+            마북제어시스템개발센터등->대형주차장->EE연구소->샤시동▶마북연구소
+          </a>
+        </td>
+        <td>1</td>
+        <td>16:30~20:30</td>
+        <td>월.화.수.목.금</td>
+        <td>출근</td>
+        <td>
+          <span>1111/이도울</span>
+        </td>
+        <td>특이사항 없음특이사항 없음특이사항 없음특이사항 없음</td>
+      </tr>
+      <tr>
+        <td>한국쓰리엠 출근</td>
+        <td>
+          <a href="">
+            마북제어시스템개발센터등->대형주차장->EE연구소->샤시동▶마북연구소
+          </a>
+        </td>
+        <td>1</td>
+        <td>16:30~20:30</td>
+        <td>월.화.수.목.금</td>
+        <td>출근</td>
+        <td>
+          <span>1111/이도울</span>
+        </td>
+        <td>특이사항 없음특이사항 없음특이사항 없음특이사항 없음</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="btnAreaBox">
+    <div class="pagination">
+      <!-- 페이징 처리 -->
+      {% if is_paginated %}
+      <div class="pagination">
+        {% if page_obj.has_previous %}
+        <div class="page-item page-pre">
+          <a class="page-link"
+            href="?top_box_selector={{selector}}&search={{searched}}&page={{ page_obj.previous_page_number }}"
+            tabindex="-1">이전</a>
+        </div>
+        {% else %}
+        <div class="page-item page-pre disabled">
+          <a class="page-link" href="#" tabindex="-1">이전</a>
+        </div>
+        {% endif %}
+        {% for page in page_range %}
+        <div class="page-item {% if page == page_obj.number %} page-activate {% endif %}">
+          <a class="page-link" href="?top_box_selector={{selector}}&search={{searched}}&page={{ page }}">{{ page }}</a>
+        </div>
+        {% endfor %}
+
+        {% if page_obj.has_next %}
+        <div class="page-item">
+          <a class="page-link page-next"
+            href="?top_box_selector={{selector}}&search={{searched}}&page={{ page_obj.next_page_number }}">다음</a>
+        </div>
+        {% else %}
+        <div class="page-item page-next disabled">
+          <a class="page-link" href="#">다음</a>
+        </div>
+        {% endif %}
+      </div>
+      {% endif %}
+    </div>
+    <div class="btnBox">
+    </div>
+
+  </div>
+</div>
+
+
+
+
+
+{% endblock %}
+
+
+
+
+
+{% block popup %}
+<div class="popupAreaModules">
+  <div class="popupBgModules"></div>
+  <div class="popupContainer"></div>
+</div>
+{% endblock %}
+
+
+
+
+
+
+{% block script %}
+<script src="{% static 'js/dispatch/regularlyCreatePopup.js' %}"></script>
+{% endblock %}

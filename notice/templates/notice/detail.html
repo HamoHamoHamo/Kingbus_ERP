@@ -22,10 +22,8 @@
     <div class="inputCell">
       <span class="inputName">구분</span>
       <div class="radiobox">
-        <input type="radio" id="driver" value="driver" name="kinds" checked>
-        <label for="driver">기사님</label>
-        <input type="radio" id="office" value="office" name="kinds">
-        <label for="office">사무실</label>
+        <div class="noticeTitle">{% if notice.kinds == "driver" %}기사님{% elif notice.kinds == "office" %}사무실{% endif %}</div>
+        
       </div>
     </div>
     <div class="inputCell inputCellFile">
@@ -51,7 +49,7 @@
 </div>
 
 <div class="commentArea">
-  <div class="commentTitle">댓글<span>count</span></div>
+  <div class="commentTitle">댓글<span>{{notice_comments | length}}</span></div>
 
   {% for comment in notice_comments %}
   <div class="commentBox">
@@ -59,7 +57,7 @@
       <span class="commentUserTitle">{{comment.creator}}</span>
       <span class="commentCreateDate">{{comment.pub_date | date:'Y.m.d H:i:s'}}</span>
       {% if request.session.user == comment.creator.id %}
-      <a class="commentDeleteBtn" {% if request.session.user == notice.creator.id %} href="{% url 'notice:comment_del' notice.kinds notice.id comment.id %}">삭제</a> {% endif %}
+      <a class="commentDeleteBtn" href="{% url 'notice:comment_del' notice.kinds notice.id comment.id %}">삭제</a>
       {% endif %}
     </div>
     <div class="commentContents">{{comment.content}}</div>

@@ -32,7 +32,7 @@
       <div class="inputCell inputCellFile">
         <span class="inputName">첨부파일</span>
         <div class="fileEditer">
-          <input type="file" name="file" value={{file.filename}} multiple>
+          <input type="file" name="file" multiple>
           <div class="createdFileBox">
             {% for file in notice_files %}
             <div class="createdFileCell">
@@ -46,7 +46,7 @@
         </div>
       </div>
     </div>
-    <textarea name="content" required></textarea>
+    <textarea name="content" required>{{comment.content}}</textarea>
     <div class="createBtnBox">
       <input type="submit" value="저장" class="createBtn">
     </div>

@@ -5,7 +5,7 @@ from vehicle.models import Vehicle
 import datetime
 
 class Salary(models.Model):
-    member_id = models.ForeignKey(Member, on_delete=models.CASCADE, related_name="salary_monthly", db_column="member_id", null=True)
+    member_id = models.ForeignKey(Member, on_delete=models.CASCADE, related_name="salary_monthly", null=True)
     attendance = models.IntegerField(verbose_name='출근요금', null=False)
     leave = models.IntegerField(verbose_name='퇴근요금', null=False)
     order = models.IntegerField(verbose_name='일반주문요금', null=False)

@@ -17,7 +17,7 @@
 
 .inputCellFile {
   align-items: flex-start;
-  height: 6.5rem;
+  height: 8rem;
   margin-bottom: 0;
 }
 
@@ -48,19 +48,47 @@
   height: 4.3rem;
   padding: 1rem;
 }
-.fileBox{
+
+.fileBox {
   display: flex;
-  flex-wrap: wrap;
+  flex-direction: column;
   justify-content: flex-start;
-  align-items: center;
+  align-items: flex-start;
   width: calc(100% - 13rem);
+  height: 8rem;
+  padding: 0.4rem 1rem;
+  border: 0.1rem solid #D2D2D2;
+  border-radius: 0.2rem;
+  box-sizing: border-box;
+  overflow-y: scroll;
 }
-.fileLink{
+
+/* 스크롤바 설정*/
+.fileBox::-webkit-scrollbar {
+  position: absolute;
+  width: 1rem;
+}
+
+/* 스크롤바 막대 설정*/
+.fileBox::-webkit-scrollbar-thumb {
+  height: 17%;
+  background-color: #828282;
+  /* 스크롤바 둥글게 설정    */
+  border-radius: 10px;
+}
+
+/* 스크롤바 뒷 배경 설정*/
+.fileBox::-webkit-scrollbar-track {
+  background-color: #F5F5F5;
+}
+
+.fileLink {
   font-size: 1.6rem;
   color: #191919;
   text-decoration: underline;
   margin-right: 1rem;
 }
+
 .radiobox {
   display: flex;
   align-items: center;

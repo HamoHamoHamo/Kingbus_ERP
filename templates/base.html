@@ -69,19 +69,19 @@
             </li>
             <div class="sideMenuNav2Box">
               <ul class="sideMenuNav2">
-                <a href="" class="sideMenuNav2Link">
+                <a href="{% url 'dispatch:regularly' %}" class="sideMenuNav2Link">
                   <li class="sideMenuNav2Menu">출/퇴근배차</li>
                 </a>
-                <a href="" class="sideMenuNav2Link">
-                  <li class="sideMenuNav2Menu">출/퇴근 노서관리</li>
+                <a href="{% url 'dispatch:regularly_route' %}" class="sideMenuNav2Link">
+                  <li class="sideMenuNav2Menu">출/퇴근 노선관리</li>
                 </a>
-                <a href="" class="sideMenuNav2Link">
+                <a href="{% url 'dispatch:order' %}" class="sideMenuNav2Link">
                   <li class="sideMenuNav2Menu">일반주문배차</li>
                 </a>
-                <a href="" class="sideMenuNav2Link">
+                <a href="{% url 'dispatch:schedule' %}" class="sideMenuNav2Link">
                   <li class="sideMenuNav2Menu">배차일정</li>
                 </a>
-                <a href="" class="sideMenuNav2Link">
+                <a href="{% url 'dispatch:document' %}" class="sideMenuNav2Link">
                   <li class="sideMenuNav2Menu">서류함</li>
                 </a>
               </ul>
@@ -95,10 +95,10 @@
             </li>
             <div class="sideMenuNav2Box">
               <ul class="sideMenuNav2">
-                <a href="" class="sideMenuNav2Link">
+                <a href="{% url 'HR:member' %}" class="sideMenuNav2Link">
                   <li class="sideMenuNav2Menu">직원관리</li>
                 </a>
-                <a href="" class="sideMenuNav2Link">
+                <a href="{% url 'HR:mgmt' %}" class="sideMenuNav2Link">
                   <li class="sideMenuNav2Menu">근태관리</li>
                 </a>
               </ul>
@@ -112,13 +112,13 @@
             </li>
             <div class="sideMenuNav2Box">
               <ul class="sideMenuNav2">
-                <a href="" class="sideMenuNav2Link">
+                <a href="{% url 'accounting:salary' %}" class="sideMenuNav2Link">
                   <li class="sideMenuNav2Menu">급여관리</li>
                 </a>
-                <a href="" class="sideMenuNav2Link">
+                <a href="{% url 'accounting:income' %}" class="sideMenuNav2Link">
                   <li class="sideMenuNav2Menu">수입현황</li>
                 </a>
-                <a href="" class="sideMenuNav2Link">
+                <a href="{% url 'accounting:collect' %}" class="sideMenuNav2Link">
                   <li class="sideMenuNav2Menu">수금관리</li>
                 </a>
               </ul>
@@ -132,10 +132,10 @@
             </li>
             <div class="sideMenuNav2Box">
               <ul class="sideMenuNav2">
-                <a href="" class="sideMenuNav2Link">
+                <a href="{% url 'vehicle:list' %}" class="sideMenuNav2Link">
                   <li class="sideMenuNav2Menu">차량목록</li>
                 </a>
-                <a href="" class="sideMenuNav2Link">
+                <a href="{% url 'vehicle:mgmt' %}" class="sideMenuNav2Link">
                   <li class="sideMenuNav2Menu">차량관리</li>
                 </a>
               </ul>
@@ -198,7 +198,9 @@
         {% block content %}
         {% endblock %}
       </div>
-
+      
+      {% block popup %}
+      {% endblock %}
     </div>
 
   </div>
