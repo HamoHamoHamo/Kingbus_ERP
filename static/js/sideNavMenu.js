@@ -4,7 +4,7 @@ const sideMenuNav2Box = document.querySelectorAll(".sideMenuNav2Box")
 const sideMenuNav2 = document.querySelectorAll(".sideMenuNav2")
 const nav1Box = document.querySelectorAll(".nav1Box")
 
-var overlapCount = 111;
+let overlapCount = 111;
 
 for (i = 0; i < 5; i++) {
   nav1BoxMenuHaveDepth2[i].addEventListener("click", openSideNav)

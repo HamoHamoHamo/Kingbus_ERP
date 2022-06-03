@@ -15,15 +15,15 @@
 
 {% block content %}
 <div class="searchAreaBox">
-  <form action="">
+  <form action="" id="top_box-form">
     <div class="searchTool">
       <div class="searchToolCell">
         <span class="searchName">검색종류</span>
-        <select form=top_box-form name="top_box_selector"  id="noticeKindsSearchToolSelect" class="searchToolInput searchToolSelect">
+        <select form=top_box-form name="top_box_selector" id="noticeKindsSearchToolSelect" class="searchToolInput searchToolSelect">
           <option value="title" {% if selector == 'title' %} selected {% endif %}>제목</option>
           <option value="creator" {% if selector == 'creator' %} selected {% endif %}>작성자</option>
         </select>
-        <input type="text" class="searchToolInput">
+        <input type="text" name="search" class="searchToolInput">
       </div>
       <input type="submit" value="검색" class="searchBtn">
     </div>
