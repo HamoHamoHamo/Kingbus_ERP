@@ -9,7 +9,7 @@
 
 {% block content-header %}
 <div class="HeaderTitle">
-  공지사항
+  {% if kinds == 'driver' %}기사님 공지사항 {% else %} 사무실 공지사항 {% endif %}
 </div>
 {% endblock %}
 

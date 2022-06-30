@@ -1,7 +1,6 @@
 from crudmember.models import User
 from django.db import models
 from humanresource.models import Member
-from vehicle.models import Vehicle
 import datetime
 
 class Salary(models.Model):

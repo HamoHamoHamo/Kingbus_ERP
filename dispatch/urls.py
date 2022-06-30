@@ -4,8 +4,8 @@ from . import views
 app_name = 'dispatch'
 
 urlpatterns = [
-    path('regularly', views.regularly, name="regularly"),
-    path('regularly/route', views.regularly_route, name="regularly_route"),
+    path('regularly', views.RegularlyDispatchList.as_view(), name="regularly"),
+    path('regularly/route', views.RegularlyRouteList.as_view(), name="regularly_route"),
     path('order', views.order, name="order"),
     path('schedule', views.schedule, name="schedule"),
     path('document', views.document, name="document"),
@@ -17,7 +17,7 @@ urlpatterns = [
     # path('order/<int:pk>/edit/', views.order_edit, name='order_edit'),
     # path('order/delete/', views.order_delete, name='order_delete'),
     
-    # path('regularly/', views.RegularlyOrderList.as_view(), name='regularly_order_list'),
+    # path('regularly/', views.RegularlyOrderList.as_view(), name='regularly'),
     # path('regularly/create/', views.regularly_order_create, name='regularly_order_create'),
     # path('regularly/<int:pk>/', views.RegularlyOrderDetail.as_view(), name='regularly_order_detail'),
     # path('regularly/<int:pk>/edit/', views.regularly_order_edit, name='regularly_order_edit'),

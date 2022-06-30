@@ -1,0 +1,597 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block head %}
+<meta http-equiv="Cache-Control" content="private, no-cache, no-store, max-age=0, must-revalidate">
+
+<link rel="stylesheet" href="{% static 'css/dispatch/order.css' %}" type="text/css" />
+<link rel="stylesheet" href="{% static 'css/pagination.css' %}" type="text/css" />
+{% endblock %}
+
+{% block content-header %}
+<div class="HeaderTitle">
+    일반배차
+</div>
+{% endblock %}
+
+{% block content %}
+
+
+
+
+<div class="searchAreaBox">
+    <form action="">
+        <div class="searchTool">
+            <span class="searchName">노선검색</span>
+            <div class="routeFilterBox">
+                <input type="text" class="inputModules" list="groupFilter" placeholder="노선이름">
+                <datalist id="groupFilter">
+                    <option value="그룹이름"></option>
+                    <option value="항목1"></option>
+                </datalist>
+                <input type="text" class="inputModules" list="routeFilter" placeholder="예약자">
+                <datalist id="routeFilter">
+                    <option value="노선이름"></option>
+                    <option value="항목1"></option>
+                </datalist>
+            </div>
+            <div class="dateFilterBox">
+                <span>기간</span>
+                <input type="date" class="inputModules">~
+                <input type="date" class="inputModules">
+            </div>
+            <input type="submit" value="검색" class="btnModules">
+        </div>
+    </form>
+    <div class="optionBtnBox">
+        <div class="createRouteBtn">노선등록</div>
+    </div>
+</div>
+
+
+
+
+
+<div class="contentsAreaBox">
+    <div class="tableRowBox">
+        <div class="tableCell">
+            <table class="tableHead">
+                <thead>
+                    <tr class="headerLine">
+                        <td>운행시간</td>
+                        <td>노선이름</td>
+                        <td>계약현황</td>
+                    </tr>
+                </thead>
+            </table>
+
+            <table class="tableBody">
+                <tbody>
+                    <tr>
+                        <td>
+                            <span>22.05.27(금)</span>
+                            <span>[16:30~20:30]</span>
+                        </td>
+                        <td class="orderRote">
+                            <span>마북제어시스템개발센터등->대형주차장->EE연구소->샤시동▶</span>
+                            <span>마북연구소</span>
+                        </td>
+                        <td>계약완료</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <span>22.05.27(금)</span>
+                            <span>[16:30~20:30]</span>
+                        </td>
+                        <td class="orderRote">
+                            <span>마북제어시스템개발센터등->대형주차장->EE연구소->샤시동▶</span>
+                            <span>마북연구소</span>
+                        </td>
+                        <td>계약완료</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="tableCell tableCellScroll">
+            <table class="tableHead">
+                <thead>
+                    <tr class="headerLine">
+                        <td>배차차량</td>
+                        <td>차량대수</td>
+                        <td>차량종류</td>
+                        <td>상여금</td>
+                        <td>상여금 지급방식</td>
+                        <td>계약금액</td>
+                        <td>예약정보</td>
+                        <td>비용구분</td>
+                        <td>운행종류</td>
+                        <td>참조사항</td>
+                        <td>수금구분</td>
+                        <td>입금현황</td>
+                        <td>VAT포함여부</td>
+                        <td>계산서발행일</td>
+                        <td>입금예정일</td>
+                    </tr>
+                </thead>
+            </table>
+
+            <table class="tableBody">
+                <tbody>
+                    <tr>
+                        <td class="orderDispatch">
+                            <span>1111(이도울)</span>
+                            <span>1111(이도울)</span>
+                            <span>1111(이도울)</span>
+                            <span>1111(이도울)</span>
+                            <span>1111(이도울)</span>
+                        </td>
+                        <td>5대</td>
+                        <td>41,45</td>
+                        <td>1,000,000</td>
+                        <td>선지금</td>
+                        <td>1,000,000</td>
+                        <td>
+                            <span>이도울</span>
+                            <span>010-0000-0000</span>
+                        </td>
+                        <td>고속별주차별상여포</td>
+                        <td>왕복</td>
+                        <td>광교산업센터주차장따로없다하심 주변건물뒤쪽에서 대기가능하다함</td>
+                        <td>회사수금</td>
+                        <td>사무실입금</td>
+                        <td> VAT포함 </td>
+                        <td>2020.01.01</td>
+                        <td>2020.01.01</td>
+                    </tr>
+                    <tr>
+                        <td class="orderDispatch">
+                            <span>1111(이도울)</span>
+                            <span>1111(이도울)</span>
+                            <span>1111(이도울)</span>
+                            <span>1111(이도울)</span>
+                            <span>1111(이도울)</span>
+                        </td>
+                        <td>5대</td>
+                        <td>41,45</td>
+                        <td>1,000,000</td>
+                        <td>선지금</td>
+                        <td>1,000,000</td>
+                        <td>
+                            <span>이도울</span>
+                            <span>010-0000-0000</span>
+                        </td>
+                        <td>고속별주차별상여포</td>
+                        <td>왕복</td>
+                        <td>광교산업센터주차장따로없다하심 주변건물뒤쪽에서 대기가능하다함</td>
+                        <td>회사수금</td>
+                        <td>사무실입금</td>
+                        <td> VAT포함 </td>
+                        <td>2020.01.01</td>
+                        <td>2020.01.01</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="btnAreaBox">
+        <div class="pagination">
+            <!-- 페이징 처리 -->
+            {% if is_paginated %}
+            <div class="pagination">
+                {% if page_obj.has_previous %}
+                <div class="page-item page-pre">
+                    <a class="page-link"
+                        href="?top_box_selector={{selector}}&search={{searched}}&page={{ page_obj.previous_page_number }}"
+                        tabindex="-1">이전</a>
+                </div>
+                {% else %}
+                <div class="page-item page-pre disabled">
+                    <a class="page-link" href="#" tabindex="-1">이전</a>
+                </div>
+                {% endif %}
+                {% for page in page_range %}
+                <div class="page-item {% if page == page_obj.number %} page-activate {% endif %}">
+                    <a class="page-link" href="?top_box_selector={{selector}}&search={{searched}}&page={{ page }}">{{
+                        page }}</a>
+                </div>
+                {% endfor %}
+
+                {% if page_obj.has_next %}
+                <div class="page-item">
+                    <a class="page-link page-next"
+                        href="?top_box_selector={{selector}}&search={{searched}}&page={{ page_obj.next_page_number }}">다음</a>
+                </div>
+                {% else %}
+                <div class="page-item page-next disabled">
+                    <a class="page-link" href="#">다음</a>
+                </div>
+                {% endif %}
+            </div>
+            {% endif %}
+        </div>
+        <div class="btnBox">
+        </div>
+
+    </div>
+</div>
+
+
+
+
+
+{% endblock %}
+
+
+
+
+
+{% block popup %}
+
+<div class="popupAreaModules">
+    <div class="popupBgModules"></div>
+    <form class="popupContainer">
+        <div class="regularyCreatePopupTitle">배차등록</div>
+        <table>
+            <thead class="regularyCreatePopupThead">
+                <tr>
+                    <td>차량</td>
+                    <td>
+                        <span>출근</span>
+                        <span>일반</span>
+                        <span>퇴근</span>
+                    </td>
+                </tr>
+            </thead>
+        </table>
+        <div class="regularyCreatePopupTbodyBoxing">
+            <table>
+                <tbody class="regularyCreatePopupTbody">
+                    <tr>
+                        <td>
+                            <div class="addDriver" id="0">1111(이도울)</div>
+                        </td>
+                        <td>
+                            <div class="GoToWork">2</div>
+                            <div class="work">2</div>
+                            <div class="backToHome">2</div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="addDriver" id="1">1111(이도울)</div>
+                        </td>
+                        <td>
+                            <div class="GoToWork">2</div>
+                            <div class="work">2</div>
+                            <div class="backToHome">2</div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="regularyCreatePopupResult">
+        </div>
+        <div class="regularyCreatePopupBtnBox orderDispatchPopupBtnBox">
+            <div class="btnModules">닫기</div>
+            <input type="submit" class="btnModules" value="등록">
+        </div>
+    </form>
+</div>
+
+
+
+<div class="popupAreaModulesOrder">
+    <div class="popupBgModules"></div>
+    <form class="popupContainerOrder">
+        <div class="orderPopupTitle">배차등록</div>
+
+        <div class="orderPopupDataArea">
+            <div class="orderPopupDataCell">
+                <span class="orderPopupDataTitle">출발지</span>
+                <input type="text" class="">
+            </div>
+            <div class="orderPopupDataCell">
+                <span class="orderPopupDataTitle">차량대수</span>
+                <input type="text" class="">
+            </div>
+            <div class="orderPopupDataCell">
+                <span class="orderPopupDataTitle">도착지</span>
+                <input type="text" class="">
+            </div>
+            <div class="orderPopupDataCell">
+                <span class="orderPopupDataTitle">차량종류</span>
+                <select>
+                    <option value=""></option>
+                </select>
+            </div>
+            <div class="orderPopupDataCell">
+                <span class="orderPopupDataTitle">운행종류</span>
+                <select>
+                    <option value=""></option>
+                </select>
+            </div>
+            <div class="orderPopupDataCell">
+                <span class="orderPopupDataTitle">운행시간</span>
+                <div class="datetimeCell">
+                    <input type="datetime-local">~
+                    <input type="datetime-local">
+                </div>
+            </div>
+            <div class="orderPopupDataCell">
+                <span class="orderPopupDataTitle">계약현황</span>
+                <select>
+                    <option value=""></option>
+                </select>
+            </div>
+            <div class="orderPopupDataCell">
+                <span class="orderPopupDataTitle">비용구분</span>
+                <select>
+                    <option value=""></option>
+                </select>
+            </div>
+            <div class="orderPopupDataCell">
+                <span class="orderPopupDataTitle">참조사항</span>
+                <input type="text" class="">
+            </div>
+            <div class="orderPopupDataCell">
+                <span class="orderPopupDataTitle">예약자</span>
+                <input type="text" class="">
+            </div>
+            <div class="orderPopupDataCell">
+                <span class="orderPopupDataTitle">전화번호</span>
+                <input type="text" class="">
+            </div>
+            <div class="orderPopupDataCell">
+                <span class="orderPopupDataTitle">계약금액</span>
+                <input type="text" class="">
+            </div>
+            <div class="orderPopupDataCell">
+                <span class="orderPopupDataTitle">입금현황</span>
+                <select>
+                    <option value=""></option>
+                </select>
+            </div>
+            <div class="orderPopupDataCell">
+                <span class="orderPopupDataTitle">입금 예정일</span>
+                <input type="date" class="">
+            </div>
+            <div class="orderPopupDataCell">
+                <span class="orderPopupDataTitle">계산서 발행일</span>
+                <input type="date" class="">
+            </div>
+            <div class="orderPopupDataCell">
+                <span class="orderPopupDataTitle">수금구분</span>
+                <select>
+                    <option value=""></option>
+                </select>
+            </div>
+            <div class="orderPopupDataCell">
+                <span class="orderPopupDataTitle">상여금</span>
+                <input type="text" class="">
+            </div>
+            <div class="orderPopupDataCell">
+                <span class="orderPopupDataTitle">상여금 선지급</span>
+                <div class="checkingCell">
+                    <input type="checkbox" id="bonus">
+                    <label for="bonus">선지급</label>
+                </div>
+            </div>
+            <div class="orderPopupDataCell">
+                <span class="orderPopupDataTitle">VAT포함</span>
+                <div class="checkingCell">
+                    <input type="checkbox" id="vat">
+                    <label for="vat">포함</label>
+                </div>
+            </div>
+        </div>
+        <div class="regularyCreatePopupBtnBox">
+            <div class="btnModules">닫기</div>
+            <input type="submit" class="btnModules" value="등록">
+        </div>
+    </form>
+</div>
+
+
+
+
+<div class="popupAreaModulesOrderRoute">
+    <div class="popupBgModules"></div>
+    <form class="popupContainerOrder">
+        <div class="orderPopupTitle">일반주문 상세</div>
+
+        <div class="orderPopupDataArea orderPopupDataAreaDetail">
+            <div class="orderPopupDataCell">
+                <span class="orderPopupDataTitle">출발지</span>
+                <div class="orderDispatchData">동수원송림빌딩앞(수원시 의사회)</div>
+            </div>
+            <div class="orderPopupDataCell">
+                <span class="orderPopupDataTitle">차량대수</span>
+                <div class="orderDispatchData">3대</div>
+            </div>
+            <div class="orderPopupDataCell">
+                <span class="orderPopupDataTitle">도착지</span>
+                <div class="orderDispatchData">영광 백수해안도로</div>
+            </div>
+            <div class="orderPopupDataCell">
+                <span class="orderPopupDataTitle">차량종류</span>
+                <div class="orderDispatchData">41</div>
+            </div>
+            <div class="orderPopupDataCell">
+                <span class="orderPopupDataTitle">운행종류</span>
+                <div class="orderDispatchData">왕복</div>
+            </div>
+            <div class="orderPopupDataCell">
+                <span class="orderPopupDataTitle">운행시간</span>
+                <div class="orderDispatchData">22.01.01 [16:40] ~ 20.01.01 [18:40]</div>
+            </div>
+            <div class="orderPopupDataCell">
+                <span class="orderPopupDataTitle">계약현황</span>
+                <div class="orderDispatchData">경비포함</div>
+            </div>
+            <div class="orderPopupDataCell">
+                <span class="orderPopupDataTitle">비용구분</span>
+                <div class="orderDispatchData">고속별주차별상여별</div>
+            </div>
+            <div class="orderPopupDataCell">
+                <span class="orderPopupDataTitle">참조사항</span>
+                <div class="orderDispatchData">광교산업센터주차장따로없다하심 주변건물뒤쪽에서 대기가능하다함</div>
+            </div>
+            <div class="orderPopupDataCell">
+                <span class="orderPopupDataTitle">예약자</span>
+                <div class="orderDispatchData">현대</div>
+            </div>
+            <div class="orderPopupDataCell">
+                <span class="orderPopupDataTitle">전화번호</span>
+                <div class="orderDispatchData">010-1324-1234</div>
+            </div>
+            <div class="orderPopupDataCell">
+                <span class="orderPopupDataTitle">계약금액</span>
+                <div class="orderDispatchData">100,000,000</div>
+            </div>
+            <div class="orderPopupDataCell">
+                <span class="orderPopupDataTitle">입금현황</span>
+                <div class="orderDispatchData">사무실입금</div>
+            </div>
+            <div class="orderPopupDataCell">
+                <span class="orderPopupDataTitle">입금 예정일</span>
+                <div class="orderDispatchData">2020.01.01</div>
+            </div>
+            <div class="orderPopupDataCell">
+                <span class="orderPopupDataTitle">계산서 발행일</span>
+                <div class="orderDispatchData">2020.01.01</div>
+            </div>
+            <div class="orderPopupDataCell">
+                <span class="orderPopupDataTitle">수금구분</span>
+                <div class="orderDispatchData">회사수금</div>
+            </div>
+            <div class="orderPopupDataCell">
+                <span class="orderPopupDataTitle">상여금</span>
+                <div class="orderDispatchData">100,000</div>
+            </div>
+            <div class="orderPopupDataCell">
+                <span class="orderPopupDataTitle">상여금 선지급</span>
+                <div class="orderDispatchData">선지급</div>
+            </div>
+            <div class="orderPopupDataCell">
+                <span class="orderPopupDataTitle">VAT포함</span>
+                <div class="orderDispatchData">포함</div>
+            </div>
+        </div>
+        
+        <div class="orderPopupDataArea orderPopupDataAreaEdit">
+            <div class="orderPopupDataCell">
+                <span class="orderPopupDataTitle">출발지</span>
+                <input type="text" class="" value="동수원송림빌딩앞(수원시 의사회)">
+            </div>
+            <div class="orderPopupDataCell">
+                <span class="orderPopupDataTitle">차량대수</span>
+                <input type="text" class="" value="3대">
+            </div>
+            <div class="orderPopupDataCell">
+                <span class="orderPopupDataTitle">도착지</span>
+                <input type="text" class="" value="영광 백수해안도로">
+            </div>
+            <div class="orderPopupDataCell">
+                <span class="orderPopupDataTitle">차량종류</span>
+                <select>
+                    <option value="">41</option>
+                </select>
+            </div>
+            <div class="orderPopupDataCell">
+                <span class="orderPopupDataTitle">운행종류</span>
+                <select>
+                    <option value="">왕복</option>
+                </select>
+            </div>
+            <div class="orderPopupDataCell">
+                <span class="orderPopupDataTitle">운행시간</span>
+                <div class="datetimeCell">
+                    <input type="datetime-local">~
+                    <input type="datetime-local">
+                </div>
+            </div>
+            <div class="orderPopupDataCell">
+                <span class="orderPopupDataTitle">계약현황</span>
+                <select>
+                    <option value="">경비포함</option>
+                </select>
+            </div>
+            <div class="orderPopupDataCell">
+                <span class="orderPopupDataTitle">비용구분</span>
+                <select>
+                    <option value="">고속별주차별상여별</option>
+                </select>
+            </div>
+            <div class="orderPopupDataCell">
+                <span class="orderPopupDataTitle">참조사항</span>
+                <input type="text" class="" value="광교산업센터주차장따로없다하심 주변건물뒤쪽에서 대기가능하다함">
+            </div>
+            <div class="orderPopupDataCell">
+                <span class="orderPopupDataTitle">예약자</span>
+                <input type="text" class="" value="현대">
+            </div>
+            <div class="orderPopupDataCell">
+                <span class="orderPopupDataTitle">전화번호</span>
+                <input type="text" class="" value="010-1324-1234">
+            </div>
+            <div class="orderPopupDataCell">
+                <span class="orderPopupDataTitle">계약금액</span>
+                <input type="text" class="" value="100,000,000">
+            </div>
+            <div class="orderPopupDataCell">
+                <span class="orderPopupDataTitle">입금현황</span>
+                <select>
+                    <option value="">사무실입금</option>
+                </select>
+            </div>
+            <div class="orderPopupDataCell">
+                <span class="orderPopupDataTitle">입금 예정일</span>
+                <input type="date" class="">
+            </div>
+            <div class="orderPopupDataCell">
+                <span class="orderPopupDataTitle">계산서 발행일</span>
+                <input type="date" class="">
+            </div>
+            <div class="orderPopupDataCell">
+                <span class="orderPopupDataTitle">수금구분</span>
+                <select>
+                    <option value="">회사수금</option>
+                </select>
+            </div>
+            <div class="orderPopupDataCell">
+                <span class="orderPopupDataTitle">상여금</span>
+                <input type="text" class="" value="100,000">
+            </div>
+            <div class="orderPopupDataCell">
+                <span class="orderPopupDataTitle">상여금 선지급</span>
+                <div class="checkingCell">
+                    <input type="checkbox" id="bonusS" checked>
+                    <label for="bonusS">선지급</label>
+                </div>
+            </div>
+            <div class="orderPopupDataCell">
+                <span class="orderPopupDataTitle">VAT포함</span>
+                <div class="checkingCell">
+                    <input type="checkbox" id="vatS" checked>
+                    <label for="vatS">포함</label>
+                </div>
+            </div>
+        </div>
+
+        <div class="orderPopupBtnBox">
+            <div class="btnModules">닫기</div>
+            <div class="btnModules">수정</div>
+            <input type="submit" class="btnModules" value="저장">
+        </div>
+    </form>
+</div>
+{% endblock %}
+
+
+
+
+
+
+{% block script %}
+<script src="{% static 'js/dispatch/orderPopup.js' %}"></script>
+{% endblock %}

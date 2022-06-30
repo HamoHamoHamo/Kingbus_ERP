@@ -7,7 +7,7 @@
 
 {% block content-header %}
 <div class="HeaderTitle">
-  공지사항
+  {% if notice.kinds == 'driver' %}기사님 공지사항 {% else %} 사무실 공지사항 {% endif %}
 </div>
 {% endblock %}
 {% block content %}
@@ -23,9 +23,9 @@
       <div class="inputCell">
         <span class="inputName">구분</span>
         <div class="radiobox">
-          <input type="radio" id="driver" value="driver" name="kinds" checked>
+          <input type="radio" id="driver" value="driver" name="kinds" {% if notice.kinds == 'driver' %} checked {% endif %}>
           <label for="driver">기사님</label>
-          <input type="radio" id="office" value="office" name="kinds">
+          <input type="radio" id="office" value="office" name="kinds" {% if notice.kinds == 'office' %} checked {% endif %}>
           <label for="office">사무실</label>
         </div>
       </div>
@@ -33,20 +33,22 @@
         <span class="inputName">첨부파일</span>
         <div class="fileEditer">
           <input type="file" name="file" multiple>
-          <div class="createdFileBox">
-            {% for file in notice_files %}
-            <div class="createdFileCell">
-              <span>{{file.filename}}</span>
-              {% if request.session.user == notice.creator.id %}
-              <a href="{% url 'notice:file_del' notice.kinds notice.id file.id %}">삭제</a>
-              {% endif %}
+          {% if notice_files %}
+            <div class="createdFileBox">
+              {% for file in notice_files %}
+              <div class="createdFileCell">
+                <span>{{file.filename}}</span>
+                {% if request.session.user == notice.creator.id %}
+                <a href="{% url 'notice:file_del' notice.kinds notice.id file.id %}">삭제</a>
+                {% endif %}
+              </div>
+              {% endfor %}
             </div>
-            {% endfor %}
-          </div>
+          {% endif %}
         </div>
       </div>
     </div>
-    <textarea name="content" required>{{comment.content}}</textarea>
+    <textarea name="content" required>{{notice.content}}</textarea>
     <div class="createBtnBox">
       <input type="submit" value="저장" class="createBtn">
     </div>

@@ -1,0 +1,814 @@
+@media only screen and (min-width: 1024px) and (max-width: 1199px) {
+    body {
+        width: 100vw;
+    }
+
+    header {
+        width: 100vw;
+        padding: 0 1rem;
+        box-sizing: border-box;
+    }
+
+    .firstContainerContentsBox {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 102.4rem;
+        height: 45rem;
+        padding: 0 1rem;
+        box-sizing: border-box;
+    }
+
+    .firstContainerContentsBox img {
+        display: none;
+    }
+
+    .firstContainerTextBox {
+        align-items: center;
+    }
+
+    .secondContainer {
+        width: 100vw;
+    }
+
+    .secondContainerTop {
+        width: 100%;
+        margin: 0 auto 10rem auto;
+        padding: 0 1rem;
+        box-sizing: border-box;
+    }
+
+    .secondContainerBottom {
+        width: 100%;
+        padding: 0 1rem;
+        box-sizing: border-box;
+    }
+
+    .secondContainerTopBg {
+        position: absolute;
+        top: 0;
+        right: 0;
+        z-index: -1;
+        width: calc((100vw - 102.4rem)/2 + 100%);
+        height: 100%;
+        background-color: #0069D9;
+    }
+
+    .thirdContainer {
+        flex-direction: column;
+        height: 140rem;
+        padding: 15rem 0;
+        justify-content: space-around;
+        box-sizing: border-box;
+    }
+
+    .secondContainerBottomTextBox {
+        height: 80%;
+    }
+
+    .secondContainerBottom img {
+        width: 63rem;
+    }
+
+    .thirdContainer {
+        width: 100%;
+    }
+
+    .thirdContainer img {
+        width: 62rem;
+        order: 2;
+    }
+
+    .thirdContainerInfoBox img {
+        width: 3.6rem;
+        order: 0;
+    }
+
+    .thirdContainerBox {
+        align-items: center;
+        height: 44rem;
+        order: 1;
+    }
+
+    .thirdContainerTitle {
+        text-align: center;
+    }
+
+    .thirdContainerContents {
+        text-align: center;
+    }
+
+    .fourthContainer {
+        width: 100%;
+    }
+
+    .fourthContainerBox {
+        width: 102.4rem;
+    }
+
+    .fourthContainerContents {
+        width: 102.4rem;
+    }
+
+    .fifthContainer {
+        width: 100%;
+    }
+
+    .fifthContainerBox {
+        justify-content: space-around;
+        width: 102.4rem;
+    }
+
+    footer {
+        width: 100%;
+    }
+
+    footer div {
+        margin: 0 1.2rem;
+    }
+}
+
+@media only screen and (min-width: 768px) and (max-width: 1023px) {
+    body {
+        width: 100vw;
+    }
+
+    header {
+        width: 100vw;
+        padding: 0 1rem;
+        box-sizing: border-box;
+    }
+
+    .firstContainerContentsBox {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 102.4rem;
+        height: 45rem;
+        padding: 0 1rem;
+        box-sizing: border-box;
+    }
+
+    .firstContainerTextBox {
+        align-items: center;
+    }
+
+    .firstContainerContentsBox img {
+        display: none;
+    }
+
+    .secondContainer {
+        width: 100vw;
+        align-items: center;
+    }
+
+    .secondContainerTop {
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
+        height: 74rem;
+        margin: 0 auto;
+        padding: 0 1rem;
+        box-sizing: border-box;
+    }
+
+    .secondContainerBottom {
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
+        height: 120rem;
+        padding: 0 1rem;
+        box-sizing: border-box;
+    }
+
+    .secondContainerBottomTextBox {
+        justify-content: space-between;
+        height: 52.8rem;
+        margin-top: 6rem;
+    }
+
+    .secondContainerMainCell {
+        align-items: center;
+    }
+
+    .secondContainerMainTitle {
+        text-align: center;
+    }
+
+    .secondContainerTopBg {
+        position: absolute;
+        top: 0;
+        left: 50%;
+        z-index: -1;
+        width: 100vw;
+        height: 100%;
+        background-color: #0069D9;
+        transform: translate(-50%, 0);
+    }
+
+    .secondContainerMainText {
+        text-align: center;
+    }
+
+    .thirdContainer {
+        flex-direction: column;
+        height: 140rem;
+        padding: 15rem 0;
+        justify-content: space-around;
+        box-sizing: border-box;
+    }
+
+    .secondContainerBottom img {
+        width: 63rem;
+    }
+
+    .thirdContainer {
+        width: 100%;
+    }
+
+    .thirdContainer img {
+        width: 62rem;
+        order: 2;
+    }
+
+    .thirdContainerInfoBox img {
+        width: 3.6rem;
+        order: 0;
+    }
+
+    .thirdContainerBox {
+        align-items: center;
+        height: 44rem;
+        order: 1;
+    }
+
+    .thirdContainerTitle {
+        text-align: center;
+    }
+
+    .thirdContainerContents {
+        text-align: center;
+    }
+
+    .fourthContainer {
+        width: 100%;
+        height: 150rem;
+    }
+
+    .fourthContainerBox {
+        width: 102.4rem;
+        padding: 14rem 0;
+    }
+
+    .fourthContainerContents {
+        grid-template-columns: 1fr;
+        width: 100%;
+        min-width: 76.8rem;
+        max-width: 102.3rem;
+    }
+
+    .fifthContainer {
+        width: 100%;
+        height: 34rem;
+    }
+
+    .fifthContainerBox {
+        flex-direction: column;
+        align-items: center;
+        justify-content: space-around;
+        width: 100%;
+        min-width: 76.8rem;
+        max-width: 102.3rem;
+    }
+
+    .fifthContainerCall {
+        justify-content: center;
+    }
+
+    footer {
+        flex-wrap: wrap;
+        justify-content: center;
+        width: 100%;
+        height: auto;
+        padding: 1.6rem 0 0.4rem 0;
+    }
+
+    footer div {
+        margin: 0 1.2rem 1.2rem 1.2rem;
+    }
+}
+
+@media only screen and (min-width: 560px) and (max-width: 767px) {
+    body {
+        width: 100vw;
+    }
+
+    header {
+        width: 100vw;
+        padding: 0 1rem;
+        box-sizing: border-box;
+    }
+
+    .navConteiner {
+        display: none;
+    }
+
+    .hembugeIcon {
+        display: flex;
+    }
+
+    .firstContainerContentsBox {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 102.4rem;
+        height: 45rem;
+        padding: 0 1rem;
+        box-sizing: border-box;
+    }
+
+    .firstContainerTextBox {
+        align-items: center;
+    }
+
+    .firstContainerContentsBox img {
+        display: none;
+    }
+
+    .secondContainer {
+        width: 100vw;
+        align-items: center;
+    }
+
+    .secondContainerTop {
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
+        height: 74rem;
+        margin: 0 auto;
+        padding: 0 1rem;
+        box-sizing: border-box;
+    }
+
+    .secondContainerBottom {
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
+        height: 112rem;
+        padding: 0 1rem;
+        box-sizing: border-box;
+    }
+
+    .secondContainerBottomTextBox {
+        justify-content: space-between;
+        height: 52.8rem;
+        margin-top: 6rem;
+    }
+
+    .secondContainerMainCell {
+        align-items: center;
+    }
+
+    .secondContainerMainTitle {
+        text-align: center;
+    }
+
+    .secondContainerTopBg {
+        position: absolute;
+        top: 0;
+        left: 50%;
+        z-index: -1;
+        width: 100vw;
+        height: 100%;
+        background-color: #0069D9;
+        transform: translate(-50%, 0);
+    }
+
+    .secondContainerMainText {
+        text-align: center;
+    }
+
+    .thirdContainer {
+        flex-direction: column;
+        height: 140rem;
+        padding: 15rem 0;
+        justify-content: space-around;
+        box-sizing: border-box;
+    }
+
+    .secondContainerBottom img {
+        width: 52rem;
+    }
+
+    .thirdContainer {
+        width: 100%;
+    }
+
+    .thirdContainer img {
+        width: 52rem;
+        order: 2;
+    }
+
+    .thirdContainerInfoBox img {
+        width: 3.6rem;
+        order: 0;
+    }
+
+    .thirdContainerBox {
+        align-items: center;
+        height: 44rem;
+        order: 1;
+    }
+
+    .thirdContainerTitle {
+        text-align: center;
+    }
+
+    .thirdContainerContents {
+        text-align: center;
+    }
+
+    .fourthContainer {
+        width: 100%;
+        height: 150rem;
+    }
+
+    .fourthContainerBox {
+        width: 56em;
+        padding: 14rem 0;
+    }
+
+    .fourthContainerContents {
+        grid-template-columns: 1fr;
+        width: 100%;
+        min-width: 56rem;
+        max-width: 76.7rem;
+    }
+
+    .fifthContainer {
+        width: 100%;
+        height: 34rem;
+    }
+
+    .fifthContainerBox {
+        flex-direction: column;
+        align-items: center;
+        justify-content: space-around;
+        width: 100%;
+        min-width: 56rem;
+        max-width: 76.7rem;
+    }
+
+    .fifthContainerCall {
+        justify-content: center;
+    }
+
+    footer {
+        flex-wrap: wrap;
+        justify-content: center;
+        width: 100%;
+        height: auto;
+        padding: 1.6rem 0 0.4rem 0;
+    }
+
+    footer div {
+        margin: 0 1.2rem 1.2rem 1.2rem;
+    }
+}
+
+@media only screen and (min-width: 360px) and (max-width: 559px) {
+    body {
+        width: 100vw;
+    }
+
+    header {
+        width: 100vw;
+        height: 4rem;
+        padding: 0 1rem;
+        box-sizing: border-box;
+    }
+
+    .header a img {
+        width: 8rem;
+    }
+
+    .navConteiner {
+        display: none;
+    }
+
+    .hembugeIcon {
+        display: flex;
+    }
+
+    .firstContainer {
+        height: 50rem;
+        margin-top: 4rem;
+    }
+
+    .firstContainerContentsBox {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        max-width: 55.9rem;
+        min-width: 36rem;
+        height: 45rem;
+        padding: 0 1rem;
+        box-sizing: border-box;
+    }
+
+    .firstContainerTextBox {
+        height: 20rem;
+        align-items: center;
+    }
+
+    .firstContainerContentsBox img {
+        display: none;
+    }
+
+    .firstContainerTitle {
+        font-size: 2.2rem;
+    }
+
+    .firstContainerText {
+        text-align: center;
+        font-size: 1.6rem;
+        line-height: 2.4rem;
+    }
+
+    .firstContainerEnterButtonBox {
+        width: 16rem;
+        height: 3.6rem;
+    }
+
+    .firstContainerEnterButton {
+        width: 16rem;
+        height: 3.6rem;
+        font-size: 1.6rem;
+    }
+
+    .secondContainer {
+        width: 100vw;
+        padding: 0;
+        align-items: center;
+    }
+
+    .secondContainerTop {
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
+        height: 56rem;
+        margin: 0 auto;
+        padding: 0 1rem;
+        box-sizing: border-box;
+    }
+
+    .secondContainerBottom {
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
+        height: 82rem;
+        margin-bottom: 8rem;
+        padding: 0 1rem;
+        box-sizing: border-box;
+    }
+
+    .secondContainerBottomTextBox {
+        justify-content: space-between;
+        height: 52.8rem;
+        margin-top: 6rem;
+    }
+
+    .secondContainerMainCell {
+        width: 36rem;
+        height: 26rem;
+        align-items: center;
+    }
+
+    .secondContainerMainTitle {
+        font-size: 2.6rem;
+        text-align: center;
+    }
+
+    .secondContainerTopBg {
+        position: absolute;
+        top: 0;
+        left: 50%;
+        z-index: -1;
+        width: 100vw;
+        height: 100%;
+        background-color: #0069D9;
+        transform: translate(-50%, 0);
+    }
+
+    .secondContainerMainText {
+        text-align: center;
+        font-size: 1.4rem;
+        line-height: 2.6rem
+    }
+
+    .thirdContainer {
+        flex-direction: column;
+        height: 140rem;
+        padding: 15rem 0;
+        justify-content: space-around;
+        box-sizing: border-box;
+    }
+
+    .secondContainerBottom img {
+        width: 32rem;
+    }
+
+    .secondContainerTopTextBox {
+        height: 24.6rem;
+        margin-top: 4rem;
+    }
+
+    .secondContainerBottomTextBox {
+        height: 38.9rem;
+        margin-top: 4rem;
+    }
+
+    .secondContainerTextCell {
+        width: 32rem;
+    }
+
+    .secondContainerTextCellText {
+        font-size: 1.4rem;
+        line-height: 2.6rem;
+    }
+
+    .secondContainerTextCellTitleBold {
+        font-size: 2.4rem;
+    }
+
+    .secondContainerTextCellTitle {
+        font-size: 1.6rem;
+    }
+
+    .thirdContainer {
+        width: 100%;
+        height: 110rem;
+        padding: 8rem 0;
+    }
+
+    .thirdContainer img {
+        width: 32rem;
+        order: 2;
+    }
+
+    .thirdContainerInfoBox img {
+        width: 3.6rem;
+        order: 0;
+    }
+
+    .thirdContainerBox {
+        align-items: center;
+        height: 44rem;
+        order: 1;
+    }
+
+    .thirdContainerTitle {
+        text-align: center;
+        font-size: 2.4rem;
+        line-height: 3.6rem;
+    }
+
+    .thirdContainerContents {
+        text-align: center;
+        font-size: 1.4rem;
+        line-height: 2.2rem;
+        margin-top: 0;
+    }
+
+    .thirdContainerInfoBox {
+        flex-direction: column;
+        justify-content: space-between;
+        height: 20rem;
+    }
+
+    .thirdContainerInfoCell {
+        height: 6.4rem;
+        align-items: center;
+        padding: 0;
+    }
+
+    .thirdContainerInfoTitle {
+        font-size: 1.6rem;
+    }
+
+    .thirdContainerInfoText {
+        font-size: 1.4rem;
+    }
+
+    .thirdContainerInfoBox .thirdContainerInfoCell:nth-child(3) {
+        width: 20rem;
+    }
+
+    .fourthContainer {
+        width: 100%;
+        height: 114rem;
+    }
+
+    .fourthContainerBox {
+        width: 36em;
+        padding: 8rem 0;
+    }
+
+    .fourthContainerTitle {
+        font-size: 2.6rem;
+    }
+
+    .fourthContainerContents {
+        grid-template-columns: 1fr;
+        width: 100%;
+        min-width: 36rem;
+        max-width: 59.9rem;
+    }
+    .fourthContainerCell{
+        margin-bottom: 8rem;
+    }
+    .fourthContainerCell img {
+        width: 8rem;
+        height: 8rem;
+    }
+
+    .fourthContainerTextCell {
+        width: 22.6rem;
+        margin-left: 3rem;
+    }
+    .fourthContainerCellSubTitle {
+        font-size: 1.4rem;
+    }
+    .fourthContainerCellTitle {
+        font-size: 2rem;
+        margin-bottom: 0.8rem;
+    }
+    .fourthContainerCellText {
+        font-size: 1.4rem;
+        line-height: 2rem;
+    }
+
+    .fifthContainer {
+        width: 100%;
+        height: 28rem;
+        padding: 4rem 0;
+    }
+
+    .fifthContainerBox {
+        flex-direction: column;
+        align-items: center;
+        justify-content: space-around;
+        width: 100%;
+        min-width: 36rem;
+        max-width: 59.9rem;
+    }
+
+    .fifthContainerPayment {
+        width: 32rem;
+        justify-content: space-around;
+        align-items: center;
+    }
+
+    .fifthContainerPaymentBox {
+        width: 22rem;
+    }
+
+    .fifthContainerPayment img {
+        width: 7rem;
+    }
+
+    .fifthContainerPaymentTopButton img {
+        width: 1.4rem;
+    }
+
+    .fifthContainerPaymentTitle {
+        font-size: 2.2rem;
+    }
+
+    .fifthContainerCall {
+        width: 32rem;
+        justify-content: center;
+    }
+
+    .fifthContainerCall span {
+        font-size: 1.4rem;
+    }
+
+    footer {
+        flex-wrap: wrap;
+        justify-content: center;
+        width: 100%;
+        height: auto;
+        padding: 1.6rem 0 0.4rem 0;
+    }
+
+    .fifthContainerCall img {
+        width: 2rem;
+        height: 2rem;
+    }
+
+    footer div {
+        margin: 0 1.2rem 1.2rem 1.2rem;
+    }
+}

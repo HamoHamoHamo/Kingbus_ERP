@@ -1,1 +1,231 @@
-sc
+{% extends 'base.html' %}
+{% load static %}
+{% block head %}
+<meta http-equiv="Cache-Control" content="private, no-cache, no-store, max-age=0, must-revalidate">
+
+<link rel="stylesheet" href="{% static 'css/dispatch/schedule.css' %}" type="text/css" />
+{% endblock %}
+
+{% block content-header %}
+<div class="HeaderTitle">
+    배차일정
+</div>
+{% endblock %}
+
+{% block content %}
+
+
+
+
+<div class="searchAreaBox">
+    <form action="">
+        <div class="searchTool">
+            <span class="searchName">검색종류</span>
+            <div class="routeFilterBox">
+                <select name="" id="" class="inputModules">
+                    <option value="">기사이름</option>
+                    <option value="">차량번호</option>
+                </select>
+                <input type="text" class="inputModules" list="diverFilter">
+                <datalist id="diverFilter">
+                    <option value="기사이름"></option>
+                    <option value="항목1"></option>
+                </datalist>
+                <input type="text" class="inputModules" list="busFilter">
+                <datalist id="busFilter">
+                    <option value="차량번호"></option>
+                    <option value="항목1"></option>
+                </datalist>
+            </div>
+            <div class="dateFilterBox">
+                <span>날짜</span>
+                <input type="date" class="inputModules">
+            </div>
+            <input type="submit" value="검색" class="btnModules">
+        </div>
+    </form>
+    <div class="optionBtnBox">
+    </div>
+</div>
+
+
+
+
+
+<div class="contentsAreaBox">
+    <div class="scheduleTableBox">
+        <table class="scheduleTableHeader">
+            <thead>
+                <tr>
+                    <td>0</td>
+                    <td>02</td>
+                    <td>04</td>
+                    <td>06</td>
+                    <td>08</td>
+                    <td>10</td>
+                    <td>12</td>
+                    <td>14</td>
+                    <td>16</td>
+                    <td>18</td>
+                    <td>20</td>
+                    <td>22</td>
+                    <td>24</td>
+                    <td>기사님</td>
+                </tr>
+            </thead>
+        </table>
+        <div class="scheduleTableCell">
+            <table class="scheduleTableBody">
+                <tbody>
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td>이도울/11111</td>
+                        <td class="schduleLineBox">
+                            <div class="toWorkLine"></div>
+                            <div class="workLine"></div>
+                            <div class="toHomeLine"></div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td>이도울/11111</td>
+                        <td class="schduleLineBox">
+                            <div class="toWorkLine"></div>
+                            <div class="workLine"></div>
+                            <div class="toHomeLine"></div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+{% endblock %}
+
+
+
+
+
+{% block popup %}
+
+<div class="popupAreaModules">
+    <div class="popupBgModules"></div>
+    <form class="popupContainer">
+
+        <div class="PopupTitle">배차등록</div>
+
+        <div class="PopupDataArea">
+            <div class="PopupDataBox">
+                <div class="PopupDataCell">
+                    <span class="PopupDataTitle">이름</span>
+                    <div>이도울</div>
+                </div>
+                <div class="PopupDataCell">
+                    <span class="PopupDataTitle">차량번호</span>
+                    <div>1111</div>
+                </div>
+                <div class="PopupDataCell">
+                    <span class="PopupDataTitle">날짜</span>
+                    <div>2022.01.01</div>
+                </div>
+            </div>
+            <div class="shcedulePopupTableBox">
+                <table class="shcedulePopupTableHeader">
+                    <thead>
+                        <thead>
+                            <tr>
+                                <td>구분</td>
+                                <td>운행시간</td>
+                                <td>노선</td>
+                            </tr>
+                        </thead>
+                    </thead>
+                </table>
+                <div class="shcedulePopupTableBodyBox">
+                    <table class="shcedulePopupTableBody">
+                        <tbody>
+                            <tr>
+                                <td>출근</td>
+                                <td>16:00~21:00</td>
+                                <td>마북제어시스템개발센터등->대형주차장->EE연구소->샤시동▶마북연구소</td>
+                            </tr>
+                            <tr>
+                                <td>출근</td>
+                                <td>16:00~21:00</td>
+                                <td>마북제어시스템개발센터등->대형주차장->EE연구소->샤시동▶마북연구소</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="PopupBtnBox">
+            <div class="btnModules">닫기</div>
+        </div>
+
+    </form>
+</div>
+
+
+{% endblock %}
+
+
+
+
+
+
+{% block script %}
+<script src="{% static 'js/dispatch/schedulePopup.js' %}"></script>
+{% endblock %}

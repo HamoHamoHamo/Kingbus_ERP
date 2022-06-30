@@ -38,6 +38,27 @@
   background-color: #444444;
 }
 
+.optionBtnBox {
+  display: flex;
+  justify-content: space-between;
+  width: 22rem;
+}
+
+.optionBtnBox div {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 10rem;
+  height: 3.8rem;
+  border-radius: 0.2rem;
+  background-color: #444444;
+  font-size: 1.4rem;
+  color: white;
+  cursor: pointer;
+}
+
+
+
 
 
 /*tableHead*/
@@ -131,22 +152,25 @@ table a {
 }
 
 td:nth-child(1) {
-  display: flex;
-  justify-content: center;
-  width: 4%;
+  width: 3%;
+  padding-left: 1%;
+}
+
+tbody td input {
+  width: 1.6rem;
+  height: 1.6rem;
 }
 
 td:nth-child(2) {
-  width: 14%;
-  padding-left: 1%;
+  width: 16%;
+  word-break: keep-all;
 }
 
 td:nth-child(3) {
   width: 30%;
-  word-break: keep-all;
 }
 
-.tableBody td:nth-child(3) {
+tbody td:nth-child(3) {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -155,27 +179,22 @@ td:nth-child(3) {
   cursor: pointer;
 }
 
-
 td:nth-child(4) {
-  width: 8%;
+  width: 10%;
 }
 
 td:nth-child(5) {
-  width: 7%;
+  width: 10%;
 }
 
 td:nth-child(6) {
   display: flex;
   justify-content: center;
-  width: 6%;
+  width: 5%;
 }
 
-td:nth-child(7) {
-  width: 9%;
-}
-
-td:nth-child(8) {
-  width: 20%;
+td:nth-child(9) {
+  width: 25%;
   padding-right: 1%;
   word-break: keep-all;
 }
@@ -185,6 +204,15 @@ td:nth-child(8) {
   height: 2rem;
   cursor: pointer;
 }
+
+.btnBox input {
+  background-color: #444444;
+}
+
+
+
+
+
 
 .popupContainer {
   position: fixed;
@@ -388,17 +416,37 @@ td:nth-child(8) {
   box-sizing: border-box;
 }
 
-.regularyCreatePopupBtnBox div{
+.regularyCreatePopupBtnBox div:nth-child(1) {
   background-color: #444444;
 }
 
-.regularyCreatePopupBtnBox input {
+.regularyCreatePopupBtnBox div:nth-child(2) {
   background-color: #0069D9;
 }
 
 
 
+
+
 .popupAreaModulesRoute {
+  position: absolute;
+  top: 0;
+  right: 0;
+  display: none;
+  width: 100%;
+  height: 100%;
+}
+
+.popupAreaModulesRouteCreate {
+  position: absolute;
+  top: 0;
+  right: 0;
+  display: none;
+  width: 100%;
+  height: 100%;
+}
+
+.popupAreaModulesGroupCreate {
   position: absolute;
   top: 0;
   right: 0;
@@ -444,6 +492,7 @@ td:nth-child(8) {
 }
 
 .routePopupDataArea {
+  display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
   width: 100%;
@@ -479,7 +528,8 @@ td:nth-child(8) {
 }
 
 .routePopupDataArea .routePopupDataCell:nth-child(2),
-.routePopupDataArea .routePopupDataCell:nth-child(13) {
+.routePopupDataArea .routePopupDataCell:nth-child(4),
+.routePopupDataArea .routePopupDataCell:nth-child(15) {
   width: 48.8rem;
 }
 
@@ -501,6 +551,10 @@ td:nth-child(8) {
   box-sizing: border-box;
 }
 
+.popupAreaModulesGroupCreate .routePopupBtnBox {
+  justify-content: center;
+}
+
 .routePopupBtnBox div:nth-child(1) {
   background-color: #444444;
 }
@@ -508,7 +562,11 @@ td:nth-child(8) {
 .routePopupBtnBox div:nth-child(2) {
   background-color: #0069D9;
 }
-.routePopupBtnBox input{
+
+.routePopupBtnBox input {
+  background-color: #0069D9;
+}
+.routePopupBtnBox input:nth-child(3){
   display: none;
   background-color: #0069D9;
 }
@@ -547,6 +605,7 @@ td:nth-child(8) {
 .routePopupDataDriveTime,
 .routePopupDataDriveTime,
 .routePopupDataDriveTime,
+.routePopupDataDriverNumber,
 .routePopupDataDriverPay,
 .routePopupDataBusKinds,
 .routePopupDataBusCount,
@@ -558,23 +617,164 @@ td:nth-child(8) {
   width: 23rem;
 }
 
-.routePopupDataDriveDate{
+.routePopupDataDriveDate {
   display: flex;
   flex-direction: column;
   align-items: flex-end;
   border-bottom: 0.1rem solid #191919;
 }
-.routePopupDataDriveDate input[type=checkbox]{
+
+.routePopupDataDriveDate input[type=checkbox] {
   margin: 0;
 }
-.routePopupDataDriveDate label{
+
+.routePopupDataDriveDate label {
   font-size: 1.4rem;
   cursor: pointer;
 }
-.routePopupWork{
+
+.routePopupWork {
   font-size: 1.4rem;
   border-bottom: 0.1rem solid #191919;
 }
-.routePopupWork label{
+
+.routePopupWork label {
   cursor: pointer;
+}
+
+
+
+
+
+.popupAreaModulesGroupCreate .routePopupDataArea {
+  display: flex;
+  flex-direction: column;
+}
+
+.createGroupBox {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  width: 100%;
+  height: 5.2rem;
+  border-bottom: 0.1rem solid #191919;
+}
+
+.createGroupBox label {
+  font-size: 1.4rem;
+}
+
+.createGroupBox input[type=text] {
+  width: 58rem;
+  height: 2.5rem;
+  margin-left: 2rem;
+  box-sizing: border-box;
+  outline: none;
+}
+
+.createGroupBox input[type=submit] {
+  background-color: #0069D9;
+  margin-left: 2rem;
+}
+
+.groupContainer {
+  height: 35.7rem;
+  overflow-y: scroll;
+  border-bottom: 0.1rem solid #191919;
+}
+
+.groupContainer::-webkit-scrollbar {
+  width: 6px;
+}
+
+.groupContainer::-webkit-scrollbar-thumb {
+  height: 17%;
+  background-color: #828282;
+  border-radius: 10px;
+}
+
+.groupContainer::-webkit-scrollbar-track {
+  background-color: #F5F5F5;
+}
+
+.groupFullBox {
+  width: 100%;
+  height: auto;
+}
+
+.groupBox {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  height: 3.2rem;
+  padding-right: 0.6rem;
+  border-bottom: 0.1rem solid #191919;
+  box-sizing: border-box;
+  cursor: pointer;
+}
+
+.groupBox img {
+  width: 1.4rem;
+  height: 0.8rem;
+  cursor: pointer;
+}
+
+.groupBoxTitle {
+  width: 63.5rem;
+  border: none;
+  font-family: 'Noto Sans CJK KR';
+  font-weight: normal;
+  color: #191919;
+  margin-left: 2rem;
+  background-color: white;
+  cursor: pointer;
+}
+
+.groupBoxTollCell {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 4rem;
+  margin-left: 2rem;
+}
+
+.groupDepth2 {
+  width: 100%;
+  height: 0;
+  padding-left: 4rem;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
+.groupDepth2Route {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  height: 3.6rem;
+  border-bottom: 0.1rem solid #CDCDCE;
+  font-size: 1.4rem;
+  font-weight: normal;
+  color: #676767;
+}
+
+.groupBoxTollCell input {
+  width: 1.4rem;
+  height: 1.4rem;
+  padding: 0;
+  border: none;
+  background-color: transparent;
+  background-size: cover;
+  cursor: pointer;
+}
+
+.groupBoxTollCell input:nth-child(1) {
+  background-image: url("../../images/editIcon.png");
+}
+
+.groupBoxTollCell input:nth-child(3) {
+  background-image: url("../../images/deleteIcon.png");
+}
+
+.groupCretetCloseBtn {
+  background-color: #444444;
 }
