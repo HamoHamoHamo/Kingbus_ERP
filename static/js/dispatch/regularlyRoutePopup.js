@@ -1,4 +1,4 @@
-const routeDetail = document.querySelectorAll(".tableBody td:nth-child(3)")
+const routeDetail = document.querySelectorAll(".tableBody td:nth-child(4)")
 const popupAreaModulesRoute = document.querySelector(".popupAreaModulesRoute")
 const popupBgModulesRoute = document.querySelectorAll(".popupBgModulesRoute")
 const SidemenuUseClose = document.querySelector(".Sidemenu")
@@ -6,9 +6,10 @@ const routePopupTitle = document.querySelector(".routePopupTitle")
 const routePopupCloseBtn = document.querySelector(".routePopupBtnBox .btnModules:nth-child(1)")
 const routePopupEditBtn = document.querySelector(".routePopupBtnBox .btnModules:nth-child(2)")
 const routePopupSaveBtn = document.querySelector(".routePopupBtnBox input")
-const routePoppupDetail = document.querySelector(".popupContainerRoute .routePopupDataArea:nth-child(2)")
-const routePoppupEdit = document.querySelector(".popupContainerRoute .routePopupDataArea:nth-child(3)")
+const routePoppupDetail = document.querySelector(".popupContainerRoute .routePopupDataArea:nth-child(3)")
+const routePoppupEdit = document.querySelector(".popupContainerRoute .routePopupDataArea:nth-child(4)")
 const routePopupDataDriveDateEdit = document.querySelectorAll(".popupAreaModulesRoute .routePopupDataDriveDate input")
+const routePopupDataDriveDateEditLabel = document.querySelectorAll(".popupAreaModulesRoute .routePopupDataDriveDate label")
 const routePopupDataDriveDateCreate = document.querySelectorAll(".popupAreaModulesRouteCreate .routePopupDataDriveDate input")
 const groupMenagementBtn = document.querySelector(".gruopManagementBtn")
 const routeCreateBtn = document.querySelector(".createRouteBtn")
@@ -27,13 +28,14 @@ const routePopupDataDriverNumber = document.querySelector(".routePopupDataDriver
 const routePopupDataDriverPay = document.querySelector(".routePopupDataDriverPay")
 const routePopupDataBusKindsOption = document.querySelectorAll(".routePopupDataBusKinds option")
 const routePopupDataBusCount = document.querySelector(".routePopupDataBusCount")
-const routePopupDataContractPeriod = document.querySelectorAll(".routePopupDataContractPeriod")
+const routePopupDataContractPeriod = document.querySelectorAll(".routePopupDataContractPeriod input")
 const routePopupDatAaccount = document.querySelector(".routePopupDatAaccount")
 const routePopupPhoneNumber = document.querySelector(".routePopupPhoneNumber")
 const routePopupDataContractAmount = document.querySelector(".routePopupDataContractAmount")
 const routePopupWorkInput = document.querySelectorAll(".routePopupWork input")
 const routePopupWorkLabel = document.querySelector(".routePopupWork label:nth-child(2)")
 const routePopupDataReference = document.querySelector(".routePopupDataReference")
+const sendToHidden = document.querySelector(".sendToHidden")
 
 
 
@@ -41,7 +43,6 @@ const routePopupDataReference = document.querySelector(".routePopupDataReference
 for (i = 0; i < routeDetail.length; i++) {
   routeDetail[i].addEventListener("click", detailPopup)
 }
-
 function detailPopup() {
   popupAreaModulesRoute.style.display = "block"
   routePopupData[0].innerText = regDatas[this.className].group
@@ -81,12 +82,28 @@ function detailPopup() {
   routePopupDataContractAmount.value = regDatas[this.className].price;
   routePopupDataContractPeriod[0].value = regDatas[this.className].contract_start_date;
   routePopupDataContractPeriod[1].value = regDatas[this.className].contract_end_date;
-  if(routePopupWorkLabel.innerText == regDatas[this.className].work_type){
+  if (routePopupWorkLabel.innerText == regDatas[this.className].work_type) {
     routePopupWorkInput[0].checked = true;
-  }else{
+  } else {
     routePopupWorkInput[1].checked = true;
   }
   routePopupDataReference.value = regDatas[this.className].references;
+  let weekArray = regDatas[this.className].week.split('')
+  let newWeekArray = weekArray.filter(item => item !== ' ')
+  let weekAllCount = 0;
+  for (i = 0; i < 8; i++) {
+    routePopupDataDriveDateEdit[i].checked = false;
+  }
+  for (i = 1; i < routePopupDataDriveDateEdit.length; i++) {
+    if (newWeekArray.find(item => item == routePopupDataDriveDateEditLabel[i].innerText)) {
+      routePopupDataDriveDateEdit[i].checked = true;
+      weekAllCount = weekAllCount + 1;
+      if (weekAllCount == 7) {
+        routePopupDataDriveDateEdit[0].checked = true;
+      }
+    }
+  }
+  sendToHidden.value = this.parentElement.className;
 }
 
 for (i = 0; i < 3; i++) {
@@ -108,6 +125,11 @@ function closedRoutePopupMenu() {
 }
 function closedRoutePopupBtn() {
   popupAreaModulesRoute.style.display = "none"
+  routePopupTitle.innerText = "노선상세"
+  routePopupEditBtn.style.display = "flex"
+  routePopupSaveBtn.style.display = "none"
+  routePoppupDetail.style.display = "flex"
+  routePoppupEdit.style.display = "none"
 }
 function changeEdit() {
   routePopupTitle.innerText = "노선수정"

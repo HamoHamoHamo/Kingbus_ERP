@@ -14,8 +14,24 @@ const routePopupSaveBtn = document.querySelector(".routePopupBtnBox input")
 const routePoppupDetail = document.querySelector(".popupContainerRoute .routePopupDataArea:nth-child(2)")
 const routePoppupEdit = document.querySelector(".popupContainerRoute .routePopupDataArea:nth-child(3)")
 const routePopupTitle = document.querySelector(".routePopupTitle")
-const routePopupDataDriveDate = document.querySelectorAll(".routePopupDataDriveDate input")
 const dispatchCloseBtn = document.querySelector(".regularyCreatePopupBtnBox div:nth-child(1)")
+const routePopupData = document.querySelectorAll(".routePopupData")
+const routePopupDataGroupOption = document.querySelectorAll(".routePopupDataGroup option")
+const routePopupDataDriveTime = document.querySelectorAll(".routePopupDataDriveTime input")
+const routePopupDataRoutName = document.querySelectorAll(".routePopupDataRoutName")
+const routePopupDataDriverNumber = document.querySelector(".routePopupDataDriverNumber")
+const routePopupDataDriverPay = document.querySelector(".routePopupDataDriverPay")
+const routePopupDataBusKindsOption = document.querySelectorAll(".routePopupDataBusKinds option")
+const routePopupDataBusCount = document.querySelector(".routePopupDataBusCount")
+const routePopupDataContractPeriod = document.querySelectorAll(".routePopupDataContractPeriod input")
+const routePopupDatAaccount = document.querySelector(".routePopupDatAaccount")
+const routePopupPhoneNumber = document.querySelector(".routePopupPhoneNumber")
+const routePopupDataContractAmount = document.querySelector(".routePopupDataContractAmount")
+const routePopupWorkInput = document.querySelectorAll(".routePopupWork input")
+const routePopupWorkLabel = document.querySelector(".routePopupWork label:nth-child(2)")
+const routePopupDataReference = document.querySelector(".routePopupDataReference")
+const routePopupDataDriveDateEdit = document.querySelectorAll(".routePopupDataDriveDate input")
+const routePopupDataDriveDateEditLabel = document.querySelectorAll(".routePopupDataDriveDate label")
 
 
 
@@ -124,6 +140,62 @@ for (i = 0; i < routeDetail.length; i++) {
 
 function detailPopup() {
   popupAreaModulesRoute.style.display = "block"
+  routePopupData[0].innerText = regDatas[this.className].group
+  routePopupData[1].innerText = regDatas[this.className].departure
+  routePopupData[2].innerText = `${regDatas[this.className].departure_time}~${regDatas[this.className].arrival_time}`
+  routePopupData[3].innerText = regDatas[this.className].arrival
+  routePopupData[4].innerText = regDatas[this.className].number
+  routePopupData[5].innerText = regDatas[this.className].week
+  routePopupData[6].innerText = regDatas[this.className].driver_allowance
+  routePopupData[7].innerText = regDatas[this.className].bus_type
+  routePopupData[8].innerText = regDatas[this.className].bus_cnt
+  routePopupData[9].innerText = regDatas[this.className].customer
+  routePopupData[10].innerText = regDatas[this.className].customer_phone
+  routePopupData[11].innerText = regDatas[this.className].price
+  routePopupData[12].innerText = `${regDatas[this.className].contract_start_date}~${regDatas[this.className].contract_end_date}`
+  routePopupData[13].innerText = regDatas[this.className].work_type
+  routePopupData[14].innerText = regDatas[this.className].references
+  for (i = 0; i < routePopupDataGroupOption.length; i++) {
+    if (routePopupDataGroupOption[i].innerText == regDatas[this.className].group) {
+      routePopupDataGroupOption[i].selected = true;
+    }
+  }
+  routePopupDataDriveTime[0].value = regDatas[this.className].departure_time;
+  routePopupDataDriveTime[1].value = regDatas[this.className].arrival_time;
+  routePopupDataRoutName[0].value = regDatas[this.className].departure;
+  routePopupDataRoutName[1].value = regDatas[this.className].arrival;
+  routePopupDataDriverNumber.value = regDatas[this.className].number;
+  routePopupDataDriverPay.value = regDatas[this.className].driver_allowance;
+  for (i = 0; i < routePopupDataBusKindsOption.length; i++) {
+    if (routePopupDataBusKindsOption[i].innerText == regDatas[this.className].bus_type) {
+      routePopupDataBusKindsOption[i].selected = true;
+    }
+  }
+  routePopupDataBusCount.value = regDatas[this.className].bus_cnt;
+  routePopupDatAaccount.value = regDatas[this.className].customer;
+  routePopupPhoneNumber.value = regDatas[this.className].customer_phone;
+  routePopupDataContractAmount.value = regDatas[this.className].price;
+  routePopupDataContractPeriod[0].value = regDatas[this.className].contract_start_date;
+  routePopupDataContractPeriod[1].value = regDatas[this.className].contract_end_date;
+  if (routePopupWorkLabel.innerText == regDatas[this.className].work_type) {
+    routePopupWorkInput[0].checked = true;
+  } else {
+    routePopupWorkInput[1].checked = true;
+  }
+  routePopupDataReference.value = regDatas[this.className].references;
+  let weekArray = regDatas[this.className].week.split('')
+  let newWeekArray = weekArray.filter(item => item !== ' ')
+  let weekAllCount = 0;
+  for (i = 1; i < routePopupDataDriveDateEdit.length; i++) {
+    if (newWeekArray.find(item => item == routePopupDataDriveDateEditLabel[i].innerText)) {
+      console.log(routePopupDataDriveDateEdit[i])
+      routePopupDataDriveDateEdit[i].checked = true;
+      weekAllCount = weekAllCount + 1;
+      if (weekAllCount == 7) {
+        routePopupDataDriveDateEdit[0].checked = true;
+      }
+    }
+  }
 }
 
 popupBgModulesRoute.addEventListener("click", closedRoutePopup)
@@ -139,6 +211,11 @@ function closedRoutePopupMenu() {
 }
 function closedRoutePopupBtn() {
   popupAreaModulesRoute.style.display = "none"
+  routePopupTitle.innerText = "노선상세";
+  routePoppupDetail.style.display = "flex";
+  routePoppupEdit.style.display = "none";
+  routePopupEditBtn.style.display = 'flex';
+  routePopupSaveBtn.style.display = 'none';
 }
 function changeEdit() {
   routePopupTitle.innerText = "노선수정";
@@ -150,29 +227,29 @@ function changeEdit() {
 
 
 /*노선상세 모두체크*/
-routePopupDataDriveDate[0].addEventListener('change', allchecked)
+routePopupDataDriveDateEdit[0].addEventListener('change', allchecked)
 
 function allchecked() {
-  if (routePopupDataDriveDate[0].checked) {
+  if (routePopupDataDriveDateEdit[0].checked) {
     for (i = 1; i < 8; i++) {
-      routePopupDataDriveDate[i].checked = true;
+      routePopupDataDriveDateEdit[i].checked = true;
     }
 
   } else {
     for (i = 1; i < 8; i++) {
-      routePopupDataDriveDate[i].checked = false;
+      routePopupDataDriveDateEdit[i].checked = false;
     }
   }
 }
 
 for (i = 1; i < 8; i++) {
-  routePopupDataDriveDate[i].addEventListener('change', changeAllCheck)
+  routePopupDataDriveDateEdit[i].addEventListener('change', changeAllCheck)
 }
 
 function changeAllCheck() {
-  if (routePopupDataDriveDate[1].checked && routePopupDataDriveDate[2].checked && routePopupDataDriveDate[3].checked && routePopupDataDriveDate[4].checked && routePopupDataDriveDate[5].checked && routePopupDataDriveDate[6].checked && routePopupDataDriveDate[7].checked) {
-    routePopupDataDriveDate[0].checked = true;
+  if (routePopupDataDriveDateEdit[1].checked && routePopupDataDriveDateEdit[2].checked && routePopupDataDriveDateEdit[3].checked && routePopupDataDriveDateEdit[4].checked && routePopupDataDriveDateEdit[5].checked && routePopupDataDriveDateEdit[6].checked && routePopupDataDriveDateEdit[7].checked) {
+    routePopupDataDriveDateEdit[0].checked = true;
   } else {
-    routePopupDataDriveDate[0].checked = false;
+    routePopupDataDriveDateEdit[0].checked = false;
   }
 }

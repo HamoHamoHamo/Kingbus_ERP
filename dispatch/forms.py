@@ -1,33 +1,63 @@
 from django import forms 
 from django.db import models
 
-from .models import DispatchOrder, DispatchOrderConnect
+from .models import DispatchOrder, DispatchOrderConnect, DispatchRegularly
+
+class RegularlyForm(forms.ModelForm):
+    class Meta:
+        model = DispatchRegularly
+        fields = [
+            'references',
+            'departure',
+            'arrival',
+            'departure_time',
+            'arrival_time',
+            'bus_type',
+            'bus_cnt',
+            'price',
+            'driver_allowance',
+            'number',
+            'customer',
+            'customer_phone',
+            'contract_start_date',
+            'contract_end_date',
+            'work_type',
+            ]
 
 class OrderForm(forms.ModelForm):
     class Meta:
         model = DispatchOrder
         fields = [
+            'operation_type',
+            'references',
             'departure',
             'arrival',
-            'stopover',
             'departure_date',
+            'departure_time',
             'arrival_date',
-            'route_name',
-            'price',
-            'driver_allowance',
+            'arrival_time',
             'bus_type',
             'bus_cnt',
-            'purpose',
-            'way',
-            'customer',            
-            'customer_tel',
-            'reference',
+            'price',
+            'driver_allowance',
+            'contract_status',
+            'cost_type',
+            'customer',
+            'customer_phone',
+            'deposit_status',
+            'deposit_date',
+            'bill_date',
+            'collection_type',
+            'payment_method',
+            'VAT',
+            'collection_amount',
+            'collection_date',
             ]
         
-        widgets = {
-            'departure_date': forms.DateInput(format='%Y-%m-%d H:i', attrs={'type':'datetime-local'}),
-            'arrival_date': forms.DateInput(format='%Y-%m-%d H:i', attrs={'type':'datetime-local'}),
-        }
+        # widgets = {
+        #     'departure_date': forms.DateInput(format='%Y-%m-%d H:i', attrs={'type':'datetime-local'}),
+        #     'arrival_date': forms.DateInput(format='%Y-%m-%d H:i', attrs={'type':'datetime-local'}),
+        # }
         
 '''
 class OrderForm(forms.ModelForm):

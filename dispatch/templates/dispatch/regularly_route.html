@@ -24,9 +24,10 @@
             <span class="searchName">노선검색</span>
             <div class="routeFilterBox">
                 <input type="text" class="inputModules" list="groupFilter" placeholder="그룹이름">
-                <datalist id="groupFilter">
-                    <option value="그룹이름"></option>
-                    <option value="항목1"></option>
+                <datalist name="group" id="groupFilter">
+                    {% for group in group_list %}
+                    <option value="{{group.id}}">{{group.name}}</option>
+                    {% endfor %}
                 </datalist>
                 <input type="text" class="inputModules" list="routeFilter" placeholder="노선이름">
                 <datalist id="routeFilter">
@@ -52,13 +53,15 @@
 
 
 
-<form action="">
+<form method="post" action="{% url 'dispatch:regularly_route_delete' %}">
+    {% csrf_token %}
     <div class="contentsAreaBox">
         <table class="tableHead">
             <thead>
                 <tr class="headerLine">
                     <td>선택</td>
                     <td>그룹</td>
+                    <td>순번</td>
                     <td>노선이름</td>
                     <td>운행시간</td>
                     <td>운행요일</td>
@@ -70,11 +73,12 @@
 
         <table class="tableBody">
             <tbody>
-                
+
                 {% for dispatch in order_list %}
-                <tr>
-                    <td><input type="checkbox"></td>
+                <tr class="{{dispatch.id}}">
+                    <td><input type="checkbox" value="{{dispatch.id}}" name="check"></td>
                     <td>{{dispatch.group.name}}</td>
+                    <td>{{dispatch.number}}</td>
                     <td class="{{ forloop.counter0 }}">
                         <span>{{dispatch.departure}}▶</span>
                         <span>{{dispatch.arrival}}</span>
@@ -85,7 +89,7 @@
                     <td>{{dispatch.references}}</td>
                 </tr>
                 {% endfor %}
-                
+
             </tbody>
         </table>
 
@@ -146,7 +150,8 @@
 {% block popup %}
 <div class="popupAreaModulesRoute">
     <div class="popupBgModulesRoute"></div>
-    <form class="popupContainerRoute">
+    <form method="post" action="{% url 'dispatch:regularly_route_edit' %}" class="popupContainerRoute">
+        {% csrf_token %}
         <div class="routePopupTitle">노선상세</div>
         <div class="routePopupDataArea">
             <div class="routePopupDataCell">
@@ -213,30 +218,31 @@
         <div class="routePopupDataArea">
             <div class="routePopupDataCell">
                 <span class="routePopupDataTitle">그룹</span>
-                <select class="routePopupDataGroup">
+                <select name="group" class="routePopupDataGroup">
                     <option value=""></option>
-                    <option value="테스트 그룹 이름">테스트 그룹 이름</option>
-                    <option value=""></option>
+                    {% for g in group_list %}
+                    <option value="{{g.id}}">{{g.name}}</option>
+                    {% endfor %}
                 </select>
             </div>
             <div class="routePopupDataCell">
                 <span class="routePopupDataTitle">출발지</span>
-                <input type="text" class="routePopupDataRoutName">
+                <input name="departure" type="text" class="routePopupDataRoutName">
             </div>
             <div class="routePopupDataCell">
                 <span class="routePopupDataTitle">운행시간</span>
                 <div class="routePopupDataDriveTime">
-                    <input type="time">~
-                    <input type="time">
+                    <input name="departure_time" type="time">~
+                    <input name="arrival_time" type="time">
                 </div>
             </div>
             <div class="routePopupDataCell">
                 <span class="routePopupDataTitle">도착지</span>
-                <input type="text" class="routePopupDataRoutName">
+                <input name="arrival" type="text" class="routePopupDataRoutName">
             </div>
             <div class="routePopupDataCell">
                 <span class="routePopupDataTitle">순번</span>
-                <input type="text" class="routePopupDataDriverNumber">
+                <input name="number" type="text" class="routePopupDataDriverNumber">
             </div>
             <div class="routePopupDataCell">
                 <span class="routePopupDataTitle">운행요일</span>
@@ -246,71 +252,82 @@
                         <label for="all">모두</label>
                     </div>
                     <div>
-                        <input id="mon" type="checkbox">
+                        <input name="week" value="월" id="mon" type="checkbox">
                         <label for="mon">월</label>
-                        <input id="tue" type="checkbox">
+                        <input name="week" value="화" id="tue" type="checkbox">
                         <label for="tue">화</label>
-                        <input id="wed" type="checkbox">
+                        <input name="week" value="수" id="wed" type="checkbox">
                         <label for="wed">수</label>
-                        <input id="thu" type="checkbox">
+                        <input name="week" value="목" id="thu" type="checkbox">
                         <label for="thu">목</label>
-                        <input id="fri" type="checkbox">
+                        <input name="week" value="금" id="fri" type="checkbox">
                         <label for="fri">금</label>
-                        <input id="sat" type="checkbox">
+                        <input name="week" value="토" id="sat" type="checkbox">
                         <label for="sat">토</label>
-                        <input id="sun" type="checkbox">
+                        <input name="week" value="일" id="sun" type="checkbox">
                         <label for="sun">일</label>
                     </div>
                 </div>
             </div>
             <div class="routePopupDataCell">
                 <span class="routePopupDataTitle">기사수당</span>
-                <input type="text" class="routePopupDataDriverPay">
+                <input name="driver_allowance" type="text" class="routePopupDataDriverPay">
             </div>
             <div class="routePopupDataCell">
                 <span class="routePopupDataTitle">버스종류</span>
-                <select name="" id="" class="routePopupDataBusKinds">
-                    <option value="">45</option>
-                    <option value="">41</option>
-                    <option value="">1</option>
+                <select name="bus_type" id="" class="routePopupDataBusKinds">
+                    <option value=""></option>
+                    <option value="45인승 대형버스">45인승 대형버스</option>
+                    <option value="41인승 대형버스">41인승 대형버스</option>
+                    <option value="33인승 중형버스">33인승 중형버스</option>
+                    <option value="28인승 대형우등버스">28인승 대형우등버스</option>
+                    <option value="24인승 미니썬롱">24인승 미니썬롱</option>
+                    <option value="24인승 미니버스">24인승 미니버스</option>
+                    <option value="21인승 프리미엄버스">21인승 프리미엄버스</option>
+                    <option value="21인승 중형우등버스">21인승 중형우등버스</option>
+                    <option value="19인승 미니우등버스">19인승 미니우등버스</option>
+                    <option value="16인승 미니우등버스">16인승 미니우등버스</option>
+                    <option value="14인승 밴">14인승 밴</option>
+                    <option value="10인승 밴">10인승 밴</option>
                 </select>
             </div>
             <div class="routePopupDataCell">
                 <span class="routePopupDataTitle">버스대수</span>
-                <input type="text" class="routePopupDataBusCount">
+                <input name="bus_cnt" type="text" class="routePopupDataBusCount">
             </div>
             <div class="routePopupDataCell">
                 <span class="routePopupDataTitle">거래처</span>
-                <input type="text" class="routePopupDatAaccount">
+                <input name="customer" type="text" class="routePopupDatAaccount">
             </div>
             <div class="routePopupDataCell">
                 <span class="routePopupDataTitle">거래처 전화번호</span>
-                <input type="text" class="routePopupPhoneNumber">
+                <input name="customer_phone" type="text" class="routePopupPhoneNumber">
             </div>
             <div class="routePopupDataCell">
                 <span class="routePopupDataTitle">계약금액</span>
-                <input type="text" class="routePopupDataContractAmount">
+                <input name="price" type="text" class="routePopupDataContractAmount">
             </div>
             <div class="routePopupDataCell">
                 <span class="routePopupDataTitle">계약기간</span>
                 <div class="routePopupDataContractPeriod">
-                    <input type="date">~
-                    <input type="date">
+                    <input name="contract_start_date" type="date">~
+                    <input name="contract_end_date" type="date">
                 </div>
             </div>
             <div class="routePopupDataCell">
                 <span class="routePopupDataTitle">출/퇴근</span>
                 <div class="routePopupWork">
-                    <input id="workStart" type="radio" name="work">
+                    <input value="출근" id="workStart" type="radio" name="work_type">
                     <label for="workStart">출근</label>
-                    <input id="workEnd" type="radio" name="work">
+                    <input value="퇴근" id="workEnd" type="radio" name="work_type">
                     <label for="workEnd">퇴근</label>
                 </div>
             </div>
             <div class="routePopupDataCell">
                 <span class="routePopupDataTitle">참조사항</span>
-                <input type="text" class="routePopupDataReference">
+                <input name="references" type="text" class="routePopupDataReference">
             </div>
+            <input type="hidden" value="" name="id" class="sendToHidden">
         </div>
         <div class="routePopupBtnBox">
             <div class="btnModules">닫기</div>
@@ -322,14 +339,15 @@
 
 <div class="popupAreaModulesRouteCreate">
     <div class="popupBgModulesRoute"></div>
-    <form method="post" class="popupContainerRoute">
+    <form method="post" action="{% url 'dispatch:regularly_route_create' %}" class="popupContainerRoute">
+        {% csrf_token %}
         <div class="routePopupTitle">노선등록</div>
         <div class="routePopupDataArea">
             <div class="routePopupDataCell">
                 <span class="routePopupDataTitle">그룹</span>
                 <select name="group" class="routePopupDataGroup">
                     {% for group in group_list %}
-                        <option value="{{group.id}}">{{group.name}}</option>
+                    <option value="{{group.id}}">{{group.name}}</option>
                     {% endfor %}
                 </select>
             </div>
@@ -360,19 +378,19 @@
                         <label for="allCreate">모두</label>
                     </div>
                     <div>
-                        <input id="monCreate" type="checkbox" name="weekend">
+                        <input value="월" id="monCreate" type="checkbox" name="week">
                         <label for="monCreate">월</label>
-                        <input id="tueCreate" type="checkbox" name="weekend">
+                        <input value="화" id="tueCreate" type="checkbox" name="week">
                         <label for="tueCreate">화</label>
-                        <input id="wedCreate" type="checkbox" name="weekend">
+                        <input value="수" id="wedCreate" type="checkbox" name="week">
                         <label for="wedCreate">수</label>
-                        <input id="thuCreate" type="checkbox" name="weekend">
+                        <input value="목" id="thuCreate" type="checkbox" name="week">
                         <label for="thuCreate">목</label>
-                        <input id="friCreate" type="checkbox" name="weekend">
+                        <input value="금" id="friCreate" type="checkbox" name="week">
                         <label for="friCreate">금</label>
-                        <input id="satCreate" type="checkbox" name="weekend">
+                        <input value="토" id="satCreate" type="checkbox" name="week">
                         <label for="satCreate">토</label>
-                        <input id="sunCreate" type="checkbox" name="weekend">
+                        <input value="일" id="sunCreate" type="checkbox" name="week">
                         <label for="sunCreate">일</label>
                     </div>
                 </div>
@@ -384,7 +402,19 @@
             <div class="routePopupDataCell">
                 <span class="routePopupDataTitle">버스종류</span>
                 <select name="bus_type" class="routePopupDataBusKinds">
-                    <option value="test">test</option>
+                    <option value=""></option>
+                    <option value="45인승 대형버스">45인승 대형버스</option>
+                    <option value="41인승 대형버스">41인승 대형버스</option>
+                    <option value="33인승 중형버스">33인승 중형버스</option>
+                    <option value="28인승 대형우등버스">28인승 대형우등버스</option>
+                    <option value="24인승 미니썬롱">24인승 미니썬롱</option>
+                    <option value="24인승 미니버스">24인승 미니버스</option>
+                    <option value="21인승 프리미엄버스">21인승 프리미엄버스</option>
+                    <option value="21인승 중형우등버스">21인승 중형우등버스</option>
+                    <option value="19인승 미니우등버스">19인승 미니우등버스</option>
+                    <option value="16인승 미니우등버스">16인승 미니우등버스</option>
+                    <option value="14인승 밴">14인승 밴</option>
+                    <option value="10인승 밴">10인승 밴</option>
                 </select>
             </div>
             <div class="routePopupDataCell">
@@ -461,7 +491,7 @@
                             </div>
                             <div class="groupDepth2">
                                 {% for order in group.regularly_info.all %}
-                                    <div class="groupDepth2Route">{{order.route}}</div>
+                                <div class="groupDepth2Route">{{order.route}}</div>
                                 {% endfor %}
                             </div>
                         </div>
@@ -487,8 +517,8 @@
 {% block script %}
 <script>
     let regDatas = [
-        {% for dispatch in order_list %}
-          {
+    {% for dispatch in order_list %}
+        {
             group: "{{ dispatch.group.name }}",
             references: "{{ dispatch.references }}",
             departure: "{{ dispatch.departure }}",
@@ -507,10 +537,9 @@
             contract_end_date: "{{ dispatch.contract_end_date }}",
             work_type: "{{ dispatch.work_type }}",
             route: "{{ dispatch.route }}",
-          },
-        {% endfor %}
+        },
+    {% endfor %}
     ]
-    console.log("출퇴근 노선", regDatas);
 </script>
 <script src="{% static 'js/dispatch/regularlyRoutePopup.js' %}"></script>
 {% endblock %}
