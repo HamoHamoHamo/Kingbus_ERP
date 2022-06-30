@@ -10,6 +10,7 @@
   <meta property="og:description" content="배차시스템과 ERP 시스템의 결합 TRP!" />
   <meta property="og:image" content="{% static 'images/TRPLogoNew.png' %}" />
   <link rel="stylesheet" href="{% static 'css/homepage/home.css' %}">
+  <link rel="stylesheet" href="{% static 'css/homepage/homeResponsive.css' %}">
   <title>TRP</title>
 </head>
 
@@ -22,9 +23,8 @@
     <div class="header">
 
       <a href="{% url 'homepage:homepage' %}">
-        <div class="logoCell">TRP</div>
+        <img src="{% static 'images/TRPHomeLogo.png' %}" alt="">
       </a>
-
       <div class="navConteiner">
         <ul class="navListUl">
           <li class="navListLi">
@@ -75,55 +75,56 @@
         </ul>
       </div>
 
-      <div>
-        <img src="{% static 'images/TRPHembuger.png' %}">
+      <div class="hembugeIcon">
+        <div class="hembugeLine"></div>
+        <div class="hembugeLine"></div>
+        <div class="hembugeLine"></div>
       </div>
-      <div class="hembugerMenuSide"></div>
-      <div class="hembugerMenu">
-        <ul class="hembugerUl">
-          <li class="hembugerLl">
-            <div>TRP특징</div>
-            <ul class="hembugerSubUl">
 
+      <div class="dropDownMenu">
+        <ul class="navListUl">
+          <li class="navListLi">
+            <div class="navListLiMain">TRP특징</div>
+            <ul class="navListUlSub">
               <a href="{% url 'homepage:trp' %}">
-                <li>TRP란</li>
+                <li class="navListLlSub">TRP란?</li>
               </a>
               <a href="{% url 'homepage:dispatch' %}">
-                <li>배차관리</li>
+                <li class="navListLlSub">배차관리</li>
               </a>
               <a href="{% url 'homepage:servicelink' %}">
-                <li>서비스 연계</li>
+                <li class="navListLlSub">서비스 연계</li>
               </a>
               <a href="{% url 'homepage:web' %}">
-                <li>WEB기반</li>
+                <li class="navListLlSub">WEB기반</li>
               </a>
               <a href="{% url 'homepage:customizing' %}">
-                <li>고객맞춤</li>
+                <li class="navListLlSub">고객맞춤</li>
               </a>
             </ul>
           </li>
-          <li class="hembugerLl">
-            <div>회사소개</div>
-            <ul class="hembugerSubUl">
+          <li class="navListLi">
+            <div class="navListLiMain">회사소개</div>
+            <ul class="navListUlSub">
               <a href="{% url 'homepage:kingbus' %}">
-                <li>킹버스</li>
+                <li class="navListLlSub">킹버스</li>
               </a>
               <a href="{% url 'homepage:driver' %}">
-                <li>드라이버</li>
+                <li class="navListLlSub">드라이버</li>
               </a>
             </ul>
           </li>
-          <li class="hembugerLl">
-            <div>가입하기</div>
-            <ul class="hembugerSubUl">
+          <li class="navListLi">
+            <div class="navListLiMain">가입하기</div>
+            <ul class="navListUlSub">
               <a href="{% url 'homepage:check' %}">
-                <li>가입전 확인사항</li>
+                <li class="navListLlSub">가입전 확인사항</li>
               </a>
               <a href="{% url 'homepage:consulting' %}">
-                <li>상담</li>
+                <li class="navListLlSub">상담</li>
               </a>
               <a href="{% url 'homepage:payment' %}">
-                <li>가입하기</li>
+                <li class="navListLlSub">가입하기</li>
               </a>
             </ul>
           </li>
@@ -134,122 +135,236 @@
   </header>
 
   <!--firstContents-->
-  <div class="firstContentsBox">
-    <div class="firstContentsBoxCover"></div>
-    <img src="{% static 'images/TRPWebMainFirst.png' %}">
-    <div class="firstContentsBoxText">
-      <span>TRP - 새로운 개념의 배차관리</span>
-      <span>전사적 자원관리 시스템과 배차시스템이 결합한 교통업무시스템</span>
 
-      <li class="navListLiTRP">
-        <a href="{% url 'home' %}">
-          <div class="TRPaddress">TRP바로가기</div>
+  <div class="firstContainer">
+    <img src="{% static 'images/firstContainerBg.png' %}" alt="메인 배경이미지" class="firstContainerBg">
+    <div class="cirstContainerCover"></div>
+    <div class="firstContainerContentsBox">
+      <img src="{% static 'images/firstContainerImg.png' %}" alt="TRP 이미지">
+      <div class="firstContainerTextBox">
+        <span class="firstContainerTitle">새롭게 탄생한 배차 프로그램</span>
+        <div class="firstContainerText">
+          전사적 자원관리 프로그램(ERP)과<br>
+          배차 프로그램의 결합으로 탄생한<br>
+          전세버스 관리 프로그램 TRP
+        </div>
+        <a href="{% url 'home' %}" class="firstContainerEnterButtonBox">
+          <div class="firstContainerEnterButton">TRP바로가기</div>
+          <div class='firstContainerEnterButtonFill'></div>
         </a>
-      </li>
+      </div>
     </div>
   </div>
 
   <!--seconedContents-->
-  <div class="SecondContentsContainer">
-
-    <div class="SecondContentsBox">
-      <img src="{% static 'images/TRPWebMainSeconed.png' %}">
-      <div class="SecondContentsCell">
-        <span>TRP란?</span>
-        <span> ERP(전사적 자원 관리 소프트웨어)를<br>
-          교통(Transportation)에 특화시켜<br>
-          전세버스회사의 배차, 인사, 경리, 차량을<br>
-          웹상에서 쉽고 빠르게 처리할 수 있는<br>
+  <div class="secondContainer">
+    <div class="secondContainerTop">
+      <div class="secondContainerMainCell">
+        <div class="secondContainerTopBg"></div>
+        <div class="secondContainerMainTitle">TRP란?</div>
+        <div class="secondContainerMainText">
+          ERP(전사적 자원 관리 소프트웨어)에<br>
+          교통(Transportation)에 관한 부분을 더해<br>
+          전세 버스회사의 배차, 인사, 경리, 차량 등<br>
+          전세버스 회사 운영에서 필요한 여러 업무를<br>
+          인터넷상에서 쉽고빠르게 처리할 수 있도록 개발된<br>
           배차&자원관리 프로그램입니다.
-        </span>
+        </div>
+      </div>
+      <div class="secondContainerTopTextBox">
+        <div class="secondContainerTextCell">
+          <div class="secondContainerTextCellTop">
+            <div class="secondContainerTextCellDeco"></div>
+            <span class="secondContainerTextCellTitleBold">우수한</span>
+            <span class="secondContainerTextCellTitle">배차보조 시스템</span>
+          </div>
+          <div class="secondContainerTextCellText">
+            오랜시간 실재로 운영한 배차방식을 프로그램화 시킨 우수한 배차보조 시스템
+          </div>
+        </div>
+        <div class="secondContainerTextCell">
+          <div class="secondContainerTextCellTop">
+            <div class="secondContainerTextCellDeco"></div>
+            <span class="secondContainerTextCellTitleBold">효과적인</span>
+            <span class="secondContainerTextCellTitle">차량관리 시스템</span>
+          </div>
+          <div class="secondContainerTextCellText">
+            차량의 정기점검이나 보험정보 기타 차량정보를 능동적으로 제공하는 시스템
+          </div>
+        </div>
       </div>
     </div>
-
-    <div class="SecondContentsBoxSub">
-      <div class="SecondContentsCellSub">
-        <span>인사관리</span>
-        <img src="{% static 'images/TRPWebMainSecondHr.png' %}">
+    <div class="secondContainerBottom">
+      <div class="secondContainerBottomTextBox">
+        <div class="secondContainerTextCell">
+          <div class="secondContainerTextCellTop">
+            <div class="secondContainerTextCellDeco"></div>
+            <span class="secondContainerTextCellTitleBold">빠른</span>
+            <span class="secondContainerTextCellTitle">공지사한 시스템</span>
+          </div>
+          <div class="secondContainerTextCellText">
+            공지사항 전파용 게시판과 댓글 기능으로 빠르게 공지사항을 전파하는 시스템
+          </div>
+        </div>
+        <div class="secondContainerTextCell">
+          <div class="secondContainerTextCellTop">
+            <div class="secondContainerTextCellDeco"></div>
+            <span class="secondContainerTextCellTitleBold">간편한</span>
+            <span class="secondContainerTextCellTitle">인사관리 시스템</span>
+          </div>
+          <div class="secondContainerTextCellText">
+            소속 기사님들의 정보의 확인, 관리와 휴가, 병가 여부 확인이 가능한 시스템
+          </div>
+        </div>
+        <div class="secondContainerTextCell">
+          <div class="secondContainerTextCellTop">
+            <div class="secondContainerTextCellDeco"></div>
+            <span class="secondContainerTextCellTitleBold">편리한</span>
+            <span class="secondContainerTextCellTitle">회계관리시스템</span>
+          </div>
+          <div class="secondContainerTextCellText">
+            기사님의 배차별 수당 및 특별수당, 노선별 수익 등을 확인 가능한 시스템
+          </div>
+        </div>
       </div>
-      <div class="SecondContentsCellSub">
-        <span>차량관리</span>
-        <img src="{% static 'images/TRPWebMainSecondVehicle.png' %}">
-      </div>
-      <div class="SecondContentsCellSub">
-        <span>재무/회계관리</span>
-        <img src="{% static 'images/TRPWebMainSecondAccount.png' %}">
-      </div>
+      <img src="{% static 'images/secondContainerImg.png' %}" alt="TRP 이미지">
     </div>
-
   </div>
 
+
   <!--thirdContents-->
-  <div class="overFlowHidden">
-    <div class="thirdContentsContainer">
-      <img src="{% static 'images/TRPFrontMainThird.png' %}">
-      <div class="thirdContentsContainerBox">
-        <img src="{% static 'images/TRPWebMainInforgraphic.png' %}">
-        <p>
-          <span>TRP프로그램</span>과 <span>연계서비스</span>를 사용하여<br>
-          전세버스의 <span>미래</span>를 체험해 보세요!
-        </p>
+  <div class="thirdContainer">
+    <img src="{% static 'images/thirdContainerImg.png' %}" alt="">
+    <div class="thirdContainerBox">
+      <div class="thirdContainerTitle">
+        킹버스와 DRIVER앱의 연동으로<br>
+        편리한 서비스를 제공합니다.
+      </div>
+      <div class="thirdContainerContents">
+        킹버스 , DRIVER, TRP에서 배차, 인사, 급여, 일정 등<br>
+        여러 정보를 공유하며 자동으로 정보를 불러와 입력하여<br>
+        쉽고 빠르게 연계 서비스를 이용 할 수 있습니다.
+      </div>
+      <div class="thirdContainerInfoBox">
+        <div class="thirdContainerInfoCell">
+          <span class="thirdContainerInfoTitle">DRIVER</span>
+          <div class="thirdContainerInfoText">기사님들만을 위한 비서 앱</div>
+        </div>
+        <img src="{% static 'images/linkIcon.png' %}" alt="">
+        <div class="thirdContainerInfoCell">
+          <span class="thirdContainerInfoTitle">킹버스</span>
+          <div class="thirdContainerInfoText">전세버스 플랫폼</div>
+        </div>
       </div>
     </div>
   </div>
 
 
   <!--fourthContents-->
-  <div class="fourthContentsContainer">
-    <img src="{% static 'images/TRPWebMainFourth.png' %}">
-    <div class="fourthContentsBox" id="fourthContentsBoxTop">
-      <div class="fourthContentsCell">
-        <span>업계 최고의 </span>
-        <span class="fontImpact">배차시스템</span>
-        <span> 도입</span><br>
+  <div class="fourthContainer">
+    <img src="{% static 'images/fourthBg.png' %}" alt="배경 이미지" class="fourthContainerBgImg">
+    <div class="fourthContainerCover"></div>
+    <div class="fourthContainerBox">
+      <div class="fourthContainerTitle">TRP의 장점</div>
+      <div class="fourthContainerContents">
+        <div class="fourthContainerCell">
+          <img src="{% static 'images/fourthIcon1.png' %}" alt="배차시스템 아이콘">
+          <div class="fourthContainerTextCell">
+            <span class="fourthContainerCellSubTitle">업계 최고의</span>
+            <span class="fourthContainerCellTitle">배차시스템</span>
+            <div class="fourthContainerCellText">
+              대형 전세버스 회사에서<br>
+              오랜기간 운용한 배차시스템 도입
+            </div>
+          </div>
+        </div>
+        <div class="fourthContainerCell">
+          <img src="{% static 'images/fourthIcon2.png' %}" alt="web 아이콘">
+          <div class="fourthContainerTextCell">
+            <span class="fourthContainerCellSubTitle">높은 접근성</span>
+            <span class="fourthContainerCellTitle">Web 기반</span>
+            <div class="fourthContainerCellText">
+              Web기반으로 개발한 프로그램으로 <br>
+              쉬운 사용과 높은 접근성이 장점
+            </div>
+          </div>
+        </div>
+        <div class="fourthContainerCell">
+          <img src="{% static 'images/fourthIcon3.png' %}" alt="업그레이드 아이콘">
+          <div class="fourthContainerTextCell">
+            <span class="fourthContainerCellSubTitle">주기적인</span>
+            <span class="fourthContainerCellTitle">업그레이드</span>
+            <div class="fourthContainerCellText">
+              지속적인 관리/업데이트와<br>
+              Web기반의 간편한 업그레이드가 장점
+            </div>
+          </div>
+        </div>
+        <div class="fourthContainerCell">
+          <img src="{% static 'images/fourthIcon4.png' %}" alt="커스터마이징 아이콘">
+          <div class="fourthContainerTextCell">
+            <span class="fourthContainerCellSubTitle">고객맞춤</span>
+            <span class="fourthContainerCellTitle">커스터마이징</span>
+            <div class="fourthContainerCellText">
+              고객의 회사에 맞는 형태로 일정부분<br>
+              기능,외형 커스터마이징 제공
+            </div>
+          </div>
+        </div>
+        <div class="fourthContainerCell">
+          <img src="{% static 'images/fourthIcon5.png' %}" alt="기능추가">
+          <div class="fourthContainerTextCell">
+            <span class="fourthContainerCellSubTitle">목적에 맞는</span>
+            <span class="fourthContainerCellTitle">기능추가</span>
+            <div class="fourthContainerCellText">
+              추가요금을 지불하면 회사에 필요한<br>
+              새로운 기능 추가 가능
+            </div>
+          </div>
+        </div>
       </div>
-      <div class="fourthContentsCell">
-        <span class="fontImpact">Web기반</span>
-        <span> 높은 접근성</span><br>
-      </div>
-      <div class="fourthContentsCell">
-        <span>주기적이고 간편한 </span>
-        <span class="fontImpact">업그레이드</span>
-      </div>
-    </div>
-    <div class="fourthContentsBox" id="fourthContentsBoxBottom">
-      <div class="fourthContentsCell">
-        <span class="fontImpact">고객맞춤 </span>
-        <span> 커스터마이징 제공</span>
-      </div>
-      <div class="fourthContentsCell">
-        <span>목적에 맞는 </span>
-        <span class="fontImpact">기능추가</span>
-        <span>로 효율up!</span>
-      </div>
-    </div>
-
-    <div class="fourthContentsBoxPrice">
-      <div class="fourthContentsBoxPriceBlock">
-        <span>각격은 상담후 책정</span>
-        <a href="{% url 'homepage:payment' %}">
-          <div class="fourthContentsBoxPriceBlockBtn">가격정책 ▶</div>
-        </a>
-      </div>
-      <span>배차,공지, 차량,인사,재무,회계 전부 사용</span>
-    </div>
-    <div class="fourthContentsBoxQuestion">
-      <div class="fourthContentsBoxQuestionBlock">
-        <a href="{% url 'homepage:consulting' %}">
-          <div class="fourthContentsBoxQuestionBlockBtn">가격상담 ▶</div>
-        </a>
-        <a href="{% url 'homepage:check' %}">
-          <div class="fourthContentsBoxQuestionBlockBtn">기타문의 ▶</div>
-        </a>
-      </div>
-      <div class="fourthContentsBoxQuestionText">전화상담 1522-9821</div>
     </div>
   </div>
 
+
+  <!--fifthContents-->
+  <div class="fifthContainer">
+    <div class="fifthContainerBox">
+      <div class="fifthContainerPayment">
+        <img src="{% static 'images/PricingImg.png' %}" alt="">
+        <div class="fifthContainerPaymentBox">
+          <div class="fifthContainerPaymentTop">
+            <div class="fifthContainerPaymentTitle">가격정책</div>
+            <a href="">
+              <div class="fifthContainerPaymentTopButton">
+                <span>가격정책</span>
+                <img src="{% static 'images/paymentArrow.png' %}" alt="화살표 아이콘">
+              </div>
+            </a>
+          </div>
+          <div class="fifthContainerPaymentText">
+            가격은 기능추가 여부에 따라 달라지며
+            상담 후 책정합니다.
+          </div>
+        </div>
+      </div>
+      <div class="fifthContainerCallBox">
+        <div class="fifthContainerCall">
+          <img src="{% static 'images/callIcon.png' %}" alt="전화기 아이콘">
+          <span>전화상담</span>
+          <span>1522-9821</span>
+        </div>
+        <div class="fifthContainerCall">
+          <img src="{% static 'images/emailIcon.png' %}" alt="전화기 아이콘">
+          <span>이메일 문의</span>
+          <span>kingbus7111@gmail.com</span>
+        </div>
+
+      </div>
+    </div>
   </div>
+
+
 
   <!--footerContents-->
   <footer>

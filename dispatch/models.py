@@ -27,6 +27,7 @@ class DispatchRegularly(models.Model):
     contract_start_date = models.CharField(verbose_name='계약시작일', max_length=10, null=False, blank=True)
     contract_end_date = models.CharField(verbose_name='계약종료일', max_length=10, null=False, blank=True)
     work_type = models.CharField(verbose_name='출/퇴근', max_length=2, null=False)
+    #노선이름 = 출발지 ▶ 도착지
     route = models.CharField(verbose_name='노선이름', max_length=100, null=False)
     pub_date = models.DateTimeField(auto_now_add=True, verbose_name='작성시간')
     creator = models.ForeignKey(User, on_delete=SET_NULL, related_name="regularly_creator", db_column="creator_id", null=True)
@@ -80,3 +81,11 @@ class DispatchRegularlyConnect(models.Model):
     arrival_date = models.CharField(verbose_name='도착날짜', max_length=16, null=False)
     pub_date = models.DateTimeField(auto_now_add=True, verbose_name='작성시간')
     creator = models.ForeignKey(User, on_delete=SET_NULL, related_name="connect_regularly_creator", db_column="creator_id", null=True)
+
+class DispatchCheck(models.Model):
+    member_id1 = models.ForeignKey(Member, on_delete=models.SET_NULL, related_name="dispatch_check_member1", db_column="member_id1", null=True)
+    member_id2 = models.ForeignKey(Member, on_delete=models.SET_NULL, related_name="dispatch_check_member2", db_column="member_id2", null=True)
+    date = models.CharField(verbose_name='날짜', max_length=10, null=False)
+    dispatch_check = models.CharField(verbose_name='확인완료', max_length=1, null=False, default='n')
+    pub_date = models.DateTimeField(auto_now_add=True, verbose_name='작성시간')
+    creator = models.ForeignKey(User, on_delete=SET_NULL, related_name="dispatch_check_creator", db_column="creator_id", null=True)

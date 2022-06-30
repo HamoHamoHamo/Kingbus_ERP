@@ -26,7 +26,7 @@
 
       <!--sidemenuLogo-->
       <div class="logoBox">
-        <a href="http://kingbuserp.link/">
+        <a href="{% url 'home' %}">
           <img src="{% static 'images/TRPlogo.png' %}" alt="">
         </a>
       </div>
@@ -41,7 +41,7 @@
           <div class="nav1Box">
             <li class="nav1BoxMenu">
               <img src="{% static 'images/calendar.png' %}" alt="일정 아이콘">
-              <a href="" class="nonDepth2Menu">일정</a>
+              <a href="{% url 'home' %}" class="nonDepth2Menu">일정</a>
             </li>
           </div>
           <div class="nav1Box">

@@ -7,7 +7,7 @@
 {% block content-header %}
 <!--trp HeaderTitle-->
 <div class="HeaderTitle">
-  공지사항
+  {% if notice.kinds == 'driver' %}기사님 공지사항 {% else %} 사무실 공지사항 {% endif %}
 </div>
 {% endblock %}
 
@@ -48,9 +48,10 @@
     {% endif %}
 </div>
 
+{% if notice_comments %}
 <div class="commentArea">
   <div class="commentTitle">댓글<span>{{notice_comments | length}}</span></div>
-
+  
   {% for comment in notice_comments %}
   <div class="commentBox">
     <div class="commentUserDataCell">
@@ -64,6 +65,7 @@
   </div>
   {% endfor %}
 </div>
+{% endif %}
 
 <div class="commentCreateArea">
   <form action="" method="post" class="notice_detail_chat_Box_create_form">

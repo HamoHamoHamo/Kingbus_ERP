@@ -2,7 +2,7 @@
 {% load static %}
 
 {% block head %}
-<link href="{% static 'css/mainpage_calender.css' %}" rel="stylesheet" type="text/css" />
+<link href="{% static 'css/crudmember/calender.css' %}" rel="stylesheet" type="text/css" />
 {% endblock %}
 
 {% block content-header %}
@@ -13,8 +13,168 @@
 {% endblock %}
 
 {% block content %}
+
+
+<div class="searchAreaBox">
+  <div class="controllBox">
+    <div class="todayBtn">Today</div>
+    <div class="controllBtnCell">
+      <div>
+        <svg xmlns="http://www.w3.org/2000/svg" width="8" height="13.993" viewBox="0 0 8 13.993">
+          <path id="Icon_ionic-ios-arrow-back" data-name="Icon ionic-ios-arrow-back"
+            d="M13.662,13.188,18.957,7.9a1,1,0,1,0-1.416-1.412l-6,5.995a1,1,0,0,0-.029,1.379L17.536,19.9a1,1,0,1,0,1.416-1.412Z"
+            transform="translate(-11.251 -6.194)" fill="#fff" />
+        </svg>
+      </div>
+      <div>
+        <svg xmlns="http://www.w3.org/2000/svg" width="8" height="13.993" viewBox="0 0 8 13.993">
+          <path id="Icon_ionic-ios-arrow-back" data-name="Icon ionic-ios-arrow-back"
+            d="M16.839,13.188,11.544,7.9a1,1,0,0,1,1.416-1.412l6,5.995a1,1,0,0,1,.029,1.379L12.965,19.9a1,1,0,0,1-1.416-1.412Z"
+            transform="translate(-11.251 -6.194)" fill="#fff" />
+        </svg>
+      </div>
+    </div>
+    <span></span>
+  </div>
+</div>
+
+<div class="contentsAreaBox">
+  <div class="calenderBox">
+    <table class="calenderTableHeader">
+      <thead>
+        <tr>
+          <td>Sun</td>
+          <td>Mon</td>
+          <td>Tue</td>
+          <td>Wed</td>
+          <td>Thu</td>
+          <td>Fri</td>
+          <td>Sat</td>
+        </tr>
+      </thead>
+    </table>
+    <div class="calenderCreteTbody"></div>
+  </div>
+</div>
+
+
 {% endblock %}
 
+
+
+{% block popup %}
+
+<div class="popupAreaModules">
+  <div class="popupBgModules"></div>
+  <form class="popupContainer">
+
+    <div class="PopupTitle">보험/정비알림</div>
+
+    <div class="PopupDataArea">
+      <div class="PopupDataBox">
+        <div class="PopupDataCell">
+          <span class="PopupDataTitle">구분</span>
+          <div class="PopupData">차량정비</div>
+        </div>
+        <div class="PopupDataCell">
+          <span class="PopupDataTitle">차량</span>
+          <div class="PopupData">1111</div>
+        </div>
+        <div class="PopupDataCell">
+          <span class="PopupDataTitle">기간</span>
+          <a href="{% url 'vehicle:mgmt' %}">
+            <div class="PopupData">2022.05.29 ~ 2022.07.29</div>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <div class="PopupBtnBox">
+      <div class="btnModules">닫기</div>
+    </div>
+
+  </form>
+</div>
+
+<div class="popupAreaModulesDispatch">
+  <div class="popupBgModules"></div>
+  <form class="popupContainer">
+
+    <div class="PopupTitle">배차지시서</div>
+
+    <div class="PopupDataAreaDispatch">
+      <div class="PopupDataCell">
+        <span class="PopupDataTitle">날짜</span>
+        <div class="PopupData">2022.05.30</div>
+      </div>
+      <div class="PopupDataCell">
+        <span class="PopupDataTitle">확인1</span>
+        <div class="PopupData">이도울</div>
+      </div>
+      <div class="PopupDataCell">
+        <span class="PopupDataTitle">확인2</span>
+        <div class="PopupData">이도울</div>
+      </div>
+      <div class="printBox">
+        <a href="" target="_blank">
+          <div class="printCell">
+            <svg xmlns="http://www.w3.org/2000/svg" width="23.1" height="20" viewBox="0 0 23.1 20">
+              <path id="Icon_zocial-print" data-name="Icon zocial-print"
+                d="M.18,23.96V15.635l2.9-3.225H5.2v1.6H3.8l-2,2.225V22.36H21.68V16.235l-2-2.225h-1.4v-1.6H20.4l2.875,3.225V23.96H.18ZM5.2,15.985V7.735L8.98,3.96h9.3V15.985H5.2ZM6.7,14.46H16.78v-9h-6.3V9.235H6.7Z"
+                transform="translate(-0.18 -3.961)" />
+            </svg>
+            <span>노선별A4</span>
+          </div>
+        </a>
+        <a href="" target="_blank">
+          <div class="printCell">
+            <svg xmlns="http://www.w3.org/2000/svg" width="23.1" height="20" viewBox="0 0 23.1 20">
+              <path id="Icon_zocial-print" data-name="Icon zocial-print"
+                d="M.18,23.96V15.635l2.9-3.225H5.2v1.6H3.8l-2,2.225V22.36H21.68V16.235l-2-2.225h-1.4v-1.6H20.4l2.875,3.225V23.96H.18ZM5.2,15.985V7.735L8.98,3.96h9.3V15.985H5.2ZM6.7,14.46H16.78v-9h-6.3V9.235H6.7Z"
+                transform="translate(-0.18 -3.961)" />
+            </svg>
+            <span>호수별A4</span>
+          </div>
+        </a>
+        <a href="" target="_blank">
+          <div class="printCell">
+            <svg xmlns="http://www.w3.org/2000/svg" width="23.1" height="20" viewBox="0 0 23.1 20">
+              <path id="Icon_zocial-print" data-name="Icon zocial-print"
+                d="M.18,23.96V15.635l2.9-3.225H5.2v1.6H3.8l-2,2.225V22.36H21.68V16.235l-2-2.225h-1.4v-1.6H20.4l2.875,3.225V23.96H.18ZM5.2,15.985V7.735L8.98,3.96h9.3V15.985H5.2ZM6.7,14.46H16.78v-9h-6.3V9.235H6.7Z"
+                transform="translate(-0.18 -3.961)" />
+            </svg>
+            <span>호수별A3</span>
+          </div>
+        </a>
+        <a href="" target="_blank">
+          <div class="printCell">
+            <svg xmlns="http://www.w3.org/2000/svg" width="23.1" height="20" viewBox="0 0 23.1 20">
+              <path id="Icon_zocial-print" data-name="Icon zocial-print"
+                d="M.18,23.96V15.635l2.9-3.225H5.2v1.6H3.8l-2,2.225V22.36H21.68V16.235l-2-2.225h-1.4v-1.6H20.4l2.875,3.225V23.96H.18ZM5.2,15.985V7.735L8.98,3.96h9.3V15.985H5.2ZM6.7,14.46H16.78v-9h-6.3V9.235H6.7Z"
+                transform="translate(-0.18 -3.961)" />
+            </svg>
+            <span>운행일보A4</span>
+          </div>
+        </a>
+      </div>
+    </div>
+
+    <div class="PopupBtnBoxDispatch">
+      <div class="btnModules">닫기</div>
+      <input type="submit" value="배차확인" class="btnModules">
+    </div>
+
+  </form>
+</div>
+
+
+{% endblock %}
+
+
+
+
+
+
 {% block script %}
-<script src="{% static 'js/mainpage_calender.js' %}"></script>
+<script src="{% static 'js/crudmember/calender.js' %}"></script>
 {% endblock %}

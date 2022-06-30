@@ -52,9 +52,9 @@
   <table class="tableHead">
     <thead>
       <tr class="headerLine">
+        <td>순번</td>
         <td>그룹</td>
         <td>노선이름</td>
-        <td>순번</td>
         <td>운행시간</td>
         <td>운행요일</td>
         <td>출/퇴근</td>
@@ -66,35 +66,35 @@
 
   <table class="tableBody">
     <tbody>
+      {% for dispatch in order_list %}
       <tr>
+        <td>1</td>
         <td>한국쓰리엠 출근</td>
         <td>
-          <a href="">
-            마북제어시스템개발센터등->대형주차장->EE연구소->샤시동▶마북연구소
-          </a>
+          <span>마북제어시스템개발센터등->대형주차장->EE연구소->샤시동▶</span>
+          <span>마북연구소</span>
         </td>
-        <td>1</td>
         <td>16:30~20:30</td>
         <td>월.화.수.목.금</td>
         <td>출근</td>
         <td>
-          <span>1111/이도울</span>
+          <span class="regularlyDispatchBtn">1111/이도울</span>
         </td>
         <td>특이사항 없음특이사항 없음특이사항 없음특이사항 없음</td>
       </tr>
+      {% endfor %}
       <tr>
+        <td>1</td>
         <td>한국쓰리엠 출근</td>
         <td>
-          <a href="">
-            마북제어시스템개발센터등->대형주차장->EE연구소->샤시동▶마북연구소
-          </a>
+          <span>마북제어시스템개발센터등->대형주차장->EE연구소->샤시동▶</span>
+          <span>마북연구소</span>
         </td>
-        <td>1</td>
         <td>16:30~20:30</td>
         <td>월.화.수.목.금</td>
         <td>출근</td>
         <td>
-          <span>1111/이도울</span>
+          <span class="regularlyDispatchBtn">1111/이도울</span>
         </td>
         <td>특이사항 없음특이사항 없음특이사항 없음특이사항 없음</td>
       </tr>
@@ -155,7 +155,211 @@
 {% block popup %}
 <div class="popupAreaModules">
   <div class="popupBgModules"></div>
-  <div class="popupContainer"></div>
+  <form class="popupContainer">
+    <div class="regularyCreatePopupTitle">배차등록</div>
+    <table>
+      <thead class="regularyCreatePopupThead">
+        <tr>
+          <td>차량</td>
+          <td>
+            <span>출근</span>
+            <span>일반</span>
+            <span>퇴근</span>
+          </td>
+        </tr>
+      </thead>
+    </table>
+    <div class="regularyCreatePopupTbodyBoxing">
+      <table>
+        <tbody class="regularyCreatePopupTbody">
+          <tr>
+            <td>
+              <div class="addDriver" id="0">1111(이도울)</div>
+            </td>
+            <td>
+              <div class="GoToWork">2</div>
+              <div class="work">2</div>
+              <div class="backToHome">2</div>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <div class="addDriver" id="1">1111(이도울)</div>
+            </td>
+            <td>
+              <div class="GoToWork">2</div>
+              <div class="work">2</div>
+              <div class="backToHome">2</div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="regularyCreatePopupResult">
+    </div>
+    <div class="regularyCreatePopupBtnBox">
+      <div class="btnModules">닫기</div>
+      <input type="submit" class="btnModules" value="등록">
+    </div>
+  </form>
+</div>
+
+
+
+<div class="popupAreaModulesRoute">
+  <div class="popupBgModulesRoute"></div>
+  <form class="popupContainerRoute">
+    <div class="routePopupTitle">노선상세</div>
+    <div class="routePopupDataArea">
+      <div class="routePopupDataCell">
+        <span class="routePopupDataTitle">그룹</span>
+        <div class="routePopupData">한국쓰리엠 출근</div>
+      </div>
+      <div class="routePopupDataCell">
+        <span class="routePopupDataTitle">노선이름</span>
+        <div class="routePopupData">마북제어시스템개발센터등->대형주차장->EE연구소->샤시동▶ 마북연구소</div>
+      </div>
+      <div class="routePopupDataCell">
+        <span class="routePopupDataTitle">운행시간</span>
+        <div class="routePopupData">16:30 ~ 20:30</div>
+      </div>
+      <div class="routePopupDataCell">
+        <span class="routePopupDataTitle">운행요일</span>
+        <div class="routePopupData">월.수.금</div>
+      </div>
+      <div class="routePopupDataCell">
+        <span class="routePopupDataTitle">기사수당</span>
+        <div class="routePopupData">15,000</div>
+      </div>
+      <div class="routePopupDataCell">
+        <span class="routePopupDataTitle">버스종류</span>
+        <div class="routePopupData">45인승</div>
+      </div>
+      <div class="routePopupDataCell">
+        <span class="routePopupDataTitle">버스대수</span>
+        <div class="routePopupData">3대</div>
+      </div>
+      <div class="routePopupDataCell">
+        <span class="routePopupDataTitle">거래처</span>
+        <div class="routePopupData">성화투어</div>
+      </div>
+      <div class="routePopupDataCell">
+        <span class="routePopupDataTitle">거래처 전화번호</span>
+        <div class="routePopupData">010-0000-0000</div>
+      </div>
+      <div class="routePopupDataCell">
+        <span class="routePopupDataTitle">계약금액</span>
+        <div class="routePopupData">10,000,000</div>
+      </div>
+      <div class="routePopupDataCell">
+        <span class="routePopupDataTitle">계약기간</span>
+        <div class="routePopupData">2020.01.01 ~ 2022.01.01</div>
+      </div>
+      <div class="routePopupDataCell">
+        <span class="routePopupDataTitle">출/퇴근</span>
+        <div class="routePopupData">출근</div>
+      </div>
+      <div class="routePopupDataCell">
+        <span class="routePopupDataTitle">참조사항</span>
+        <div class="routePopupData">참조사항 ~~</div>
+      </div>
+    </div>
+    <div class="routePopupDataArea">
+      <div class="routePopupDataCell">
+        <span class="routePopupDataTitle">그룹</span>
+        <select class="routePopupDataGroup">
+          <option value=""></option>
+        </select>
+      </div>
+      <div class="routePopupDataCell">
+        <span class="routePopupDataTitle">노선이름</span>
+        <input type="text" class="routePopupDataRoutName" value="마북제어시스템개발센터등->대형주차장->EE연구소->샤시동▶ 마북연구소">
+      </div>
+      <div class="routePopupDataCell">
+        <span class="routePopupDataTitle">운행시간</span>
+        <div class="routePopupDataDriveTime">
+          <input type="time" value="16:30">~
+          <input type="time" value="20:30">
+        </div>
+      </div>
+      <div class="routePopupDataCell">
+        <span class="routePopupDataTitle">운행요일</span>
+        <div class="routePopupDataDriveDate">
+          <div>
+            <input id="all" type="checkbox">
+            <label for="all">모두</label>
+          </div>
+          <div>
+            <input id="mon" type="checkbox">
+            <label for="mon">월</label>
+            <input id="tue" type="checkbox">
+            <label for="tue">화</label>
+            <input id="wed" type="checkbox">
+            <label for="wed">수</label>
+            <input id="thu" type="checkbox">
+            <label for="thu">목</label>
+            <input id="fri" type="checkbox">
+            <label for="fri">금</label>
+            <input id="sat" type="checkbox">
+            <label for="sat">토</label>
+            <input id="sun" type="checkbox">
+            <label for="sun">일</label>
+          </div>
+        </div>
+      </div>
+      <div class="routePopupDataCell">
+        <span class="routePopupDataTitle">기사수당</span>
+        <input type="text" class="routePopupDataDriverPay" value="15,000">
+      </div>
+      <div class="routePopupDataCell">
+        <span class="routePopupDataTitle">버스종류</span>
+        <select name="" id="" class="routePopupDataBusKinds">
+          <option value=""></option>
+        </select>
+      </div>
+      <div class="routePopupDataCell">
+        <span class="routePopupDataTitle">버스대수</span>
+        <input type="text" class="routePopupDataBusCount" value="3">
+      </div>
+      <div class="routePopupDataCell">
+        <span class="routePopupDataTitle">거래처</span>
+        <input type="text" class="routePopupDatAaccount" value="성화투어">
+      </div>
+      <div class="routePopupDataCell">
+        <span class="routePopupDataTitle">거래처 전화번호</span>
+        <input type="text" class="routePopupPhoneNumber" value="010-0000-0000">
+      </div>
+      <div class="routePopupDataCell">
+        <span class="routePopupDataTitle">계약금액</span>
+        <input type="text" class="routePopupDataContractAmount" value="10,000,000">
+      </div>
+      <div class="routePopupDataCell">
+        <span class="routePopupDataTitle">계약기간</span>
+        <div class="routePopupDataContractPeriod">
+          <input type="date" value="2020.01.01">~
+          <input type="date" value="2020.01.01">
+        </div>
+      </div>
+      <div class="routePopupDataCell">
+        <span class="routePopupDataTitle">출/퇴근</span>
+        <div class="routePopupWork">
+          <input id="workStart" type="radio" name="work">
+          <label for="workStart">출근</label>
+          <input id="workEnd" type="radio" name="work">
+          <label for="workEnd">퇴근</label>
+        </div>
+      </div>
+      <div class="routePopupDataCell">
+        <span class="routePopupDataTitle">참조사항</span>
+        <input type="text" class="routePopupDataReference" value="마북제어시스템개발센터등->대형주차장->EE연구소->샤시동▶ 마북연구소">
+      </div>
+    </div>
+    <div class="routePopupBtnBox">
+      <div class="btnModules">닫기</div>
+      <div class="btnModules">수정</div>
+      <input type="submit" class="btnModules" value="저장">
+    </div>
+  </form>
 </div>
 {% endblock %}
 

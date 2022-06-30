@@ -5,7 +5,7 @@ from django.urls import reverse
 from django.views import generic
 
 # from .forms import OrderForm, ConnectForm
-from .models import DispatchOrderConnect, DispatchOrder, RegularlyGroup
+from .models import DispatchOrderConnect, DispatchOrder, DispatchRegularly, RegularlyGroup
 from crudmember.models import User
 from humanresource.models import Member
 from vehicle.models import Vehicle
@@ -17,7 +17,7 @@ TODAY = str(datetime.now())[:10]
 FORMAT = "%Y-%m-%d"
 
 def regularly(request):
-
+    
     return render(request, 'dispatch/regularly.html')
 
 def regularly_route(request):
@@ -35,6 +35,138 @@ def schedule(request):
 def document(request):
 
     return render(request, 'dispatch/document.html')
+    
+class RegularlyDispatchList(generic.ListView):
+    template_name = 'dispatch/regularly.html'
+    context_object_name = 'order_list'
+    paginate_by = 10
+    model = DispatchOrder
+
+    def get_queryset(self):
+        
+        group_name = self.request.GET.get('group_name', '')
+        start_time = self.request.GET.get('start_time', '')
+        end_time = self.request.GET.get('end_time', '')
+
+        print("스타트", start_time, self.request.GET.get('start_time', ''))
+        print("엔드", end_time, self.request.GET.get('end_time', ''))
+        print("그룹", group_name)
+        if group_name or start_time or end_time:
+            dispatch_list = []
+            if start_time and end_time:
+                dispatch_list = DispatchOrder.objects.filter(departure_date__range=[start_time,end_time])
+                print("기간 디스패치", dispatch_list)
+            if group_name:
+                if dispatch_list:
+                    temp = []
+                    for dispatch in dispatch_list:
+                        if dispatch.regularly.regularly_group.name == group_name:
+                            temp.append(dispatch)
+                    dispatch_list = temp
+                else:
+                    try:
+                        for regularly in RegularlyGroup.objects.get(name__contains=group_name).regularly_info.all():
+                            dispatch_list.append(regularly.order_info.all()[0])
+                    except Exception as e:
+                        print("ERROR", e)
+        else:
+            dispatch_list = DispatchRegularly.objects.all().order_by('group', 'number')
+        return dispatch_list
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        
+        paginator = context['paginator']
+        page_numbers_range = 5
+        max_index = len(paginator.page_range)
+        page = self.request.GET.get('page')
+        current_page = int(page) if page else 1
+
+        start_index = int((current_page - 1) / page_numbers_range) * page_numbers_range
+        end_index = start_index + page_numbers_range
+        if end_index >= max_index:
+            end_index = max_index
+        page_range = paginator.page_range[start_index:end_index]
+        context['page_range'] = page_range
+        
+        #페이징 끝
+
+        group_name = self.request.GET.get('group_name', '')
+        start_time = self.request.GET.get('start_time', '')
+        end_time = self.request.GET.get('end_time', '')
+
+        context['group_list'] = RegularlyGroup.objects.all()
+        context['group_name'] = group_name
+        context['start_time'] = start_time
+        context['end_time'] = end_time
+        return context
+
+class RegularlyRouteList(generic.ListView):
+    template_name = 'dispatch/regularly_route.html'
+    context_object_name = 'order_list'
+    paginate_by = 10
+    model = DispatchOrder
+
+    def get_queryset(self):
+        
+        group_name = self.request.GET.get('group_name', '')
+        start_time = self.request.GET.get('start_time', '')
+        end_time = self.request.GET.get('end_time', '')
+
+        print("스타트", start_time, self.request.GET.get('start_time', ''))
+        print("엔드", end_time, self.request.GET.get('end_time', ''))
+        print("그룹", group_name)
+        if group_name or start_time or end_time:
+            dispatch_list = []
+            if start_time and end_time:
+                dispatch_list = DispatchOrder.objects.filter(departure_date__range=[start_time,end_time])
+                print("기간 디스패치", dispatch_list)
+            if group_name:
+                if dispatch_list:
+                    temp = []
+                    for dispatch in dispatch_list:
+                        if dispatch.regularly.regularly_group.name == group_name:
+                            temp.append(dispatch)
+                    dispatch_list = temp
+                else:
+                    try:
+                        for regularly in RegularlyGroup.objects.get(name__contains=group_name).regularly_info.all():
+                            dispatch_list.append(regularly.order_info.all()[0])
+                    except Exception as e:
+                        print("ERROR", e)
+        else:
+            dispatch_list = DispatchRegularly.objects.all().order_by('group', 'number')
+        return dispatch_list
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        
+        paginator = context['paginator']
+        page_numbers_range = 5
+        max_index = len(paginator.page_range)
+        page = self.request.GET.get('page')
+        current_page = int(page) if page else 1
+
+        start_index = int((current_page - 1) / page_numbers_range) * page_numbers_range
+        end_index = start_index + page_numbers_range
+        if end_index >= max_index:
+            end_index = max_index
+        page_range = paginator.page_range[start_index:end_index]
+        context['page_range'] = page_range
+        
+        #페이징 끝
+
+        group_name = self.request.GET.get('group_name', '')
+        start_time = self.request.GET.get('start_time', '')
+        end_time = self.request.GET.get('end_time', '')
+
+        context['group_list'] = RegularlyGroup.objects.all()
+        context['group_name'] = group_name
+        context['start_time'] = start_time
+        context['end_time'] = end_time
+        return context
+
+
 
 # class DispatchList(generic.ListView):
 #     template_name = 'dispatch/dispatch_list.html'
