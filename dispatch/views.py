@@ -4,7 +4,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
 from django.views import generic
 
-# from .forms import OrderForm, ConnectForm
+from .forms import OrderForm, ConnectForm, RegularlyForm
 from .models import DispatchOrderConnect, DispatchOrder, DispatchRegularly, RegularlyGroup
 from crudmember.models import User
 from humanresource.models import Member
@@ -15,14 +15,6 @@ from utill.decorator import option_year_deco
 
 TODAY = str(datetime.now())[:10]
 FORMAT = "%Y-%m-%d"
-
-def regularly(request):
-    
-    return render(request, 'dispatch/regularly.html')
-
-def regularly_route(request):
-
-    return render(request, 'dispatch/regularly_route.html')
 
 def order(request):
 
@@ -40,7 +32,7 @@ class RegularlyDispatchList(generic.ListView):
     template_name = 'dispatch/regularly.html'
     context_object_name = 'order_list'
     paginate_by = 10
-    model = DispatchOrder
+    model = DispatchRegularly
 
     def get_queryset(self):
         
@@ -54,7 +46,7 @@ class RegularlyDispatchList(generic.ListView):
         if group_name or start_time or end_time:
             dispatch_list = []
             if start_time and end_time:
-                dispatch_list = DispatchOrder.objects.filter(departure_date__range=[start_time,end_time])
+                dispatch_list = DispatchRegularly.objects.filter(departure_date__range=[start_time,end_time])
                 print("기간 디스패치", dispatch_list)
             if group_name:
                 if dispatch_list:
@@ -105,7 +97,7 @@ class RegularlyRouteList(generic.ListView):
     template_name = 'dispatch/regularly_route.html'
     context_object_name = 'order_list'
     paginate_by = 10
-    model = DispatchOrder
+    model = DispatchRegularly
 
     def get_queryset(self):
         
@@ -119,7 +111,7 @@ class RegularlyRouteList(generic.ListView):
         if group_name or start_time or end_time:
             dispatch_list = []
             if start_time and end_time:
-                dispatch_list = DispatchOrder.objects.filter(departure_date__range=[start_time,end_time])
+                dispatch_list = DispatchRegularly.objects.filter(departure_date__range=[start_time,end_time])
                 print("기간 디스패치", dispatch_list)
             if group_name:
                 if dispatch_list:
@@ -165,6 +157,107 @@ class RegularlyRouteList(generic.ListView):
         context['start_time'] = start_time
         context['end_time'] = end_time
         return context
+
+def regularly_order_create(request):
+    context = {}
+    if request.method == "POST":
+        creator = get_object_or_404(User, pk=request.session.get('user'))
+        order_form = RegularlyForm(request.POST)
+        print("RRRR", request.POST)
+
+        if order_form.is_valid():
+            print("VALID")
+            if datetime.strptime(request.POST.get('contract_start_date'), FORMAT) > datetime.strptime(request.POST.get('contract_end_date'), FORMAT):
+                context = {}
+                # context['order_list'] = DispatchOrder.objects.exclude(regularly=None).order_by('-pk')
+                context['group_list'] = RegularlyGroup.objects.all()
+                # context['error'] = "출발일이 도착일보다 늦습니다"
+                #raise BadRequest('출발일이 도착일보다 늦습니다.')
+                #return render(request, 'dispatch/regularly_order_create.html', context)
+                raise Http404
+            post_group = request.POST.get('group', None)
+            try:
+                regularly_group = RegularlyGroup.objects.get(pk=post_group)
+            except Exception as e:
+                regularly_group = None
+
+            week = ' '.join(request.POST.getlist('week', None))
+            # regularly = RegularlyOrder(
+            #     week=week,
+            #     term_begin=request.POST.get('term_begin', None),
+            #     term_end=request.POST.get('term_end', None),
+            #     regularly_group=regularly_group,
+            # )
+            # regularly.save()
+            
+            order = order_form.save(commit=False)
+            order.week = week
+            order.creator = creator
+            order.group = regularly_group
+            order.route = order_form.cleaned_data['departure'] + " ▶ " + order_form.cleaned_data['arrival']
+            order.save()
+            return redirect('dispatch:regularly_route')
+
+    else:
+        raise Http404    
+
+def regularly_order_edit(request):
+    id = request.POST.get('id', None)
+    order = get_object_or_404(DispatchRegularly, pk=id)
+    
+    if request.method == 'POST':
+        creator = get_object_or_404(User, pk=request.session.get('user'))
+        order_form = RegularlyForm(request.POST)
+        if order_form.is_valid():
+            print("VALID")
+            group = get_object_or_404(RegularlyGroup, pk=request.POST.get('group'))
+            week = ' '.join(request.POST.getlist('week', None))
+        
+            if datetime.strptime(request.POST.get('contract_start_date'), FORMAT) > datetime.strptime(request.POST.get('contract_end_date'), FORMAT):
+                #raise BadRequest('출발일이 도착일보다 늦습니다.')
+                raise Http404
+            route_name = order_form.cleaned_data['departure'] + " ▶ " + order_form.cleaned_data['arrival']
+            
+
+            order.references = order_form.cleaned_data['references']
+            order.departure = order_form.cleaned_data['departure']
+            order.arrival = order_form.cleaned_data['arrival']
+            order.departure_time = order_form.cleaned_data['departure_time']
+            order.arrival_time = order_form.cleaned_data['arrival_time']
+            order.bus_type = order_form.cleaned_data['bus_type']
+            order.bus_cnt = order_form.cleaned_data['bus_cnt']
+            order.price = order_form.cleaned_data['price']
+            order.driver_allowance = order_form.cleaned_data['driver_allowance']
+            order.number = order_form.cleaned_data['number']
+            order.customer = order_form.cleaned_data['customer']
+            order.customer_phone = order_form.cleaned_data['customer_phone']
+            order.contract_start_date = order_form.cleaned_data['contract_start_date']
+            order.contract_end_date = order_form.cleaned_data['contract_end_date']
+            order.work_type = order_form.cleaned_data['work_type']
+
+            order.week = week
+            order.route = route_name
+            order.group = group
+            order.creator = creator
+            order.save()
+            
+            return redirect('dispatch:regularly_route')
+        else: 
+            raise Http404
+    else:
+        raise Http404
+
+def regularly_order_delete(request):
+    if request.method == "POST":
+        order_list = request.POST.getlist("check")
+        for order_id in order_list:
+            order = get_object_or_404(DispatchRegularly, pk=order_id)
+            # if order.creator.pk == request.session['user'] or User.objects.get(pk=request.session['user']).authority == "관리자": # ?? 작성자만 지울 수 있게 하나?
+                # order.delete()
+            order.delete()
+        return redirect('dispatch:regularly_route')
+    else:
+        raise Http404
 
 
 

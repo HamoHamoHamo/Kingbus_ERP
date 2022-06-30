@@ -131,14 +131,14 @@ table a {
 }
 
 td:nth-child(1) {
-  display: flex;
-  justify-content: center;
-  width: 4%;
+  width: 14%;
+  padding-left: 1%;
 }
 
 td:nth-child(2) {
-  width: 14%;
-  padding-left: 1%;
+  display: flex;
+  justify-content: center;
+  width: 4%;
 }
 
 td:nth-child(3) {
@@ -388,7 +388,7 @@ td:nth-child(8) {
   box-sizing: border-box;
 }
 
-.regularyCreatePopupBtnBox div{
+.regularyCreatePopupBtnBox div {
   background-color: #444444;
 }
 
@@ -397,8 +397,16 @@ td:nth-child(8) {
 }
 
 
-
 .popupAreaModulesRoute {
+  position: absolute;
+  top: 0;
+  right: 0;
+  display: none;
+  width: 100%;
+  height: 100%;
+}
+
+.popupAreaModulesRouteCreate {
   position: absolute;
   top: 0;
   right: 0;
@@ -444,6 +452,7 @@ td:nth-child(8) {
 }
 
 .routePopupDataArea {
+  display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
   width: 100%;
@@ -479,7 +488,8 @@ td:nth-child(8) {
 }
 
 .routePopupDataArea .routePopupDataCell:nth-child(2),
-.routePopupDataArea .routePopupDataCell:nth-child(13) {
+.routePopupDataArea .routePopupDataCell:nth-child(4),
+.routePopupDataArea .routePopupDataCell:nth-child(15) {
   width: 48.8rem;
 }
 
@@ -501,6 +511,10 @@ td:nth-child(8) {
   box-sizing: border-box;
 }
 
+.popupAreaModulesGroupCreate .routePopupBtnBox {
+  justify-content: center;
+}
+
 .routePopupBtnBox div:nth-child(1) {
   background-color: #444444;
 }
@@ -508,7 +522,12 @@ td:nth-child(8) {
 .routePopupBtnBox div:nth-child(2) {
   background-color: #0069D9;
 }
-.routePopupBtnBox input{
+
+.routePopupBtnBox input {
+  background-color: #0069D9;
+}
+
+.routePopupBtnBox input:nth-child(3) {
   display: none;
   background-color: #0069D9;
 }
@@ -547,6 +566,7 @@ td:nth-child(8) {
 .routePopupDataDriveTime,
 .routePopupDataDriveTime,
 .routePopupDataDriveTime,
+.routePopupDataDriverNumber,
 .routePopupDataDriverPay,
 .routePopupDataBusKinds,
 .routePopupDataBusCount,
@@ -558,23 +578,27 @@ td:nth-child(8) {
   width: 23rem;
 }
 
-.routePopupDataDriveDate{
+.routePopupDataDriveDate {
   display: flex;
   flex-direction: column;
   align-items: flex-end;
   border-bottom: 0.1rem solid #191919;
 }
-.routePopupDataDriveDate input[type=checkbox]{
+
+.routePopupDataDriveDate input[type=checkbox] {
   margin: 0;
 }
-.routePopupDataDriveDate label{
+
+.routePopupDataDriveDate label {
   font-size: 1.4rem;
   cursor: pointer;
 }
-.routePopupWork{
+
+.routePopupWork {
   font-size: 1.4rem;
   border-bottom: 0.1rem solid #191919;
 }
-.routePopupWork label{
+
+.routePopupWork label {
   cursor: pointer;
 }
