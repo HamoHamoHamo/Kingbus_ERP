@@ -447,11 +447,14 @@ html::-webkit-scrollbar-track {
   align-items: center;
   width: 6.5rem;
   height: 2.5rem;
+  padding: 0;
   border: none;
   border-radius: 0.3rem;
   font-size: 1.4rem;
   color: white;
   cursor: pointer;
+  box-sizing: border-box;
+  outline: none;
 }
 .popupAreaModules{
   position: absolute;

@@ -2,7 +2,7 @@ import urllib
 import os
 import mimetypes
 from crudmember.models import User
-from django.http import Http404, HttpResponse
+from django.http import Http404, HttpResponse, HttpResponseNotAllowed
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
 from django.views import generic
@@ -260,11 +260,14 @@ def file_del(request, kinds, notice_id, file_id):
     return redirect(reverse('notice:edit', args=(kinds, notice_id,)))
 
 def comment_del(request, kinds, notice_id, comment_id):
-    kinds_check(kinds)
-    if creator_check(request, comment_id, NoticeComment):
-        NoticeComment.objects.filter(id=comment_id).delete()
-    return redirect('/notice/{0}/{1}'.format(kinds, notice_id))
+    if request.method == "POST":
+        kinds_check(kinds)
+        if creator_check(request, comment_id, NoticeComment):
+            NoticeComment.objects.filter(id=comment_id).delete()
+        return redirect('/notice/{0}/{1}'.format(kinds, notice_id))
 
+    else:
+        return HttpResponseNotAllowed(['POST'])
 def creator_check(request, pk, type):
     if request.session.get('user') != type.objects.get(id=pk).creator.id:
         raise Http404

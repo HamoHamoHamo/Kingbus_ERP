@@ -38,7 +38,7 @@
   <div class="noticeTextarea">{{notice.content}}</div>
     {% if notice.creator.id == request.session.user %}
     <div class="createBtnBox">
-      <form action="{% url 'notice:delete' notice.kinds notice.id %}" class="deleteForm">
+      <form action="{% url 'notice:delete' notice.kinds notice.id %}" class="deleteForm" onsubmit="return confirm('정말로 삭제하시겠습니까?');">
         <input type="submit" value="삭제" class="deleteBtn">
       </form>
       <form action="{% url 'notice:edit' notice.kinds notice.id %}" class="noticeDetailEdit">
@@ -58,7 +58,10 @@
       <span class="commentUserTitle">{{comment.creator}}</span>
       <span class="commentCreateDate">{{comment.pub_date | date:'Y.m.d H:i:s'}}</span>
       {% if request.session.user == comment.creator.id %}
-      <a class="commentDeleteBtn" href="{% url 'notice:comment_del' notice.kinds notice.id comment.id %}">삭제</a>
+      <form method="post" action="{% url 'notice:comment_del' notice.kinds notice.id comment.id %}" onsubmit="return confirm('정말로 삭제하시겠습니까?');">
+        {% csrf_token %}
+        <input type="submit" class="commentDeleteBtn" value="삭제">
+      </form>
       {% endif %}
     </div>
     <div class="commentContents">{{comment.content}}</div>

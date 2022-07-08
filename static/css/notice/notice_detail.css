@@ -242,6 +242,11 @@
   margin-right: 0.6rem;
 }
 
+
+.commentUserDataCell form{
+  width: 4rem;
+}
+
 .commentDeleteBtn {
   display: flex;
   justify-content: center;
