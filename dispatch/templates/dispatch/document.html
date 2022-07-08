@@ -1,6 +1,9 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load custom_tags %}
+
 {% block head %}
+
 <meta http-equiv="Cache-Control" content="private, no-cache, no-store, max-age=0, must-revalidate">
 
 <link rel="stylesheet" href="{% static 'css/dispatch/document.css' %}" type="text/css" />
@@ -22,7 +25,7 @@
         <div class="searchTool">
             <div class="dateFilterBox">
                 <span>날짜</span>
-                <input type="date" class="inputModules">
+                <input name="date" type="date" class="inputModules" value="{{date}}">
             </div>
             <input type="submit" value="검색" class="btnModules">
         </div>
@@ -49,12 +52,13 @@
         <div class="documentTbodyBox">
             <table class="documentTbody">
                 <tbody>
+                    {% for order in order_list %}
                     <tr>
                         <td>
-                            22.05.37<br>
-                            [16:60~20:30]
+                            {{ departure_date|index:forloop.counter0 }}<br>
+                            {% if num_days|index:forloop.counter0 %} {{num_days|index:forloop.counter0}}일 {% endif %}[{{ time|index:forloop.counter0 }}]
                         </td>
-                        <td>마북제어시스템개발센터등->대형주차장->EE연구소->샤시동▶마북연구소</td>
+                        <td>{{order.route}}</td>
                         <td>
                             <span>이도울(1111)</span>
                             <span>이도울(1111)</span>
@@ -62,7 +66,7 @@
                             <span>이도울(1111)</span>
                             <span>이도울(1111)</span>
                         </td>
-                        <td>1대</td>
+                        <td>{{order.bus_cnt}}대</td>
                         <td>
                             <div class="documentBox">
                                 <a href="" target="_blank">
@@ -104,281 +108,7 @@
                             </div>
                         </td>
                     </tr>
-                    <tr>
-                        <td>
-                            22.05.37<br>
-                            [16:60~20:30]
-                        </td>
-                        <td>마북제어시스템개발센터등->대형주차장->EE연구소->샤시동▶마북연구소</td>
-                        <td>
-                            <span>이도울(1111)</span>
-                            <span>이도울(1111)</span>
-                            <span>이도울(1111)</span>
-                            <span>이도울(1111)</span>
-                            <span>이도울(1111)</span>
-                        </td>
-                        <td>1대</td>
-                        <td>
-                            <div class="documentBox">
-                                <a href="" target="_blank">
-                                    <div class="documentCell">등록증</div>
-                                </a>
-                                <a href="" target="_blank">
-                                    <div class="documentCell">등록증</div>
-                                </a>
-                                <a href="" target="_blank">
-                                    <div class="documentCell">등록증</div>
-                                </a>
-                                <a href="" target="_blank">
-                                    <div class="documentCell">등록증</div>
-                                </a>
-                                <a href="" target="_blank">
-                                    <div class="documentCell">등록증</div>
-                                </a>
-                                <a href="" target="_blank">
-                                    <div class="documentCell">등록증</div>
-                                </a>
-                                <a href="" target="_blank">
-                                    <div class="documentCell">등록증</div>
-                                </a>
-                                <a href="" target="_blank">
-                                    <div class="documentCell">등록증</div>
-                                </a>
-                                <a href="" target="_blank">
-                                    <div class="documentCell">등록증</div>
-                                </a>
-                                <a href="" target="_blank">
-                                    <div class="documentCell">등록증</div>
-                                </a>
-                                <a href="" target="_blank">
-                                    <div class="documentCell">등록증</div>
-                                </a>
-                                <a href="" target="_blank">
-                                    <div class="documentCell">등록증</div>
-                                </a>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            22.05.37<br>
-                            [16:60~20:30]
-                        </td>
-                        <td>마북제어시스템개발센터등->대형주차장->EE연구소->샤시동▶마북연구소</td>
-                        <td>
-                            <span>이도울(1111)</span>
-                            <span>이도울(1111)</span>
-                            <span>이도울(1111)</span>
-                            <span>이도울(1111)</span>
-                            <span>이도울(1111)</span>
-                        </td>
-                        <td>1대</td>
-                        <td>
-                            <div class="documentBox">
-                                <a href="" target="_blank">
-                                    <div class="documentCell">등록증</div>
-                                </a>
-                                <a href="" target="_blank">
-                                    <div class="documentCell">등록증</div>
-                                </a>
-                                <a href="" target="_blank">
-                                    <div class="documentCell">등록증</div>
-                                </a>
-                                <a href="" target="_blank">
-                                    <div class="documentCell">등록증</div>
-                                </a>
-                                <a href="" target="_blank">
-                                    <div class="documentCell">등록증</div>
-                                </a>
-                                <a href="" target="_blank">
-                                    <div class="documentCell">등록증</div>
-                                </a>
-                                <a href="" target="_blank">
-                                    <div class="documentCell">등록증</div>
-                                </a>
-                                <a href="" target="_blank">
-                                    <div class="documentCell">등록증</div>
-                                </a>
-                                <a href="" target="_blank">
-                                    <div class="documentCell">등록증</div>
-                                </a>
-                                <a href="" target="_blank">
-                                    <div class="documentCell">등록증</div>
-                                </a>
-                                <a href="" target="_blank">
-                                    <div class="documentCell">등록증</div>
-                                </a>
-                                <a href="" target="_blank">
-                                    <div class="documentCell">등록증</div>
-                                </a>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            22.05.37<br>
-                            [16:60~20:30]
-                        </td>
-                        <td>마북제어시스템개발센터등->대형주차장->EE연구소->샤시동▶마북연구소</td>
-                        <td>
-                            <span>이도울(1111)</span>
-                            <span>이도울(1111)</span>
-                            <span>이도울(1111)</span>
-                            <span>이도울(1111)</span>
-                            <span>이도울(1111)</span>
-                        </td>
-                        <td>1대</td>
-                        <td>
-                            <div class="documentBox">
-                                <a href="" target="_blank">
-                                    <div class="documentCell">등록증</div>
-                                </a>
-                                <a href="" target="_blank">
-                                    <div class="documentCell">등록증</div>
-                                </a>
-                                <a href="" target="_blank">
-                                    <div class="documentCell">등록증</div>
-                                </a>
-                                <a href="" target="_blank">
-                                    <div class="documentCell">등록증</div>
-                                </a>
-                                <a href="" target="_blank">
-                                    <div class="documentCell">등록증</div>
-                                </a>
-                                <a href="" target="_blank">
-                                    <div class="documentCell">등록증</div>
-                                </a>
-                                <a href="" target="_blank">
-                                    <div class="documentCell">등록증</div>
-                                </a>
-                                <a href="" target="_blank">
-                                    <div class="documentCell">등록증</div>
-                                </a>
-                                <a href="" target="_blank">
-                                    <div class="documentCell">등록증</div>
-                                </a>
-                                <a href="" target="_blank">
-                                    <div class="documentCell">등록증</div>
-                                </a>
-                                <a href="" target="_blank">
-                                    <div class="documentCell">등록증</div>
-                                </a>
-                                <a href="" target="_blank">
-                                    <div class="documentCell">등록증</div>
-                                </a>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            22.05.37<br>
-                            [16:60~20:30]
-                        </td>
-                        <td>마북제어시스템개발센터등->대형주차장->EE연구소->샤시동▶마북연구소</td>
-                        <td>
-                            <span>이도울(1111)</span>
-                            <span>이도울(1111)</span>
-                            <span>이도울(1111)</span>
-                            <span>이도울(1111)</span>
-                            <span>이도울(1111)</span>
-                        </td>
-                        <td>1대</td>
-                        <td>
-                            <div class="documentBox">
-                                <a href="" target="_blank">
-                                    <div class="documentCell">등록증</div>
-                                </a>
-                                <a href="" target="_blank">
-                                    <div class="documentCell">등록증</div>
-                                </a>
-                                <a href="" target="_blank">
-                                    <div class="documentCell">등록증</div>
-                                </a>
-                                <a href="" target="_blank">
-                                    <div class="documentCell">등록증</div>
-                                </a>
-                                <a href="" target="_blank">
-                                    <div class="documentCell">등록증</div>
-                                </a>
-                                <a href="" target="_blank">
-                                    <div class="documentCell">등록증</div>
-                                </a>
-                                <a href="" target="_blank">
-                                    <div class="documentCell">등록증</div>
-                                </a>
-                                <a href="" target="_blank">
-                                    <div class="documentCell">등록증</div>
-                                </a>
-                                <a href="" target="_blank">
-                                    <div class="documentCell">등록증</div>
-                                </a>
-                                <a href="" target="_blank">
-                                    <div class="documentCell">등록증</div>
-                                </a>
-                                <a href="" target="_blank">
-                                    <div class="documentCell">등록증</div>
-                                </a>
-                                <a href="" target="_blank">
-                                    <div class="documentCell">등록증</div>
-                                </a>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            22.05.37<br>
-                            [16:60~20:30]
-                        </td>
-                        <td>마북제어시스템개발센터등->대형주차장->EE연구소->샤시동▶마북연구소</td>
-                        <td>
-                            <span>이도울(1111)</span>
-                            <span>이도울(1111)</span>
-                            <span>이도울(1111)</span>
-                            <span>이도울(1111)</span>
-                            <span>이도울(1111)</span>
-                        </td>
-                        <td>1대</td>
-                        <td>
-                            <div class="documentBox">
-                                <a href="" target="_blank">
-                                    <div class="documentCell">등록증</div>
-                                </a>
-                                <a href="" target="_blank">
-                                    <div class="documentCell">등록증</div>
-                                </a>
-                                <a href="" target="_blank">
-                                    <div class="documentCell">등록증</div>
-                                </a>
-                                <a href="" target="_blank">
-                                    <div class="documentCell">등록증</div>
-                                </a>
-                                <a href="" target="_blank">
-                                    <div class="documentCell">등록증</div>
-                                </a>
-                                <a href="" target="_blank">
-                                    <div class="documentCell">등록증</div>
-                                </a>
-                                <a href="" target="_blank">
-                                    <div class="documentCell">등록증</div>
-                                </a>
-                                <a href="" target="_blank">
-                                    <div class="documentCell">등록증</div>
-                                </a>
-                                <a href="" target="_blank">
-                                    <div class="documentCell">등록증</div>
-                                </a>
-                                <a href="" target="_blank">
-                                    <div class="documentCell">등록증</div>
-                                </a>
-                                <a href="" target="_blank">
-                                    <div class="documentCell">등록증</div>
-                                </a>
-                                <a href="" target="_blank">
-                                    <div class="documentCell">등록증</div>
-                                </a>
-                            </div>
-                        </td>
-                    </tr>
+                    {% endfor %}
                 </tbody>
             </table>
         </div>

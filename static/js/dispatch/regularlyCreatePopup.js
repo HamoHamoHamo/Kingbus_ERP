@@ -11,8 +11,8 @@ const popupBgModulesRoute = document.querySelector(".popupBgModulesRoute")
 const routePopupCloseBtn = document.querySelector(".routePopupBtnBox .btnModules:nth-child(1)")
 const routePopupEditBtn = document.querySelector(".routePopupBtnBox .btnModules:nth-child(2)")
 const routePopupSaveBtn = document.querySelector(".routePopupBtnBox input")
-const routePoppupDetail = document.querySelector(".popupContainerRoute .routePopupDataArea:nth-child(2)")
-const routePoppupEdit = document.querySelector(".popupContainerRoute .routePopupDataArea:nth-child(3)")
+const routePoppupDetail = document.querySelector(".popupAreaModulesRoute .routePopupDataArea:nth-child(3)")
+const routePoppupEdit = document.querySelector(".popupAreaModulesRoute .routePopupDataArea:nth-child(4)")
 const routePopupTitle = document.querySelector(".routePopupTitle")
 const dispatchCloseBtn = document.querySelector(".regularyCreatePopupBtnBox div:nth-child(1)")
 const routePopupData = document.querySelectorAll(".routePopupData")
@@ -32,6 +32,7 @@ const routePopupWorkLabel = document.querySelector(".routePopupWork label:nth-ch
 const routePopupDataReference = document.querySelector(".routePopupDataReference")
 const routePopupDataDriveDateEdit = document.querySelectorAll(".routePopupDataDriveDate input")
 const routePopupDataDriveDateEditLabel = document.querySelectorAll(".routePopupDataDriveDate label")
+const sendToHidden = document.querySelector(".sendToHidden")
 
 
 
@@ -196,6 +197,7 @@ function detailPopup() {
       }
     }
   }
+  sendToHidden.value = this.parentElement.className;
 }
 
 popupBgModulesRoute.addEventListener("click", closedRoutePopup)

@@ -23,22 +23,20 @@
         <div class="searchTool">
             <span class="searchName">노선검색</span>
             <div class="routeFilterBox">
-                <input type="text" class="inputModules" list="groupFilter" placeholder="그룹이름">
-                <datalist name="group" id="groupFilter">
+                <input value="{{group_old}}" name="group" type="text" class="inputModules" list="groupFilter"
+                    placeholder="그룹이름" autocomplete="off">
+                <datalist id="groupFilter">
                     {% for group in group_list %}
-                    <option value="{{group.id}}">{{group.name}}</option>
+                    <option value="{{group.name}}"></option>
                     {% endfor %}
                 </datalist>
-                <input type="text" class="inputModules" list="routeFilter" placeholder="노선이름">
+                <input value="{{route_old}}" name="route" type="text" class="inputModules" list="routeFilter"
+                    placeholder="노선이름" autocomplete="off">
                 <datalist id="routeFilter">
-                    <option value="노선이름"></option>
-                    <option value="항목1"></option>
+                    {% for order in order_list %}
+                    <option value="{{order.route}}"></option>
+                    {% endfor %}
                 </datalist>
-            </div>
-            <div class="dateFilterBox">
-                <span>기간</span>
-                <input type="date" class="inputModules">~
-                <input type="date" class="inputModules">
             </div>
             <input type="submit" value="검색" class="btnModules">
         </div>
@@ -53,7 +51,7 @@
 
 
 
-<form method="post" action="{% url 'dispatch:regularly_route_delete' %}">
+<form class="groupListForm" method="post" action="{% url 'dispatch:regularly_route_delete' %}">
     {% csrf_token %}
     <div class="contentsAreaBox">
         <table class="tableHead">
@@ -219,7 +217,6 @@
             <div class="routePopupDataCell">
                 <span class="routePopupDataTitle">그룹</span>
                 <select name="group" class="routePopupDataGroup">
-                    <option value=""></option>
                     {% for g in group_list %}
                     <option value="{{g.id}}">{{g.name}}</option>
                     {% endfor %}
@@ -276,7 +273,6 @@
             <div class="routePopupDataCell">
                 <span class="routePopupDataTitle">버스종류</span>
                 <select name="bus_type" id="" class="routePopupDataBusKinds">
-                    <option value=""></option>
                     <option value="45인승 대형버스">45인승 대형버스</option>
                     <option value="41인승 대형버스">41인승 대형버스</option>
                     <option value="33인승 중형버스">33인승 중형버스</option>
@@ -465,46 +461,49 @@
 
 <div class="popupAreaModulesGroupCreate">
     <div class="popupBgModulesRoute"></div>
-    <form>
-        <div class="popupContainerRoute">
-            <div class="routePopupTitle">그룹생성</div>
-            <div class="routePopupDataArea">
-                <form>
-                    <div class="createGroupBox">
-                        <label for="">그룹이름</label>
-                        <input type="text">
-                        <input class="btnModules" type="submit" value="등록">
-                    </div>
-                </form>
-                <form>
-                    <div class="groupContainer">
-                        {% for group in group_list %}
-                        <div class="groupFullBox">
-                            <div class="groupBox">
-                                <img src="{% static 'images/groupCreateArrow.png' %}" alt="">
-                                <input type="text" class="groupBoxTitle" value="{{group.name}}" disabled>
-                                <div class="groupBoxTollCell">
-                                    <input type="submit" value="">
-                                    <div></div>
-                                    <input type="submit" value="">
-                                </div>
-                            </div>
-                            <div class="groupDepth2">
-                                {% for order in group.regularly_info.all %}
-                                <div class="groupDepth2Route">{{order.route}}</div>
-                                {% endfor %}
+
+    <div class="popupContainerRoute">
+        <div class="routePopupTitle">그룹생성</div>
+        <div class="routePopupDataArea createGroupDataArea">
+            <form method="post" action="{% url 'dispatch:regularly_group_create' %}">
+                {% csrf_token %}
+                <div class="createGroupBox">
+                    <label for="">그룹이름</label>
+                    <input type="text" name="name">
+                    <input class="btnModules" type="submit" value="등록">
+                </div>
+            </form>
+            <form action="" method="post">
+                {% csrf_token %}
+                <div class="groupContainer">
+                    {% for group in group_list %}
+                    <div class="groupFullBox">
+                        <div class="groupBox">
+                            <img src="{% static 'images/groupCreateArrow.png' %}" alt="">
+                            <input type="text" name="group" class="groupBoxTitle" value="{{group.name}}" disabled>
+                            <input type="hidden" name="group_id" class="groupBoxTitle" value="{{group.id}}" disabled>
+                            <div class="groupBoxTollCell">
+                                <div></div>
+                                <input type="submit" value="">
                             </div>
                         </div>
-                        {% endfor %}
+                        <div class="groupDepth2">
+                            {% for order in group.regularly_info.all %}
+                            <div class="groupDepth2Route">{{order.route}}</div>
+                            {% endfor %}
+                        </div>
                     </div>
-                </form>
-            </div>
-            <div class="routePopupBtnBox">
-                <div class="btnModules groupCretetCloseBtn">닫기</div>
-            </div>
-
+                    {% endfor %}
+                </div>
+                <div class="routePopupBtnBox">
+                    <div class="btnModules groupCretetCloseBtn">닫기</div>
+                    <input type="submit" class="btnModules" value="저장">
+                </div>
+            </form>
         </div>
-    </form>
+
+    </div>
+
 </div>
 
 {% endblock %}
@@ -517,26 +516,26 @@
 {% block script %}
 <script>
     let regDatas = [
-    {% for dispatch in order_list %}
-        {
-            group: "{{ dispatch.group.name }}",
+        {% for dispatch in order_list %}
+    {
+        group: "{{ dispatch.group.name }}",
             references: "{{ dispatch.references }}",
-            departure: "{{ dispatch.departure }}",
-            arrival: "{{ dispatch.arrival }}",
-            departure_time: "{{ dispatch.departure_time }}",
-            arrival_time: "{{ dispatch.arrival_time }}",
-            bus_type: "{{ dispatch.bus_type }}",
-            bus_cnt: "{{ dispatch.bus_cnt }}",
-            price: "{{ dispatch.price }}",
-            driver_allowance: "{{ dispatch.driver_allowance }}",
-            number: "{{ dispatch.number }}",
-            week: "{{ dispatch.week }}",
-            customer: "{{ dispatch.customer }}",
-            customer_phone: "{{ dispatch.customer_phone }}",
-            contract_start_date: "{{ dispatch.contract_start_date }}",
-            contract_end_date: "{{ dispatch.contract_end_date }}",
-            work_type: "{{ dispatch.work_type }}",
-            route: "{{ dispatch.route }}",
+                departure: "{{ dispatch.departure }}",
+                    arrival: "{{ dispatch.arrival }}",
+                        departure_time: "{{ dispatch.departure_time }}",
+                            arrival_time: "{{ dispatch.arrival_time }}",
+                                bus_type: "{{ dispatch.bus_type }}",
+                                    bus_cnt: "{{ dispatch.bus_cnt }}",
+                                        price: "{{ dispatch.price }}",
+                                            driver_allowance: "{{ dispatch.driver_allowance }}",
+                                                number: "{{ dispatch.number }}",
+                                                    week: "{{ dispatch.week }}",
+                                                        customer: "{{ dispatch.customer }}",
+                                                            customer_phone: "{{ dispatch.customer_phone }}",
+                                                                contract_start_date: "{{ dispatch.contract_start_date }}",
+                                                                    contract_end_date: "{{ dispatch.contract_end_date }}",
+                                                                        work_type: "{{ dispatch.work_type }}",
+                                                                            route: "{{ dispatch.route }}",
         },
     {% endfor %}
     ]

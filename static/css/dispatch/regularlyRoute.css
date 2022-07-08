@@ -505,6 +505,17 @@ td:nth-child(8) {
   box-sizing: border-box;
 }
 
+.createGroupDataArea{
+  flex-wrap: nowrap;
+  height: calc(100% - 4.9rem);
+}
+.routePopupDataArea form{
+  width: 100%;
+}
+.createGroupDataArea .routePopupBtnBox{
+  padding: 0 29.5rem;
+}
+
 .popupAreaModulesRoute .popupContainerRoute .routePopupDataArea:nth-child(3) {
   display: flex;
 }
@@ -720,6 +731,7 @@ td:nth-child(8) {
 .groupBox img {
   width: 1.4rem;
   height: 0.8rem;
+  padding: 1rem;
   cursor: pointer;
 }
 
@@ -731,7 +743,6 @@ td:nth-child(8) {
   color: #191919;
   margin-left: 2rem;
   background-color: white;
-  cursor: pointer;
 }
 
 .groupBoxTollCell {
@@ -761,7 +772,9 @@ td:nth-child(8) {
   color: #676767;
 }
 
-.groupBoxTollCell input {
+
+.groupBoxTollCell div:nth-child(1) {
+  background-image: url("../../images/editIcon.png");
   width: 1.4rem;
   height: 1.4rem;
   padding: 0;
@@ -771,14 +784,17 @@ td:nth-child(8) {
   cursor: pointer;
 }
 
-.groupBoxTollCell input:nth-child(1) {
-  background-image: url("../../images/editIcon.png");
-}
-
-.groupBoxTollCell input:nth-child(3) {
+.groupBoxTollCell input:nth-child(2) {
   background-image: url("../../images/deleteIcon.png");
+  width: 1.4rem;
+  height: 1.4rem;
+  padding: 0;
+  border: none;
+  background-color: transparent;
+  background-size: cover;
+  cursor: pointer;
 }
-
 .groupCretetCloseBtn {
   background-color: #444444;
+  margin-right: 2rem;
 }

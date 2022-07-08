@@ -1,5 +1,5 @@
 from django.db.models import Q
-from django.http import Http404, HttpResponse, HttpResponseBadRequest
+from django.http import Http404, HttpResponse, HttpResponseBadRequest, HttpResponseNotAllowed
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
 from django.views import generic
@@ -10,23 +10,66 @@ from crudmember.models import User
 from humanresource.models import Member
 from vehicle.models import Vehicle
 
-from datetime import datetime, timedelta
-from utill.decorator import option_year_deco
+from datetime import datetime, timedelta, date
+# from utill.decorator import option_year_deco
 
 TODAY = str(datetime.now())[:10]
 FORMAT = "%Y-%m-%d"
-
-def order(request):
-
-    return render(request, 'dispatch/order.html')
+WEEK = ['(월)', '(화)', '(수)', '(목)', '(금)', '(토)', '(일)', ]
 
 def schedule(request):
 
     return render(request, 'dispatch/schedule.html')
 
-def document(request):
+class DocumentList(generic.ListView):
+    template_name = 'dispatch/document.html'
+    context_object_name = 'order_list'
+    model = DispatchOrder
 
-    return render(request, 'dispatch/document.html')
+    def get_queryset(self):
+        date = self.request.GET.get('date', TODAY)
+        order_list = DispatchOrder.objects.filter(departure_date__lte=f'{date}T24:00').filter(arrival_date__gte=f'{date}T00:00')
+        return order_list
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        departure_date = []
+        time = []
+        num_days = []
+
+        for order in context['order_list']:
+            d_y = order.departure_date[0:4]
+            d_m = order.departure_date[5:7]
+            d_d = order.departure_date[8:10]
+            d_t = order.departure_date[11:16]
+            d_date = date(int(d_y), int(d_m), int(d_d))
+            d_w = WEEK[d_date.weekday()]
+            d_y = d_y[2:4]
+
+            a_y = order.arrival_date[0:4]
+            a_m = order.arrival_date[5:7]
+            a_d = order.arrival_date[8:10]
+            a_t = order.arrival_date[11:16]
+            a_date = date(int(a_y), int(a_m), int(a_d))
+            a_w = WEEK[d_date.weekday()]
+            a_y = a_y[2:4]
+            
+            date_diff = a_date - d_date
+            if date_diff.days > 1:
+                num_days.append(date_diff.days)
+            else:
+                num_days.append('')
+
+            departure_date.append(f"{d_y}.{d_m}.{d_d} {d_w}")
+            time.append(f"{d_t}~{a_t}")
+            # arrival_date.append(f"{a_y}.{a_m}.{a_d} {a_w} {a_t}")
+
+        context['departure_date'] = departure_date
+        context['num_days'] = num_days
+        context['time'] = time
+        context['date'] = self.request.GET.get('date', TODAY)
+        
+        return context
     
 class RegularlyDispatchList(generic.ListView):
     template_name = 'dispatch/regularly.html'
@@ -35,35 +78,24 @@ class RegularlyDispatchList(generic.ListView):
     model = DispatchRegularly
 
     def get_queryset(self):
+        group = self.request.GET.get('group', '')
+        route = self.request.GET.get('route', '')
         
-        group_name = self.request.GET.get('group_name', '')
-        start_time = self.request.GET.get('start_time', '')
-        end_time = self.request.GET.get('end_time', '')
-
-        print("스타트", start_time, self.request.GET.get('start_time', ''))
-        print("엔드", end_time, self.request.GET.get('end_time', ''))
-        print("그룹", group_name)
-        if group_name or start_time or end_time:
-            dispatch_list = []
-            if start_time and end_time:
-                dispatch_list = DispatchRegularly.objects.filter(departure_date__range=[start_time,end_time])
-                print("기간 디스패치", dispatch_list)
-            if group_name:
-                if dispatch_list:
-                    temp = []
-                    for dispatch in dispatch_list:
-                        if dispatch.regularly.regularly_group.name == group_name:
-                            temp.append(dispatch)
-                    dispatch_list = temp
+        dispatch_list = []
+        group_data = None
+        if route or group:
+            if group:
+                group_data = RegularlyGroup.objects.get(name=group)
+                dispatch_list = group_data.regularly_info.all()
+            if route:
+                if group_data:
+                    dispatch_list = group_data.regularly_info.filter(route__contains=route)
                 else:
-                    try:
-                        for regularly in RegularlyGroup.objects.get(name__contains=group_name).regularly_info.all():
-                            dispatch_list.append(regularly.order_info.all()[0])
-                    except Exception as e:
-                        print("ERROR", e)
+                    dispatch_list = DispatchRegularly.objects.filter(route__contains=route)
         else:
             dispatch_list = DispatchRegularly.objects.all().order_by('group', 'number')
         return dispatch_list
+
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -82,15 +114,20 @@ class RegularlyDispatchList(generic.ListView):
         context['page_range'] = page_range
         
         #페이징 끝
-
-        group_name = self.request.GET.get('group_name', '')
-        start_time = self.request.GET.get('start_time', '')
-        end_time = self.request.GET.get('end_time', '')
+        group_name = self.request.GET.get('group', '')
+        route_name = self.request.GET.get('route', '')
+        date = self.request.GET.get('date', '')
+        if not date:
+            date = TODAY
+        
+        vehicle = Vehicle.objects.all()
 
         context['group_list'] = RegularlyGroup.objects.all()
         context['group_name'] = group_name
-        context['start_time'] = start_time
-        context['end_time'] = end_time
+        context['route_name'] = route_name
+        context['date'] = date
+        context['vehicle'] = vehicle
+
         return context
 
 class RegularlyRouteList(generic.ListView):
@@ -100,32 +137,19 @@ class RegularlyRouteList(generic.ListView):
     model = DispatchRegularly
 
     def get_queryset(self):
-        
-        group_name = self.request.GET.get('group_name', '')
-        start_time = self.request.GET.get('start_time', '')
-        end_time = self.request.GET.get('end_time', '')
-
-        print("스타트", start_time, self.request.GET.get('start_time', ''))
-        print("엔드", end_time, self.request.GET.get('end_time', ''))
-        print("그룹", group_name)
-        if group_name or start_time or end_time:
-            dispatch_list = []
-            if start_time and end_time:
-                dispatch_list = DispatchRegularly.objects.filter(departure_date__range=[start_time,end_time])
-                print("기간 디스패치", dispatch_list)
-            if group_name:
-                if dispatch_list:
-                    temp = []
-                    for dispatch in dispatch_list:
-                        if dispatch.regularly.regularly_group.name == group_name:
-                            temp.append(dispatch)
-                    dispatch_list = temp
+        group = self.request.GET.get('group', '')
+        route = self.request.GET.get('route', '')
+        dispatch_list = []
+        group_data = None
+        if route or group:
+            if group:
+                group_data = RegularlyGroup.objects.get(name=group)
+                dispatch_list = group_data.regularly_info.all()
+            if route:
+                if group_data:
+                    dispatch_list = group_data.regularly_info.filter(route__contains=route)
                 else:
-                    try:
-                        for regularly in RegularlyGroup.objects.get(name__contains=group_name).regularly_info.all():
-                            dispatch_list.append(regularly.order_info.all()[0])
-                    except Exception as e:
-                        print("ERROR", e)
+                    dispatch_list = DispatchRegularly.objects.filter(route__contains=route)
         else:
             dispatch_list = DispatchRegularly.objects.all().order_by('group', 'number')
         return dispatch_list
@@ -148,14 +172,13 @@ class RegularlyRouteList(generic.ListView):
         
         #페이징 끝
 
-        group_name = self.request.GET.get('group_name', '')
-        start_time = self.request.GET.get('start_time', '')
-        end_time = self.request.GET.get('end_time', '')
+        group = self.request.GET.get('group', '')
+        route = self.request.GET.get('route', '')
 
         context['group_list'] = RegularlyGroup.objects.all()
-        context['group_name'] = group_name
-        context['start_time'] = start_time
-        context['end_time'] = end_time
+        context['group_old'] = group
+        context['route_old'] = route
+
         return context
 
 def regularly_order_create(request):
@@ -218,7 +241,6 @@ def regularly_order_edit(request):
                 raise Http404
             route_name = order_form.cleaned_data['departure'] + " ▶ " + order_form.cleaned_data['arrival']
             
-
             order.references = order_form.cleaned_data['references']
             order.departure = order_form.cleaned_data['departure']
             order.arrival = order_form.cleaned_data['arrival']
@@ -259,6 +281,219 @@ def regularly_order_delete(request):
     else:
         raise Http404
 
+def regularly_group_create(request):
+    if request.method == "POST":
+        group = RegularlyGroup(
+            name = request.POST.get('name'),
+            creator = get_object_or_404(User, pk=request.session['user'])
+        )
+        group.save()
+        return redirect('dispatch:regularly_route')
+    else:
+        return HttpResponseNotAllowed(['POST'])
+
+def regularly_group_edit(request):
+
+    if request.method == "POST":
+        id_list = request.POST.getlist('group_id', None)
+        name_list = request.POST.getlist('group', None)
+        
+        cnt = 0
+        for id in id_list:
+            group = get_object_or_404(RegularlyGroup, id=id)
+            group.name = name_list[cnt]
+            group.save()
+            cnt += 1
+        return redirect('dispatch:regularly_route')
+    else:
+        return HttpResponseNotAllowed(['POST'])
+
+def regularly_group_delete(request):
+    if request.method == "POST":
+        group = get_object_or_404(RegularlyGroup, id=request.POST.get('group_id', None))
+        group.delete()
+        return redirect('dispatch:regularly_route')
+    else:
+        return HttpResponseNotAllowed(['POST'])
+
+class OrderList(generic.ListView):
+    template_name = 'dispatch/order.html'
+    context_object_name = 'order_list'
+    model = DispatchOrder
+    paginate_by = 10
+
+    def get_queryset(self):
+        start_date = self.request.GET.get('start_date')
+        end_date = self.request.GET.get('end_date')
+        route = self.request.GET.get('route')
+        customer = self.request.GET.get('customer')
+
+        if start_date or end_date or route or customer:
+            dispatch_list = []
+            if start_date and end_date:
+                dispatch_list = DispatchOrder.objects.filter(departure_date__range=[start_date + "T00:00", end_date + "T24:00"]).order_by('departure_date')
+            if route:
+                if dispatch_list:
+                    dispatch_list = dispatch_list.filter(route__contains=route).order_by('departure_date')
+                else:
+                    dispatch_list = DispatchOrder.objects.filter(route__contains=route).order_by('departure_date')
+            if customer:
+                if dispatch_list:
+                    dispatch_list = dispatch_list.filter(customer__contains=customer).order_by('departure_date')
+                else:
+                    dispatch_list = DispatchOrder.objects.filter(customer__contains=customer).order_by('departure_date')
+        else:
+            dispatch_list = DispatchOrder.objects.exclude(arrival_date__lt=TODAY).order_by('departure_date')
+        
+        return dispatch_list
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        paginator = context['paginator']
+        page_numbers_range = 5
+        max_index = len(paginator.page_range)
+        page = self.request.GET.get('page')
+        current_page = int(page) if page else 1
+
+        start_index = int((current_page - 1) / page_numbers_range) * page_numbers_range
+        end_index = start_index + page_numbers_range
+        if end_index >= max_index:
+            end_index = max_index
+        page_range = paginator.page_range[start_index:end_index]
+        context['page_range'] = page_range
+        
+        #페이징 끝
+        departure_date = []
+        time = []
+        num_days = []
+
+        for order in context['order_list']:
+            d_y = order.departure_date[0:4]
+            d_m = order.departure_date[5:7]
+            d_d = order.departure_date[8:10]
+            d_t = order.departure_date[11:16]
+            d_date = date(int(d_y), int(d_m), int(d_d))
+            d_w = WEEK[d_date.weekday()]
+            d_y = d_y[2:4]
+
+            a_y = order.arrival_date[0:4]
+            a_m = order.arrival_date[5:7]
+            a_d = order.arrival_date[8:10]
+            a_t = order.arrival_date[11:16]
+            a_date = date(int(a_y), int(a_m), int(a_d))
+            a_w = WEEK[d_date.weekday()]
+            a_y = a_y[2:4]
+            
+            date_diff = a_date - d_date
+            if date_diff.days > 1:
+                num_days.append(date_diff.days)
+            else:
+                num_days.append('')
+
+            departure_date.append(f"{d_y}.{d_m}.{d_d} {d_w}")
+            time.append(f"{d_t}~{a_t}")
+            # arrival_date.append(f"{a_y}.{a_m}.{a_d} {a_w} {a_t}")
+
+        context['departure_date'] = departure_date
+        context['num_days'] = num_days
+        context['time'] = time
+        context['route_old'] = self.request.GET.get('route', '')
+        context['customer_old'] = self.request.GET.get('customer', '')
+        context['start_date_old'] = self.request.GET.get('start_date', '')
+        context['end_date_old'] = self.request.GET.get('end_date', '')
+
+
+        return context
+
+def order_create(request):
+    context = {}
+    
+    if request.method == "POST":
+        creator = get_object_or_404(User, pk=request.session.get('user'))
+        order_form = OrderForm(request.POST)
+        print("POST", request.POST)
+        if order_form.is_valid():
+            post_departure_date = request.POST.get('departure_date', None).replace('T', ' ')
+            post_arrival_date = request.POST.get('arrival_date', None).replace('T', ' ')
+
+            format = '%Y-%m-%d %H:%M'
+            if datetime.strptime(post_departure_date, format) > datetime.strptime(post_arrival_date, format):
+                print("term begin > term end")
+                raise Http404
+
+            order = order_form.save(commit=False)
+            order.creator = creator
+            order.route = order_form.cleaned_data['departure'] + " ▶ " + order_form.cleaned_data['arrival']
+
+            order.save()
+            return redirect('dispatch:order')
+        else:
+            raise Http404
+    else:
+        raise Http404
+        
+def order_edit(request):
+    pk = request.POST.get('id')
+    order = get_object_or_404(DispatchOrder, pk=pk)
+    
+    if request.method == 'POST':
+        creator = get_object_or_404(User, pk=request.session.get('user'))
+        order_form = OrderForm(request.POST)
+
+        if order_form.is_valid():
+            post_departure_date = request.POST.get('departure_date', None).replace('T', ' ')
+            post_arrival_date = request.POST.get('arrival_date', None).replace('T', ' ')
+
+            format = '%Y-%m-%d %H:%M'
+            if datetime.strptime(post_departure_date, format) > datetime.strptime(post_arrival_date, format):
+                print("term begin > term end")
+                raise Http404
+
+            order.operation_type = order_form.cleaned_data['operation_type']
+            order.references = order_form.cleaned_data['references']
+            order.departure = order_form.cleaned_data['departure']
+            order.arrival = order_form.cleaned_data['arrival']
+            order.departure_date = order_form.cleaned_data['departure_date']
+            order.arrival_date = order_form.cleaned_data['arrival_date']
+            order.bus_type = order_form.cleaned_data['bus_type']
+            order.bus_cnt = order_form.cleaned_data['bus_cnt']
+            order.price = order_form.cleaned_data['price']
+            order.driver_allowance = order_form.cleaned_data['driver_allowance']
+            order.contract_status = order_form.cleaned_data['contract_status']
+            order.cost_type = order_form.cleaned_data['cost_type']
+            order.customer = order_form.cleaned_data['customer']
+            order.customer_phone = order_form.cleaned_data['customer_phone']
+            order.deposit_status = order_form.cleaned_data['deposit_status']
+            order.deposit_date = order_form.cleaned_data['deposit_date']
+            order.bill_date = order_form.cleaned_data['bill_date']
+            order.collection_type = order_form.cleaned_data['collection_type']
+            
+            order.payment_method = request.POST.get('payment_method', 'n')
+            order.VAT = request.POST.get('VAT', 'n')
+            order.route = order_form.cleaned_data['departure'] + " ▶ " + order_form.cleaned_data['arrival']
+            order.creator = creator
+            print("ORDER", order)
+            order.save()
+
+            return redirect(reverse('dispatch:order'))
+        else:
+            raise Http404
+    else:
+        raise Http404
+
+def order_delete(request):
+    if request.method == "POST":
+        id_list = request.POST.getlist('id', None)
+        for id in id_list:
+            order = get_object_or_404(DispatchOrder, id=id)
+            order.delete()
+
+        return redirect(reverse('dispatch:order'))
+    else:
+        return HttpResponseNotAllowed(['post'])
+
+
+# @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 
 
 # class DispatchList(generic.ListView):

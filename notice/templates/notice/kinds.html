@@ -38,7 +38,6 @@
     <table class="tableHead">
       <thead>
         <tr class="headerLine">
-          <td>선택</td>
           <td>번호</td>
           <td>제목</td>
           <td>작성자</td>
@@ -52,10 +51,6 @@
       <tbody>
         {% for notice in notices %}
         <tr>
-          <td>
-            <input type="checkbox" class="checkbox" id="checkbox">
-            <label for="checkbox" class="checkboxLabel"></label>
-          </td>
           <td>{{notice.num}}</td>
           <td><a href="{% url 'notice:detail' kinds notice.id %}">{{notice.title}}</a></td>
           <td>{{notice.creator.name}}</td>
@@ -102,7 +97,6 @@
         {% endif %}
       </div>
       <div class="btnBox">
-        <input type="submit" value="삭제" class="deletBtn">
         <a href="{% url 'notice:create' %}">
           <div class="createBtn">등록</div>
         </a>

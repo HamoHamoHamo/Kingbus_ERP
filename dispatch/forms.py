@@ -33,9 +33,7 @@ class OrderForm(forms.ModelForm):
             'departure',
             'arrival',
             'departure_date',
-            'departure_time',
             'arrival_date',
-            'arrival_time',
             'bus_type',
             'bus_cnt',
             'price',
@@ -48,10 +46,10 @@ class OrderForm(forms.ModelForm):
             'deposit_date',
             'bill_date',
             'collection_type',
-            'payment_method',
-            'VAT',
-            'collection_amount',
-            'collection_date',
+            # 'payment_method',
+            # 'VAT',
+            # 'collection_amount',
+            # 'collection_date',
             ]
         
         # widgets = {
