@@ -32,8 +32,8 @@ function openSideNav() {
         sideMenuNav2[Array.from(nav1BoxMenuHaveDepth2).indexOf(this)].style.height = "21rem";
         break;
       case 2:
-        sideMenuNav2Box[Array.from(nav1BoxMenuHaveDepth2).indexOf(this)].style.height = "10.4rem";
-        sideMenuNav2[Array.from(nav1BoxMenuHaveDepth2).indexOf(this)].style.height = "8.4rem";
+        sideMenuNav2Box[Array.from(nav1BoxMenuHaveDepth2).indexOf(this)].style.height = "5.6rem";
+        sideMenuNav2[Array.from(nav1BoxMenuHaveDepth2).indexOf(this)].style.height = "3.6rem";
         break;
       case 3:
         sideMenuNav2Box[Array.from(nav1BoxMenuHaveDepth2).indexOf(this)].style.height = "15.2rem";
