@@ -4,10 +4,13 @@ from . import views
 app_name = 'HR'
 
 urlpatterns = [
-    path('member', views.member, name='member'),
-    path('mgmt', views.mgmt, name='mgmt'),
+    path('member', views.MemberList.as_view(), name='member'),
+    path('member/create', views.member_create, name='member_create'),
+    path('member/edit', views.member_edit, name='member_edit'),
+    path('member/delete', views.member_delete, name='member_delete'),
+    path('mgmt', views.ManagementList.as_view(), name='mgmt'),
+    path('mgmt/create', views.mgmt_create, name='mgmt_create'),
 
-    # path('management/', views.ManagementList.as_view(), name='management'),
     # path('management/create/', views.HR_create, name='HR_create'),
     # path('management/delete/', views.HR_delete, name='HR_delete'),
     # path('management/<int:pk>/', views.HRDetail.as_view(), name='HR_detail'),

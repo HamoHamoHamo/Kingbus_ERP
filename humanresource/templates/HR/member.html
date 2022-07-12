@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load custom_tags %}
 {% block head %}
 <meta http-equiv="Cache-Control" content="private, no-cache, no-store, max-age=0, must-revalidate">
 
@@ -23,95 +24,102 @@
     <div class="searchTool">
       <span class="searchName">직원검색</span>
       <div class="routeFilterBox">
-        <input value="{{group_old}}" name="group" type="text" class="inputModules" list="groupFilter" placeholder="그룹이름" autocomplete="off">
-        <datalist id="groupFilter">
-          <option value=""></option>
+        <input value="{{name}}" name="name" type="text" class="inputModules" list="hrFilter" placeholder="직원이름" autocomplete="off">
+        <datalist id="hrFilter">
+          {% for member in member_all %}
+            <option value="{{member.name}}"></option>
+          {% endfor %}
         </datalist>
       </div>
       <input type="submit" value="검색" class="btnModules">
     </div>
   </form>
+  <div class="addPeople">직원등록</div>
 </div>
 
 
 
 
+<form method="post" action="{% url 'HR:member_delete' %}" class="hrMemberListForm" onsubmit="return confirm('정말로 삭제하시겠습니까?');">
+  {% csrf_token %}
+  <div class="contentsAreaBox">
+    <table class="tableHead">
+      <thead>
+        <tr class="headerLine">
+          <td>선택</td>
+          <td>이름</td>
+          <td>담당업무</td>
+          <td>입사일</td>
+          <td>면허번호</td>
+          <td>휴대폰 번호</td>
+          <td>생년월일</td>
+          <td>주소</td>
+        </tr>
+      </thead>
+    </table>
 
-<div class="contentsAreaBox">
-  <table class="tableHead">
-    <thead>
-      <tr class="headerLine">
-        <td>선택</td>
-        <td>이름</td>
-        <td>담당업무</td>
-        <td>입사일</td>
-        <td>면허번호</td>
-        <td>휴대폰 번호</td>
-        <td>생년월일</td>
-        <td>주소</td>
-      </tr>
-    </thead>
-  </table>
-
-  <table class="tableBody">
-    <tbody>
-      <tr>
-        <td>
-          <input type="checkbox">
-        </td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-
-  <div class="btnAreaBox">
-    <div class="pagination">
-      <!-- 페이징 처리 -->
-      {% if is_paginated %}
-      <div class="pagination">
-        {% if page_obj.has_previous %}
-        <div class="page-item page-pre">
-          <a class="page-link"
-            href="?top_box_selector={{selector}}&search={{searched}}&page={{ page_obj.previous_page_number }}"
-            tabindex="-1">이전</a>
-        </div>
-        {% else %}
-        <div class="page-item page-pre disabled">
-          <a class="page-link" href="#" tabindex="-1">이전</a>
-        </div>
-        {% endif %}
-        {% for page in page_range %}
-        <div class="page-item {% if page == page_obj.number %} page-activate {% endif %}">
-          <a class="page-link" href="?top_box_selector={{selector}}&search={{searched}}&page={{ page }}">{{ page }}</a>
-        </div>
+    <table class="tableBody">
+      <tbody>
+        {% for member in member_list %}
+        <tr class="{{member.id}}">
+          <td>
+            <input name="delete_check" value="{{member.id}}" type="checkbox">
+          </td>
+          <td class="{{ forloop.counter0 }}">{{member.name}}</td>
+          <td>{{member.role}}</td>
+          <td>{{member.entering_date}}</td>
+          <td>{{member.license_number}}</td>
+          <td>{{member.phone_num}}</td>
+          <td>{{member.birthdate}}</td>
+          <td>{{member.address}}</td>
+        </tr>
         {% endfor %}
+      </tbody>
+    </table>
 
-        {% if page_obj.has_next %}
-        <div class="page-item">
-          <a class="page-link page-next"
-            href="?top_box_selector={{selector}}&search={{searched}}&page={{ page_obj.next_page_number }}">다음</a>
-        </div>
-        {% else %}
-        <div class="page-item page-next disabled">
-          <a class="page-link" href="#">다음</a>
+    <div class="btnAreaBox">
+      <div class="pagination">
+        <!-- 페이징 처리 -->
+        {% if is_paginated %}
+        <div class="pagination">
+          {% if page_obj.has_previous %}
+          <div class="page-item page-pre">
+            <a class="page-link"
+              href="?top_box_selector={{selector}}&search={{searched}}&page={{ page_obj.previous_page_number }}"
+              tabindex="-1">이전</a>
+          </div>
+          {% else %}
+          <div class="page-item page-pre disabled">
+            <a class="page-link" href="#" tabindex="-1">이전</a>
+          </div>
+          {% endif %}
+          {% for page in page_range %}
+          <div class="page-item {% if page == page_obj.number %} page-activate {% endif %}">
+            <a class="page-link" href="?top_box_selector={{selector}}&search={{searched}}&page={{ page }}">{{ page
+              }}</a>
+          </div>
+          {% endfor %}
+
+          {% if page_obj.has_next %}
+          <div class="page-item">
+            <a class="page-link page-next"
+              href="?top_box_selector={{selector}}&search={{searched}}&page={{ page_obj.next_page_number }}">다음</a>
+          </div>
+          {% else %}
+          <div class="page-item page-next disabled">
+            <a class="page-link" href="#">다음</a>
+          </div>
+          {% endif %}
         </div>
         {% endif %}
       </div>
-      {% endif %}
-    </div>
-    <div class="btnBox">
-      <input type="text" value="삭제" class="btnModules">
-      <div class="btnModules">수정</div>
-    </div>
+      <div class="btnBox">
+        <input type="submit" value="삭제" class="btnModules">
+      </div>
 
+    </div>
   </div>
-</div>
+</form>
 
 
 
@@ -126,51 +134,96 @@
 {% block popup %}
 <div class="popupAreaModules">
   <div class="popupBgModules"></div>
-  <form class="popupContainer">
-    <div class="regularyCreatePopupTitle">배차등록</div>
-    <table>
-      <thead class="regularyCreatePopupThead">
-        <tr>
-          <td>차량</td>
-          <td>
-            <span>출근</span>
-            <span>일반</span>
-            <span>퇴근</span>
-          </td>
-        </tr>
-      </thead>
-    </table>
-    <div class="regularyCreatePopupTbodyBoxing">
-      <table>
-        <tbody class="regularyCreatePopupTbody">
-          <tr>
-            <td>
-              <div class="addDriver" id="0">1111(이도울)</div>
-            </td>
-            <td>
-              <div class="GoToWork">2</div>
-              <div class="work">2</div>
-              <div class="backToHome">2</div>
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <div class="addDriver" id="1">1111(이도울)</div>
-            </td>
-            <td>
-              <div class="GoToWork">2</div>
-              <div class="work">2</div>
-              <div class="backToHome">2</div>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+  <form method="post" action="{% url 'HR:member_create' %}" class="popupContainer">
+    {% csrf_token %}
+    <div class="PopupTitle">직원등록</div>
+    <div class="PopupDataArea">
+      <div class="PopupDataCell">
+        <span class="PopupDataTitle">이름</span>
+        <input name="name" type="text" class="PopupDataInput">
+      </div>
+      <div class="PopupDataCell">
+        <span class="PopupDataTitle">담당업무</span>
+        <select name="role" id="" class="PopupDataInput">
+          <option value="운전원">운전원</option>
+          <option value="배차관리자">배차관리자</option>
+          <option value="경리관리자">경리관리자</option>
+          <option value="팀장">팀장</option>
+        </select>
+      </div>
+      <div class="PopupDataCell">
+        <span class="PopupDataTitle">입사일</span>
+        <input name="entering_date" type="date" class="PopupDataInput">
+      </div>
+      <div class="PopupDataCell">
+        <span class="PopupDataTitle">면허번호</span>
+        <input name="license_number" type="text" class="PopupDataInput" placeholder="'-'을 생략하고 입력해 주세요.">
+      </div>
+      <div class="PopupDataCell">
+        <span class="PopupDataTitle">휴대폰 번호</span>
+        <input name="phone_num" type="text" class="PopupDataInput" placeholder="'-'을 생략하고 입력해 주세요.">
+      </div>
+      <div class="PopupDataCell">
+        <span class="PopupDataTitle">생년월일</span>
+        <input name="birthdate" type="text" class="PopupDataInput" placeholder="ex)19990101">
+      </div>
+      <div class="PopupDataCell">
+        <span class="PopupDataTitle">주소</span>
+        <input name="address" type="text" class="PopupDataInput">
+      </div>
     </div>
-    <div class="regularyCreatePopupResult">
-    </div>
-    <div class="regularyCreatePopupBtnBox">
+    <div class="PopupBtnBox">
       <div class="btnModules">닫기</div>
       <input type="submit" class="btnModules" value="등록">
+    </div>
+  </form>
+</div>
+
+
+<div class="popupAreaModules">
+  <div class="popupBgModules"></div>
+  <form method="post" action="{% url 'HR:member_edit' %}" class="editPopupContainer">
+    {% csrf_token %}
+    <div class="PopupTitle">직원수정</div>
+    <div class="PopupDataArea">
+      <div class="PopupDataCell">
+        <span class="PopupDataTitle">이름</span>
+        <input name="name" type="text" class="PopupDataInput hrName">
+      </div>
+      <div class="PopupDataCell">
+        <span class="PopupDataTitle">담당업무</span>
+        <select name="role" id="" class="PopupDataInput hrRole">
+          <option value="운전원">운전원</option>
+          <option value="배차관리자">배차관리자</option>
+          <option value="경리관리자">경리관리자</option>
+          <option value="팀장">팀장</option>
+        </select>
+      </div>
+      <div class="PopupDataCell">
+        <span class="PopupDataTitle">입사일</span>
+        <input name="entering_date" type="date" class="PopupDataInput hrEntering">
+      </div>
+      <div class="PopupDataCell">
+        <span class="PopupDataTitle">면허번호</span>
+        <input name="license_number" type="text" class="PopupDataInput hrLicense" placeholder="'-'을 생략하고 입력해 주세요.">
+      </div>
+      <div class="PopupDataCell">
+        <span class="PopupDataTitle">휴대폰 번호</span>
+        <input name="phone_num" type="number" class="PopupDataInput hrPhone" placeholder="'-'을 생략하고 입력해 주세요.">
+      </div>
+      <div class="PopupDataCell">
+        <span class="PopupDataTitle">생년월일</span>
+        <input name="birthdate" type="text" class="PopupDataInput hrBirth" placeholder="ex)19990101">
+      </div>
+      <div class="PopupDataCell">
+        <span class="PopupDataTitle">주소</span>
+        <input name="address" type="text" class="PopupDataInput hrAddress">
+      </div>
+      <input type="hidden" value="" name="id" class="sendToHidden">
+    </div>
+    <div class="PopupBtnBox">
+      <div class="btnModules">닫기</div>
+      <input type="submit" class="btnModules" value="저장">
     </div>
   </form>
 </div>
@@ -182,5 +235,20 @@
 
 
 {% block script %}
-<script src="{% static 'js/dispatch/regularlyCreatePopup.js' %}"></script>
+<script>
+  let regDatas = [
+      {% for member in member_list %}
+        {
+          name: "{{member.name}}",
+          role: "{{member.role}}",
+          birthdate: "{{member.birthdate}}",
+          address: "{{member.address}}",
+          phone_num: "{{member.phone_num}}",
+          entering_date: "{{member.entering_date}}",
+          license_number: "{{member.license_number}}",
+        },
+      {% endfor %}      
+  ]
+</script>
+<script src="{% static 'js/hr/hr_list_popup.js' %}"></script>
 {% endblock %}

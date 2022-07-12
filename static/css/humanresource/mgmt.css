@@ -7,7 +7,7 @@
     margin-left: 2rem;
 }
 
-.addPeople {
+.addState {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -95,11 +95,6 @@ table tr:nth-child(even) {
 }
 
 
-.tableBody td:nth-child(2) {
-    font-size: 1.4rem;
-    color: #0069D9;
-    cursor: pointer;
-}
 
 
 td:nth-child(1) {
@@ -108,32 +103,46 @@ td:nth-child(1) {
     width: 4%;
 }
 
+.tableBody td:nth-child(2) {
+    font-size: 1.4rem;
+    color: #0069D9;
+    cursor: pointer;
+}
+
 td:nth-child(2) {
-    width: 10%;
+    width: 6%;
 }
 
 td:nth-child(3) {
-    width: 12%;
+    width: 14%;
 }
 
 td:nth-child(4) {
-    width: 10%;
+    width: 12%;
 }
 
 td:nth-child(5) {
-    width: 15%;
+    width: 6%;
 }
 
 td:nth-child(6) {
-    width: 15%;
+    width: 12%;
 }
 
 td:nth-child(7) {
-    width: 10%;
+    width: 12%;
 }
 
 td:nth-child(8) {
-    width: 24%;
+    width: 26%;
+}
+
+td:nth-child(9) {
+    width: 6%;
+}
+
+td:nth-child(10) {
+    width: 6%;
 }
 
 .btnBox div {
@@ -153,14 +162,15 @@ td:nth-child(8) {
 
 
 /*popup*/
-.popupContainer {
+.popupContainer,
+.detailPopupContainer {
     position: fixed;
     top: 50%;
     left: calc(50% + 11rem);
     display: flex;
     flex-direction: column;
     align-items: center;
-    width: 54.5rem;
+    width: 80rem;
     height: 58rem;
     background-color: white;
     border-radius: 0.3rem;
@@ -168,19 +178,8 @@ td:nth-child(8) {
     transform: translate(-50%, -50%);
 }
 
-.editPopupContainer {
-    position: fixed;
-    top: 50%;
-    left: calc(50% + 11rem);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 54.5rem;
-    height: 58rem;
-    background-color: white;
-    border-radius: 0.3rem;
-    box-shadow: 0 0.2rem 0.4rem rgb(0 0 0 / 16%);
-    transform: translate(-50%, -50%);
+.detailPopupContainer {
+    height: 66rem;
 }
 
 .PopupTitle {
@@ -213,13 +212,21 @@ td:nth-child(8) {
     height: 6rem;
 }
 
-.PopupDataArea .PopupDataCell:nth-child(7) {
+.PopupDataArea .PopupDataCell:nth-child(10) {
     width: 100%;
 }
 
 .PopupDataTitle {
     font-size: 1.4rem;
     color: #7A7A7A;
+}
+
+.PopupData {
+    width: 100%;
+    padding-bottom: 0.1rem;
+    font-size: 1.4rem;
+    color: #191919;
+    border-bottom: 0.1rem solid #191919;
 }
 
 .PopupDataInput {
@@ -233,6 +240,120 @@ td:nth-child(8) {
     border-radius: 0.3rem;
     box-sizing: border-box;
     outline: none;
+}
+
+.managementDetailTable {
+    width: 100%;
+    height: 33.6rem;
+    border: 0.1rem solid #CDCDCE;
+    border-radius: 0.3rem;
+    overflow: hidden;
+    box-sizing: border-box;
+}
+
+.managementDetailTable table {
+    width: 100%;
+    border-spacing: 0;
+}
+
+.managementDetailTable table:nth-child(1) {
+    height: 3.6rem;
+}
+
+.managementDetailTableHeader {
+    width: 100%;
+    height: 3.6rem;
+    padding-right: 0.6rem;
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: #7A7A7A;
+    box-sizing: border-box;
+}
+
+.managementDetailTableDataBox table {
+    width: 100%;
+    height: 100%;
+    font-size: 1.4rem;
+    color: #191919;
+}
+
+.managementDetailTableDataBox {
+    height: 30rem;
+    overflow-y: scroll;
+}
+
+.managementDetailTableDataBox::-webkit-scrollbar {
+    width: 0.6rem;
+}
+
+.managementDetailTableDataBox::-webkit-scrollbar-thumb {
+    height: 17%;
+    background-color: #828282;
+    border-radius: 10px;
+}
+
+.managementDetailTableDataBox::-webkit-scrollbar-track {
+    background-color: #F5F5F5;
+}
+
+.managementDetailTable table tr {
+    height: 3.6rem;
+}
+
+.managementDetailTable td {
+    display: flex;
+    align-items: center;
+}
+
+.managementDetailTable td:nth-child(1) {
+    width: 10%;
+}
+
+.managementDetailTable td:nth-child(2) {
+    width: 20%;
+}
+
+.managementDetailTable td:nth-child(3) {
+    width: 20%;
+}
+
+.managementDetailTable td:nth-child(4) {
+    width: 34%;
+}
+
+.managementDetailTable td:nth-child(5) {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 8%;
+}
+
+.managementDetailTable td:nth-child(6) {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 8%;
+}
+
+.managementDetailTableDataBox td svg {
+    cursor: pointer;
+}
+
+.managementDetailTableDataBox td input[type=date],
+.managementDetailTableDataBox td input[type=text] {
+    background-color: white;
+    border: none;
+    outline: none;
+    height: 2.2rem;
+}
+
+.managementDetailTableDataBox input[type=submit] {
+    background-image: url("../../images/deleteIcon.png");
+    background-repeat: no-repeat;
+    background-size: cover;
+    cursor: pointer;
+    background-color: white;
+    border: none;
 }
 
 .PopupBtnBox {

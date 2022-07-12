@@ -1,0 +1,295 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load custom_tags %}
+
+{% block head %}
+<meta http-equiv="Cache-Control" content="private, no-cache, no-store, max-age=0, must-revalidate">
+
+<link rel="stylesheet" href="{% static 'css/humanresource/mgmt.css' %}" type="text/css" />
+<link rel="stylesheet" href="{% static 'css/pagination.css' %}" type="text/css" />
+{% endblock %}
+
+{% block content-header %}
+<div class="HeaderTitle">
+    근태관리
+</div>
+{% endblock %}
+
+{% block content %}
+
+
+
+
+<div class="searchAreaBox">
+    <form action="">
+        <div class="searchTool">
+            <span class="searchName">직원검색</span>
+            <div class="routeFilterBox">
+                <input value="{{name}}" name="name" type="text" class="inputModules" list="hrFilter" placeholder="직원이름" autocomplete="off">
+                <datalist id="hrFilter">
+                    {% for member in member_list %}
+                    <option value="{{member.name}}"></option>
+                    {% endfor %}
+                </datalist>
+            </div>
+            <input type="submit" value="검색" class="btnModules">
+        </div>
+    </form>
+    <div class="addState">근태등록</div>
+</div>
+
+
+
+
+<form action="" class="hrMemberListForm">
+    {% csrf_token %}
+    <div class="contentsAreaBox">
+        <table class="tableHead">
+            <thead>
+                <tr class="headerLine">
+                    <td>선택</td>
+                    <td>이름</td>
+                    <td>휴대폰번호</td>
+                    <td>생년월일</td>
+                    <td>구분</td>
+                    <td>시작일</td>
+                    <td>종료일</td>
+                    <td>내용</td>
+                    <td>연차</td>
+                </tr>
+            </thead>
+        </table>
+
+        <table class="tableBody">
+            <tbody>
+                {% for hr in hr_list %}
+                {% with m=hr.member_id.id %}
+                <tr class="{{hr.id}}">
+                    <td>
+                        <input type="checkbox">
+                    </td>
+                    <td class="{{ forloop.counter0 }}">{{hr.member_id.name}}</td>
+                    <td>{{hr.member_id.phone_num}}</td>
+                    <td>{{hr.member_id.birthdate}}</td>
+                    <td>{{hr.hr_type}}</td>
+                    <td>{{hr.start_date}}</td>
+                    <td>{{hr.end_date}}</td>
+                    <td>{{hr.reason}}</td>
+                    <td>{{cnt|index:hr.member_id.id}}</td>
+                </tr>
+                {% endwith %}
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <div class="btnAreaBox">
+            <div class="pagination">
+                <!-- 페이징 처리 -->
+                {% if is_paginated %}
+                <div class="pagination">
+                    {% if page_obj.has_previous %}
+                    <div class="page-item page-pre">
+                        <a class="page-link"
+                            href="?top_box_selector={{selector}}&search={{searched}}&page={{ page_obj.previous_page_number }}"
+                            tabindex="-1">이전</a>
+                    </div>
+                    {% else %}
+                    <div class="page-item page-pre disabled">
+                        <a class="page-link" href="#" tabindex="-1">이전</a>
+                    </div>
+                    {% endif %}
+                    {% for page in page_range %}
+                    <div class="page-item {% if page == page_obj.number %} page-activate {% endif %}">
+                        <a class="page-link"
+                            href="?top_box_selector={{selector}}&search={{searched}}&page={{ page }}">{{ page
+                            }}</a>
+                    </div>
+                    {% endfor %}
+
+                    {% if page_obj.has_next %}
+                    <div class="page-item">
+                        <a class="page-link page-next"
+                            href="?top_box_selector={{selector}}&search={{searched}}&page={{ page_obj.next_page_number }}">다음</a>
+                    </div>
+                    {% else %}
+                    <div class="page-item page-next disabled">
+                        <a class="page-link" href="#">다음</a>
+                    </div>
+                    {% endif %}
+                </div>
+                {% endif %}
+            </div>
+            <div class="btnBox">
+                <input type="submit" value="삭제" class="btnModules">
+            </div>
+
+        </div>
+    </div>
+</form>
+
+
+
+
+
+{% endblock %}
+
+
+
+
+
+{% block popup %}
+<div class="popupAreaModules">
+    <div class="popupBgModules"></div>
+    <form method="post" action="{% url 'HR:mgmt_create' %}" class="popupContainer">
+        {% csrf_token %}
+        <div class="PopupTitle">근태등록</div>
+        <div class="PopupDataArea">
+            <div class="PopupDataCell">
+                <span class="PopupDataTitle">이름</span>
+                <select name="member_id" class="PopupDataInput">
+                    {% for member in member_list %}
+                    <option value="{{member.id}}">{{member.name}}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="PopupDataCell">
+                <span class="PopupDataTitle">휴대폰 번호</span>
+                <div class="PopupData"></div>
+            </div>
+            <div class="PopupDataCell">
+                <span class="PopupDataTitle">생년월일</span>
+                <div class="PopupData"></div>
+            </div>
+            <div class="PopupDataCell">
+                <span class="PopupDataTitle"></span>
+            </div>
+            <div class="PopupDataCell">
+                <span class="PopupDataTitle"></span>
+            </div>
+            <div class="PopupDataCell">
+                <span class="PopupDataTitle">연차</span>
+                <div class="PopupData"></div>
+            </div>
+            <div class="PopupDataCell">
+                <span class="PopupDataTitle">구분</span>
+                <input name="hr_type" class="PopupDataInput" list="hrCreateType">
+                <datalist id="hrCreateType">
+                    <option value="연차"></option>
+                    <option value="반차"></option>
+                    <option value="병가"></option>
+                    <option value="경조사"></option>
+                    <option value="조퇴"></option>
+                    <option value="교육"></option>
+                </datalist>
+            </div>
+            <div class="PopupDataCell">
+                <span class="PopupDataTitle">시작일</span>
+                <input name="start_date" type="date" class="PopupDataInput">
+            </div>
+            <div class="PopupDataCell">
+                <span class="PopupDataTitle">종료일</span>
+                <input name="end_date" type="date" class="PopupDataInput">
+            </div>
+            <div class="PopupDataCell">
+                <span class="PopupDataTitle">내용</span>
+                <input name="reason" type="text" class="PopupDataInput">
+            </div>
+        </div>
+        <div class="PopupBtnBox">
+            <div class="btnModules">닫기</div>
+            <input type="submit" class="btnModules" value="등록">
+        </div>
+    </form>
+</div>
+
+
+<div class="popupAreaModules">
+    <div class="popupBgModules"></div>
+    <form method="post" action="" class="detailPopupContainer">
+        {% csrf_token %}
+        <div class="PopupTitle">근태상세</div>
+        <div class="PopupDataArea">
+            <div class="PopupDataCell">
+                <span class="PopupDataTitle">이름</span>
+                <div class="PopupData"></div>
+            </div>
+            <div class="PopupDataCell">
+                <span class="PopupDataTitle">전화번호</span>
+                <div class="PopupData"></div>
+            </div>
+            <div class="PopupDataCell">
+                <span class="PopupDataTitle">생년월일</span>
+                <div class="PopupData"></div>
+            </div>
+            <div class="PopupDataCell">
+                <span class="PopupDataTitle"></span>
+            </div>
+            <div class="PopupDataCell">
+                <span class="PopupDataTitle"></span>
+            </div>
+            <div class="PopupDataCell">
+                <span class="PopupDataTitle">연차</span>
+                <div class="PopupData"></div>
+            </div>
+            <div class="managementDetailTable">
+                <table>
+                    <thead>
+                        <tr class="managementDetailTableHeader">
+                            <td>구분</td>
+                            <td>시작일</td>
+                            <td>종료일</td>
+                            <td>내용</td>
+                            <td>수정</td>
+                            <td>삭제</td>
+                        </tr>
+                    </thead>
+                </table>
+                <div class="managementDetailTableDataBox">
+                    <table>
+                        <tbody>
+                            <tr>
+                                <td>연차</td>
+                                <td>
+                                    <input type="date" value="2022.01.01" disabled>
+                                </td>
+                                <td>
+                                    <input type="date" value="2022.01.01" disabled>
+                                </td>
+                                <td>
+                                    <input type="text" value="내용내용내용내용" disabled>
+                                </td>
+                                <td>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 14 14">
+                                        <path id="Icon_material-edit" data-name="Icon material-edit"
+                                            d="M4.5,15.58V18.5H7.416l8.6-8.6L13.1,6.979ZM18.273,7.64a.774.774,0,0,0,0-1.1l-1.82-1.82a.774.774,0,0,0-1.1,0L13.933,6.147l2.916,2.916Z"
+                                            transform="translate(-4.5 -4.496)" fill="#c1c0c0" />
+                                    </svg>
+                                </td>
+                                <td>
+                                    <input type="submit" value="">
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <input type="hidden" value="" name="id" class="sendToHidden">
+        </div>
+        <div class="PopupBtnBox">
+            <div class="btnModules">닫기</div>
+            <input type="submit" class="btnModules" value="저장">
+        </div>
+    </form>
+</div>
+{% endblock %}
+
+
+
+
+
+
+{% block script %}
+<script>
+</script>
+<script src="{% static 'js/hr/management.js' %}"></script>
+{% endblock %}

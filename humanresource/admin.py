@@ -1,17 +1,6 @@
 from django.contrib import admin
-from .models import Member, HR
+from .models import Member, HR, Yearly
 
-
-class HRInline(admin.TabularInline):
-    model = HR
-
-class MemberAdmin(admin.ModelAdmin):
-    list_display = ('id', 'name')
-    inlines = (HRInline, )
-
-class HRAdmin(admin.ModelAdmin):
-    list_display = ('id', 'member_id')
-
-admin.site.register(HR, HRAdmin)
-
-admin.site.register(Member, MemberAdmin)
+admin.site.register(HR)
+admin.site.register(Member)
+admin.site.register(Yearly)

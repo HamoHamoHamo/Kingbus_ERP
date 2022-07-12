@@ -5,7 +5,7 @@ class UserFilesInline(admin.TabularInline):
     model = UserFile
 
 class UserAdmin(admin.ModelAdmin):
-    list_display = ('id','user_id','registered_dttm')
+    list_display = ('id','user_id','pub_date')
     inlines = (UserFilesInline,)
 
 class UserIPAdmin(admin.ModelAdmin):
