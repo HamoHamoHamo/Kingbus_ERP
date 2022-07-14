@@ -38,7 +38,7 @@ const routeOrderDriverAllowance = document.querySelector(".routeOrderDriverAllow
 const routeOrderPaymentMethod = document.querySelector(".routeOrderPaymentMethod input")
 const routeOrderVat = document.querySelector(".routeOrderVat input")
 const sendToHidden = document.querySelector(".sendToHidden")
-const groupCheck = document.querySelectorAll(".tableBody td:nth-child(1)")
+const groupCheck = document.querySelectorAll(".tableBody td:nth-child(1) input")
 const dispatchListForm = document.querySelector(".dispatchListForm")
 
 
@@ -261,27 +261,32 @@ function orderDetailClose() {
 
 
 
-
+//삭제알림
 let checkBoxCheking = false;
 
 for (i = 0; i < groupCheck.length; i++) {
-  groupCheck[i].addEventListener('change', deleteList)
+  groupCheck[i].addEventListener('change', checking)
 }
 
-
-function deleteList() {
-  checkBoxCheking = true;
-  console.log(checkBoxCheking)
+function checking() {
+  checkBoxCheking = false
+  for (i = 0; i < groupCheck.length; i++) {
+    if (groupCheck[i].checked) {
+      checkBoxCheking = true
+    }
+  }
 }
+
 
 dispatchListForm.addEventListener('submit', checkToDelete)
 
 function checkToDelete(e) {
-  if (checkBoxCheking) {
-    return confirm('정말로 삭제하시겠습니까?')
-  } else {
+  if (!checkBoxCheking) {
     e.preventDefault()
-    alert('삭제할 노선을 선택해 주세요')
+    alert('삭제할 노선을 선택해 주세요.')
+  } else {
+    if (confirm('정말로 삭제하시겠습니까?') == false) {
+      e.preventDefault()
+    }
   }
-  checkBoxCheking = false;
 }

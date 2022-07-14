@@ -43,7 +43,7 @@ const saveIcon = document.querySelector(".routePopupBtnBox input")
 const deletIcon = document.querySelectorAll(".groupBoxTollCell input")
 const createGroupDataArea = document.querySelector(".createGroupDataArea")
 const groupBoxTitle = document.querySelectorAll(".groupBoxTitle")
-const groupCheck = document.querySelectorAll(".tableBody td:nth-child(1)")
+const groupCheck = document.querySelectorAll(".tableBody td:nth-child(1) input")
 const groupListForm = document.querySelector(".groupListForm")
 
 
@@ -323,26 +323,36 @@ function saveGroup(event) {
   deleteOrSave = 0;
 }
 
+
+
+
+
+//삭제알림
 let checkBoxCheking = false;
 
 for (i = 0; i < groupCheck.length; i++) {
-  groupCheck[i].addEventListener('change', deleteList)
+  groupCheck[i].addEventListener('change', checking)
 }
 
-
-function deleteList() {
-  checkBoxCheking = true;
-  console.log(checkBoxCheking)
-}
-
-groupListForm.addEventListener('submit', checkToDelete)
-
-function checkToDelete(e) {
-  if (checkBoxCheking) {
-    return confirm('정말로 삭제하시겠습니까?')
-  } else {
-    e.preventDefault()
-    alert('삭제할 노선을 선택해 주세요')
+function checking() {
+  checkBoxCheking = false
+  for (i = 0; i < groupCheck.length; i++) {
+    if (groupCheck[i].checked) {
+      checkBoxCheking = true
+    }
   }
-  checkBoxCheking = false;
+}
+
+
+groupListForm.addEventListener('submit', deleteData)
+
+function deleteData(e) {
+  if (!checkBoxCheking) {
+    e.preventDefault()
+    alert('삭제할 차량을 선택해 주세요.')
+  } else {
+    if (confirm('정말로 삭제하시겠습니까?') == false) {
+      e.preventDefault()
+    }
+  }
 }

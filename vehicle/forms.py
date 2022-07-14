@@ -2,20 +2,24 @@ from django import forms
 from . import models
 
 
-# class VehicleDetailForm(forms.ModelForm):
-#     class Meta:
-#         model = models.Vehicle#, models.Vehicle_insurance, models.Vehicle_document
-#         fields = [
-#             'vehicle_num',
-#             'vehicle_id',
-#             'group',
-#             'vehicle_type',
-#             'maker',
-#             'model_year',
-#             'release_date',            
-#             'use',
-#             'passenger_num',
-#         ]
+class VehicleForm(forms.ModelForm):
+    class Meta:
+        model = models.Vehicle#, models.Vehicle_insurance, models.Vehicle_document
+        fields = [
+            'vehicle_num0',
+            'vehicle_num',
+            'vehicle_id',
+            'motor_type',
+            'rated_output',
+            'vehicle_type',
+            'maker',
+            'model_year',
+            'release_date',
+            'use',
+            'passenger_num',
+            'check_duration',
+            'insurance_expiry_date',
+        ]
 
 # class VehicleInsuranceForm(forms.ModelForm):
 #     class Meta:

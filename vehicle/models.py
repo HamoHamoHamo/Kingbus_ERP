@@ -5,20 +5,23 @@ from datetime import datetime
 from uuid import uuid4
 
 class Vehicle(models.Model):
+    vehicle_num0 = models.CharField(verbose_name='차량번호 앞자리', max_length=15, null=False)
     vehicle_num = models.CharField(verbose_name='차량번호', max_length=15, null=False)
-    vehicle_id = models.CharField(verbose_name='차대번호', max_length=20, null=False)
+    vehicle_id = models.CharField(verbose_name='차대번호', max_length=30, null=False)
     motor_type = models.CharField(verbose_name='원동기형식', max_length=30, null=False, blank=True)
     rated_output = models.CharField(verbose_name='정격출력', max_length=15, null=False, blank=True)
-    vehicle_type = models.CharField(verbose_name='차량종류', max_length=15, null=False)
-    maker = models.CharField(verbose_name='제조사', max_length=15, null=False)
+    vehicle_type = models.CharField(verbose_name='차량이름', max_length=50, null=False)
+    maker = models.CharField(verbose_name='제조사', max_length=50, null=False, blank=True)
     model_year = models.CharField(verbose_name='연식', max_length=15, null=False)
     release_date = models.CharField(verbose_name='출고일자', max_length=15, null=False)
     driver = models.ForeignKey(Member, verbose_name='기사', on_delete=models.SET_NULL, null=True, related_name="driver", db_column="driver")
-    use = models.CharField(verbose_name='사용여부', max_length=10, null=False)
+    driver_name = models.CharField(verbose_name='기사이름', max_length=20, null=False)
+    use = models.CharField(verbose_name='사용여부', max_length=1, null=False, default='y')
     passenger_num = models.IntegerField(verbose_name='승차인원', null=False)
 
     check_duration = models.CharField(verbose_name='정기점검정비기록', max_length=30, null=False, blank=True)
-    inspection_duration = models.CharField(verbose_name='검사유효기간', max_length=30, null=False, blank=True)
+    insurance_expiry_date = models.CharField(verbose_name='보험만료일', max_length=30, null=False, blank=True)
+    # inspection_duration(검사유효기간)
     # vehicle_registration = models.CharField(verbose_name='차량등록증', max_length=30, null=False, blank=True)
     # insurance_receipt = models.CharField(verbose_name='보험영수증', max_length=30, null=False, blank=True)
 
@@ -35,5 +38,3 @@ class VehicleDocument(models.Model):
     # 보험영수증, 차량등록증 저장
     type = models.CharField(max_length=30, null=True, verbose_name='종류')
 
-    def __str__(self):
-        return self.vehicle_id

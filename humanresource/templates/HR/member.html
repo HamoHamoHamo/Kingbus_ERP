@@ -40,7 +40,7 @@
 
 
 
-<form method="post" action="{% url 'HR:member_delete' %}" class="hrMemberListForm" onsubmit="return confirm('정말로 삭제하시겠습니까?');">
+<form method="post" action="{% url 'HR:member_delete' %}" class="hrMemberListForm">
   {% csrf_token %}
   <div class="contentsAreaBox">
     <table class="tableHead">
@@ -95,8 +95,7 @@
           {% endif %}
           {% for page in page_range %}
           <div class="page-item {% if page == page_obj.number %} page-activate {% endif %}">
-            <a class="page-link" href="?top_box_selector={{selector}}&search={{searched}}&page={{ page }}">{{ page
-              }}</a>
+            <a class="page-link" href="?top_box_selector={{selector}}&search={{searched}}&page={{ page }}">{{ page }}</a>
           </div>
           {% endfor %}
 
