@@ -73,6 +73,7 @@ function closedHrEdit() {
 }
 
 
+//삭제알림
 let checkCounte = false;
 
 for (i = 0; i < checkBox.length; i++) {
@@ -80,12 +81,12 @@ for (i = 0; i < checkBox.length; i++) {
 }
 
 function checking() {
+  checkCounte = false
   for (i = 0; i < checkBox.length; i++) {
     if (checkBox[i].checked) {
       checkCounte = true
-    } else {
-      checkCounte = false
     }
+    console.log(checkBox[i].checked)
   }
 }
 
@@ -95,6 +96,10 @@ hrMemberListForm.addEventListener('submit', deleteData)
 function deleteData(e) {
   if (!checkCounte) {
     e.preventDefault()
-    alert('삭제할 직원을 선택해 주세요.')
+    alert('삭제할 차량을 선택해 주세요.')
+  } else {
+    if (confirm('정말로 삭제하시겠습니까?') == false) {
+      e.preventDefault()
+    }
   }
 }

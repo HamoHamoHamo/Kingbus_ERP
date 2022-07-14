@@ -11,6 +11,8 @@ from ERP.settings import BASE_DIR
 
 from datetime import datetime
 
+from vehicle.models import Vehicle
+
 from .forms import MemberForm, HRForm
 from .models import Member, HR, Yearly
 from utill.decorator import option_year_deco
@@ -79,6 +81,10 @@ def member_edit(request):
     if request.method == "POST":
         member_form = MemberForm(request.POST)
         if member_form.is_valid():
+            if member_form.cleaned_data['role'] == '운전원' and member.name != member_form.cleaned_data['name']:
+                for vehicle in Vehicle.objects.filter(driver=member):
+                    vehicle.driver_name = member_form.cleaned_data['name']
+                    vehicle.save()
             member.name = member_form.cleaned_data['name']
             member.role = member_form.cleaned_data['role']
             member.entering_date = member_form.cleaned_data['entering_date']
@@ -86,7 +92,10 @@ def member_edit(request):
             member.phone_num = member_form.cleaned_data['phone_num']
             member.birthdate = member_form.cleaned_data['birthdate']
             member.address = member_form.cleaned_data['address']
+            
+            
             member.save()
+
 
             return redirect('HR:member')
         else:
@@ -99,6 +108,10 @@ def member_delete(request):
         del_list = request.POST.getlist('delete_check', '')
         for pk in del_list:
             member = get_object_or_404(Member, pk=pk)
+            vehicle_list = Vehicle.objects.filter(driver=member)
+            for vehicle in vehicle_list:
+                vehicle.driver_name = ''
+                vehicle.save()
             member.delete()
 
         return redirect('HR:member')

@@ -4,9 +4,13 @@ from . import views
 app_name = 'vehicle'
 
 urlpatterns = [
-    path('list', views.list, name='list'),
-    path('mgmt', views.mgmt, name='mgmt'),
+    path('list', views.VehicleList.as_view(), name='list'),
+    path('list/create', views.vehicle_create, name='vehicle_create'),
+    path('list/edit', views.vehicle_edit, name='vehicle_edit'),
+    path('list/delete', views.vehicle_delete, name='vehicle_delete'),
+    path('list/image/<str:file_id>', views.document_image, name='vehicle_document_img'),
 
+    path('mgmt', views.VehicleMgmt.as_view(), name='mgmt'),
     # path('', views.VehicleList.as_view(), name='vehicle_list'),
     # path('create/', views.vehicle_create, name='vehicle_create'),
     # path('delete/', views.vehicle_delete, name='vehicle_delete'),

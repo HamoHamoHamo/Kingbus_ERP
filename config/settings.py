@@ -121,16 +121,16 @@ USE_TZ = False
 STATIC_URL = '/static/'
 STATIC_DIR = os.path.join(BASE_DIR, 'static'),
 #STATICFILES_FINDERS = ['django.contrib.staticfiles.finders.FileSystemFinder',]
-# STATICFILES_DIRS=[
+STATICFILES_DIRS=[
 #     os.path.join(BASE_DIR,'crudmember','static'),
 #     os.path.join(BASE_DIR,'accounting','static'),
 #     os.path.join(BASE_DIR,'dispatch','static'),
 #     os.path.join(BASE_DIR,'document','static'),
 #     os.path.join(BASE_DIR,'humanresource','static'),
-#     os.path.join(BASE_DIR,'vehicle','static'),
+    # os.path.join(BASE_DIR,'vehicle','static'),
 #     os.path.join(BASE_DIR,'notice','static'),
     
-# ]
+]
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 # 미디어 파일을 관리할 루트 media 디렉터리
