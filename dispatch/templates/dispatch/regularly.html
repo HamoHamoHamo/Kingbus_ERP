@@ -158,6 +158,7 @@
     <div class="regularyCreatePopupTbodyBoxing">
       <table>
         <tbody class="regularyCreatePopupTbody">
+          {% for vehicle in vehicle_list %}
           <tr>
             <td>
               <div class="addDriver" id="0">1111(이도울)</div>
@@ -168,16 +169,7 @@
               <div class="backToHome">2</div>
             </td>
           </tr>
-          <tr>
-            <td>
-              <div class="addDriver" id="1">1111(이도울)</div>
-            </td>
-            <td>
-              <div class="GoToWork">2</div>
-              <div class="work">2</div>
-              <div class="backToHome">2</div>
-            </td>
-          </tr>
+          {% endfor %}
         </tbody>
       </table>
     </div>

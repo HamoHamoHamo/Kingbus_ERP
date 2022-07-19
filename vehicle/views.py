@@ -166,8 +166,11 @@ def vehicle_create(request):
             vehicle.driver = driver
             vehicle.driver_name = driver.name
             vehicle.save()
-            vehicle_file_save(vehicle_registration_file, vehicle, "vehicle_registration")
-            vehicle_file_save(insurance_receipt_file, vehicle, "insurance_receipt")
+            if vehicle_registration_file:
+                vehicle_file_save(vehicle_registration_file, vehicle, "vehicle_registration")
+
+            if insurance_receipt_file:
+                vehicle_file_save(insurance_receipt_file, vehicle, "insurance_receipt")
 
             return redirect('vehicle:list')
         else:

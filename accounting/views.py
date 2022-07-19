@@ -69,7 +69,6 @@ class SalaryDetail(generic.ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['selected_month'] = self.month
-        
         # context['monthly'] = context['member'].salary_monthly.get(month=context['selected_month'])
 
         a = []
@@ -153,6 +152,27 @@ def salary_edit(request):
             return redirect('accounting:salary')
         else:
             raise Http404
+    else:
+        return HttpResponseNotAllowed(['post'])
+
+def salary_delete(request):
+    if request.method == "POST":
+        id_list = request.POST.getlist('check')
+        salary = ''
+        for id in id_list:
+            additional = get_object_or_404(AdditionalSalary, id=id)
+            if not salary:
+                salary = additional.salary_id
+            additional.delete()
+        additional_list = salary.additional_salary.all()
+        total_additional = 0
+        for a in additional_list:
+            total_additional += a.price
+        salary.additional = total_additional
+        salary.total = salary.attendance + salary.leave + salary.order + salary.additional
+        salary.save()
+
+        return redirect('accounting:salary')
     else:
         return HttpResponseNotAllowed(['post'])
 

@@ -36,7 +36,7 @@
 
 
 
-<form method="post" action="" class="salaryForm">
+<form method="post" action="{% url 'accounting:salary_delete' %}" class="salaryForm">
     {% csrf_token %}
     
     <div class="contentsAreaBox">
@@ -75,7 +75,9 @@
                 <tr>
                     {% with additional=additional_list|index:forloop.counter0 %}
                     <td>
+                        {% if additional %}
                         <input name="check" value="{{additional.id}}" type="checkbox">
+                        {% endif %}
                     </td>
                     <td>{{i}}</td>
                     <td>???</td>
@@ -98,7 +100,7 @@
         <div class="btnAreaBox">
             <div class="btnBox">
                 <input type="submit" value="삭제" class="btnModules">
-                <div class="btnModules">수정</div>
+                
             </div>
 
         </div>
