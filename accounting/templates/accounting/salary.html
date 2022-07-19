@@ -1,1 +1,177 @@
-salary
+{% extends 'base.html' %}
+{% load static %}
+{% load custom_tags %}
+{% block head %}
+<meta http-equiv="Cache-Control" content="private, no-cache, no-store, max-age=0, must-revalidate">
+
+<link rel="stylesheet" href="{% static 'css/accounting/salay.css' %}" type="text/css" />
+{% endblock %}
+
+{% block content-header %}
+<div class="HeaderTitle">
+    급여관리
+</div>
+{% endblock %}
+
+{% block content %}
+
+
+
+
+<div class="searchAreaBox">
+    <form action="">
+        <div class="searchTool">
+            <span class="searchName">날짜검색</span>
+            <div class="FilterBox">
+                <input name="month" type="month" value="{{selected_month}}" class="inputModules">
+            </div>
+            <input type="submit" value="검색" class="btnModules">
+        </div>
+    </form>
+    <div class="addSalay">급여등록</div>
+</div>
+
+
+
+
+<form method="post" action="{% url 'accounting:remark_edit' %}" class="salaryForm">
+    {% csrf_token %}
+    <div class="contentsAreaBox">
+        <table class="tableHead">
+            <thead>
+                <tr class="headerLine">
+                    <td>이름</td>
+                    <td>입사일자</td>
+                    <td>출근</td>
+                    <td>퇴근</td>
+                    <td>일반주문</td>
+                    <td>기타</td>
+                    <td>합계</td>
+                    <td>비고</td>
+                </tr>
+            </thead>
+        </table>
+        <div class="tableScrollBox">
+            <table class="tableBody">
+                <tbody>
+                    {% for salary in salary_list %}
+                    <tr>
+                        <td>
+                            <a href="{% url 'accounting:salary_detail' salary.member_id.id %}">{{salary.member_id.name}}</a>
+                        </td>
+                        <td>{{salary.member_id.entering_date}}</td>
+                        <td>{{salary.attendance}}</td>
+                        <td>{{salary.leave}}</td>
+                        <td>{{salary.order}}</td>
+                        <td>{{salary.additional}}</td>
+                        <td>{{salary.total}}</td>
+                        <td>
+                            <input name="remark" value="{{salary.remark}}" type="text" class="inputModules">
+                            <input type="hidden" value="{{salary.id}}" name="id">
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <div class="btnAreaBox">
+            <div class="btnBox">
+                <input type="submit" value="저장" class="btnModules">
+            </div>
+
+        </div>
+    </div>
+</form>
+
+
+
+
+
+{% endblock %}
+
+
+
+
+
+{% block popup %}
+<div class="popupAreaModules">
+    <div class="popupBgModules"></div>
+    <form method="post" action="{% url 'accounting:salary_create' %}" class="popupContainer"
+        enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="PopupTitle">급여등록</div>
+        <div class="PopupDataArea">
+            <div class="PopupDataCell">
+                <span class="PopupDataTitle">이름</span>
+                <div class="salayNameBox">
+                    <select name="member_id" id="" class="PopupDataInput popupSelect">
+                        {% for member in member_list %}
+                        <option value="{{member.id}}">{{member.name}}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+            <div class="PopupDataCell">
+                <span class="PopupDataTitle">입사일자</span>
+                <div class="enteringDateBox">
+                    <div name="" type="text" class="PopupData popupEntering"></div>
+                </div>
+            </div>
+            <div class="PopupDataCell">
+                <span class="PopupDataTitle">날짜</span>
+                <div class="dateBox">
+                    <input name="date" type="date" class="PopupDataInput">
+                </div>
+            </div>
+            <div class="PopupDataCell">
+                <span class="PopupDataTitle">금액</span>
+                <div class="priceBox">
+                    <input name="price" type="text" class="PopupDataInput">
+                </div>
+            </div>
+            <div class="PopupDataCell">
+                <span class="PopupDataTitle">비고</span>
+                <div class="blanckBox">
+                    <input name="remark" type="text" class="PopupDataInput">
+                </div>
+            </div>
+        </div>
+        <div class="PopupBtnBox">
+            <div class="btnModules closeBtn">닫기</div>
+            <input type="submit" class="btnModules createBtn" value="등록">
+        </div>
+    </form>
+</div>
+
+{% endblock %}
+
+
+
+
+
+
+{% block script %}
+<script>
+    const entering_date = {
+        {% for member in member_list %}
+        '{{member.id}}': '{{entering_list|index:forloop.counter0}}',
+        {% endfor %}
+    }
+
+    const additional = {}
+    let temp = [];
+    {% for member in member_list %}
+        {% for id in additional_list|index:forloop.counter0 %}
+            temp.push('{{id.date}}')
+        {% endfor %}
+        additional[{{member.id}}] = temp;
+        temp=[];
+    {% endfor %}
+
+    console.log("entering_date :",entering_date)
+    console.log("additional :",additional)
+
+</script>
+<script src="{% static 'js/accounting/salay.js' %}"></script>
+{% endblock %}

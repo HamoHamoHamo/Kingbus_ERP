@@ -54,9 +54,10 @@ class DispatchOrder(models.Model):
     collection_type = models.CharField(verbose_name='수금구분', max_length=30, null=False, blank=True)
     payment_method = models.CharField(verbose_name='상여금 선지급', max_length=1, null=False, default="n")
     VAT = models.CharField(verbose_name='VAT포함여부', max_length=1, null=False, default='n')
+    route = models.CharField(verbose_name='노선이름', max_length=200, null=False)
     collection_amount = models.CharField(verbose_name='수금금액', max_length=30, null=False, default='0')
     collection_date = models.CharField(verbose_name='수금날짜', max_length=10, null=False, blank=True)
-    route = models.CharField(verbose_name='노선이름', max_length=200, null=False)
+    collection_creator = models.CharField(verbose_name='수금입력자', max_length=10, null=False, blank=True)
     pub_date = models.DateTimeField(auto_now_add=True, verbose_name='작성시간')
     creator = models.ForeignKey(User, on_delete=models.CASCADE, related_name="dispatch_creator", db_column="creator_id", null=True)
     def __str__(self):
