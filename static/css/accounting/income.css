@@ -1,3 +1,170 @@
-@import "income_list.css";
-@import "income_detail.css";
-@import "income_create.css";
+.FilterBox input {
+    width: 14rem;
+    padding: 0;
+    margin-right: 1rem;
+}
+
+.searchTool input[type=submit] {
+    background-color: #444444;
+}
+
+.tableHead {
+    width: calc(100% - 0.2rem);
+    height: 4.8rem;
+    padding-right: 0.6rem;
+    border: 0.1rem solid #CDCDCE;
+    border-radius: 0.5rem 0.5rem 0 0;
+    box-sizing: border-box;
+}
+
+.tableHead thead {
+    width: 100%;
+    height: 100%;
+}
+
+table tr {
+    display: flex;
+    width: 100%;
+    height: 4.8rem;
+    border-bottom: 0.1rem solid #CDCDCE;
+}
+
+.tableHead tr {
+    width: 100%;
+    height: 100%;
+    align-items: center;
+    border: none;
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: #7A7A7A;
+}
+
+table tr:nth-child(odd) {
+    background-color: white;
+}
+
+table tr:nth-child(even) {
+    background-color: #EFEFEF;
+}
+
+.tableScrollBox {
+    width: calc(100% - 0.2rem);
+    height: 64rem;
+    margin-top: -0.1rem;
+    border: 0.1rem solid #CDCDCE;
+    box-sizing: border-box;
+    overflow-y: scroll;
+}
+
+.tableScrollBox::-webkit-scrollbar {
+    width: 0.6rem;
+}
+
+.tableScrollBox::-webkit-scrollbar-thumb {
+    height: 17%;
+    background-color: #444444;
+    border-radius: 1rem;
+}
+
+.tableScrollBox::-webkit-scrollbar-track {
+    background-color: #F5F5F5;
+}
+
+.tableBody {
+    width: 100%;
+    height: auto;
+    border-spacing: 0;
+}
+
+tbody {
+    width: 100%;
+    height: 100%;
+}
+
+.tableBody td {
+    display: flex;
+    align-items: center;
+    font-size: 1.4rem;
+    color: #191919;
+}
+
+td:nth-child(1) {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 10%;
+}
+
+td:nth-child(2) {
+    width: 14%;
+    padding-left: 2rem;
+    box-sizing: border-box;
+}
+
+td:nth-child(3) {
+    width: 14%;
+    padding-left: 2rem;
+    box-sizing: border-box;
+}
+
+td:nth-child(4) {
+    width: 14%;
+    padding-left: 2rem;
+    box-sizing: border-box;
+}
+
+td:nth-child(5) {
+    width: 14%;
+    padding-left: 2rem;
+    box-sizing: border-box;
+}
+
+td:nth-child(6) {
+    width: 20%;
+    padding-left: 2rem;
+    box-sizing: border-box;
+}
+
+td:nth-child(7) {
+    display: flex;
+    justify-content: flex-end;
+    width: 14%;
+    padding-right: 1rem;
+    box-sizing: border-box;
+}
+
+.tableHead {
+    padding-right: 0.6rem;
+    box-sizing: border-box;
+}
+
+.totalTable {
+    width: 100%;
+    border: 0.1rem solid #CDCDCE;
+    border-spacing: 0;
+    padding-right: 0.6rem;
+    background-color: #EFEFEF;
+}
+
+.totalTable tr {
+    border: none;
+}
+
+.totalTable td {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    font-size: 1.4rem;
+}
+
+.totalTable td:nth-child(1) {
+    justify-content: center;
+    background-color: #EFEFEF;
+    font-size: 1.4rem;
+}
+
+.totalTable td:nth-child(7) {
+    justify-content: flex-end;
+    background-color: #EFEFEF;
+    font-size: 1.4rem;
+}

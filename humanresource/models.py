@@ -30,6 +30,7 @@ class Yearly(models.Model):
     member_id = models.ForeignKey(Member, on_delete=models.SET_NULL, related_name="yearly_member", null=True)
     year = models.CharField(verbose_name="년도", max_length=4, null=False)
     cnt = models.CharField(verbose_name="연차 사용 개수", max_length=10, null=False)
-
+    creator = models.ForeignKey(User, on_delete=models.SET_NULL, related_name="yearly_creator", db_column="user_id", null=True)
+    pub_date = models.DateTimeField(verbose_name='작성시간', auto_now_add=True, null=False)
     def __str__(self):
         return self.member_id.name

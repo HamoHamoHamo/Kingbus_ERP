@@ -399,8 +399,8 @@ class OrderList(generic.ListView):
         context['time'] = time
         context['route_old'] = self.request.GET.get('route', '')
         context['customer_old'] = self.request.GET.get('customer', '')
-        context['start_date_old'] = self.request.GET.get('start_date', '')
-        context['end_date_old'] = self.request.GET.get('end_date', '')
+        context['start_date_old'] = self.request.GET.get('start_date', TODAY)
+        context['end_date_old'] = self.request.GET.get('end_date', TODAY)
 
 
         return context

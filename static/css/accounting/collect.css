@@ -1,0 +1,275 @@
+.FilterBox input {
+    width: 14rem;
+    padding: 0;
+    margin-right: 1rem;
+}
+
+.searchTool input[type=submit] {
+    background-color: #444444;
+}
+
+.tableHead {
+    width: calc(100% - 0.2rem);
+    height: 4.8rem;
+    padding-right: 0.6rem;
+    border: 0.1rem solid #CDCDCE;
+    border-radius: 0.5rem 0.5rem 0 0;
+    box-sizing: border-box;
+}
+
+.tableHead thead {
+    width: 100%;
+    height: 100%;
+}
+
+table tr {
+    display: flex;
+    width: 100%;
+    height: 4.8rem;
+    border-bottom: 0.1rem solid #CDCDCE;
+}
+
+.tableHead tr {
+    width: 100%;
+    height: 100%;
+    align-items: center;
+    border: none;
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: #7A7A7A;
+}
+
+table tr:nth-child(odd) {
+    background-color: white;
+}
+
+table tr:nth-child(even) {
+    background-color: #EFEFEF;
+}
+
+.tableScrollBox {
+    width: calc(100% - 0.2rem);
+    height: 69rem;
+    margin-top: -0.1rem;
+    margin-bottom: 2rem;
+    border: 0.1rem solid #CDCDCE;
+    box-sizing: border-box;
+    overflow-y: scroll;
+}
+
+.tableScrollBox::-webkit-scrollbar {
+    width: 0.6rem;
+}
+
+.tableScrollBox::-webkit-scrollbar-thumb {
+    height: 17%;
+    background-color: #444444;
+    border-radius: 1rem;
+}
+
+.tableScrollBox::-webkit-scrollbar-track {
+    background-color: #F5F5F5;
+}
+
+.tableBody {
+    width: 100%;
+    height: auto;
+    border-spacing: 0;
+}
+
+tbody {
+    width: 100%;
+    height: 100%;
+}
+
+.tableBody td {
+    display: flex;
+    align-items: center;
+    font-size: 1.4rem;
+    color: #191919;
+}
+
+td:nth-child(1) {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    padding-left: 2rem;
+    box-sizing: border-box;
+    width: 10%;
+}
+
+td:nth-child(2) {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    width: 28%;
+}
+
+td:nth-child(3) {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    width: 9%;
+}
+
+td:nth-child(4) {
+    width: 7%;
+}
+
+td:nth-child(5) {
+    width: 7%;
+}
+
+td:nth-child(6) {
+    width: 7%;
+}
+
+td:nth-child(7) {
+    width: 7%;
+}
+
+td:nth-child(8) {
+    width: 7%;
+}
+
+.tableBody td:nth-child(8) div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 80%;
+    height: 60%;
+    background-color: #0069d9;
+    border-radius: 0.2rem;
+    color: white;
+    cursor: pointer;
+}
+
+td:nth-child(9) {
+    width: 7%;
+}
+
+td:nth-child(10) {
+    width: 7%;
+}
+
+td:nth-child(11) {
+    width: 7%;
+}
+
+
+.popupContainer {
+    position: fixed;
+    top: 50%;
+    left: calc(50% + 11rem);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 80rem;
+    height: 80rem;
+    background-color: white;
+    border-radius: 0.3rem;
+    box-shadow: 0 0.2rem 0.4rem rgb(0 0 0 / 16%);
+    transform: translate(-50%, -50%);
+}
+
+.PopupTitle {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 4.8rem;
+    border-bottom: 0.1rem solid #191919;
+    font-size: 1.6rem;
+    font-weight: 500;
+}
+
+.PopupDataArea {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    width: 100%;
+    height: calc(100% - 9.7rem);
+    padding: 4.2rem 3rem 0 3rem;
+    box-sizing: border-box;
+}
+
+.PopupDataCell {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: flex-start;
+    width: 23rem;
+    height: 6rem;
+}
+
+.PopupDataCell div {
+    width: 100%;
+}
+
+.PopupDataCell:nth-last-child(1) {
+    width: 100%;
+}
+
+.PopupData {
+    width: 100%;
+    padding-bottom: 0.1rem;
+    font-size: 1.4rem;
+    color: #191919;
+    border-bottom: 0.1rem solid #191919;
+}
+
+.PopupDataTitle {
+    font-size: 1.4rem;
+    color: #7A7A7A;
+}
+
+.PopupDataInput {
+    width: 100%;
+    height: 2.6rem;
+    padding-left: 0.6rem;
+    padding-bottom: 0.1rem;
+    font-size: 1.4rem;
+    color: #191919;
+    border: 0.1rem solid #D2D2D2;
+    border-radius: 0.3rem;
+    box-sizing: border-box;
+    outline: none;
+}
+
+.PopupBtnBox {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 4.8rem;
+    box-sizing: border-box;
+}
+
+.closeBtn {
+    background-color: #444444;
+    margin: 1rem;
+}
+
+.createBtn {
+    background-color: #0069D9;
+    margin: 1rem;
+}
+
+.PopupDataCell:nth-child(4),
+.PopupDataCell:nth-child(6),
+.PopupDataCell:nth-child(8),
+.PopupDataCell:nth-child(11),
+.PopupDataCell:nth-child(11) {
+    width: 48.8rem;
+}
+
+.PopupDataCell:nth-child(20) {
+    width: 12rem;
+}
+
+.PopupDataCell:nth-child(21) {
+    width: 10rem;
+}

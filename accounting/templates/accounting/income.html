@@ -1,0 +1,229 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load custom_tags %}
+{% block head %}
+<meta http-equiv="Cache-Control" content="private, no-cache, no-store, max-age=0, must-revalidate">
+
+<link rel="stylesheet" href="{% static 'css/accounting/income.css' %}" type="text/css" />
+{% endblock %}
+
+{% block content-header %}
+<div class="HeaderTitle">
+    수입현황
+</div>
+{% endblock %}
+
+{% block content %}
+
+
+
+
+<div class="searchAreaBox">
+    <form action="">
+        <div class="searchTool">
+            <span class="searchName">날짜검색</span>
+            <div class="FilterBox">
+                <input name="month" type="month" value="{{selected_month}}" class="inputModules">
+            </div>
+            <input type="submit" value="검색" class="btnModules">
+        </div>
+    </form>
+</div>
+
+
+
+
+<form method="post" action="{% url 'accounting:remark_edit' %}" class="salaryForm">
+    {% csrf_token %}
+    <div class="contentsAreaBox">
+        <table class="tableHead">
+            <thead>
+                <tr class="headerLine">
+                    <td>날짜</td>
+                    <td>출근</td>
+                    <td>퇴근</td>
+                    <td>일반주문</td>
+                    <td>수금액</td>
+                    <td>미수금액</td>
+                    <td>합계</td>
+                </tr>
+            </thead>
+        </table>
+        <div class="tableScrollBox">
+            <table class="tableBody">
+                <tbody>
+                    <tr>
+                        <td>1</td>
+                        <td>100,000</td>
+                        <td>100,000</td>
+                        <td>100,000</td>
+                        <td>100,000</td>
+                        <td>100,000</td>
+                        <td>1,000,000</td>
+                    </tr>
+                    <tr>
+                        <td>1</td>
+                        <td>100,000</td>
+                        <td>100,000</td>
+                        <td>100,000</td>
+                        <td>100,000</td>
+                        <td>100,000</td>
+                        <td>1,000,000</td>
+                    </tr>
+                    <tr>
+                        <td>1</td>
+                        <td>100,000</td>
+                        <td>100,000</td>
+                        <td>100,000</td>
+                        <td>100,000</td>
+                        <td>100,000</td>
+                        <td>1,000,000</td>
+                    </tr>
+                    <tr>
+                        <td>1</td>
+                        <td>100,000</td>
+                        <td>100,000</td>
+                        <td>100,000</td>
+                        <td>100,000</td>
+                        <td>100,000</td>
+                        <td>1,000,000</td>
+                    </tr>
+                    <tr>
+                        <td>1</td>
+                        <td>100,000</td>
+                        <td>100,000</td>
+                        <td>100,000</td>
+                        <td>100,000</td>
+                        <td>100,000</td>
+                        <td>1,000,000</td>
+                    </tr>
+                    <tr>
+                        <td>1</td>
+                        <td>100,000</td>
+                        <td>100,000</td>
+                        <td>100,000</td>
+                        <td>100,000</td>
+                        <td>100,000</td>
+                        <td>1,000,000</td>
+                    </tr>
+                    <tr>
+                        <td>1</td>
+                        <td>100,000</td>
+                        <td>100,000</td>
+                        <td>100,000</td>
+                        <td>100,000</td>
+                        <td>100,000</td>
+                        <td>1,000,000</td>
+                    </tr>
+                    <tr>
+                        <td>1</td>
+                        <td>100,000</td>
+                        <td>100,000</td>
+                        <td>100,000</td>
+                        <td>100,000</td>
+                        <td>100,000</td>
+                        <td>1,000,000</td>
+                    </tr>
+                    <tr>
+                        <td>1</td>
+                        <td>100,000</td>
+                        <td>100,000</td>
+                        <td>100,000</td>
+                        <td>100,000</td>
+                        <td>100,000</td>
+                        <td>1,000,000</td>
+                    </tr>
+                    <tr>
+                        <td>1</td>
+                        <td>100,000</td>
+                        <td>100,000</td>
+                        <td>100,000</td>
+                        <td>100,000</td>
+                        <td>100,000</td>
+                        <td>1,000,000</td>
+                    </tr>
+                    <tr>
+                        <td>1</td>
+                        <td>100,000</td>
+                        <td>100,000</td>
+                        <td>100,000</td>
+                        <td>100,000</td>
+                        <td>100,000</td>
+                        <td>1,000,000</td>
+                    </tr>
+                    <tr>
+                        <td>1</td>
+                        <td>100,000</td>
+                        <td>100,000</td>
+                        <td>100,000</td>
+                        <td>100,000</td>
+                        <td>100,000</td>
+                        <td>1,000,000</td>
+                    </tr>
+                    <tr>
+                        <td>1</td>
+                        <td>100,000</td>
+                        <td>100,000</td>
+                        <td>100,000</td>
+                        <td>100,000</td>
+                        <td>100,000</td>
+                        <td>1,000,000</td>
+                    </tr>
+                    <tr>
+                        <td>1</td>
+                        <td>100,000</td>
+                        <td>100,000</td>
+                        <td>100,000</td>
+                        <td>100,000</td>
+                        <td>100,000</td>
+                        <td>1,000,000</td>
+                    </tr>
+                    <tr>
+                        <td>1</td>
+                        <td>100,000</td>
+                        <td>100,000</td>
+                        <td>100,000</td>
+                        <td>100,000</td>
+                        <td>100,000</td>
+                        <td>1,000,000</td>
+                    </tr>
+                    <tr>
+                        <td>1</td>
+                        <td>100,000</td>
+                        <td>100,000</td>
+                        <td>100,000</td>
+                        <td>100,000</td>
+                        <td>100,000</td>
+                        <td>1,000,000</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="btnAreaBox">
+            <table class="totalTable">
+                <thead>
+                    <tr>
+                        <td>합계</td>
+                        <td>100,000</td>
+                        <td>100,000</td>
+                        <td>100,000</td>
+                        <td>100,000</td>
+                        <td>100,000</td>
+                        <td>1,000,000</td>
+                    </tr>
+                </thead>
+            </table>
+        </div>
+    </div>
+</form>
+
+
+{% endblock %}
+
+
+
+
+{% block script %}
+<script src="{% static 'js/accounting/salay.js' %}"></script>
+{% endblock %}

@@ -1,0 +1,268 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load custom_tags %}
+
+
+{% block head %}
+<meta http-equiv="Cache-Control" content="private, no-cache, no-store, max-age=0, must-revalidate">
+
+<link rel="stylesheet" href="{% static 'css/accounting/salay_detail.css' %}" type="text/css" />
+{% endblock %}
+
+{% block content-header %}
+<div class="HeaderTitle">
+    급여상세
+</div>
+{% endblock %}
+
+{% block content %}
+
+
+
+
+<div class="searchAreaBox">
+    <form action="">
+        <div class="searchTool">
+            <span class="searchName">날짜검색</span>
+            <div class="FilterBox">
+                <input name="month" type="month" value="{{selected_month}}" class="inputModules">
+            </div>
+            <input type="submit" value="검색" class="btnModules">
+        </div>
+    </form>
+    <div class="addSalay">급여등록</div>
+</div>
+
+
+
+
+<form method="post" action="" class="salaryForm">
+    {% csrf_token %}
+    
+    <div class="contentsAreaBox">
+        <div class="tableDataBox">
+            <div class="tableDataCell">
+                <span>이름</span>
+                <span>{{member.name}}</span>
+            </div>
+            <div class="tableDataCell">
+                <span>입사일자</span>
+                <span>{{member.entering_date}}</span>
+            </div>
+        </div>
+        <table class="tableHead">
+            <thead>
+                <tr class="headerLine">
+                    <td>선택</td>
+                    <td>날짜</td>
+                    <td>출근운행</td>
+                    <td>퇴근운행</td>
+                    <td>일반운행</td>
+                    <td>출근상여</td>
+                    <td>출근요금</td>
+                    <td>퇴근상여</td>
+                    <td>퇴근요금</td>
+                    <td>일반주문상여</td>
+                    <td>일반주문요금</td>
+                    <td>기타</td>
+                    <td>일일 합계</td>
+                </tr>
+            </thead>
+        </table>
+        <table class="tableBody">
+            <tbody>
+                {% for i in a %}
+                <tr>
+                    {% with additional=additional_list|index:forloop.counter0 %}
+                    <td>
+                        <input name="check" value="{{additional.id}}" type="checkbox">
+                    </td>
+                    <td>{{i}}</td>
+                    <td>???</td>
+                    <td>???</td>
+                    <td>???</td>
+                    <td>1000,000</td>
+                    <td>1000,000</td>
+                    <td>1000,000</td>
+                    <td>1000,000</td>
+                    <td>1000,000</td>
+                    <td>1000,000</td>
+                    <td class="{{additional.id}}">{% if additional %}{{additional.price}}{% endif %}</td>
+                    {% endwith %}
+                    <td>1000,000</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <div class="btnAreaBox">
+            <div class="btnBox">
+                <input type="submit" value="삭제" class="btnModules">
+                <div class="btnModules">수정</div>
+            </div>
+
+        </div>
+    </div>
+</form>
+
+
+
+
+
+{% endblock %}
+
+
+
+
+
+{% block popup %}
+<div class="popupAreaModules">
+    <div class="popupBgModules"></div>
+    <form method="post" action="{% url 'accounting:salary_create' %}" class="popupContainer"
+        enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="PopupTitle">급여등록</div>
+        <div class="PopupDataArea">
+            <div class="PopupDataCell">
+                <span class="PopupDataTitle">이름</span>
+                <div class="salayNameBox">
+                    <select name="member_id" id="" class="PopupDataInput popupSelect">
+                        {% for member in member_list %}
+                        <option value="{{member.id}}">{{member.name}}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+            <div class="PopupDataCell">
+                <span class="PopupDataTitle">입사일자</span>
+                <div class="enteringDateBox">
+                    <div name="" type="text" class="PopupData popupEntering"></div>
+                </div>
+            </div>
+            <div class="PopupDataCell">
+                <span class="PopupDataTitle">날짜</span>
+                <div class="dateBox">
+                    <input name="date" type="date" class="PopupDataInput" >
+                </div>
+            </div>
+            <div class="PopupDataCell">
+                <span class="PopupDataTitle">금액</span>
+                <div class="priceBox">
+                    <input name="price" type="text" class="PopupDataInput">
+                </div>
+            </div>
+            <div class="PopupDataCell">
+                <span class="PopupDataTitle">비고</span>
+                <div class="blanckBox">
+                    <input name="remark" type="text" class="PopupDataInput">
+                </div>
+            </div>
+        </div>
+        <div class="PopupBtnBox">
+            <div class="btnModules closeBtn">닫기</div>
+            <input type="submit" class="btnModules createBtn" value="등록">
+        </div>
+    </form>
+</div>
+
+
+<div class="popupAreaModules">
+    <div class="popupBgModules"></div>
+    <form method="post" action="{% url 'accounting:salary_edit' %}" class="popupContainer"
+        enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="PopupTitle">급여수정</div>
+        <div class="PopupDataArea">
+            <div class="PopupDataCell">
+                <span class="PopupDataTitle">이름</span>
+                <div class="salayNameBox">
+                    <select name="member_id" id="" class="PopupDataInput popupSelectEdit">
+                        {% for member in member_list %}
+                        <option value="{{member.id}}">{{member.name}}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+            <div class="PopupDataCell">
+                <span class="PopupDataTitle">입사일자</span>
+                <div class="enteringDateBox">
+                    <div name="" type="text" class="PopupData popupEntering"></div>
+                </div>
+            </div>
+            <div class="PopupDataCell">
+                <span class="PopupDataTitle">날짜</span>
+                <div class="dateBox">
+                    <input name="date" type="date" class="PopupDataInput PopupDataInputDate">
+                </div>
+            </div>
+            <div class="PopupDataCell">
+                <span class="PopupDataTitle">금액</span>
+                <div class="priceBox">
+                    <input name="price" type="text" class="PopupDataInput PopupDataInputPrice">
+                </div>
+            </div>
+            <div class="PopupDataCell">
+                <span class="PopupDataTitle">비고</span>
+                <div class="blanckBox">
+                    <input name="remark" type="text" class="PopupDataInput PopupDataInputBlanck">
+                </div>
+            </div>
+            <input type="hidden" value="" name="id" class="sendToHidden">
+        </div>
+        <div class="PopupBtnBox">
+            <div class="btnModules closeBtn">닫기</div>
+            <input type="submit" class="btnModules editBtn" value="저장">
+        </div>
+    </form>
+</div>
+
+{% endblock %}
+
+
+
+
+
+
+{% block script %}
+<script>
+    const entering_date = {
+        {% for member in member_list %}
+        '{{member.id}}': '{{entering_list|index:forloop.counter0}}',
+        {% endfor %}
+    }
+
+    const additional = {}
+    let temp = [];
+    {% for member in member_list %}
+        {% for id in m_additional_list|index:forloop.counter0 %}
+            temp.push('{{id.date}}')
+        {% endfor %}
+        additional[{{member.id}}] = temp;
+        temp=[];
+    {% endfor %}
+
+
+    const data = {}
+    {% for add in additional_list %}
+        temp = {}
+        {% if add %}
+        temp = {
+            member_id: '{{add.member_id.id}}',
+            entering_date: '{{add.member_id.entering_date}}',
+            date: '{{add.date}}',
+            price: '{{add.price}}',
+            remark: '{{add.remark}}',
+        }
+        data[{{add.id}}] = temp;
+        {% endif %}
+    {% endfor %}
+
+
+
+    console.log("entering_date :",entering_date)
+    console.log("additional :",additional)
+    console.log("data", data)
+
+</script>
+<script src="{% static 'js/accounting/salayDetail.js' %}"></script>
+{% endblock %}

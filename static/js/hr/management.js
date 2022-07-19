@@ -77,13 +77,13 @@ for (i = 0; i < listCheckBox.length; i++) {
     listCheckBox[i].addEventListener('change', checkingToDelete)
 }
 
-function checkingToDelete(){
+function checkingToDelete() {
     for (i = 0; i < listCheckBox.length; i++) {
-      if (listCheckBox[i].checked) {
-        checkCounte = true
-      } else {
-        checkCounte = false
-      }
+        if (listCheckBox[i].checked) {
+            checkCounte = true
+        } else {
+            checkCounte = false
+        }
     }
     console.log(checkCounte)
 }
@@ -93,6 +93,13 @@ hrMemberListForm.addEventListener('submit', activateDelete)
 function activateDelete(e) {
     if (!checkCounte) {
         e.preventDefault()
-        alert('삭제항 항목을 선택해 주세요.')
+        alert('삭제항 할목을 선택해 주세요.')
+        else {
+            if (confirm("정말로 삭제하시겠습니까?")) {
+
+            } else {
+                e.preventDefault()
+            }
+        }
     }
 }
