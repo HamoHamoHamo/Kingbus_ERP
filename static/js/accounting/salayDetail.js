@@ -56,13 +56,13 @@ for (i = 0; i < listCheckBox.length; i++) {
 }
 
 function checkingToDelete() {
+    checkCounte = false
     for (i = 0; i < listCheckBox.length; i++) {
         if (listCheckBox[i].checked) {
             checkCounte = true
-        } else {
-            checkCounte = false
         }
     }
+    console.log(checkCounte)
 }
 
 salaryForm.addEventListener('submit', activateDelete)
@@ -72,9 +72,7 @@ function activateDelete(e) {
         e.preventDefault()
         alert('삭제할 항목을 선택해 주세요.')
     } else {
-        if (confirm("정말로 삭제하시겠습니까?")) {
-
-        } else {
+        if (confirm('정말로 삭제하시겠습니까?') == false) {
             e.preventDefault()
         }
     }
@@ -87,17 +85,19 @@ for (i = 0; i < editSalay.length; i++) {
 }
 
 function openEditPopup(e) {
-    popupAreaModules[1].style.display = "block"
-    for(i=0; i<popupSelectEditOP.length; i++){
-        if(popupSelectEditOP[i].value == data[this.className].member_id){
-            popupSelectEditOP[i].selected = true;
+    if (this.innerText !== "") {
+        popupAreaModules[1].style.display = "block"
+        for (i = 0; i < popupSelectEditOP.length; i++) {
+            if (popupSelectEditOP[i].value == data[this.className].member_id) {
+                popupSelectEditOP[i].selected = true;
+            }
         }
+        popupEntering[1].innerText = data[this.className].entering_date
+        PopupDataInputDate.value = data[this.className].date
+        PopupDataInputPrice.value = data[this.className].price
+        PopupDataInputBlanck.value = data[this.className].remark
+        sendToHidden.value = this.className
     }
-    popupEntering[1].innerText = data[this.className].entering_date
-    PopupDataInputDate.value = data[this.className].date
-    PopupDataInputPrice.value = data[this.className].price
-    PopupDataInputBlanck.value = data[this.className].remark
-    sendToHidden.value = this.className
 }
 
 

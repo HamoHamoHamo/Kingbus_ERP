@@ -120,13 +120,13 @@ class RegularlyDispatchList(generic.ListView):
         if not date:
             date = TODAY
         
-        vehicle = Vehicle.objects.all()
+        vehicle_list = Vehicle.objects.filter(use='y')
 
         context['group_list'] = RegularlyGroup.objects.all()
         context['group_name'] = group_name
         context['route_name'] = route_name
         context['date'] = date
-        context['vehicle'] = vehicle
+        context['vehicle_list'] = vehicle_list
 
         return context
 
@@ -222,7 +222,7 @@ def regularly_order_create(request):
             return redirect('dispatch:regularly_route')
 
     else:
-        raise Http404    
+        raise Http404
 
 def regularly_order_edit(request):
     id = request.POST.get('id', None)
