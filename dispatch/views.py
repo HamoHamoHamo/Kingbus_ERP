@@ -5,7 +5,7 @@ from django.urls import reverse
 from django.views import generic
 
 from .forms import OrderForm, ConnectForm, RegularlyForm
-from .models import DispatchOrderConnect, DispatchOrder, DispatchRegularly, RegularlyGroup
+from .models import DispatchOrderConnect, DispatchOrder, DispatchRegularly, RegularlyGroup, DispatchRegularlyConnect
 from crudmember.models import User
 from humanresource.models import Member
 from vehicle.models import Vehicle
@@ -54,7 +54,7 @@ class DocumentList(generic.ListView):
             a_w = WEEK[d_date.weekday()]
             a_y = a_y[2:4]
             
-            date_diff = a_date - d_date
+            date_diff = (a_date - d_date) + timedelta(days=1)
             if date_diff.days > 1:
                 num_days.append(date_diff.days)
             else:
@@ -114,21 +114,65 @@ class RegularlyDispatchList(generic.ListView):
         context['page_range'] = page_range
         
         #페이징 끝
+        
         group_name = self.request.GET.get('group', '')
         route_name = self.request.GET.get('route', '')
-        date = self.request.GET.get('date', '')
-        if not date:
-            date = TODAY
-        
-        vehicle_list = Vehicle.objects.filter(use='y')
-
+        date = self.request.GET.get('date', TODAY)
         context['group_list'] = RegularlyGroup.objects.all()
         context['group_name'] = group_name
         context['route_name'] = route_name
         context['date'] = date
+
+        vehicle_list = Vehicle.objects.prefetch_related('info_regulary_bus_id', 'info_bus_id').filter(use='y')
+
+        r_enter_cnt = []
+        r_leave_cnt = []
+        order_cnt = []
+        for vehicle in vehicle_list:
+            r_enter_cnt.append(vehicle.info_regulary_bus_id.filter(departure_date__lte=f'{TODAY} 24:59').filter(arrival_date__gte=f'{TODAY} 00:00').filter(work_type="출근").count())
+            r_leave_cnt.append(vehicle.info_regulary_bus_id.filter(departure_date__lte=f'{TODAY} 24:59').filter(arrival_date__gte=f'{TODAY} 00:00').filter(work_type="퇴근").count())
+            order_cnt.append(vehicle.info_bus_id.filter(departure_date__lte=f'{TODAY} 24:59').filter(arrival_date__gte=f'{TODAY} 00:00').count())
+            print(vehicle.info_bus_id.filter(departure_date__lte=f'{TODAY} 24:59').filter(arrival_date__gte=f'{TODAY} 00:00'))
+        
+        print("ORDERCNT", order_cnt)
+        context['r_enter_cnt'] = r_enter_cnt
+        context['r_leave_cnt'] = r_leave_cnt
+        context['order_cnt'] = order_cnt
         context['vehicle_list'] = vehicle_list
 
+        connect_list = []
+        for order in context['order_list']:
+            connect_list.append(order.info_regularly.filter(departure_date__lte=f'{date} 24:59').filter(arrival_date__gte=f'{date} 00:00'))
+        context['connect_list'] = connect_list
         return context
+
+def regularly_connect_create(request):
+    if request.method == "POST":
+        creator = get_object_or_404(User, id=request.session.get('user'))
+        order = get_object_or_404(DispatchRegularly, id=request.POST.get('id', None))
+        bus_list = request.POST.getlist('vehicle')
+        date = request.POST.get('date', None)
+
+        connect = order.info_regularly.filter(departure_date__startswith=date)
+        connect.delete()
+
+        for bus in bus_list:
+            vehicle = Vehicle.objects.get(id=bus)
+            r_connect = DispatchRegularlyConnect(
+                regularly_id = order,
+                bus_id = vehicle,
+                driver_id = vehicle.driver,
+                departure_date = f'{date} {order.departure_time}',
+                arrival_date = f'{date} {order.arrival_time}',
+                work_type = order.work_type,
+                driver_allowance = order.driver_allowance,
+                creator = creator
+            )
+            r_connect.save()
+
+        return redirect('dispatch:regularly')
+    else:
+        return HttpResponseNotAllowed(['post'])
 
 class RegularlyRouteList(generic.ListView):
     template_name = 'dispatch/regularly_route.html'
@@ -327,11 +371,13 @@ class OrderList(generic.ListView):
         end_date = self.request.GET.get('end_date')
         route = self.request.GET.get('route')
         customer = self.request.GET.get('customer')
+        self.next_week = datetime.strptime(TODAY, FORMAT) + timedelta(days=7)
 
         if start_date or end_date or route or customer:
             dispatch_list = []
             if start_date and end_date:
-                dispatch_list = DispatchOrder.objects.filter(departure_date__range=[start_date + "T00:00", end_date + "T24:00"]).order_by('departure_date')
+                dispatch_list = DispatchOrder.objects.exclude(arrival_date__lt=start_date).exclude(departure_date__gt=end_date).order_by('departure_date')
+                # dispatch_list = DispatchOrder.objects.filter(departure_date__range=[start_date + "T00:00", end_date + "T24:00"]).order_by('departure_date')
             if route:
                 if dispatch_list:
                     dispatch_list = dispatch_list.filter(route__contains=route).order_by('departure_date')
@@ -343,7 +389,8 @@ class OrderList(generic.ListView):
                 else:
                     dispatch_list = DispatchOrder.objects.filter(customer__contains=customer).order_by('departure_date')
         else:
-            dispatch_list = DispatchOrder.objects.exclude(arrival_date__lt=TODAY).order_by('departure_date')
+            
+            dispatch_list = DispatchOrder.objects.exclude(arrival_date__lt=TODAY).exclude(departure_date__gt=self.next_week).order_by('departure_date')
         
         return dispatch_list
 
@@ -384,7 +431,7 @@ class OrderList(generic.ListView):
             a_w = WEEK[d_date.weekday()]
             a_y = a_y[2:4]
             
-            date_diff = a_date - d_date
+            date_diff = (a_date - d_date) + timedelta(days=1)
             if date_diff.days > 1:
                 num_days.append(date_diff.days)
             else:
@@ -399,15 +446,63 @@ class OrderList(generic.ListView):
         context['time'] = time
         context['route_old'] = self.request.GET.get('route', '')
         context['customer_old'] = self.request.GET.get('customer', '')
-        context['start_date_old'] = self.request.GET.get('start_date', TODAY)
-        context['end_date_old'] = self.request.GET.get('end_date', TODAY)
+        start_date_old = self.request.GET.get('start_date', TODAY)
+        context['start_date_old'] = start_date_old
+        end_date_old = self.request.GET.get('end_date', self.next_week.strftime(FORMAT))
+        context['end_date_old'] = end_date_old
 
+        vehicle_list = Vehicle.objects.prefetch_related('info_regulary_bus_id', 'info_bus_id').filter(use='y')
+
+        r_enter_cnt = []
+        r_leave_cnt = []
+        order_cnt = []
+        for vehicle in vehicle_list:
+            r_enter_cnt.append(vehicle.info_regulary_bus_id.filter(departure_date__lte=f'{TODAY} 24:59').filter(arrival_date__gte=f'{TODAY} 00:00').filter(work_type="출근").count())
+            r_leave_cnt.append(vehicle.info_regulary_bus_id.filter(departure_date__lte=f'{TODAY} 24:59').filter(arrival_date__gte=f'{TODAY} 00:00').filter(work_type="퇴근").count())
+            order_cnt.append(vehicle.info_bus_id.filter(departure_date__lte=f'{TODAY} 24:59').filter(arrival_date__gte=f'{TODAY} 00:00').count())
+            print(vehicle.info_bus_id.filter(departure_date__lte=f'{TODAY} 24:59').filter(arrival_date__gte=f'{TODAY} 00:00'))
+        
+        print("ORDERCNT", order_cnt)
+        context['r_enter_cnt'] = r_enter_cnt
+        context['r_leave_cnt'] = r_leave_cnt
+        context['order_cnt'] = order_cnt
+        context['vehicle_list'] = vehicle_list
+
+        connect_list = []
+        for order in context['order_list']:
+            connect_list.append(order.info_order.all())
+        context['connect_list'] = connect_list
 
         return context
 
-def order_create(request):
-    context = {}
-    
+def order_connect_create(request):
+    if request.method == "POST":
+        creator = get_object_or_404(User, id=request.session.get('user'))
+        order = get_object_or_404(DispatchOrder, id=request.POST.get('id', None))
+        bus_list = request.POST.getlist('vehicle')
+        
+        connect = order.info_order.all()
+        connect.delete()
+
+        for bus in bus_list:
+            vehicle = Vehicle.objects.get(id=bus)
+            connect = DispatchOrderConnect(
+                order_id = order,
+                bus_id = vehicle,
+                driver_id = vehicle.driver,
+                departure_date = order.departure_date,
+                arrival_date = order.arrival_date,
+                driver_allowance = order.driver_allowance,
+                creator = creator
+            )
+            connect.save()
+
+        return redirect('dispatch:order')
+    else:
+        return HttpResponseNotAllowed(['post'])
+
+
+def order_create(request):    
     if request.method == "POST":
         creator = get_object_or_404(User, pk=request.session.get('user'))
         order_form = OrderForm(request.POST)
@@ -430,7 +525,7 @@ def order_create(request):
         else:
             raise Http404
     else:
-        raise Http404
+        return HttpResponseNotAllowed(['post'])
         
 def order_edit(request):
     pk = request.POST.get('id')

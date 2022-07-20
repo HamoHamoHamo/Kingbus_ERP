@@ -59,7 +59,7 @@
     <div class="contentsAreaBox">
         <div class="tableRowBox">
             <div class="tableCell">
-                <table class="tableHead">
+                <table class="table">
                     <thead>
                         <tr class="headerLine">
                             <td>선택</td>
@@ -68,9 +68,6 @@
                             <td>계약현황</td>
                         </tr>
                     </thead>
-                </table>
-
-                <table class="tableBody">
                     <tbody>
                         {% for order in order_list %}
                         <tr class="{{order.id}}">
@@ -91,8 +88,8 @@
                     </tbody>
                 </table>
             </div>
-            <div class="tableCell tableCellScroll">
-                <table class="tableHead">
+            <div class="tableCellScroll">
+                <table class="table">
                     <thead>
                         <tr class="headerLine">
                             <td>배차차량</td>
@@ -112,18 +109,17 @@
                             <td>입금예정일</td>
                         </tr>
                     </thead>
-                </table>
-
-                <table class="tableBody">
                     <tbody>
                         {% for order in order_list %}
-                        <tr>
+                        <tr class="{{order.id}}">
                             <td class="orderDispatch">
-                                <span>1111{dlehdnf)</span>
-                                <span>1111{dlehdnf)</span>
-                                <span>1111{dlehdnf)</span>
-                                <span>1111{dlehdnf)</span>
-                                
+                                <div>
+                                {% with connect=connect_list|index:forloop.counter0 %}
+                                    {% for c in connect %}
+                                    <span>{{c.bus_id.vehicle_num}}({{c.driver_id.name}})</span>
+                                    {% endfor %}
+                                {% endwith %}
+                                </div>
                             </td>
                             <td>{{order.bus_cnt}}</td>
                             <td>{{order.bus_type}}</td>
@@ -206,7 +202,8 @@
 
 <div class="popupAreaModules">
     <div class="popupBgModules"></div>
-    <form class="popupContainer">
+    <form method="post" action="{% url 'dispatch:order_connect_create' %}" class="popupContainer">
+        {% csrf_token %}
         <div class="regularyCreatePopupTitle">배차등록</div>
         <table>
             <thead class="regularyCreatePopupThead">
@@ -223,27 +220,19 @@
         <div class="regularyCreatePopupTbodyBoxing">
             <table>
                 <tbody class="regularyCreatePopupTbody">
+                    {% for vehicle in vehicle_list %}
                     <tr>
-                        <td>
-                            <div class="addDriver" id="0">1111(이도울)</div>
-                        </td>
-                        <td>
-                            <div class="GoToWork">2</div>
-                            <div class="work">2</div>
-                            <div class="backToHome">2</div>
-                        </td>
+                      <td class="{{vehicle.id}}">
+                        <div class="addDriver">{{vehicle.vehicle_num}}({{vehicle.driver_name}})</div>
+                      </td>
+                      <td>
+                        <div class="GoToWork">{{r_enter_cnt|index:forloop.counter0}}</div>
+                        <div class="work">{{r_leave_cnt|index:forloop.counter0}}</div>
+                        <div class="backToHome">{{order_cnt|index:forloop.counter0}}</div>
+                      </td>
                     </tr>
-                    <tr>
-                        <td>
-                            <div class="addDriver" id="1">1111(이도울)</div>
-                        </td>
-                        <td>
-                            <div class="GoToWork">2</div>
-                            <div class="work">2</div>
-                            <div class="backToHome">2</div>
-                        </td>
-                    </tr>
-                </tbody>
+                    {% endfor %}
+                  </tbody>
             </table>
         </div>
         <div class="regularyCreatePopupResult">
@@ -252,6 +241,8 @@
             <div class="btnModules">닫기</div>
             <input type="submit" class="btnModules" value="등록">
         </div>
+        <input type="hidden" name="id" value="" class="dispatchHidden">
+        <input type="hidden" name="date" value="{{date}}">
     </form>
 </div>
 
@@ -650,6 +641,16 @@
           },
         {% endfor %}      
     ]
+    const connectData = {}
+    {% for order in order_list %}
+        temp = []
+        {% for connect in connect_list|index:forloop.counter0 %}
+            temp.push('{{connect.bus_id.id}}')
+        {% endfor %}
+
+        connectData[{{order.id}}] = temp,
+    {% endfor %}
+    console.log("CONNECT", connectData);
 </script>
 <script src="{% static 'js/dispatch/orderPopup.js' %}"></script>
 {% endblock %}

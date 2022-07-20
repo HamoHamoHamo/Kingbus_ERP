@@ -5,6 +5,7 @@ app_name = 'dispatch'
 
 urlpatterns = [
     path('regularly', views.RegularlyDispatchList.as_view(), name="regularly"),
+    path('regularly/create', views.regularly_connect_create, name="regularly_connect_create"),
     path('regularly/route', views.RegularlyRouteList.as_view(), name="regularly_route"),
     path('regularly/route/create', views.regularly_order_create, name="regularly_route_create"),
     path('regularly/route/edit', views.regularly_order_edit, name="regularly_route_edit"),
@@ -13,6 +14,7 @@ urlpatterns = [
     path('regularly/group/edit', views.regularly_group_edit, name="regularly_group_edit"),
     path('regularly/group/delete', views.regularly_group_delete, name="regularly_group_delete"),
     path('order', views.OrderList.as_view(), name="order"),
+    path('order/create', views.order_connect_create, name="order_connect_create"),
     path('order/route/create', views.order_create, name="order_create"),
     path('order/route/edit', views.order_edit, name="order_edit"),
     path('order/route/delete', views.order_delete, name="order_delete"),

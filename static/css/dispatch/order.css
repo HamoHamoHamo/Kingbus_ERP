@@ -69,7 +69,108 @@
     display: flex;
     flex-direction: column;
     width: 50%;
+    height: 68rem;
+    border: 0.1rem solid #CDCDCE;
 }
+
+.tableCell .table {
+    width: 100%;
+    border-radius: 0.5rem 0.5rem 0 0;
+    border-spacing: 0;
+}
+
+.tableCell thead {
+    width: 100%;
+    height: 6.8rem;
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: #7A7A7A;
+}
+
+.tableCell thead tr {
+    height: 100%;
+}
+
+.tableCell thead td {
+    height: 100%;
+    border-bottom: 0.11rem solid #CDCDCE;
+}
+
+.tableCell tbody {
+    width: 100%;
+    font-size: 1.4rem;
+    color: #191919;
+}
+
+.tableCell tbody tr {
+    width: 100%;
+    height: 6.8rem;
+}
+
+.tableCell tbody td {
+    height: 6.8rem;
+    border-bottom: 0.11rem solid #CDCDCE;
+}
+
+
+.tableCellScroll {
+    display: flex;
+    flex-direction: column;
+    width: 50%;
+    height: 69.7rem;
+    overflow-x: scroll;
+    border: 0.1rem solid #CDCDCE;
+}
+
+.tableCellScroll .table {
+    width: auto;
+    table-layout: fixed;
+    border-radius: 0.5rem 0.5rem 0 0;
+    border-spacing: 0;
+    white-space: nowrap;
+}
+
+.tableCellScroll thead {
+    height: 6.8rem;
+    border-bottom: 0.11rem solid #CDCDCE;
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: #7A7A7A;
+}
+
+.tableCellScroll thead tr {
+    height: 100%;
+}
+
+.tableCellScroll thead td {
+    height: 100%;
+    padding: 0 2rem;
+    border-bottom: 0.11rem solid #CDCDCE;
+}
+
+.tableCellScroll tbody {
+    font-size: 1.4rem;
+    color: #191919;
+}
+
+.tableCellScroll tbody tr {
+    height: 6.8rem;
+}
+
+.tableCellScroll tbody td {
+    height: 6.8rem;
+    padding: 0 2rem;
+    border-bottom: 0.11rem solid #CDCDCE;
+}
+
+.orderDispatch div{
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+}
+
+/*
+
 
 .tableCellScroll {
     overflow-x: scroll;
@@ -108,21 +209,21 @@
     border: 0.1rem solid #CDCDCE
 }
 
-.tableCellScroll .tableBody {
+.tableCellScroll tbody {
     width: 300%;
 }
 
-.tableBody::-webkit-scrollbar {
+.tableCellScroll tbody::-webkit-scrollbar {
     width: 0.6rem;
 }
 
-.tableBody::-webkit-scrollbar-thumb {
+.tableCellScroll tbody::-webkit-scrollbar-thumb {
     height: 17%;
     background-color: grey;
     border-radius: 10px;
 }
 
-.tableBody::-webkit-scrollbar-track {
+.tableCellScroll tbody::-webkit-scrollbar-track {
     background-color: #dbdada;
 }
 
@@ -179,12 +280,14 @@ td:nth-child(1) {
 }
 
 td:nth-child(2) {
+    width: 18%;
+    padding-left: 2%;
+}
+.tableBody td:nth-child(2) {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: flex-start;
-    width: 18%;
-    padding-left: 2%;
 }
 
 td:nth-child(3) {
@@ -207,15 +310,13 @@ td:nth-child(4) {
 }
 
 .tableCellScroll td:nth-child(1) {
-    width: 15%;
 }
 
-.tableCellScroll .tableBody td:nth-child(1) {
+.tableCellScroll tbody td:nth-child(1) {
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
     align-items: flex-start;
-    width: 14.4%;
     height: 4.6rem;
     margin: 0.6rem 1%;
     padding: 0.3rem 0.3%;
@@ -226,7 +327,7 @@ td:nth-child(4) {
 }
 
 .tableCellScroll td:nth-child(2) {
-    width: 4%;
+    width: 9.3rem;
     height: 100%;
     display: flex;
     flex-direction: row;
@@ -240,19 +341,19 @@ td:nth-child(4) {
 }
 
 .tableCellScroll td:nth-child(3) {
-    width: 4%;
+    width: 9.3rem;
 }
 
-td:nth-child(4) {
-    width: 5%;
+.tableCellScroll td:nth-child(4) {
+    width: 11.6rem;
 }
 
 td:nth-child(5) {
-    width: 7%;
+    width: 16.24rem;
 }
 
 td:nth-child(6) {
-    width: 5%;
+    width: 11.6rem;
 }
 
 td:nth-child(7) {
@@ -260,37 +361,37 @@ td:nth-child(7) {
 }
 
 td:nth-child(8) {
-    width: 7%;
+    width: 16.24rem;
 }
 
 td:nth-child(9) {
-    width: 5%;
+    width: 11.6rem;
 }
 
 td:nth-child(10) {
-    width: 13%;
+    width: 30.16rem;
     word-break: keep-all;
 }
 
 td:nth-child(11) {
-    width: 5%;
+    width: 11.6rem;
 }
 
 td:nth-child(12) {
-    width: 5%;
+    width: 11.6rem;
 }
 
 td:nth-child(13) {
-    width: 5%;
+    width: 11.6rem;
 }
 
 td:nth-child(14) {
-    width: 5%;
+    width: 11.6rem;
 }
 
 td:nth-child(15) {
-    width: 5%;
-}
+    width: 11.6rem;
+} */
 
 
 .checkbox {
@@ -705,6 +806,6 @@ td:nth-child(15) {
     font-size: 1.4rem;
 }
 
-.btnBox input{
+.btnBox input {
     background-color: #444444;
 }

@@ -1,5 +1,7 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load custom_tags %}
+
 {% block head %}
 <meta http-equiv="Cache-Control" content="private, no-cache, no-store, max-age=0, must-revalidate">
 
@@ -78,8 +80,14 @@
         <td>{{dispatch.departure_time}} ~ {{dispatch.arrival_time}}</td>
         <td>{{dispatch.week}}</td>
         <td>{{dispatch.work_type}}</td>
-        <td>
-          <span class="regularlyDispatchBtn"></span>
+        <td class="{{dispatch.id}}">
+          <div class="regularlyDispatchBtn">
+            {% with connect=connect_list|index:forloop.counter0 %}
+              {% for c in connect %}
+                {{c.bus_id.vehicle_num}}({{c.driver_id.name}})
+              {% endfor %}
+            {% endwith %}
+          </div>
         </td>
         <td>{{dispatch.references}}</td>
       </tr>
@@ -141,7 +149,8 @@
 {% block popup %}
 <div class="popupAreaModules">
   <div class="popupBgModules"></div>
-  <form class="popupContainer">
+  <form method="post" action="{% url 'dispatch:regularly_connect_create' %}" class="popupContainer">
+    {% csrf_token %}
     <div class="regularyCreatePopupTitle">배차등록</div>
     <table>
       <thead class="regularyCreatePopupThead">
@@ -160,13 +169,13 @@
         <tbody class="regularyCreatePopupTbody">
           {% for vehicle in vehicle_list %}
           <tr>
-            <td>
-              <div class="addDriver" id="0">1111(이도울)</div>
+            <td class="{{vehicle.id}}">
+              <div class="addDriver">{{vehicle.vehicle_num}}({{vehicle.driver_name}})</div>
             </td>
             <td>
-              <div class="GoToWork">2</div>
-              <div class="work">2</div>
-              <div class="backToHome">2</div>
+              <div class="GoToWork">{{r_enter_cnt|index:forloop.counter0}}</div>
+              <div class="work">{{r_leave_cnt|index:forloop.counter0}}</div>
+              <div class="backToHome">{{order_cnt|index:forloop.counter0}}</div>
             </td>
           </tr>
           {% endfor %}
@@ -179,11 +188,9 @@
       <div class="btnModules">닫기</div>
       <input type="submit" class="btnModules" value="등록">
     </div>
+    <input type="hidden" name="id" value="" class="dispatchHidden">
   </form>
 </div>
-
-
-
 
 <div class="popupAreaModulesRoute">
   <div class="popupBgModulesRoute"></div>
@@ -287,21 +294,35 @@
                     <input id="all" type="checkbox">
                     <label for="all">모두</label>
                 </div>
-                <div>
+                <div class="dateArea">
+                  <div class="dateCell">
                     <input name="week" value="월" id="mon" type="checkbox">
                     <label for="mon">월</label>
+                  </div>
+                  <div class="dateCell">
                     <input name="week" value="화" id="tue" type="checkbox">
                     <label for="tue">화</label>
+                  </div>
+                    <div class="dateCell">
                     <input name="week" value="수" id="wed" type="checkbox">
                     <label for="wed">수</label>
+                  </div>
+                    <div class="dateCell">
                     <input name="week" value="목" id="thu" type="checkbox">
                     <label for="thu">목</label>
+                  </div>
+                    <div class="dateCell">
                     <input name="week" value="금" id="fri" type="checkbox">
                     <label for="fri">금</label>
+                  </div>
+                    <div class="dateCell">
                     <input name="week" value="토" id="sat" type="checkbox">
                     <label for="sat">토</label>
+                  </div>
+                    <div class="dateCell">
                     <input name="week" value="일" id="sun" type="checkbox">
                     <label for="sun">일</label>
+                  </div>
                 </div>
             </div>
         </div>
@@ -403,8 +424,18 @@
           work_type: "{{ dispatch.work_type }}",
           route: "{{ dispatch.route }}",
         },
-      {% endfor %}      
+      {% endfor %}
   ]
+  const connectData = {}
+  {% for order in order_list %}
+    temp = []
+    {% for connect in connect_list|index:forloop.counter0 %}
+      temp.push('{{connect.bus_id.id}}')
+    {% endfor %}
+
+    connectData[{{order.id}}] = temp,
+  {% endfor %}
+  console.log("CONNECT", connectData);
 </script>
 <script src="{% static 'js/dispatch/regularlyCreatePopup.js' %}"></script>
 {% endblock %}
