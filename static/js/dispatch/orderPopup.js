@@ -40,6 +40,7 @@ const routeOrderVat = document.querySelector(".routeOrderVat input")
 const sendToHidden = document.querySelector(".sendToHidden")
 const groupCheck = document.querySelectorAll(".tableBody td:nth-child(1) input")
 const dispatchListForm = document.querySelector(".dispatchListForm")
+const dispatchHidden = document.querySelector(".dispatchHidden")
 
 
 /*배차등록 추가/삭제 */
@@ -54,24 +55,27 @@ function addVehicle() {
     this.style.color = 'white'
 
     const newDiv = document.createElement('div');
-    newDiv.setAttribute("class", `vehicle${this.id} addVehicle`);
+    newDiv.setAttribute("class", `${this.parentNode.className} addVehicle`);
     const newText = document.createTextNode(this.innerText);
     newDiv.appendChild(newText);
     regularyCreatePopupResult.appendChild(newDiv);
 
     const newInput = document.createElement('input');
     newInput.setAttribute("type", "hidden");
-    newInput.setAttribute("value", `vehicle${this.id}`);
+    newInput.setAttribute("value", this.parentNode.className);
     newInput.setAttribute("name", 'vehicle');
     newInput.setAttribute("class", `vehicle${this.id}`);
     regularyCreatePopupResult.appendChild(newInput);
-
     this.classList.add('removeDriver');
     this.classList.remove('addDriver');
   } else {
-    const removeIt = document.querySelectorAll(`.vehicle${this.id}`)
-    removeIt[0].remove();
-    removeIt[1].remove();
+    removeItHidden = regularyCreatePopupResult.querySelectorAll("input");
+    for (i = 0; i < removeItHidden.length; i++) {
+      if (removeItHidden[i].value == this.parentNode.className) {
+        removeItHidden[i].previousSibling.remove();
+        removeItHidden[i].remove();
+      }
+    }
     this.style.backgroundColor = 'white'
     this.style.color = '#191919'
     this.classList.add('addDriver');
@@ -96,7 +100,31 @@ for (i = 0; i < orderDispatch.length; i++) {
 
 function openRegularlyDispatch() {
   popupAreaModules.style.display = "block"
+  dispatchHidden.value = this.parentNode.className;
+  for (i = 0; i < connectData[this.parentNode.className].length; i++) {
+    for (j = 0; j < dispatchVehicle.length; j++) {
+      if (dispatchVehicle[j].parentNode.className == connectData[this.parentNode.className][i]) {
+        dispatchVehicle[j].classList.remove("addDriver")
+        dispatchVehicle[j].classList.add("removeDriver")
+        dispatchVehicle[j].style.backgroundColor = '#0069D9'
+        dispatchVehicle[j].style.color = 'white'
+        const newDiv = document.createElement('div');
+        newDiv.setAttribute("class", `${dispatchVehicle[j].parentNode.className} addVehicle`);
+        const newText = document.createTextNode(dispatchVehicle[j].innerText);
+        newDiv.appendChild(newText);
+        regularyCreatePopupResult.appendChild(newDiv);
+
+        const newInput = document.createElement('input');
+        newInput.setAttribute("type", "hidden");
+        newInput.setAttribute("value", dispatchVehicle[j].parentNode.className);
+        newInput.setAttribute("name", 'vehicle');
+        newInput.setAttribute("class", `vehicle${this.id}`);
+        regularyCreatePopupResult.appendChild(newInput);
+      }
+    }
+  }
 }
+
 
 
 for (i = 0; i < 3; i++) {
@@ -210,14 +238,14 @@ function openOrderDetail() {
   routeOrderBillDate.value = regDatas[this.className.substr(10,)].bill_date;
   routeOrderCollectionType.value = regDatas[this.className.substr(10,)].collection_type;
   routeOrderDriverAllowance.value = regDatas[this.className.substr(10,)].driver_allowance;
-  if(regDatas[this.className.substr(10,)].payment_method = 'y'){
+  if (regDatas[this.className.substr(10,)].payment_method = 'y') {
     routeOrderPaymentMethod.checked = true;
-  }else{
+  } else {
     routeOrderPaymentMethod.checked = false;
   }
-  if(regDatas[this.className.substr(10,)].VAT = 'y'){
+  if (regDatas[this.className.substr(10,)].VAT = 'y') {
     routeOrderVat.checked = true;
-  }else{
+  } else {
     routeOrderVat.checked = false;
   }
   for (i = 0; i < routeOrderBusType.length; i++) {

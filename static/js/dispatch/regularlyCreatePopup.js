@@ -33,6 +33,8 @@ const routePopupDataReference = document.querySelector(".routePopupDataReference
 const routePopupDataDriveDateEdit = document.querySelectorAll(".routePopupDataDriveDate input")
 const routePopupDataDriveDateEditLabel = document.querySelectorAll(".routePopupDataDriveDate label")
 const sendToHidden = document.querySelector(".sendToHidden")
+const dispatchHidden = document.querySelector(".dispatchHidden")
+const regularyCreatePopupTbody = document.querySelector(".regularyCreatePopupTbody")
 
 
 
@@ -50,24 +52,27 @@ function addVehicle() {
     this.style.color = 'white'
 
     const newDiv = document.createElement('div');
-    newDiv.setAttribute("class", `vehicle${this.id} addVehicle`);
+    newDiv.setAttribute("class", `${this.parentNode.className} addVehicle`);
     const newText = document.createTextNode(this.innerText);
     newDiv.appendChild(newText);
     regularyCreatePopupResult.appendChild(newDiv);
 
     const newInput = document.createElement('input');
     newInput.setAttribute("type", "hidden");
-    newInput.setAttribute("value", `vehicle${this.id}`);
+    newInput.setAttribute("value", this.parentNode.className);
     newInput.setAttribute("name", 'vehicle');
     newInput.setAttribute("class", `vehicle${this.id}`);
     regularyCreatePopupResult.appendChild(newInput);
-
     this.classList.add('removeDriver');
     this.classList.remove('addDriver');
   } else {
-    const removeIt = document.querySelectorAll(`.vehicle${this.id}`)
-    removeIt[0].remove();
-    removeIt[1].remove();
+    removeItHidden = regularyCreatePopupResult.querySelectorAll("input");
+    for (i = 0; i < removeItHidden.length; i++) {
+      if (removeItHidden[i].value == this.parentNode.className) {
+        removeItHidden[i].previousSibling.remove();
+        removeItHidden[i].remove();
+      }
+    }
     this.style.backgroundColor = 'white'
     this.style.color = '#191919'
     this.classList.add('addDriver');
@@ -77,7 +82,6 @@ function addVehicle() {
 
   if (regularyCreatePopupResult.childElementCount > 6) {
     regularyCreatePopupResult.style.justifyContent = 'flex-start'
-    console.log('check')
   } else {
     regularyCreatePopupResult.style.justifyContent = 'center'
   }
@@ -93,6 +97,29 @@ for (i = 0; i < regularlyDispatchBtn.length; i++) {
 
 function openRegularlyDispatch() {
   popupAreaModules.style.display = "block"
+  dispatchHidden.value = this.parentNode.className;
+  for (i = 0; i < connectData[this.parentNode.className].length; i++) {
+    for (j = 0; j < dispatchVehicle.length; j++) {
+      if (dispatchVehicle[j].parentNode.className == connectData[this.parentNode.className][i]) {
+        dispatchVehicle[j].classList.remove("addDriver")
+        dispatchVehicle[j].classList.add("removeDriver")
+        dispatchVehicle[j].style.backgroundColor = '#0069D9'
+        dispatchVehicle[j].style.color = 'white'
+        const newDiv = document.createElement('div');
+        newDiv.setAttribute("class", `${dispatchVehicle[j].parentNode.className} addVehicle`);
+        const newText = document.createTextNode(dispatchVehicle[j].innerText);
+        newDiv.appendChild(newText);
+        regularyCreatePopupResult.appendChild(newDiv);
+    
+        const newInput = document.createElement('input');
+        newInput.setAttribute("type", "hidden");
+        newInput.setAttribute("value", dispatchVehicle[j].parentNode.className);
+        newInput.setAttribute("name", 'vehicle');
+        newInput.setAttribute("class", `vehicle${this.id}`);
+        regularyCreatePopupResult.appendChild(newInput);
+      }
+    }
+  }
 }
 
 
@@ -189,7 +216,6 @@ function detailPopup() {
   let weekAllCount = 0;
   for (i = 1; i < routePopupDataDriveDateEdit.length; i++) {
     if (newWeekArray.find(item => item == routePopupDataDriveDateEditLabel[i].innerText)) {
-      console.log(routePopupDataDriveDateEdit[i])
       routePopupDataDriveDateEdit[i].checked = true;
       weekAllCount = weekAllCount + 1;
       if (weekAllCount == 7) {
@@ -197,7 +223,7 @@ function detailPopup() {
       }
     }
   }
-  sendToHidden.value = this.parentElement.className;
+  sendToHidden.value = this.parentNode.className;
 }
 
 popupBgModulesRoute.addEventListener("click", closedRoutePopup)

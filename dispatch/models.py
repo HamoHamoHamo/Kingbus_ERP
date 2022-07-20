@@ -31,7 +31,8 @@ class DispatchRegularly(models.Model):
     route = models.CharField(verbose_name='노선이름', max_length=100, null=False)
     pub_date = models.DateTimeField(auto_now_add=True, verbose_name='작성시간')
     creator = models.ForeignKey(User, on_delete=SET_NULL, related_name="regularly_creator", db_column="creator_id", null=True)
-    
+    def __str__(self):
+        return self.route
 
 class DispatchOrder(models.Model):
     operation_type = models.CharField(verbose_name='왕복,편도,', max_length=10, null=False)
@@ -61,7 +62,7 @@ class DispatchOrder(models.Model):
     pub_date = models.DateTimeField(auto_now_add=True, verbose_name='작성시간')
     creator = models.ForeignKey(User, on_delete=models.CASCADE, related_name="dispatch_creator", db_column="creator_id", null=True)
     def __str__(self):
-        return self.departure + " ▶ " + self.arrival
+        return self.route
 
 
 class DispatchOrderConnect(models.Model):
@@ -70,18 +71,22 @@ class DispatchOrderConnect(models.Model):
     driver_id = models.ForeignKey(Member, on_delete=models.SET_NULL, related_name="info_driver_id", db_column="driver_id", null=True)
     departure_date = models.CharField(verbose_name='출발날짜', max_length=16, null=False)
     arrival_date = models.CharField(verbose_name='도착날짜', max_length=16, null=False)
+    driver_allowance = models.CharField(verbose_name='기사수당', max_length=20, null=False)
     pub_date = models.DateTimeField(auto_now_add=True, verbose_name='작성시간')
     creator = models.ForeignKey(User, on_delete=SET_NULL, related_name="connect_creator", db_column="creator_id", null=True)
 
 class DispatchRegularlyConnect(models.Model):
-    regularly_id = models.ForeignKey(DispatchOrder, on_delete=models.CASCADE, related_name="info_regularly", db_column="order_id", null=False)
+    regularly_id = models.ForeignKey(DispatchRegularly, on_delete=models.CASCADE, related_name="info_regularly", db_column="order_id", null=False)
     bus_id = models.ForeignKey(Vehicle, on_delete=models.SET_NULL, related_name="info_regulary_bus_id", db_column="bus_id", null=True)
     driver_id = models.ForeignKey(Member, on_delete=models.SET_NULL, related_name="info_regularly_driver_id", db_column="driver_id", null=True)
     departure_date = models.CharField(verbose_name='출발날짜', max_length=16, null=False)
     arrival_date = models.CharField(verbose_name='도착날짜', max_length=16, null=False)
+    work_type = models.CharField(verbose_name='출/퇴근', max_length=2, null=False)
+    driver_allowance = models.CharField(verbose_name='기사수당', max_length=20, null=False)
     pub_date = models.DateTimeField(auto_now_add=True, verbose_name='작성시간')
     creator = models.ForeignKey(User, on_delete=SET_NULL, related_name="connect_regularly_creator", db_column="creator_id", null=True)
-
+    def __str__(self):
+        return f'{self.regularly_id.route} / {self.departure_date[2:10]}'
 class DispatchCheck(models.Model):
     member_id1 = models.ForeignKey(Member, on_delete=models.SET_NULL, related_name="dispatch_check_member1", db_column="member_id1", null=True)
     member_id2 = models.ForeignKey(Member, on_delete=models.SET_NULL, related_name="dispatch_check_member2", db_column="member_id2", null=True)

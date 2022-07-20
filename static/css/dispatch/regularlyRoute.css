@@ -505,14 +505,16 @@ td:nth-child(8) {
   box-sizing: border-box;
 }
 
-.createGroupDataArea{
+.createGroupDataArea {
   flex-wrap: nowrap;
   height: calc(100% - 4.9rem);
 }
-.routePopupDataArea form{
+
+.routePopupDataArea form {
   width: 100%;
 }
-.createGroupDataArea .routePopupBtnBox{
+
+.createGroupDataArea .routePopupBtnBox {
   padding: 0 29.5rem;
 }
 
@@ -581,7 +583,8 @@ td:nth-child(8) {
 .routePopupBtnBox input {
   background-color: #0069D9;
 }
-.routePopupBtnBox input:nth-child(3){
+
+.routePopupBtnBox input:nth-child(3) {
   display: none;
   background-color: #0069D9;
 }
@@ -636,7 +639,18 @@ td:nth-child(8) {
   display: flex;
   flex-direction: column;
   align-items: flex-end;
+  width: 100%;
   border-bottom: 0.1rem solid #191919;
+}
+
+.dateArea {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.dateCell {
+  width: calc(100%/7);
 }
 
 .routePopupDataDriveDate input[type=checkbox] {
@@ -794,6 +808,7 @@ td:nth-child(8) {
   background-size: cover;
   cursor: pointer;
 }
+
 .groupCretetCloseBtn {
   background-color: #444444;
   margin-right: 2rem;
