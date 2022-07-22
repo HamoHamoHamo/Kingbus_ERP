@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
-{% load custom_tags %}
+{% load dispatch_custom_tags %}
 
 {% block head %}
 <meta http-equiv="Cache-Control" content="private, no-cache, no-store, max-age=0, must-revalidate">
@@ -75,7 +75,7 @@
                                 <input type="checkbox" name="id" value="{{order.id}}">
                             </td>
                             <td>
-                                <span>{{ departure_date|index:forloop.counter0 }}</span>
+                                <span>{{ departure_date|index:forloop.counter0 }}</span><br>
                                 <span>{% if num_days|index:forloop.counter0 %} {{num_days|index:forloop.counter0}}일 {% endif %}[{{ time|index:forloop.counter0 }}]</span>
                             </td>
                             <td class="orderRote {{forloop.counter0}}">
@@ -113,7 +113,7 @@
                         {% for order in order_list %}
                         <tr class="{{order.id}}">
                             <td class="orderDispatch">
-                                <div>
+                                <div class="orderDispatchDiv">
                                 {% with connect=connect_list|index:forloop.counter0 %}
                                     {% for c in connect %}
                                     <span>{{c.bus_id.vehicle_num}}({{c.driver_id.name}})</span>
@@ -121,7 +121,8 @@
                                 {% endwith %}
                                 </div>
                             </td>
-                            <td>{{order.bus_cnt}}</td>
+                            
+                            <td>{{order.info_order.all.count}}/{{order.bus_cnt}}</td>
                             <td>{{order.bus_type}}</td>
                             <td>{{order.driver_allowance}}</td>
                             <td>{% if order.payment_method == 'y' %} 선지급 {% endif %}</td>
@@ -226,9 +227,9 @@
                         <div class="addDriver">{{vehicle.vehicle_num}}({{vehicle.driver_name}})</div>
                       </td>
                       <td>
-                        <div class="GoToWork">{{r_enter_cnt|index:forloop.counter0}}</div>
-                        <div class="work">{{r_leave_cnt|index:forloop.counter0}}</div>
-                        <div class="backToHome">{{order_cnt|index:forloop.counter0}}</div>
+                        <div class="GoToWork">{% if r_enter_cnt %} {{r_enter_cnt|index:forloop.counter0}} {% endif %}</div>
+                        <div class="work">{% if order_cnt %} {{order_cnt|index:forloop.counter0}} {% endif %}</div>
+                        <div class="backToHome">{% if r_leave_cnt %} {{r_leave_cnt|index:forloop.counter0}} {% endif %}</div>
                       </td>
                     </tr>
                     {% endfor %}
@@ -242,7 +243,7 @@
             <input type="submit" class="btnModules" value="등록">
         </div>
         <input type="hidden" name="id" value="" class="dispatchHidden">
-        <input type="hidden" name="date" value="{{date}}">
+        
     </form>
 </div>
 
@@ -392,7 +393,7 @@
     <form method="post" action="{% url 'dispatch:order_edit' %}" class="popupContainerOrder">
         {% csrf_token %}
         <div class="orderPopupTitle">일반주문 상세</div>
-
+        
         <div class="orderPopupDataArea orderPopupDataAreaDetail">
             <div class="orderPopupDataCell">
                 <span class="orderPopupDataTitle">출발지</span>
@@ -614,6 +615,7 @@
 
 {% block script %}
 <script>
+    {% autoescape off %}
     let regDatas = [
         {% for dispatch in order_list %}
           {
@@ -648,9 +650,19 @@
             temp.push('{{connect.bus_id.id}}')
         {% endfor %}
 
-        connectData[{{order.id}}] = temp,
+        connectData[{{order.id}}] = temp
     {% endfor %}
+
+    
+    const vehicleConnect = {{vehicle_connect}}
+    {% endautoescape %}
+
     console.log("CONNECT", connectData);
+    console.log("regDatas", regDatas);
+    console.log("vehicleConnect", vehicleConnect);
+
+    console.log("{{min_date}}")
+    console.log("{{max_date}}")
 </script>
 <script src="{% static 'js/dispatch/orderPopup.js' %}"></script>
 {% endblock %}

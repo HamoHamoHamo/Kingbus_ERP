@@ -79,6 +79,11 @@
     border-spacing: 0;
 }
 
+.tableCell td:nth-child(1) {
+    padding-left: 1rem;
+    box-sizing: border-box;
+}
+
 .tableCell thead {
     width: 100%;
     height: 6.8rem;
@@ -110,6 +115,11 @@
 .tableCell tbody td {
     height: 6.8rem;
     border-bottom: 0.11rem solid #CDCDCE;
+}
+
+.tableCell tbody td:nth-child(3) {
+    color: #0069D9;
+    cursor: pointer;
 }
 
 
@@ -163,235 +173,29 @@
     border-bottom: 0.11rem solid #CDCDCE;
 }
 
-.orderDispatch div{
+.orderDispatch {
     display: flex;
-    flex-direction: column;
-    flex-wrap: wrap;
-}
-
-/*
-
-
-.tableCellScroll {
-    overflow-x: scroll;
-}
-
-.tableHead {
-    width: 100%;
-    height: 4.8rem;
-    border: 0.1rem solid #CDCDCE;
-    border-radius: 0.5rem 0.5rem 0 0;
-}
-
-.tableCellScroll .tableHead {
-    width: 300%;
-}
-
-.tableHead thead {
-    width: 100%;
-    height: 100%;
-}
-
-.tableHead tr {
-    width: 100%;
-    height: 100%;
-    align-items: center;
-    border: none;
-    font-size: 1.6rem;
-    font-weight: 700;
-    color: #7A7A7A;
-}
-
-.tableBody {
-    width: 100%;
-    height: 64em;
-    margin-top: -0.1rem;
-    border: 0.1rem solid #CDCDCE
-}
-
-.tableCellScroll tbody {
-    width: 300%;
-}
-
-.tableCellScroll tbody::-webkit-scrollbar {
-    width: 0.6rem;
-}
-
-.tableCellScroll tbody::-webkit-scrollbar-thumb {
-    height: 17%;
-    background-color: grey;
-    border-radius: 10px;
-}
-
-.tableCellScroll tbody::-webkit-scrollbar-track {
-    background-color: #dbdada;
-}
-
-tbody {
-    width: 100%;
-    height: 100%;
-}
-
-table tr {
-    display: flex;
-    width: 100%;
-    height: 6.4rem;
-    border-bottom: 0.1rem solid #CDCDCE;
-}
-
-table tr:nth-child(10) {
-    border-bottom: none;
-}
-
-table tr:nth-child(odd) {
-    background-color: white;
-}
-
-table tr:nth-child(even) {
-    background-color: #EFEFEF;
-}
-
-table td {
-    display: flex;
-    align-items: center;
-}
-
-table a {
-    color: #0069D9;
-}
-
-.regularlyDispatchBtn {
-    padding: 0.3rem 1.6rem;
-    background-color: #0069D9;
-    color: white;
-    border-radius: 0.2rem;
-    cursor: pointer;
-}
-
-.tableBody td {
-    font-size: 1.4rem;
-    color: #191919;
-}
-
-td:nth-child(1) {
-    display: flex;
-    justify-content: center;
-    width: 6%;
-}
-
-td:nth-child(2) {
-    width: 18%;
-    padding-left: 2%;
-}
-.tableBody td:nth-child(2) {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: flex-start;
-}
-
-td:nth-child(3) {
-    width: 60%;
-    word-break: keep-all;
-}
-
-.tableBody td:nth-child(3) {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: flex-start;
-    color: #0069D9;
-    cursor: pointer;
-}
-
-td:nth-child(4) {
-    width: 14%;
-    padding-left: 1%;
-}
-
-.tableCellScroll td:nth-child(1) {
-}
-
-.tableCellScroll tbody td:nth-child(1) {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    align-items: flex-start;
-    height: 4.6rem;
-    margin: 0.6rem 1%;
-    padding: 0.3rem 0.3%;
-    color: white;
-    background-color: #0069D9;
-    cursor: pointer;
-    border-radius: 0.3rem;
-}
-
-.tableCellScroll td:nth-child(2) {
-    width: 9.3rem;
-    height: 100%;
-    display: flex;
-    flex-direction: row;
     justify-content: flex-start;
     align-items: center;
-    cursor: auto;
 }
 
-.tableCellScroll .tableBody td:nth-child(2) {
-    color: #191919;
+.orderDispatch div {
+    background-color: #0069D9;
+    height: 6rem;
+    padding: 0.6rem;
+    border-radius: 0.3rem;
+    box-sizing: border-box;
+    color: white;
+    cursor: pointer;
 }
 
-.tableCellScroll td:nth-child(3) {
-    width: 9.3rem;
+.orderDispatch div span {
+    display: flex;
+    justify-content: center;
+    width: 9.2rem;
+    display: inline-block;
+    margin: 0.2rem 0;
 }
-
-.tableCellScroll td:nth-child(4) {
-    width: 11.6rem;
-}
-
-td:nth-child(5) {
-    width: 16.24rem;
-}
-
-td:nth-child(6) {
-    width: 11.6rem;
-}
-
-td:nth-child(7) {
-    width: 10%;
-}
-
-td:nth-child(8) {
-    width: 16.24rem;
-}
-
-td:nth-child(9) {
-    width: 11.6rem;
-}
-
-td:nth-child(10) {
-    width: 30.16rem;
-    word-break: keep-all;
-}
-
-td:nth-child(11) {
-    width: 11.6rem;
-}
-
-td:nth-child(12) {
-    width: 11.6rem;
-}
-
-td:nth-child(13) {
-    width: 11.6rem;
-}
-
-td:nth-child(14) {
-    width: 11.6rem;
-}
-
-td:nth-child(15) {
-    width: 11.6rem;
-} */
 
 
 .checkbox {

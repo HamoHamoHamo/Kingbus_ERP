@@ -41,6 +41,10 @@ const sendToHidden = document.querySelector(".sendToHidden")
 const groupCheck = document.querySelectorAll(".tableBody td:nth-child(1) input")
 const dispatchListForm = document.querySelector(".dispatchListForm")
 const dispatchHidden = document.querySelector(".dispatchHidden")
+const dispatchNum = document.querySelectorAll(".orderDispatch div span")
+const thisTr = document.querySelectorAll(".tableCell .table tbody tr")
+const dispatchList = document.querySelectorAll(".regularyCreatePopupTbody td:nth-child(1)")
+const orderDispatchDiv = document.querySelectorAll(".orderDispatchDiv")
 
 
 /*배차등록 추가/삭제 */
@@ -100,6 +104,43 @@ for (i = 0; i < orderDispatch.length; i++) {
 
 function openRegularlyDispatch() {
   popupAreaModules.style.display = "block"
+  //배차 불가차량 판별
+  let departureTime = ""
+  let arrivalTime = ""
+  let departureTimeCheck = ""
+  let arrivalTimeCheck = ""
+  let cantDispatch = 0
+  console.log(thisTr)
+  for (i = 0; i < thisTr.length; i++) {
+    if (thisTr[i].className == this.parentNode.className) {
+      departureTime = regDatas[thisTr[i].childNodes[5].className.substr(10,)].departure_date.replace(/-|T|:|\s/g, "")
+      arrivalTime = regDatas[thisTr[i].childNodes[5].className.substr(10,)].arrival_date.replace(/-|T|:|\s/g, "")
+    }
+  }
+  let = keyArray = Object.keys(vehicleConnect)
+  //차량
+  for (i = 0; i < dispatchList.length; i++) {
+    dispatchList[i].style.pointerEvents = "auto"
+    if (keyArray[i] == dispatchList[i].className) {
+      if (vehicleConnect[keyArray[i]].length !== 0) {
+        for (j = 0; j < vehicleConnect[keyArray[i]].length; j++) {
+          cantDispatch = 0
+          departureTimeCheck = vehicleConnect[keyArray[i]][j][0].replace(/-|T|:|\s/g, "")
+          arrivalTimeCheck = vehicleConnect[keyArray[i]][j][1].replace(/-|T|:|\s/g, "")
+          if (arrivalTimeCheck < departureTime || departureTimeCheck > arrivalTime) {
+            cantDispatch = cantDispatch
+          } else {
+            cantDispatch = cantDispatch + 1
+          }
+          if (cantDispatch !== 0) {
+            dispatchList[i].childNodes[1].style.backgroundColor = "#a7a7a7"
+            dispatchList[i].style.pointerEvents = "none"
+          }
+        }
+      }
+    }
+  }
+  //기존 배차차량 띄우기
   dispatchHidden.value = this.parentNode.className;
   for (i = 0; i < connectData[this.parentNode.className].length; i++) {
     for (j = 0; j < dispatchVehicle.length; j++) {
@@ -108,6 +149,7 @@ function openRegularlyDispatch() {
         dispatchVehicle[j].classList.add("removeDriver")
         dispatchVehicle[j].style.backgroundColor = '#0069D9'
         dispatchVehicle[j].style.color = 'white'
+        dispatchVehicle[j].style.pointerEvents = "auto"
         const newDiv = document.createElement('div');
         newDiv.setAttribute("class", `${dispatchVehicle[j].parentNode.className} addVehicle`);
         const newText = document.createTextNode(dispatchVehicle[j].innerText);
@@ -123,17 +165,18 @@ function openRegularlyDispatch() {
       }
     }
   }
+
 }
 
 
 
 for (i = 0; i < 3; i++) {
-  popupBgModules[i].addEventListener("click", closedRegularlyDispatchBg)
+  popupBgModules[i].addEventListener("click", closedRegularlyDispatch)
 }
-SidemenuUseClose.addEventListener("click", closedRegularlyDispatchSideMenu)
-dispatchCloseBtn.addEventListener("click", closedRegularlyDispatchBtn)
+SidemenuUseClose.addEventListener("click", closedRegularlyDispatch)
+dispatchCloseBtn.addEventListener("click", closedRegularlyDispatch)
 
-function closedRegularlyDispatchBg() {
+function closedRegularlyDispatch() {
   popupAreaModules.style.display = "none"
   popupAreaModulesOrder.style.display = "none"
   popupAreaModulesOrderRoute.style.display = 'none'
@@ -144,27 +187,8 @@ function closedRegularlyDispatchBg() {
     dispatchVehicle[i].style.backgroundColor = 'white'
     dispatchVehicle[i].style.color = '#191919'
   }
-}
-function closedRegularlyDispatchSideMenu() {
-  popupAreaModules.style.display = "none"
-  popupAreaModulesOrder.style.display = "none"
-  popupAreaModulesOrderRoute.style.display = 'none'
-  regularyCreatePopupResult.textContent = '';
-  for (i = 0; i < dispatchVehicle.length; i++) {
-    dispatchVehicle[i].classList.add('addDriver');
-    dispatchVehicle[i].classList.remove('removeDriver')
-    dispatchVehicle[i].style.backgroundColor = 'white'
-    dispatchVehicle[i].style.color = '#191919'
-  }
-}
-function closedRegularlyDispatchBtn() {
-  popupAreaModules.style.display = "none"
-  regularyCreatePopupResult.textContent = '';
-  for (i = 0; i < dispatchVehicle.length; i++) {
-    dispatchVehicle[i].classList.add('addDriver');
-    dispatchVehicle[i].classList.remove('removeDriver')
-    dispatchVehicle[i].style.backgroundColor = 'white'
-    dispatchVehicle[i].style.color = '#191919'
+  for (j = 0; j < dispatchList.length; j++) {
+    dispatchList[i].style.pointerEvents = "auto"
   }
 }
 
@@ -196,6 +220,8 @@ for (i = 0; i < orderRouteDetail.length; i++) {
 function openOrderDetail() {
   console.log(routeOrderDeparture.value)
   popupAreaModulesOrderRoute.style.display = 'block'
+  console.log(regDatas[this.className.substr(10,)].departure_date)
+  console.log(this.className)
   orderDispatchData[0].innerText = regDatas[this.className.substr(10,)].departure;
   orderDispatchData[1].innerText = regDatas[this.className.substr(10,)].bus_cnt;
   orderDispatchData[2].innerText = regDatas[this.className.substr(10,)].arrival;
@@ -316,5 +342,19 @@ function checkToDelete(e) {
     if (confirm('정말로 삭제하시겠습니까?') == false) {
       e.preventDefault()
     }
+  }
+}
+
+
+
+
+
+// 배차차량 줄바꿈
+let lineBreake
+window.onload = function () {
+  for (i = 0; i < orderDispatchDiv.length; i++) {
+    const breake = document.createElement("br")
+    lineBreake = Math.round(orderDispatchDiv[i].childElementCount);
+    orderDispatchDiv[i].insertBefore(breake, orderDispatchDiv[i].childNodes[lineBreake])
   }
 }
