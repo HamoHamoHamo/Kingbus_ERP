@@ -128,13 +128,15 @@ class RegularlyDispatchList(generic.ListView):
         r_enter_cnt = []
         r_leave_cnt = []
         order_cnt = []
+
+        vehicle_connect = {}
         for vehicle in vehicle_list:
-            r_enter_cnt.append(vehicle.info_regulary_bus_id.filter(departure_date__lte=f'{TODAY} 24:59').filter(arrival_date__gte=f'{TODAY} 00:00').filter(work_type="출근").count())
-            r_leave_cnt.append(vehicle.info_regulary_bus_id.filter(departure_date__lte=f'{TODAY} 24:59').filter(arrival_date__gte=f'{TODAY} 00:00').filter(work_type="퇴근").count())
-            order_cnt.append(vehicle.info_bus_id.filter(departure_date__lte=f'{TODAY} 24:59').filter(arrival_date__gte=f'{TODAY} 00:00').count())
-            print(vehicle.info_bus_id.filter(departure_date__lte=f'{TODAY} 24:59').filter(arrival_date__gte=f'{TODAY} 00:00'))
-        
-        print("ORDERCNT", order_cnt)
+            r_enter_cnt.append(vehicle.info_regulary_bus_id.filter(departure_date__lte=f'{date} 24:00').filter(arrival_date__gte=f'{date} 00:00').filter(work_type="출근").count())
+            r_leave_cnt.append(vehicle.info_regulary_bus_id.filter(departure_date__lte=f'{date} 24:00').filter(arrival_date__gte=f'{date} 00:00').filter(work_type="퇴근").count())
+            order_cnt.append(vehicle.info_bus_id.filter(departure_date__lte=f'{date} 24:00').filter(arrival_date__gte=f'{date} 00:00').count())
+            
+            vehicle_connect[vehicle.id] = []
+
         context['r_enter_cnt'] = r_enter_cnt
         context['r_leave_cnt'] = r_leave_cnt
         context['order_cnt'] = order_cnt
@@ -142,8 +144,17 @@ class RegularlyDispatchList(generic.ListView):
 
         connect_list = []
         for order in context['order_list']:
-            connect_list.append(order.info_regularly.filter(departure_date__lte=f'{date} 24:59').filter(arrival_date__gte=f'{date} 00:00'))
+            connect_list.append(order.info_regularly.filter(departure_date__lte=f'{date} 24:00').filter(arrival_date__gte=f'{date} 00:00'))
+            for o in order.info_regularly.filter(departure_date__startswith=date):
+                vehicle_connect[o.bus_id.id].append([o.departure_date, o.arrival_date])
         context['connect_list'] = connect_list
+
+        order_list = DispatchOrderConnect.objects.exclude(arrival_date__lte=f'{date} 00:00').exclude(departure_date__gte=f'{date} 24:00')
+        for order in order_list:
+            vehicle_connect[order.bus_id.id].append([order.departure_date, order.arrival_date])
+
+        context['vehicle_connect'] = vehicle_connect
+
         return context
 
 def regularly_connect_create(request):
@@ -170,7 +181,7 @@ def regularly_connect_create(request):
             )
             r_connect.save()
 
-        return redirect('dispatch:regularly')
+        return redirect(request.META.get('HTTP_REFERER', 'redirect_if_referer_not_found'))
     else:
         return HttpResponseNotAllowed(['post'])
 
@@ -263,7 +274,7 @@ def regularly_order_create(request):
             order.group = regularly_group
             order.route = order_form.cleaned_data['departure'] + " ▶ " + order_form.cleaned_data['arrival']
             order.save()
-            return redirect('dispatch:regularly_route')
+            return redirect(request.META.get('HTTP_REFERER', 'redirect_if_referer_not_found'))
 
     else:
         raise Http404
@@ -307,7 +318,7 @@ def regularly_order_edit(request):
             order.creator = creator
             order.save()
             
-            return redirect('dispatch:regularly_route')
+            return redirect(request.META.get('HTTP_REFERER', 'redirect_if_referer_not_found'))
         else: 
             raise Http404
     else:
@@ -321,7 +332,7 @@ def regularly_order_delete(request):
             # if order.creator.pk == request.session['user'] or User.objects.get(pk=request.session['user']).authority == "관리자": # ?? 작성자만 지울 수 있게 하나?
                 # order.delete()
             order.delete()
-        return redirect('dispatch:regularly_route')
+        return redirect(request.META.get('HTTP_REFERER', 'redirect_if_referer_not_found'))
     else:
         raise Http404
 
@@ -332,7 +343,7 @@ def regularly_group_create(request):
             creator = get_object_or_404(User, pk=request.session['user'])
         )
         group.save()
-        return redirect('dispatch:regularly_route')
+        return redirect(request.META.get('HTTP_REFERER', 'redirect_if_referer_not_found'))
     else:
         return HttpResponseNotAllowed(['POST'])
 
@@ -348,7 +359,7 @@ def regularly_group_edit(request):
             group.name = name_list[cnt]
             group.save()
             cnt += 1
-        return redirect('dispatch:regularly_route')
+        return redirect(request.META.get('HTTP_REFERER', 'redirect_if_referer_not_found'))
     else:
         return HttpResponseNotAllowed(['POST'])
 
@@ -356,7 +367,7 @@ def regularly_group_delete(request):
     if request.method == "POST":
         group = get_object_or_404(RegularlyGroup, id=request.POST.get('group_id', None))
         group.delete()
-        return redirect('dispatch:regularly_route')
+        return redirect(request.META.get('HTTP_REFERER', 'redirect_if_referer_not_found'))
     else:
         return HttpResponseNotAllowed(['POST'])
 
@@ -371,26 +382,26 @@ class OrderList(generic.ListView):
         end_date = self.request.GET.get('end_date')
         route = self.request.GET.get('route')
         customer = self.request.GET.get('customer')
-        self.next_week = datetime.strptime(TODAY, FORMAT) + timedelta(days=7)
+        # self.next_week = (datetime.strptime(TODAY, FORMAT) + timedelta(days=7)).strftime(FORMAT)
 
         if start_date or end_date or route or customer:
             dispatch_list = []
             if start_date and end_date:
-                dispatch_list = DispatchOrder.objects.exclude(arrival_date__lt=start_date).exclude(departure_date__gt=end_date).order_by('departure_date')
+                dispatch_list = DispatchOrder.objects.prefetch_related('info_order').exclude(arrival_date__lt=f'{start_date}T00:00').exclude(departure_date__gt=f'{end_date}T24:00').order_by('departure_date')
                 # dispatch_list = DispatchOrder.objects.filter(departure_date__range=[start_date + "T00:00", end_date + "T24:00"]).order_by('departure_date')
             if route:
                 if dispatch_list:
                     dispatch_list = dispatch_list.filter(route__contains=route).order_by('departure_date')
                 else:
-                    dispatch_list = DispatchOrder.objects.filter(route__contains=route).order_by('departure_date')
+                    dispatch_list = DispatchOrder.objects.prefetch_related('info_order').filter(route__contains=route).order_by('departure_date')
             if customer:
                 if dispatch_list:
                     dispatch_list = dispatch_list.filter(customer__contains=customer).order_by('departure_date')
                 else:
-                    dispatch_list = DispatchOrder.objects.filter(customer__contains=customer).order_by('departure_date')
+                    dispatch_list = DispatchOrder.objects.prefetch_related('info_order').filter(customer__contains=customer).order_by('departure_date')
         else:
             
-            dispatch_list = DispatchOrder.objects.exclude(arrival_date__lt=TODAY).exclude(departure_date__gt=self.next_week).order_by('departure_date')
+            dispatch_list = DispatchOrder.objects.prefetch_related('info_order').exclude(arrival_date__lt=f'{TODAY}T00:00').exclude(departure_date__gt=f'{TODAY}T24:00').order_by('departure_date')
         
         return dispatch_list
 
@@ -448,7 +459,7 @@ class OrderList(generic.ListView):
         context['customer_old'] = self.request.GET.get('customer', '')
         start_date_old = self.request.GET.get('start_date', TODAY)
         context['start_date_old'] = start_date_old
-        end_date_old = self.request.GET.get('end_date', self.next_week.strftime(FORMAT))
+        end_date_old = self.request.GET.get('end_date', TODAY)
         context['end_date_old'] = end_date_old
 
         vehicle_list = Vehicle.objects.prefetch_related('info_regulary_bus_id', 'info_bus_id').filter(use='y')
@@ -456,23 +467,46 @@ class OrderList(generic.ListView):
         r_enter_cnt = []
         r_leave_cnt = []
         order_cnt = []
+        # 
+        vehicle_connect = {}
+            
         for vehicle in vehicle_list:
-            r_enter_cnt.append(vehicle.info_regulary_bus_id.filter(departure_date__lte=f'{TODAY} 24:59').filter(arrival_date__gte=f'{TODAY} 00:00').filter(work_type="출근").count())
-            r_leave_cnt.append(vehicle.info_regulary_bus_id.filter(departure_date__lte=f'{TODAY} 24:59').filter(arrival_date__gte=f'{TODAY} 00:00').filter(work_type="퇴근").count())
-            order_cnt.append(vehicle.info_bus_id.filter(departure_date__lte=f'{TODAY} 24:59').filter(arrival_date__gte=f'{TODAY} 00:00').count())
-            print(vehicle.info_bus_id.filter(departure_date__lte=f'{TODAY} 24:59').filter(arrival_date__gte=f'{TODAY} 00:00'))
-        
-        print("ORDERCNT", order_cnt)
+            if start_date_old == end_date_old:
+                r_enter_cnt.append(vehicle.info_regulary_bus_id.filter(departure_date__lte=f'{start_date_old} 24:59').filter(arrival_date__gte=f'{start_date_old} 00:00').filter(work_type="출근").count())
+                r_leave_cnt.append(vehicle.info_regulary_bus_id.filter(departure_date__lte=f'{start_date_old} 24:59').filter(arrival_date__gte=f'{start_date_old} 00:00').filter(work_type="퇴근").count())
+                order_cnt.append(vehicle.info_bus_id.filter(departure_date__lte=f'{start_date_old} 24:59').filter(arrival_date__gte=f'{start_date_old} 00:00').count())
+
+            # 
+            vehicle_connect[vehicle.id] = []
+
         context['r_enter_cnt'] = r_enter_cnt
         context['r_leave_cnt'] = r_leave_cnt
         context['order_cnt'] = order_cnt
         context['vehicle_list'] = vehicle_list
 
         connect_list = []
+        min_date = f'{start_date_old}T23:59'
+        max_date = f'{end_date_old}T00:00'
         for order in context['order_list']:
             connect_list.append(order.info_order.all())
+
+            if order.departure_date < min_date:
+                min_date = order.departure_date
+            if order.arrival_date > max_date:
+                max_date = order.arrival_date
         context['connect_list'] = connect_list
 
+        print("MIN", min_date, "max", max_date)
+        order_connect_range = DispatchOrderConnect.objects.exclude(arrival_date__lt=min_date).exclude(departure_date__gt=max_date)
+        for o in order_connect_range:
+            vehicle_connect[o.bus_id.id].append([o.departure_date, o.arrival_date])
+            
+        
+        regularly_order_list = DispatchRegularlyConnect.objects.filter(departure_date__range=[f'{min_date[:10]} {min_date[11:]}', f'{max_date[:10]} {max_date[11:]}'])
+        for regularly in regularly_order_list:
+            vehicle_connect[regularly.bus_id.id].append([regularly.departure_date, regularly.arrival_date])
+
+        context['vehicle_connect'] = vehicle_connect
         return context
 
 def order_connect_create(request):
@@ -497,7 +531,8 @@ def order_connect_create(request):
             )
             connect.save()
 
-        return redirect('dispatch:order')
+        return redirect(request.META.get('HTTP_REFERER', 'redirect_if_referer_not_found'))
+
     else:
         return HttpResponseNotAllowed(['post'])
 
@@ -521,7 +556,7 @@ def order_create(request):
             order.route = order_form.cleaned_data['departure'] + " ▶ " + order_form.cleaned_data['arrival']
 
             order.save()
-            return redirect('dispatch:order')
+            return redirect(request.META.get('HTTP_REFERER', 'redirect_if_referer_not_found'))
         else:
             raise Http404
     else:
@@ -570,7 +605,7 @@ def order_edit(request):
             print("ORDER", order)
             order.save()
 
-            return redirect(reverse('dispatch:order'))
+            return redirect(request.META.get('HTTP_REFERER', 'redirect_if_referer_not_found'))
         else:
             raise Http404
     else:
@@ -583,7 +618,7 @@ def order_delete(request):
             order = get_object_or_404(DispatchOrder, id=id)
             order.delete()
 
-        return redirect(reverse('dispatch:order'))
+        return redirect(request.META.get('HTTP_REFERER', 'redirect_if_referer_not_found'))
     else:
         return HttpResponseNotAllowed(['post'])
 

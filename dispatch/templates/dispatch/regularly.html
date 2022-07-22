@@ -174,8 +174,8 @@
             </td>
             <td>
               <div class="GoToWork">{{r_enter_cnt|index:forloop.counter0}}</div>
-              <div class="work">{{r_leave_cnt|index:forloop.counter0}}</div>
-              <div class="backToHome">{{order_cnt|index:forloop.counter0}}</div>
+              <div class="work">{{order_cnt|index:forloop.counter0}}</div>
+              <div class="backToHome">{{r_leave_cnt|index:forloop.counter0}}</div>
             </td>
           </tr>
           {% endfor %}
@@ -189,6 +189,7 @@
       <input type="submit" class="btnModules" value="등록">
     </div>
     <input type="hidden" name="id" value="" class="dispatchHidden">
+    <input type="hidden" name="date" value="{{date}}">
   </form>
 </div>
 
@@ -432,10 +433,14 @@
     {% for connect in connect_list|index:forloop.counter0 %}
       temp.push('{{connect.bus_id.id}}')
     {% endfor %}
-
-    connectData[{{order.id}}] = temp,
+    connectData[{{order.id}}] = temp
   {% endfor %}
+
+  {% autoescape off %}
+    const vehicleConnect = {{vehicle_connect}}
+  {% endautoescape %}
   console.log("CONNECT", connectData);
+  console.log("vehicleConnect", vehicleConnect)
 </script>
 <script src="{% static 'js/dispatch/regularlyCreatePopup.js' %}"></script>
 {% endblock %}

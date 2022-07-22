@@ -19,3 +19,8 @@ def index(indexable, i):
 def to_int(to):
     to = int(to)
     return to
+
+@register.filter
+def obj(indexable, i):
+    #print("TEMPLATEINDEX", "LIST : ", indexable, "I : ", i)
+    return indexable[i]

@@ -64,7 +64,6 @@ class DispatchOrder(models.Model):
     def __str__(self):
         return self.route
 
-
 class DispatchOrderConnect(models.Model):
     order_id = models.ForeignKey(DispatchOrder, on_delete=models.CASCADE, related_name="info_order", db_column="order_id", null=False)
     bus_id = models.ForeignKey(Vehicle, on_delete=models.SET_NULL, related_name="info_bus_id", db_column="bus_id", null=True)
@@ -87,6 +86,7 @@ class DispatchRegularlyConnect(models.Model):
     creator = models.ForeignKey(User, on_delete=SET_NULL, related_name="connect_regularly_creator", db_column="creator_id", null=True)
     def __str__(self):
         return f'{self.regularly_id.route} / {self.departure_date[2:10]}'
+        
 class DispatchCheck(models.Model):
     member_id1 = models.ForeignKey(Member, on_delete=models.SET_NULL, related_name="dispatch_check_member1", db_column="member_id1", null=True)
     member_id2 = models.ForeignKey(Member, on_delete=models.SET_NULL, related_name="dispatch_check_member2", db_column="member_id2", null=True)
