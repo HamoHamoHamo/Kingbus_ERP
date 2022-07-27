@@ -88,9 +88,12 @@ class DispatchRegularlyConnect(models.Model):
         return f'{self.regularly_id.route} / {self.departure_date[2:10]}'
         
 class DispatchCheck(models.Model):
-    member_id1 = models.ForeignKey(Member, on_delete=models.SET_NULL, related_name="dispatch_check_member1", db_column="member_id1", null=True)
-    member_id2 = models.ForeignKey(Member, on_delete=models.SET_NULL, related_name="dispatch_check_member2", db_column="member_id2", null=True)
+    member_id1 = models.ForeignKey(User, on_delete=models.SET_NULL, related_name="dispatch_check_member1", db_column="member_id1", null=True)
+    member_id2 = models.ForeignKey(User, on_delete=models.SET_NULL, related_name="dispatch_check_member2", db_column="member_id2", null=True)
     date = models.CharField(verbose_name='날짜', max_length=10, null=False)
     dispatch_check = models.CharField(verbose_name='확인완료', max_length=1, null=False, default='n')
     pub_date = models.DateTimeField(auto_now_add=True, verbose_name='작성시간')
     creator = models.ForeignKey(User, on_delete=SET_NULL, related_name="dispatch_check_creator", db_column="creator_id", null=True)
+
+    def __str__(self):
+        return self.date

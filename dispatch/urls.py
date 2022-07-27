@@ -18,8 +18,11 @@ urlpatterns = [
     path('order/route/create', views.order_create, name="order_create"),
     path('order/route/edit', views.order_edit, name="order_edit"),
     path('order/route/delete', views.order_delete, name="order_delete"),
-    path('schedule', views.schedule, name="schedule"),
+    path('schedule', views.ScheduleList.as_view(), name="schedule"),
     path('document', views.DocumentList.as_view(), name="document"),
+    path('calendar/create', views.calendar_create, name='calendar_create'),
+    path('calendar/delete/1', views.calendar_delete_1, name='calendar_delete1'),
+    path('calendar/delete/2', views.calendar_delete_2, name='calendar_delete2'),
 
     # path('', views.DispatchList.as_view(), name='dispatch_list'),
     # path('order/', views.OrderList.as_view(), name='order'),

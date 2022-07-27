@@ -93,6 +93,7 @@ class SalaryDetail(generic.ListView):
         context['entering_list'] = entering_list
         context['m_additional_list'] = m_additional_list
         context['member'] = get_object_or_404(Member, id=self.kwargs['pk'])
+        
         return context
 
 def salary_create(request):

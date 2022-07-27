@@ -5,7 +5,7 @@ from django.urls import reverse
 from django.views import generic
 
 from .forms import OrderForm, ConnectForm, RegularlyForm
-from .models import DispatchOrderConnect, DispatchOrder, DispatchRegularly, RegularlyGroup, DispatchRegularlyConnect
+from .models import DispatchCheck, DispatchOrderConnect, DispatchOrder, DispatchRegularly, RegularlyGroup, DispatchRegularlyConnect
 from crudmember.models import User
 from humanresource.models import Member
 from vehicle.models import Vehicle
@@ -17,9 +17,124 @@ TODAY = str(datetime.now())[:10]
 FORMAT = "%Y-%m-%d"
 WEEK = ['(월)', '(화)', '(수)', '(목)', '(금)', '(토)', '(일)', ]
 
-def schedule(request):
+def calendar_create(request):
+    if request.method == "POST":
+        creator = get_object_or_404(User, id=request.session.get('user'))
+        date = request.POST.get('date', None)
+        try:
+            check = get_object_or_404(DispatchCheck, date=date)
+            if check.member_id1:
+                check.member_id2 = creator
+                check.dispatch_check = 'y'
+            else:
+                check.member_id1 = creator
+                check.dispatch_check = 'n'
+                
+        except:
+            check = DispatchCheck(
+                member_id1 = creator,
+                date = date,
+                dispatch_check = 'n',
+                creator = creator,
+            )
+        check.save()
+        return redirect(request.META.get('HTTP_REFERER', 'redirect_if_referer_not_found'))
+    else:
+        return HttpResponseNotAllowed(['post'])
 
-    return render(request, 'dispatch/schedule.html')
+def calendar_delete_1(request):
+    if request.method == "POST":
+        date = request.POST.get('date', None)
+        check = get_object_or_404(DispatchCheck, date=date)
+        check.member_id1 = check.member_id2
+        check.member_id2 = None
+        check.dispatch_check = 'n'
+        check.save()
+
+        return redirect(request.META.get('HTTP_REFERER', 'redirect_if_referer_not_found'))
+    else:
+        return HttpResponseNotAllowed(['post'])
+
+def calendar_delete_2(request):
+    if request.method == "POST":
+        date = request.POST.get('date', None)
+        check = get_object_or_404(DispatchCheck, date=date)
+        check.member_id2 = None
+        check.dispatch_check = 'n'
+        check.save()
+
+        return redirect(request.META.get('HTTP_REFERER', 'redirect_if_referer_not_found'))
+    else:
+        return HttpResponseNotAllowed(['post'])
+
+
+class ScheduleList(generic.ListView):
+    template_name = 'dispatch/schedule.html'
+    context_object_name = 'vehicle_list'
+    model = Vehicle
+
+    def get_queryset(self):
+        select = self.request.GET.get('select', None)
+        search_d = self.request.GET.get('search_d', None)
+        search_v = self.request.GET.get('search_v', None)
+
+        if select == 'driver':
+            vehicle_list = Vehicle.objects.prefetch_related('info_bus_id', 'info_regulary_bus_id').filter(driver_name__contains=search_d).filter(use='y')
+        elif select == 'vehicle':
+            vehicle_list = Vehicle.objects.prefetch_related('info_bus_id', 'info_regulary_bus_id').filter(vehicle_num__contains=search_v).filter(use='y')
+        else:
+            vehicle_list = Vehicle.objects.prefetch_related('info_bus_id', 'info_regulary_bus_id').filter(use='y')
+        return vehicle_list
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        date = self.request.GET.get('date', TODAY)
+
+        schedule_list = []
+
+        for vehicle in context['vehicle_list']:
+            temp = []
+            order_list = vehicle.info_bus_id.exclude(arrival_date__lte=f'{date}T00:00').exclude(departure_date__gte=f'{date}T24:00')
+            e_regulary_list = vehicle.info_regulary_bus_id.exclude(arrival_date__lte=f'{date} 00:00').exclude(departure_date__gte=f'{date} 24:00').filter(work_type='출근')
+            l_regulary_list = vehicle.info_regulary_bus_id.exclude(arrival_date__lte=f'{date} 00:00').exclude(departure_date__gte=f'{date} 24:00').filter(work_type='퇴근')
+            for o in order_list:
+                temp.append({
+                    'work_type': '일반',
+                    'departure_date': o.departure_date,
+                    'arrival_date': o.arrival_date,
+                    'departure': o.order_id.departure,
+                    'arrival': o.order_id.arrival,
+                })
+            for o in e_regulary_list:
+                temp.append({
+                    'work_type': '출근',
+                    'departure_date': o.departure_date,
+                    'arrival_date': o.arrival_date,
+                    'departure': o.regularly_id.departure,
+                    'arrival': o.regularly_id.arrival,
+                })
+            for o in l_regulary_list:
+                temp.append({
+                    'work_type': '퇴근',
+                    'departure_date': o.departure_date,
+                    'arrival_date': o.arrival_date,
+                    'departure': o.regularly_id.departure,
+                    'arrival': o.regularly_id.arrival,
+                })
+
+            schedule_list.append(temp)
+        print(schedule_list)
+        context['schedule_list'] = schedule_list
+
+        context['datalist_vehicle'] = Vehicle.objects.filter(use='y')
+        context['datalist_driver'] = Member.objects.filter(role='운전원')
+        
+        context['select'] = self.request.GET.get('select', '')
+        context['search_d'] = self.request.GET.get('search_d', '')
+        context['search_v'] = self.request.GET.get('search_v', '')
+        context['date'] = date
+        return context
+
 
 class DocumentList(generic.ListView):
     template_name = 'dispatch/document.html'
