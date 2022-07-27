@@ -25,12 +25,13 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    width: 18rem;
+    width: auto;
     height: 100%;
     margin-right: 2rem;
 }
 
 .dateFilterBox span {
+    width: 3rem;
     font-size: 1.6rem;
     margin-right: 1rem;
 }
@@ -73,11 +74,11 @@
 
 .scheduleTableHeader td:nth-child(13) {
     text-align: right;
-    width: 3.5%;
+    width: 3.48%;
 }
 
 .scheduleTableHeader td:nth-child(14) {
-    width: 16%;
+    width: 16.48%;
 }
 
 .scheduleTableCell {
@@ -109,59 +110,71 @@
     border-spacing: 0;
 }
 
-.scheduleTableBody tr {
+.table {
+    width: 100%;
+    height: auto;
+}
+
+.tbody {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    width: 100%;
+    height: auto;
+}
+
+.tr {
     position: relative;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
     height: 3.2rem;
 }
 
-.scheduleTableBody tr:hover {
+.tr:hover {
     background-color: #F5F5F5;
 }
 
-.schduleLineBox {
-    position: absolute;
-    left: 0;
-    top: 0.175rem;
-    display: flex;
-    height: 2.6rem;
-}
-
-.toWorkLine {
-    height: 2.6rem;
-    background-color: #444444;
-}
-
-.workLine {
-    height: 2.6rem;
-    background-color: #0069D9;
-}
-
-.toHomeLine {
-    height: 2.6rem;
-    background-color: #444444;
-}
-
-.scheduleTableCell td {
-    width: 3.5%;
+.td {
+    width: 3.48%;
+    height: 100%;
     border-right: 0.1rem solid #CDCDCE;
     border-bottom: 0.1rem solid #CDCDCE;
-    border-collapse: collapse;
     box-sizing: border-box;
 }
 
-.scheduleTableCell td:nth-child(25) {
+.tdDriver {
+    display: flex;
+    justify-content: center;
+    align-items: center;
     text-align: center;
-    width: 16%;
+    width: 16.48%;
+    height: 100%;
     border-right: none;
+    border-bottom: 0.1rem solid #CDCDCE;
     font-size: 1.4rem;
     color: #7A7A7A;
     cursor: pointer;
+    box-sizing: border-box;
 }
 
-.scheduleTableCell td:nth-child(26) {
-    width: 84%;
-    border: none;
+.regularlyLine {
+    position: absolute;
+    top: 50%;
+    left: 10rem;
+    height: 2.6rem;
+    background-color: #444444;
+    transform: translate(0, -50%);
 }
+
+.orderLine {
+    position: absolute;
+    top: 50%;
+    height: 2.6rem;
+    background-color: #0069D9;
+    transform: translate(0, -50%);
+}
+
 
 
 

@@ -162,6 +162,9 @@ function deleteData(e) {
 fileBox.addEventListener("change", fileName)
 
 function fileName() {
+  console.log(fileBox)
+  console.log(fileBox.files[0])
+  console.log(fileBox.files[0].name)
   fileNameBox[0].value = fileBox.files[0].name
 }
 

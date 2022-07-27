@@ -25,7 +25,7 @@
     height: 100%;
 }
 
-.tableTitle{
+.tableTitle {
     display: flex;
     justify-content: flex-start;
     align-items: center;
@@ -74,7 +74,7 @@ table tr:nth-child(even) {
     background-color: #EFEFEF;
 }
 
-.tableScrollBox{
+.tableScrollBox {
     width: calc(100% - 0.4rem);
     height: 66.4rem;
     overflow-y: scroll;
@@ -83,17 +83,17 @@ table tr:nth-child(even) {
 }
 
 
-.tableScrollBox::-webkit-scrollbar{
+.tableScrollBox::-webkit-scrollbar {
     width: 0.6rem;
 }
 
-.tableScrollBox::-webkit-scrollbar-thumb{
+.tableScrollBox::-webkit-scrollbar-thumb {
     height: 17%;
     background-color: #444444;
-    border-radius: 1rem;  
+    border-radius: 1rem;
 }
 
-.tableScrollBox::-webkit-scrollbar-track{
+.tableScrollBox::-webkit-scrollbar-track {
     background-color: #F5F5F5;
 }
 
@@ -119,26 +119,43 @@ tbody {
     padding-left: 1rem;
     box-sizing: border-box;
 }
+
+.tableBody .insuranceTable td:nth-child(1) {
+    color: #0069D9;
+    cursor: pointer;
+}
+
+.tableBody .testTable td:nth-child(1) {
+    color: #0069D9;
+    cursor: pointer;
+}
+
 .insuranceTable td:nth-child(2) {
     width: 16%;
 }
+
 .insuranceTable td:nth-child(3) {
     width: 12%;
 }
+
 .insuranceTable td:nth-child(4) {
     width: 16%;
 }
+
 .insuranceTable td:nth-child(5) {
     width: 22%;
 }
+
 .insuranceTable td:nth-child(6) {
     width: 14%;
 }
+
 .tableScrollBox .insuranceTable td:nth-child(6) {
     width: calc(14% - 0.4rem);
     color: #0069D9;
 }
-.tableScrollBox .insuranceTable td:nth-child(6) div{
+
+.tableScrollBox .insuranceTable td:nth-child(6) div {
     cursor: pointer;
 }
 
@@ -147,15 +164,167 @@ tbody {
     padding-left: 1rem;
     box-sizing: border-box;
 }
+
 .testTable td:nth-child(2) {
     width: 16%;
 }
+
 .testTable td:nth-child(3) {
     width: 32%;
 }
+
 .testTable td:nth-child(4) {
     width: 32%;
 }
+
 .tableScrollBox .testTable td:nth-child(4) {
     width: calc(32% - 0.4rem);
+}
+
+
+
+
+
+
+.popupContainer {
+    position: fixed;
+    top: 50%;
+    left: calc(50% + 11rem);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 80rem;
+    height: 23rem;
+    background-color: white;
+    border-radius: 0.3rem;
+    box-shadow: 0 0.2rem 0.4rem rgb(0 0 0 / 16%);
+    transform: translate(-50%, -50%);
+}
+
+.popupContainerTest {
+    width: 54.5rem;
+}
+
+.PopupTitle {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 4.8rem;
+    border-bottom: 0.1rem solid #191919;
+    font-size: 1.6rem;
+    font-weight: 500;
+}
+
+.PopupDataArea {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    width: 100%;
+    height: calc(100% - 9.7rem);
+    padding: 4.2rem 3rem 0 3rem;
+    box-sizing: border-box;
+}
+
+.PopupDataCell {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: flex-start;
+    width: 23rem;
+    height: 6rem;
+}
+
+.PopupData {
+    width: 100%;
+    padding-bottom: 0.1rem;
+    font-size: 1.4rem;
+    color: #191919;
+    border-bottom: 0.1rem solid #191919;
+}
+
+.PopupDataTitle {
+    font-size: 1.4rem;
+    color: #7A7A7A;
+}
+
+.PopupDataInput {
+    width: 100%;
+    height: 2.6rem;
+    padding-left: 0.6rem;
+    padding-bottom: 0.1rem;
+    font-size: 1.4rem;
+    color: #191919;
+    border: 0.1rem solid #D2D2D2;
+    border-radius: 0.3rem;
+    box-sizing: border-box;
+    outline: none;
+}
+
+.PopupBtnBox {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 4.8rem;
+    box-sizing: border-box;
+}
+
+.PopupBtnBox div {
+    background-color: #444444;
+    margin: 1rem;
+}
+
+.saveBtn {
+    background-color: #0069D9;
+    margin: 1rem;
+}
+
+#insuranceFile {
+    width: 0;
+    height: 0;
+    border: none;
+    outline: none;
+    overflow: hidden;
+}
+
+.fileForm {
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.fileNameBox {
+    width: calc(100% - 7.2rem);
+    padding-right: 2rem;
+    border: 0.1rem solid #D2D2D2;
+    border-left: none;
+    box-sizing: border-box;
+}
+
+.fileLabel {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 7.2rem;
+    height: 2.6rem;
+    border-radius: 0.3rem 0 0 0.3rem;
+    background-color: #444444;
+    color: white;
+    font-size: 1.3rem;
+}
+
+.fileDeletBtn {
+    position: absolute;
+    top: 48%;
+    left: 22rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 1.4rem;
+    height: 1.4rem;
+    transform: translate(-50%, -50%);
+    cursor: pointer;
 }

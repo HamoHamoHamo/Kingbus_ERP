@@ -22,24 +22,26 @@
         <div class="searchTool">
             <span class="searchName">검색종류</span>
             <div class="routeFilterBox">
-                <select name="" id="" class="inputModules">
-                    <option value="">기사이름</option>
-                    <option value="">차량번호</option>
+                <select name="select" id="" class="inputModules">
+                    <option {% if select == "driver" %} selected {% endif %} value="driver">기사이름</option>
+                    <option {% if select == "vehicle" %} selected {% endif %} value="vehicle">차량번호</option>
                 </select>
-                <input type="text" class="inputModules" list="diverFilter">
+                <input value="{{search_d}}" name="search_d" type="text" class="inputModules" list="diverFilter" autocomplete="off">
                 <datalist id="diverFilter">
-                    <option value="기사이름"></option>
-                    <option value="항목1"></option>
+                    {% for driver in datalist_driver %}
+                    <option value="{{driver.name}}"></option>
+                    {% endfor %}
                 </datalist>
-                <input type="text" class="inputModules" list="busFilter">
+                <input value="{{search_v}}" name="search_v" type="text" class="inputModules" list="busFilter" autocomplete="off">
                 <datalist id="busFilter">
-                    <option value="차량번호"></option>
-                    <option value="항목1"></option>
+                    {% for vehicle in datalist_vehicle %}
+                    <option value="{{vehicle.vehicle_num}}"></option>
+                    {% endfor %}
                 </datalist>
             </div>
             <div class="dateFilterBox">
                 <span>날짜</span>
-                <input type="date" class="inputModules">
+                <input value="{{date}}" name="date" type="date" class="inputModules">
             </div>
             <input type="submit" value="검색" class="btnModules">
         </div>
@@ -47,9 +49,6 @@
     <div class="optionBtnBox">
     </div>
 </div>
-
-
-
 
 
 <div class="contentsAreaBox">
@@ -75,74 +74,41 @@
             </thead>
         </table>
         <div class="scheduleTableCell">
-            <table class="scheduleTableBody">
-                <tbody>
-                    <tr>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td>이도울/11111</td>
-                        <td class="schduleLineBox">
-                            <div class="toWorkLine"></div>
-                            <div class="workLine"></div>
-                            <div class="toHomeLine"></div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td>이도울/11111</td>
-                        <td class="schduleLineBox">
-                            <div class="toWorkLine"></div>
-                            <div class="workLine"></div>
-                            <div class="toHomeLine"></div>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
+            <div class="table">
+                <div class="tbody">
+                    {% for vehicle in vehicle_list %}
+                    <div class="tr">
+                        <div class="td"></div>
+                        <div class="td"></div>
+                        <div class="td"></div>
+                        <div class="td"></div>
+                        <div class="td"></div>
+                        <div class="td"></div>
+                        <div class="td"></div>
+                        <div class="td"></div>
+                        <div class="td"></div>
+                        <div class="td"></div>
+                        <div class="td"></div>
+                        <div class="td"></div>
+                        <div class="td"></div>
+                        <div class="td"></div>
+                        <div class="td"></div>
+                        <div class="td"></div>
+                        <div class="td"></div>
+                        <div class="td"></div>
+                        <div class="td"></div>
+                        <div class="td"></div>
+                        <div class="td"></div>
+                        <div class="td"></div>
+                        <div class="td"></div>
+                        <div class="td"></div>
+                        <div class="tdDriver">
+                            <span class="{{forloop.counter0}}">{{vehicle.vehicle_num}}</span>
+                            <span>({{vehicle.driver_name}})</span>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
         </div>
     </div>
 </div>
@@ -169,15 +135,15 @@
             <div class="PopupDataBox">
                 <div class="PopupDataCell">
                     <span class="PopupDataTitle">이름</span>
-                    <div>이도울</div>
+                    <div class="deiverName">이도울</div>
                 </div>
                 <div class="PopupDataCell">
                     <span class="PopupDataTitle">차량번호</span>
-                    <div>1111</div>
+                    <div class="vehicleNum">1111</div>
                 </div>
                 <div class="PopupDataCell">
                     <span class="PopupDataTitle">날짜</span>
-                    <div>2022.01.01</div>
+                    <div class="dispatchDate">2022.01.01</div>
                 </div>
             </div>
             <div class="shcedulePopupTableBox">
@@ -195,16 +161,6 @@
                 <div class="shcedulePopupTableBodyBox">
                     <table class="shcedulePopupTableBody">
                         <tbody>
-                            <tr>
-                                <td>출근</td>
-                                <td>16:00~21:00</td>
-                                <td>마북제어시스템개발센터등->대형주차장->EE연구소->샤시동▶마북연구소</td>
-                            </tr>
-                            <tr>
-                                <td>출근</td>
-                                <td>16:00~21:00</td>
-                                <td>마북제어시스템개발센터등->대형주차장->EE연구소->샤시동▶마북연구소</td>
-                            </tr>
                         </tbody>
                     </table>
                 </div>
@@ -227,5 +183,11 @@
 
 
 {% block script %}
+<script>
+    {% autoescape off %}
+    const data = {{schedule_list}}
+    console.log("DATA", data)
+    {% endautoescape %}
+</script>
 <script src="{% static 'js/dispatch/schedulePopup.js' %}"></script>
 {% endblock %}

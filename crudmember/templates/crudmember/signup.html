@@ -63,7 +63,7 @@
         </div>
         <div class="inputCell">
           <label for="cTel">회사 전화번호</label>
-          <input type="text" id="cTel" name="company_tel" placeholder="회사 전화번호를 ' - ' 없이 입력해 주세요.">
+          <input type="text" id="cTel" name="company_tel" placeholder="회사 전화번호를 입력해 주세요.">
           <div class="spaceForCehckOverlapBtn"></div>
         </div>
         <div class="inputCell">
@@ -73,7 +73,7 @@
         </div>
         <div class="inputCell">
           <label for="businessCord">사업자 등록번호</label>
-          <input type="text" id="businessCord" name="registeration_num" placeholder="사업자 등록번호를 ' - ' 없이 입력해 주세요.">
+          <input type="text" id="businessCord" name="registeration_num" placeholder="사업자 등록번호를 입력해 주세요.">
           <div class="spaceForCehckOverlapBtn"></div>
         </div>
         <div class="inputCell">
@@ -83,7 +83,7 @@
         </div>
         <div class="inputCell">
           <label for="tel">담당자 전화번호</label>
-          <input type="text" id="tel" name="manager_tel"ㅊ placeholder="전화번호를 ' - ' 없이 입력해 주세요.">
+          <input type="text" id="tel" name="manager_tel"ㅊ placeholder="전화번호를 입력해 주세요.">
           <div class="spaceForCehckOverlapBtn"></div>
         </div>
         <div class="inputCell">
@@ -102,170 +102,6 @@
     </form>
 
   </div>
-
-  <!-- <div class="signupHeader">
-    <div class="signupHeaderPage">정보입력</div>
-    <div class="signupNavBox">
-      <div class="signupNav">01약관동의</div>
-      <div class="signupNav" id="signupNavPage">02정보입력</div>
-      <div class="signupNav">03가입완료</div>
-    </div>
-  </div>
-  <form action="{% url 'crudmember:signup' %}" method="post">
-    {% csrf_token %}
-    <div class="signupMain">
-      <div class="signupSignupInputBox">
-        
-        <div class="signupSignupInputCell">
-          <div class="signupSignupInputCellIcon">
-            <img src="{% static 'images/id.png' %}">
-          </div>
-          <input type="text" check_result="fail" class="signupSignupInputCellInput username_input" id="signupId" placeholder="아이디" name="user_id" autocomplete="off">
-          <button type="button" class="id_overlap_button" id="signupIdBtton" onclick="id_overlap_check()">중복검사</button>
-          <img src="{% static 'images/checkboxAfter.png' %}" id="id_check_sucess" style="display: none;">
-        </div>
-        <div class="signupAlertBox low">
-          <div class="signupAlert hidden">*필수 입력사항입니다.</div>
-          <div class="signupAlert hidden">*5~20자의 영문 소문자, 숫자의 조합으로 입력해 주세요.</div>
-        </div>
-
-        <div class="signupSignupInputCell">
-          <div class="signupSignupInputCellIcon">
-            <img src="{% static 'images/password.png' %}">
-          </div>
-          <input type="password" class="signupSignupInputCellInput" placeholder="비밀번호" name="password1" autocomplete="off">
-        </div>
-        <div class="signupAlertBox low">
-          <div class="signupAlert hidden">*필수 입력사항입니다.</div>
-          <div class="signupAlert hidden">*12자 이내의 영어 소문자, 숫자, 특수기호를 하나 이상 사용해 입력해 주세요.</div>
-        </div>
-        
-        <div class="signupSignupInputCell">
-          <div class="signupSignupInputCellIcon">
-            <img src="{% static 'images/passwordcheck.png' %}">
-          </div>
-          <input type="password" class="signupSignupInputCellInput" placeholder="비밀번호 확인" name="password2" autocomplete="off">
-        </div>
-        <div class="signupAlertBox low">
-          <div class="signupAlert hidden">*필수 입력사항입니다.</div>
-          <div class="signupAlert hidden">*비밀번호가 일치하지 않습니다.</div>
-        </div>
-
-      </div>
-
-      <div class="signupSignupInputBox">
-
-        <div class="signupSignupInputCell">
-          <div class="signupSignupInputCellIcon">
-            <img src="{% static 'images/company.png' %}">
-          </div>
-          <input type="text" class="signupSignupInputCellInput" placeholder="회사명" name="company" autocomplete="off">
-        </div>
-        <div class="signupAlertBox low">
-          <div class="signupAlert hidden">*필수 입력사항입니다.</div>
-          <div class="signupAlert hidden">*형식에 맞춰 입력해주세요.</div>
-        </div>
-
-
-        <div class="signupSignupInputCell">
-          <div class="signupSignupInputCellIcon">
-            <img src="{% static 'images/companytel.png' %}">
-          </div>
-          <input type="text" class="signupSignupInputCellInput" placeholder="회사 전화번호" name="company_tel" autocomplete="off">
-        </div>
-        <div class="signupAlertBox low">
-          <div class="signupAlert hidden">*필수 입력사항입니다.</div>
-          <div class="signupAlert hidden">*형식에 맞춰 입력해주세요.</div>
-        </div>
-
-        <div class="signupSignupInputCell">
-          <div class="signupSignupInputCellIcon">
-            <img src="{% static 'images/companyaddress.png' %}">
-          </div>
-          <input type="text" class="signupSignupInputCellInput" placeholder="회사 주소" name="company_address" autocomplete="off">
-        </div>
-        <div class="signupAlertBox low">
-          <div class="signupAlert hidden">*필수 입력사항입니다.</div>
-        </div>
-
-        <div class="signupSignupInputCell">
-          <div class="signupSignupInputCellIcon">
-            <img src="{% static 'images/companycord.png' %}">
-          </div>
-          <input type="text" class="signupSignupInputCellInput" placeholder="사업자등록번호" name="registeration_num" autocomplete="off">
-        </div>
-        <div class="signupAlertBox low">
-          <div class="signupAlert hidden">*필수 입력사항입니다.</div>
-          <div class="signupAlert hidden">*형식에 맞춰 입력해주세요.</div>
-        </div>
-
-      </div>
-
-      <div class="signupSignupInputBox">
-        
-        <div class="signupSignupInputCell">
-          <div class="signupSignupInputCellIcon">
-            <img src="{% static 'images/man.png' %}">
-          </div>
-          <input type="text" class="signupSignupInputCellInput" placeholder="담당자 이름" name="name" autocomplete="off">
-        </div>
-        <div class="signupAlertBox low">
-          <div class="signupAlert hidden">*필수 입력사항입니다.</div>
-          <div class="signupAlert hidden">*5자 이내의 한글로 입력해 주세요.</div>
-        </div>
-
-        <div class="signupSignupInputCell">
-          <div class="signupSignupInputCellIcon">
-            <img src="{% static 'images/tel.png' %}">
-          </div>
-          <input type="text" class="signupSignupInputCellInput" id="phoneNumber" placeholder="담당자 전화번호" name="manager_tel" autocomplete="off">
-          <div class="getCordnumber">인증번호받기</div>
-        </div>
-        <div class="signupAlertBox low">
-          <div class="signupAlert hidden">*필수 입력사항입니다.</div>
-          <div class="signupAlert hidden">*형식에 맞춰 입력해주세요.</div>
-        </div>
-
-        <div class="cordnumberInformationBox hidden">
-
-          <div class="cordnumberInformationCell">
-            <div class="cordnumberInformationCellTime">
-              인증번호를 발송했습니다.<br>
-              (유효시간 30분)
-            </div>
-            <input type="text" class="cordnumberInformationCellinput" placeholder="인증번호를 입력해 주세요.">
-          </div>
-
-          <div class="cordnumberMoreInformation">
-            인증번호가 오지 않으면 입력하신 정보가 정확한지 확인하여 주세요.<br>
-            이미 가입된 번호이거나, 가상전화번호는 인증번호를 받을 수 없습니다.
-          </div>
-          
-        </div>
-
-        <div class="signupSignupInputCell">
-          <div class="signupSignupInputCellIcon">
-            <img src="{% static 'images/email.png' %}">
-          </div>
-          <input type="text" class="signupSignupInputCellInput" id="signupSignupInputCellInputEmail" placeholder="담당자 이메일" name="manager_mail" autocomplete="off">
-          <select name="manager_mail" id="" class="signupSignupInputCellselect">
-            <option value="@naver.com">@naver.com</option>
-          </select>
-        </div>
-        <div class="signupAlertBox low">
-          <div class="signupAlert hidden">*필수 입력사항입니다.</div>
-        </div>
-      </div>
-
-    </div>
-
-
-    <div class="termsCenterBox">
-      <input type="submit" class="termsButtonNext" value="다음">
-      {{error}}
-    </div>
-
-  </form> -->
 
   </div>
   <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>

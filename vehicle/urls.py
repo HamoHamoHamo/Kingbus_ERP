@@ -11,6 +11,8 @@ urlpatterns = [
     path('list/image/<str:file_id>', views.document_image, name='vehicle_document_img'),
 
     path('mgmt', views.VehicleMgmt.as_view(), name='mgmt'),
+    path('mgmt/insurance/edit', views.insurance_edit, name='insurance_edit'),
+    path('mgmt/check/edit', views.check_edit, name='check_edit'),
     # path('', views.VehicleList.as_view(), name='vehicle_list'),
     # path('create/', views.vehicle_create, name='vehicle_create'),
     # path('delete/', views.vehicle_delete, name='vehicle_delete'),

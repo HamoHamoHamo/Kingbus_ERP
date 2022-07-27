@@ -29,8 +29,7 @@
                     <option {% if select == 'driver' %} selected {% endif %} value="driver">담당기사</option>
                     <option {% if select == 'passenger' %} selected {% endif %} value="passenger">승차인원</option>
                 </select>
-                <input value="{{search}}" name="search" type="text" class="inputModules" list="hrFilter" placeholder="직원이름"
-                    autocomplete="off">
+                <input value="{{search}}" name="search" type="text" class="inputModules" list="hrFilter" autocomplete="off">
                 <datalist id="hrFilter">
                     {% for member in member_list %}
                     <option value="{{member.name}}"></option>
@@ -67,7 +66,7 @@
                 <tbody>
                     {% for vehicle in insurance_list %}
                     <tr class="insuranceTable">
-                        <td>{{vehicle.vehicle_num0}} {{vehicle.vehicle_num}}</td>
+                        <td class="{{vehicle.id}}">{{vehicle.vehicle_num0}} {{vehicle.vehicle_num}}</td>
                         <td>{{vehicle.driver_name}}</td>
                         <td>회차</td>
                         <td>금액</td>
@@ -105,7 +104,7 @@
                 <tbody>
                     {% for vehicle in check_list %}
                     <tr class="testTable">                        
-                        <td>{{vehicle.vehicle_num0}} {{vehicle.vehicle_num}}</td>
+                        <td class="{{vehicle.id}}">{{vehicle.vehicle_num0}} {{vehicle.vehicle_num}}</td>
                         <td>{{vehicle.driver}}</td>
                         <td>{{vehicle.check_duration}} ~ {{duration|index:forloop.counter0}}</td>
                         <td>{{expire|index:forloop.counter0}}</td>
@@ -125,10 +124,87 @@
 
 
 
+{% block popup %}
+<div class="popupAreaModules">
+    <div class="popupBgModules"></div>
+    <form method="post" action="{% url 'vehicle:insurance_edit' %}" class="popupContainer" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="PopupTitle">보험수정</div>
+        <div class="PopupDataArea">
+            <div class="PopupDataCell">
+                <span class="PopupDataTitle">차량번호</span>
+                <div class="PopupData insuranceVehicleNum"></div>
+            </div>
+            <div class="PopupDataCell">
+                <span class="PopupDataTitle">만료일</span>
+                <input name="date" class="PopupDataInput insuranceEndDate" type="date">
+            </div>
+            <div class="PopupDataCell">
+                <span class="PopupDataTitle">보험 영수증</span>
+                <div class="fileForm">
+                    <label for="insuranceFile" class="fileLabel">파일찾기</label>
+                    <input name="insurance_receipt_name" class="PopupDataInput fileNameBox" readonly>
+                    <svg class="fileDeletBtn" xmlns="http://www.w3.org/2000/svg" width="14.829" height="14.542" viewBox="0 0 14.829 14.542">
+                        <g id="그룹_930" data-name="그룹 930" transform="translate(-3537.086 5807.914)">
+                          <line id="선_624" data-name="선 624" x2="11.706" y2="11.714" transform="translate(3538.5 -5806.5)" fill="none" stroke="#707070" stroke-linecap="round" stroke-width="2"/>
+                          <line id="선_625" data-name="선 625" x1="11.706" y2="11.714" transform="translate(3538.794 -5806.5)" fill="none" stroke="#707070" stroke-linecap="round" stroke-width="2"/>
+                        </g>
+                      </svg>
+                    <input name="insurance_receipt" id="insuranceFile" type="file">
+                </div>
+            </div>
+            <input type="hidden" value="" name="id" class="sendToHidden">
+        </div>
+        <div class="PopupBtnBox">
+            <div class="btnModules">닫기</div>
+            <input type="submit" class="btnModules saveBtn" value="저장">
+        </div>
+    </form>
+</div>
+
+
+<div class="popupAreaModules">
+    <div class="popupBgModules"></div>
+    <form method="post" action="{% url 'vehicle:check_edit' %}" class="popupContainer popupContainerTest">
+        {% csrf_token %}
+        <div class="PopupTitle">정기점검 수정</div>
+        <div class="PopupDataArea">
+            <div class="PopupDataCell">
+                <span class="PopupDataTitle">차량번호</span>
+                <div class="PopupData testVehicleNum"></div>
+            </div>
+            <div class="PopupDataCell">
+                <span class="PopupDataTitle">정비기록</span>
+                <input name="date" class="PopupDataInput testEndDate" type="date">
+            </div>
+            <input type="hidden" value="" name="id" class="sendToHidden">
+        </div>
+        <div class="PopupBtnBox">
+            <div class="btnModules">닫기</div>
+            <input type="submit" class="btnModules saveBtn" value="저장">
+        </div>
+    </form>
+</div>
+{% endblock %}
+
+
+
+
+
 {% block script %}
 <script>
     function openViwePrint(url){
         window.open(url, "보험", "width=630, height=891")
     }
+    const insurance_list = {};
+    {% for vehicle in insurance_list %}
+        {% with list=file_list|index:forloop.counter0 %}
+            {% if list %}
+                insurance_list['{{vehicle.id}}'] = '{{list.filename}}';
+            {% endif %}
+        {% endwith %}
+    {% endfor %}
+    console.log("filename", insurance_list);
 </script>
+<script src="{% static 'js/vehicle/editPopup.js' %}"></script>
 {% endblock %}

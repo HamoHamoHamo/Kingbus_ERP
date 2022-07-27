@@ -14,12 +14,18 @@ const hrPhone = document.querySelector(".hrPhone")
 const hrBirth = document.querySelector(".hrBirth")
 const hrAddress = document.querySelector(".hrAddress")
 const sendToHidden = document.querySelector(".sendToHidden")
+const createName = document.querySelector(".createName")
+const createID = document.querySelector(".createID")
+const hrID = document.querySelector(".hrID")
 
+
+
+//직원상세
 for (i = 0; i < editMember.length; i++) {
-  editMember[i].addEventListener('click', openDeitPopup)
+  editMember[i].addEventListener('click', openDetailPopup)
 }
 
-function openDeitPopup() {
+function openDetailPopup() {
   popupAreaModules[1].style.display = 'block'
   hrName.value = regDatas[this.className].name;
   for (i = 0; i < hrRole.length; i++) {
@@ -33,40 +39,37 @@ function openDeitPopup() {
   hrBirth.value = regDatas[this.className].birthdate;
   hrAddress.value = regDatas[this.className].address;
   sendToHidden.value = this.parentNode.className;
+  hrID.value = "리스트에서 아이디를 보여줄까 상세에서만 보여줄까?"
 }
 
 
 
+//직원등록
 openPopup.addEventListener('click', hrRegistration);
 
 function hrRegistration() {
   popupAreaModules[0].style.display = 'block'
+  console.log(createName)
+}
+
+//이름 작성
+if (createName.value == createID.value) {
+  createName.addEventListener('change', nameChange)
+}
+function nameChange() {
+  createID.value = createName.value
 }
 
 
+
+//팝업닫기
 for (i = 0; i < popupBgModules.length; i++) {
-  popupBgModules[i].addEventListener("click", closedRegularlyDispatchBg)
+  popupBgModules[i].addEventListener("click", closePopup)
+  popupCloseBtn[i].addEventListener("click", closePopup)
 }
-SidemenuUseClose.addEventListener("click", closedRegularlyDispatchSideMenu)
-popupCloseBtn[0].addEventListener("click", closedHrCrate)
-popupCloseBtn[1].addEventListener("click", closedHrEdit)
+SidemenuUseClose.addEventListener("click", closePopup)
 
-function closedRegularlyDispatchBg() {
-  for (i = 0; i < popupAreaModules.length; i++) {
-    popupAreaModules[i].style.display = "none"
-  }
-}
-function closedRegularlyDispatchSideMenu() {
-  for (i = 0; i < popupAreaModules.length; i++) {
-    popupAreaModules[i].style.display = "none"
-  }
-}
-function closedHrCrate() {
-  for (i = 0; i < popupAreaModules.length; i++) {
-    popupAreaModules[i].style.display = "none"
-  }
-}
-function closedHrEdit() {
+function closePopup() {
   for (i = 0; i < popupAreaModules.length; i++) {
     popupAreaModules[i].style.display = "none"
   }

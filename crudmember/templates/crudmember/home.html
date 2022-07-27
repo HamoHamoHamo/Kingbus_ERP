@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load custom_tags %}
 {% load static %}
 
 {% block head %}
@@ -14,29 +15,31 @@
 
 {% block content %}
 
-
-<div class="searchAreaBox">
-  <div class="controllBox">
-    <div class="todayBtn">Today</div>
-    <div class="controllBtnCell">
-      <div>
-        <svg xmlns="http://www.w3.org/2000/svg" width="8" height="13.993" viewBox="0 0 8 13.993">
-          <path id="Icon_ionic-ios-arrow-back" data-name="Icon ionic-ios-arrow-back"
-            d="M13.662,13.188,18.957,7.9a1,1,0,1,0-1.416-1.412l-6,5.995a1,1,0,0,0-.029,1.379L17.536,19.9a1,1,0,1,0,1.416-1.412Z"
-            transform="translate(-11.251 -6.194)" fill="#fff" />
-        </svg>
+<form action="" method="get" id="sendMonth">
+  <div class="searchAreaBox">
+    <div class="controllBox">
+      <div class="todayBtn">Today</div>
+      <div class="controllBtnCell">
+        <div>
+          <svg xmlns="http://www.w3.org/2000/svg" width="8" height="13.993" viewBox="0 0 8 13.993">
+            <path id="Icon_ionic-ios-arrow-back" data-name="Icon ionic-ios-arrow-back"
+              d="M13.662,13.188,18.957,7.9a1,1,0,1,0-1.416-1.412l-6,5.995a1,1,0,0,0-.029,1.379L17.536,19.9a1,1,0,1,0,1.416-1.412Z"
+              transform="translate(-11.251 -6.194)" fill="#fff" />
+          </svg>
+        </div>
+        <div>
+          <svg xmlns="http://www.w3.org/2000/svg" width="8" height="13.993" viewBox="0 0 8 13.993">
+            <path id="Icon_ionic-ios-arrow-back" data-name="Icon ionic-ios-arrow-back"
+              d="M16.839,13.188,11.544,7.9a1,1,0,0,1,1.416-1.412l6,5.995a1,1,0,0,1,.029,1.379L12.965,19.9a1,1,0,0,1-1.416-1.412Z"
+              transform="translate(-11.251 -6.194)" fill="#fff" />
+          </svg>
+        </div>
       </div>
-      <div>
-        <svg xmlns="http://www.w3.org/2000/svg" width="8" height="13.993" viewBox="0 0 8 13.993">
-          <path id="Icon_ionic-ios-arrow-back" data-name="Icon ionic-ios-arrow-back"
-            d="M16.839,13.188,11.544,7.9a1,1,0,0,1,1.416-1.412l6,5.995a1,1,0,0,1,.029,1.379L12.965,19.9a1,1,0,0,1-1.416-1.412Z"
-            transform="translate(-11.251 -6.194)" fill="#fff" />
-        </svg>
-      </div>
+      <span></span>
     </div>
-    <span></span>
+    <input type="hidden" name="month" class="hiddenMonth">
   </div>
-</div>
+</form>
 
 <div class="contentsAreaBox">
   <div class="calenderBox">
@@ -71,22 +74,6 @@
     <div class="PopupTitle">보험/정비알림</div>
 
     <div class="PopupDataArea">
-      <div class="PopupDataBox">
-        <div class="PopupDataCell">
-          <span class="PopupDataTitle">구분</span>
-          <div class="PopupData">차량정비</div>
-        </div>
-        <div class="PopupDataCell">
-          <span class="PopupDataTitle">차량</span>
-          <div class="PopupData">1111</div>
-        </div>
-        <div class="PopupDataCell">
-          <span class="PopupDataTitle">기간</span>
-          <a href="{% url 'vehicle:mgmt' %}">
-            <div class="PopupData">2022.05.29 ~ 2022.07.29</div>
-          </a>
-        </div>
-      </div>
     </div>
 
     <div class="PopupBtnBox">
@@ -98,22 +85,44 @@
 
 <div class="popupAreaModulesDispatch">
   <div class="popupBgModules"></div>
-  <form class="popupContainer">
-
+  <form method="post" action="{% url 'dispatch:calendar_create' %}" class="popupContainer">
+    {% csrf_token %}
     <div class="PopupTitle">배차지시서</div>
 
     <div class="PopupDataAreaDispatch">
       <div class="PopupDataCell">
         <span class="PopupDataTitle">날짜</span>
-        <div class="PopupData">2022.05.30</div>
+        <input name="date" type="text" class="PopupData fakeInput" readonly>
       </div>
       <div class="PopupDataCell">
         <span class="PopupDataTitle">확인1</span>
-        <div class="PopupData">이도울</div>
+        <div class="haveDeleteIcon">
+          <div class="PopupData check1"></div>
+          <svg class="fileDeletBtn" xmlns="http://www.w3.org/2000/svg" width="14.829" height="14.542"
+            viewBox="0 0 14.829 14.542">
+            <g id="그룹_930" data-name="그룹 930" transform="translate(-3537.086 5807.914)">
+              <line id="선_624" data-name="선 624" x2="11.706" y2="11.714" transform="translate(3538.5 -5806.5)"
+                fill="none" stroke="#707070" stroke-linecap="round" stroke-width="2" />
+              <line id="선_625" data-name="선 625" x1="11.706" y2="11.714" transform="translate(3538.794 -5806.5)"
+                fill="none" stroke="#707070" stroke-linecap="round" stroke-width="2" />
+            </g>
+          </svg>
+        </div>
       </div>
       <div class="PopupDataCell">
         <span class="PopupDataTitle">확인2</span>
-        <div class="PopupData">이도울</div>
+        <div class="haveDeleteIcon">
+          <div class="PopupData check2"></div>
+          <svg class="fileDeletBtn" xmlns="http://www.w3.org/2000/svg" width="14.829" height="14.542"
+            viewBox="0 0 14.829 14.542">
+            <g id="그룹_930" data-name="그룹 930" transform="translate(-3537.086 5807.914)">
+              <line id="선_624" data-name="선 624" x2="11.706" y2="11.714" transform="translate(3538.5 -5806.5)"
+                fill="none" stroke="#707070" stroke-linecap="round" stroke-width="2" />
+              <line id="선_625" data-name="선 625" x1="11.706" y2="11.714" transform="translate(3538.794 -5806.5)"
+                fill="none" stroke="#707070" stroke-linecap="round" stroke-width="2" />
+            </g>
+          </svg>
+        </div>
       </div>
       <div class="printBox">
         <a href="" target="_blank">
@@ -157,6 +166,7 @@
           </div>
         </a>
       </div>
+      <input type="hidden" class="sendToHiddenChecker">
     </div>
 
     <div class="PopupBtnBoxDispatch">
@@ -176,5 +186,46 @@
 
 
 {% block script %}
+<script>
+  const totalBusCnt = {{ total_bus_cnt }}
+  const curBusCnt = {{ cur_bus_cnt }}
+  const r_totalBusCnt = {{ r_total_bus_cnt }}
+  const r_curBusCnt = {{ r_cur_bus_cnt }}
+
+  console.log("일반배차 총 :", totalBusCnt)
+  console.log("일반배차 :", curBusCnt)
+  console.log("정기배차 총 :", r_totalBusCnt)
+  console.log("정기배차 :", r_curBusCnt)
+
+  {% autoescape off %}
+  // console.log("AAAAAA", {{insurance_list}})
+  // console.log("AAAAAA", {{check_list}})
+  // console.log("AAAAAA", {{duration}})
+  // console.log("AAAAAA", {{expire}})
+
+  const alarm = [
+    {% for vehicle in insurance_list %}
+  {
+    type: '보험',
+      num : '{{vehicle.vehicle_num}}',
+        duration: '{{vehicle.insurance_expiry_date}}'
+  },
+  {% endfor %}
+  {% for vehicle in check_list %}
+  {
+    type: '차량정비',
+      num : '{{vehicle.vehicle_num}}',
+        duration: '{{duration|index:forloop.counter0}} ~ {{expire|index:forloop.counter0}}'
+  }
+  {% endfor %}
+  ]
+  const name1 = {{ check_id1 }}
+  const name2 = {{ check_id2 }}
+  console.log("alarm", alarm)
+  console.log("name1", name1)
+  console.log("name2", name2)
+  {% endautoescape %}
+
+</script>
 <script src="{% static 'js/crudmember/calender.js' %}"></script>
 {% endblock %}
