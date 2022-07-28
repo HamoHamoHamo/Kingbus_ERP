@@ -1,13 +1,16 @@
 from accounting.forms import AdditionalForm
 from crudmember.models import User
+from dispatch.views import FORMAT
 from humanresource.models import Member
-from dispatch.models import DispatchOrder
+from datetime import datetime, timedelta, date
+from dateutil.relativedelta import relativedelta
+from dispatch.models import DispatchOrder, DispatchOrderConnect, DispatchRegularlyConnect
 from django.http import Http404, HttpResponse, HttpResponseNotAllowed, HttpResponseRedirect
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse, reverse_lazy
 from django.views import generic
 from .models import Salary, Income, AdditionalSalary
-from datetime import datetime, date
+
 
 TODAY = str(datetime.now())[:10]
 WEEK = ['(월)', '(화)', '(수)', '(목)', '(금)', '(토)', '(일)', ]
@@ -69,11 +72,14 @@ class SalaryDetail(generic.ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['selected_month'] = self.month
+        member = get_object_or_404(Member, id=self.kwargs['pk'])
         # context['monthly'] = context['member'].salary_monthly.get(month=context['selected_month'])
+        first_day = datetime.strptime(self.month + "-01", FORMAT)
+        last_day = datetime.strftime(first_day + relativedelta(months=1) - timedelta(days=1), FORMAT)[8:]
 
         a = []
         additional_list = []
-        for i in range(31):
+        for i in range(int(last_day)):
             a.append(i+1)
             additional_list.append('')
 
@@ -81,9 +87,33 @@ class SalaryDetail(generic.ListView):
         for i in additional:
             additional_list[int(i.date[8:])-1] = i
 
-
         context['a'] = a
         context['additional_list'] = additional_list
+
+        
+        order_list = [0] * int(last_day)
+        dispatches = DispatchOrderConnect.objects.filter(driver_id=member).filter(departure_date__startswith=self.month).order_by('departure_date')
+        for dispatch in dispatches:
+            order_list[int(dispatch.departure_date[8:10])-1] += int(dispatch.driver_allowance)
+
+        e_order_list = [0] * int(last_day)
+        e_dispatches = DispatchRegularlyConnect.objects.filter(driver_id=member).filter(departure_date__startswith=self.month).filter(work_type="출근").order_by('departure_date')
+        for dispatch in e_dispatches:
+            e_order_list[int(dispatch.departure_date[8:10])-1] += int(dispatch.driver_allowance)
+        
+        c_order_list = [0] * int(last_day)
+        c_dispatches = DispatchRegularlyConnect.objects.filter(driver_id=member).filter(departure_date__startswith=self.month).filter(work_type="퇴근").order_by('departure_date')
+        for dispatch in c_dispatches:
+            c_order_list[int(dispatch.departure_date[8:10])-1] += int(dispatch.driver_allowance)
+
+        context['order_list'] = order_list
+        context['c_order_list'] = c_order_list
+        context['e_order_list'] = e_order_list
+
+        print("order", order_list)
+        print("c_order", c_order_list)
+        print("e_order", e_order_list)
+
         context['member_list'] = Member.objects.all().order_by('name')
         entering_list = []
         m_additional_list = []
@@ -191,9 +221,48 @@ def remark_edit(request):
     else:
         return HttpResponseNotAllowed(['post'])
 
-def income(request):
-    
-    return render(request, 'accounting/income.html')
+class IncomeList(generic.ListView):
+    template_name = 'accounting/income.html'
+    context_object_name = 'dispatch_list'
+    model = DispatchOrder
+
+    def get_queryset(self):
+        return
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        month = self.request.GET.get('month', TODAY[:7])
+        first_day = datetime.strptime(month + "-01", FORMAT)
+        last_day = datetime.strftime(first_day + relativedelta(months=1) - timedelta(days=1), FORMAT)[8:]
+
+        order_list = [0] * int(last_day)
+        collect_list = [0] * int(last_day)
+        dispatches = DispatchOrderConnect.objects.select_related('order_id').filter(departure_date__startswith=month).order_by('departure_date')
+        for dispatch in dispatches:
+            order_list[int(dispatch.departure_date[8:10])-1] += int(dispatch.order_id.price)
+            collect_list[int(dispatch.departure_date[8:10])-1] += int(dispatch.order_id.collection_amount)
+
+        e_order_list = [0] * int(last_day)
+        e_dispatches = DispatchRegularlyConnect.objects.select_related('regularly_id').filter(departure_date__startswith=month).filter(work_type="출근").order_by('departure_date')
+        for dispatch in e_dispatches:
+            e_order_list[int(dispatch.departure_date[8:10])-1] += int(dispatch.regularly_id.price)
+        
+        c_order_list = [0] * int(last_day)
+        c_dispatches = DispatchRegularlyConnect.objects.select_related('regularly_id').filter(departure_date__startswith=month).filter(work_type="퇴근").order_by('departure_date')
+        for dispatch in c_dispatches:
+            c_order_list[int(dispatch.departure_date[8:10])-1] += int(dispatch.regularly_id.price)
+
+        
+        context['order_list'] = order_list
+        context['c_order_list'] = c_order_list
+        context['e_order_list'] = e_order_list
+        context['collect_list'] = collect_list
+        context['last_day'] = last_day
+
+
+        return context
+
+
 
 class CollectList(generic.ListView):
     template_name = 'accounting/collect.html'

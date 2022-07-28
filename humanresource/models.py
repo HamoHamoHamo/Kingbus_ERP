@@ -4,6 +4,8 @@ from django.db import models
 from crudmember.models import User
 
 class Member(models.Model):
+    user_id = models.CharField(max_length=64, verbose_name='사용자id')
+    password = models.CharField(max_length=255, verbose_name='비밀번호')
     name = models.CharField(verbose_name='이름', max_length=10, null=False)
     role = models.CharField(verbose_name='업무', max_length=10, null=False)
     birthdate = models.CharField(verbose_name='생년월일', max_length=10, null=False)

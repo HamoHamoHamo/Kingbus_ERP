@@ -24,10 +24,11 @@
     <div class="searchTool">
       <span class="searchName">직원검색</span>
       <div class="routeFilterBox">
-        <input value="{{name}}" name="name" type="text" class="inputModules" list="hrFilter" placeholder="직원이름" autocomplete="off">
+        <input value="{{name}}" name="name" type="text" class="inputModules" list="hrFilter" placeholder="직원이름"
+          autocomplete="off">
         <datalist id="hrFilter">
           {% for member in member_all %}
-            <option value="{{member.name}}"></option>
+          <option value="{{member.name}}"></option>
           {% endfor %}
         </datalist>
       </div>
@@ -48,6 +49,7 @@
         <tr class="headerLine">
           <td>선택</td>
           <td>이름</td>
+          <td>아이디</td>
           <td>담당업무</td>
           <td>입사일</td>
           <td>면허번호</td>
@@ -66,6 +68,7 @@
             <input name="delete_check" value="{{member.id}}" type="checkbox">
           </td>
           <td class="{{ forloop.counter0 }}">{{member.name}}</td>
+          <td>{{member.user_id}}</td>
           <td>{{member.role}}</td>
           <td>{{member.entering_date}}</td>
           <td>{{member.license_number}}</td>
@@ -95,7 +98,8 @@
           {% endif %}
           {% for page in page_range %}
           <div class="page-item {% if page == page_obj.number %} page-activate {% endif %}">
-            <a class="page-link" href="?top_box_selector={{selector}}&search={{searched}}&page={{ page }}">{{ page }}</a>
+            <a class="page-link" href="?top_box_selector={{selector}}&search={{searched}}&page={{ page }}">{{ page
+              }}</a>
           </div>
           {% endfor %}
 
@@ -143,7 +147,8 @@
       </div>
       <div class="PopupDataCell">
         <span class="PopupDataTitle">담당업무</span>
-        <select name="role" id="" class="PopupDataInput">
+        <select name="role" id="" class="PopupDataInput PopupDataInputWork">
+          <option value="">담당업무 선택</option>
           <option value="운전원">운전원</option>
           <option value="배차관리자">배차관리자</option>
           <option value="경리관리자">경리관리자</option>
@@ -152,7 +157,7 @@
       </div>
       <div class="PopupDataCell">
         <span class="PopupDataTitle">입사일</span>
-        <input name="entering_date" type="date" class="PopupDataInput">
+        <input name="entering_date" type="date" class="PopupDataInput PopupDataInputEntering">
       </div>
       <div class="PopupDataCell">
         <span class="PopupDataTitle">면허번호</span>
@@ -160,28 +165,29 @@
       </div>
       <div class="PopupDataCell">
         <span class="PopupDataTitle">휴대폰 번호</span>
-        <input name="phone_num" type="text" class="PopupDataInput" placeholder="'-'을 생략하고 입력해 주세요.">
+        <input name="phone_num" type="text" class="PopupDataInput PopupDataInputPhoneNum" placeholder="'-'을 생략하고 입력해 주세요.">
       </div>
       <div class="PopupDataCell">
         <span class="PopupDataTitle">생년월일</span>
-        <input name="birthdate" type="text" class="PopupDataInput" placeholder="ex)19990101">
+        <input name="birthdate" type="text" class="PopupDataInput PopupDataInputBirth" placeholder="ex)19990101">
       </div>
       <div class="PopupDataCell">
         <span class="PopupDataTitle">주소</span>
-        <input name="address" type="text" class="PopupDataInput">
+        <input name="address" type="text" class="PopupDataInput PopupDataInputAddress">
       </div>
       <div class="PopupDataCell">
         <span class="PopupDataTitle">아이디</span>
-        <input name="ID" type="text" class="PopupDataInput createID">
+        <input name="user_id" type="text" class="PopupDataInput createID">
       </div>
-      <div class="PopupDataCell">
+      <div class="idchecker" onClick="id_overlap_check_hr()">중복확인</div>
+      <div class="PopupDataCell PopupDataCellPw">
         <span class="PopupDataTitle">비밀번호</span>
-        <input name="PW" type="text" class="PopupDataInput" readonly value="0000">
+        <input name="pw" type="text" class="PopupDataInput" readonly value="0000">
       </div>
     </div>
     <div class="PopupBtnBox">
       <div class="btnModules">닫기</div>
-      <input type="submit" class="btnModules" value="등록">
+      <input type="submit" class="btnModules btnModulesCreate" value="등록">
     </div>
   </form>
 </div>
@@ -228,11 +234,15 @@
       </div>
       <div class="PopupDataCell">
         <span class="PopupDataTitle">아이디</span>
-        <input name="address" type="text" class="PopupDataInput hrID">
+        <input name="id" type="text" class="PopupDataInput hrID" readonly>
       </div>
       <div class="PopupDataCell">
-        <span class="PopupDataTitle">비밀번호</span>
-        <input name="address" type="text" class="PopupDataInput hrPW">
+        <div class="hrPW">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18.012" height="18" viewBox="0 0 18.012 18">
+            <path id="Icon_awesome-redo" data-name="Icon awesome-redo" d="M18.146,0H16.452a.429.429,0,0,0-.429.449L16.167,3.4a8.857,8.857,0,1,0-.812,12.313.429.429,0,0,0,.017-.622l-1.214-1.214a.429.429,0,0,0-.585-.02,6.286,6.286,0,1,1,1.065-8.225l-3.626-.174a.429.429,0,0,0-.449.429V7.584a.429.429,0,0,0,.429.429h7.155a.429.429,0,0,0,.429-.429V.429A.429.429,0,0,0,18.146,0Z" transform="translate(-0.563)" fill="#fff"/>
+          </svg>          
+          <span>비밀번호 초기화</span>
+        </div>
       </div>
       <input type="hidden" value="" name="id" class="sendToHidden">
     </div>
@@ -252,18 +262,20 @@
 {% block script %}
 <script>
   let regDatas = [
-      {% for member in member_list %}
-        {
-          name: "{{member.name}}",
-          role: "{{member.role}}",
-          birthdate: "{{member.birthdate}}",
-          address: "{{member.address}}",
-          phone_num: "{{member.phone_num}}",
-          entering_date: "{{member.entering_date}}",
-          license_number: "{{member.license_number}}",
-        },
-      {% endfor %}      
+    {% for member in member_list %}
+  {
+    name: "{{member.name}}",
+    role: "{{member.role}}",
+    birthdate: "{{member.birthdate}}",
+    address: "{{member.address}}",
+    phone_num: "{{member.phone_num}}",
+    entering_date: "{{member.entering_date}}",
+    license_number: "{{member.license_number}}",
+    id: '{{member.user_id}}'
+  },
+  {% endfor %}      
   ]
+  console.log("DATA", regDatas);
 </script>
 <script src="{% static 'js/hr/hr_list_popup.js' %}"></script>
 {% endblock %}

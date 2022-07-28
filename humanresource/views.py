@@ -2,6 +2,7 @@ import mimetypes
 import os
 import urllib
 from crudmember.models import User
+from django.contrib.auth.hashers import make_password, check_password
 from django.http import Http404, HttpResponse, HttpResponseNotAllowed
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse, reverse_lazy
@@ -68,6 +69,12 @@ def member_create(request):
         if member_form.is_valid():
             member = member_form.save(commit=False)
             member.creator = User.objects.get(pk=request.session.get('user'))
+            user_id = request.POST.get('user_id', None)
+            if Member.objects.filter(user_id=user_id).exists(): #아이디 중복체크
+                raise Http404
+            
+            member.user_id = user_id
+            member.password = make_password('0000')
             member.save()
 
             return redirect('HR:member')
