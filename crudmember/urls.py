@@ -12,4 +12,6 @@ urlpatterns = [
     path('profile', views.profile, name='profile'),
     # path('find_password/<str:uid64>/<str:token>/', views.pwchangeauth, name='pwchangeauth'),
     path('id-check', views.id_overlap_check, name="id_check"),
+    path('change/id', views.change_id, name="change_id"),
+    path('change/password', views.change_password, name="change_password"),
 ]

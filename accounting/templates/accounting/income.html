@@ -52,150 +52,18 @@
         <div class="tableScrollBox">
             <table class="tableBody">
                 <tbody>
+                    {% for i in "x"|rjust:last_day %}
                     <tr>
-                        <td>1</td>
-                        <td>100,000</td>
-                        <td>100,000</td>
-                        <td>100,000</td>
+                        <td>{{forloop.counter}}</td>
+                        <td>{% if e_order_list|index:forloop.counter0 != 0 %} {{e_order_list|index:forloop.counter0}} {% endif %}</td>
+                        <td>{% if c_order_list|index:forloop.counter0 != 0 %} {{c_order_list|index:forloop.counter0}} {% endif %}</td>
+                        <td>{% if order_list|index:forloop.counter0 != 0 %} {{order_list|index:forloop.counter0}} {% endif %}</td>
                         <td>100,000</td>
                         <td>100,000</td>
                         <td>1,000,000</td>
                     </tr>
-                    <tr>
-                        <td>1</td>
-                        <td>100,000</td>
-                        <td>100,000</td>
-                        <td>100,000</td>
-                        <td>100,000</td>
-                        <td>100,000</td>
-                        <td>1,000,000</td>
-                    </tr>
-                    <tr>
-                        <td>1</td>
-                        <td>100,000</td>
-                        <td>100,000</td>
-                        <td>100,000</td>
-                        <td>100,000</td>
-                        <td>100,000</td>
-                        <td>1,000,000</td>
-                    </tr>
-                    <tr>
-                        <td>1</td>
-                        <td>100,000</td>
-                        <td>100,000</td>
-                        <td>100,000</td>
-                        <td>100,000</td>
-                        <td>100,000</td>
-                        <td>1,000,000</td>
-                    </tr>
-                    <tr>
-                        <td>1</td>
-                        <td>100,000</td>
-                        <td>100,000</td>
-                        <td>100,000</td>
-                        <td>100,000</td>
-                        <td>100,000</td>
-                        <td>1,000,000</td>
-                    </tr>
-                    <tr>
-                        <td>1</td>
-                        <td>100,000</td>
-                        <td>100,000</td>
-                        <td>100,000</td>
-                        <td>100,000</td>
-                        <td>100,000</td>
-                        <td>1,000,000</td>
-                    </tr>
-                    <tr>
-                        <td>1</td>
-                        <td>100,000</td>
-                        <td>100,000</td>
-                        <td>100,000</td>
-                        <td>100,000</td>
-                        <td>100,000</td>
-                        <td>1,000,000</td>
-                    </tr>
-                    <tr>
-                        <td>1</td>
-                        <td>100,000</td>
-                        <td>100,000</td>
-                        <td>100,000</td>
-                        <td>100,000</td>
-                        <td>100,000</td>
-                        <td>1,000,000</td>
-                    </tr>
-                    <tr>
-                        <td>1</td>
-                        <td>100,000</td>
-                        <td>100,000</td>
-                        <td>100,000</td>
-                        <td>100,000</td>
-                        <td>100,000</td>
-                        <td>1,000,000</td>
-                    </tr>
-                    <tr>
-                        <td>1</td>
-                        <td>100,000</td>
-                        <td>100,000</td>
-                        <td>100,000</td>
-                        <td>100,000</td>
-                        <td>100,000</td>
-                        <td>1,000,000</td>
-                    </tr>
-                    <tr>
-                        <td>1</td>
-                        <td>100,000</td>
-                        <td>100,000</td>
-                        <td>100,000</td>
-                        <td>100,000</td>
-                        <td>100,000</td>
-                        <td>1,000,000</td>
-                    </tr>
-                    <tr>
-                        <td>1</td>
-                        <td>100,000</td>
-                        <td>100,000</td>
-                        <td>100,000</td>
-                        <td>100,000</td>
-                        <td>100,000</td>
-                        <td>1,000,000</td>
-                    </tr>
-                    <tr>
-                        <td>1</td>
-                        <td>100,000</td>
-                        <td>100,000</td>
-                        <td>100,000</td>
-                        <td>100,000</td>
-                        <td>100,000</td>
-                        <td>1,000,000</td>
-                    </tr>
-                    <tr>
-                        <td>1</td>
-                        <td>100,000</td>
-                        <td>100,000</td>
-                        <td>100,000</td>
-                        <td>100,000</td>
-                        <td>100,000</td>
-                        <td>1,000,000</td>
-                    </tr>
-                    <tr>
-                        <td>1</td>
-                        <td>100,000</td>
-                        <td>100,000</td>
-                        <td>100,000</td>
-                        <td>100,000</td>
-                        <td>100,000</td>
-                        <td>1,000,000</td>
-                    </tr>
-                    <tr>
-                        <td>1</td>
-                        <td>100,000</td>
-                        <td>100,000</td>
-                        <td>100,000</td>
-                        <td>100,000</td>
-                        <td>100,000</td>
-                        <td>1,000,000</td>
-                    </tr>
+                    {% endfor %}
+                    
                 </tbody>
             </table>
         </div>

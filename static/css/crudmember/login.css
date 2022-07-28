@@ -12,9 +12,9 @@ body {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  width: 97.6rem;
-  height: 67.2rem;
-  padding: 2.4rem 13.4rem 2.4rem 2.4rem;
+  width: 82rem;
+  height: 56rem;
+  padding: 2.4rem 6.4rem 2.4rem 2.4rem;
   background-color: white;
   border-radius: 3rem;
   transform: translate(-50%, -50%);
@@ -26,11 +26,13 @@ body {
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
-  width: 30rem;
-  height: 60rem;
-  padding: 4rem 3rem;
+  width: 24rem;
+  height: calc(100% - 4.8rem);
+  padding: 4rem 3rem 2rem 3rem;
   border-radius: 3rem;
   background-image: url(/static/images/loginInformationBox.png);
+  background-size: contain;
+  background-repeat: no-repeat;
 }
 
 .loginInformationTItle {
@@ -81,27 +83,32 @@ body {
   font-size: 1.3rem;
   color: white;
 }
-.loginInformationToolBox a{
+
+.loginInformationToolBox a {
   display: flex;
   justify-content: center;
   align-items: center;
   width: 13rem;
   height: 100%;
 }
-.loginInformationToolBox a:nth-child(1){
+
+.loginInformationToolBox a:nth-child(1) {
   padding-left: 2rem;
   border-radius: 0.8rem 0 0 0.8rem;
 }
-.loginInformationToolBox a:nth-child(1):hover{
+
+.loginInformationToolBox a:nth-child(1):hover {
   background-color: white;
   color: #0069D9;
   font-weight: 700;
 }
-.loginInformationToolBox a:nth-child(2){
+
+.loginInformationToolBox a:nth-child(2) {
   padding-right: 2rem;
   border-radius: 0 0.8rem 0.8rem 0;
 }
-.loginInformationToolBox a:nth-child(2):hover{
+
+.loginInformationToolBox a:nth-child(2):hover {
   background-color: white;
   color: #0069D9;
   font-weight: 700;
@@ -112,7 +119,7 @@ body {
   flex-direction: column;
   justify-content: space-between;
   width: 40rem;
-  height: 58rem;
+  height: 51.2rem;
 }
 
 .loginBoxTitleBox {

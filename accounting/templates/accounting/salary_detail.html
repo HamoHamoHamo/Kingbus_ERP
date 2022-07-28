@@ -58,12 +58,9 @@
                     <td>출근운행</td>
                     <td>퇴근운행</td>
                     <td>일반운행</td>
-                    <td>출근상여</td>
-                    <td>출근요금</td>
-                    <td>퇴근상여</td>
-                    <td>퇴근요금</td>
-                    <td>일반주문상여</td>
-                    <td>일반주문요금</td>
+                    <td>출근</td>
+                    <td>퇴근</td>
+                    <td>일반주문</td>
                     <td>기타</td>
                     <td>일일 합계</td>
                 </tr>
@@ -83,12 +80,9 @@
                     <td>???</td>
                     <td>???</td>
                     <td>???</td>
-                    <td>1000,000</td>
-                    <td>1000,000</td>
-                    <td>1000,000</td>
-                    <td>1000,000</td>
-                    <td>1000,000</td>
-                    <td>1000,000</td>
+                    <td>{% if e_order_list|index:forloop.counter0 != 0 %} {{e_order_list|index:forloop.counter0}} {% endif %}</td>
+                    <td>{% if c_order_list|index:forloop.counter0 != 0 %} {{c_order_list|index:forloop.counter0}} {% endif %}</td>
+                    <td>{% if order_list|index:forloop.counter0 != 0 %} {{order_list|index:forloop.counter0}} {% endif %}</td>
                     <td class="{{additional.id}}">{% if additional %}{{additional.price}}{% endif %}</td>
                     {% endwith %}
                     <td>1000,000</td>

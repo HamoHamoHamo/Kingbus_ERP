@@ -108,7 +108,7 @@ tbody {
 }
 
 td {
-    width: calc(61% / 8);
+    width: calc(48% / 5);
 }
 
 .tableBody td:nth-child(12){
@@ -133,15 +133,15 @@ td:nth-child(2) {
 }
 
 td:nth-child(3) {
-    width: 11%;
+    width: 15%;
 }
 
 td:nth-child(4) {
-    width: 11%;
+    width: 15%;
 }
 
 td:nth-child(5) {
-    width: 11%;
+    width: 15%;
 }
 
 .btnAreaBox input {

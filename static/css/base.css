@@ -246,6 +246,7 @@ html::-webkit-scrollbar-track {
   display: flex;
   justify-content: flex-start;
   align-items: center;
+  cursor: pointer;
 }
 
 .profileMenuCell img {
@@ -430,7 +431,7 @@ html::-webkit-scrollbar-track {
 
 
 /*modules*/
-.inputModules{
+.inputModules {
   height: 2.5rem;
   padding-left: 1rem;
   background-color: white;
@@ -441,7 +442,8 @@ html::-webkit-scrollbar-track {
   color: #191919;
   outline: none;
 }
-.btnModules{
+
+.btnModules {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -456,7 +458,8 @@ html::-webkit-scrollbar-track {
   box-sizing: border-box;
   outline: none;
 }
-.popupAreaModules{
+
+.popupAreaModules {
   position: absolute;
   top: 0;
   right: 0;
@@ -464,7 +467,8 @@ html::-webkit-scrollbar-track {
   width: 100%;
   height: 100%;
 }
-.popupBgModules{
+
+.popupBgModules {
   position: absolute;
   top: 0;
   right: 0;
@@ -472,4 +476,101 @@ html::-webkit-scrollbar-track {
   width: 100%;
   height: 100%;
   background-color: rgba(0, 0, 0, 0.16);
+}
+
+.HomePopupAreaModules {
+  position: absolute;
+  top: 0;
+  right: 0;
+  display: none;
+  width: 100%;
+  height: 100%;
+}
+
+.HomePopupBgModules {
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.16);
+}
+
+.HomePopupContainer {
+  position: fixed;
+  top: 50%;
+  left: calc(50% + 11rem);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 42rem;
+  height: 32rem;
+  background-color: white;
+  border-radius: 0.3rem;
+  box-shadow: 0 0.2rem 0.4rem rgb(0 0 0 / 16%);
+  transform: translate(-50%, -50%);
+}
+
+.HomePopupContainerPw {
+  width: 38rem;
+  height: 38rem;
+}
+
+.HomePopupContainerPw .HomePopupDataCell {
+  margin: 0 auto;
+}
+
+.HomePopupDataArea {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  width: 100%;
+  height: calc(100% - 9.7rem);
+  padding: 4.2rem 3rem 0 3rem;
+  box-sizing: border-box;
+}
+
+.HomePopupDataInput {
+  width: 100%;
+  height: 2.6rem;
+  padding-left: 0.6rem;
+  padding-bottom: 0.1rem;
+  font-size: 1.4rem;
+  color: #191919;
+  border: 0.1rem solid #D2D2D2;
+  border-radius: 0.3rem;
+  box-sizing: border-box;
+  outline: none;
+}
+
+.HomePopupDataCell {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-start;
+  width: 26rem;
+  height: 6rem;
+}
+
+.HomePopupDataCell .dateBox {
+  width: 100%;
+}
+
+.idchecker {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  width: 7rem;
+  height: 2.6rem;
+  margin-top: 3.4rem;
+  border-radius: 0.2rem;
+  background-color: #444444;
+  font-size: 1.3rem;
+  color: white;
+  cursor: pointer;
+}
+
+.HomePopupContainer .editBtn {
+  background-color: #0069D9;
 }

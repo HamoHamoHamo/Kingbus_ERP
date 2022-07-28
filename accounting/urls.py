@@ -10,7 +10,7 @@ urlpatterns = [
     path('salary/edit', views.salary_edit, name='salary_edit'),
     path('salary/delete', views.salary_delete, name='salary_delete'),
     path('salary/remark/edit', views.remark_edit, name='remark_edit'),
-    path('income', views.income, name='income'),
+    path('income', views.IncomeList.as_view(), name='income'),
     path('collect', views.CollectList.as_view(), name='collect'),
     path('collect/create', views.collect_create, name='collect_create'),
 

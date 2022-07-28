@@ -1,7 +1,9 @@
 from django.shortcuts import render, redirect, HttpResponse, get_object_or_404
 from django.contrib.auth.hashers import make_password, check_password
 from django.contrib.auth import login
-from django.http import JsonResponse
+from django.http import Http404, JsonResponse
+
+from humanresource.models import Member
 
 from .models import User, UserFile
 from dispatch.models import DispatchCheck, DispatchOrder, DispatchOrderConnect, DispatchRegularly, DispatchRegularlyConnect
@@ -156,7 +158,16 @@ class Calendar(generic.ListView):
         return context
 
 def reset_password(request):
-    return render(request, 'crudmember/reset_password.html')
+    id = request.GET.get('id')
+    if id:
+        member = get_object_or_404(Member, id=id)
+        member.password = make_password('0000')
+        member.save()
+
+        return redirect('crudmember:signup_terms')
+    else:
+        raise Http404
+
 
 def signup_terms(request):
     return render(request, 'crudmember/signup_terms.html')
@@ -165,20 +176,57 @@ def welcome(request):
     return render(request, 'crudmember/welcome.html')
 
 def id_overlap_check(request):
-    user_id = request.GET.get('user_id')
-    try:
-        # 중복 검사 실패
-        user = User.objects.get(user_id=user_id)
-    except:
-        # 중복 검사 성공
-        user = None
-    if user is None:
-        overlap = "pass"
+    if request.method == "GET":
+        user_id = request.GET.get('user_id')
+        try:
+            # 중복 검사 실패
+            user = Member.objects.get(user_id=user_id)
+        except:
+            # 중복 검사 성공
+            user = None
+        if user is None:
+            overlap = "pass"
+        else:
+            overlap = "fail"
+        context = {'overlap': overlap}
+        return JsonResponse(context)
     else:
-        overlap = "fail"
-    context = {'overlap': overlap}
-    return JsonResponse(context)   
+        return JsonResponse({'error': 'method not allowed'})
 
+def change_id(request):
+    if request.method == "POST":
+        password = request.POST.get('password')
+        member = get_object_or_404(Member, id=request.session.get('user'))
+
+        if check_password(password, member.password):
+            change_id = request.POST.get('user_id')
+            if change_id:
+                member.user_id = change_id
+                member.save()
+                return JsonResponse({'status': 'success'})
+            else:
+                return JsonResponse({"status": "fail"})        
+        return JsonResponse({"status": "fail"})
+    return JsonResponse({"status": "fail"})
+
+def change_password(request):
+    if request.method == "POST":
+        cur_password = request.POST.get('cur_password')
+        member = get_object_or_404(Member, id=request.session.get('user'))
+
+        if check_password(cur_password, member.password):
+            password1 = request.POST.get('password1')
+            password2 = request.POST.get('password2')
+            if password1 == password2:
+                member.password = make_password(password1)
+                member.save()
+                return JsonResponse({"status": 'success'})
+            else:
+                return JsonResponse({"status": 'fail'})
+
+        return JsonResponse({"status": "fail"})
+    return JsonResponse({"error": "method not allowed", "status": "fail"})
+    
 
 def signup(request):
     if request.method == "GET":
@@ -234,7 +282,7 @@ def login(request):
         login_password = request.POST.get('password', None)
         
         try:
-            user = User.objects.get(user_id=login_username)
+            user = Member.objects.get(user_id=login_username)
         except Exception as e:
             print("error", e)
             res_data['error'] = "아이디/비밀번호가 다릅니다."
@@ -243,8 +291,8 @@ def login(request):
         if check_password(login_password, user.password):
             request.session['user'] = user.id
             request.session['name'] = user.name
-            request.session['login_time'] = str(datetime.now())[:16]
-            request.session['today'] = str(datetime.now())[:10]
+            # request.session['login_time'] = str(datetime.now())[:16]
+            # request.session['today'] = str(datetime.now())[:10]
             #세션 만료시간 설정 0을 넣으면 브라우져 닫을시 세션 쿠키 삭제 + DB만료기간 14일
             request.session.set_expiry(0)
             
@@ -258,9 +306,11 @@ def login(request):
             return render(request, 'crudmember/login.html', res_data)
     else:
         user_id = request.session.get('user')
-        if user_id:
+        try:
+            Member.objects.get(id=user_id)
             return redirect('home')
-        return render(request, 'crudmember/login.html')
+        except:
+            return render(request, 'crudmember/login.html')
 
 
 def logout(request):
