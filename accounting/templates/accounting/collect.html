@@ -76,7 +76,7 @@
                         <td>{% if order.VAT == 'y' %}VAT포함{% endif %}</td>
                         <td>{{order.collection_type}}</td>
                         <td class="{{forloop.counter0}}">
-                            <div>{{order.collection_amount}}</div>
+                            <div class="popupOpenBtn">{{order.collection_amount}}</div>
                         </td>
                         <td>{{order.price|minus:order.collection_amount}}</td>
                         <td>{{order.collection_date}}</td>

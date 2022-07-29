@@ -23,7 +23,7 @@
         <div class="searchTool">
             <span class="searchName">날짜검색</span>
             <div class="FilterBox">
-                <input name="month" type="month" value="{{selected_month}}" class="inputModules">
+                <input name="month" type="month" value="{{month}}" class="inputModules">
             </div>
             <input type="submit" value="검색" class="btnModules">
         </div>
@@ -58,9 +58,16 @@
                         <td>{% if e_order_list|index:forloop.counter0 != 0 %} {{e_order_list|index:forloop.counter0}} {% endif %}</td>
                         <td>{% if c_order_list|index:forloop.counter0 != 0 %} {{c_order_list|index:forloop.counter0}} {% endif %}</td>
                         <td>{% if order_list|index:forloop.counter0 != 0 %} {{order_list|index:forloop.counter0}} {% endif %}</td>
-                        <td>100,000</td>
-                        <td>100,000</td>
-                        <td>1,000,000</td>
+                        <td>{% if collect_list|index:forloop.counter0 != 0 %} {{collect_list|index:forloop.counter0}} {% endif %}</td>
+                        <td>{% if n_collect_list|index:forloop.counter0 != 0 %} {{n_collect_list|index:forloop.counter0}} {% endif %}</td>
+                        {% with e=e_order_list|index:forloop.counter0 %}
+                        {% with c=c_order_list|index:forloop.counter0 %}
+                        {% with o=order_list|index:forloop.counter0 %}
+                        <td>{{e|add:c|add:o}}</td>
+                        {% endwith %}
+                        {% endwith %}
+                        {% endwith %}
+
                     </tr>
                     {% endfor %}
                     
@@ -73,12 +80,12 @@
                 <thead>
                     <tr>
                         <td>합계</td>
-                        <td>100,000</td>
-                        <td>100,000</td>
-                        <td>100,000</td>
-                        <td>100,000</td>
-                        <td>100,000</td>
-                        <td>1,000,000</td>
+                        <td>{{ e_order_list_total }}</td>
+                        <td>{{ c_order_list_total }}</td>
+                        <td>{{ order_list_total }}</td>
+                        <td>{{ collect_list_total }}</td>
+                        <td>{{ n_collect_list_total }}</td>
+                        <td>{{ e_order_list_total|add:c_order_list_total|add:order_list_total }}</td>
                     </tr>
                 </thead>
             </table>

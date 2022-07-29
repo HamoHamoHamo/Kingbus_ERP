@@ -333,8 +333,6 @@ fileDeletBtn[1].addEventListener('click', deleteChecker2)
 function deleteChecker1() {
     popupContainer[1].action = "/dispatch/calendar/delete/1"
     sendToHiddenChecker.value = fakeInput.value
-    console.log(popupContainer[1].action)
-    console.log(sendToHiddenChecker.value)
     popupContainer[1].submit()
 }
 function deleteChecker2() {

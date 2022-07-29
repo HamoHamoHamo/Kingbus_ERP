@@ -77,15 +77,15 @@
                         {% endif %}
                     </td>
                     <td>{{i}}</td>
-                    <td>???</td>
-                    <td>???</td>
-                    <td>???</td>
+                    <td>{% if e_order_list_d|index:forloop.counter0 and e_order_list_a|index:forloop.counter0 %} {{e_order_list_d|index:forloop.counter0}} ▶ {{e_order_list_a|index:forloop.counter0}} {% endif %}</td>
+                    <td>{% if c_order_list_d|index:forloop.counter0 and c_order_list_a|index:forloop.counter0 %} {{c_order_list_d|index:forloop.counter0}} ▶ {{c_order_list_a|index:forloop.counter0}} {% endif %}</td>
+                    <td>{% if order_list_d|index:forloop.counter0 and order_list_a|index:forloop.counter0 %} {{order_list_d|index:forloop.counter0}} ▶ {{order_list_a|index:forloop.counter0}} {% endif %}</td>
                     <td>{% if e_order_list|index:forloop.counter0 != 0 %} {{e_order_list|index:forloop.counter0}} {% endif %}</td>
                     <td>{% if c_order_list|index:forloop.counter0 != 0 %} {{c_order_list|index:forloop.counter0}} {% endif %}</td>
                     <td>{% if order_list|index:forloop.counter0 != 0 %} {{order_list|index:forloop.counter0}} {% endif %}</td>
                     <td class="{{additional.id}}">{% if additional %}{{additional.price}}{% endif %}</td>
                     {% endwith %}
-                    <td>1000,000</td>
+                    <td>{{total_list|index:forloop.counter0}}</td>
                 </tr>
                 {% endfor %}
             </tbody>

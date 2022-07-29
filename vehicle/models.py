@@ -24,7 +24,7 @@ class Vehicle(models.Model):
     # inspection_duration(검사유효기간)
     # vehicle_registration = models.CharField(verbose_name='차량등록증', max_length=30, null=False, blank=True)
     # insurance_receipt = models.CharField(verbose_name='보험영수증', max_length=30, null=False, blank=True)
-    creator = models.ForeignKey(User, on_delete=models.SET_NULL, related_name="vehicle_user", db_column="user_id", null=True)
+    creator = models.ForeignKey(Member, on_delete=models.SET_NULL, related_name="vehicle_user", db_column="user_id", null=True)
     pub_date = models.DateTimeField(verbose_name='작성시간', auto_now_add=True, null=False)
     
     def __str__(self):
@@ -42,6 +42,6 @@ class VehicleDocument(models.Model):
     filename = models.CharField(max_length=1024, null=True, verbose_name='첨부파일명')
     # 보험영수증, 차량등록증 저장
     type = models.CharField(max_length=30, null=True, verbose_name='종류')
-    creator = models.ForeignKey(User, on_delete=models.SET_NULL, related_name="vehicle_document_user", db_column="user_id", null=True)
+    creator = models.ForeignKey(Member, on_delete=models.SET_NULL, related_name="vehicle_document_user", db_column="user_id", null=True)
     pub_date = models.DateTimeField(verbose_name='작성시간', auto_now_add=True, null=False)
 

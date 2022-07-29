@@ -1,0 +1,362 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <title>TRP</title>
+    <link href="{% static 'css/dispatch/daily_driving_print.css' %}" rel="stylesheet" type="text/css" />
+</head>
+
+<body>
+
+    <div class="a4Container">
+        <div class="drivingPrintHeader">
+            <div class="dayAndDriver">
+                <div class="dayAndDriverTop">
+                    <div class="dataItemCell">
+                        <span>차량번호 :</span>
+                        <span></span>
+                    </div>
+                    <div class="dataItemCell">
+                        <span>승무원 :</span>
+                        <span></span>
+                    </div>
+                </div>
+                <div class="dayAndDriverBottom">
+                    <div class="dataItemCell">
+                        <span>2022년</span>
+                        <span>07월</span>
+                        <span>29일</span>
+                        <span>금요일</span>
+                    </div>
+                    <div class="dataItemCell">
+                        <span>날씨 :</span>
+                        <span></span>
+                    </div>
+                </div>
+            </div>
+            <div class="drivingPrintTitle">배차 (운행) 일보</div>
+            <table class="adminTable">
+                <tr>
+                    <td rowspan="4">결<br>재</td>
+                    <td>담당</td>
+                    <td>대표</td>
+                    <td>비고</td>
+                </tr>
+                <tr>
+                    <td rowspan="3">
+                        <div class="tableHeightBox"></div>
+                    </td>
+                    <td rowspan="3">
+                        <div class="tableHeightBox"></div>
+                    </td>
+                    <td rowspan="3">
+                        <div class="tableHeightBox"></div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div class="startArea">
+            <div class="startBox">
+                <div class="startCell">
+                    <div class="tableHeader tableFirst"><span>오전</span>/출근시간</div>
+                    <div class="tableHeader">출발지</div>
+                    <div class="tableHeader">도착지</div>
+                    <div class="tableHeader">비고</div>
+                </div>
+                <div class="startCell">
+                    <div class="tableFirst"></div>
+                    <div class="tableContents"></div>
+                    <div class="tableContents"></div>
+                    <div class="tableContents">
+                    </div>
+                </div>
+                <div class="startCell">
+                    <div class="tableFirst"></div>
+                    <div class="tableContents"></div>
+                    <div class="tableContents"></div>
+                    <div class="tableContents"></div>
+                </div>
+                <div class="startCell">
+                    <div class="tableFirst"></div>
+                    <div class="tableContents"></div>
+                    <div class="tableContents"></div>
+                    <div class="tableContents"></div>
+                </div>
+                <div class="startCell">
+                    <div class="tableFirst"></div>
+                    <div class="tableContents"></div>
+                    <div class="tableContents"></div>
+                    <div class="tableContents"></div>
+                </div>
+            </div>
+            <div class="dataBox">
+                <div class="dataCell dataCellFirst">
+                    <div class="dataCellHeader">운행 전 Km</div>
+                    <div class="dataCellContents"></div>
+                </div>
+                <div class="dataCell">
+                    <div class="dataCellHeader">운행 후 Km</div>
+                    <div class="dataCellContents"></div>
+                </div>
+                <div class="dataCell">
+                    <div class="dataCellHeader">금일 운행 Km</div>
+                    <div class="dataCellContents"></div>
+                </div>
+                <div class="dataCell">
+                    <div class="dataCellHeader">주유량</div>
+                    <div class="dataCellContents"></div>
+                </div>
+                <div class="dataCell">
+                    <div class="dataCellHeader">연비</div>
+                    <div class="dataCellContents"></div>
+                </div>
+            </div>
+        </div>
+        <div class="endArea">
+            <div class="endBox">
+                <div class="endCell">
+                    <div class="tableHeader tableFirst"><span>오후</span>/출근시간</div>
+                    <div class="tableHeader">출발지</div>
+                    <div class="tableHeader">도착지</div>
+                    <div class="tableHeader">비고</div>
+                </div>
+                <div class="endCell">
+                    <div class="tableFirst"></div>
+                    <div class="tableContents"></div>
+                    <div class="tableContents"></div>
+                    <div class="tableContents">
+                    </div>
+                </div>
+                <div class="endCell">
+                    <div class="tableFirst"></div>
+                    <div class="tableContents"></div>
+                    <div class="tableContents"></div>
+                    <div class="tableContents"></div>
+                </div>
+                <div class="endCell">
+                    <div class="tableFirst"></div>
+                    <div class="tableContents"></div>
+                    <div class="tableContents"></div>
+                    <div class="tableContents"></div>
+                </div>
+                <div class="endCell">
+                    <div class="tableFirst"></div>
+                    <div class="tableContents"></div>
+                    <div class="tableContents"></div>
+                    <div class="tableContents"></div>
+                </div>
+            </div>
+            <div class="noticeBox">
+                <div class="noticeBoxTitle">공지사항</div>
+                <div class="noticeBoxContents"></div>
+            </div>
+        </div>
+        <div class="orderBox"></div>
+        <div class="drivingPrintrecord">
+            <table class="drivingPrintrecordTable">
+                <tr>
+                    <td>출발시간</td>
+                    <td>출발지</td>
+                    <td>출발전 Km</td>
+                    <td>인원</td>
+                    <td>도착시간</td>
+                    <td>도착지</td>
+                    <td>도착후 Km</td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="tableHeight"></div>
+                    </td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="tableHeight"></div>
+                    </td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="tableHeight"></div>
+                    </td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="tableHeight"></div>
+                    </td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="tableHeight"></div>
+                    </td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="tableHeight"></div>
+                    </td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="tableHeight"></div>
+                    </td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="tableHeight"></div>
+                    </td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+            </table>
+            <table class="drivingPrintrecordTable">
+                <tr>
+                    <td>출발시간</td>
+                    <td>출발지</td>
+                    <td>출발전 Km</td>
+                    <td>인원</td>
+                    <td>도착시간</td>
+                    <td>도착지</td>
+                    <td>도착후 Km</td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="tableHeight"></div>
+                    </td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="tableHeight"></div>
+                    </td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="tableHeight"></div>
+                    </td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="tableHeight"></div>
+                    </td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="tableHeight"></div>
+                    </td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="tableHeight"></div>
+                    </td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="tableHeight"></div>
+                    </td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="tableHeight"></div>
+                    </td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+</body>
+
+</html>

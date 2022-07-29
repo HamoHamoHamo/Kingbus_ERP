@@ -90,14 +90,16 @@ def vehicle_create(request):
     if request.method == 'POST':
         vehicle_form = VehicleForm(request.POST)
 
-        if vehicle_form.is_valid():            
+        if vehicle_form.is_valid():
             driver = get_object_or_404(Member, pk=request.POST.get('driver'))
+            creator = get_object_or_404(Member, pk=request.session.get('user'))
             vehicle_registration_file = request.FILES.get('vehicle_registration', None)
             insurance_receipt_file = request.FILES.get('insurance_receipt', None)
             
             vehicle = vehicle_form.save(commit=False)
             vehicle.driver = driver
             vehicle.driver_name = driver.name
+            vehicle.creator = creator
             vehicle.save()
             if vehicle_registration_file:
                 vehicle_file_save(vehicle_registration_file, vehicle, "vehicle_registration")

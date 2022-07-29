@@ -1,8 +1,8 @@
-const collectPopupOpen = document.querySelectorAll(".tableBody td:nth-child(8) div")
+const collectPopupOpen = document.querySelectorAll(".popupOpenBtn")
 const popupAreaModules = document.querySelector(".popupAreaModules")
 const popupBgModules = document.querySelector(".popupBgModules")
 const SidemenuUseClose = document.querySelector(".Sidemenu")
-const closeBtn = document.querySelector(".closeBtn")
+const closeBtnCollect = document.querySelector(".closeBtn")
 const PopupData = document.querySelectorAll(".PopupData")
 const sendToHidden = document.querySelector(".sendToHidden")
 const PopupDataInputPrice = document.querySelector(".PopupDataInputPrice")
@@ -52,7 +52,7 @@ function openPopup() {
 
 //팝업닫기
 popupBgModules.addEventListener("click", closePopup)
-closeBtn.addEventListener("click", closePopup)
+closeBtnCollect.addEventListener("click", closePopup)
 SidemenuUseClose.addEventListener("click", closePopup)
 
 function closePopup() {
