@@ -12,7 +12,7 @@ class Salary(models.Model):
     total = models.IntegerField(verbose_name='총금액', null=False)
     remark = models.CharField(verbose_name='비고', null=True, max_length=100 )
     month = models.CharField(verbose_name='지급월', null=False,max_length=7, default=str(datetime.datetime.now())[:7])
-    creator = models.ForeignKey(User, on_delete=models.SET_NULL, related_name="salary_user", db_column="user_id", null=True)
+    creator = models.ForeignKey(Member, on_delete=models.SET_NULL, related_name="salary_user", db_column="user_id", null=True)
     pub_date = models.DateTimeField(verbose_name='작성시간', auto_now_add=True, null=False)
     
 
@@ -23,7 +23,7 @@ class AdditionalSalary(models.Model):
     date = models.CharField(verbose_name='날짜', null=False, max_length=10)
     price = models.IntegerField(verbose_name='금액', null=False)
     remark = models.CharField(verbose_name='비고', null=False, blank=True, max_length=100)
-    creator = models.ForeignKey(User, on_delete=models.SET_NULL, related_name="additional_user", db_column="user_id", null=True)
+    creator = models.ForeignKey(Member, on_delete=models.SET_NULL, related_name="additional_user", db_column="user_id", null=True)
     pub_date = models.DateTimeField(verbose_name='작성시간', auto_now_add=True, null=False)
 
 class Income(models.Model):
@@ -34,5 +34,5 @@ class Income(models.Model):
     collect = models.CharField(verbose_name='수금액', max_length=20, null=False)
     outstanding = models.CharField(verbose_name='미수금액', max_length=20, null=False)
     total = models.CharField(verbose_name='합계', max_length=30, null=False)
-    creator = models.ForeignKey(User, on_delete=models.SET_NULL, related_name="income_user", db_column="user_id", null=True)
+    creator = models.ForeignKey(Member, on_delete=models.SET_NULL, related_name="income_user", db_column="user_id", null=True)
     pub_date = models.DateTimeField(verbose_name='작성시간', auto_now_add=True, null=False)

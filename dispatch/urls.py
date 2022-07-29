@@ -20,9 +20,15 @@ urlpatterns = [
     path('order/route/delete', views.order_delete, name="order_delete"),
     path('schedule', views.ScheduleList.as_view(), name="schedule"),
     path('document', views.DocumentList.as_view(), name="document"),
+    # 일정
     path('calendar/create', views.calendar_create, name='calendar_create'),
     path('calendar/delete/1', views.calendar_delete_1, name='calendar_delete1'),
     path('calendar/delete/2', views.calendar_delete_2, name='calendar_delete2'),
+    # 배차지시서
+    path('print/line', views.line_print, name='line_print'),
+    path('print/bus', views.bus_print, name='bus_print'),
+    path('print/dailylist', views.daily_driving_list, name='daily_driving_list'),
+    path('print/daily', views.daily_driving_print, name='daily_driving_print'),
 
     # path('', views.DispatchList.as_view(), name='dispatch_list'),
     # path('order/', views.OrderList.as_view(), name='order'),

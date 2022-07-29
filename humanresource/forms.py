@@ -1,7 +1,7 @@
 from django import forms 
 from django.db import models
 
-from .models import Member, HR
+from .models import Member
 
 class MemberForm(forms.ModelForm):
     class Meta:
@@ -15,18 +15,14 @@ class MemberForm(forms.ModelForm):
             'entering_date',
             'license_number',
         ]
-# class MemberEditForm(forms.ModelForm):
-#     class Meta:
-#         model = Member
-#         fields = '__all__'
 
-class HRForm(forms.ModelForm):
-    class Meta:
-        model = HR
-        fields = [
-            'hr_type',
-            'reason',
-            'start_date',
-            'end_date',
-        ]
+# class HRForm(forms.ModelForm):
+#     class Meta:
+#         model = HR
+#         fields = [
+#             'hr_type',
+#             'reason',
+#             'start_date',
+#             'end_date',
+#         ]
         

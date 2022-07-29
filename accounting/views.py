@@ -1,5 +1,4 @@
 from accounting.forms import AdditionalForm
-from crudmember.models import User
 from dispatch.views import FORMAT
 from humanresource.models import Member
 from datetime import datetime, timedelta, date
@@ -50,7 +49,7 @@ class SalaryDetail(generic.ListView):
     def get_queryset(self):
         member = get_object_or_404(Member, id=self.kwargs['pk'])
         self.month = self.request.GET.get('month', TODAY[:7])
-        creator = get_object_or_404(User, pk=self.request.session.get('user'))
+        creator = get_object_or_404(Member, pk=self.request.session.get('user'))
         try:
             salary = Salary.objects.filter(member_id=member).get(month=self.month)
         except:
@@ -92,27 +91,52 @@ class SalaryDetail(generic.ListView):
 
         
         order_list = [0] * int(last_day)
-        dispatches = DispatchOrderConnect.objects.filter(driver_id=member).filter(departure_date__startswith=self.month).order_by('departure_date')
+        order_list_d = [''] * int(last_day)
+        order_list_a = [''] * int(last_day)
+        dispatches = DispatchOrderConnect.objects.prefetch_related('order_id').filter(driver_id=member).filter(departure_date__startswith=self.month).order_by('departure_date')
         for dispatch in dispatches:
             order_list[int(dispatch.departure_date[8:10])-1] += int(dispatch.driver_allowance)
+            order_list_d[int(dispatch.departure_date[8:10])-1] = dispatch.order_id.departure
+            order_list_a[int(dispatch.departure_date[8:10])-1] = dispatch.order_id.arrival
 
         e_order_list = [0] * int(last_day)
-        e_dispatches = DispatchRegularlyConnect.objects.filter(driver_id=member).filter(departure_date__startswith=self.month).filter(work_type="출근").order_by('departure_date')
+        e_order_list_d = [''] * int(last_day)
+        e_order_list_a = [''] * int(last_day)
+        e_dispatches = DispatchRegularlyConnect.objects.prefetch_related('regularly_id').filter(driver_id=member).filter(departure_date__startswith=self.month).filter(work_type="출근").order_by('departure_date')
         for dispatch in e_dispatches:
             e_order_list[int(dispatch.departure_date[8:10])-1] += int(dispatch.driver_allowance)
+            e_order_list_d[int(dispatch.departure_date[8:10])-1] = dispatch.regularly_id.departure
+            e_order_list_a[int(dispatch.departure_date[8:10])-1] = dispatch.regularly_id.arrival
         
         c_order_list = [0] * int(last_day)
-        c_dispatches = DispatchRegularlyConnect.objects.filter(driver_id=member).filter(departure_date__startswith=self.month).filter(work_type="퇴근").order_by('departure_date')
+        c_order_list_d = [''] * int(last_day)
+        c_order_list_a = [''] * int(last_day)
+        c_dispatches = DispatchRegularlyConnect.objects.prefetch_related('regularly_id').filter(driver_id=member).filter(departure_date__startswith=self.month).filter(work_type="퇴근").order_by('departure_date')
         for dispatch in c_dispatches:
             c_order_list[int(dispatch.departure_date[8:10])-1] += int(dispatch.driver_allowance)
+            c_order_list_d[int(dispatch.departure_date[8:10])-1] = dispatch.regularly_id.departure
+            c_order_list_a[int(dispatch.departure_date[8:10])-1] = dispatch.regularly_id.arrival
 
         context['order_list'] = order_list
         context['c_order_list'] = c_order_list
         context['e_order_list'] = e_order_list
 
-        print("order", order_list)
-        print("c_order", c_order_list)
-        print("e_order", e_order_list)
+        context['order_list_d'] = order_list_d
+        context['c_order_list_d'] = c_order_list_d
+        context['e_order_list_d'] = e_order_list_d
+
+        context['order_list_a'] = order_list_a
+        context['c_order_list_a'] = c_order_list_a
+        context['e_order_list_a'] = e_order_list_a
+
+        total_list = [0] * int(last_day)
+        for i in range(int(last_day)):
+            if additional_list[i]:
+                total_list[i] = int(order_list[i]) + int(c_order_list[i]) + int(e_order_list[i]) + int(additional_list[i].price)
+            else:
+                total_list[i] = int(order_list[i]) + int(c_order_list[i]) + int(e_order_list[i])
+
+        context['total_list'] = total_list
 
         context['member_list'] = Member.objects.all().order_by('name')
         entering_list = []
@@ -130,7 +154,7 @@ def salary_create(request):
     if request.method == "POST":
         additional_form = AdditionalForm(request.POST)
         if additional_form.is_valid():
-            creator = get_object_or_404(User, pk=request.session.get('user'))
+            creator = get_object_or_404(Member, pk=request.session.get('user'))
             member = get_object_or_404(Member, pk=request.POST.get('member_id'))
             month = additional_form.cleaned_data['date'][:7]
             try:
@@ -236,29 +260,58 @@ class IncomeList(generic.ListView):
         last_day = datetime.strftime(first_day + relativedelta(months=1) - timedelta(days=1), FORMAT)[8:]
 
         order_list = [0] * int(last_day)
+        order_list_total = 0
         collect_list = [0] * int(last_day)
         dispatches = DispatchOrderConnect.objects.select_related('order_id').filter(departure_date__startswith=month).order_by('departure_date')
         for dispatch in dispatches:
             order_list[int(dispatch.departure_date[8:10])-1] += int(dispatch.order_id.price)
-            collect_list[int(dispatch.departure_date[8:10])-1] += int(dispatch.order_id.collection_amount)
+            order_list_total += int(dispatch.order_id.price)
+            collect_list[int(dispatch.departure_date[8:10])-1] = int(dispatch.order_id.collection_amount)
+            
 
         e_order_list = [0] * int(last_day)
+        e_order_list_total = 0
         e_dispatches = DispatchRegularlyConnect.objects.select_related('regularly_id').filter(departure_date__startswith=month).filter(work_type="출근").order_by('departure_date')
         for dispatch in e_dispatches:
             e_order_list[int(dispatch.departure_date[8:10])-1] += int(dispatch.regularly_id.price)
+            e_order_list_total += int(dispatch.regularly_id.price)
         
         c_order_list = [0] * int(last_day)
+        c_order_list_total = 0
         c_dispatches = DispatchRegularlyConnect.objects.select_related('regularly_id').filter(departure_date__startswith=month).filter(work_type="퇴근").order_by('departure_date')
         for dispatch in c_dispatches:
             c_order_list[int(dispatch.departure_date[8:10])-1] += int(dispatch.regularly_id.price)
+            c_order_list_total += int(dispatch.regularly_id.price)
 
-        
+        n_collect_list = [0] * int(last_day)
+        n_collect_list_total = 0
+        collect_list_total = 0
+        total_list = [0] * int(last_day)
+        for i in range(int(last_day)):
+            collect_list_total += collect_list[i]
+            if order_list[i] and collect_list[i]:
+                n_collect_list[i] = order_list[i] - collect_list[i]
+                n_collect_list_total += n_collect_list[i]
+            if order_list[i] and e_order_list[i] and c_order_list[i]:
+                total_list[i] = order_list[i] + e_order_list[i] + c_order_list[i]
+            
+
         context['order_list'] = order_list
         context['c_order_list'] = c_order_list
         context['e_order_list'] = e_order_list
-        context['collect_list'] = collect_list
-        context['last_day'] = last_day
 
+        context['order_list_total'] = order_list_total
+        context['c_order_list_total'] = c_order_list_total
+        context['e_order_list_total'] = e_order_list_total
+        context['collect_list_total'] = collect_list_total
+        context['n_collect_list_total'] = n_collect_list_total
+
+        context['collect_list'] = collect_list
+        context['n_collect_list'] = n_collect_list
+        context['total_list'] = total_list
+
+        context['last_day'] = last_day
+        context['month'] = month
 
         return context
 
