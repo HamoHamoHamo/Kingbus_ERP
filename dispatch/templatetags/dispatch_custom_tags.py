@@ -12,8 +12,11 @@ def inCheck(value, i):
 
 @register.filter
 def index(indexable, i):
-    #print("TEMPLATEINDEX", "LIST : ", indexable, "I : ", i)
-    return indexable[int(i)]
+    try:
+        a = indexable[int(i)]
+    except:
+        a = ''
+    return a
 
 @register.simple_tag
 def to_int(to):
@@ -24,3 +27,7 @@ def to_int(to):
 def obj(indexable, i):
     #print("TEMPLATEINDEX", "LIST : ", indexable, "I : ", i)
     return indexable[i]
+
+# @register.filter
+# def regularly_cnt(order, date):
+#     return order.objects.filter(departure_date__startswith=date).count()

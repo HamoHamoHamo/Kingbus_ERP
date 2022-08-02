@@ -117,6 +117,8 @@ table a {
 }
 
 .regularlyDispatchBtn {
+  min-width: 8rem;
+  min-height: 2.6rem;
   text-align: center;
   padding: 0.3rem 1rem;
   background-color: #0069D9;
@@ -126,7 +128,8 @@ table a {
   margin: 1rem 0;
   box-sizing: border-box;
 }
-.tableBody tr{
+
+.tableBody tr {
   min-height: 6.4rem;
   height: auto;
   max-height: auto;
@@ -145,11 +148,11 @@ td:nth-child(1) {
 td:nth-child(2) {
   display: flex;
   justify-content: center;
-  width: 4%;
+  width: 6%;
 }
 
 td:nth-child(3) {
-  width: 30%;
+  width: 24%;
   word-break: keep-all;
 }
 
@@ -180,13 +183,19 @@ td:nth-child(6) {
 td:nth-child(7) {
   display: flex;
   justify-content: center;
+  width: 6%;
+}
+
+td:nth-child(8) {
+  display: flex;
+  justify-content: center;
   width: 9%;
   padding: 0 2rem 0 0;
   box-sizing: border-box;
 }
 
-td:nth-child(8) {
-  width: 19%;
+td:nth-child(9) {
+  width: 17%;
   padding-right: 1%;
   word-break: keep-all;
 }
@@ -318,23 +327,23 @@ td:nth-child(8) {
   width: calc((100% - 0.4rem)/3);
   height: 3rem;
   border: 0.1rem solid #D2D2D2;
-  border-radius: 0.3rem;
+  border-radius: 0.1rem;
   box-sizing: border-box;
   font-size: 1.4rem;
 }
 
 .GoToWork {
-  background-color: #a7a7a7;
+  background-color: #514EA1;
   color: white;
 }
 
 .work {
-  background-color: #ff3b30;
+  background-color: #1C1A4E;
   color: white;
 }
 
 .backToHome {
-  background-color: #5856d6;
+  background-color: #0A39A5;
   color: white;
 }
 
@@ -514,7 +523,7 @@ td:nth-child(8) {
 
 .routePopupBtnBox {
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
   width: 100%;
   height: 4.8rem;

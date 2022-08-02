@@ -123,7 +123,7 @@ class Calendar(generic.ListView):
         c_next_month = datetime.strptime(TODAY, FORMAT) - relativedelta(months=11)
         c_next_month = c_next_month.strftime(FORMAT)
         
-        context['check_list'] = vehicle.filter(check_duration__lte=c_next_month).order_by('check_duration')
+        context['check_list'] = vehicle.exclude(check_duration__lte='').filter(check_duration__lte=c_next_month).order_by('check_duration')
         
         duration = []
         expire = []

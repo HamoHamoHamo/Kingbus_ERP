@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
-{% load custom_tags %}
+{% load dispatch_custom_tags %}
 
 {% block head %}
 <meta http-equiv="Cache-Control" content="private, no-cache, no-store, max-age=0, must-revalidate">
@@ -61,6 +61,7 @@
         <td>운행시간</td>
         <td>운행요일</td>
         <td>출/퇴근</td>
+        <td>차량대수</td>
         <td>배차차량</td>
         <td>참조사항</td>
       </tr>
@@ -80,6 +81,7 @@
         <td>{{dispatch.departure_time}} ~ {{dispatch.arrival_time}}</td>
         <td>{{dispatch.week}}</td>
         <td>{{dispatch.work_type}}</td>
+        <td>{{bus_cnt_list|index:forloop.counter0}}/{{dispatch.bus_cnt}}</td>
         <td class="{{dispatch.id}}">
           <div class="regularlyDispatchBtn">
             {% with connect=connect_list|index:forloop.counter0 %}
@@ -260,137 +262,8 @@
               <div class="routePopupData"></div>
           </div>
       </div>
-      <div class="routePopupDataArea">
-        <div class="routePopupDataCell">
-            <span class="routePopupDataTitle">그룹</span>
-            <select name="group" class="routePopupDataGroup">
-                {% for g in group_list %}
-                <option value="{{g.id}}">{{g.name}}</option>
-                {% endfor %}
-            </select>
-        </div>
-        <div class="routePopupDataCell">
-            <span class="routePopupDataTitle">출발지</span>
-            <input name="departure" type="text" class="routePopupDataRoutName">
-        </div>
-        <div class="routePopupDataCell">
-            <span class="routePopupDataTitle">운행시간</span>
-            <div class="routePopupDataDriveTime">
-                <input name="departure_time" type="time">~
-                <input name="arrival_time" type="time">
-            </div>
-        </div>
-        <div class="routePopupDataCell">
-            <span class="routePopupDataTitle">도착지</span>
-            <input name="arrival" type="text" class="routePopupDataRoutName">
-        </div>
-        <div class="routePopupDataCell">
-            <span class="routePopupDataTitle">순번</span>
-            <input name="number" type="text" class="routePopupDataDriverNumber">
-        </div>
-        <div class="routePopupDataCell">
-            <span class="routePopupDataTitle">운행요일</span>
-            <div class="routePopupDataDriveDate">
-                <div>
-                    <input id="all" type="checkbox">
-                    <label for="all">모두</label>
-                </div>
-                <div class="dateArea">
-                  <div class="dateCell">
-                    <input name="week" value="월" id="mon" type="checkbox">
-                    <label for="mon">월</label>
-                  </div>
-                  <div class="dateCell">
-                    <input name="week" value="화" id="tue" type="checkbox">
-                    <label for="tue">화</label>
-                  </div>
-                    <div class="dateCell">
-                    <input name="week" value="수" id="wed" type="checkbox">
-                    <label for="wed">수</label>
-                  </div>
-                    <div class="dateCell">
-                    <input name="week" value="목" id="thu" type="checkbox">
-                    <label for="thu">목</label>
-                  </div>
-                    <div class="dateCell">
-                    <input name="week" value="금" id="fri" type="checkbox">
-                    <label for="fri">금</label>
-                  </div>
-                    <div class="dateCell">
-                    <input name="week" value="토" id="sat" type="checkbox">
-                    <label for="sat">토</label>
-                  </div>
-                    <div class="dateCell">
-                    <input name="week" value="일" id="sun" type="checkbox">
-                    <label for="sun">일</label>
-                  </div>
-                </div>
-            </div>
-        </div>
-        <div class="routePopupDataCell">
-            <span class="routePopupDataTitle">기사수당</span>
-            <input name="driver_allowance" type="text" class="routePopupDataDriverPay">
-        </div>
-        <div class="routePopupDataCell">
-            <span class="routePopupDataTitle">버스종류</span>
-            <select name="bus_type" id="" class="routePopupDataBusKinds">
-                <option value=""></option>
-                <option value="45인승 대형버스">45인승 대형버스</option>
-                <option value="41인승 대형버스">41인승 대형버스</option>
-                <option value="33인승 중형버스">33인승 중형버스</option>
-                <option value="28인승 대형우등버스">28인승 대형우등버스</option>
-                <option value="24인승 미니썬롱">24인승 미니썬롱</option>
-                <option value="24인승 미니버스">24인승 미니버스</option>
-                <option value="21인승 프리미엄버스">21인승 프리미엄버스</option>
-                <option value="21인승 중형우등버스">21인승 중형우등버스</option>
-                <option value="19인승 미니우등버스">19인승 미니우등버스</option>
-                <option value="16인승 미니우등버스">16인승 미니우등버스</option>
-                <option value="14인승 밴">14인승 밴</option>
-                <option value="10인승 밴">10인승 밴</option>
-            </select>
-        </div>
-        <div class="routePopupDataCell">
-            <span class="routePopupDataTitle">버스대수</span>
-            <input name="bus_cnt" type="text" class="routePopupDataBusCount">
-        </div>
-        <div class="routePopupDataCell">
-            <span class="routePopupDataTitle">거래처</span>
-            <input name="customer" type="text" class="routePopupDatAaccount">
-        </div>
-        <div class="routePopupDataCell">
-            <span class="routePopupDataTitle">거래처 전화번호</span>
-            <input name="customer_phone" type="text" class="routePopupPhoneNumber">
-        </div>
-        <div class="routePopupDataCell">
-            <span class="routePopupDataTitle">계약금액</span>
-            <input name="price" type="text" class="routePopupDataContractAmount">
-        </div>
-        <div class="routePopupDataCell">
-            <span class="routePopupDataTitle">계약기간</span>
-            <div class="routePopupDataContractPeriod">
-                <input name="contract_start_date" type="date">~
-                <input name="contract_end_date" type="date">
-            </div>
-        </div>
-        <div class="routePopupDataCell">
-            <span class="routePopupDataTitle">출/퇴근</span>
-            <div class="routePopupWork">
-                <input value="출근" id="workStart" type="radio" name="work_type">
-                <label for="workStart">출근</label>
-                <input value="퇴근" id="workEnd" type="radio" name="work_type">
-                <label for="workEnd">퇴근</label>
-            </div>
-        </div>
-        <div class="routePopupDataCell">
-            <span class="routePopupDataTitle">참조사항</span>
-            <input name="references" type="text" class="routePopupDataReference">
-        </div>
-        <input type="hidden" value="" name="id" class="sendToHidden">
-    </div>
       <div class="routePopupBtnBox">
           <div class="btnModules">닫기</div>
-          <div class="btnModules">수정</div>
-          <input type="submit" class="btnModules" value="저장">
       </div>
   </form>
 </div>

@@ -1,11 +1,11 @@
 import urllib
 import os
 import mimetypes
-from crudmember.models import User
 from django.http import Http404, HttpResponse, HttpResponseNotAllowed
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
 from django.views import generic
+from humanresource.models import Member
 from notice.forms import NoticeForm
 from notice.models import Notice, NoticeFile, NoticeComment, NoticeViewCnt
 from ERP.settings import BASE_DIR
@@ -34,7 +34,7 @@ class NoticeKindsView(generic.ListView):
                 notices = Notice.objects.filter(title__contains=search).filter(kinds=kinds).order_by('-pub_date')
             elif selector == "creator":
                 try:
-                    creator = User.objects.get(name=search)
+                    creator = Member.objects.get(name=search)
                     notices = Notice.objects.filter(creator=creator).filter(kinds=kinds).order_by('-pub_date')
                 except:
                     creator = None
@@ -76,14 +76,14 @@ class NoticeKindsView(generic.ListView):
 
 def create(request):
     context={
-        'name': get_object_or_404(User, pk=request.session.get('user')).name,
+        'name': get_object_or_404(Member, pk=request.session.get('user')).name,
         }
     if request.method == "GET":
         
         return render(request, 'notice/create.html', context)
 
     elif request.method == 'POST':
-        creator = get_object_or_404(User, pk=request.session.get('user'))
+        creator = get_object_or_404(Member, pk=request.session.get('user'))
         notice_form = NoticeForm(request.POST)
         
         files = request.FILES.getlist('file', None)
@@ -153,7 +153,7 @@ class NoticeDetail(generic.DetailView):
     
     def post(self, request, *args, **kwargs):
         self.user_id = request.session.get('user')
-        user = User.objects.get(pk=self.user_id)
+        user = Member.objects.get(pk=self.user_id)
         content = request.POST.get('content', None)
         self.notice_id=self.kwargs['pk']
         notice = Notice.objects.get(id=self.notice_id)
@@ -167,7 +167,7 @@ class NoticeDetail(generic.DetailView):
 
 
     def get_queryset(self):
-        self.user = User.objects.get(pk=self.request.session.get('user'))
+        self.user = Member.objects.get(pk=self.request.session.get('user'))
         self.notice_id=self.kwargs['pk']
         self.notice = get_object_or_404(Notice, id=self.notice_id)
         return Notice.objects.filter(title=self.notice)

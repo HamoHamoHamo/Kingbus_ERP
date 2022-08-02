@@ -224,22 +224,22 @@
             </div>
             <div class="routePopupDataCell">
                 <span class="routePopupDataTitle">출발지</span>
-                <input name="departure" type="text" class="routePopupDataRoutName">
+                <input name="departure" type="text" class="routePopupDataRoutName" required>
             </div>
             <div class="routePopupDataCell">
                 <span class="routePopupDataTitle">운행시간</span>
                 <div class="routePopupDataDriveTime">
-                    <input name="departure_time" type="time">~
-                    <input name="arrival_time" type="time">
+                    <input name="departure_time" type="time" required>~
+                    <input name="arrival_time" type="time" required>
                 </div>
             </div>
             <div class="routePopupDataCell">
                 <span class="routePopupDataTitle">도착지</span>
-                <input name="arrival" type="text" class="routePopupDataRoutName">
+                <input name="arrival" type="text" class="routePopupDataRoutName" required>
             </div>
             <div class="routePopupDataCell">
                 <span class="routePopupDataTitle">순번</span>
-                <input name="number" type="text" class="routePopupDataDriverNumber">
+                <input name="number" type="text" class="routePopupDataDriverNumber" required>
             </div>
             <div class="routePopupDataCell">
                 <span class="routePopupDataTitle">운행요일</span>
@@ -282,7 +282,7 @@
             </div>
             <div class="routePopupDataCell">
                 <span class="routePopupDataTitle">기사수당</span>
-                <input name="driver_allowance" type="text" class="routePopupDataDriverPay">
+                <input name="driver_allowance" type="number" class="routePopupDataDriverPay" required>
             </div>
             <div class="routePopupDataCell">
                 <span class="routePopupDataTitle">버스종류</span>
@@ -303,7 +303,7 @@
             </div>
             <div class="routePopupDataCell">
                 <span class="routePopupDataTitle">버스대수</span>
-                <input name="bus_cnt" type="text" class="routePopupDataBusCount">
+                <input name="bus_cnt" type="number" class="routePopupDataBusCount" required>
             </div>
             <div class="routePopupDataCell">
                 <span class="routePopupDataTitle">거래처</span>
@@ -315,7 +315,7 @@
             </div>
             <div class="routePopupDataCell">
                 <span class="routePopupDataTitle">계약금액</span>
-                <input name="price" type="text" class="routePopupDataContractAmount">
+                <input name="price" type="number" class="routePopupDataContractAmount">
             </div>
             <div class="routePopupDataCell">
                 <span class="routePopupDataTitle">계약기간</span>
@@ -363,22 +363,22 @@
             </div>
             <div class="routePopupDataCell">
                 <span class="routePopupDataTitle">출발지</span>
-                <input name="departure" type="text" class="routePopupDataRoutName">
+                <input name="departure" type="text" class="routePopupDataRoutName" required>
             </div>
             <div class="routePopupDataCell">
                 <span class="routePopupDataTitle">운행시간</span>
                 <div class="routePopupDataDriveTime">
-                    <input type="time" name="departure_time">~
-                    <input type="time" name="arrival_time">
+                    <input type="time" name="departure_time" required>~
+                    <input type="time" name="arrival_time" required>
                 </div>
             </div>
             <div class="routePopupDataCell">
                 <span class="routePopupDataTitle">도착지</span>
-                <input type="text" class="routePopupDataRoutName" name="arrival">
+                <input type="text" class="routePopupDataRoutName" name="arrival" required>
             </div>
             <div class="routePopupDataCell">
                 <span class="routePopupDataTitle">순번</span>
-                <input type="text" class="routePopupDataDriverPay" name="number">
+                <input type="text" class="routePopupDataDriverPay" name="number" required>
             </div>
             <div class="routePopupDataCell">
                 <span class="routePopupDataTitle">운행요일</span>
@@ -407,7 +407,7 @@
             </div>
             <div class="routePopupDataCell">
                 <span class="routePopupDataTitle">기사수당</span>
-                <input type="text" class="routePopupDataDriverPay" name="driver_allowance">
+                <input type="number" class="routePopupDataDriverPay" name="driver_allowance" required>
             </div>
             <div class="routePopupDataCell">
                 <span class="routePopupDataTitle">버스종류</span>
@@ -429,7 +429,7 @@
             </div>
             <div class="routePopupDataCell">
                 <span class="routePopupDataTitle">버스대수</span>
-                <input type="text" class="routePopupDataBusCount" name="bus_cnt">
+                <input type="number" class="routePopupDataBusCount" name="bus_cnt" required>
             </div>
             <div class="routePopupDataCell">
                 <span class="routePopupDataTitle">거래처</span>
@@ -441,7 +441,7 @@
             </div>
             <div class="routePopupDataCell">
                 <span class="routePopupDataTitle">계약금액</span>
-                <input type="text" class="routePopupDataContractAmount" name="price">
+                <input type="number" class="routePopupDataContractAmount" name="price">
             </div>
             <div class="routePopupDataCell">
                 <span class="routePopupDataTitle">계약기간</span>
@@ -453,7 +453,7 @@
             <div class="routePopupDataCell">
                 <span class="routePopupDataTitle">출/퇴근</span>
                 <div class="routePopupWork">
-                    <input id="workStartCreate" type="radio" value="출근" name="work_type">
+                    <input id="workStartCreate" type="radio" value="출근" name="work_type" checked>
                     <label for="workStartCreate">출근</label>
                     <input id="workEndCreate" type="radio" value="퇴근" name="work_type">
                     <label for="workEndCreate">퇴근</label>
@@ -483,7 +483,7 @@
                 {% csrf_token %}
                 <div class="createGroupBox">
                     <label for="">그룹이름</label>
-                    <input type="text" name="name">
+                    <input type="text" name="name" required>
                     <input class="btnModules" type="submit" value="등록">
                 </div>
             </form>
@@ -494,7 +494,7 @@
                     <div class="groupFullBox">
                         <div class="groupBox">
                             <img src="{% static 'images/groupCreateArrow.png' %}" alt="">
-                            <input type="text" name="group" class="groupBoxTitle" value="{{group.name}}" disabled>
+                            <input type="text" name="group" class="groupBoxTitle" value="{{group.name}}" disabled required>
                             <input type="hidden" name="group_id" class="groupBoxTitle" value="{{group.id}}" disabled>
                             <div class="groupBoxTollCell">
                                 <div></div>

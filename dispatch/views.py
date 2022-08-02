@@ -269,6 +269,10 @@ class RegularlyDispatchList(generic.ListView):
 
         context['vehicle_connect'] = vehicle_connect
 
+        bus_cnt_list = []
+        for order in context['order_list']:
+            bus_cnt_list.append(order.info_regularly.filter(departure_date__startswith=date).count())
+        context['bus_cnt_list'] = bus_cnt_list
         return context
 
 def regularly_connect_create(request):
@@ -359,14 +363,14 @@ def regularly_order_create(request):
 
         if order_form.is_valid():
             print("VALID")
-            if datetime.strptime(request.POST.get('contract_start_date'), FORMAT) > datetime.strptime(request.POST.get('contract_end_date'), FORMAT):
-                context = {}
-                # context['order_list'] = DispatchOrder.objects.exclude(regularly=None).order_by('-pk')
-                context['group_list'] = RegularlyGroup.objects.all()
-                # context['error'] = "출발일이 도착일보다 늦습니다"
-                #raise BadRequest('출발일이 도착일보다 늦습니다.')
-                #return render(request, 'dispatch/regularly_order_create.html', context)
-                raise Http404
+            # if datetime.strptime(request.POST.get('contract_start_date'), FORMAT) > datetime.strptime(request.POST.get('contract_end_date'), FORMAT):
+            #     context = {}
+            #     # context['order_list'] = DispatchOrder.objects.exclude(regularly=None).order_by('-pk')
+            #     context['group_list'] = RegularlyGroup.objects.all()
+            #     # context['error'] = "출발일이 도착일보다 늦습니다"
+            #     #raise BadRequest('출발일이 도착일보다 늦습니다.')
+            #     #return render(request, 'dispatch/regularly_order_create.html', context)
+            #     raise Http404
             post_group = request.POST.get('group', None)
             try:
                 regularly_group = RegularlyGroup.objects.get(pk=post_group)
@@ -389,9 +393,10 @@ def regularly_order_create(request):
             order.route = order_form.cleaned_data['departure'] + " ▶ " + order_form.cleaned_data['arrival']
             order.save()
             return redirect(request.META.get('HTTP_REFERER', 'redirect_if_referer_not_found'))
-
+        else:
+            raise Http404
     else:
-        raise Http404
+        return HttpResponseNotAllowed(['post'])
 
 def regularly_order_edit(request):
     id = request.POST.get('id', None)
@@ -610,6 +615,9 @@ class OrderList(generic.ListView):
                 max_date = order.arrival_date
         context['connect_list'] = connect_list
 
+        min_date = f'{min_date[:10]}T00:00'
+        max_date = f'{max_date[:10]}T24:00'
+
         print("MIN", min_date, "max", max_date)
         order_connect_range = DispatchOrderConnect.objects.exclude(arrival_date__lt=min_date).exclude(departure_date__gt=max_date)
         for o in order_connect_range:
@@ -617,6 +625,7 @@ class OrderList(generic.ListView):
             
         
         regularly_order_list = DispatchRegularlyConnect.objects.filter(departure_date__range=[f'{min_date[:10]} {min_date[11:]}', f'{max_date[:10]} {max_date[11:]}'])
+        print("REGURLRLRY", regularly_order_list)
         for regularly in regularly_order_list:
             vehicle_connect[regularly.bus_id.id].append([regularly.departure_date, regularly.arrival_date])
 
@@ -666,6 +675,8 @@ def order_create(request):
                 raise Http404
 
             order = order_form.save(commit=False)
+            order.VAT = request.POST.get('VAT', 'n')
+            order.payment_method = request.POST.get('payment_method', 'n')
             order.creator = creator
             order.route = order_form.cleaned_data['departure'] + " ▶ " + order_form.cleaned_data['arrival']
 
@@ -737,16 +748,134 @@ def order_delete(request):
         return HttpResponseNotAllowed(['post'])
 
 def line_print(request):
-    return render(request, 'dispatch/line_print.html')
+    context = {}
+    date = request.GET.get('date')
+    week = WEEK[datetime.strptime(date, FORMAT).weekday()][1]
+    
+    
+    regularly_list = DispatchRegularly.objects.prefetch_related('info_regularly').exclude(info_regularly=None).filter(week__contains=week).order_by('group', 'number', 'departure_time')
+    print(regularly_list)
+    temp = []
+    temp2 = []
+    group = ''
+    context['regularly_list'] = []
+    context['connect_list'] = []
+    for r in regularly_list:
+        print("GROUP", r.group.name)
+        if r.group.name != group:
+            group = r.group.name
+            if r != regularly_list[0]:
+                context['regularly_list'].append(temp)
+                context['connect_list'].append(temp2)
+                temp = []
+                temp2 = []
+        temp.append(r)
+        temp2.append(r.info_regularly.filter(departure_date__startswith=date))
+
+    if r == regularly_list[len(regularly_list)-1]:
+        context['regularly_list'].append(temp)
+        context['connect_list'].append(temp2)
+
+        
+        
+    no_list = DispatchRegularly.objects.filter(info_regularly=None).order_by('group', 'number', 'departure_time')
+    
+    print('REGULSRY', context['regularly_list'])
+    print('connect_list', context['connect_list'])
+    context['no_list'] = no_list
+
+    return render(request, 'dispatch/line_print.html', context)
 
 def bus_print(request):
-    return render(request, 'dispatch/bus_print.html')
+    context = {}
+    date = request.GET.get('date')
+
+    vehicle_list = Vehicle.objects.filter(use='y').order_by('vehicle_num')
+    context['vehicle_list'] = vehicle_list
+    
+    connect_object = {}
+    e_connect_object = {}
+    c_connect_object = {}
+    for vehicle in vehicle_list:
+        connect_object[vehicle.id] = []
+        e_connect_object[vehicle.id] = []
+        c_connect_object[vehicle.id] = []
+
+    r_connect_list = DispatchRegularlyConnect.objects.select_related('bus_id', 'regularly_id').filter(departure_date__startswith=date).order_by('departure_date')
+    for connect in r_connect_list:
+        if connect.work_type == "출근":
+            e_connect_object[connect.bus_id.id].append(connect)
+        elif connect.work_type == "퇴근":
+            c_connect_object[connect.bus_id.id].append(connect)
+
+    connect_list = DispatchOrderConnect.objects.select_related('bus_id', 'order_id').filter(departure_date__lte=f'{date}T24:00').filter(arrival_date__gte=f'{date}T00:00')
+    print("CONNECTSLIST", connect_list)
+    for connect in connect_list:
+        connect_object[connect.bus_id.id].append(connect)
+
+
+    context['connect_object'] = connect_object
+    context['e_connect_object'] = e_connect_object
+    context['c_connect_object'] = c_connect_object
+    return render(request, 'dispatch/bus_print.html', context)
 
 def daily_driving_list(request):
-    return render(request, 'dispatch/daily_driving_list.html')
+    context = {}
+    date = request.GET.get('date')
+
+    vehicle_list = Vehicle.objects.filter(use='y').order_by('vehicle_num')
+    context['vehicle_list'] = vehicle_list
+    
+    connect_object = {}
+    e_connect_object = {}
+    c_connect_object = {}
+    for vehicle in vehicle_list:
+        connect_object[vehicle.id] = []
+        e_connect_object[vehicle.id] = []
+        c_connect_object[vehicle.id] = []
+
+    r_connect_list = DispatchRegularlyConnect.objects.select_related('bus_id', 'regularly_id').filter(departure_date__startswith=date).order_by('departure_date')
+    for connect in r_connect_list:
+        if connect.work_type == "출근":
+            e_connect_object[connect.bus_id.id].append(connect)
+        elif connect.work_type == "퇴근":
+            c_connect_object[connect.bus_id.id].append(connect)
+
+    connect_list = DispatchOrderConnect.objects.select_related('bus_id', 'order_id').filter(departure_date__lte=f'{date}T24:00').filter(arrival_date__gte=f'{date}T00:00')
+    print("CONNECTSLIST", connect_list)
+    for connect in connect_list:
+        connect_object[connect.bus_id.id].append(connect)
+
+
+    context['connect_object'] = connect_object
+    context['e_connect_object'] = e_connect_object
+    context['c_connect_object'] = c_connect_object
+    return render(request, 'dispatch/daily_driving_list.html', context)
 
 def daily_driving_print(request):
-    return render(request, 'dispatch/daily_driving_print.html')
+    id_list = request.GET.get('id').split(',')
+    date = request.GET.get('date')
+    context = {}
+    context['vehicle_list'] = []
+    context['order_list'] = []
+    context['e_order_list'] = []
+    context['c_order_list'] = []
+    context['cnt'] = len(id_list)
+    for id in id_list:
+        if id and date:
+            vehicle = get_object_or_404(Vehicle, id=id)
+            context['vehicle_list'].append(vehicle)
+            context['order_list'].append(DispatchOrderConnect.objects.select_related('order_id').filter(departure_date__lte=f'{date}T24:00').filter(arrival_date__gte=f'{date}T00:00').filter(bus_id=vehicle).order_by('departure_date'))
+            context['e_order_list'].append(DispatchRegularlyConnect.objects.select_related('regularly_id').filter(departure_date__startswith=date).filter(work_type="출근").filter(bus_id=vehicle).order_by('departure_date'))
+            context['c_order_list'].append(DispatchRegularlyConnect.objects.select_related('regularly_id').filter(departure_date__startswith=date).filter(work_type="퇴근").filter(bus_id=vehicle).order_by('departure_date'))
+            print("ENETET", context['e_order_list'])
+
+        else:
+            raise Http404
+
+
+
+    return render(request, 'dispatch/daily_driving_print.html', context)
     
 
 # @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@

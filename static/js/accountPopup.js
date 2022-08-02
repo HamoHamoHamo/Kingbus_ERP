@@ -1,8 +1,8 @@
 const HomePopupAreaModules = document.querySelectorAll(".HomePopupAreaModules")
 const HomePopupBgModules = document.querySelectorAll(".HomePopupBgModules")
-const closeBtn = document.querySelectorAll(".closeBtn")
+const HomeCloseBtn = document.querySelectorAll(".HomeCloseBtn")
 const profileMenuCell = document.querySelectorAll(".profileMenuCell")
-const editBtn = document.querySelectorAll(".editBtn")
+const HomeEditBtn = document.querySelectorAll(".HomeEditBtn")
 const username_input = document.querySelector('.username_input');
 const PopupDataInputPwCheckerId = document.querySelector('.PopupDataInputPwCheckerId');
 const PopupDataInputPwCheckerPw = document.querySelector('.PopupDataInputPwCheckerPw');
@@ -21,7 +21,7 @@ function openIDPopup() {
 }
 
 //아이디 수정
-editBtn[0].addEventListener('click', idChecker)
+HomeEditBtn[0].addEventListener('click', idChecker)
 
 function idChecker() {
     if (username_input.attributes.check_result.value == "fail" || PopupDataInputPwCheckerId.value == "") {
@@ -124,6 +124,7 @@ function pw_overlap_check_id() {
                 return;
             } else {
                 alert("아이디가 변경되었습니다.")
+                closeHomePopup()
                 return;
             }
         },
@@ -147,7 +148,7 @@ function openPWPopup() {
 
 
 //비밀번호 수정
-editBtn[1].addEventListener('click', pwChecker)
+HomeEditBtn[1].addEventListener('click', pwChecker)
 
 function pwChecker() {
     if (PopupDataInputPwCheckerPw.value == "" || PopupDataInputNewPw.value == "" || PopupDataInputOverlap.value == "" || PopupDataInputNewPw.value !== PopupDataInputOverlap.value) {
@@ -193,6 +194,7 @@ function pw_overlap_check_pw() {
                 return;
             } else {
                 alert("비밀번호가 변경되었습니다.")
+                closeHomePopup()
                 return;
             }
         },
@@ -206,7 +208,7 @@ function pw_overlap_check_pw() {
 //팝업닫기
 for (i = 0; i < HomePopupBgModules.length; i++) {
     HomePopupBgModules[i].addEventListener("click", closeHomePopup)
-    closeBtn[i].addEventListener("click", closeHomePopup)
+    HomeCloseBtn[i].addEventListener("click", closeHomePopup)
 }
 
 function closeHomePopup() {

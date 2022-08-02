@@ -1,2 +1,89 @@
+{% load dispatch_custom_tags %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="ko">
 
-        <a href="{% url 'dispatch:daily_driving_print' %}" target="_blank">asdflaj</a>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <title>TRP</title>
+    <link href="{% static 'css/dispatch/daily_driving_list.css' %}" rel="stylesheet" type="text/css" />
+</head>
+
+<body>
+    <div class="busPrintContainer">
+        <div class="printBtn">
+            <svg xmlns="http://www.w3.org/2000/svg" width="13.859" height="12" viewBox="0 0 13.859 12">
+                <path id="Icon_zocial-print" data-name="Icon zocial-print"
+                    d="M.18,15.96V10.965L1.92,9.03H3.195v.96h-.84l-1.2,1.335V15H13.08V11.325L11.88,9.99h-.84V9.03h1.275l1.725,1.935V15.96H.18Zm3.015-4.785V6.225L5.46,3.96h5.58v7.215Zm.9-.915H10.14V4.86H6.36V7.125H4.095Z"
+                    transform="translate(-0.18 -3.961)" />
+            </svg>
+            <span onclick="openDrivingPrint('/dispatch/print/daily')">인쇄</span>
+        </div>
+        <div class="pageTitle">
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+            <span>배차지시서 (호수별)</span>
+        </div>
+        <div class="headerCell">
+            <div>선택</div>
+            <div>차량번호</div>
+            <div>기사명</div>
+            <div>출근</div>
+            <div>업무</div>
+            <div>퇴근</div>
+        </div>
+        <div class="tableBorder">
+            <table class="contentsCell">
+                <tbody>
+                    {% for vehicle in vehicle_list %}
+                    <tr class="{{vehicle.id}}">
+                        <td>
+                            <input type="checkbox">
+                        </td>
+                        <td>{{vehicle.vehicle_num}}</td>
+                        <td>{{vehicle.driver_name}}</td>
+                        {% with e_connect=e_connect_object|obj:vehicle.id %}
+                        {% with connect=connect_object|obj:vehicle.id %}
+                        {% with c_connect=c_connect_object|obj:vehicle.id %}
+                        <td>
+                            {% for con in e_connect %}
+                                {% if forloop.counter != 1 %},{% endif %}
+                                ({{con.departure_date|slice:"11:"}}) [{{con.regularly_id.departure}} ▶ {{con.regularly_id.arrival}}]
+                                {% if con.regularly_id.references %} -- ({{con.regularly_id.references}}) {% endif %}
+                            {% endfor %}
+                        </td>
+                        
+                        <td>
+                            {% for con in connect %}
+                                {% if forloop.counter != 1 %},{% endif %}
+                                {% if date != con.departure_date|slice:":10" %} {% endif %}
+                                ({{con.departure_date|slice:"11:"}}) [{{con.order_id.departure}} ▶ {{con.order_id.arrival}}]
+                                {% if con.order_id.references %} -- ({{con.order_id.references}}) {% endif %}
+                            {% endfor %}
+                        </td>
+                        
+                        <td>
+                            {% for con in c_connect %}
+                                {% if forloop.counter != 1 %},{% endif %}
+                                ({{con.departure_date|slice:"11:"}}) [{{con.regularly_id.departure}} ▶ {{con.regularly_id.arrival}}]
+                                {% if con.regularly_id.references %} -- ({{con.regularly_id.references}}) {% endif %}
+                            {% endfor %}
+                        </td>
+                        {% endwith %}
+                        {% endwith %}
+                        {% endwith %}
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+
+<script src="{% static 'js/dispatch/bus_Print.js' %}"></script>
+<script src="{% static 'js/dispatch/printCheck.js' %}"></script>
+
+</html>

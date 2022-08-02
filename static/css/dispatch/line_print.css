@@ -1,0 +1,95 @@
+* {
+    list-style: none;
+    text-decoration: none;
+}
+
+html {
+    font-size: 62.5%;
+    font-family: "Noto Sans CJK KR";
+    overflow-x: hidden;
+}
+
+body {
+    margin: 0;
+    background-color: white;
+}
+
+.lineContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    width: 72rem;
+    height: auto;
+    padding: 2rem 4rem;
+}
+
+.pageTitle {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 2.4rem;
+    font-weight: bold;
+    border-bottom: 0.2rem solid black;
+    margin-bottom: 1rem;
+    letter-spacing: 0.2rem;
+}
+
+.pageTitle span {
+    margin: 0 0.4rem;
+}
+
+.lineContentsArea {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    width: 100%;
+}
+
+.lineContentsTitle {
+    font-size: 2.4rem;
+    font-weight: bold;
+    letter-spacing: 0.2rem;
+    margin-bottom: 0.6rem;
+}
+
+.lineContentsBox {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    padding: 0;
+}
+
+.lineContentsBox li:nth-child(1) {
+    list-style: none;
+}
+
+.lineContentsCell {
+    font-size: 1.6rem;
+    letter-spacing: 0.1rem;
+    word-wrap: break-word;
+    word-break: break-all;
+    padding-left: 2.4rem;
+}
+.lineContentsCell span{
+    width: 2rem;
+    margin-left: -2.4rem;
+}
+
+.lineTime {
+    color: blue;
+}
+
+.lineContentsCell b {
+    font-size: 1.6rem;
+    font-weight: bold;
+    word-wrap: break-word;
+    word-break: break-all;
+}
+
+@page {
+    size: A4 portrait;
+    margin: 0;
+}
