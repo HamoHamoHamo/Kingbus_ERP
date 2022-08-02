@@ -200,16 +200,16 @@
         <form method="post" action="{% url 'crudmember:change_id' %}" class="HomePopupContainer"
           enctype="multipart/form-data">
           {% csrf_token %}
-          <div class="PopupTitle">아이디 변경</div>
+          <div class="homePopupTitle">아이디 변경</div>
           <div class="HomePopupDataArea">
             <div class="HomePopupDataCell">
-              <span class="PopupDataTitle">비밀번호</span>
+              <span class="HomePopupDataTitle">비밀번호</span>
               <div class="dateBox">
                 <input name="password" type="password" class="HomePopupDataInput PopupDataInputPwCheckerId">
               </div>
             </div>
             <div class="HomePopupDataCell">
-              <span class="PopupDataTitle">새 아이디</span>
+              <span class="HomePopupDataTitle">새 아이디</span>
               <div class="dateBox">
                 <input type="text" check_result="fail" name="user_id" id="id" placeholder="새 아이디를 입력해 주세요."
                   class="HomePopupDataInput username_input">
@@ -217,9 +217,9 @@
             </div>
             <div class="idchecker" onClick="id_overlap_check()">중복확인</div>
           </div>
-          <div class="PopupBtnBox">
-            <div class="btnModules closeBtn">닫기</div>
-            <div class="btnModules editBtn">저장</div>
+          <div class="homePopupBtnBox">
+            <div class="btnModules HomeCloseBtn">닫기</div>
+            <div class="btnModules HomeEditBtn">저장</div>
           </div>
         </form>
       </div>
@@ -229,30 +229,30 @@
         <form method="post" action="{% url 'crudmember:change_password' %}" class="HomePopupContainer HomePopupContainerPw"
           enctype="multipart/form-data">
           {% csrf_token %}
-          <div class="PopupTitle">비밀번호 변경</div>
+          <div class="homePopupTitle">비밀번호 변경</div>
           <div class="HomePopupDataArea">
             <div class="HomePopupDataCell">
-              <span class="PopupDataTitle">비밀번호</span>
+              <span class="HomePopupDataTitle">비밀번호</span>
               <div class="dateBox">
                 <input name="cur_password" type="password" class="HomePopupDataInput PopupDataInputPwCheckerPw">
               </div>
             </div>
             <div class="HomePopupDataCell">
-              <span class="PopupDataTitle">새 비밀번호</span>
+              <span class="HomePopupDataTitle">새 비밀번호</span>
               <div class="dateBox">
                 <input name="password1" type="password" class="HomePopupDataInput PopupDataInputNewPw">
               </div>
             </div>
             <div class="HomePopupDataCell">
-              <span class="PopupDataTitle">비밀번호 확인</span>
+              <span class="HomePopupDataTitle">비밀번호 확인</span>
               <div class="dateBox">
                 <input name="password2" type="password" class="HomePopupDataInput PopupDataInputOverlap">
               </div>
             </div>
           </div>
-          <div class="PopupBtnBox">
-            <div class="btnModules closeBtn">닫기</div>
-            <div class="btnModules editBtn">저장</div>
+          <div class="homePopupBtnBox">
+            <div class="btnModules HomeCloseBtn">닫기</div>
+            <div class="btnModules HomeEditBtn">저장</div>
           </div>
         </form>
       </div>

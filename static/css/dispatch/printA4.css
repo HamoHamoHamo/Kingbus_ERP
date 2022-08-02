@@ -1,0 +1,16 @@
+.busPrintContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    width: 117rem;
+    min-height: 74rem;
+    height: auto;
+    padding: 2rem;
+    box-sizing: border-box;
+}
+
+@page {
+    size: 297mm 210mm;
+    margin: 0;
+}

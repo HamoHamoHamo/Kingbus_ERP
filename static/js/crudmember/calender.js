@@ -14,6 +14,7 @@ const sendToHiddenChecker = document.querySelector(".sendToHiddenChecker")
 const fileDeletBtn = document.querySelectorAll(".fileDeletBtn")
 
 let moveMonth = 0;
+let moveYear = 0;
 let defualtDate = new Date();
 let fixedDate = new Date();
 let fixedYear = fixedDate.getFullYear();
@@ -34,6 +35,7 @@ window.onload = () => {
             date.setFullYear(cutUrl[1].substr(0, 4))
         }
         moveMonth = date.getMonth() - new Date().getMonth()
+        moveYear = date.getFullYear() - new Date().getFullYear()
         createCalender(date);
     }
     const dispatchCellOrder = document.querySelectorAll(".dispatchCellOrder")
@@ -74,7 +76,7 @@ window.onload = () => {
                 linkMonth = date.getMonth() + 1
             }
             if (linkDate < 9) {
-                linkDate = `0${i}`
+                linkDate = `0${i + 1}`
             } else {
                 linkDate = i + 1
             }
@@ -90,6 +92,10 @@ function prevMonth() {
     moveMonth = moveMonth - 1;
     let date = new Date();
     let newDate = new Date(date.setMonth(date.getMonth() + moveMonth))
+    newDate = new Date(date.setFullYear(date.getFullYear() + moveYear))
+    if(newDate.getMonth() == 0){
+        moveYear = moveYear - 1;
+    }    
     // createCalender(newDate);
     if (String(newDate.getMonth() + 1).length == 1) {
         hiddenMonth.value = `${newDate.getFullYear()}-0${newDate.getMonth() + 1}`
@@ -105,6 +111,10 @@ function nextMonth() {
     moveMonth = moveMonth + 1;
     let date = new Date();
     let newDate = new Date(date.setMonth(date.getMonth() + moveMonth))
+    newDate = new Date(date.setFullYear(date.getFullYear() + moveYear))
+    if(newDate.getMonth() == 0){
+        moveYear = moveYear + 1;
+    }    
     // createCalender(newDate);
     if (String(newDate.getMonth() + 1).length == 1) {
         hiddenMonth.value = `${newDate.getFullYear()}-0${newDate.getMonth() + 1}`
@@ -316,9 +326,18 @@ function openDispatchPopup(element) {
     popupAreaModulesDispatch.style.display = 'block';
     popupContainer.action = "/dispatch/calendar/create"
     if (dateTItle.innerText.substr(6, 2) == "10" || dateTItle.innerText.substr(6, 2) == "11" || dateTItle.innerText.substr(6, 2) == "12") {
-        fakeInput.value = `${dateTItle.innerText.substr(0, 4)}-${dateTItle.innerText.substr(6, 2)}-${element.parentNode.parentNode.parentNode.firstChild.innerText}`
+        if (parseInt(element.parentNode.parentNode.parentNode.firstChild.innerText) < 10) {
+            fakeInput.value = `${dateTItle.innerText.substr(0, 4)}-${dateTItle.innerText.substr(6, 2)}-0${element.parentNode.parentNode.parentNode.firstChild.innerText}`
+        } else {
+            fakeInput.value = `${dateTItle.innerText.substr(0, 4)}-${dateTItle.innerText.substr(6, 2)}-${element.parentNode.parentNode.parentNode.firstChild.innerText}`
+        }
     } else {
-        fakeInput.value = `${dateTItle.innerText.substr(0, 4)}-0${dateTItle.innerText.substr(6, 1)}-${element.parentNode.parentNode.parentNode.firstChild.innerText}`
+        if (parseInt(element.parentNode.parentNode.parentNode.firstChild.innerText) < 10) {
+            fakeInput.value = `${dateTItle.innerText.substr(0, 4)}-0${dateTItle.innerText.substr(6, 1)}-0${element.parentNode.parentNode.parentNode.firstChild.innerText}`
+        } else {
+            fakeInput.value = `${dateTItle.innerText.substr(0, 4)}-0${dateTItle.innerText.substr(6, 1)}-${element.parentNode.parentNode.parentNode.firstChild.innerText}`
+        }
+
     }
     for (i = 0; i < name1.length; i++) {
         check1.innerText = `${name1[parseInt(element.parentNode.parentNode.parentNode.firstChild.innerText) - 1]}`

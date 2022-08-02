@@ -43,8 +43,11 @@ const dispatchListForm = document.querySelector(".dispatchListForm")
 const dispatchHidden = document.querySelector(".dispatchHidden")
 const dispatchNum = document.querySelectorAll(".orderDispatch div span")
 const thisTr = document.querySelectorAll(".tableCell .table tbody tr")
+const thisOtherTr = document.querySelectorAll(".tableCellScroll .table tbody tr")
 const dispatchList = document.querySelectorAll(".regularyCreatePopupTbody td:nth-child(1)")
 const orderDispatchDiv = document.querySelectorAll(".orderDispatchDiv")
+const bus_count = document.querySelectorAll(".tableCellScroll td:nth-child(2)")
+const popupContainer = document.querySelector(".popupContainer")
 
 
 /*배차등록 추가/삭제 */
@@ -54,24 +57,34 @@ for (i = 0; i < dispatchVehicle.length; i++) {
 
 function addVehicle() {
   if (this.className == 'addDriver') {
+    let searchTr = ""
+    for (i = 0; i < thisOtherTr.length; i++) {
+      if (thisOtherTr[i].className == dispatchHidden.value) {
+        searchTr = thisOtherTr[i]
+      }
+    }
+    let needDispatch = searchTr.querySelector("td:nth-child(2)").innerText.split('/')[1]
+    const countRemoveDriver = this.parentNode.parentNode.parentNode.querySelectorAll(".removeDriver")
+    if (countRemoveDriver.length < needDispatch) {
 
-    this.style.backgroundColor = '#0069D9'
-    this.style.color = 'white'
+      this.style.backgroundColor = '#0069D9'
+      this.style.color = 'white'
 
-    const newDiv = document.createElement('div');
-    newDiv.setAttribute("class", `${this.parentNode.className} addVehicle`);
-    const newText = document.createTextNode(this.innerText);
-    newDiv.appendChild(newText);
-    regularyCreatePopupResult.appendChild(newDiv);
+      const newDiv = document.createElement('div');
+      newDiv.setAttribute("class", `${this.parentNode.className} addVehicle`);
+      const newText = document.createTextNode(this.innerText);
+      newDiv.appendChild(newText);
+      regularyCreatePopupResult.appendChild(newDiv);
 
-    const newInput = document.createElement('input');
-    newInput.setAttribute("type", "hidden");
-    newInput.setAttribute("value", this.parentNode.className);
-    newInput.setAttribute("name", 'vehicle');
-    newInput.setAttribute("class", `vehicle${this.id}`);
-    regularyCreatePopupResult.appendChild(newInput);
-    this.classList.add('removeDriver');
-    this.classList.remove('addDriver');
+      const newInput = document.createElement('input');
+      newInput.setAttribute("type", "hidden");
+      newInput.setAttribute("value", this.parentNode.className);
+      newInput.setAttribute("name", 'vehicle');
+      newInput.setAttribute("class", `vehicle${this.id}`);
+      regularyCreatePopupResult.appendChild(newInput);
+      this.classList.add('removeDriver');
+      this.classList.remove('addDriver');
+    }
   } else {
     removeItHidden = regularyCreatePopupResult.querySelectorAll("input");
     for (i = 0; i < removeItHidden.length; i++) {
@@ -93,6 +106,22 @@ function addVehicle() {
     regularyCreatePopupResult.style.justifyContent = 'center'
   }
 }
+
+
+
+//추가 배차여부 판단
+popupContainer.addEventListener('submit', noMoreDispatch)
+
+function noMoreDispatch() {
+  let compare = []
+  for (i = 1; i < bus_count.length; i++) {
+    compare = String(bus_count[i].innerText).split("/")
+    if (compare[0] == compare[1]) {
+      orderDispatchDiv[i - 1].style.backgroundColor = "#707070"
+    }
+  }
+}
+
 
 
 
@@ -239,6 +268,8 @@ function openOrderDetail() {
   orderDispatchData[14].innerText = regDatas[this.className.substr(10,)].bill_date;
   orderDispatchData[15].innerText = regDatas[this.className.substr(10,)].collection_type;
   orderDispatchData[16].innerText = regDatas[this.className.substr(10,)].driver_allowance;
+  console.log(regDatas[this.className.substr(10,)])
+  console.log(regDatas[this.className.substr(10,)].payment_method)
   if (regDatas[this.className.substr(10,)].payment_method == 'y') {
     orderDispatchData[17].innerText = '선지급'
   } else {
@@ -264,12 +295,12 @@ function openOrderDetail() {
   routeOrderBillDate.value = regDatas[this.className.substr(10,)].bill_date;
   routeOrderCollectionType.value = regDatas[this.className.substr(10,)].collection_type;
   routeOrderDriverAllowance.value = regDatas[this.className.substr(10,)].driver_allowance;
-  if (regDatas[this.className.substr(10,)].payment_method = 'y') {
+  if (regDatas[this.className.substr(10,)].payment_method == 'y') {
     routeOrderPaymentMethod.checked = true;
   } else {
     routeOrderPaymentMethod.checked = false;
   }
-  if (regDatas[this.className.substr(10,)].VAT = 'y') {
+  if (regDatas[this.className.substr(10,)].VAT == 'y') {
     routeOrderVat.checked = true;
   } else {
     routeOrderVat.checked = false;
@@ -353,8 +384,11 @@ function checkToDelete(e) {
 let lineBreake
 window.onload = function () {
   for (i = 0; i < orderDispatchDiv.length; i++) {
-    const breake = document.createElement("br")
-    lineBreake = Math.round(orderDispatchDiv[i].childElementCount);
-    orderDispatchDiv[i].insertBefore(breake, orderDispatchDiv[i].childNodes[lineBreake])
+    if (orderDispatchDiv[i].childElementCount > 1) {
+      const breake = document.createElement("br")
+      lineBreake = Math.round(orderDispatchDiv[i].childElementCount);
+      orderDispatchDiv[i].insertBefore(breake, orderDispatchDiv[i].childNodes[lineBreake])
+    }
   }
+  noMoreDispatch()
 }

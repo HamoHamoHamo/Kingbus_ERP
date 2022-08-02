@@ -128,7 +128,7 @@
     display: flex;
     flex-direction: column;
     width: 50%;
-    height: 69.7rem;
+    height: 68rem;
     overflow-x: scroll;
     border: 0.1rem solid #CDCDCE;
 }
@@ -172,6 +172,11 @@
     height: 6.7rem;
     padding: 0 2rem;
     border-bottom: 0.1rem solid #CDCDCE;
+    text-align: center;
+}
+
+.tableCellScroll tbody td:nth-child(2) {
+    padding-left: 3.6rem;
 }
 
 .orderDispatch {
@@ -182,12 +187,15 @@
 
 .orderDispatch div {
     background-color: #0069D9;
-    height: 6rem;
+    min-width: 8rem;
+    min-height: 2.6rem;
+    max-height: 6rem;
     padding: 0.6rem;
     border-radius: 0.3rem;
     box-sizing: border-box;
     color: white;
     cursor: pointer;
+    text-align: left;
 }
 
 .orderDispatch div span {
@@ -326,25 +334,25 @@
     width: calc((100% - 0.4rem)/3);
     height: 3rem;
     border: 0.1rem solid #D2D2D2;
-    border-radius: 0.3rem;
+    border-radius: 0.11rem;
     box-sizing: border-box;
     font-size: 1.4rem;
 }
 
 .GoToWork {
-    background-color: #a7a7a7;
+    background-color: #514EA1;
     color: white;
-}
-
-.work {
-    background-color: #ff3b30;
+  }
+  
+  .work {
+    background-color: #1C1A4E;
     color: white;
-}
-
-.backToHome {
-    background-color: #5856d6;
+  }
+  
+  .backToHome {
+    background-color: #0A39A5;
     color: white;
-}
+  }
 
 .regularyCreatePopupResult {
     display: flex;
@@ -559,6 +567,7 @@
 }
 
 .orderPopupDataCell input[type=text],
+.orderPopupDataCell input[type=number],
 .orderPopupDataCell input[type=date],
 .orderPopupDataCell input[type=time],
 .orderPopupDataCell input[type=datetime-local],

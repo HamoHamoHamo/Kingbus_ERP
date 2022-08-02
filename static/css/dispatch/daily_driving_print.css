@@ -11,13 +11,17 @@ html {
 
 body {
     margin: 0;
-    background-color: #F5F5F5;
+    background-color: white;
 }
 
 table {
     border-spacing: 0;
 }
 
+.a4ContainerFor{
+    width: 117rem;
+    height: 82rem;
+}
 .a4Container {
     display: flex;
     flex-direction: column;
@@ -26,10 +30,13 @@ table {
     width: 117rem;
     min-height: 74rem;
     height: auto;
-    max-height: 85rem;
+    max-height: 82rem;
+    padding: 2rem;
+    box-sizing: border-box;
 }
 
 .drivingPrintHeader {
+    position: relative;
     display: flex;
     justify-content: space-between;
     align-items: flex-end;
@@ -86,11 +93,15 @@ table {
 
 
 .drivingPrintTitle {
+    position: absolute;
+    top: 50%;
+    left: 50%;
     font-size: 3rem;
     font-weight: 500;
     letter-spacing: 0.5rem;
     border-bottom: 0.2rem solid black;
     margin-bottom: 2rem;
+    transform: translate(-50%, -50%);
 }
 
 .adminTable {
@@ -131,10 +142,11 @@ table {
 .startArea {
     display: flex;
     justify-content: space-between;
-    align-items: center;
+    align-items: flex-start;
     width: 100%;
     min-height: 12rem;
     height: auto;
+    margin-bottom: 1rem;
 }
 
 .startBox {
@@ -145,8 +157,8 @@ table {
 
 .startCell {
     display: flex;
-    min-height: 2rem;
-    height: auto;
+    min-height: 2.4rem;
+    height: 100%;
     font-size: 1.3rem;
 }
 
@@ -191,6 +203,8 @@ table {
     display: flex;
     justify-content: flex-start;
     align-items: center;
+    padding-left: 0.6rem;
+    box-sizing: border-box;
 }
 
 .dataBox {
@@ -199,17 +213,20 @@ table {
     height: auto;
     font-size: 1.3rem;
 }
-.dataCell{
+
+.dataCell {
     display: flex;
     width: 100%;
-    min-height: 2rem;
-    height: auto;
+    min-height: 2.4rem;
+    height: 100%;
 }
-.dataCell div{
+
+.dataCell div {
     border-right: 0.1rem solid black;
     border-bottom: 0.1rem solid black;
 }
-.dataCellHeader{
+
+.dataCellHeader {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -217,10 +234,12 @@ table {
     border-left: 0.1rem solid black;
     background-color: #ddd;
 }
-.dataCellContents{
+
+.dataCellContents {
     width: 60%;
 }
-.dataCellFirst{
+
+.dataCellFirst {
     border-top: 0.1rem solid black;
 }
 
@@ -230,13 +249,14 @@ table {
 .endArea {
     display: flex;
     justify-content: space-between;
-    align-items: center;
+    align-items: flex-start;
     width: 100%;
     min-height: 12rem;
     height: auto;
+    margin-bottom: 1rem;
 }
 
-.endBox{
+.endBox {
     width: 80%;
     min-height: 100%;
     height: auto;
@@ -244,8 +264,8 @@ table {
 
 .endCell {
     display: flex;
-    min-height: 2rem;
-    height: auto;
+    min-height: 2.4rem;
+    height: 100%;
     font-size: 1.3rem;
 }
 
@@ -270,26 +290,29 @@ table {
 .endCell span {
     font-weight: 700;
 }
-.noticeBox{
+
+.noticeBox {
     display: flex;
     flex-direction: column;
     width: 19%;
     min-height: 12rem;
     height: 100%;
 }
-.noticeBoxTitle{
+
+.noticeBoxTitle {
     display: flex;
     justify-content: center;
     align-items: center;
     font-size: 1.3rem;
     width: 100%;
-    height: 2rem;
+    height: 2.2rem;
     border: 0.1rem solid black;
     background-color: #ddd;
 }
-.noticeBoxContents{
+
+.noticeBoxContents {
     width: 100%;
-    min-height: 8rem;
+    min-height: 9.5rem;
     height: 100%;
     border-left: 0.1rem solid black;
     border-right: 0.1rem solid black;
@@ -304,7 +327,48 @@ table {
     flex-direction: column;
     width: 100%;
     min-height: 12rem;
-    height: auto;
+    height: 100%;
+    margin-bottom: 1rem;
+}
+
+.orderCell {
+    display: flex;
+    min-height: 2.4rem;
+    height: 100%;
+    font-size: 1.3rem;
+}
+
+.orderCell div:nth-child(1) {
+    width: 8%;
+}
+
+.orderCell div:nth-child(2) {
+    width: 51%;
+}
+
+.orderCell div:nth-child(3) {
+    width: 22%;
+}
+
+.orderCell div:nth-child(4) {
+    width: 19%;
+}
+
+.orderCell div {
+    border-right: 0.1rem solid black;
+    border-bottom: 0.1rem solid black;
+}
+
+.orderCell span {
+    font-weight: 700;
+}
+
+.tableLast {
+    background-color: #ddd;
+}
+
+.orderCellTotal div:nth-child(2) {
+    width: 92%;
 }
 
 
@@ -312,7 +376,7 @@ table {
 .drivingPrintrecord {
     display: flex;
     width: 100%;
-    height: 26rem;
+    height: 22rem;
     font-size: 1.3rem;
     text-align: center;
 }
@@ -366,4 +430,22 @@ table {
 
 .tableHeight {
     height: 2.4rem;
+}
+
+
+@page {
+    size: A4 landscape;
+    margin: 0;
+}
+
+@media print {
+    .adminTable tr:nth-child(1),
+    .tableHeader,
+    .dataCellHeader,
+    .noticeBoxTitle,
+    .tableLast, 
+    .drivingPrintrecordTable tr:nth-child(1) {
+        background-color: #ddd !important;
+        -webkit-print-color-adjust: exact;
+    }
 }

@@ -18,7 +18,7 @@ class DispatchRegularly(models.Model):
     bus_cnt = models.CharField(verbose_name='버스대수', max_length=3, null=False)
     price = models.CharField(verbose_name='계약금액', max_length=10, null=False)
     driver_allowance = models.CharField(verbose_name='기사수당', max_length=10, null=False)
-    number = models.IntegerField(verbose_name='순번', null=True)
+    number = models.CharField(verbose_name='순번', max_length=20, null=False)
     week = models.CharField(verbose_name='운행요일', max_length=20, null=False)
     customer = models.CharField(verbose_name='예약자', max_length=20, null=False, blank=True)
     customer_phone = models.CharField(verbose_name='예약자 전화번호', max_length=20, null=False, blank=True)

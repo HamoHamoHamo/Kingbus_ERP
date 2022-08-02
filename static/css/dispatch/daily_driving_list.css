@@ -1,0 +1,156 @@
+* {
+    list-style: none;
+    text-decoration: none;
+}
+
+html {
+    font-size: 62.5%;
+    font-family: "Noto Sans CJK KR";
+    overflow-x: hidden;
+}
+
+body {
+    margin: 0;
+    background-color: white;
+}
+
+.busPrintContainer {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    width: 117rem;
+    min-height: 74rem;
+    height: auto;
+    padding-top: 0.6rem;
+    margin-left: 1rem;
+}
+
+.pageTitle {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.8rem;
+    font-weight: 700;
+    border-bottom: 0.1rem solid black;
+    margin-bottom: 1rem;
+    letter-spacing: 0.1rem;
+}
+.printBtn{
+    position: absolute;
+    top: 1rem;
+    left: 0;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    width: 5.2rem;
+    height: 2.2rem;
+    padding: 0 0.1rem;
+    border: 0.1rem solid black;
+    border-radius: 0.3rem;
+    font-size: 1.4rem;
+    cursor: pointer;
+    box-shadow: 0.1rem 0.1rem 0.3rem rgba(0, 0, 0, 0.4);
+    box-sizing: border-box;
+}
+
+.pageTitle span {
+    margin: 0 0.4rem;
+}
+
+.headerCell {
+    display: flex;
+    width: 100%;
+    height: 2.4rem;
+    background-color: #eee;
+    border: 0.1rem solid black;
+    box-sizing: border-box;
+}
+
+.headerCell div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.4rem;
+    box-sizing: border-box;
+}
+
+.headerCell div:nth-child(1){
+    width: 4%;
+    border-right: 0.1rem solid black;
+}
+.headerCell div:nth-child(2),
+.headerCell div:nth-child(3) {
+    width: 7.5%;
+    border-right: 0.1rem solid black;
+}
+
+.headerCell div:nth-child(4) {
+    width: 27%;
+    border-right: 0.1rem solid black;
+}
+
+.headerCell div:nth-child(5) {
+    width: 27%;
+    border-right: 0.1rem solid black;
+}
+
+.headerCell div:nth-child(6) {
+    width: 27%;
+}
+
+.tableBorder{
+    width: 100%;
+    border-left: 0.1rem solid black;
+    border-right: 0.1rem solid black;
+    box-sizing: border-box;
+}
+.contentsCell {
+    width: 100%;
+    min-height: 2.4rem;
+    height: auto;
+    border-spacing: 0;
+}
+
+.contentsCell tbody{
+    width: 100%;
+}
+.contentsCell tr{
+    width: 100%;
+}
+
+.contentsCell td {
+    height: 100%;
+    box-sizing: border-box;
+    font-size: 1.1rem;
+    border-bottom: 0.1rem solid black;
+    border-right: 0.1rem solid black;
+}
+
+.contentsCell td:nth-child(1) {
+    text-align: center;
+    width: 4%;
+}
+.contentsCell td:nth-child(2),
+.contentsCell td:nth-child(3) {
+    text-align: center;
+    padding: 0.1rem;
+    width: 7.5%;
+}
+
+.contentsCell td:nth-child(4) {
+    padding: 0.1rem;
+    width: 27%;
+}
+
+.contentsCell td:nth-child(5) {
+    padding: 0.1rem;
+    width: 27%;
+}
+
+.contentsCell td:nth-child(6) {
+    padding: 0.1rem;
+    width: 27%;
+    border-right: none;
+}

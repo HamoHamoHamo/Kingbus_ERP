@@ -132,7 +132,10 @@
 }
 
 .tr:hover {
-    background-color: #F5F5F5;
+    background-color: #929292;
+}
+.tr:hover .tdDriver{
+    color: white;
 }
 
 .td {
@@ -158,12 +161,20 @@
     box-sizing: border-box;
 }
 
-.regularlyLine {
+.regularlyLineStart {
     position: absolute;
     top: 50%;
     left: 10rem;
     height: 2.6rem;
-    background-color: #444444;
+    background-color: #514EA1;
+    transform: translate(0, -50%);
+}
+.regularlyLineEnd {
+    position: absolute;
+    top: 50%;
+    left: 10rem;
+    height: 2.6rem;
+    background-color: #0A39A5;
     transform: translate(0, -50%);
 }
 
@@ -171,7 +182,7 @@
     position: absolute;
     top: 50%;
     height: 2.6rem;
-    background-color: #0069D9;
+    background-color: #1C1A4E;
     transform: translate(0, -50%);
 }
 

@@ -125,8 +125,7 @@
         </div>
       </div>
       <div class="printBox">
-        <a href="" target="_blank">
-          <div class="printCell">
+          <div class="printCell" onclick="openLinePrint('/dispatch/print/line')">
             <svg xmlns="http://www.w3.org/2000/svg" width="23.1" height="20" viewBox="0 0 23.1 20">
               <path id="Icon_zocial-print" data-name="Icon zocial-print"
                 d="M.18,23.96V15.635l2.9-3.225H5.2v1.6H3.8l-2,2.225V22.36H21.68V16.235l-2-2.225h-1.4v-1.6H20.4l2.875,3.225V23.96H.18ZM5.2,15.985V7.735L8.98,3.96h9.3V15.985H5.2ZM6.7,14.46H16.78v-9h-6.3V9.235H6.7Z"
@@ -134,9 +133,7 @@
             </svg>
             <span>노선별A4</span>
           </div>
-        </a>
-        <a href="" target="_blank">
-          <div class="printCell">
+          <div class="printCell" onclick="openBusPrintA4('/dispatch/print/bus')">
             <svg xmlns="http://www.w3.org/2000/svg" width="23.1" height="20" viewBox="0 0 23.1 20">
               <path id="Icon_zocial-print" data-name="Icon zocial-print"
                 d="M.18,23.96V15.635l2.9-3.225H5.2v1.6H3.8l-2,2.225V22.36H21.68V16.235l-2-2.225h-1.4v-1.6H20.4l2.875,3.225V23.96H.18ZM5.2,15.985V7.735L8.98,3.96h9.3V15.985H5.2ZM6.7,14.46H16.78v-9h-6.3V9.235H6.7Z"
@@ -144,9 +141,7 @@
             </svg>
             <span>호수별A4</span>
           </div>
-        </a>
-        <a href="" target="_blank">
-          <div class="printCell">
+          <div class="printCell" onclick="openBusPrintA3('/dispatch/print/bus')">
             <svg xmlns="http://www.w3.org/2000/svg" width="23.1" height="20" viewBox="0 0 23.1 20">
               <path id="Icon_zocial-print" data-name="Icon zocial-print"
                 d="M.18,23.96V15.635l2.9-3.225H5.2v1.6H3.8l-2,2.225V22.36H21.68V16.235l-2-2.225h-1.4v-1.6H20.4l2.875,3.225V23.96H.18ZM5.2,15.985V7.735L8.98,3.96h9.3V15.985H5.2ZM6.7,14.46H16.78v-9h-6.3V9.235H6.7Z"
@@ -154,9 +149,7 @@
             </svg>
             <span>호수별A3</span>
           </div>
-        </a>
-        <a href="{% url 'dispatch:daily_driving_list' %}" target="_blank">
-          <div class="printCell">
+          <div class="printCell" onclick="openDrivingListPrint('/dispatch/print/dailylist')">
             <svg xmlns="http://www.w3.org/2000/svg" width="23.1" height="20" viewBox="0 0 23.1 20">
               <path id="Icon_zocial-print" data-name="Icon zocial-print"
                 d="M.18,23.96V15.635l2.9-3.225H5.2v1.6H3.8l-2,2.225V22.36H21.68V16.235l-2-2.225h-1.4v-1.6H20.4l2.875,3.225V23.96H.18ZM5.2,15.985V7.735L8.98,3.96h9.3V15.985H5.2ZM6.7,14.46H16.78v-9h-6.3V9.235H6.7Z"
@@ -164,7 +157,6 @@
             </svg>
             <span>운행일보A4</span>
           </div>
-        </a>
       </div>
       <input type="hidden" class="sendToHiddenChecker">
     </div>
@@ -225,6 +217,25 @@
   console.log("name1", name1)
   console.log("name2", name2)
   {% endautoescape %}
+
+  let targetLink = ""
+
+  function openLinePrint(url){
+        targetLink = `${url}?date=${fakeInput.value}`
+        window.open(targetLink, "노선별A4", "width=800, height=640")
+    }
+  function openBusPrintA4(url){
+        targetLink = `${url}?date=${fakeInput.value}&size=A4`
+        window.open(targetLink, "호수별A4", "width=1170, height=640")
+    }
+  function openBusPrintA3(url){
+        targetLink = `${url}?date=${fakeInput.value}&size=A3`
+        window.open(targetLink, "호수별A3", "width=1660, height=640")
+    }
+  function openDrivingListPrint(url){
+        targetLink = `${url}?date=${fakeInput.value}`
+        window.open(targetLink, "운행일보A4", "width=1200, height=640")
+    }
 
 </script>
 <script src="{% static 'js/crudmember/calender.js' %}"></script>

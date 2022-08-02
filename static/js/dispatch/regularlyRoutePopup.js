@@ -31,7 +31,7 @@ const routePopupDataBusKindsOption = document.querySelectorAll(".routePopupDataB
 const routePopupDataBusCount = document.querySelector(".routePopupDataBusCount")
 const routePopupDataContractPeriod = document.querySelectorAll(".routePopupDataContractPeriod input")
 const routePopupDatAaccount = document.querySelector(".routePopupDatAaccount")
-const routePopupPhoneNumber = document.querySelector(".routePopupPhoneNumber")
+const routePopupPhoneNumber = document.querySelectorAll(".routePopupPhoneNumber")
 const routePopupDataContractAmount = document.querySelector(".routePopupDataContractAmount")
 const routePopupWorkInput = document.querySelectorAll(".routePopupWork input")
 const routePopupWorkLabel = document.querySelector(".routePopupWork label:nth-child(2)")
@@ -39,7 +39,6 @@ const routePopupDataReference = document.querySelector(".routePopupDataReference
 const sendToHidden = document.querySelector(".sendToHidden")
 const deleIcon = document.querySelectorAll(".groupBoxTollCell input")
 const editIcon = document.querySelectorAll(".groupBoxTollCell div")
-const saveIcon = document.querySelector(".routePopupBtnBox input")
 const deletIcon = document.querySelectorAll(".groupBoxTollCell input")
 const createGroupDataArea = document.querySelector(".createGroupDataArea")
 const groupBoxTitle = document.querySelectorAll(".groupBoxTitle")
@@ -87,7 +86,7 @@ function detailPopup() {
   }
   routePopupDataBusCount.value = regDatas[this.className].bus_cnt;
   routePopupDatAaccount.value = regDatas[this.className].customer;
-  routePopupPhoneNumber.value = regDatas[this.className].customer_phone;
+  routePopupPhoneNumber[0].value = regDatas[this.className].customer_phone;
   routePopupDataContractAmount.value = regDatas[this.className].price;
   routePopupDataContractPeriod[0].value = regDatas[this.className].contract_start_date;
   routePopupDataContractPeriod[1].value = regDatas[this.className].contract_end_date;
@@ -355,4 +354,34 @@ function deleteData(e) {
       e.preventDefault()
     }
   }
+}
+
+
+//유효성 검사
+groupMenagementCreateBtn.addEventListener('click', fillchecker)
+function fillchecker(e) {
+  if (routePopupDataDriveDateCreate[0].checked || routePopupDataDriveDateCreate[1].checked || routePopupDataDriveDateCreate[2].checked || routePopupDataDriveDateCreate[3].checked || routePopupDataDriveDateCreate[4].checked || routePopupDataDriveDateCreate[5].checked || routePopupDataDriveDateCreate[6].checked || routePopupDataDriveDateCreate[7].checked) {
+
+  } else {
+    e.preventDefault()
+    alert('운행요일을 체크해 주세요')
+  }
+}
+routePopupSaveBtn.addEventListener('click', fillcheckerSave)
+function fillcheckerSave(e) {
+  if (routePopupDataDriveDateEdit[0].checked || routePopupDataDriveDateEdit[1].checked || routePopupDataDriveDateEdit[2].checked || routePopupDataDriveDateEdit[3].checked || routePopupDataDriveDateEdit[4].checked || routePopupDataDriveDateEdit[5].checked || routePopupDataDriveDateEdit[6].checked || routePopupDataDriveDateEdit[7].checked) {
+
+  } else {
+    e.preventDefault()
+    alert('운행요일을 체크해 주세요')
+  }
+}
+
+routePopupPhoneNumber[1].addEventListener('change', callchecker)
+
+function callchecker() {
+  let checkerCall = /^[0~9]+$/
+    if (!checkerCall.routePopupPhoneNumber[1].value) {
+      alert('숫자와 "-"만 입력 가능합니다.')
+    }
 }

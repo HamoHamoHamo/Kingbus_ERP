@@ -76,15 +76,11 @@
     <div class="commentCreateTitle">댓글쓰기</div>
     <div class="commentCreateBox">
       <div class="commentCreateGuide">댓글</div>
-      <textarea name="content"></textarea>
+      <textarea name="content" required></textarea>
     </div>
     <div class="commentCreateBtnCell">
       <input type="submit" value="등록" class="createBtn">
     </div>
   </form>
 </div>
-{% endblock %}
-
-{% block script %}
-<script src="{% static 'js/deletAlert.js' %}"></script>
 {% endblock %}

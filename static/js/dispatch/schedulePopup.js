@@ -9,6 +9,7 @@ const dispatchDate = document.querySelector(".dispatchDate")
 const dispatchDateFilter = document.querySelector(".dateFilterBox input")
 const popupListBox = document.querySelector(".shcedulePopupTableBody tbody")
 const tr = document.querySelectorAll(".tr")
+const addTitle = document.querySelectorAll(".addTitle")
 
 
 for (i = 0; i < scheduleDriver.length; i++) {
@@ -83,6 +84,7 @@ window.onload = function () {
                     endM = data[i][j].arrival_date.substr(11,).replace(/:/g, "").substr(2,)
                     const order = document.createElement('div');
                     order.setAttribute("class", "orderLine");
+                    order.setAttribute("title", `[${data[i][j].work_type}] - ${data[i][j].departure}▶${data[i][j].arrival}`);
                     order.setAttribute("style", `left: ${((startH * 60 + startM) * 0.058) / 100}%; width: ${(((endH * 60 + endM) - (startH * 60 + startM)) * 0.058) / 100}%;`);
                     tr[i].appendChild(order);
                 } else if (data[i][j].departure_date.substr(0, 10) == dispatchDateFilter.value) {
@@ -90,6 +92,7 @@ window.onload = function () {
                     startM = data[i][j].departure_date.substr(11,).replace(/:/g, "").substr(2,)
                     const order = document.createElement('div');
                     order.setAttribute("class", "orderLine");
+                    order.setAttribute("title", `[${data[i][j].work_type}] - ${data[i][j].departure}▶${data[i][j].arrival}`);
                     order.setAttribute("style", `left: ${(((startH * 60 + startM) * 0.058) / 100) - 0.1}%; width: ${100 - (((startH * 60 + startM) * 0.058) / 100) - 16.38}%;`);
                     tr[i].appendChild(order);
                 } else if (data[i][j].arrival_date.substr(0, 10) == dispatchDateFilter.value) {
@@ -97,11 +100,13 @@ window.onload = function () {
                     endM = data[i][j].arrival_date.substr(11,).replace(/:/g, "").substr(2,)
                     const order = document.createElement('div');
                     order.setAttribute("class", "orderLine");
+                    order.setAttribute("title", `[${data[i][j].work_type}] - ${data[i][j].departure}▶${data[i][j].arrival}`);
                     order.setAttribute("style", `left: 0%; width: ${(((endH * 60 + endM) * 0.058) / 100) - 0.1}%;`);
                     tr[i].appendChild(order);
                 } else {
                     const order = document.createElement('div');
                     order.setAttribute("class", "orderLine");
+                    order.setAttribute("title", `[${data[i][j].work_type}] - ${data[i][j].departure}▶${data[i][j].arrival}`);
                     order.setAttribute("style", `left: 0%; width: 83.52%;`);
                     tr[i].appendChild(order);
                 }
@@ -111,7 +116,12 @@ window.onload = function () {
                 endH = data[i][j].arrival_date.substr(11,).replace(/:/g, "").substr(0, 2)
                 endM = data[i][j].arrival_date.substr(11,).replace(/:/g, "").substr(2,)
                 const regularly = document.createElement('div');
-                regularly.setAttribute("class", "regularlyLine");
+                if (data[i][j].work_type == "출근") {
+                    regularly.setAttribute("class", "regularlyLineStart");
+                } else {
+                    regularly.setAttribute("class", "regularlyLineEnd");
+                }
+                regularly.setAttribute("title", `[${data[i][j].work_type}] - ${data[i][j].departure}▶${data[i][j].arrival}`);
                 regularly.setAttribute("style", `left: ${((startH * 60 + startM) * 0.058) / 100}%; width: ${(((endH * 60 + endM) - (startH * 60 + startM)) * 0.058) / 100}%;`);
                 tr[i].appendChild(regularly);
             }
