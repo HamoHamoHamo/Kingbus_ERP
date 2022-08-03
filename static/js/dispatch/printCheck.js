@@ -1,4 +1,6 @@
 const checker = document.querySelectorAll('.contentsCell input')
+const checkAll = document.querySelector('.headerCell input')
+const check = document.querySelectorAll('.contentsCell input')
 
 
 let targetLink = ""
@@ -24,5 +26,19 @@ function getCheckerId() {
         checkerArray.push(this.parentNode.parentNode.className)
     } else {
         checkerArray = checkerArray.filter(current => current != this.parentNode.parentNode.className)
+    }
+}
+
+checkAll.addEventListener('change', checkingAll)
+
+function checkingAll() {
+    if (checkAll.checked) {
+        for (i = 0; i < check.length; i++) {
+            check[i].checked = true
+        }
+    }else{
+        for (i = 0; i < check.length; i++) {
+            check[i].checked = false
+        }
     }
 }

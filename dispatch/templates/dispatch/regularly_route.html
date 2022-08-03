@@ -494,8 +494,8 @@
                     <div class="groupFullBox">
                         <div class="groupBox">
                             <img src="{% static 'images/groupCreateArrow.png' %}" alt="">
-                            <input type="text" name="group" class="groupBoxTitle" value="{{group.name}}" disabled required>
-                            <input type="hidden" name="group_id" class="groupBoxTitle" value="{{group.id}}" disabled>
+                            <input type="text" name="group" class="groupBoxTitle" value="{{group.name}}"readonly required>
+                            <input type="hidden" name="group_id" class="groupBoxTitleHidden" value="{{group.id}}">
                             <div class="groupBoxTollCell">
                                 <div></div>
                                 <input type="submit" value="">

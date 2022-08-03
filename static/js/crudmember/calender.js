@@ -13,6 +13,7 @@ const popupContainer = document.querySelectorAll(".popupContainer")
 const sendToHiddenChecker = document.querySelector(".sendToHiddenChecker")
 const fileDeletBtn = document.querySelectorAll(".fileDeletBtn")
 
+
 let moveMonth = 0;
 let moveYear = 0;
 let defualtDate = new Date();
@@ -21,9 +22,12 @@ let fixedYear = fixedDate.getFullYear();
 let fixedMonth = fixedDate.getMonth();
 
 window.onload = () => {
+
     let date = new Date();
     let url = window.location.search
     let cutUrl = url.split('=');
+
+
     if (window.location.search == "") {
         createCalender(date);
     } else {
@@ -38,19 +42,22 @@ window.onload = () => {
         moveYear = date.getFullYear() - new Date().getFullYear()
         createCalender(date);
     }
+
+
     const dispatchCellOrder = document.querySelectorAll(".dispatchCellOrder")
     const dispatchCellRegularly = document.querySelectorAll(".dispatchCellRegularly")
     const dispatchCellOrderCount = document.querySelectorAll(".dispatchCellOrder div:nth-child(2)")
     const dispatchCellRegularlyCount = document.querySelectorAll(".dispatchCellRegularly div:nth-child(2)")
     const orderLink = document.querySelectorAll(".orderLink")
     const regularlyLink = document.querySelectorAll(".regularlyLink")
+
+
     for (i = 0; i < totalBusCnt.length; i++) {
         let linkDate = i
-        orderLink[i].classList.add("blockLink")
-        regularlyLink[i].classList.add("blockLink")
+        dispatchCellOrderCount[i].innerText = `${curBusCnt[i]}/${totalBusCnt[i]}`
+        dispatchCellRegularlyCount[i].innerText = `${r_curBusCnt[i]}/${r_totalBusCnt[i]}`
         if (totalBusCnt[i] > curBusCnt[i]) {
             dispatchCellOrder[i].classList.add("dispatchCellInclude")
-            dispatchCellOrderCount[i].innerText = `${curBusCnt[i]}/${totalBusCnt[i]}`
             let linkMonth = date.getMonth()
             if (String(linkMonth).length == 1) {
                 linkMonth = `0${date.getMonth() + 1}`
@@ -64,11 +71,9 @@ window.onload = () => {
             }
 
             orderLink[i].href = `http://kingbuserp.link/dispatch/order?route=&customer=&start_date=${date.getFullYear()}-${linkMonth}-${linkDate}&end_date=${date.getFullYear()}-${linkMonth}-${linkDate}`
-            orderLink[i].classList.remove("blockLink")
         }
         if (r_totalBusCnt[i] > r_curBusCnt[i]) {
             dispatchCellRegularly[i].classList.add("dispatchCellInclude")
-            dispatchCellRegularlyCount[i].innerText = `${r_curBusCnt[i]}/${r_totalBusCnt[i]}`
             let linkMonth = date.getMonth()
             if (String(linkMonth).length == 1) {
                 linkMonth = `0${date.getMonth() + 1}`
@@ -81,7 +86,6 @@ window.onload = () => {
                 linkDate = i + 1
             }
             regularlyLink[i].href = `http://kingbuserp.link/dispatch/regularly?group=&route=&date=${date.getFullYear()}-${linkMonth}-${linkDate}`
-            regularlyLink[i].classList.remove("blockLink")
         }
     }
 }
@@ -93,9 +97,9 @@ function prevMonth() {
     let date = new Date();
     let newDate = new Date(date.setMonth(date.getMonth() + moveMonth))
     newDate = new Date(date.setFullYear(date.getFullYear() + moveYear))
-    if(newDate.getMonth() == 0){
+    if (newDate.getMonth() == 0) {
         moveYear = moveYear - 1;
-    }    
+    }
     // createCalender(newDate);
     if (String(newDate.getMonth() + 1).length == 1) {
         hiddenMonth.value = `${newDate.getFullYear()}-0${newDate.getMonth() + 1}`
@@ -112,9 +116,9 @@ function nextMonth() {
     let date = new Date();
     let newDate = new Date(date.setMonth(date.getMonth() + moveMonth))
     newDate = new Date(date.setFullYear(date.getFullYear() + moveYear))
-    if(newDate.getMonth() == 0){
+    if (newDate.getMonth() == 0) {
         moveYear = moveYear + 1;
-    }    
+    }
     // createCalender(newDate);
     if (String(newDate.getMonth() + 1).length == 1) {
         hiddenMonth.value = `${newDate.getFullYear()}-0${newDate.getMonth() + 1}`
@@ -143,6 +147,7 @@ function thisMonth() {
 
 
 function createCalender(date) {
+
     let thisYear = date.getFullYear();
     let lastMonth = date.getMonth();
     let today = date.getDate();
@@ -240,8 +245,19 @@ function createCalender(date) {
         bodyDummy += `<div class="dayBox othereMonth"><span>${afterMonthDay}</span></div>`
         afterMonthDay = afterMonthDay + 1;
     }
+
     document.querySelector(`.calenderCreteTbody`).innerHTML = bodyDummy;
     dateText.innerText = `${thisYear}년 ${lastMonth + 1}월`
+
+
+    //배차지시서 확인
+    const dispatchAlarm = document.querySelectorAll(".dispatchAlarm")
+
+    for (i = 0; i < dispatchAlarm.length; i++) {
+        if (name1[i] !== "" && name2[i] !== "") {
+            dispatchAlarm[i].style.backgroundColor = "#707070"
+        }
+    }
 }
 
 

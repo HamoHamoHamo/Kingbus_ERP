@@ -25,9 +25,9 @@
       <div class="inputCell">
         <span class="inputName">구분</span>
         <div class="radiobox">
-          <input type="radio" id="driver" value="driver" name="kinds" checked>
+          <input type="radio" id="driver" value="driver" name="kinds" {% if kinds == "driver" %}checked{% endif %}>
           <label for="driver">기사님</label>
-          <input type="radio" id="office" value="office" name="kinds">
+          <input type="radio" id="office" value="office" name="kinds" {% if kinds == "office" %}checked{% endif %}>
           <label for="office">사무실</label>
         </div>
       </div>

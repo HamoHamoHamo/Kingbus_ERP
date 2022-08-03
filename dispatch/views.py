@@ -142,7 +142,7 @@ class DocumentList(generic.ListView):
 
     def get_queryset(self):
         date = self.request.GET.get('date', TODAY)
-        order_list = DispatchOrder.objects.filter(departure_date__lte=f'{date}T24:00').filter(arrival_date__gte=f'{date}T00:00')
+        order_list = DispatchOrder.objects.prefetch_related('info_order').filter(departure_date__lte=f'{date}T24:00').filter(arrival_date__gte=f'{date}T00:00')
         return order_list
 
     def get_context_data(self, **kwargs):
@@ -178,6 +178,11 @@ class DocumentList(generic.ListView):
             time.append(f"{d_t}~{a_t}")
             # arrival_date.append(f"{a_y}.{a_m}.{a_d} {a_w} {a_t}")
 
+        connect_list = []
+        for order in context['order_list']:
+            connect_list.append(order.info_order.all())
+        print("CONNETCTT", connect_list)
+        context['connect_list'] = connect_list
         context['departure_date'] = departure_date
         context['num_days'] = num_days
         context['time'] = time
@@ -410,9 +415,9 @@ def regularly_order_edit(request):
             group = get_object_or_404(RegularlyGroup, pk=request.POST.get('group'))
             week = ' '.join(request.POST.getlist('week', None))
         
-            if datetime.strptime(request.POST.get('contract_start_date'), FORMAT) > datetime.strptime(request.POST.get('contract_end_date'), FORMAT):
-                #raise BadRequest('출발일이 도착일보다 늦습니다.')
-                raise Http404
+            # if datetime.strptime(request.POST.get('contract_start_date'), FORMAT) > datetime.strptime(request.POST.get('contract_end_date'), FORMAT):
+            #     #raise BadRequest('출발일이 도착일보다 늦습니다.')
+            #     raise Http404
             route_name = order_form.cleaned_data['departure'] + " ▶ " + order_form.cleaned_data['arrival']
             
             order.references = order_form.cleaned_data['references']
@@ -441,7 +446,7 @@ def regularly_order_edit(request):
         else: 
             raise Http404
     else:
-        raise Http404
+        return HttpResponseNotAllowed(['post'])
 
 def regularly_order_delete(request):
     if request.method == "POST":
@@ -453,7 +458,7 @@ def regularly_order_delete(request):
             order.delete()
         return redirect(request.META.get('HTTP_REFERER', 'redirect_if_referer_not_found'))
     else:
-        raise Http404
+        return HttpResponseNotAllowed(['post'])
 
 def regularly_group_create(request):
     if request.method == "POST":
@@ -734,7 +739,7 @@ def order_edit(request):
         else:
             raise Http404
     else:
-        raise Http404
+        return HttpResponseNotAllowed(['post'])
 
 def order_delete(request):
     if request.method == "POST":

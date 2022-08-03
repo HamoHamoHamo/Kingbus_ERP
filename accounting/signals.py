@@ -12,7 +12,7 @@ def create_additional(sender, instance, created, **kwargs):
     additional = salary.additional_salary.all()
     total_additional = 0
     for a in additional:
-        total_additional += a.price
+        total_additional += int(a.price)
     salary.additional = total_additional
-    salary.total = salary.attendance + salary.leave + salary.order + salary.additional
+    salary.total = int(salary.attendance) + int(salary.leave) + int(salary.order) + int(salary.additional)
     salary.save()

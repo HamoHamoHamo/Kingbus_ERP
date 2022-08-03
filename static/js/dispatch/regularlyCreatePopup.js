@@ -23,6 +23,9 @@ const regularyCreatePopupTbody = document.querySelector(".regularyCreatePopupTbo
 const dispatchList = document.querySelectorAll(".regularyCreatePopupTbody td:nth-child(1)")
 const thisTr = document.querySelectorAll(".tableBody tr")
 const filterDate = document.querySelector(".dateFilterBox input")
+const GoToWork = document.querySelectorAll(".GoToWork")
+const work = document.querySelectorAll(".work")
+const backToHome = document.querySelectorAll(".backToHome")
 
 
 
@@ -105,7 +108,9 @@ for (i = 0; i < regularlyDispatchBtn.length; i++) {
 }
 
 function openRegularlyDispatch() {
+
   popupAreaModules.style.display = "block"
+
   //배차 불가차량 판별
   let departureTime = ""
   let arrivalTime = ""
@@ -120,7 +125,9 @@ function openRegularlyDispatch() {
 
     }
   }
+
   let = keyArray = Object.keys(vehicleConnect)
+
   //차량
   for (i = 0; i < dispatchList.length; i++) {
     dispatchList[i].style.pointerEvents = "auto"
@@ -143,6 +150,7 @@ function openRegularlyDispatch() {
       }
     }
   }
+
   //기존 배차차량 띄우기
   dispatchHidden.value = this.parentNode.className;
   for (i = 0; i < connectData[this.parentNode.className].length; i++) {
@@ -166,6 +174,22 @@ function openRegularlyDispatch() {
         newInput.setAttribute("class", `vehicle${this.id}`);
         regularyCreatePopupResult.appendChild(newInput);
       }
+    }
+  }
+
+  //빈 배차 색 없애기
+  for(i=0; i<GoToWork.length; i++){
+    if(GoToWork[i].innerText == "0"){
+      GoToWork[i].style.backgroundColor = "white"
+      GoToWork[i].innerText = ""
+    }
+    if(work[i].innerText == "0"){
+      work[i].style.backgroundColor = "white"
+      work[i].innerText = ""
+    }
+    if(backToHome[i].innerText == "0"){
+      backToHome[i].style.backgroundColor = "white"
+      backToHome[i].innerText = ""
     }
   }
 }
@@ -240,3 +264,5 @@ routePopupCloseBtn.addEventListener("click", closedRoutePopup)
 function closedRoutePopup() {
   popupAreaModulesRoute.style.display = "none"
 }
+
+

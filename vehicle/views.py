@@ -289,7 +289,7 @@ class VehicleMgmt(generic.ListView):
         c_next_month = datetime.strptime(TODAY, FORMAT) - relativedelta(months=11)
         c_next_month = c_next_month.strftime(FORMAT)
         
-        context['check_list'] = context['vehicle_list'].filter(check_duration__lte=c_next_month).order_by('check_duration')
+        context['check_list'] = context['vehicle_list'].exclude(check_duration='').filter(check_duration__lte=c_next_month).order_by('check_duration')
         
         duration = []
         expire = []

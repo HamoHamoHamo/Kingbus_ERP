@@ -26,6 +26,8 @@ const hrID = document.querySelector(".hrID")
 const hrPW = document.querySelector(".hrPW")
 const editPopupContainer = document.querySelector(".editPopupContainer")
 const btnModulesCreate = document.querySelector(".btnModulesCreate")
+const PopupDataInputLicense = document.querySelector(".PopupDataInputLicense")
+const hrRoleSelect = document.querySelector(".hrRole")
 
 
 
@@ -49,6 +51,11 @@ function openDetailPopup() {
   hrAddress.value = regDatas[this.className].address;
   hrID.value = regDatas[this.className].id
   sendToHidden.value = this.parentNode.className;
+  if(hrRoleSelect.options[hrRoleSelect.selectedIndex].text ==  "운전원"){
+    hrLicense.parentNode.style.visibility = "visible"
+  }else{
+    hrLicense.parentNode.style.visibility = "hidden"
+  }
 }
 
 
@@ -187,4 +194,24 @@ function id_overlap_check_hr() {
       // ajax 처리가 결과가 에러이면 전송 여부는 false // 앞서 초기값을 false로 해 놓았지만 한번 더 선언을 한다.
     }
   });
+}
+
+
+//원전원 이외에 면허번호 가림
+PopupDataInputWork.addEventListener('change', showLicense)
+hrRoleSelect.addEventListener('change', showLicenseEdit)
+
+function showLicense(){
+  if(PopupDataInputWork.options[PopupDataInputWork.selectedIndex].text ==  "운전원"){
+    PopupDataInputLicense.parentNode.style.visibility = "visible"
+  }else{
+    PopupDataInputLicense.parentNode.style.visibility = "hidden"
+  }
+}
+function showLicenseEdit(){
+  if(hrRoleSelect.options[hrRoleSelect.selectedIndex].text ==  "운전원"){
+    hrLicense.parentNode.style.visibility = "visible"
+  }else{
+    hrLicense.parentNode.style.visibility = "hidden"
+  }
 }
