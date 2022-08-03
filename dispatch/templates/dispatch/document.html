@@ -60,11 +60,12 @@
                         </td>
                         <td>{{order.route}}</td>
                         <td>
-                            <span>이도울(1111)</span>
-                            <span>이도울(1111)</span>
-                            <span>이도울(1111)</span>
-                            <span>이도울(1111)</span>
-                            <span>이도울(1111)</span>
+                            {% with connect=connect_list|index:forloop.counter0 %}
+                            {% for c in connect %}
+                            <span>{{c.driver_id.name}}({{c.bus_id.vehicle_num}})</span>
+                            
+                            {% endfor %}
+                            {% endwith %}
                         </td>
                         <td>{{order.bus_cnt}}대</td>
                         <td>

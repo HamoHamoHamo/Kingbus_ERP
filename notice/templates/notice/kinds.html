@@ -97,7 +97,8 @@
         {% endif %}
       </div>
       <div class="btnBox">
-        <a href="{% url 'notice:create' %}">
+        {% if kinds == "office" %}<a href="{% url 'notice:create' %}?kinds=office">
+        {% else %} <a href="{% url 'notice:create' %}?kinds=driver"> {% endif %}
           <div class="createBtn">등록</div>
         </a>
       </div>

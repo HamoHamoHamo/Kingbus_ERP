@@ -220,6 +220,10 @@ td:nth-child(9) {
     width: 100%;
 }
 
+.PopupDataCellLicense{
+    visibility: hidden;
+}
+
 .PopupDataTitle {
     font-size: 1.4rem;
     color: #7A7A7A;

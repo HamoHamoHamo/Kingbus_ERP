@@ -204,7 +204,7 @@
   },
   {% endfor %}
   {% for vehicle in check_list %}
-  {
+  ,{
     type: '차량정비',
       num : '{{vehicle.vehicle_num}}',
         duration: '{{duration|index:forloop.counter0}} ~ {{expire|index:forloop.counter0}}'

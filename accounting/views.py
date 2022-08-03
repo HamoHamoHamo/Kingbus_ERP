@@ -157,19 +157,18 @@ def salary_create(request):
             creator = get_object_or_404(Member, pk=request.session.get('user'))
             member = get_object_or_404(Member, pk=request.POST.get('member_id'))
             month = additional_form.cleaned_data['date'][:7]
+            date = additional_form.cleaned_data['date']
             try:
                 salary = Salary.objects.filter(member_id=member).get(month=month)
                 
-                try:
-                    additional = AdditionalSalary.objects.filter(member_id=member).get(date=additional_form.cleaned_data['date'])
-                    
-                    salary.additional = salary.additional - additional.price + int(additional_form.cleaned_data['price'])
-                    additional.delete()
-                except Exception as e:
-                    salary.additional = salary.additional + int(additional_form.cleaned_data['price'])
-                
-            except Exception as e:
-                print(e)
+                additional = AdditionalSalary.objects.filter(member_id=member).get(date=date)
+
+                salary.additional = int(salary.additional) - int(additional.price) + int(additional_form.cleaned_data['price'])
+                additional.delete()
+            except AdditionalSalary.DoesNotExist:
+                salary.additional = int(salary.additional) + int(additional_form.cleaned_data['price'])
+
+            except Salary.DoesNotExist:
                 salary = Salary(
                     member_id = member,
                     attendance=0,
@@ -181,6 +180,7 @@ def salary_create(request):
                     month=month,
                     creator=creator,
                 )
+
             salary.save()
             
             additional_salary = additional_form.save(commit=False)

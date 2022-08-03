@@ -77,6 +77,7 @@ class NoticeKindsView(generic.ListView):
 def create(request):
     context={
         'name': get_object_or_404(Member, pk=request.session.get('user')).name,
+        'kinds': request.GET.get('kinds')
         }
     if request.method == "GET":
         

@@ -753,13 +753,15 @@ td:nth-child(8) {
 }
 
 .groupBoxTitle {
-  width: 63.5rem;
+  width: 61rem;
   border: none;
+  outline: none;
   font-family: 'Noto Sans CJK KR';
   font-weight: normal;
   color: #191919;
   margin-left: 2rem;
   background-color: white;
+  cursor: pointer;
 }
 
 .groupBoxTollCell {

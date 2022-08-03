@@ -48,6 +48,9 @@ const dispatchList = document.querySelectorAll(".regularyCreatePopupTbody td:nth
 const orderDispatchDiv = document.querySelectorAll(".orderDispatchDiv")
 const bus_count = document.querySelectorAll(".tableCellScroll td:nth-child(2)")
 const popupContainer = document.querySelector(".popupContainer")
+const GoToWork = document.querySelectorAll(".GoToWork")
+const work = document.querySelectorAll(".work")
+const backToHome = document.querySelectorAll(".backToHome")
 
 
 /*배차등록 추가/삭제 */
@@ -139,7 +142,6 @@ function openRegularlyDispatch() {
   let departureTimeCheck = ""
   let arrivalTimeCheck = ""
   let cantDispatch = 0
-  console.log(thisTr)
   for (i = 0; i < thisTr.length; i++) {
     if (thisTr[i].className == this.parentNode.className) {
       departureTime = regDatas[thisTr[i].childNodes[5].className.substr(10,)].departure_date.replace(/-|T|:|\s/g, "")
@@ -195,6 +197,21 @@ function openRegularlyDispatch() {
     }
   }
 
+  //빈 배차 색 없애기
+  for(i=0; i<GoToWork.length; i++){
+    if(GoToWork[i].innerText == "0"){
+      GoToWork[i].style.backgroundColor = "white"
+      GoToWork[i].innerText = ""
+    }
+    if(work[i].innerText == "0"){
+      work[i].style.backgroundColor = "white"
+      work[i].innerText = ""
+    }
+    if(backToHome[i].innerText == "0"){
+      backToHome[i].style.backgroundColor = "white"
+      backToHome[i].innerText = ""
+    }
+  }
 }
 
 
@@ -247,10 +264,7 @@ for (i = 0; i < orderRouteDetail.length; i++) {
 }
 
 function openOrderDetail() {
-  console.log(routeOrderDeparture.value)
   popupAreaModulesOrderRoute.style.display = 'block'
-  console.log(regDatas[this.className.substr(10,)].departure_date)
-  console.log(this.className)
   orderDispatchData[0].innerText = regDatas[this.className.substr(10,)].departure;
   orderDispatchData[1].innerText = regDatas[this.className.substr(10,)].bus_cnt;
   orderDispatchData[2].innerText = regDatas[this.className.substr(10,)].arrival;
@@ -268,8 +282,6 @@ function openOrderDetail() {
   orderDispatchData[14].innerText = regDatas[this.className.substr(10,)].bill_date;
   orderDispatchData[15].innerText = regDatas[this.className.substr(10,)].collection_type;
   orderDispatchData[16].innerText = regDatas[this.className.substr(10,)].driver_allowance;
-  console.log(regDatas[this.className.substr(10,)])
-  console.log(regDatas[this.className.substr(10,)].payment_method)
   if (regDatas[this.className.substr(10,)].payment_method == 'y') {
     orderDispatchData[17].innerText = '선지급'
   } else {

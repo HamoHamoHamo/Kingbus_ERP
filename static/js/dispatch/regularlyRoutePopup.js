@@ -42,9 +42,12 @@ const editIcon = document.querySelectorAll(".groupBoxTollCell div")
 const deletIcon = document.querySelectorAll(".groupBoxTollCell input")
 const createGroupDataArea = document.querySelector(".createGroupDataArea")
 const groupBoxTitle = document.querySelectorAll(".groupBoxTitle")
+const groupBoxTitleHidden = document.querySelectorAll(".groupBoxTitleHidden")
 const groupCheck = document.querySelectorAll(".tableBody td:nth-child(1) input")
 const groupListForm = document.querySelector(".groupListForm")
 
+
+let editOpenCount = true
 
 
 /*노선상세 */
@@ -187,16 +190,23 @@ groupMenagementBtn.addEventListener('click', openGroupMenagement)
 groupCretetCloseBtn.addEventListener('click', closeGroupMenagement)
 
 function openGroupMenagement() {
+  editOpenCount = true
   popupAreaModulesGroupCreate.style.display = "flex"
 }
 
 function closeGroupMenagement() {
   popupAreaModulesGroupCreate.style.display = "none"
   for (i = 0; i < groupBoxTitle.length; i++) {
-    console.log(groupBoxTitle[i])
     groupBoxTitle[i].style.border = 0;
-    groupBoxTitle[i].disabled = true;
+    groupBoxTitle[i].style.cursor = "pointer";
+    groupBoxTitle[i].style.outline = "none";
+    groupBoxTitle[i].readOnly = true
   }
+  for (i = 0; i < groupBox.length; i++) {
+    groupBoxImg[i].style.transform = 'rotate(0deg)'
+    groupDepth2[i].style.height = '0';
+  }
+  openCount = -1;
 }
 
 
@@ -211,6 +221,7 @@ groupMenagementCloseBtn.addEventListener('click', closeRouteCreate)
 
 function openRouteCreate() {
   popupAreaModulesRouteCreate.style.display = "flex"
+  editOpenCount = true
 }
 
 function closeRouteCreate() {
@@ -251,28 +262,32 @@ function changeAllCheck() {
 
 
 /*그룹관리 그룹내 노선*/
+
 for (i = 0; i < groupBoxImg.length; i++) {
   groupBoxImg[i].addEventListener('click', openGroupInside)
+  groupBoxTitle[i].addEventListener('click', openGroupInside)
 }
 
 let openCount = -1;
 
 function openGroupInside() {
-  if (openCount !== Array.from(groupBox).indexOf(this.parentNode)) {
-    for (i = 0; i < groupBox.length; i++) {
-      groupBoxImg[i].style.transform = 'rotate(0deg)'
-      groupDepth2[i].style.height = '0';
+  console.log(editOpenCount)
+  if (editOpenCount) {
+    if (openCount !== Array.from(groupBox).indexOf(this.parentNode)) {
+      for (i = 0; i < groupBox.length; i++) {
+        groupBoxImg[i].style.transform = 'rotate(0deg)'
+        groupDepth2[i].style.height = '0';
+      }
+      this.parentNode.querySelector("img").style.transform = 'rotate(180deg)'
+      this.parentNode.parentNode.querySelector('.groupDepth2').style.height = 'auto';
+      openCount = Array.from(groupBox).indexOf(this.parentNode);
+    } else {
+      for (i = 0; i < groupBox.length; i++) {
+        groupBoxImg[i].style.transform = 'rotate(0deg)'
+        groupDepth2[i].style.height = '0';
+      }
+      openCount = -1;
     }
-    this.style.transform = 'rotate(180deg)'
-    this.parentNode.parentNode.querySelector('.groupDepth2').style.height = 'auto';
-    openCount = Array.from(groupBox).indexOf(this.parentNode);
-  } else {
-    for (i = 0; i < groupBox.length; i++) {
-      console.log(groupBox[openCount].parentNode.parentNode.querySelector('.groupDepth2'))
-      groupBoxImg[i].style.transform = 'rotate(0deg)'
-      groupDepth2[i].style.height = '0';
-    }
-    openCount = -1;
   }
 }
 
@@ -288,8 +303,10 @@ for (i = 0; i < editIcon.length; i++) {
 }
 
 function ableToSave() {
-  this.parentNode.parentNode.querySelectorAll('.groupBoxTitle')[0].disabled = false;
-  this.parentNode.parentNode.querySelectorAll('.groupBoxTitle')[1].disabled = false;
+  editOpenCount = false
+  this.parentNode.parentNode.querySelectorAll('.groupBoxTitle')[0].removeAttribute("readonly")
+  this.parentNode.parentNode.querySelectorAll('.groupBoxTitle')[0].style.cursor = "Auto";
+  this.parentNode.parentNode.querySelectorAll('.groupBoxTitle')[0].style.outline = "inherit";
   this.parentNode.parentNode.querySelector('.groupBoxTitle').style.border = '0.1rem solid #191919';
   createGroupDataArea.querySelector('form:nth-child(2)').action = '/dispatch/regularly/group/edit'
   submit = true;
@@ -301,7 +318,7 @@ for (i = 0; i < deletIcon.length; i++) {
 }
 
 function deletGroup() {
-  this.parentNode.parentNode.querySelectorAll('.groupBoxTitle')[1].disabled = false;
+  this.parentNode.parentNode.querySelectorAll('.groupBoxTitleHidden').disabled = false;
   createGroupDataArea.querySelector('form:nth-child(2)').action = '/dispatch/regularly/group/delete'
   submit = true;
   deleteOrSave = 1;
@@ -381,7 +398,7 @@ routePopupPhoneNumber[1].addEventListener('change', callchecker)
 
 function callchecker() {
   let checkerCall = /^[0~9]+$/
-    if (!checkerCall.routePopupPhoneNumber[1].value) {
-      alert('숫자와 "-"만 입력 가능합니다.')
-    }
+  if (!checkerCall.routePopupPhoneNumber[1].value) {
+    alert('숫자와 "-"만 입력 가능합니다.')
+  }
 }
