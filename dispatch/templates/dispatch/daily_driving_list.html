@@ -61,8 +61,8 @@
                         <td>
                             {% for con in connect %}
                                 {% if forloop.counter != 1 %},{% endif %}
-                                {% if date != con.departure_date|slice:":10" %} {% endif %}
-                                ({{con.departure_date|slice:"11:"}}) [{{con.order_id.departure}} ▶ {{con.order_id.arrival}}]
+                                {% if date != con.departure_date|slice:":10" %}연속{% else %}({{con.departure_date|slice:"11:"}}){% endif %} [{{con.order_id.departure}} ▶ {{con.order_id.arrival}}]
+                                
                                 {% if con.order_id.references %} -- ({{con.order_id.references}}) {% endif %}
                             {% endfor %}
                         </td>

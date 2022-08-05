@@ -5,6 +5,7 @@ const sideMenuNav2 = document.querySelectorAll(".sideMenuNav2")
 const nav1Box = document.querySelectorAll(".nav1Box")
 
 let overlapCount = 111;
+let navOpenCount = false;
 
 for (i = 0; i < 5; i++) {
   nav1BoxMenuHaveDepth2[i].addEventListener("click", openSideNav)
@@ -15,12 +16,13 @@ function openSideNav() {
     sideMenuNav2Box[i].style.height = "0";
     sideMenuNav2[i].style.height = "0"
     sideNavControll[i].style.transform = "rotate(0deg)"
-    nav1Box[i].style.backgroundColor = "transparent";
+    nav1Box[i].style.backgroundColor = "#1C1A4E";
   }
   if (overlapCount == Array.from(nav1BoxMenuHaveDepth2).indexOf(this)) {
     sideMenuNav2Box[Array.from(nav1BoxMenuHaveDepth2).indexOf(this)].style.height = "0";
     sideMenuNav2[Array.from(nav1BoxMenuHaveDepth2).indexOf(this)].style.height = "0"
     overlapCount = 111;
+    navOpenCount = false;
   } else {
     switch (Array.from(nav1BoxMenuHaveDepth2).indexOf(this)) {
       case 0:
@@ -45,7 +47,27 @@ function openSideNav() {
         break;
     }
     sideNavControll[Array.from(nav1BoxMenuHaveDepth2).indexOf(this)].style.transform = "rotate(180deg)"
-    nav1Box[parseInt(`${Array.from(nav1BoxMenuHaveDepth2).indexOf(this)}`)+1].style.backgroundColor = "#19173B";
+    nav1Box[parseInt(`${Array.from(nav1BoxMenuHaveDepth2).indexOf(this)}`) + 1].style.backgroundColor = "#19173B";
     overlapCount = Array.from(nav1BoxMenuHaveDepth2).indexOf(this);
+    navOpenCount = true;
+  }
+}
+
+
+//hover 색 변화
+for (i = 0; i < nav1Box.length; i++) {
+  nav1Box[i].addEventListener('mouseover', bgThis)
+  nav1Box[i].addEventListener('mouseout', bgNotThis)
+}
+
+function bgThis() {
+  if (!navOpenCount) {
+    this.style.backgroundColor = "#19173B"
+  }
+}
+
+function bgNotThis() {
+  if (!navOpenCount) {
+    this.style.backgroundColor = "#1C1A4E"
   }
 }

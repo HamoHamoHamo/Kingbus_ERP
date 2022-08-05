@@ -52,5 +52,7 @@ class LoginCheckMiddleware(object):
             #return redirect('crudmember:login')
         # Code to be executed for each request/response after
         # the view is called.
-
+        
+        # if request.session.authority > 2 and (request.path.startswith("/dispatch") or request.path.startswith('/HR') or request.path.startswith('')):
+        # print("TEST", request.path)
         return response

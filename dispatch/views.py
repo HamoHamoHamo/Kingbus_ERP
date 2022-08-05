@@ -6,6 +6,7 @@ from django.views import generic
 
 from .forms import OrderForm, ConnectForm, RegularlyForm
 from .models import DispatchCheck, DispatchOrderConnect, DispatchOrder, DispatchRegularly, RegularlyGroup, DispatchRegularlyConnect
+from accounting.models import Salary
 from humanresource.models import Member
 from vehicle.models import Vehicle
 
@@ -15,6 +16,7 @@ from datetime import datetime, timedelta, date
 TODAY = str(datetime.now())[:10]
 FORMAT = "%Y-%m-%d"
 WEEK = ['(월)', '(화)', '(수)', '(목)', '(금)', '(토)', '(일)', ]
+WEEK2 = ['월', '화', '수', '목', '금', '토', '일', ]
 
 def calendar_create(request):
     if request.method == "POST":
@@ -199,20 +201,27 @@ class RegularlyDispatchList(generic.ListView):
     def get_queryset(self):
         group = self.request.GET.get('group', '')
         route = self.request.GET.get('route', '')
+        date = self.request.GET.get('date', TODAY)
+
+        weekday = WEEK2[datetime.strptime(date, FORMAT).weekday()]
         
+        print("VVVVVV", weekday)
+
         dispatch_list = []
         group_data = None
         if route or group:
             if group:
                 group_data = RegularlyGroup.objects.get(name=group)
-                dispatch_list = group_data.regularly_info.all()
+                dispatch_list = group_data.regularly_info.filter(week__contains=weekday)
             if route:
                 if group_data:
                     dispatch_list = group_data.regularly_info.filter(route__contains=route)
                 else:
-                    dispatch_list = DispatchRegularly.objects.filter(route__contains=route)
+                    dispatch_list = DispatchRegularly.objects.filter(week__contains=weekday).filter(route__contains=route)
         else:
-            dispatch_list = DispatchRegularly.objects.all().order_by('group', 'number')
+            dispatch_list = DispatchRegularly.objects.filter(week__contains=weekday).order_by('group', 'number')
+
+            print("AAAA", dispatch_list)
         return dispatch_list
 
 
@@ -234,12 +243,12 @@ class RegularlyDispatchList(generic.ListView):
         
         #페이징 끝
         
-        group_name = self.request.GET.get('group', '')
-        route_name = self.request.GET.get('route', '')
+        group = self.request.GET.get('group', '')
+        route = self.request.GET.get('route', '')
         date = self.request.GET.get('date', TODAY)
         context['group_list'] = RegularlyGroup.objects.all()
-        context['group_name'] = group_name
-        context['route_name'] = route_name
+        context['group'] = group
+        context['route'] = route
         context['date'] = date
 
         vehicle_list = Vehicle.objects.prefetch_related('info_regulary_bus_id', 'info_bus_id').filter(use='y')
@@ -278,6 +287,9 @@ class RegularlyDispatchList(generic.ListView):
         for order in context['order_list']:
             bus_cnt_list.append(order.info_regularly.filter(departure_date__startswith=date).count())
         context['bus_cnt_list'] = bus_cnt_list
+
+
+
         return context
 
 def regularly_connect_create(request):
@@ -291,6 +303,7 @@ def regularly_connect_create(request):
         connect.delete()
 
         for bus in bus_list:
+            
             vehicle = Vehicle.objects.get(id=bus)
             r_connect = DispatchRegularlyConnect(
                 regularly_id = order,
@@ -303,6 +316,7 @@ def regularly_connect_create(request):
                 creator = creator
             )
             r_connect.save()
+            
 
         return redirect(request.META.get('HTTP_REFERER', 'redirect_if_referer_not_found'))
     else:
@@ -322,12 +336,12 @@ class RegularlyRouteList(generic.ListView):
         if route or group:
             if group:
                 group_data = RegularlyGroup.objects.get(name=group)
-                dispatch_list = group_data.regularly_info.all()
+                dispatch_list = group_data.regularly_info.all().order_by('group', 'number')
             if route:
                 if group_data:
-                    dispatch_list = group_data.regularly_info.filter(route__contains=route)
+                    dispatch_list = group_data.regularly_info.filter(route__contains=route).order_by('group', 'number')
                 else:
-                    dispatch_list = DispatchRegularly.objects.filter(route__contains=route)
+                    dispatch_list = DispatchRegularly.objects.filter(route__contains=route).order_by('group', 'number')
         else:
             dispatch_list = DispatchRegularly.objects.all().order_by('group', 'number')
         return dispatch_list
@@ -392,6 +406,8 @@ def regularly_order_create(request):
             # regularly.save()
             
             order = order_form.save(commit=False)
+            order.price = int(order_form.cleaned_data['price'].replace(',',''))
+            order.driver_allowance = int(order_form.cleaned_data['driver_allowance'].replace(',',''))
             order.week = week
             order.creator = creator
             order.group = regularly_group
@@ -427,8 +443,8 @@ def regularly_order_edit(request):
             order.arrival_time = order_form.cleaned_data['arrival_time']
             order.bus_type = order_form.cleaned_data['bus_type']
             order.bus_cnt = order_form.cleaned_data['bus_cnt']
-            order.price = order_form.cleaned_data['price']
-            order.driver_allowance = order_form.cleaned_data['driver_allowance']
+            order.price = int(order_form.cleaned_data['price'].replace(',',''))
+            order.driver_allowance = int(order_form.cleaned_data['driver_allowance'].replace(',',''))
             order.number = order_form.cleaned_data['number']
             order.customer = order_form.cleaned_data['customer']
             order.customer_phone = order_form.cleaned_data['customer_phone']
@@ -608,6 +624,10 @@ class OrderList(generic.ListView):
         context['order_cnt'] = order_cnt
         context['vehicle_list'] = vehicle_list
 
+        print("et", r_enter_cnt)
+        print("lt", r_leave_cnt)
+        print("ot", order_cnt)
+
         connect_list = []
         min_date = f'{start_date_old}T23:59'
         max_date = f'{end_date_old}T00:00'
@@ -680,6 +700,8 @@ def order_create(request):
                 raise Http404
 
             order = order_form.save(commit=False)
+            order.price = int(order_form.cleaned_data['price'].replace(',',''))
+            order.driver_allowance = int(order_form.cleaned_data['driver_allowance'].replace(',',''))
             order.VAT = request.POST.get('VAT', 'n')
             order.payment_method = request.POST.get('payment_method', 'n')
             order.creator = creator
@@ -708,7 +730,6 @@ def order_edit(request):
             if datetime.strptime(post_departure_date, format) > datetime.strptime(post_arrival_date, format):
                 print("term begin > term end")
                 raise Http404
-
             order.operation_type = order_form.cleaned_data['operation_type']
             order.references = order_form.cleaned_data['references']
             order.departure = order_form.cleaned_data['departure']
@@ -717,8 +738,8 @@ def order_edit(request):
             order.arrival_date = order_form.cleaned_data['arrival_date']
             order.bus_type = order_form.cleaned_data['bus_type']
             order.bus_cnt = order_form.cleaned_data['bus_cnt']
-            order.price = order_form.cleaned_data['price']
-            order.driver_allowance = order_form.cleaned_data['driver_allowance']
+            order.price = int(order_form.cleaned_data['price'].replace(',',''))
+            order.driver_allowance = int(order_form.cleaned_data['driver_allowance'].replace(',',''))
             order.contract_status = order_form.cleaned_data['contract_status']
             order.cost_type = order_form.cleaned_data['cost_type']
             order.customer = order_form.cleaned_data['customer']
@@ -866,6 +887,8 @@ def daily_driving_print(request):
     context['e_order_list'] = []
     context['c_order_list'] = []
     context['cnt'] = len(id_list)
+    context['date'] = date
+
     for id in id_list:
         if id and date:
             vehicle = get_object_or_404(Vehicle, id=id)

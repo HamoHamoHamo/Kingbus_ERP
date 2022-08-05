@@ -69,11 +69,36 @@ window.onload = () => {
             } else {
                 linkDate = i + 1
             }
-
+            orderLink[i].href = `http://kingbuserp.link/dispatch/order?route=&customer=&start_date=${date.getFullYear()}-${linkMonth}-${linkDate}&end_date=${date.getFullYear()}-${linkMonth}-${linkDate}`
+        } else {
+            let linkMonth = date.getMonth()
+            if (String(linkMonth).length == 1) {
+                linkMonth = `0${date.getMonth() + 1}`
+            } else {
+                linkMonth = date.getMonth() + 1
+            }
+            if (linkDate < 9) {
+                linkDate = `0${i + 1}`
+            } else {
+                linkDate = i + 1
+            }
             orderLink[i].href = `http://kingbuserp.link/dispatch/order?route=&customer=&start_date=${date.getFullYear()}-${linkMonth}-${linkDate}&end_date=${date.getFullYear()}-${linkMonth}-${linkDate}`
         }
         if (r_totalBusCnt[i] > r_curBusCnt[i]) {
             dispatchCellRegularly[i].classList.add("dispatchCellInclude")
+            let linkMonth = date.getMonth()
+            if (String(linkMonth).length == 1) {
+                linkMonth = `0${date.getMonth() + 1}`
+            } else {
+                linkMonth = date.getMonth() + 1
+            }
+            if (linkDate < 9) {
+                linkDate = `0${i + 1}`
+            } else {
+                linkDate = i + 1
+            }
+            regularlyLink[i].href = `http://kingbuserp.link/dispatch/regularly?group=&route=&date=${date.getFullYear()}-${linkMonth}-${linkDate}`
+        } else {
             let linkMonth = date.getMonth()
             if (String(linkMonth).length == 1) {
                 linkMonth = `0${date.getMonth() + 1}`

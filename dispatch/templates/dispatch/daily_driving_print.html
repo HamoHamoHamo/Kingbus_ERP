@@ -167,7 +167,9 @@
 
                 {% if order %}
                 <div class="orderCell">
-                    <div class="tableFirst">{{order.departure_date|slice:"10:"}}</div>
+                    {% with departure_date=order.departure_date|slice:":10" %}
+                    <div class="tableFirst">{% if date != departure_date %}연속{% else %}{{order.departure_date|slice:"11:"}}{% endif %}</div>
+                    {% endwith %}
                     <div class="tableContents">{{order.order_id.departure}} ▶ {{order.order_id.arrival}}</div>
                     <div class="tableContents">{{order.order_id.references}}</div>
                     <div class="tableContents">({{order.order_id.customer}}){{order.order_id.customer_phone}}</div>

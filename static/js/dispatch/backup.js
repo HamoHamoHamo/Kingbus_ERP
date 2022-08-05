@@ -19,13 +19,15 @@ const dispatchCloseBtn = document.querySelector(".regularyCreatePopupBtnBox div:
 const popupContainer = document.querySelector(".popupContainer")
 const routePopupData = document.querySelectorAll(".routePopupData")
 const dispatchHidden = document.querySelector(".dispatchHidden")
-const regularyCreatePopupTbody = document.querySelector(".regularyCreatePopupTbody td")
+const regularyCreatePopupTbody = document.querySelector(".regularyCreatePopupTbody")
 const dispatchList = document.querySelectorAll(".regularyCreatePopupTbody td:nth-child(1)")
 const thisTr = document.querySelectorAll(".tableBody tr")
 const filterDate = document.querySelector(".dateFilterBox input")
 const GoToWork = document.querySelectorAll(".GoToWork")
 const work = document.querySelectorAll(".work")
 const backToHome = document.querySelectorAll(".backToHome")
+
+
 
 
 

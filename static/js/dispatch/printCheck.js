@@ -35,10 +35,12 @@ function checkingAll() {
     if (checkAll.checked) {
         for (i = 0; i < check.length; i++) {
             check[i].checked = true
+            checkerArray.push( check[i].parentNode.parentNode.className)
         }
     }else{
         for (i = 0; i < check.length; i++) {
             check[i].checked = false
+            checkerArray = checkerArray.filter(current => current != check[i].parentNode.parentNode.className)
         }
     }
 }

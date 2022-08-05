@@ -234,7 +234,6 @@ def signup(request):
 
         return render(request, 'crudmember/signup.html', {
             'form': form,
-            'test': "asdfasdasdfasf",
         })
 
     elif request.method == 'POST':
@@ -291,6 +290,18 @@ def login(request):
         if check_password(login_password, user.password):
             request.session['user'] = user.id
             request.session['name'] = user.name
+            if user.role == '관리자':
+                authority = 0
+            elif user.role == '경리관리자':
+                authority = 1
+            elif user.role == '배차관리자':
+                authority = 2
+            elif user.role == '팀장':
+                authority = 3
+            elif user.role == '운전원':
+                authority = 4
+            
+            request.session['authority'] = authority
             # request.session['login_time'] = str(datetime.now())[:16]
             # request.session['today'] = str(datetime.now())[:10]
             #세션 만료시간 설정 0을 넣으면 브라우져 닫을시 세션 쿠키 삭제 + DB만료기간 14일

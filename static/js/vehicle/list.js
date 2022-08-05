@@ -31,6 +31,8 @@ const fileBox2 = document.querySelector("#insuranceFile")
 const fileNameBox = document.querySelectorAll(".fileNameBox")
 const sendToHidden = document.querySelector(".sendToHidden")
 const fileDeletBtn = document.querySelectorAll(".fileDeletBtn")
+const addUnit1 = document.querySelectorAll(".tableBody td:nth-child(5)")
+const addUnit2 = document.querySelectorAll(".tableBody td:nth-child(6)")
 
 
 //등록팝업 열기
@@ -185,4 +187,19 @@ function deletFile1() {
 
 function deletFile2() {
   fileNameBox[1].value = ""
+}
+
+
+
+
+// , 추가, 단위추가
+window.onload = function () {
+  for (i = 0; i < addUnit1.length; i++) {
+      if (addUnit1[i].innerText !== "") {
+          addUnit1[i].innerText = `${addUnit1[i].innerText}명`
+      }
+      if (addUnit2[i].innerText !== "") {
+          addUnit2[i].innerText = `${addUnit2[i].innerText}년`
+      }
+  }
 }

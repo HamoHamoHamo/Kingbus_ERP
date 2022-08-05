@@ -12,6 +12,8 @@ const fileNameBox = document.querySelector(".fileNameBox")
 const fileDeletBtn = document.querySelector(".fileDeletBtn")
 const sendToHidden = document.querySelectorAll(".sendToHidden")
 const insuranceFile = document.querySelector("#insuranceFile")
+const roundUnit = document.querySelectorAll(".insuranceTable td:nth-child(3)")
+const priceUnit = document.querySelectorAll(".insuranceTable td:nth-child(4)")
 
 
 //보험 수정창 열기
@@ -72,3 +74,18 @@ insuranceFile.addEventListener("change", changeFile)
 function changeFile(){
     fileNameBox.value = insuranceFile.files[0].name
 }
+
+
+
+
+// , 추가, 단위추가
+window.onload = function () {
+    for (i = 0; i < roundUnit.length; i++) {
+        if (roundUnit[i].innerText !== "") {
+            roundUnit[i].innerText = `${roundUnit[i].innerText}회차`
+        }
+        if (priceUnit[i].innerText !== "") {
+            priceUnit[i].innerText = `${priceUnit[i].innerText.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}원`
+        }
+    }
+  }

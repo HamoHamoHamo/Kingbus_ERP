@@ -260,6 +260,7 @@
 .regularyCreatePopupThead tr td {
     display: flex;
     justify-content: center;
+    align-items: center;
     width: calc((100% - 1.8rem)/2);
 }
 
@@ -353,6 +354,7 @@
     background-color: #0A39A5;
     color: white;
   }
+
 
 .regularyCreatePopupResult {
     display: flex;

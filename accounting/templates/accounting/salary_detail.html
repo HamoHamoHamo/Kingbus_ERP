@@ -77,9 +77,18 @@
                         {% endif %}
                     </td>
                     <td>{{i}}</td>
-                    <td>{% if e_order_list_d|index:forloop.counter0 and e_order_list_a|index:forloop.counter0 %} {{e_order_list_d|index:forloop.counter0}} ▶ {{e_order_list_a|index:forloop.counter0}} {% endif %}</td>
-                    <td>{% if c_order_list_d|index:forloop.counter0 and c_order_list_a|index:forloop.counter0 %} {{c_order_list_d|index:forloop.counter0}} ▶ {{c_order_list_a|index:forloop.counter0}} {% endif %}</td>
-                    <td>{% if order_list_d|index:forloop.counter0 and order_list_a|index:forloop.counter0 %} {{order_list_d|index:forloop.counter0}} ▶ {{order_list_a|index:forloop.counter0}} {% endif %}</td>
+                    <td>
+                        {% if e_order_list_d|index:forloop.counter0 and e_order_list_a|index:forloop.counter0 %} {{e_order_list_d|index:forloop.counter0|truncatewords:2}} ▶<br>
+                        {{e_order_list_a|index:forloop.counter0|truncatewords:2}} {% endif %}
+                    </td>
+                    <td>
+                        {% if c_order_list_d|index:forloop.counter0 and c_order_list_a|index:forloop.counter0 %} {{c_order_list_d|index:forloop.counter0|truncatewords:2}} ▶<br>
+                        {{c_order_list_a|index:forloop.counter0|truncatewords:2}} {% endif %}
+                    </td>
+                    <td>
+                        {% if order_list_d|index:forloop.counter0 and order_list_a|index:forloop.counter0 %} {{order_list_d|index:forloop.counter0|truncatewords:2}} ▶<br>
+                        {{order_list_a|index:forloop.counter0|truncatewords:2}} {% endif %}
+                    </td>
                     <td>{% if e_order_list|index:forloop.counter0 != 0 %} {{e_order_list|index:forloop.counter0}} {% endif %}</td>
                     <td>{% if c_order_list|index:forloop.counter0 != 0 %} {{c_order_list|index:forloop.counter0}} {% endif %}</td>
                     <td>{% if order_list|index:forloop.counter0 != 0 %} {{order_list|index:forloop.counter0}} {% endif %}</td>
@@ -89,6 +98,19 @@
                 </tr>
                 {% endfor %}
             </tbody>
+        </table>
+        <table class="detailTotal">
+            <tr>
+                <td>합계</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
         </table>
 
         <div class="btnAreaBox">
@@ -144,7 +166,7 @@
             <div class="PopupDataCell">
                 <span class="PopupDataTitle">금액</span>
                 <div class="priceBox">
-                    <input name="price" type="text" class="PopupDataInput">
+                    <input name="price" type="text" class="PopupDataInput PopupDataInputCeratePrice">
                 </div>
             </div>
             <div class="PopupDataCell">

@@ -6,6 +6,8 @@ const popupCloseBtn = document.querySelectorAll(".PopupBtnBox div")
 const checkBox = document.querySelectorAll(".tableBody td:nth-child(1) input")
 const hrMemberListForm = document.querySelector(".hrMemberListForm")
 const editMember = document.querySelectorAll(".tableBody td:nth-child(2)")
+const phoneNum = document.querySelectorAll(".tableBody td:nth-child(7)")
+const birthday = document.querySelectorAll(".tableBody td:nth-child(8)")
 const hrName = document.querySelector(".hrName")
 const hrRole = document.querySelectorAll(".hrRole option")
 const hrEntering = document.querySelector(".hrEntering")
@@ -51,9 +53,9 @@ function openDetailPopup() {
   hrAddress.value = regDatas[this.className].address;
   hrID.value = regDatas[this.className].id
   sendToHidden.value = this.parentNode.className;
-  if(hrRoleSelect.options[hrRoleSelect.selectedIndex].text ==  "운전원"){
+  if (hrRoleSelect.options[hrRoleSelect.selectedIndex].text == "운전원") {
     hrLicense.parentNode.style.visibility = "visible"
-  }else{
+  } else {
     hrLicense.parentNode.style.visibility = "hidden"
   }
 }
@@ -110,6 +112,8 @@ for (i = 0; i < popupBgModules.length; i++) {
 SidemenuUseClose.addEventListener("click", closePopup)
 
 function closePopup() {
+  idCheckCount = false
+  createID.removeAttribute("check_result")
   for (i = 0; i < popupAreaModules.length; i++) {
     popupAreaModules[i].style.display = "none"
   }
@@ -201,17 +205,25 @@ function id_overlap_check_hr() {
 PopupDataInputWork.addEventListener('change', showLicense)
 hrRoleSelect.addEventListener('change', showLicenseEdit)
 
-function showLicense(){
-  if(PopupDataInputWork.options[PopupDataInputWork.selectedIndex].text ==  "운전원"){
+function showLicense() {
+  if (PopupDataInputWork.options[PopupDataInputWork.selectedIndex].text == "운전원") {
     PopupDataInputLicense.parentNode.style.visibility = "visible"
-  }else{
+  } else {
     PopupDataInputLicense.parentNode.style.visibility = "hidden"
   }
 }
-function showLicenseEdit(){
-  if(hrRoleSelect.options[hrRoleSelect.selectedIndex].text ==  "운전원"){
+function showLicenseEdit() {
+  if (hrRoleSelect.options[hrRoleSelect.selectedIndex].text == "운전원") {
     hrLicense.parentNode.style.visibility = "visible"
-  }else{
+  } else {
     hrLicense.parentNode.style.visibility = "hidden"
+  }
+}
+
+
+window.onload = function () {
+  for (i = 0; i < phoneNum.length; i++) {
+    phoneNum[i].innerText = phoneNum[i].innerText.replace(/^(\d{2,3})(\d{3,4})(\d{4})$/, `$1-$2-$3`)
+    birthday[i].innerText = birthday[i].innerText.replace(/^(\d{4})(\d{2})(\d{2})$/, `$1-$2-$3`)
   }
 }

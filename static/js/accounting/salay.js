@@ -11,6 +11,12 @@ const popupEntering = document.querySelector(".popupEntering")
 const popupContainer = document.querySelector(".popupContainer")
 const popupSelectOp = document.querySelectorAll(".popupSelect option")
 const popupDate = document.querySelectorAll(".PopupDataInput")
+const addComma1 = document.querySelectorAll(".tableBody td:nth-child(3)")
+const addComma2 = document.querySelectorAll(".tableBody td:nth-child(4)")
+const addComma3 = document.querySelectorAll(".tableBody td:nth-child(5)")
+const addComma4 = document.querySelectorAll(".tableBody td:nth-child(6)")
+const addComma5 = document.querySelectorAll(".tableBody td:nth-child(7)")
+const PopupDataInputPrice = document.querySelector(".PopupDataInputPrice")
 
 
 let selectingName = popupSelect.value
@@ -77,3 +83,24 @@ function createSalay(e) {
         e.preventDefault()
       }
 }
+
+
+// , 추가
+PopupDataInputPrice.addEventListener('change', addComma)
+
+function addComma(){
+    this.value = this.value.replace(/\,/g,"")
+    this.value = this.value.replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+}
+
+
+// , 추가, 단위추가
+window.onload = function () {
+    for (i = 0; i < addComma1.length; i++) {
+      addComma1[i].innerText = `${addComma1[i].innerText.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}원`
+      addComma2[i].innerText = `${addComma2[i].innerText.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}원`
+      addComma3[i].innerText = `${addComma3[i].innerText.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}원`
+      addComma4[i].innerText = `${addComma4[i].innerText.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}원`
+      addComma5[i].innerText = `${addComma5[i].innerText.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}원`
+    }
+  }

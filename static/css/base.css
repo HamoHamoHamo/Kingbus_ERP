@@ -109,10 +109,6 @@ html::-webkit-scrollbar-track {
   padding: 0 2rem 0 3rem;
 }
 
-.nav1Box:hover {
-  background-color: #19173B;
-}
-
 .nav1BoxMenu {
   display: flex;
   align-items: center;
