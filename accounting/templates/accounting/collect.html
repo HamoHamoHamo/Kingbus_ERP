@@ -69,7 +69,7 @@
                         </td>
                         <td>
                             <div>{{order.customer}}</div>
-                            <div>{{order.customer_phone}}</div>
+                            <div class="phoneNum">{{order.customer_phone}}</div>
                         </td>
                         <td>{{order.price}}</td>
                         <td>{{order.deposit_status}}</td>
@@ -118,7 +118,7 @@
             <div class="PopupDataCell">
                 <span class="PopupDataTitle">입력자</span>
                 <div class="dateBox">
-                    <input name="collection_creator" type="text" class="PopupDataInput PopupDataInputEditer">
+                    <div class="PopupData">{{ request.session.name }}</div>
                 </div>
             </div>
             <div class="PopupDataCell">

@@ -65,7 +65,8 @@
 table tr {
     display: flex;
     width: 100%;
-    height: 3.2rem;
+    min-height: 3.2rem;
+    height: auto;
     border-bottom: 0.1rem solid #CDCDCE;
 }
 
@@ -108,10 +109,10 @@ tbody {
 }
 
 td {
-    width: calc(48% / 5);
+    width: calc(52% / 5);
 }
 
-.tableBody td:nth-child(12){
+.tableBody td:nth-child(12) {
     color: #0069D9;
     cursor: pointer;
 }
@@ -254,4 +255,37 @@ td:nth-child(5) {
 .editBtn {
     background-color: #0069D9;
     margin: 1rem;
+}
+
+.detailTotal {
+    width: 100%;
+    height: 3.6rem;
+    border: 0.1rem solid #CDCDCE;
+    border-radius: 0.3rem;
+    margin-top: 2rem;
+    border-spacing: 0;
+}
+
+.detailTotal tr {
+    border: none;
+    min-height: 0;
+    height: 100%;
+}
+
+.detailTotal td {
+    display: flex;
+    align-items: center;
+    width: calc(52% / 5);
+    font-size: 1.6rem;
+}
+
+.detailTotal td:nth-child(1) {
+    width: 7%;
+    background-color: #EFEFEF;
+}
+
+.detailTotal td:nth-child(2),
+.detailTotal td:nth-child(3),
+.detailTotal td:nth-child(4) {
+    width: 15%
 }

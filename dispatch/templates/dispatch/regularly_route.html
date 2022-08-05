@@ -282,7 +282,7 @@
             </div>
             <div class="routePopupDataCell">
                 <span class="routePopupDataTitle">기사수당</span>
-                <input name="driver_allowance" type="number" class="routePopupDataDriverPay" required>
+                <input name="driver_allowance" type="text" class="routePopupDataDriverPay" required>
             </div>
             <div class="routePopupDataCell">
                 <span class="routePopupDataTitle">버스종류</span>
@@ -315,7 +315,7 @@
             </div>
             <div class="routePopupDataCell">
                 <span class="routePopupDataTitle">계약금액</span>
-                <input name="price" type="number" class="routePopupDataContractAmount">
+                <input name="price" type="text" class="routePopupDataContractAmount">
             </div>
             <div class="routePopupDataCell">
                 <span class="routePopupDataTitle">계약기간</span>
@@ -378,7 +378,7 @@
             </div>
             <div class="routePopupDataCell">
                 <span class="routePopupDataTitle">순번</span>
-                <input type="text" class="routePopupDataDriverPay" name="number" required>
+                <input type="text" class="routePopupDataDriverNumber" name="number" required>
             </div>
             <div class="routePopupDataCell">
                 <span class="routePopupDataTitle">운행요일</span>
@@ -407,7 +407,7 @@
             </div>
             <div class="routePopupDataCell">
                 <span class="routePopupDataTitle">기사수당</span>
-                <input type="number" class="routePopupDataDriverPay" name="driver_allowance" required>
+                <input type="text" class="routePopupDataDriverPay" name="driver_allowance" required>
             </div>
             <div class="routePopupDataCell">
                 <span class="routePopupDataTitle">버스종류</span>
@@ -441,7 +441,7 @@
             </div>
             <div class="routePopupDataCell">
                 <span class="routePopupDataTitle">계약금액</span>
-                <input type="number" class="routePopupDataContractAmount" name="price">
+                <input type="text" class="routePopupDataContractAmount" name="price">
             </div>
             <div class="routePopupDataCell">
                 <span class="routePopupDataTitle">계약기간</span>
@@ -477,7 +477,7 @@
     <div class="popupBgModulesRoute"></div>
 
     <div class="popupContainerRoute">
-        <div class="routePopupTitle">그룹생성</div>
+        <div class="routePopupTitle">그룹관리</div>
         <div class="routePopupDataArea createGroupDataArea">
             <form method="post" action="{% url 'dispatch:regularly_group_create' %}">
                 {% csrf_token %}
@@ -487,7 +487,7 @@
                     <input class="btnModules" type="submit" value="등록">
                 </div>
             </form>
-            <form action="" method="post">
+            <form action="" method="post" class="editOrDelete">
                 {% csrf_token %}
                 <div class="groupContainer">
                     {% for group in group_list %}
@@ -511,7 +511,7 @@
                 </div>
                 <div class="routePopupBtnBox">
                     <div class="btnModules groupCretetCloseBtn">닫기</div>
-                    <input type="submit" class="btnModules" value="저장">
+                    <input type="submit" class="btnModules btnModulesGroupSave" value="저장">
                 </div>
             </form>
         </div>
@@ -529,30 +529,35 @@
 
 {% block script %}
 <script>
-    let regDatas = [
+    const regDatas = [
         {% for dispatch in order_list %}
     {
         group: "{{ dispatch.group.name }}",
-            references: "{{ dispatch.references }}",
-                departure: "{{ dispatch.departure }}",
-                    arrival: "{{ dispatch.arrival }}",
-                        departure_time: "{{ dispatch.departure_time }}",
-                            arrival_time: "{{ dispatch.arrival_time }}",
-                                bus_type: "{{ dispatch.bus_type }}",
-                                    bus_cnt: "{{ dispatch.bus_cnt }}",
-                                        price: "{{ dispatch.price }}",
-                                            driver_allowance: "{{ dispatch.driver_allowance }}",
-                                                number: "{{ dispatch.number }}",
-                                                    week: "{{ dispatch.week }}",
-                                                        customer: "{{ dispatch.customer }}",
-                                                            customer_phone: "{{ dispatch.customer_phone }}",
-                                                                contract_start_date: "{{ dispatch.contract_start_date }}",
-                                                                    contract_end_date: "{{ dispatch.contract_end_date }}",
-                                                                        work_type: "{{ dispatch.work_type }}",
-                                                                            route: "{{ dispatch.route }}",
+        references: "{{ dispatch.references }}",
+        departure: "{{ dispatch.departure }}",
+        arrival: "{{ dispatch.arrival }}",
+        departure_time: "{{ dispatch.departure_time }}",
+        arrival_time: "{{ dispatch.arrival_time }}",
+        bus_type: "{{ dispatch.bus_type }}",
+        bus_cnt: "{{ dispatch.bus_cnt }}",
+        price: "{{ dispatch.price }}",
+        driver_allowance: "{{ dispatch.driver_allowance }}",
+        number: "{{ dispatch.number }}",
+        week: "{{ dispatch.week }}",
+        customer: "{{ dispatch.customer }}",
+        customer_phone: "{{ dispatch.customer_phone }}",
+        contract_start_date: "{{ dispatch.contract_start_date }}",
+        contract_end_date: "{{ dispatch.contract_end_date }}",
+        work_type: "{{ dispatch.work_type }}",
+        route: "{{ dispatch.route }}",
         },
     {% endfor %}
     ]
+    const groupList = []
+    {% for group in group_list %}
+        groupList.push('{{group.name}}')
+    {% endfor %}
+    console.log("GROUP", groupList)
 </script>
 <script src="{% static 'js/dispatch/regularlyRoutePopup.js' %}"></script>
 {% endblock %}

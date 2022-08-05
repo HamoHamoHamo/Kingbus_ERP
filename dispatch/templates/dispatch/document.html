@@ -58,7 +58,10 @@
                             {{ departure_date|index:forloop.counter0 }}<br>
                             {% if num_days|index:forloop.counter0 %} {{num_days|index:forloop.counter0}}일 {% endif %}[{{ time|index:forloop.counter0 }}]
                         </td>
-                        <td>{{order.route}}</td>
+                        <td>
+                            {{order.departure}}▶<br>
+                            {{order.arrival}}
+                        </td>
                         <td>
                             {% with connect=connect_list|index:forloop.counter0 %}
                             {% for c in connect %}

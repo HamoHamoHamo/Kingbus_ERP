@@ -264,7 +264,13 @@
   <script src="{% static 'js/sideNavMenu.js' %}"></script>
   <script src="{% static 'js/profile.js' %}"></script>
   <script src="{% static 'js/accountPopup.js' %}"></script>
+  <script src="{% static 'js/authority.js' %}"></script>
   {% block script %}{% endblock %}
+  <script>
+    const authority = {{request.session.authority}}
+    console.log(authority)
+  </script>
 </body>
 
 </html>
+

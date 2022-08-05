@@ -38,7 +38,7 @@ const routeOrderDriverAllowance = document.querySelector(".routeOrderDriverAllow
 const routeOrderPaymentMethod = document.querySelector(".routeOrderPaymentMethod input")
 const routeOrderVat = document.querySelector(".routeOrderVat input")
 const sendToHidden = document.querySelector(".sendToHidden")
-const groupCheck = document.querySelectorAll(".tableBody td:nth-child(1) input")
+const groupCheck = document.querySelectorAll(".tableCell tbody td:nth-child(1) input")
 const dispatchListForm = document.querySelector(".dispatchListForm")
 const dispatchHidden = document.querySelector(".dispatchHidden")
 const dispatchNum = document.querySelectorAll(".orderDispatch div span")
@@ -51,6 +51,9 @@ const popupContainer = document.querySelector(".popupContainer")
 const GoToWork = document.querySelectorAll(".GoToWork")
 const work = document.querySelectorAll(".work")
 const backToHome = document.querySelectorAll(".backToHome")
+const orderPopupDataDriverAllowance = document.querySelector(".orderPopupDataDriverAllowance")
+const orderPopupDataPrice = document.querySelector(".orderPopupDataPrice")
+const dateSetting = document.querySelectorAll(".dateFilterBox input")
 
 
 /*배차등록 추가/삭제 */
@@ -198,18 +201,27 @@ function openRegularlyDispatch() {
   }
 
   //빈 배차 색 없애기
-  for(i=0; i<GoToWork.length; i++){
-    if(GoToWork[i].innerText == "0"){
+  for (i = 0; i < GoToWork.length; i++) {
+    if (GoToWork[i].innerText == "0") {
       GoToWork[i].style.backgroundColor = "white"
       GoToWork[i].innerText = ""
     }
-    if(work[i].innerText == "0"){
+    if (work[i].innerText == "0") {
       work[i].style.backgroundColor = "white"
       work[i].innerText = ""
     }
-    if(backToHome[i].innerText == "0"){
+    if (backToHome[i].innerText == "0") {
       backToHome[i].style.backgroundColor = "white"
       backToHome[i].innerText = ""
+    }
+  }
+
+  //날짜가 기간으로 설정 될 경우
+  if (dateSetting[0].value !== dateSetting[1].value) {
+    for (i = 0; i < GoToWork.length; i++) {
+      GoToWork[i].style.backgroundColor = "#707070"
+      work[i].style.backgroundColor = "#707070"
+      backToHome[i].style.backgroundColor = "#707070"
     }
   }
 }
@@ -266,7 +278,7 @@ for (i = 0; i < orderRouteDetail.length; i++) {
 function openOrderDetail() {
   popupAreaModulesOrderRoute.style.display = 'block'
   orderDispatchData[0].innerText = regDatas[this.className.substr(10,)].departure;
-  orderDispatchData[1].innerText = regDatas[this.className.substr(10,)].bus_cnt;
+  orderDispatchData[1].innerText = `${regDatas[this.className.substr(10,)].bus_cnt}대`;
   orderDispatchData[2].innerText = regDatas[this.className.substr(10,)].arrival;
   orderDispatchData[3].innerText = regDatas[this.className.substr(10,)].bus_type;
   orderDispatchData[4].innerText = regDatas[this.className.substr(10,)].operation_type;
@@ -275,13 +287,13 @@ function openOrderDetail() {
   orderDispatchData[7].innerText = regDatas[this.className.substr(10,)].cost_type;
   orderDispatchData[8].innerText = regDatas[this.className.substr(10,)].references;
   orderDispatchData[9].innerText = regDatas[this.className.substr(10,)].customer;
-  orderDispatchData[10].innerText = regDatas[this.className.substr(10,)].customer_phone;
-  orderDispatchData[11].innerText = regDatas[this.className.substr(10,)].price;
+  orderDispatchData[10].innerText = regDatas[this.className.substr(10,)].customer_phone.replace(/^(\d{2,3})(\d{3,4})(\d{4})$/, `$1-$2-$3`);
+  orderDispatchData[11].innerText = `${regDatas[this.className.substr(10,)].price.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}원`;
   orderDispatchData[12].innerText = regDatas[this.className.substr(10,)].deposit_status;
   orderDispatchData[13].innerText = regDatas[this.className.substr(10,)].deposit_date;
   orderDispatchData[14].innerText = regDatas[this.className.substr(10,)].bill_date;
   orderDispatchData[15].innerText = regDatas[this.className.substr(10,)].collection_type;
-  orderDispatchData[16].innerText = regDatas[this.className.substr(10,)].driver_allowance;
+  orderDispatchData[16].innerText = `${regDatas[this.className.substr(10,)].driver_allowance.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}원`;
   if (regDatas[this.className.substr(10,)].payment_method == 'y') {
     orderDispatchData[17].innerText = '선지급'
   } else {
@@ -301,12 +313,12 @@ function openOrderDetail() {
   routeOrderReferences.value = regDatas[this.className.substr(10,)].references;
   routeOrderCustomer.value = regDatas[this.className.substr(10,)].customer;
   routeOrderCustomerPhone.value = regDatas[this.className.substr(10,)].customer_phone;
-  routeOrderPrice.value = regDatas[this.className.substr(10,)].price;
+  routeOrderPrice.value = regDatas[this.className.substr(10,)].price.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
   routeOrderDepositStatus.value = regDatas[this.className.substr(10,)].deposit_status;
   routeOrderDepositDate.value = regDatas[this.className.substr(10,)].deposit_date;
   routeOrderBillDate.value = regDatas[this.className.substr(10,)].bill_date;
   routeOrderCollectionType.value = regDatas[this.className.substr(10,)].collection_type;
-  routeOrderDriverAllowance.value = regDatas[this.className.substr(10,)].driver_allowance;
+  routeOrderDriverAllowance.value = regDatas[this.className.substr(10,)].driver_allowance.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
   if (regDatas[this.className.substr(10,)].payment_method == 'y') {
     routeOrderPaymentMethod.checked = true;
   } else {
@@ -370,6 +382,7 @@ function checking() {
   for (i = 0; i < groupCheck.length; i++) {
     if (groupCheck[i].checked) {
       checkBoxCheking = true
+      console.log(checkBoxCheking)
     }
   }
 }
@@ -403,4 +416,31 @@ window.onload = function () {
     }
   }
   noMoreDispatch()
+}
+
+orderPopupDataDriverAllowance.addEventListener('change', addComma)
+orderPopupDataPrice.addEventListener('change', addComma)
+
+function addComma() {
+  this.value = this.value.replace(/\,/g, "")
+  this.value = this.value.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+}
+
+
+//기간 연동
+dateSetting[0].addEventListener('change', changeDate)
+
+function changeDate() {
+  dateSetting[1].value = dateSetting[0].value
+}
+
+//기간 역전 방지
+
+dateSetting[1].addEventListener('change', blockDate)
+
+function blockDate() {
+  if (dateSetting[0].value.replace(/\-/g, "") > dateSetting[1].value.replace(/\-/g, "")) {
+    alert("기간을 올바르게 설정해 주세요")
+    dateSetting[1].value = dateSetting[0].value
+  }
 }

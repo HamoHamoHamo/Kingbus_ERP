@@ -64,7 +64,8 @@ class VehicleList(generic.ListView):
 
         context['select'] = self.request.GET.get('select', '')
         context['search'] = self.request.GET.get('search', '')
-        context['driver_list'] = Member.objects.filter(role='운전원')
+        # context['driver_list'] = Member.objects.filter(role='운전원')
+        context['driver_list'] = Member.objects.filter(driver=None).filter(role='운전원')
         
         file_list = []
         for vehicle in context['vehicle_list']:
@@ -82,6 +83,7 @@ class VehicleList(generic.ListView):
                 list.append('')
             file_list.append(list)
         context['file_list'] = file_list
+        
 
         return context
 

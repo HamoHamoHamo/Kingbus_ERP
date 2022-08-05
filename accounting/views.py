@@ -158,24 +158,25 @@ def salary_create(request):
             member = get_object_or_404(Member, pk=request.POST.get('member_id'))
             month = additional_form.cleaned_data['date'][:7]
             date = additional_form.cleaned_data['date']
+            price = int(additional_form.cleaned_data['price'].replace(',',''))
             try:
                 salary = Salary.objects.filter(member_id=member).get(month=month)
                 
                 additional = AdditionalSalary.objects.filter(member_id=member).get(date=date)
 
-                salary.additional = int(salary.additional) - int(additional.price) + int(additional_form.cleaned_data['price'])
+                salary.additional = int(salary.additional) - int(additional.price) + price
                 additional.delete()
             except AdditionalSalary.DoesNotExist:
-                salary.additional = int(salary.additional) + int(additional_form.cleaned_data['price'])
-
+                salary.additional = int(salary.additional) + price
             except Salary.DoesNotExist:
+                print("Does Not Exist")
                 salary = Salary(
                     member_id = member,
                     attendance=0,
                     leave=0,
                     order=0,
-                    additional=additional_form.cleaned_data['price'],
-                    total=0,
+                    additional=price,
+                    total=price,
                     remark='',
                     month=month,
                     creator=creator,
@@ -184,12 +185,13 @@ def salary_create(request):
             salary.save()
             
             additional_salary = additional_form.save(commit=False)
+            additional_salary.price = price
             additional_salary.salary_id = salary
             additional_salary.creator = creator
             additional_salary.member_id = member
             additional_salary.save()
 
-            return redirect('accounting:salary')
+            return redirect(request.META.get('HTTP_REFERER', 'redirect_if_referer_not_found'))
         else:
             raise Http404
     else:
@@ -222,12 +224,12 @@ def salary_delete(request):
         additional_list = salary.additional_salary.all()
         total_additional = 0
         for a in additional_list:
-            total_additional += a.price
+            total_additional += int(a.price)
         salary.additional = total_additional
-        salary.total = salary.attendance + salary.leave + salary.order + salary.additional
+        salary.total = int(salary.attendance) + int(salary.leave) + int(salary.order) + int(salary.additional)
         salary.save()
 
-        return redirect('accounting:salary')
+        return redirect(request.META.get('HTTP_REFERER', 'redirect_if_referer_not_found'))
     else:
         return HttpResponseNotAllowed(['post'])
 
@@ -373,8 +375,7 @@ def collect_create(request):
     if request.method == "POST":
         id = request.POST.get('id')
         collection = get_object_or_404(DispatchOrder, id=id)
-
-        collection.collection_amount = request.POST.get('collection_amount', '')
+        collection.collection_amount = int(request.POST.get('collection_amount').replace(',',''))
         collection.collection_date = request.POST.get('collection_date', '')
         collection.collection_creator = request.POST.get('collection_creator', '')
         collection.save()

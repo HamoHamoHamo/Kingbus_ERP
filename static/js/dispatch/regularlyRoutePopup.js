@@ -26,18 +26,17 @@ const routePopupDataGroupOption = document.querySelectorAll(".routePopupDataGrou
 const routePopupDataDriveTime = document.querySelectorAll(".routePopupDataDriveTime input")
 const routePopupDataRoutName = document.querySelectorAll(".routePopupDataRoutName")
 const routePopupDataDriverNumber = document.querySelector(".routePopupDataDriverNumber")
-const routePopupDataDriverPay = document.querySelector(".routePopupDataDriverPay")
+const routePopupDataDriverPay = document.querySelectorAll(".routePopupDataDriverPay")
 const routePopupDataBusKindsOption = document.querySelectorAll(".routePopupDataBusKinds option")
 const routePopupDataBusCount = document.querySelector(".routePopupDataBusCount")
 const routePopupDataContractPeriod = document.querySelectorAll(".routePopupDataContractPeriod input")
 const routePopupDatAaccount = document.querySelector(".routePopupDatAaccount")
 const routePopupPhoneNumber = document.querySelectorAll(".routePopupPhoneNumber")
-const routePopupDataContractAmount = document.querySelector(".routePopupDataContractAmount")
+const routePopupDataContractAmount = document.querySelectorAll(".routePopupDataContractAmount")
 const routePopupWorkInput = document.querySelectorAll(".routePopupWork input")
 const routePopupWorkLabel = document.querySelector(".routePopupWork label:nth-child(2)")
 const routePopupDataReference = document.querySelector(".routePopupDataReference")
 const sendToHidden = document.querySelector(".sendToHidden")
-const deleIcon = document.querySelectorAll(".groupBoxTollCell input")
 const editIcon = document.querySelectorAll(".groupBoxTollCell div")
 const deletIcon = document.querySelectorAll(".groupBoxTollCell input")
 const createGroupDataArea = document.querySelector(".createGroupDataArea")
@@ -45,9 +44,13 @@ const groupBoxTitle = document.querySelectorAll(".groupBoxTitle")
 const groupBoxTitleHidden = document.querySelectorAll(".groupBoxTitleHidden")
 const groupCheck = document.querySelectorAll(".tableBody td:nth-child(1) input")
 const groupListForm = document.querySelector(".groupListForm")
+const btnModulesGroupSave = document.querySelector(".btnModulesGroupSave")
+const editOrDelete = document.querySelector(".editOrDelete")
 
 
 let editOpenCount = true
+let groupDelet = false
+let groupSave = false
 
 
 /*노선상세 */
@@ -62,12 +65,12 @@ function detailPopup() {
   routePopupData[3].innerText = regDatas[this.className].arrival
   routePopupData[4].innerText = regDatas[this.className].number
   routePopupData[5].innerText = regDatas[this.className].week
-  routePopupData[6].innerText = regDatas[this.className].driver_allowance
+  routePopupData[6].innerText = `${regDatas[this.className].driver_allowance.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}원`;
   routePopupData[7].innerText = regDatas[this.className].bus_type
-  routePopupData[8].innerText = regDatas[this.className].bus_cnt
+  routePopupData[8].innerText = `${regDatas[this.className].bus_cnt}대`
   routePopupData[9].innerText = regDatas[this.className].customer
   routePopupData[10].innerText = regDatas[this.className].customer_phone
-  routePopupData[11].innerText = regDatas[this.className].price
+  routePopupData[11].innerText = `${regDatas[this.className].price.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}원`;
   routePopupData[12].innerText = `${regDatas[this.className].contract_start_date}~${regDatas[this.className].contract_end_date}`
   routePopupData[13].innerText = regDatas[this.className].work_type
   routePopupData[14].innerText = regDatas[this.className].references
@@ -81,7 +84,7 @@ function detailPopup() {
   routePopupDataRoutName[0].value = regDatas[this.className].departure;
   routePopupDataRoutName[1].value = regDatas[this.className].arrival;
   routePopupDataDriverNumber.value = regDatas[this.className].number;
-  routePopupDataDriverPay.value = regDatas[this.className].driver_allowance;
+  routePopupDataDriverPay[0].value = regDatas[this.className].driver_allowance.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
   for (i = 0; i < routePopupDataBusKindsOption.length; i++) {
     if (routePopupDataBusKindsOption[i].innerText == regDatas[this.className].bus_type) {
       routePopupDataBusKindsOption[i].selected = true;
@@ -90,7 +93,7 @@ function detailPopup() {
   routePopupDataBusCount.value = regDatas[this.className].bus_cnt;
   routePopupDatAaccount.value = regDatas[this.className].customer;
   routePopupPhoneNumber[0].value = regDatas[this.className].customer_phone;
-  routePopupDataContractAmount.value = regDatas[this.className].price;
+  routePopupDataContractAmount[0].value = regDatas[this.className].price.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
   routePopupDataContractPeriod[0].value = regDatas[this.className].contract_start_date;
   routePopupDataContractPeriod[1].value = regDatas[this.className].contract_end_date;
   if (routePopupWorkLabel.innerText == regDatas[this.className].work_type) {
@@ -192,6 +195,9 @@ groupCretetCloseBtn.addEventListener('click', closeGroupMenagement)
 function openGroupMenagement() {
   editOpenCount = true
   popupAreaModulesGroupCreate.style.display = "flex"
+  for (i = 0; i < groupBoxTitle.length; i++) {
+    groupBoxTitle[i].value = `${groupList[i]}`
+  }
 }
 
 function closeGroupMenagement() {
@@ -271,7 +277,6 @@ for (i = 0; i < groupBoxImg.length; i++) {
 let openCount = -1;
 
 function openGroupInside() {
-  console.log(editOpenCount)
   if (editOpenCount) {
     if (openCount !== Array.from(groupBox).indexOf(this.parentNode)) {
       for (i = 0; i < groupBox.length; i++) {
@@ -295,8 +300,6 @@ function openGroupInside() {
 
 
 /*그룹수정*/
-let submit = false;
-let deleteOrSave = 0;
 
 for (i = 0; i < editIcon.length; i++) {
   editIcon[i].addEventListener('click', ableToSave)
@@ -309,7 +312,6 @@ function ableToSave() {
   this.parentNode.parentNode.querySelectorAll('.groupBoxTitle')[0].style.outline = "inherit";
   this.parentNode.parentNode.querySelector('.groupBoxTitle').style.border = '0.1rem solid #191919';
   createGroupDataArea.querySelector('form:nth-child(2)').action = '/dispatch/regularly/group/edit'
-  submit = true;
 }
 
 
@@ -319,24 +321,29 @@ for (i = 0; i < deletIcon.length; i++) {
 
 function deletGroup() {
   this.parentNode.parentNode.querySelectorAll('.groupBoxTitleHidden').disabled = false;
-  createGroupDataArea.querySelector('form:nth-child(2)').action = '/dispatch/regularly/group/delete'
-  submit = true;
-  deleteOrSave = 1;
+  editOrDelete.action = '/dispatch/regularly/group/delete'
+  groupSave = false
+  groupDelet = true
 }
 
 
-createGroupDataArea.querySelector('form:nth-child(2)').addEventListener('submit', saveGroup)
+btnModulesGroupSave.addEventListener('click', saveGroup)
 
-function saveGroup(event) {
-  if (!submit) {
-    event.preventDefault();
-  } else {
-    if (deleteOrSave == 1) {
-      return confirm('정말로 삭제하시겠습니까?');
+function saveGroup() {
+  editOrDelete.action = '/dispatch/regularly/group/edit'
+  groupSave = true
+  groupDelet = false
+}
+
+
+editOrDelete.addEventListener('submit', submitGroup)
+
+function submitGroup(event) {
+  if (groupDelet) {
+    if (!confirm('정말로 삭제하시겠습니까?')) {
+      event.preventDefault();
     }
   }
-  submit = false;
-  deleteOrSave = 0;
 }
 
 
@@ -401,4 +408,16 @@ function callchecker() {
   if (!checkerCall.routePopupPhoneNumber[1].value) {
     alert('숫자와 "-"만 입력 가능합니다.')
   }
+}
+
+
+
+
+// , 추가
+Array.from(routePopupDataDriverPay)[1].addEventListener('change', addComma)
+Array.from(routePopupDataContractAmount)[1].addEventListener('change', addComma)
+
+function addComma() {
+  this.value = this.value.replace(/\,/g, "")
+  this.value = this.value.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 }
