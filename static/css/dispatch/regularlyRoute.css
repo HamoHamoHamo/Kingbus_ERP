@@ -646,6 +646,12 @@ td:nth-child(8) {
   border-bottom: 0.1rem solid #191919;
 }
 
+.routePopupDataDriveDate DIV:nth-child(2){
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
 .dateArea {
   display: flex;
   justify-content: space-between;

@@ -9,7 +9,7 @@
 
 {% block content-header %}
 <div class="HeaderTitle">
-    급여관리
+    상여관리
 </div>
 {% endblock %}
 
@@ -28,7 +28,7 @@
             <input type="submit" value="검색" class="btnModules">
         </div>
     </form>
-    <div class="addSalay">급여등록</div>
+    <div class="addSalay">상여등록</div>
 </div>
 
 
@@ -100,7 +100,7 @@
     <form method="post" action="{% url 'accounting:salary_create' %}" class="popupContainer"
         enctype="multipart/form-data">
         {% csrf_token %}
-        <div class="PopupTitle">급여등록</div>
+        <div class="PopupTitle">상여등록</div>
         <div class="PopupDataArea">
             <div class="PopupDataCell">
                 <span class="PopupDataTitle">이름</span>

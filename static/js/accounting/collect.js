@@ -47,7 +47,7 @@ function openPopup() {
         PopupData[18].innerText = "x"
     }
     sendToHidden.value = this.parentNode.parentNode.className;
-    PopupDataInputPrice.value = regDatas[this.parentNode.className].collection_amount
+    PopupDataInputPrice.value = regDatas[this.parentNode.className].collection_amount.replace(/\B(?=(\d{3})+(?!\d))/g, ',')
     PopupDataInputDate.value = regDatas[this.parentNode.className].collection_date
     PopupDataInputEditer.value = regDatas[this.parentNode.className].collection_creator
 }
@@ -66,7 +66,10 @@ function closePopup() {
 // , 추가
 PopupDataInputPrice.addEventListener('change', addComma)
 
+let onlyNumber = /[^0-9]/g;
+
 function addComma(){
+    this.value = this.value.replace(onlyNumber, "")
     this.value = this.value.replace(/\,/g,"")
     this.value = this.value.replace(/\B(?=(\d{3})+(?!\d))/g, ',')
 }

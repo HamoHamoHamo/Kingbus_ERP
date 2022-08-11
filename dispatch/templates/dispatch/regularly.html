@@ -86,7 +86,7 @@
           <div class="regularlyDispatchBtn">
             {% with connect=connect_list|index:forloop.counter0 %}
               {% for c in connect %}
-                {{c.bus_id.vehicle_num}}({{c.driver_id.name}})
+              <span>{{c.bus_id.vehicle_num}}({{c.driver_id.name}})</span>                
               {% endfor %}
             {% endwith %}
           </div>

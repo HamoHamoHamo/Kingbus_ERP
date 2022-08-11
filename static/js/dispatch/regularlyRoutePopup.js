@@ -384,40 +384,67 @@ function deleteData(e) {
 //유효성 검사
 groupMenagementCreateBtn.addEventListener('click', fillchecker)
 function fillchecker(e) {
-  if (routePopupDataDriveDateCreate[0].checked || routePopupDataDriveDateCreate[1].checked || routePopupDataDriveDateCreate[2].checked || routePopupDataDriveDateCreate[3].checked || routePopupDataDriveDateCreate[4].checked || routePopupDataDriveDateCreate[5].checked || routePopupDataDriveDateCreate[6].checked || routePopupDataDriveDateCreate[7].checked) {
-
-  } else {
+  if (routePopupDataDriveDateCreate[0].checked == false && routePopupDataDriveDateCreate[1].checked == false && routePopupDataDriveDateCreate[2].checked == false && routePopupDataDriveDateCreate[3].checked == false && routePopupDataDriveDateCreate[4].checked == false && routePopupDataDriveDateCreate[5].checked == false && routePopupDataDriveDateCreate[6].checked == false && routePopupDataDriveDateCreate[7].checked == false) {
     e.preventDefault()
     alert('운행요일을 체크해 주세요')
+  } else if (routePopupDataDriveTime[2].value.replace(/\:/g, "") >= routePopupDataDriveTime[3].value.replace(/\:/g, "")) {
+    e.preventDefault()
+    alert('운행시간을 다시 확인해 주세요')
+  }else if(routePopupDataContractPeriod[2].value.replace(/\-/g, "") >= routePopupDataContractPeriod[3].value.replace(/\-/g, "") && routePopupDataContractPeriod[2].value !== "" && routePopupDataContractPeriod[3].value !== ""){
+    e.preventDefault()
+    alert('계약기간을 다시 확인해 주세요')
   }
 }
 routePopupSaveBtn.addEventListener('click', fillcheckerSave)
 function fillcheckerSave(e) {
-  if (routePopupDataDriveDateEdit[0].checked || routePopupDataDriveDateEdit[1].checked || routePopupDataDriveDateEdit[2].checked || routePopupDataDriveDateEdit[3].checked || routePopupDataDriveDateEdit[4].checked || routePopupDataDriveDateEdit[5].checked || routePopupDataDriveDateEdit[6].checked || routePopupDataDriveDateEdit[7].checked) {
-
-  } else {
+  if (routePopupDataDriveDateEdit[0].checked == false && routePopupDataDriveDateEdit[1].checked == false && routePopupDataDriveDateEdit[2].checked == false && routePopupDataDriveDateEdit[3].checked == false && routePopupDataDriveDateEdit[4].checked == false && routePopupDataDriveDateEdit[5].checked == false && routePopupDataDriveDateEdit[6].checked == false && routePopupDataDriveDateEdit[7].checked == false) {
     e.preventDefault()
     alert('운행요일을 체크해 주세요')
+    for(i=0; i<8; i++){
+      console.log(routePopupDataDriveDateEdit[i].checked)
+    }
+  } else if (routePopupDataDriveTime[0].value.replace(/\:/g, "") >= routePopupDataDriveTime[1].value.replace(/\:/g, "")) {
+    e.preventDefault()
+    alert('운행시간을 다시 확인해 주세요')
+  }else if(routePopupDataContractPeriod[0].value.replace(/\-/g, "") >= routePopupDataContractPeriod[1].value.replace(/\-/g, "") && routePopupDataContractPeriod[2].value !== "" && routePopupDataContractPeriod[3].value !== ""){
+    e.preventDefault()
+    alert('계약기간을 다시 확인해 주세요')
   }
 }
 
-routePopupPhoneNumber[1].addEventListener('change', callchecker)
-
-function callchecker() {
-  let checkerCall = /^[0~9]+$/
-  if (!checkerCall.routePopupPhoneNumber[1].value) {
-    alert('숫자와 "-"만 입력 가능합니다.')
-  }
-}
 
 
 
 
 // , 추가
+Array.from(routePopupDataDriverPay)[0].addEventListener('change', addComma)
+Array.from(routePopupDataContractAmount)[0].addEventListener('change', addComma)
 Array.from(routePopupDataDriverPay)[1].addEventListener('change', addComma)
 Array.from(routePopupDataContractAmount)[1].addEventListener('change', addComma)
+let onlyNumber = /[^0-9]/g;
 
 function addComma() {
+  this.value = this.value.replace(onlyNumber, "")
   this.value = this.value.replace(/\,/g, "")
   this.value = this.value.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+}
+
+//전화번호 유효성
+Array.from(routePopupPhoneNumber)[0].addEventListener('change', phoneNumCheckerEdit)
+Array.from(routePopupPhoneNumber)[1].addEventListener('change', phoneNumChecker)
+
+function phoneNumChecker(){
+  this.value = this.value.replace(onlyNumber, "")
+  if(this.value.length <= 8 || this.value.length >= 12){
+    alert("형식에 맞지않는 전화번호 입니다.")
+    this.value = ""
+  }
+  this.value = this.value.replace(/^(\d{2,3})(\d{3,4})(\d{4})$/, `$1-$2-$3`)
+}
+function phoneNumCheckerEdit(){
+  this.value = this.value.replace(onlyNumber, "")
+  if(this.value.length <= 8 || this.value.length >= 12){
+    alert("형식에 맞지않는 전화번호 입니다.")
+  }
+  this.value = this.value.replace(/^(\d{2,3})(\d{3,4})(\d{4})$/, `$1-$2-$3`)
 }

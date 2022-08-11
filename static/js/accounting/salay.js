@@ -43,8 +43,6 @@ function closePopup() {
 }
 
 //급여등록 입사일자
-
-
 popupSelect.addEventListener('change', showEnteringDate)
 
 function showEnteringDate() {
@@ -88,7 +86,10 @@ function createSalay(e) {
 // , 추가
 PopupDataInputPrice.addEventListener('change', addComma)
 
+let onlyNumber = /[^0-9]/g;
+
 function addComma(){
+    this.value = this.value.replace(onlyNumber, "")
     this.value = this.value.replace(/\,/g,"")
     this.value = this.value.replace(/\B(?=(\d{3})+(?!\d))/g, ',')
 }

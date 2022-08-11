@@ -272,7 +272,7 @@
 
 .regularyCreatePopupTbodyBoxing {
     width: 100%;
-    height: calc(100% - 27.7rem);
+    height: calc(100% - 14.7rem);
     border-bottom: 0.1rem solid #191919;
     overflow-y: scroll;
 }
@@ -354,57 +354,6 @@
     background-color: #0A39A5;
     color: white;
   }
-
-
-.regularyCreatePopupResult {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    height: 12rem;
-    padding: 0 1.8rem;
-    margin-bottom: 1rem;
-    border-bottom: 0.1rem solid #191919;
-    box-sizing: border-box;
-    overflow-y: scroll;
-}
-
-.regularyCreatePopupResult::-webkit-scrollbar {
-    width: 0.6rem;
-}
-
-.regularyCreatePopupResult::-webkit-scrollbar-thumb {
-    height: 17%;
-    background-color: #828282;
-    border-radius: 10px;
-}
-
-.regularyCreatePopupResult::-webkit-scrollbar-track {
-    background-color: #F5F5F5;
-}
-
-.regularyCreatePopupResult div:nth-child(1) {
-    margin-top: 0.6rem;
-}
-
-.regularyCreatePopupResult div {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    height: 2.6rem;
-    text-align: center;
-    padding: 0.4rem 0;
-    border-radius: 0.2rem;
-    background-color: #0069D9;
-    box-sizing: border-box;
-    font-size: 1.4rem;
-    color: white;
-    margin-bottom: 0.6rem;
-    outline: none;
-    border: none;
-}
 
 
 .regularyCreatePopupBtnBox {
