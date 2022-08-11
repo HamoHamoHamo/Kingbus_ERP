@@ -17,6 +17,7 @@ urlpatterns = [
     path('order/create', views.order_connect_create, name="order_connect_create"),
     path('order/route/create', views.order_create, name="order_create"),
     path('order/route/edit', views.order_edit, name="order_edit"),
+    path('order/route/edit/check', views.order_edit_check, name="order_edit_check"),
     path('order/route/delete', views.order_delete, name="order_delete"),
     path('schedule', views.ScheduleList.as_view(), name="schedule"),
     path('document', views.DocumentList.as_view(), name="document"),

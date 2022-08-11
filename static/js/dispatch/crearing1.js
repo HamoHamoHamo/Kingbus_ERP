@@ -31,7 +31,6 @@ let needStart = ""
 let needEnd = ""
 let useDriver = ""
 let addDispatchBtn = ""
-let addDispatchTime = ""
 let addDispatchChecker = 0
 let overBusCount = true
 let busCount = ""
@@ -66,15 +65,14 @@ function openPopup() {
   for (i = 0; i < thisTr.length; i++) {
     if (thisTr[i].classList.contains(`${saveClass}`)) {
       addDispatchBtn = thisTr[i].children[7].children[0]
-      addDispatchTime = thisTr[i].children[7].children[0].parentNode.parentNode.children[3].innerText
     }
   }
-  needStart = addDispatchTime.split("~")[0].replace(/\ |:/g, "")
-  needEnd = addDispatchTime.split("~")[1].replace(/\ |:/g, "")
+  needStart = addDispatchBtn.parentNode.parentNode.children[3].innerText.split("~")[0].replace(/\ |:/g, "")
+  needEnd = addDispatchBtn.parentNode.parentNode.children[3].innerText.split("~")[1].replace(/\ |:/g, "")
   for (i = 0; i < dispatchList.length; i++) {
     if (!(vehicleConnect[Object.keys(vehicleConnect)[i]] == "")) {
-      if (!(vehicleConnect[Object.keys(vehicleConnect)[i]][0][1].substr(11, 5).replace(/\:/g, "") < needStart) &&
-        !(vehicleConnect[Object.keys(vehicleConnect)[i]][0][0].substr(11, 5).replace(/\:/g, "") > needEnd)) {
+      if (vehicleConnect[Object.keys(vehicleConnect)[i]][0][1].substr(11, 5).replace(/\:/g, "") >= needStart ||
+        vehicleConnect[Object.keys(vehicleConnect)[i]][0][0].substr(11, 5).replace(/\:/g, "") <= needEnd) {
         for (j = 0; j < dispatchBoxList.length; j++) {
           if (dispatchBoxList[j].classList.contains(`${Object.keys(vehicleConnect)[i]}`)) {
             dispatchBoxList[j].children[0].style.backgroundColor = "grey"
@@ -176,12 +174,12 @@ function pickDispatch() {
   } else {
     overBusCount = true
   }
-  for (i = 0; i < thisTr.length; i++) {
-    if (thisTr[i].classList.contains(`${dispatchHidden.value}`)) {
+  for(i=0; i<thisTr.length; i++){
+    if(thisTr[i].classList.contains(`${dispatchHidden.value}`)){
       thisTr[i].children[6].innerText = `${addDispatchChecker}/${thisTr[i].children[6].innerText.split("/")[1]}`
     }
   }
-
+  
 }
 
 

@@ -33,6 +33,8 @@ const sendToHidden = document.querySelector(".sendToHidden")
 const fileDeletBtn = document.querySelectorAll(".fileDeletBtn")
 const addUnit1 = document.querySelectorAll(".tableBody td:nth-child(5)")
 const addUnit2 = document.querySelectorAll(".tableBody td:nth-child(6)")
+const PopupDataInput = document.querySelectorAll(".PopupDataInput")
+const createBtn = document.querySelector(".createBtn")
 
 
 //등록팝업 열기
@@ -201,5 +203,27 @@ window.onload = function () {
       if (addUnit2[i].innerText !== "") {
           addUnit2[i].innerText = `${addUnit2[i].innerText}년`
       }
+  }
+}
+
+//차량번호, 연식
+PopupDataInput[1].addEventListener('change', busNumChecker)
+PopupDataInput[7].addEventListener('change', yearChecker)
+
+function busNumChecker(){
+  if(this.value.length >= 5){
+    this.value = this.value.substr(0,4)
+  }else if(this.value.length <= 3){
+    alert("4자리의 숫자를 입력해 주세요.")
+  }
+}
+function yearChecker(){
+  if(this.value.length >= 5){
+    this.value = this.value.substr(0,4)
+  }else if(this.value.length <= 3){
+    alert("4자리의 숫자를 입력해 주세요.")
+  }else if(this.value.substr(2,) !== 19 && this.value.substr(2,) !== 20){
+    alert("올바른 연도를 입력해 주세요")
+    this.value = ""
   }
 }

@@ -39,8 +39,6 @@ openCrete.addEventListener("click", openCreatePopup)
 
 function openCreatePopup() {
     popupAreaModules[0].style.display = "block"
-    createBtn.style.display = "flex"
-    editBtn.style.display = "none"
 }
 
 
@@ -183,6 +181,7 @@ window.onload = function () {
             addComma5[i].innerText = `${addComma5[i].innerText.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}원`
         }
     }
+
     //합계 계산
     let getTotal1Count = "0"
     let getTotal2Count = "0"
@@ -192,30 +191,30 @@ window.onload = function () {
     let addComma3Total = "0"
     let addComma4Total = "0"
     let addComma5Total = "0"
-    for(i=0; i<getTotal1.length; i++){
-        if(getTotal1[i].innerText !== ""){
+    for (i = 0; i < getTotal1.length; i++) {
+        if (getTotal1[i].innerText !== "") {
             getTotal1Count = parseInt(getTotal1Count) + 1;
         }
-        if(getTotal2[i].innerText !== ""){
+        if (getTotal2[i].innerText !== "") {
             getTotal2Count = parseInt(getTotal2Count) + 1;
         }
-        if(getTotal3[i].innerText !== ""){
+        if (getTotal3[i].innerText !== "") {
             getTotal3Count = parseInt(getTotal3Count) + 1;
         }
-        if(addComma1[i].innerText !== ""){
+        if (addComma1[i].innerText !== "") {
             addComma1Total = parseInt(addComma1Total) + parseInt(addComma1[i].innerText.replace(/[ㄱ-ㅎㅏ-ㅣ가-힣\,]/g, ""))
         }
-        if(addComma2[i].innerText !== ""){
+        if (addComma2[i].innerText !== "") {
             addComma2Total = parseInt(addComma2Total) + parseInt(addComma2[i].innerText.replace(/[ㄱ-ㅎㅏ-ㅣ가-힣\,]/g, ""))
         }
-        if(addComma3[i].innerText !== ""){
+        if (addComma3[i].innerText !== "") {
             addComma3Total = parseInt(addComma3Total) + parseInt(addComma3[i].innerText.replace(/[ㄱ-ㅎㅏ-ㅣ가-힣\,]/g, ""))
             console.log(addComma3Total)
         }
-        if(addComma4[i].innerText !== ""){
+        if (addComma4[i].innerText !== "") {
             addComma4Total = parseInt(addComma4Total) + parseInt(addComma4[i].innerText.replace(/[ㄱ-ㅎㅏ-ㅣ가-힣\,]/g, ""))
         }
-        if(addComma5[i].innerText !== "0원"){
+        if (addComma5[i].innerText !== "0원") {
             addComma5Total = parseInt(addComma5Total) + parseInt(addComma5[i].innerText.replace(/[ㄱ-ㅎㅏ-ㅣ가-힣\,]/g, ""))
         }
     }
@@ -226,7 +225,25 @@ window.onload = function () {
     detailTotal[5].innerText = `${String(addComma2Total).replace(/\B(?=(\d{3})+(?!\d))/g, ',')}원`
     detailTotal[6].innerText = `${String(addComma3Total).replace(/\B(?=(\d{3})+(?!\d))/g, ',')}원`
     detailTotal[7].innerText = `${String(addComma4Total).replace(/\B(?=(\d{3})+(?!\d))/g, ',')}원`
-    detailTotal[8].innerText = `${String(addComma5Total).replace(/\B(?=(\d{3})+(?!\d))/g, ',')}원` 
+    detailTotal[8].innerText = `${String(addComma5Total).replace(/\B(?=(\d{3})+(?!\d))/g, ',')}원`
+
+    //기타 색 변화
+    for (i = 0; i < addComma4.length; i++) {
+        if (addComma4[i].title !== "") {
+            addComma4[i].style.color = "#0069D9"
+        }
+    }
 }
 
+
+// , 추가
+PopupDataInputPrice.addEventListener('change', addComma)
+
+let onlyNumber = /[^0-9]/g;
+
+function addComma(){
+    this.value = this.value.replace(onlyNumber, "")
+    this.value = this.value.replace(/\,/g,"")
+    this.value = this.value.replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+}
 

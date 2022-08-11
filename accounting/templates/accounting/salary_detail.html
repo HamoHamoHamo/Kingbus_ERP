@@ -11,7 +11,7 @@
 
 {% block content-header %}
 <div class="HeaderTitle">
-    급여상세
+    상여상세
 </div>
 {% endblock %}
 
@@ -30,7 +30,7 @@
             <input type="submit" value="검색" class="btnModules">
         </div>
     </form>
-    <div class="addSalay">급여등록</div>
+    <div class="addSalay">상여등록</div>
 </div>
 
 
@@ -42,7 +42,7 @@
     <div class="contentsAreaBox">
         <div class="tableDataBox">
             <div class="tableDataCell">
-                <span>이름</span>
+                <!-- <span>이름</span> -->
                 <span>{{member.name}}</span>
             </div>
             <div class="tableDataCell">
@@ -92,7 +92,7 @@
                     <td>{% if e_order_list|index:forloop.counter0 != 0 %} {{e_order_list|index:forloop.counter0}} {% endif %}</td>
                     <td>{% if c_order_list|index:forloop.counter0 != 0 %} {{c_order_list|index:forloop.counter0}} {% endif %}</td>
                     <td>{% if order_list|index:forloop.counter0 != 0 %} {{order_list|index:forloop.counter0}} {% endif %}</td>
-                    <td class="{{additional.id}}">{% if additional %}{{additional.price}}{% endif %}</td>
+                    <td title="{{additional.remark}}" class="{{additional.id}}">{% if additional %}{{additional.price}}{% endif %}</td>
                     {% endwith %}
                     <td>{{total_list|index:forloop.counter0}}</td>
                 </tr>
@@ -139,7 +139,7 @@
     <form method="post" action="{% url 'accounting:salary_create' %}" class="popupContainer"
         enctype="multipart/form-data">
         {% csrf_token %}
-        <div class="PopupTitle">급여등록</div>
+        <div class="PopupTitle">상여등록</div>
         <div class="PopupDataArea">
             <div class="PopupDataCell">
                 <span class="PopupDataTitle">이름</span>
@@ -189,7 +189,7 @@
     <form method="post" action="{% url 'accounting:salary_edit' %}" class="popupContainer"
         enctype="multipart/form-data">
         {% csrf_token %}
-        <div class="PopupTitle">급여수정</div>
+        <div class="PopupTitle">상여수정</div>
         <div class="PopupDataArea">
             <div class="PopupDataCell">
                 <span class="PopupDataTitle">이름</span>

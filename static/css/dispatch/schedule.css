@@ -1,3 +1,7 @@
+.searchAreaBox form{
+    width: 100%;
+}
+
 .searchName {
     font-size: 1.6rem;
     font-weight: 500;
@@ -25,13 +29,13 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    width: auto;
+    width: 18rem;
     height: 100%;
     margin-right: 2rem;
 }
 
 .dateFilterBox span {
-    width: 3rem;
+    width: 5rem;
     font-size: 1.6rem;
     margin-right: 1rem;
 }

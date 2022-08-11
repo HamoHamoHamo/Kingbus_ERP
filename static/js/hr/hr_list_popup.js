@@ -84,6 +84,12 @@ function nameChange() {
 btnModulesCreate.addEventListener('click', createChecker)
 let selectedOption = ""
 let idCheckCount = false
+let date = new Date();
+let year = date.getFullYear();
+let month = ("0" + (1 + date.getMonth())).slice(-2);
+let day = ("0" + date.getDate()).slice(-2);
+let onlyNumber = /[^0-9]/g;
+let birthPAttern = /^(19[0-9][0-9]|20\d{2})(0[0-9]|1[0-2])(0[1-9]|[1-2][0-9]|3[0-1])$/
 
 function createChecker(e) {
   for (i = 0; i < selectOption.length; i++) {
@@ -100,6 +106,29 @@ function createChecker(e) {
   } else if (createID.attributes.check_result.value == "fail") {
     alert("이미 사용중인 아이디 입니다.")
     e.preventDefault()
+  }
+}
+
+//전화번호
+PopupDataInputPhoneNum.addEventListener('change', phoneNumChecker)
+
+function phoneNumChecker(){
+  this.value.replace(onlyNumber, "")
+  if(this.value.length <= 8 || this.value.length >= 12){
+    alert("형식에 맞지않는 전화번호 입니다.")
+    this.value = ""
+  }
+  this.value = this.value.replace(/\-/g, "")
+  this.value = this.value.replace(/^(\d{2,3})(\d{3,4})(\d{4})$/, `$1-$2-$3`)
+}
+
+//생년월일
+PopupDataInputBirth.addEventListener('change', birthChecker)
+
+function birthChecker(){
+  if(!birthPAttern.test(this.value)){
+    alert("형식에 맞지 않습니다.")
+    this.value = ""
   }
 }
 

@@ -44,8 +44,7 @@ const dispatchHidden = document.querySelector(".dispatchHidden")
 const dispatchNum = document.querySelectorAll(".orderDispatch div span")
 const thisTr = document.querySelectorAll(".tableCell .table tbody tr")
 const thisOtherTr = document.querySelectorAll(".tableCellScroll .table tbody tr")
-const dispatchList = document.querySelectorAll(".regularyCreatePopupTbody td:nth-child(1) div")
-const dispatchBoxList = document.querySelectorAll(".regularyCreatePopupTbody td:nth-child(1)")
+const dispatchList = document.querySelectorAll(".regularyCreatePopupTbody td:nth-child(1)")
 const orderDispatchDiv = document.querySelectorAll(".orderDispatchDiv")
 const bus_count = document.querySelectorAll(".tableCellScroll td:nth-child(2)")
 const popupContainer = document.querySelector(".popupContainer")
@@ -60,24 +59,150 @@ const price = document.querySelector(".tableCellScroll .table tbody td:nth-child
 const customer_phone = document.querySelector(".tableCellScroll .table tbody td:nth-child(7)")
 const createPhoneNumber = document.querySelectorAll(".orderPopupDataCell input")
 
-let saveClass = ""
-let needStart = ""
-let needEnd = ""
-let useDriver = ""
-let addDispatchBtn = ""
-let addDispatchChecker = 0
-let overBusCount = true
-let busCount = ""
 
-for (i = 0; i < orderDispatchDiv.length; i++) {
-  orderDispatchDiv[i].addEventListener("click", openPopup)
+/*배차등록 추가/삭제 */
+for (i = 0; i < dispatchVehicle.length; i++) {
+  dispatchVehicle[i].addEventListener("click", addVehicle)
 }
 
-//배차팝업 열기
-function openPopup() {
-  popupAreaModules.style.display = "block"
+function addVehicle() {
+  if (this.className == 'addDriver') {
+    let searchTr = ""
+    for (i = 0; i < thisOtherTr.length; i++) {
+      if (thisOtherTr[i].className == dispatchHidden.value) {
+        searchTr = thisOtherTr[i]
+      }
+    }
+    let needDispatch = searchTr.querySelector("td:nth-child(2)").innerText.split('/')[1]
+    const countRemoveDriver = this.parentNode.parentNode.parentNode.querySelectorAll(".removeDriver")
+    if (countRemoveDriver.length < needDispatch) {
 
-  saveClass = this.parentNode.parentNode.className;
+      this.style.backgroundColor = '#0069D9'
+      this.style.color = 'white'
+
+      const newDiv = document.createElement('div');
+      newDiv.setAttribute("class", `${this.parentNode.className} addVehicle`);
+      const newText = document.createTextNode(this.innerText);
+      newDiv.appendChild(newText);
+      regularyCreatePopupResult.appendChild(newDiv);
+
+      const newInput = document.createElement('input');
+      newInput.setAttribute("type", "hidden");
+      newInput.setAttribute("value", this.parentNode.className);
+      newInput.setAttribute("name", 'vehicle');
+      newInput.setAttribute("class", `vehicle${this.id}`);
+      regularyCreatePopupResult.appendChild(newInput);
+      this.classList.add('removeDriver');
+      this.classList.remove('addDriver');
+    }
+  } else {
+    removeItHidden = regularyCreatePopupResult.querySelectorAll("input");
+    for (i = 0; i < removeItHidden.length; i++) {
+      if (removeItHidden[i].value == this.parentNode.className) {
+        removeItHidden[i].previousSibling.remove();
+        removeItHidden[i].remove();
+      }
+    }
+    this.style.backgroundColor = 'white'
+    this.style.color = '#191919'
+    this.classList.add('addDriver');
+    this.classList.remove('removeDriver');
+  }
+
+
+  if (regularyCreatePopupResult.childElementCount > 6) {
+    regularyCreatePopupResult.style.justifyContent = 'flex-start'
+  } else {
+    regularyCreatePopupResult.style.justifyContent = 'center'
+  }
+}
+
+
+
+//추가 배차여부 판단
+popupContainer.addEventListener('submit', noMoreDispatch)
+
+function noMoreDispatch() {
+  let compare = []
+  for (i = 1; i < bus_count.length; i++) {
+    compare = String(bus_count[i].innerText).split("/")
+    if (compare[0] == compare[1]) {
+      orderDispatchDiv[i - 1].style.backgroundColor = "#707070"
+    }
+  }
+}
+
+
+
+
+
+/*배차등록 팝업 띄우기/닫기 */
+for (i = 0; i < orderDispatch.length; i++) {
+  orderDispatch[i].addEventListener("click", openRegularlyDispatch)
+}
+
+function openRegularlyDispatch() {
+  popupAreaModules.style.display = "block"
+  //배차 불가차량 판별
+  let departureTime = ""
+  let arrivalTime = ""
+  let departureTimeCheck = ""
+  let arrivalTimeCheck = ""
+  let cantDispatch = 0
+  for (i = 0; i < thisTr.length; i++) {
+    if (thisTr[i].className == this.parentNode.className) {
+      departureTime = regDatas[thisTr[i].childNodes[5].className.substr(10,)].departure_date.replace(/-|T|:|\s/g, "")
+      arrivalTime = regDatas[thisTr[i].childNodes[5].className.substr(10,)].arrival_date.replace(/-|T|:|\s/g, "")
+    }
+  }
+  let = keyArray = Object.keys(vehicleConnect)
+  //차량
+  for (i = 0; i < dispatchList.length; i++) {
+    dispatchList[i].style.pointerEvents = "auto"
+    if (keyArray[i] == dispatchList[i].className) {
+      if (vehicleConnect[keyArray[i]].length !== 0) {
+        for (j = 0; j < vehicleConnect[keyArray[i]].length; j++) {
+          cantDispatch = 0
+          departureTimeCheck = vehicleConnect[keyArray[i]][j][0].replace(/-|T|:|\s/g, "")
+          arrivalTimeCheck = vehicleConnect[keyArray[i]][j][1].replace(/-|T|:|\s/g, "")
+          if (arrivalTimeCheck < departureTime || departureTimeCheck > arrivalTime) {
+            cantDispatch = cantDispatch
+          } else {
+            cantDispatch = cantDispatch + 1
+          }
+          if (cantDispatch !== 0) {
+            dispatchList[i].childNodes[1].style.backgroundColor = "#a7a7a7"
+            dispatchList[i].style.pointerEvents = "none"
+          }
+        }
+      }
+    }
+  }
+  //기존 배차차량 띄우기
+  dispatchHidden.value = this.parentNode.className;
+  for (i = 0; i < connectData[this.parentNode.className].length; i++) {
+    for (j = 0; j < dispatchVehicle.length; j++) {
+      if (dispatchVehicle[j].parentNode.className == connectData[this.parentNode.className][i]) {
+        dispatchVehicle[j].classList.remove("addDriver")
+        dispatchVehicle[j].classList.add("removeDriver")
+        dispatchVehicle[j].style.backgroundColor = '#0069D9'
+        dispatchVehicle[j].style.color = 'white'
+        dispatchVehicle[j].style.pointerEvents = "auto"
+        const newDiv = document.createElement('div');
+        newDiv.setAttribute("class", `${dispatchVehicle[j].parentNode.className} addVehicle`);
+        const newText = document.createTextNode(dispatchVehicle[j].innerText);
+        newDiv.appendChild(newText);
+        regularyCreatePopupResult.appendChild(newDiv);
+
+        const newInput = document.createElement('input');
+        newInput.setAttribute("type", "hidden");
+        newInput.setAttribute("value", dispatchVehicle[j].parentNode.className);
+        newInput.setAttribute("name", 'vehicle');
+        newInput.setAttribute("class", `vehicle${this.id}`);
+        regularyCreatePopupResult.appendChild(newInput);
+      }
+    }
+  }
 
   //빈 배차 색 없애기
   for (i = 0; i < GoToWork.length; i++) {
@@ -95,128 +220,12 @@ function openPopup() {
     }
   }
 
-  //배차불가 차량
-  for (i = 0; i < thisOtherTr.length; i++) {
-    if (thisOtherTr[i].classList.contains(`${saveClass}`)) {
-      addDispatchBtn = thisOtherTr[i].children[0].children[0]
-    }
-    if (thisTr[i].classList.contains(`${saveClass}`)) {
-      addDispatchTime = thisTr[i].children[1].children[2].innerText.split("[")[1].replace(/\]/g, "")
-    }
-  }
-  needStart = addDispatchTime.split("~")[0].replace(/\ |:/g, "")
-  needEnd = addDispatchTime.split("~")[1].replace(/\ |:/g, "")
-  for (i = 0; i < dispatchList.length; i++) {
-    if (!(vehicleConnect[Object.keys(vehicleConnect)[i]] == "")) {
-      if (!(vehicleConnect[Object.keys(vehicleConnect)[i]][0][1].substr(11, 5).replace(/\:/g, "") < needStart) &&
-        !(vehicleConnect[Object.keys(vehicleConnect)[i]][0][0].substr(11, 5).replace(/\:/g, "") > needEnd)) {
-        for (j = 0; j < dispatchBoxList.length; j++) {
-          if (dispatchBoxList[j].classList.contains(`${Object.keys(vehicleConnect)[i]}`)) {
-            dispatchBoxList[j].children[0].style.backgroundColor = "grey"
-            dispatchBoxList[j].children[0].style.pointerEvents = "none"
-          }
-        }
-      }
-    }
-  }
-
-  //기존 배차차량
-  for (i = 0; i < dispatchBoxList.length; i++) {
-    for (j = 0; j < connectData[saveClass].length; j++) {
-      if (dispatchBoxList[i].classList.contains(`${connectData[this.parentNode.parentNode.className][j]}`)) {
-        dispatchBoxList[i].children[0].style.backgroundColor = "#0069D9"
-        dispatchBoxList[i].children[0].style.color = "white"
-        dispatchBoxList[i].children[0].style.pointerEvents = "auto"
-        dispatchBoxList[i].children[0].classList.remove("addDriver")
-        dispatchBoxList[i].children[0].classList.add("removeDriver")
-        const newInput = document.createElement('input');
-        newInput.setAttribute("type", "hidden");
-        newInput.setAttribute("value",  dispatchBoxList[i].className);
-        newInput.setAttribute("name", 'vehicle');
-        newInput.setAttribute("class", `vehicle`);
-        popupContainer.appendChild(newInput);
-      }
-    }
-
-  }
-
-  dispatchHidden.value = saveClass
-  
-  //차량대수 추가배차 가능여부 판단
-  addDispatchChecker = 0
-
-  for (i = 0; i < thisOtherTr.length; i++) {
-    if (thisOtherTr[i].classList.contains(`${saveClass}`)) {
-      busCount = thisOtherTr[i].children[1].innerText.split("/")[1]
-    }
-  }
-  const vehicle = document.querySelectorAll(".vehicle")
-  for (i = 0; i < vehicle.length; i++) {
-    addDispatchChecker = addDispatchChecker + 1
-  }
-
-  if (addDispatchChecker >= busCount) {
-    overBusCount = false
-  } else {
-    overBusCount = true
-  }
-}
-
-//배차추가
-for (i = 0; i < dispatchList.length; i++) {
-  dispatchList[i].addEventListener("click", pickDispatch)
-}
-
-function pickDispatch() {
-  addDispatchChecker = 0
-  if (this.classList.contains("addDriver")) {
-    if (overBusCount) {
-      this.style.backgroundColor = "#0069D9"
-      this.style.color = "white"
-      this.classList.remove("addDriver")
-      this.classList.add("removeDriver")
-      const dispatchSpan = document.createElement('span');
-      const disparchDriver = document.createTextNode(this.innerText);
-      dispatchSpan.appendChild(disparchDriver);
-      addDispatchBtn.appendChild(dispatchSpan);
-
-      const newInput = document.createElement('input');
-      newInput.setAttribute("type", "hidden");
-      newInput.setAttribute("value", this.parentNode.className);
-      newInput.setAttribute("name", 'vehicle');
-      newInput.setAttribute("class", `vehicle`);
-      popupContainer.appendChild(newInput);
-    }
-  } else {
-    this.style.backgroundColor = "white"
-    this.style.color = "black"
-    this.classList.remove("removeDriver")
-    this.classList.add("addDriver")
-    for (i = 0; i < addDispatchBtn.children.length; i++) {
-      if (addDispatchBtn.children[i].innerText == this.innerText) {
-        addDispatchBtn.children[i].remove()
-      }
-    }
-    const vehicle = document.querySelectorAll(".vehicle")
-    for (i = 0; i < vehicle.length; i++) {
-      if (vehicle[i].value == this.parentNode.className) {
-        vehicle[i].remove()
-      }
-    }
-  }
-  const vehicle = document.querySelectorAll(".vehicle")
-  for (i = 0; i < vehicle.length; i++) {
-    addDispatchChecker = addDispatchChecker + 1
-  console.log(addDispatchChecker)
-  }
-  if (addDispatchChecker >= busCount) {
-    overBusCount = false
-  } else {
-    overBusCount = true
-  }
-  for(i=0; i<thisOtherTr.length; i++){
-    if(thisOtherTr[i].classList.contains(`${dispatchHidden.value}`)){
-      thisOtherTr[i].children[1].innerText = `${addDispatchChecker}/${thisOtherTr[i].children[1].innerText.split("/")[1]}`
+  //날짜가 기간으로 설정 될 경우
+  if (dateSetting[0].value !== dateSetting[1].value) {
+    for (i = 0; i < GoToWork.length; i++) {
+      GoToWork[i].style.backgroundColor = "#707070"
+      work[i].style.backgroundColor = "#707070"
+      backToHome[i].style.backgroundColor = "#707070"
     }
   }
 }
@@ -402,7 +411,7 @@ function checkToDelete(e) {
 
 // 배차차량 줄바꿈
 let lineBreake
-window.onload = function lineBreaking() {
+window.onload = function () {
   for (i = 0; i < orderDispatchDiv.length; i++) {
     if (orderDispatchDiv[i].childElementCount > 1) {
       const breake = document.createElement("br")
@@ -410,6 +419,8 @@ window.onload = function lineBreaking() {
       orderDispatchDiv[i].insertBefore(breake, orderDispatchDiv[i].childNodes[lineBreake])
     }
   }
+  noMoreDispatch()
+  console.log(driver_allowance)
   driver_allowance.innerText = driver_allowance.innerText.replace(/\B(?=(\d{3})+(?!\d))/g, ',')
   price.innerText = price.innerText.replace(/\B(?=(\d{3})+(?!\d))/g, ',')
   customer_phone.innerText = customer_phone.innerText.replace(/^(\d{2,3})(\d{3,4})(\d{4})$/, `$1-$2-$3`)
@@ -450,7 +461,7 @@ createPhoneNumber[8].addEventListener("change", phoneNumChecker)
 
 function phoneNumChecker() {
   this.value = this.value.replace(onlyNumber, "")
-  if (this.value.length <= 8 || this.value.length >= 12) {
+  if(this.value.length <= 8 || this.value.length >= 12){
     alert("형식에 맞지않는 전화번호 입니다.")
     this.value = ""
   }

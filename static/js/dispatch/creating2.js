@@ -101,15 +101,15 @@ function openPopup() {
       addDispatchBtn = thisOtherTr[i].children[0].children[0]
     }
     if (thisTr[i].classList.contains(`${saveClass}`)) {
-      addDispatchTime = thisTr[i].children[1].children[2].innerText.split("[")[1].replace(/\]/g, "")
+      addDispatchTime = thisTr[i].children[1].children[2].innerText.substr(4, 11)
     }
   }
   needStart = addDispatchTime.split("~")[0].replace(/\ |:/g, "")
   needEnd = addDispatchTime.split("~")[1].replace(/\ |:/g, "")
   for (i = 0; i < dispatchList.length; i++) {
     if (!(vehicleConnect[Object.keys(vehicleConnect)[i]] == "")) {
-      if (!(vehicleConnect[Object.keys(vehicleConnect)[i]][0][1].substr(11, 5).replace(/\:/g, "") < needStart) &&
-        !(vehicleConnect[Object.keys(vehicleConnect)[i]][0][0].substr(11, 5).replace(/\:/g, "") > needEnd)) {
+      if (vehicleConnect[Object.keys(vehicleConnect)[i]][0][1].substr(11, 5).replace(/\:/g, "") >= needStart ||
+        vehicleConnect[Object.keys(vehicleConnect)[i]][0][0].substr(11, 5).replace(/\:/g, "") <= needEnd) {
         for (j = 0; j < dispatchBoxList.length; j++) {
           if (dispatchBoxList[j].classList.contains(`${Object.keys(vehicleConnect)[i]}`)) {
             dispatchBoxList[j].children[0].style.backgroundColor = "grey"
@@ -168,7 +168,6 @@ for (i = 0; i < dispatchList.length; i++) {
 }
 
 function pickDispatch() {
-  addDispatchChecker = 0
   if (this.classList.contains("addDriver")) {
     if (overBusCount) {
       this.style.backgroundColor = "#0069D9"
@@ -207,17 +206,11 @@ function pickDispatch() {
   const vehicle = document.querySelectorAll(".vehicle")
   for (i = 0; i < vehicle.length; i++) {
     addDispatchChecker = addDispatchChecker + 1
-  console.log(addDispatchChecker)
   }
   if (addDispatchChecker >= busCount) {
     overBusCount = false
   } else {
     overBusCount = true
-  }
-  for(i=0; i<thisOtherTr.length; i++){
-    if(thisOtherTr[i].classList.contains(`${dispatchHidden.value}`)){
-      thisOtherTr[i].children[1].innerText = `${addDispatchChecker}/${thisOtherTr[i].children[1].innerText.split("/")[1]}`
-    }
   }
 }
 
@@ -402,7 +395,7 @@ function checkToDelete(e) {
 
 // 배차차량 줄바꿈
 let lineBreake
-window.onload = function lineBreaking() {
+window.onload = function () {
   for (i = 0; i < orderDispatchDiv.length; i++) {
     if (orderDispatchDiv[i].childElementCount > 1) {
       const breake = document.createElement("br")

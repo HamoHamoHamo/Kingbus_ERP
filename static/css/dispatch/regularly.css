@@ -265,7 +265,7 @@ td:nth-child(9) {
 
 .regularyCreatePopupTbodyBoxing {
   width: 100%;
-  height: calc(100% - 15.7rem);
+  height: calc(100% - 14.7rem);
   border-bottom: 0.1rem solid #191919;
   overflow-y: scroll;
 }
@@ -539,7 +539,7 @@ td:nth-child(9) {
 .routePopupDataDriveTime,
 .routePopupDataDriveTime,
 .routePopupDataDriverNumber,
-.routePopupDataDriverPay,
+.routePopupDataDriverPay,regularyCreatePopupResult
 .routePopupDataBusKinds,
 .routePopupDataBusCount,
 .routePopupDatAaccount,

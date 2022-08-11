@@ -1,5 +1,5 @@
 from django.db.models import Q
-from django.http import Http404, HttpResponse, HttpResponseBadRequest, HttpResponseNotAllowed
+from django.http import Http404, JsonResponse, HttpResponse, HttpResponseBadRequest, HttpResponseNotAllowed
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
 from django.views import generic
@@ -277,7 +277,7 @@ class RegularlyDispatchList(generic.ListView):
                 vehicle_connect[o.bus_id.id].append([o.departure_date, o.arrival_date])
         context['connect_list'] = connect_list
 
-        order_list = DispatchOrderConnect.objects.exclude(arrival_date__lte=f'{date} 00:00').exclude(departure_date__gte=f'{date} 24:00')
+        order_list = DispatchOrderConnect.objects.exclude(arrival_date__lte=f'{date}T00:00').exclude(departure_date__gte=f'{date}T24:00')
         for order in order_list:
             vehicle_connect[order.bus_id.id].append([order.departure_date, order.arrival_date])
 
@@ -678,7 +678,7 @@ def order_connect_create(request):
                 creator = creator
             )
             connect.save()
-
+        
         return redirect(request.META.get('HTTP_REFERER', 'redirect_if_referer_not_found'))
 
     else:
@@ -713,7 +713,31 @@ def order_create(request):
             raise Http404
     else:
         return HttpResponseNotAllowed(['post'])
+
+def order_edit_check(request):
+    pk = request.POST.get('id')
+    order = get_object_or_404(DispatchOrder, pk=pk)
+    #
+    connects = order.info_order.all()
+    r_connects = order.info_regularly.all()
+    for connect in connects:
+        bus = connect.bus_id
+
+        post_departure_date = request.POST.get('departure_date', None)
+        post_arrival_date = request.POST.get('arrival_date', None)
+
+        format = '%Y-%m-%d %H:%M'
+        if datetime.strptime(post_departure_date.replace('T', ' '), format) > datetime.strptime(post_arrival_date.replace('T', ' '), format):
+            print("term begin > term end")
+            raise Http404
         
+        if bus.info_bus_id.exclude(arrival_date__lt=post_departure_date).exclude(departure_date__gt=post_arrival_date).exclude(id__in=connects):
+            return JsonResponse({"status": "fail"})
+        if bus.info_regulary_bus_id.exclude(arrival_date__lt=post_departure_date).exclude(departure_date__gt=post_arrival_date).exclude(id__in=r_connects):
+            return JsonResponse({"status": "fail"})
+    
+    return JsonResponse({'status': 'success'})
+
 def order_edit(request):
     pk = request.POST.get('id')
     order = get_object_or_404(DispatchOrder, pk=pk)
@@ -723,13 +747,30 @@ def order_edit(request):
         order_form = OrderForm(request.POST)
 
         if order_form.is_valid():
-            post_departure_date = request.POST.get('departure_date', None).replace('T', ' ')
-            post_arrival_date = request.POST.get('arrival_date', None).replace('T', ' ')
+            post_departure_date = request.POST.get('departure_date', None)
+            post_arrival_date = request.POST.get('arrival_date', None)
 
             format = '%Y-%m-%d %H:%M'
-            if datetime.strptime(post_departure_date, format) > datetime.strptime(post_arrival_date, format):
+            if datetime.strptime(post_departure_date.replace('T', ' '), format) > datetime.strptime(post_arrival_date.replace('T', ' '), format):
                 print("term begin > term end")
                 raise Http404
+
+            #
+            connects = order.info_order.all()
+            r_connects = order.info_regularly.all()
+            for connect in connects:
+                bus = connect.bus_id
+                if bus.info_bus_id.exclude(arrival_date__lt=post_departure_date).exclude(departure_date__gt=post_arrival_date).exclude(id__in=connects):
+                    return JsonResponse({"status": "fail"})
+                if bus.info_regulary_bus_id.exclude(arrival_date__lt=post_departure_date).exclude(departure_date__gt=post_arrival_date).exclude(id__in=r_connects):
+                    return JsonResponse({"status": "fail"})
+
+            for connect in connects:
+                connect.departure_date = post_departure_date
+                connect.arrival_date = post_arrival_date
+                connect.save()
+            #
+
             order.operation_type = order_form.cleaned_data['operation_type']
             order.references = order_form.cleaned_data['references']
             order.departure = order_form.cleaned_data['departure']
