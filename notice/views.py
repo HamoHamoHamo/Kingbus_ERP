@@ -86,8 +86,7 @@ def create(request):
         'name': get_object_or_404(Member, pk=request.session.get('user')).name,
         'kinds': request.GET.get('kinds')
         }
-    if request.session.get('authority') == 4:
-            
+    if request.session.get('authority') == 4 and request.GET.get('kinds') == 'office':
         return redirect(request.META.get('HTTP_REFERER', 'redirect_if_referer_not_found'))
     if request.method == "GET":
         
@@ -118,8 +117,8 @@ def notice_file_save(upload_file, notice):
         notice_file.save()
     return
 
-def edit(request, kinds, notice_id):
-    if request.session.get('authority') == 4:
+def edit(request, kinds, notice_id):    
+    if request.session.get('authority') == 4 and Notice.objects.get(id=notice_id).creator.id != request.session.get('user'):
         return redirect(request.META.get('HTTP_REFERER', 'redirect_if_referer_not_found'))
     notice = get_object_or_404(Notice, pk=notice_id)
 
