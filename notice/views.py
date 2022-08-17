@@ -44,6 +44,13 @@ class NoticeKindsView(generic.ListView):
             return notices
         else:
             return None
+    
+    def get(self, request, **kwargs):
+        if request.session.get('authority') == 4 and self.kwargs['kinds'] == 'office':
+            
+            return redirect(request.META.get('HTTP_REFERER', 'redirect_if_referer_not_found'))
+        else:
+            return super().get(request, **kwargs)
 
     def get_queryset(self):
         notices = self.search_result(self.request, self.kwargs['kinds'])
@@ -79,6 +86,9 @@ def create(request):
         'name': get_object_or_404(Member, pk=request.session.get('user')).name,
         'kinds': request.GET.get('kinds')
         }
+    if request.session.get('authority') == 4:
+            
+        return redirect(request.META.get('HTTP_REFERER', 'redirect_if_referer_not_found'))
     if request.method == "GET":
         
         return render(request, 'notice/create.html', context)
@@ -109,6 +119,8 @@ def notice_file_save(upload_file, notice):
     return
 
 def edit(request, kinds, notice_id):
+    if request.session.get('authority') == 4:
+        return redirect(request.META.get('HTTP_REFERER', 'redirect_if_referer_not_found'))
     notice = get_object_or_404(Notice, pk=notice_id)
 
     if request.method == "GET":
@@ -166,7 +178,13 @@ class NoticeDetail(generic.DetailView):
         notice_comment.save()
         return redirect(reverse('notice:detail', args=(self.kwargs['kinds'], self.notice_id)))
 
-
+    def get(self, request, **kwargs):
+        if request.session.get('authority') == 4 and self.kwargs['kinds'] == 'office':
+            
+            return redirect(request.META.get('HTTP_REFERER', 'redirect_if_referer_not_found'))
+        else:
+            return super().get(request, **kwargs)
+            
     def get_queryset(self):
         self.user = Member.objects.get(pk=self.request.session.get('user'))
         self.notice_id=self.kwargs['pk']
@@ -270,7 +288,7 @@ def comment_del(request, kinds, notice_id, comment_id):
     else:
         return HttpResponseNotAllowed(['POST'])
 def creator_check(request, pk, type):
-    if request.session.get('user') != type.objects.get(id=pk).creator.id:
+    if request.session.get('user') != type.objects.get(id=pk).creator.id and request.session.get('authority') != 0:
         raise Http404
     return True
 
