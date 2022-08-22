@@ -4,6 +4,7 @@ from vehicle.models import Vehicle
 
 class RegularlyGroup(models.Model):
     name = models.CharField(verbose_name='그룹 이름', max_length=30, null=False)
+    number = models.CharField(verbose_name='순번', max_length=20, null=False, blank=True)
     pub_date = models.DateTimeField(auto_now_add=True, verbose_name='작성시간')
     creator = models.ForeignKey(Member, on_delete=models.SET_NULL, related_name="group_creator", db_column="creator_id", null=True)
     
@@ -14,16 +15,17 @@ class DispatchRegularly(models.Model):
     arrival = models.CharField(verbose_name='도착지', max_length=50, null=False)
     departure_time = models.CharField(verbose_name='출발시간', max_length=10, null=False)
     arrival_time = models.CharField(verbose_name='복귀시간', max_length=10, null=False)
-    bus_type = models.CharField(verbose_name='버스종류', max_length=30, null=False, blank=True)
-    bus_cnt = models.CharField(verbose_name='버스대수', max_length=3, null=False)
+    # bus_type = models.CharField(verbose_name='버스종류', max_length=30, null=False, blank=True)
+    # bus_cnt = models.CharField(verbose_name='버스대수', max_length=3, null=False)
     price = models.CharField(verbose_name='계약금액', max_length=40, null=False)
     driver_allowance = models.CharField(verbose_name='기사수당', max_length=40, null=False)
-    number = models.CharField(verbose_name='순번', max_length=20, null=False)
+    number1 = models.CharField(verbose_name='순번1', max_length=20, null=False, blank=True)
+    number2 = models.CharField(verbose_name='순번2', max_length=20, null=False, blank=True)
     week = models.CharField(verbose_name='운행요일', max_length=20, null=False)
-    customer = models.CharField(verbose_name='예약자', max_length=20, null=False, blank=True)
-    customer_phone = models.CharField(verbose_name='예약자 전화번호', max_length=20, null=False, blank=True)
-    contract_start_date = models.CharField(verbose_name='계약시작일', max_length=10, null=False, blank=True)
-    contract_end_date = models.CharField(verbose_name='계약종료일', max_length=10, null=False, blank=True)
+    # customer = models.CharField(verbose_name='예약자', max_length=20, null=False, blank=True)
+    # customer_phone = models.CharField(verbose_name='예약자 전화번호', max_length=20, null=False, blank=True)
+    # contract_start_date = models.CharField(verbose_name='계약시작일', max_length=10, null=False, blank=True)
+    # contract_end_date = models.CharField(verbose_name='계약종료일', max_length=10, null=False, blank=True)
     work_type = models.CharField(verbose_name='출/퇴근', max_length=2, null=False)
     #노선이름 = 출발지 ▶ 도착지
     route = models.CharField(verbose_name='노선이름', max_length=100, null=False)
