@@ -1,0 +1,576 @@
+.searchTool {
+    width: 100rem;
+}
+
+.routeFilterBox {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 38rem;
+    height: 100%;
+    margin-left: 2rem;
+    margin-right: 4rem;
+}
+
+.routeFilterBox input {
+    width: 18rem;
+}
+
+.dateFilterBox {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 37rem;
+    height: 100%;
+    margin-right: 2rem;
+}
+
+.dateFilterBox span {
+    font-size: 1.6rem;
+    margin-right: 1rem;
+}
+
+.dateFilterBox input {
+    width: 15rem;
+}
+
+.searchTool input[type=submit] {
+    background-color: #444444;
+}
+
+.optionBtnBox {
+    display: flex;
+    width: 10rem;
+}
+
+.optionBtnBox div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 10rem;
+    height: 3.8rem;
+    border-radius: 0.2rem;
+    background-color: #444444;
+    font-size: 1.4rem;
+    color: white;
+    cursor: pointer;
+}
+
+
+
+/*tableHead*/
+.tableRowBox {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.tableCell {
+    display: flex;
+    flex-direction: column;
+    width: 50%;
+    height: 68rem;
+    border: 0.1rem solid #CDCDCE;
+}
+
+.tableCell .table {
+    width: 100%;
+    border-radius: 0.5rem 0.5rem 0 0;
+    border-spacing: 0;
+}
+
+.tableCell td:nth-child(1) {
+    padding-left: 1rem;
+    box-sizing: border-box;
+}
+
+.tableCell thead {
+    width: 100%;
+    height: 6.8rem;
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: #7A7A7A;
+}
+
+.tableCell thead tr {
+    height: 100%;
+}
+
+.tableCell thead td {
+    height: 100%;
+    border-bottom: 0.1rem solid #CDCDCE;
+}
+
+.tableCell tbody {
+    width: 100%;
+    font-size: 1.4rem;
+    color: #191919;
+}
+
+.tableCell tbody tr {
+    width: 100%;
+    height: 6.8rem;
+}
+
+.tableCell tbody td {
+    height: 6.7rem;
+    border-bottom: 0.1rem solid #CDCDCE;
+    box-sizing: border-box;
+}
+
+.tableCell tbody td:nth-child(3) {
+    color: #0069D9;
+    cursor: pointer;
+}
+
+
+.tableCellScroll {
+    display: flex;
+    flex-direction: column;
+    width: 50%;
+    height: 68rem;
+    overflow-x: scroll;
+    border: 0.1rem solid #CDCDCE;
+}
+
+.tableCellScroll .table {
+    width: auto;
+    table-layout: fixed;
+    border-radius: 0.5rem 0.5rem 0 0;
+    border-spacing: 0;
+    white-space: nowrap;
+}
+
+.tableCellScroll thead {
+    height: 6.8rem;
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: #7A7A7A;
+}
+
+.tableCellScroll thead tr {
+    height: 100%;
+}
+
+.tableCellScroll thead td {
+    height: 100%;
+    padding: 0 2rem;
+    border-bottom: 0.1rem solid #CDCDCE;
+}
+
+.tableCellScroll tbody {
+    width: 100%;
+    font-size: 1.4rem;
+    color: #191919;
+}
+
+.tableCellScroll tbody tr {
+    height: 6.8rem;
+}
+
+.tableCellScroll tbody td {
+    height: 6.7rem;
+    padding: 0 2rem;
+    border-bottom: 0.1rem solid #CDCDCE;
+    text-align: center;
+}
+
+.tableCellScroll tbody td:nth-child(2) {
+    padding-left: 3.6rem;
+}
+
+.orderDispatch {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.orderDispatch div {
+    background-color: #0069D9;
+    min-width: 8rem;
+    min-height: 2.6rem;
+    max-height: 6rem;
+    padding: 0.6rem;
+    border-radius: 0.3rem;
+    box-sizing: border-box;
+    color: white;
+    cursor: pointer;
+    text-align: left;
+}
+
+.orderDispatch div span {
+    display: flex;
+    justify-content: center;
+    width: 9.2rem;
+    display: inline-block;
+    margin: 0.2rem 0;
+}
+
+
+.checkbox {
+    width: 2rem;
+    height: 2rem;
+    cursor: pointer;
+}
+
+.popupContainer {
+    position: fixed;
+    top: 50%;
+    right: 3rem;
+    z-index: 100;
+    display: flex;
+    flex-direction: column;
+    width: 36rem;
+    height: 90vh;
+    align-items: center;
+    background-color: white;
+    border-radius: 0.3rem;
+    transform: translate(0, -50%);
+    box-shadow: 0.2rem 0.2rem 0.6rem rgba(0, 0, 0, 0.3);
+}
+
+.regularyCreatePopupTitle {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 4.8rem;
+    border-bottom: 0.1rem solid #191919;
+    font-size: 1.6rem;
+    font-weight: 500;
+}
+
+.popupContainer table {
+    width: 100%;
+    border-spacing: 0;
+}
+
+.regularyCreatePopupThead tr {
+    display: flex;
+    justify-content: space-between;
+    width: calc(100% - 0.6rem);
+    height: 4.8rem;
+    padding: 0 1.8rem;
+    border-bottom: 0.1rem solid #191919;
+    box-sizing: border-box;
+    font-size: 1.6rem;
+    font-weight: 500;
+}
+
+.regularyCreatePopupThead tr td {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: calc((100% - 1.8rem)/2);
+}
+
+.popupContainer table tr td span {
+    display: flex;
+    justify-content: center;
+    width: calc(100%/3);
+}
+
+.regularyCreatePopupTbodyBoxing {
+    width: 100%;
+    height: calc(100% - 14.7rem);
+    border-bottom: 0.1rem solid #191919;
+    overflow-y: scroll;
+}
+
+.regularyCreatePopupTbodyBoxing::-webkit-scrollbar {
+    width: 0.6rem;
+}
+
+.regularyCreatePopupTbodyBoxing::-webkit-scrollbar-thumb {
+    height: 17%;
+    background-color: #828282;
+    border-radius: 10px;
+}
+
+.regularyCreatePopupTbodyBoxing::-webkit-scrollbar-track {
+    background-color: #F5F5F5;
+}
+
+.regularyCreatePopupTbody tr:nth-child(odd) {
+    background-color: white;
+}
+
+.regularyCreatePopupTbody tr:nth-child(even) {
+    background-color: white;
+}
+
+.regularyCreatePopupTbody tr {
+    display: flex;
+    justify-content: space-between;
+    height: 3.6rem;
+    padding: 0 1.2rem;
+    box-sizing: border-box;
+    border: none;
+}
+
+.regularyCreatePopupTbody tr td {
+    display: flex;
+    justify-content: space-between;
+    width: calc((100% - 1.2rem)/2);
+}
+
+.regularyCreatePopupTbody tr td:nth-child(1) div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 3rem;
+    border: 0.1rem solid #D2D2D2;
+    border-radius: 0.2rem;
+    box-sizing: border-box;
+    font-size: 1.4rem;
+    cursor: pointer;
+    background-color: white;
+}
+
+.regularyCreatePopupTbody tr td:nth-child(2) div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: calc((100% - 0.4rem)/3);
+    height: 3rem;
+    border: 0.1rem solid #D2D2D2;
+    border-radius: 0.11rem;
+    box-sizing: border-box;
+    font-size: 1.4rem;
+}
+
+.GoToWork {
+    background-color: #514EA1;
+    color: white;
+  }
+  
+  .work {
+    background-color: #1C1A4E;
+    color: white;
+  }
+  
+  .backToHome {
+    background-color: #0A39A5;
+    color: white;
+  }
+
+
+.regularyCreatePopupBtnBox {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    height: 4.8rem;
+    padding: 0 32.5rem;
+    box-sizing: border-box;
+}
+
+.orderDispatchPopupBtnBox {
+    padding: 0 10.5rem;
+}
+
+.regularyCreatePopupBtnBox div {
+    background-color: #444444;
+}
+
+.regularyCreatePopupBtnBox input {
+    background-color: #0069D9;
+}
+
+
+
+
+
+
+
+
+.popupAreaModulesOrderRoute {
+    position: absolute;
+    top: 0;
+    right: 0;
+    display: none;
+    width: 100%;
+    height: 100%;
+}
+
+.popupAreaModulesOrder {
+    position: absolute;
+    top: 0;
+    right: 0;
+    display: none;
+    width: 100%;
+    height: 100%;
+}
+
+.popupBgModulesOrder {
+    position: absolute;
+    top: 0;
+    right: 0;
+    z-index: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.16);
+}
+
+.popupAreaModulesorder {
+    position: absolute;
+    top: 0;
+    right: 0;
+    display: none;
+    width: 100%;
+    height: 100%;
+}
+
+
+.popupContainerOrder {
+    position: fixed;
+    top: 50%;
+    left: calc(50% + 11rem);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 80rem;
+    height: 72rem;
+    background-color: white;
+    border-radius: 0.3rem;
+    box-shadow: 0 0.2rem 0.4rem rgba(0, 0, 0, 0.16);
+    transform: translate(-50%, -50%);
+}
+
+.orderPopupTitle {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 4.8rem;
+    font-size: 1.6rem;
+    font-weight: 500;
+    border-bottom: 0.1rem solid #191919;
+}
+
+.orderPopupDataArea {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    width: 100%;
+    height: calc(100% - 9.7rem);
+    padding: 4.2rem 3rem 3rem 3rem;
+    box-sizing: border-box;
+}
+
+.orderPopupDataCell {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: flex-start;
+    height: 6rem;
+}
+
+.orderPopupDataTitle {
+    font-size: 1.4rem;
+    color: #7A7A7A;
+}
+
+.orderPopupDataCell {
+    width: 23rem;
+
+}
+
+.orderPopupDataArea .orderPopupDataCell:nth-child(1),
+.orderPopupDataArea .orderPopupDataCell:nth-child(3),
+.orderPopupDataArea .orderPopupDataCell:nth-child(6),
+.orderPopupDataArea .orderPopupDataCell:nth-child(9) {
+    width: 48.8rem;
+}
+
+.orderPopupDataArea .orderPopupDataCell:nth-child(4),
+.orderPopupDataArea .orderPopupDataCell:nth-child(5),
+.orderPopupDataArea .orderPopupDataCell:nth-child(18),
+.orderPopupDataArea .orderPopupDataCell:nth-child(19) {
+    width: 10.5rem;
+}
+
+.orderPopupData {
+    width: 100%;
+    padding-bottom: 0.1rem;
+    font-size: 1.4rem;
+    color: #191919;
+    border-bottom: 0.1rem solid #191919;
+}
+
+.orderPopupBtnBox {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    height: 4.8rem;
+    padding: 0 32.5rem;
+    box-sizing: border-box;
+}
+
+.orderPopupBtnBox div:nth-child(1) {
+    background-color: #444444;
+}
+
+.orderPopupBtnBox div:nth-child(2) {
+    background-color: #0069D9;
+}
+
+.orderPopupDataCell input[type=text],
+.orderPopupDataCell input[type=number],
+.orderPopupDataCell input[type=date],
+.orderPopupDataCell input[type=time],
+.orderPopupDataCell input[type=datetime-local],
+.orderPopupDataCell select {
+    width: 100%;
+    height: 2.6rem;
+    border: 0.1rem solid #D2D2D2;
+    background-color: white;
+    border-radius: 0.2rem;
+    outline: none;
+    font-size: 1.4rem;
+    color: #191919;
+}
+
+.orderPopupDataCell input[type=datetime-local] {
+    width: 47%;
+}
+
+.datetimeCell {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+.checkingCell {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    font-size: 1.4rem;
+    color: #7A7A7A;
+}
+
+.checkingCell label {
+    cursor: pointer;
+}
+
+.orderPopupDataAreaEdit {
+    display: none;
+}
+
+.orderPopupBtnBox input {
+    display: none;
+    background-color: #0069D9;
+}
+
+.orderDispatchData {
+    width: 100%;
+    border-bottom: 0.1rem solid #191919;
+    font-size: 1.4rem;
+}
+
+.btnBox input {
+    background-color: #444444;
+}

@@ -1,0 +1,448 @@
+/* 레이아웃 */
+.regularly_layout {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    height: calc(100vh - 12rem);
+}
+
+
+
+
+
+
+/* 메인 레이아웃 */
+.main_Layout {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 126rem;
+    height: 100%;
+}
+
+
+
+
+
+
+/* 스케줄 */
+.schedule {
+    width: 36rem;
+    height: 100%;
+    background-color: white;
+    border-radius: 0.2rem;
+    box-shadow: 0.1rem 0.1rem 0.6rem rgba(0, 0, 0, 0.3);
+    box-sizing: border-box;
+}
+
+.scheduleHeaderArea {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 4.8rem;
+    padding-bottom: 1rem;
+}
+
+.scheduleHeader {
+    font-size: 1.6rem;
+}
+
+.scheduleBodyArea {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    width: 100%;
+    height: calc(100% - 5.8rem);
+}
+
+.hourMarker {
+    display: flex;
+    width: 25.2rem;
+    height: 2.2rem;
+    font-size: 1.6rem;
+}
+
+.hourMarker div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: calc(100%/6);
+}
+
+.hourMarker div:nth-child(1) {
+    width: calc(100%/12);
+    justify-content: flex-start;
+}
+
+.hourMarker div:nth-last-child(1) {
+    width: calc(100%/12);
+    justify-content: flex-end;
+}
+
+.scheduleTableScroll {
+    width: 100%;
+    height: calc(100% - 2.4rem);
+    overflow-y: scroll;
+}
+
+/* 스크롤바 설정*/
+.scheduleTableScroll::-webkit-scrollbar {
+    width: 0.6rem;
+}
+
+.scheduleTableScroll::-webkit-scrollbar-thumb {
+    height: 17%;
+    background-color: #444444;
+    border-radius: 10px;
+}
+
+.scheduleTableScroll::-webkit-scrollbar-track {
+    background-color: #D2D2D2;
+}
+
+.scheduleTable {
+    width: 100%;
+    border-spacing: 0;
+}
+
+.scheduleTableTr {
+    position: relative;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    height: 2.6rem;
+}
+
+.scheduleTableTr:hover {
+    background-color: #B5B5B5;
+}
+
+.scheduleTableTr:nth-child(1) .hourTd {
+    border-top: 0.1rem solid black;
+}
+
+.hourTd {
+    width: 4.2rem;
+    height: 100%;
+    border-left: 0.1rem solid black;
+    border-bottom: 0.1rem solid black;
+    box-sizing: border-box;
+}
+
+.driverTd {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    font-size: 1.4rem;
+    text-align: center;
+    background-color: #444;
+    color: white;
+    cursor: pointer;
+}
+
+.regularlyLineStart {
+    position: absolute;
+    top: 50%;
+    left: 10rem;
+    width: 4rem;
+    height: 2.2rem;
+    background-color: #514EA1;
+    transform: translate(0, -50%);
+}
+
+.regularlyLineEnd {
+    position: absolute;
+    top: 50%;
+    left: 10rem;
+    height: 2.2rem;
+    background-color: #0A39A5;
+    transform: translate(0, -50%);
+}
+
+.orderLine {
+    position: absolute;
+    top: 50%;
+    height: 2.2rem;
+    background-color: #1C1A4E;
+    transform: translate(0, -50%);
+}
+
+
+
+
+
+
+
+/* 검색창 */
+.search {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    height: 5.2rem;
+    padding: 1rem;
+    background-color: white;
+    border-radius: 0.2rem;
+    box-shadow: 0.1rem 0.1rem 0.6rem rgba(0, 0, 0, 0.3);
+    box-sizing: border-box;
+}
+
+.searchTitle {
+    font-size: 1.6rem;
+    font-weight: 500;
+    color: black;
+    margin-right: 1rem;
+}
+
+.searchBtn {
+    margin-left: 2rem;
+    background-color: #444;
+}
+
+.search form {
+    display: flex;
+    width: auto;
+}
+
+.search_inputArea {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.search_inputArea label {
+    font-size: 1.6rem;
+    color: black;
+    margin-left: 2rem;
+    margin-right: 1rem;
+}
+
+.search_inputArea select,
+.search_inputArea input[type=text],
+.search_inputArea input[type=date] {
+    width: 16rem;
+    height: 2.4rem;
+    padding-left: 0.3rem;
+    border: 0.1rem solid #B5B5B5;
+    border-radius: 0.2rem;
+    font-size: 1.5rem;
+    box-sizing: border-box;
+    outline: none;
+}
+
+.search_inputArea select {
+    width: 20rem;
+}
+
+
+
+
+
+
+/* 노선목록 */
+.list {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    width: 100%;
+    background-color: white;
+    border-radius: 0.2rem;
+    box-shadow: 0.1rem 0.1rem 0.6rem rgba(0, 0, 0, 0.3);
+    box-sizing: border-box;
+}
+
+.listTable {
+    width: calc(100% - 0.6rem);
+    border-spacing: 0;
+}
+
+.listTableScroll .listTable {
+    width: 100%;
+}
+
+.listTable thead,
+.listTable tbody {
+    width: 100%;
+}
+
+.listTable thead tr,
+.listTable tbody tr {
+    width: 100%;
+    height: 2.8rem;
+}
+
+.listTable tbody tr:nth-child(even) {
+    background-color: #EFEFEF;
+}
+
+.listTable thead tr td {
+    text-align: center;
+    background-color: #444;
+    color: white;
+    font-size: 1.5rem;
+}
+
+.listTable tbody tr td {
+    text-align: center;
+    font-size: 1.5rem;
+}
+
+.listTableScroll {
+    height: calc(100% - 7rem);
+    overflow-y: scroll;
+}
+
+/* 스크롤바 설정*/
+.listTableScroll::-webkit-scrollbar {
+    width: 0.6rem;
+}
+
+.listTableScroll::-webkit-scrollbar-thumb {
+    height: 17%;
+    background-color: #444444;
+    border-radius: 10px;
+}
+
+.listTableScroll::-webkit-scrollbar-track {
+    background-color: #D2D2D2;
+}
+
+
+
+
+
+
+
+/* 입력창 */
+.input {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    box-sizing: border-box;
+    background-color: white;
+    border-radius: 0.2rem;
+    box-shadow: 0.1rem 0.1rem 0.6rem rgba(0, 0, 0, 0.3);
+}
+
+.input table {
+    width: 100%;
+    border-spacing: 0;
+    border-radius: 0.2rem;
+}
+
+.input table tr {
+    height: 3rem;
+}
+
+.input table tr:nth-last-child(1) td {
+    border: none;
+}
+
+.input table tr td {
+    border-bottom: 0.1rem solid black;
+    font-size: 1.4rem;
+}
+
+.InputHeader {
+    width: 7.2rem;
+    background-color: #444;
+    text-align: center;
+    color: white;
+    font-size: 1.4rem;
+}
+
+.InputHeaderBordeTopLeft {
+    border-radius: 0.2rem 0 0 0;
+}
+
+.InputHeaderBordeBottomLeft {
+    border-radius: 0 0 0 0.2rem;
+}
+
+.inputSelect {
+    width: calc(100% - 1.6rem);
+    height: 1.8rem;
+    margin: 0 0.8rem;
+    outline: none;
+}
+
+.inputSelectfixedWidth {
+    width: calc(50% - 7rem);
+}
+
+.inputText {
+    width: calc(100% - 2.4rem);
+    height: 1.8rem;
+    margin: 0 0.8rem;
+    outline: none;
+}
+
+.inputTextTwice {
+    width: calc(50% - 2.4rem);
+    height: 1.8rem;
+    margin: 0 0.8rem;
+    outline: none;
+}
+
+.inputTextUnit {
+    width: calc(100% - 4.4rem);
+}
+
+.InputTd {
+    width: 24.3rem;
+}
+
+.twiceBox {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    font-size: 1.4rem;
+}
+
+.quarterBox {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.quarterBox .inputTextTwice {
+    margin: 0 0.4rem;
+}
+
+.workTypeBox {
+    display: flex;
+    align-items: center;
+}
+
+.workTypeBox input {
+    margin-left: 0.8rem;
+}
+
+.workTypeBox label {
+    margin-right: 0.2rem;
+    cursor: pointer;
+}
+
+.driveDateBox {
+    display: flex;
+    align-items: center;
+}
+
+.driveDateBox input {
+    margin-left: 0.8rem;
+}
+
+.driveDateBox label {
+    margin-right: 0.2rem;
+    cursor: pointer;
+}
+
+.driveDateBox label {
+    margin-right: 0.6rem;
+}
+
+.driveDateBox label:nth-child(2) {
+    margin-right: 1.6rem;
+}

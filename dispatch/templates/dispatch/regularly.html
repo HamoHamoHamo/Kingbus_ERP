@@ -4,9 +4,8 @@
 
 {% block head %}
 <meta http-equiv="Cache-Control" content="private, no-cache, no-store, max-age=0, must-revalidate">
-
+<link rel="stylesheet" href="{% static 'css/dispatch/dispatchBase.css' %}" type="text/css" />
 <link rel="stylesheet" href="{% static 'css/dispatch/regularly.css' %}" type="text/css" />
-<link rel="stylesheet" href="{% static 'css/pagination.css' %}" type="text/css" />
 {% endblock %}
 
 {% block content-header %}
@@ -15,303 +14,246 @@
 </div>
 {% endblock %}
 
+
 {% block content %}
 
+<div class="regularly_layout">
 
 
 
-<div class="searchAreaBox">
-  <form action="">
-    <div class="searchTool">
-      <span class="searchName">노선검색</span>
-      <div class="routeFilterBox">
-        <input value="{{group}}" name="group" type="text" class="inputModules" list="groupFilter" placeholder="그룹이름" autocomplete="off">
-        <datalist id="groupFilter">
-          {% for group in group_list %}
-          <option value="{{group.name}}"></option>
-          {% endfor %}
-        </datalist>
-        <input value="{{route}}" name="route" type="text" class="inputModules" list="routeFilter" placeholder="노선이름" autocomplete="off">
-        <datalist id="routeFilter">
-          {% for order in order_list %}
-          <option value="{{order.route}}"></option>
-          {% endfor %}
-        </datalist>
-      </div>
-      <div class="dateFilterBox">
-        <span>날짜</span>
-        <input value="{{date}}" name='date' type="date" class="inputModules">
-      </div>
-      <input type="submit" value="검색" class="btnModules">
+  <!-- 스케줄 -->
+  <div class="schedule">
+
+    <!-- 스케줄-헤더 -->
+    <div class="scheduleHeaderArea">
+      <div class="scheduleHeader">2022년 8월 16일 (화)</div>
     </div>
-  </form>
-</div>
 
-
-
-
-
-<div class="contentsAreaBox">
-  <table class="tableHead">
-    <thead>
-      <tr class="headerLine">
-        <td>그룹</td>
-        <td>순번</td>
-        <td>노선이름</td>
-        <td>운행시간</td>
-        <td>운행요일</td>
-        <td>출/퇴근</td>
-        <td>차량대수</td>
-        <td>배차차량</td>
-        <td>참조사항</td>
-      </tr>
-    </thead>
-  </table>
-
-  <table class="tableBody">
-    <tbody>
-      {% for dispatch in order_list %}
-      <tr class="{{dispatch.id}}">
-        <td>{{dispatch.group.name}}</td>
-        <td>{{dispatch.number}}</td>
-        <td class="{{ forloop.counter0 }}">
-          <span>{{dispatch.departure}}▶</span>
-          <span>{{dispatch.arrival}}</span>
-        </td>
-        <td>{{dispatch.departure_time}} ~ {{dispatch.arrival_time}}</td>
-        <td>{{dispatch.week}}</td>
-        <td>{{dispatch.work_type}}</td>
-        <td>{{bus_cnt_list|index:forloop.counter0}}/{{dispatch.bus_cnt}}</td>
-        <td class="{{dispatch.id}}">
-          <div class="regularlyDispatchBtn">
-            {% with connect=connect_list|index:forloop.counter0 %}
-              {% for c in connect %}
-              <span>{{c.bus_id.vehicle_num}}({{c.driver_id.name}})</span>                
-              {% endfor %}
-            {% endwith %}
+    <!-- 스케줄-바디 -->
+    <div class="scheduleBodyArea">
+      <div class="hourMarker">
+        <div>0</div>
+        <div>4</div>
+        <div>8</div>
+        <div>12</div>
+        <div>16</div>
+        <div>20</div>
+        <div>24</div>
+      </div>
+      <div class="scheduleTableScroll">
+        <div class="scheduleTable">
+          <div class="scheduleTableTr">
+            <div class="hourTd"></div>
+            <div class="hourTd"></div>
+            <div class="hourTd"></div>
+            <div class="hourTd"></div>
+            <div class="hourTd"></div>
+            <div class="hourTd"></div>
+            <div class="hourTd"></div>
+            <div class="driverTd">7846(민병기)</div>
           </div>
-        </td>
-        <td>{{dispatch.references}}</td>
-      </tr>
-      {% endfor %}
-    </tbody>
-  </table>
-
-  <div class="btnAreaBox">
-    <div class="pagination">
-      <!-- 페이징 처리 -->
-      {% if is_paginated %}
-      <div class="pagination">
-        {% if page_obj.has_previous %}
-        <div class="page-item page-pre">
-          <a class="page-link"
-            href="?top_box_selector={{selector}}&search={{searched}}&page={{ page_obj.previous_page_number }}"
-            tabindex="-1">이전</a>
         </div>
-        {% else %}
-        <div class="page-item page-pre disabled">
-          <a class="page-link" href="#" tabindex="-1">이전</a>
-        </div>
-        {% endif %}
-        {% for page in page_range %}
-        <div class="page-item {% if page == page_obj.number %} page-activate {% endif %}">
-          <a class="page-link" href="?top_box_selector={{selector}}&search={{searched}}&page={{ page }}">{{ page }}</a>
-        </div>
-        {% endfor %}
-
-        {% if page_obj.has_next %}
-        <div class="page-item">
-          <a class="page-link page-next"
-            href="?top_box_selector={{selector}}&search={{searched}}&page={{ page_obj.next_page_number }}">다음</a>
-        </div>
-        {% else %}
-        <div class="page-item page-next disabled">
-          <a class="page-link" href="#">다음</a>
-        </div>
-        {% endif %}
       </div>
-      {% endif %}
-    </div>
-    <div class="btnBox">
     </div>
 
   </div>
-</div>
 
 
 
 
 
-{% endblock %}
+  <div class="main_Layout">
 
 
 
+    <!-- 검색창 -->
+    <div class="search">
+
+      <div class="searchTitle">노선검색</div>
+
+      <form action="">
+
+        <!-- 변경영역 -->
+        <div class="search_inputArea">
+          <label for="">그룹</label>
+          <select name="" id="">
+            <option value=""></option>
+          </select>
+          <label for="">날짜</label>
+          <input type="date">
+          <div class="dateControllBtnBox">
+            <div class="dateControllBtn">
+              <svg xmlns="http://www.w3.org/2000/svg" width="8.6" height="13" viewBox="0 0 8.6 13">
+                <path id="Icon_ionic-ios-arrow-back" data-name="Icon ionic-ios-arrow-back"
+                  d="M13.843,12.692l5.692-4.915a.839.839,0,0,0,0-1.312,1.2,1.2,0,0,0-1.523,0l-6.449,5.569a.839.839,0,0,0-.031,1.281l6.475,5.608a1.205,1.205,0,0,0,1.523,0,.839.839,0,0,0,0-1.312Z"
+                  transform="translate(-11.25 -6.194)" fill="#fff" />
+              </svg>
+            </div>
+            <div class="dateControllBtn">
+              <svg xmlns="http://www.w3.org/2000/svg" width="8.6" height="13" viewBox="0 0 8.6 13">
+                <path id="Icon_ionic-ios-arrow-back" data-name="Icon ionic-ios-arrow-back"
+                  d="M17.258,12.692,11.566,7.777a.839.839,0,0,1,0-1.312,1.2,1.2,0,0,1,1.523,0l6.448,5.569a.839.839,0,0,1,.031,1.281l-6.475,5.608a1.205,1.205,0,0,1-1.523,0,.839.839,0,0,1,0-1.312Z"
+                  transform="translate(-11.25 -6.194)" fill="#fff" />
+              </svg>
+            </div>
+          </div>
+        </div>
+
+        <input type="submit" class="btnModules searchBtn" value="검색">
+
+      </form>
+
+    </div>
 
 
-{% block popup %}
-<div class="popupAreaModules">
-  <div class="popupBgModules"></div>
-  <form method="post" action="{% url 'dispatch:regularly_connect_create' %}" class="popupContainer">
-    {% csrf_token %}
-    <div class="regularyCreatePopupTitle">배차등록</div>
-    <table>
-      <thead class="regularyCreatePopupThead">
+
+    <!-- 입력창 -->
+    <form class="input">
+      <input type="submit" value="저장" class="btnModules inputSave">
+      <table>
         <tr>
-          <td>차량</td>
-          <td>
-            <span>출근</span>
-            <span>일반</span>
-            <span>퇴근</span>
+          <td class="InputHeader InputHeaderBordeTopLeft">그룹</td>
+          <td class="InputTd"><select name="" id="" class="inputSelect">
+              <option value=""></option>
+            </select></td>
+          <td class="InputHeader">노선이름</td>
+          <td class="InputTd"><input type="text" class="inputText"></td>
+          <td class="InputHeader">출/퇴근</td>
+          <td class="InputTd">
+            <div class="workTypeBox">
+              <input type="radio">
+              <label for="">출근</label>
+              <input type="radio">
+              <label for="">퇴근</label>
+            </div>
+          </td>
+          <td class="InputHeader">주차</td>
+          <td class="InputTd"><input type="text" class="inputText"></td>
+        </tr>
+        <tr>
+          <td class="InputHeader">출발지</td>
+          <td colspan="3"><input type="text" class="inputText"></td>
+          <td class="InputHeader">운행요일</td>
+          <td colspan="3">
+            <div class="driveDateBox">
+              <input type="checkbox">
+              <label for="">전체</label>
+              <input type="checkbox">
+              <label for="">월</label>
+              <input type="checkbox">
+              <label for="">화</label>
+              <input type="checkbox">
+              <label for="">수</label>
+              <input type="checkbox">
+              <label for="">목</label>
+              <input type="checkbox">
+              <label for="">금</label>
+              <input type="checkbox">
+              <label for="">토</label>
+              <input type="checkbox">
+              <label for="">일</label>
+            </div>
           </td>
         </tr>
-      </thead>
-    </table>
-    <div class="regularyCreatePopupTbodyBoxing">
-      <table>
-        <tbody class="regularyCreatePopupTbody">
-          {% for vehicle in vehicle_list %}
-          <tr>
-            <td class="{{vehicle.id}}">
-              <div class="addDriver">{{vehicle.vehicle_num}}({{vehicle.driver_name}})</div>
-            </td>
-            <td>
-              <div class="GoToWork">{{r_enter_cnt|index:forloop.counter0}}</div>
-              <div class="work">{{order_cnt|index:forloop.counter0}}</div>
-              <div class="backToHome">{{r_leave_cnt|index:forloop.counter0}}</div>
-            </td>
-          </tr>
-          {% endfor %}
-        </tbody>
+        <tr>
+          <td class="InputHeader">도착지</td>
+          <td colspan="3"><input type="text" class="inputText"></td>
+          <td class="InputHeader">금액</td>
+          <td class="InputTd"><input type="text" class="inputText inputTextUnit">원</td>
+          <td class="InputHeader">기사수당</td>
+          <td class="InputTd"><input type="text" class="inputText inputTextUnit">원</td>
+        </tr>
+        <tr>
+          <td class="InputHeader InputHeaderBordeBottomLeft">순번</td>
+          <td class="InputTd">
+            <div class="twiceBox">
+              <input type="number" class="inputTextTwice">-<input type="number" class="inputTextTwice">
+            </div>
+          </td>
+          <td class="InputHeader">운행시간</td>
+          <td class="InputTd">
+            <div class="twiceBox">
+              <div class="quarterBox">
+                <input type="text" class="inputTextTwice">
+                :
+                <input type="text" class="inputTextTwice">
+              </div>
+              ~
+              <div class="quarterBox">
+                <input type="text" class="inputTextTwice">
+                :
+                <input type="text" class="inputTextTwice">
+              </div>
+            </div>
+          </td>
+          <td class="InputHeader">참조사항</td>
+          <td colspan="3"><input type="text" class="inputText"></td>
+        </tr>
       </table>
-    </div>
-    <div class="regularyCreatePopupBtnBox">
-      <div class="btnModules">닫기</div>
-      <input type="submit" class="btnModules" value="등록">
-    </div>
-    <input type="hidden" name="id" value="" class="dispatchHidden">
-    <input type="hidden" name="date" value="{{date}}">
-  </form>
-</div>
+    </form>
 
-<div class="popupAreaModulesRoute">
-  <div class="popupBgModulesRoute"></div>
-  <form method="post" action="{% url 'dispatch:regularly_route_edit' %}" class="popupContainerRoute">
-      {% csrf_token %}
-      <div class="routePopupTitle">노선상세</div>
-      <div class="routePopupDataArea">
-          <div class="routePopupDataCell">
-              <span class="routePopupDataTitle">그룹</span>
-              <div class="routePopupData"></div>
-          </div>
-          <div class="routePopupDataCell">
-              <span class="routePopupDataTitle">출발지</span>
-              <div class="routePopupData"></div>
-          </div>
-          <div class="routePopupDataCell">
-              <span class="routePopupDataTitle">운행시간</span>
-              <div class="routePopupData"></div>
-          </div>
-          <div class="routePopupDataCell">
-              <span class="routePopupDataTitle">도착지</span>
-              <div class="routePopupData"></div>
-          </div>
-          <div class="routePopupDataCell">
-              <span class="routePopupDataTitle">순번</span>
-              <div class="routePopupData"></div>
-          </div>
-          <div class="routePopupDataCell">
-              <span class="routePopupDataTitle">운행요일</span>
-              <div class="routePopupData"></div>
-          </div>
-          <div class="routePopupDataCell">
-              <span class="routePopupDataTitle">기사수당</span>
-              <div class="routePopupData"></div>
-          </div>
-          <div class="routePopupDataCell">
-              <span class="routePopupDataTitle">버스종류</span>
-              <div class="routePopupData"></div>
-          </div>
-          <div class="routePopupDataCell">
-              <span class="routePopupDataTitle">버스대수</span>
-              <div class="routePopupData"></div>
-          </div>
-          <div class="routePopupDataCell">
-              <span class="routePopupDataTitle">거래처</span>
-              <div class="routePopupData"></div>
-          </div>
-          <div class="routePopupDataCell">
-              <span class="routePopupDataTitle">거래처 전화번호</span>
-              <div class="routePopupData"></div>
-          </div>
-          <div class="routePopupDataCell">
-              <span class="routePopupDataTitle">계약금액</span>
-              <div class="routePopupData"></div>
-          </div>
-          <div class="routePopupDataCell">
-              <span class="routePopupDataTitle">계약기간</span>
-              <div class="routePopupData"></div>
-          </div>
-          <div class="routePopupDataCell">
-              <span class="routePopupDataTitle">출/퇴근</span>
-              <div class="routePopupData"></div>
-          </div>
-          <div class="routePopupDataCell">
-              <span class="routePopupDataTitle">참조사항</span>
-              <div class="routePopupData"></div>
-          </div>
+
+
+    <!-- 노선목록 -->
+    <form class="list">
+      <div class="listHeader">
+        <span>그룹이름</span>
+        <input type="submit" value="엑셀로 내려받기" class="btnModules listExcel">
       </div>
-      <div class="routePopupBtnBox">
-          <div class="btnModules">닫기</div>
+      <table class="listTable">
+        <thead>
+          <tr>
+            <td>순번</td>
+            <td>주차</td>
+            <td>차량</td>
+            <td>운전원</td>
+            <td>용역</td>
+            <td>운행시간</td>
+            <td>노선이름</td>
+            <td>출발지</td>
+            <td>참조사항</td>
+          </tr>
+        </thead>
+      </table>
+      <div class="listTableScroll">
+        <table class="listTable">
+          <tbody>
+            <tr>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+            </tr>
+          </tbody>
+        </table>
       </div>
+  </div>
+
   </form>
+
+
+
+
 </div>
 {% endblock %}
-
-
-
 
 
 
 {% block script %}
-<script>
-  let regDatas = [
-      {% for dispatch in order_list %}
-        {
-          group: "{{ dispatch.group.name }}",
-          references: "{{ dispatch.references }}",
-          departure: "{{ dispatch.departure }}",
-          arrival: "{{ dispatch.arrival }}",
-          departure_time: "{{ dispatch.departure_time }}",
-          arrival_time: "{{ dispatch.arrival_time }}",
-          bus_type: "{{ dispatch.bus_type }}",
-          bus_cnt: "{{ dispatch.bus_cnt }}",
-          price: "{{ dispatch.price }}",
-          driver_allowance: "{{ dispatch.driver_allowance }}",
-          number: "{{ dispatch.number }}",
-          week: "{{ dispatch.week }}",
-          customer: "{{ dispatch.customer }}",
-          customer_phone: "{{ dispatch.customer_phone }}",
-          contract_start_date: "{{ dispatch.contract_start_date }}",
-          contract_end_date: "{{ dispatch.contract_end_date }}",
-          work_type: "{{ dispatch.work_type }}",
-          route: "{{ dispatch.route }}",
-        },
-      {% endfor %}
-  ]
-  const connectData = {}
-  {% for order in order_list %}
-    temp = []
-    {% for connect in connect_list|index:forloop.counter0 %}
-      temp.push('{{connect.bus_id.id}}')
-    {% endfor %}
-    connectData[{{order.id}}] = temp
-  {% endfor %}
-
-  {% autoescape off %}
-    const vehicleConnect = {{vehicle_connect}}
-  {% endautoescape %}
-  console.log("CONNECT", connectData);
-  console.log("vehicleConnect", vehicleConnect)
-</script>
-<script src="{% static 'js/dispatch/regularlyCreatePopup.js' %}"></script>
 {% endblock %}

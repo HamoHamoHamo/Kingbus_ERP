@@ -95,7 +95,7 @@ class ScheduleList(generic.ListView):
 
         for vehicle in context['vehicle_list']:
             temp = []
-            order_list = vehicle.info_bus_id.exclude(arrival_date__lte=f'{date}T00:00').exclude(departure_date__gte=f'{date}T24:00')
+            order_list = vehicle.info_bus_id.exclude(arrival_date__lte=f'{date} 00:00').exclude(departure_date__gte=f'{date} 24:00')
             e_regulary_list = vehicle.info_regulary_bus_id.exclude(arrival_date__lte=f'{date} 00:00').exclude(departure_date__gte=f'{date} 24:00').filter(work_type='출근')
             l_regulary_list = vehicle.info_regulary_bus_id.exclude(arrival_date__lte=f'{date} 00:00').exclude(departure_date__gte=f'{date} 24:00').filter(work_type='퇴근')
             for o in order_list:
@@ -195,31 +195,22 @@ class DocumentList(generic.ListView):
 class RegularlyDispatchList(generic.ListView):
     template_name = 'dispatch/regularly.html'
     context_object_name = 'order_list'
-    paginate_by = 10
     model = DispatchRegularly
 
     def get_queryset(self):
         group = self.request.GET.get('group', '')
-        route = self.request.GET.get('route', '')
         date = self.request.GET.get('date', TODAY)
 
         weekday = WEEK2[datetime.strptime(date, FORMAT).weekday()]
-        
-        print("VVVVVV", weekday)
 
         dispatch_list = []
         group_data = None
-        if route or group:
-            if group:
-                group_data = RegularlyGroup.objects.get(name=group)
-                dispatch_list = group_data.regularly_info.filter(week__contains=weekday)
-            if route:
-                if group_data:
-                    dispatch_list = group_data.regularly_info.filter(route__contains=route)
-                else:
-                    dispatch_list = DispatchRegularly.objects.filter(week__contains=weekday).filter(route__contains=route)
+        
+        if group:
+            group_data = RegularlyGroup.objects.get(name=group)
+            dispatch_list = group_data.regularly_info.filter(week__contains=weekday).order_by('number1', 'number2')
         else:
-            dispatch_list = DispatchRegularly.objects.filter(week__contains=weekday).order_by('group', 'number')
+            dispatch_list = DispatchRegularly.objects.filter(week__contains=weekday).order_by('group', 'number1', 'number2')
 
             print("AAAA", dispatch_list)
         return dispatch_list
@@ -227,31 +218,95 @@ class RegularlyDispatchList(generic.ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        
-        paginator = context['paginator']
-        page_numbers_range = 5
-        max_index = len(paginator.page_range)
-        page = self.request.GET.get('page')
-        current_page = int(page) if page else 1
 
-        start_index = int((current_page - 1) / page_numbers_range) * page_numbers_range
-        end_index = start_index + page_numbers_range
-        if end_index >= max_index:
-            end_index = max_index
-        page_range = paginator.page_range[start_index:end_index]
-        context['page_range'] = page_range
-        
-        #페이징 끝
+        ############### 스케줄 부분
+        date = self.request.GET.get('date', TODAY)
+
+        schedule_list = []
+        vehicle_list = Vehicle.objects.prefetch_related('info_bus_id', 'info_regulary_bus_id').filter(use='y')
+        for vehicle in vehicle_list:
+            temp = []
+            order_list = vehicle.info_bus_id.exclude(arrival_date__lte=f'{date} 00:00').exclude(departure_date__gte=f'{date} 24:00')
+            e_regulary_list = vehicle.info_regulary_bus_id.exclude(arrival_date__lte=f'{date} 00:00').exclude(departure_date__gte=f'{date} 24:00').filter(work_type='출근')
+            l_regulary_list = vehicle.info_regulary_bus_id.exclude(arrival_date__lte=f'{date} 00:00').exclude(departure_date__gte=f'{date} 24:00').filter(work_type='퇴근')
+            for o in order_list:
+                temp.append({
+                    'work_type': '일반',
+                    'departure_date': o.departure_date,
+                    'arrival_date': o.arrival_date,
+                    'departure': o.order_id.departure,
+                    'arrival': o.order_id.arrival,
+                })
+            for o in e_regulary_list:
+                temp.append({
+                    'work_type': '출근',
+                    'departure_date': o.departure_date,
+                    'arrival_date': o.arrival_date,
+                    'departure': o.regularly_id.departure,
+                    'arrival': o.regularly_id.arrival,
+                })
+            for o in l_regulary_list:
+                temp.append({
+                    'work_type': '퇴근',
+                    'departure_date': o.departure_date,
+                    'arrival_date': o.arrival_date,
+                    'departure': o.regularly_id.departure,
+                    'arrival': o.regularly_id.arrival,
+                })
+
+            schedule_list.append(temp)
+        print(schedule_list)
+        context['schedule_list'] = schedule_list
+
+        context['datalist_vehicle'] = Vehicle.objects.filter(use='y')
+        context['datalist_driver'] = Member.objects.filter(role='운전원')
+        ############
         
         group = self.request.GET.get('group', '')
+        # 노선 클릭하면 get으로 route id 보냄
         route = self.request.GET.get('route', '')
-        date = self.request.GET.get('date', TODAY)
+        
+        
         context['group_list'] = RegularlyGroup.objects.all()
         context['group'] = group
         context['route'] = route
         context['date'] = date
 
-        vehicle_list = Vehicle.objects.prefetch_related('info_regulary_bus_id', 'info_bus_id').filter(use='y')
+        # vehicle_list = Vehicle.objects.prefetch_related('info_regulary_bus_id', 'info_bus_id').filter(use='y')
+
+        ################# 위쪽 2주치 달력
+        date_date = datetime.strptime(date, FORMAT)
+        if date_date.weekday() != 6:
+            first_date = date_date - timedelta(days=date_date.weekday() + 1)
+        else:
+            first_date = date_date
+
+        if route:
+            route_id = get_object_or_404(DispatchRegularly, id=route)
+
+            calendar_connect_list = []
+            calendar_date_list = []
+            for i in range(14):
+                cur_date = datetime.strftime(first_date + timedelta(days=i), FORMAT)
+                calendar_date_list.append(cur_date)
+                try:
+                    connect = DispatchRegularlyConnect.objects.filter(regularly_id=route_id).get(departure_date__startswith=cur_date)
+                    calendar_connect_list.append(connect)
+                except DispatchRegularlyConnect.DoesNotExist:
+                    calendar_connect_list.append('')
+            
+            print("Calendar connect", calendar_connect_list)
+            print("Calendar date", calendar_date_list)
+            context['calendar_connect_list'] = calendar_connect_list
+            context['calendar_date_list'] = calendar_date_list
+        ####################
+
+
+
+
+
+
+
 
         r_enter_cnt = []
         r_leave_cnt = []
@@ -325,7 +380,7 @@ def regularly_connect_create(request):
 class RegularlyRouteList(generic.ListView):
     template_name = 'dispatch/regularly_route.html'
     context_object_name = 'order_list'
-    paginate_by = 10
+    # paginate_by = 10
     model = DispatchRegularly
 
     def get_queryset(self):
@@ -336,31 +391,31 @@ class RegularlyRouteList(generic.ListView):
         if route or group:
             if group:
                 group_data = RegularlyGroup.objects.get(name=group)
-                dispatch_list = group_data.regularly_info.all().order_by('group', 'number')
+                dispatch_list = group_data.regularly_info.all().order_by('group', 'number1', 'number2')
             if route:
                 if group_data:
-                    dispatch_list = group_data.regularly_info.filter(route__contains=route).order_by('group', 'number')
+                    dispatch_list = group_data.regularly_info.filter(route__contains=route).order_by('group', 'number1', 'number2')
                 else:
-                    dispatch_list = DispatchRegularly.objects.filter(route__contains=route).order_by('group', 'number')
+                    dispatch_list = DispatchRegularly.objects.filter(route__contains=route).order_by('group', 'number1', 'number2')
         else:
-            dispatch_list = DispatchRegularly.objects.all().order_by('group', 'number')
+            dispatch_list = DispatchRegularly.objects.all().order_by('group', 'number1', 'number2')
         return dispatch_list
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         
-        paginator = context['paginator']
-        page_numbers_range = 5
-        max_index = len(paginator.page_range)
-        page = self.request.GET.get('page')
-        current_page = int(page) if page else 1
+        # paginator = context['paginator']
+        # page_numbers_range = 5
+        # max_index = len(paginator.page_range)
+        # page = self.request.GET.get('page')
+        # current_page = int(page) if page else 1
 
-        start_index = int((current_page - 1) / page_numbers_range) * page_numbers_range
-        end_index = start_index + page_numbers_range
-        if end_index >= max_index:
-            end_index = max_index
-        page_range = paginator.page_range[start_index:end_index]
-        context['page_range'] = page_range
+        # start_index = int((current_page - 1) / page_numbers_range) * page_numbers_range
+        # end_index = start_index + page_numbers_range
+        # if end_index >= max_index:
+        #     end_index = max_index
+        # page_range = paginator.page_range[start_index:end_index]
+        # context['page_range'] = page_range
         
         #페이징 끝
 
@@ -445,7 +500,8 @@ def regularly_order_edit(request):
             order.bus_cnt = order_form.cleaned_data['bus_cnt']
             order.price = int(order_form.cleaned_data['price'].replace(',',''))
             order.driver_allowance = int(order_form.cleaned_data['driver_allowance'].replace(',',''))
-            order.number = order_form.cleaned_data['number']
+            order.number1 = order_form.cleaned_data['number1']
+            order.number2 = order_form.cleaned_data['number2']
             order.customer = order_form.cleaned_data['customer']
             order.customer_phone = order_form.cleaned_data['customer_phone']
             order.contract_start_date = order_form.cleaned_data['contract_start_date']
@@ -719,9 +775,10 @@ def order_edit_check(request):
     order = get_object_or_404(DispatchOrder, pk=pk)
     #
     connects = order.info_order.all()
-    r_connects = order.info_regularly.all()
+    # r_connects = order.info_regularly.all()
     for connect in connects:
         bus = connect.bus_id
+        # r_connects = bus.info_regulary_bus_id.all()
 
         post_departure_date = request.POST.get('departure_date', None)
         post_arrival_date = request.POST.get('arrival_date', None)
@@ -733,7 +790,7 @@ def order_edit_check(request):
         
         if bus.info_bus_id.exclude(arrival_date__lt=post_departure_date).exclude(departure_date__gt=post_arrival_date).exclude(id__in=connects):
             return JsonResponse({"status": "fail"})
-        if bus.info_regulary_bus_id.exclude(arrival_date__lt=post_departure_date).exclude(departure_date__gt=post_arrival_date).exclude(id__in=r_connects):
+        if bus.info_regulary_bus_id.exclude(arrival_date__lt=post_departure_date).exclude(departure_date__gt=post_arrival_date):
             return JsonResponse({"status": "fail"})
     
     return JsonResponse({'status': 'success'})
@@ -757,12 +814,12 @@ def order_edit(request):
 
             #
             connects = order.info_order.all()
-            r_connects = order.info_regularly.all()
+            
             for connect in connects:
                 bus = connect.bus_id
                 if bus.info_bus_id.exclude(arrival_date__lt=post_departure_date).exclude(departure_date__gt=post_arrival_date).exclude(id__in=connects):
                     return JsonResponse({"status": "fail"})
-                if bus.info_regulary_bus_id.exclude(arrival_date__lt=post_departure_date).exclude(departure_date__gt=post_arrival_date).exclude(id__in=r_connects):
+                if bus.info_regulary_bus_id.exclude(arrival_date__lt=post_departure_date).exclude(departure_date__gt=post_arrival_date):
                     return JsonResponse({"status": "fail"})
 
             for connect in connects:
@@ -820,7 +877,7 @@ def line_print(request):
     week = WEEK[datetime.strptime(date, FORMAT).weekday()][1]
     
     
-    regularly_list = DispatchRegularly.objects.prefetch_related('info_regularly').exclude(info_regularly=None).filter(week__contains=week).order_by('group', 'number', 'departure_time')
+    regularly_list = DispatchRegularly.objects.prefetch_related('info_regularly').exclude(info_regularly=None).filter(week__contains=week).order_by('group', 'number1', 'number2', 'departure_time')
     print(regularly_list)
     temp = []
     temp2 = []
@@ -845,7 +902,7 @@ def line_print(request):
 
         
         
-    no_list = DispatchRegularly.objects.filter(info_regularly=None).order_by('group', 'number', 'departure_time')
+    no_list = DispatchRegularly.objects.filter(info_regularly=None).order_by('group', 'number1', 'number2', 'departure_time')
     
     print('REGULSRY', context['regularly_list'])
     print('connect_list', context['connect_list'])
