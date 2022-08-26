@@ -4,12 +4,8 @@ register = template.Library()
 
 
 @register.filter
-def inCheck(value, i):
-    if i in value:
-        return "checked"
-    else:
-        return None
-
+def in_check(value, i):
+    return i in value
 @register.filter
 def index(indexable, i):
     try:

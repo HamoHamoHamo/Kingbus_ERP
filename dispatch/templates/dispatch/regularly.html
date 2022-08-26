@@ -10,7 +10,7 @@
 
 {% block content-header %}
 <div class="HeaderTitle">
-  출/퇴근배차
+  출/퇴근 배차
 </div>
 {% endblock %}
 
@@ -69,7 +69,7 @@
     <!-- 검색창 -->
     <div class="search">
 
-      <div class="searchTitle">노선검색</div>
+      <div class="searchTitle">그룹검색</div>
 
       <form action="">
 
@@ -80,7 +80,7 @@
             <option value=""></option>
           </select>
           <label for="">날짜</label>
-          <input type="date">
+          <input type="date" class="searchDate">
           <div class="dateControllBtnBox">
             <div class="dateControllBtn">
               <svg xmlns="http://www.w3.org/2000/svg" width="8.6" height="13" viewBox="0 0 8.6 13">
@@ -256,4 +256,6 @@
 
 
 {% block script %}
+<script src="{% static 'js/dispatch/oneStepDate.js' %}"></script>
+<script src="{% static 'js/dispatch/checker.js' %}"></script>
 {% endblock %}

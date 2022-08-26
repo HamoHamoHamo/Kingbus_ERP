@@ -103,8 +103,12 @@
 }
 
 .scheduleTable {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
     width: 100%;
     border-spacing: 0;
+    border-top: 0.1rem solid black;
 }
 
 .scheduleTableTr {
@@ -117,10 +121,6 @@
 
 .scheduleTableTr:hover {
     background-color: #B5B5B5;
-}
-
-.scheduleTableTr:nth-child(1) .hourTd {
-    border-top: 0.1rem solid black;
 }
 
 .hourTd {
