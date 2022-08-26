@@ -27,35 +27,49 @@
     <!-- 그룹목록 -->
     <div class="groupList">
       <div class="groupListHeadre">그룹목록</div>
-      <form class="groupListForm">
-        <div class="groupListBox">
-          <div class="groupListCell">
-            <div class="groupListOpenBtn">
-              <svg xmlns="http://www.w3.org/2000/svg" width="8.253" height="12.766" viewBox="0 0 8.253 12.766">
-                <path id="패스_300" data-name="패스 300" d="M0,0,4.8,5.842,9.947,0"
-                  transform="translate(1.411 11.359) rotate(-90)" fill="none" stroke="#444" stroke-linecap="round"
-                  stroke-linejoin="round" stroke-width="2" />
-              </svg>
+      <form method="post" action="{% url 'dispatch:regularly_group_edit' %}" class="groupListForm">
+        {% csrf_token %}
+        {% for group in group_list %}
+          <div class="groupListBox">
+            <div class="groupListCell">
+              <div class="groupListCellOpenArea">
+                <div class="groupListOpenBtn">
+                  {% if group.regularly_info.all %}
+                  <svg xmlns="http://www.w3.org/2000/svg" width="8.253" height="12.766" viewBox="0 0 8.253 12.766"
+                    class="groupArrowIcon">
+                    <path id="패스_300" data-name="패스 300" d="M0,0,4.8,5.842,9.947,0"
+                      transform="translate(1.411 11.359) rotate(-90)" fill="none" stroke="#444" stroke-linecap="round"
+                      stroke-linejoin="round" stroke-width="2" />
+                  </svg>
+                  {% endif %}
+                </div>
+                <input type="text" class="groupNum" value="{{group.number}}" name="number">
+                <input type="text" class="groupName" readonly value="{{group.name}}" name="name">
+              </div>
+              <div class="groupListBtnBox">
+                <div class="groupoEditeBtn {{group.id}}"></div>
+                <input type="submit" value="" class="groupDeleteBtn {{group.id}}">
+                <input type="submit" class="btnModules groupSaveBtn" value="저장">
+              </div>
             </div>
-            <input type="text" class="groupNum" disabled value="a">
-            <input type="text" class="groupName" disabled value="a">
-            <div class="groupListBtnBox">
-              <div></div>
-              <input type="submit" value="">
-              <input type="submit" class="btnModules">
+            <div class="routeListBox">
+              {% for regularly in group.regularly_info.all %}
+              <a href="{% url 'dispatch:regularly_route' %}?id={{regularly.id}}">
+                <div class="routeListCell">
+                  <div class="routeListNumber">{{regularly.number1}}{% if regularly.number2 %}-{{regularly.number2}}{% endif%}</div>
+                  <div class="routeListName">{{regularly.route}}</div>
+                </div>
+              </a>
+              {% endfor %}
             </div>
           </div>
-          <div class="routeListBox">
-            <div class="routeListCell">
-              <div class="routeListNumber">1-1</div>
-              <div class="routeListName">노선이름</div>
-            </div>
-          </div>
-        </div>
+        {% endfor %}
+        <input type="hidden" class="groupHidden" name="id">
       </form>
-      <form action="" class="createGroupForm">
-        <input type="text">
-        <input type="text">
+      <form action="{% url 'dispatch:regularly_group_create' %}" method="post" class="createGroupForm">
+        {% csrf_token %}
+        <input name="number" type="number">
+        <input name="name" type="text">
         <input type="submit" class="btnModules" value="등록">
       </form>
     </div>
@@ -72,11 +86,17 @@
 
 
     <!-- 입력창 -->
-    <form class="input">
+    {% if request.get_full_path != '/dispatch/regularly/route' %}
+    <form action="{% url 'dispatch:regularly_route_edit' %}" method="post" class="input">
+    {% else %}
+    <form action="{% url 'dispatch:regularly_route_create' %}" method="post" class="input">
+    {% endif %}
+      {% csrf_token %}
+      <input name="id" type="hidden" value="{{ request.get_full_path|slice:'29:' }}" class="inputHidden">
       <div class="inputHeader">
         <span>노선정보</span>
         <div class="inputBtnBox">
-          <input type="submit" value="신규" class="btnModules inputNew">
+          <a href="{% url 'dispatch:regularly_route' %}" class="btnModules inputNew">신규</a>
           <input type="submit" value="저장" class="btnModules inputSave">
           <input type="submit" value="삭제" class="btnModules inputDelete">
         </div>
@@ -84,81 +104,88 @@
       <table>
         <tr>
           <td class="InputHeader InputHeaderBordeTopLeft">그룹</td>
-          <td class="InputTd"><select name="" id="" class="inputSelect">
-              <option value=""></option>
-            </select></td>
+          <td class="InputTd">
+            <select name="group" id="" class="inputSelect">
+              <option></option>
+              {% for group in group_list %}
+              <option value="{{group.id}}" {% if regularly.group == group %} selected {% endif %}>{{group.name}}</option>
+              {% endfor %}
+            </select>
+          </td>
           <td class="InputHeader">노선이름</td>
-          <td class="InputTd"><input type="text" class="inputText"></td>
+          <td class="InputTd">
+            <input name="route" type="text" class="inputText" value="{{regularly.route}}">
+          </td>
           <td class="InputHeader">출/퇴근</td>
           <td class="InputTd">
             <div class="workTypeBox">
-              <input type="radio">
-              <label for="">출근</label>
-              <input type="radio">
-              <label for="">퇴근</label>
+              <input {% if regularly.work_type == '출근' %} checked {% endif %} name="work_type" value="출근" type="radio" id="startWork">
+              <label for="startWork">출근</label>
+              <input {% if regularly.work_type == '퇴근' %} checked {% endif %} name="work_type" value="퇴근" type="radio" id="endWork">
+              <label for="endWork">퇴근</label>
             </div>
           </td>
           <td class="InputHeader">주차</td>
-          <td class="InputTd"><input type="text" class="inputText"></td>
+          <td class="InputTd"><input name="parking" value="{{regulalry.parking}}" type="text" class="inputText"></td>
         </tr>
         <tr>
           <td class="InputHeader">출발지</td>
-          <td colspan="3"><input type="text" class="inputText"></td>
+          <td colspan="3"><input name="departure" value="{{regularly.departure}}" type="text" class="inputText"></td>
           <td class="InputHeader">운행요일</td>
           <td colspan="3">
             <div class="driveDateBox">
-              <input type="checkbox">
-              <label for="">전체</label>
-              <input type="checkbox">
-              <label for="">일</label>
-              <input type="checkbox">
-              <label for="">월</label>
-              <input type="checkbox">
-              <label for="">화</label>
-              <input type="checkbox">
-              <label for="">수</label>
-              <input type="checkbox">
-              <label for="">목</label>
-              <input type="checkbox">
-              <label for="">금</label>
-              <input type="checkbox">
-              <label for="">토</label>
+              <input name="week" value="" type="checkbox" id="allcheck">
+              <label for="allcheck">전체</label>
+              <input {% if regularly and regularly.week|in_check:'일' %} checked {% endif %} name="week" value="일" type="checkbox" id="checkWeek1" class="driveDateBoxInput">
+              <label for="checkWeek1">일</label>
+              <input {% if regularly and regularly.week|in_check:'월' %} checked {% endif %} name="week" value="월" type="checkbox" id="checkWeek2" class="driveDateBoxInput">
+              <label for="checkWeek2">월</label>
+              <input {% if regularly and regularly.week|in_check:'화' %} checked {% endif %} name="week" value="화" type="checkbox" id="checkWeek3" class="driveDateBoxInput">
+              <label for="checkWeek3">화</label>
+              <input {% if regularly and regularly.week|in_check:'수' %} checked {% endif %} name="week" value="수" type="checkbox" id="checkWeek4" class="driveDateBoxInput">
+              <label for="checkWeek4">수</label>
+              <input {% if regularly and regularly.week|in_check:'목' %} checked {% endif %} name="week" value="목" type="checkbox" id="checkWeek5" class="driveDateBoxInput">
+              <label for="checkWeek5">목</label>
+              <input {% if regularly and regularly.week|in_check:'금' %} checked {% endif %} name="week" value="금" type="checkbox" id="checkWeek6" class="driveDateBoxInput">
+              <label for="checkWeek6">금</label>
+              <input {% if regularly and regularly.week|in_check:'토' %} checked {% endif %} name="week" value="토" type="checkbox" id="checkWeek7" class="driveDateBoxInput">
+              <label for="checkWeek7">토</label>
             </div>
           </td>
         </tr>
         <tr>
           <td class="InputHeader">도착지</td>
-          <td colspan="3"><input type="text" class="inputText"></td>
+          <td colspan="3"><input name="arrival" value="{{regularly.arrival}}" type="text" class="inputText"></td>
           <td class="InputHeader">금액</td>
-          <td class="InputTd"><input type="text" class="inputText inputTextUnit">원</td>
+          <td class="InputTd"><input name="price" value="{{regularly.price}}" type="text" class="inputText inputTextUnit">원</td>
           <td class="InputHeader">기사수당</td>
-          <td class="InputTd"><input type="text" class="inputText inputTextUnit">원</td>
+          <td class="InputTd"><input name="driver_allowance" value="{{regularly.driver_allowance}}" type="text" class="inputText inputTextUnit">원</td>
         </tr>
         <tr>
           <td class="InputHeader InputHeaderBordeBottomLeft">순번</td>
           <td class="InputTd">
             <div class="twiceBox">
-              <input type="number" class="inputTextTwice">-<input type="number" class="inputTextTwice">
+              <input name="number1" value="{{regularly.number1}}" type="number" class="inputTextTwice">-<input name="number2" value="{{regularly.number2}}" type="number" class="inputTextTwice">
             </div>
           </td>
           <td class="InputHeader">운행시간</td>
           <td class="InputTd">
             <div class="twiceBox">
               <div class="quarterBox">
-                <input type="text" class="inputTextTwice">
+                <input name="departure_time1" value="{{regularly.departure_time|slice:':2'}}" type="text" class="inputTextTwice">
                 :
-                <input type="text" class="inputTextTwice">
+                <input name="departure_time2" value="{{regularly.departure_time|slice:'3:'}}" type="text" class="inputTextTwice">
               </div>
               ~
               <div class="quarterBox">
-                <input type="text" class="inputTextTwice">
+                <input name="arrival_time1" value="{{regularly.arrival_time|slice:':2'}}" type="text" class="inputTextTwice">
                 :
-                <input type="text" class="inputTextTwice">
+                <input name="arrival_time2" value="{{regularly.arrival_time|slice:'3:'}}" type="text" class="inputTextTwice">
               </div>
             </div>
           </td>
           <td class="InputHeader">참조사항</td>
-          <td colspan="3"><input type="text" class="inputText"></td>
+          <td colspan="3"><input name="references" value="{{regularly.references}}" type="text" class="inputText"></td>
         </tr>
       </table>
     </form>
@@ -166,12 +193,14 @@
 
 
     <!-- 고정배차 -->
-    <div class="fixedDispatch">
+    <form action="{% url 'dispatch:regularly_fixed_create' %}" method="post" class="fixedDispatch">
+      {% csrf_token %}
+      <input name="id" type="hidden" value="{{ request.get_full_path|slice:'29:' }}">
       <div class="fixedDispatchHeader">
         <span>고정배차</span>
         <div class="fixedDispatchHeaderBtnBox">
           <input type="submit" value="저장" class="btnModules fixedDispatchSave">
-          <input type="submit" value="삭제" class="btnModules fixedDispatchDelete">
+          <div class="btnModules fixedDispatchDelete">삭제</div>
         </div>
       </div>
       <table class="fixedDispatchTable">
@@ -189,30 +218,65 @@
         <tbody>
           <tr>
             <td>
-              <input type="text" class="fixedDispatchInput" disabled>
+              <div class="fixedDispatchBox" id="fixedDispatch1">
+                <div class="fixedDispatchText driveDateBoxInput"></div>
+                <select name="driver1" id="" class="fixedDispatchSelect">
+                </select>
+                <input type="hidden" name="bus1" class="fixedDispatchInput">
+              </div>
             </td>
             <td>
-              <input type="text" class="fixedDispatchInput" disabled>
+              <div class="fixedDispatchBox" id="fixedDispatch2">
+                <div class="fixedDispatchText driveDateBoxInput"></div>
+                <select name="driver2" id="" class="fixedDispatchSelect">
+                </select>
+                <input type="hidden" name="bus2" class="fixedDispatchInput">
+              </div>
             </td>
             <td>
-              <input type="text" class="fixedDispatchInput" disabled>
+              <div class="fixedDispatchBox" id="fixedDispatch3">
+                <div class="fixedDispatchText driveDateBoxInput"></div>
+                <select name="driver3" id="" class="fixedDispatchSelect">
+                </select>
+                <input type="hidden" name="bus3" class="fixedDispatchInput">
+              </div>
             </td>
             <td>
-              <input type="text" class="fixedDispatchInput" disabled>
+              <div class="fixedDispatchBox" id="fixedDispatch4">
+                <div class="fixedDispatchText driveDateBoxInput"></div>
+                <select name="driver4" id="" class="fixedDispatchSelect">
+                </select>
+                <input type="hidden" name="bus4" class="fixedDispatchInput">
+              </div>
             </td>
             <td>
-              <input type="text" class="fixedDispatchInput" disabled>
+              <div class="fixedDispatchBox" id="fixedDispatch5">
+                <div class="fixedDispatchText driveDateBoxInput"></div>
+                <select name="driver5" id="" class="fixedDispatchSelect">
+                </select>
+                <input type="hidden" name="bus5" class="fixedDispatchInput">
+              </div>
             </td>
             <td>
-              <input type="text" class="fixedDispatchInput" disabled>
+              <div class="fixedDispatchBox" id="fixedDispatch6">
+                <div class="fixedDispatchText driveDateBoxInput"></div>
+                <select name="driver6" id="" class="fixedDispatchSelect">
+                </select>
+                <input type="hidden" name="bus6" class="fixedDispatchInput">
+              </div>
             </td>
             <td>
-              <input type="text" class="fixedDispatchInput" disabled>
+              <div class="fixedDispatchBox" id="fixedDispatch7">
+                <div class="fixedDispatchText driveDateBoxInput"></div>
+                <select name="driver7" id="" class="fixedDispatchSelect">
+                </select>
+                <input type="hidden" name="bus7" class="fixedDispatchInput">
+              </div>
             </td>
           </tr>
         </tbody>
       </table>
-    </div>
+    </form>
 
 
 
@@ -224,20 +288,20 @@
       <div class="scheduleHeaderArea">
         <span>2022년 8월 16일 (화)</span>
         <div class="scheduleHeaderFilterBox">
-          <input type="checkbox">
-          <label for="">일</label>
-          <input type="checkbox">
-          <label for="">월</label>
-          <input type="checkbox">
-          <label for="">화</label>
-          <input type="checkbox">
-          <label for="">수</label>
-          <input type="checkbox">
-          <label for="">목</label>
-          <input type="checkbox">
-          <label for="">금</label>
-          <input type="checkbox">
-          <label for="">토</label>
+          <input type="radio" name="date" id="weekSun" class="scheduleRadio">
+          <label for="weekSun">일</label>
+          <input type="radio" name="date" id="weekMon" class="scheduleRadio" checked>
+          <label for="weekMon">월</label>
+          <input type="radio" name="date" id="weekTue" class="scheduleRadio">
+          <label for="weekTue">화</label>
+          <input type="radio" name="date" id="weekWed" class="scheduleRadio">
+          <label for="weekWed">수</label>
+          <input type="radio" name="date" id="weekThu" class="scheduleRadio">
+          <label for="weekThu">목</label>
+          <input type="radio" name="date" id="weekFri" class="scheduleRadio">
+          <label for="weekFri">금</label>
+          <input type="radio" name="date" id="weekSat" class="scheduleRadio">
+          <label for="weekSat">토</label>
         </div>
       </div>
 
@@ -260,6 +324,7 @@
         </div>
         <div class="scheduleTableScroll">
           <div class="scheduleTable">
+            {% for data in vehicle_list %}
             <div class="scheduleTableTr">
               <div class="hourTd"></div>
               <div class="hourTd"></div>
@@ -273,8 +338,12 @@
               <div class="hourTd"></div>
               <div class="hourTd"></div>
               <div class="hourTd"></div>
-              <div class="driverTd">7846(민병기)</div>
+              
+              <div class="driverTd {{data|index:0}} {{data|index:2}}">{{data|index:1}}({{data|index:3}})</div>
+              
             </div>
+            {% endfor %}
+            
           </div>
         </div>
       </div>
@@ -293,5 +362,18 @@
 
 
 {% block script %}
+<script>
+  {% autoescape off %}
+  const data = {{ bus_dict }}
+  const connect = {{ connect_list }}
+  console.log("DATA", data)
+  console.log("bus, driver", '{{bus_list}}', '{{driver_list}}')
+  console.log("connect", connect)
+  {% endautoescape %}
+</script>
+<script src="{% static 'js/dispatch/group.js' %}"></script>
 <script src="{% static 'js/dispatch/fixedDispatch.js' %}"></script>
+<script src="{% static 'js/dispatch/scheduleFilter.js' %}"></script>
+<script src="{% static 'js/dispatch/checker.js' %}"></script>
+<script src="{% static 'js/dispatch/input.js' %}"></script>
 {% endblock %}
