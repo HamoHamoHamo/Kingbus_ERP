@@ -485,7 +485,11 @@ class RegularlyRouteList(generic.ListView):
                 })
             context['connect_list'] = connect
         context['group_list'] = RegularlyGroup.objects.all().order_by('number', 'name')
-
+        context['vehicles'] = Vehicle.objects.filter(use='y')
+        driver_list = Member.objects.filter(role='운전원').values_list('id', 'name')
+        context['driver_dict'] = {}
+        for driver in driver_list:
+            context['driver_dict'][driver[0]] = driver[1]
         return context
 
 def regularly_order_create(request):

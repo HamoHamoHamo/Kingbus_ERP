@@ -113,9 +113,11 @@
       <table>
         <tr>
           <td class="InputHeader InputHeaderBordeTopLeft">그룹</td>
-          <td class="InputTd"><select name="" id="" class="inputSelect">
+          <td class="InputTd">
+            <select name="" id="selectGroup" class="inputSelect">
               <option value=""></option>
-            </select></td>
+            </select>
+          </td>
           <td class="InputHeader">노선이름</td>
           <td class="InputTd"><input type="text" class="inputText"></td>
           <td class="InputHeader">출/퇴근</td>
@@ -258,4 +260,5 @@
 {% block script %}
 <script src="{% static 'js/dispatch/oneStepDate.js' %}"></script>
 <script src="{% static 'js/dispatch/checker.js' %}"></script>
+<script src="{% static 'js/dispatch/regularlyDispatch.js' %}"></script>
 {% endblock %}

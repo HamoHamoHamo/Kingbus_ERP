@@ -324,7 +324,7 @@
         </div>
         <div class="scheduleTableScroll">
           <div class="scheduleTable">
-            {% for data in vehicle_list %}
+            {% for data in vehicles %}
             <div class="scheduleTableTr">
               <div class="hourTd"></div>
               <div class="hourTd"></div>
@@ -339,7 +339,7 @@
               <div class="hourTd"></div>
               <div class="hourTd"></div>
               
-              <div class="driverTd {{data|index:0}} {{data|index:2}}">{{data|index:1}}({{data|index:3}})</div>
+              <div class="driverTd {{data.id}} {{data.driver.id}}">{{data.vehicle_num}}</div>
               
             </div>
             {% endfor %}
@@ -366,9 +366,11 @@
   {% autoescape off %}
   const data = {{ bus_dict }}
   const connect = {{ connect_list }}
+  const driverObj = {{ driver_dict }}
   console.log("DATA", data)
   console.log("bus, driver", '{{bus_list}}', '{{driver_list}}')
   console.log("connect", connect)
+  console.log("driverObj", driverObj)
   {% endautoescape %}
 </script>
 <script src="{% static 'js/dispatch/group.js' %}"></script>

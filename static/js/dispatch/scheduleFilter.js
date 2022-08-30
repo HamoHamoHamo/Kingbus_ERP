@@ -99,7 +99,7 @@ function drawSchdule() {
                         else {
                             startWork.setAttribute("class", "regularlyLineEnd");
                         }
-                        startWork.setAttribute("title", `${weekObj[weekKey[3]]}▶${weekObj[weekKey[4]]}`);
+                        startWork.setAttribute("title", `${driverObj[driverKey[j]]} || ${weekObj[weekKey[3]]}▶${weekObj[weekKey[4]]}`);
                         startWork.setAttribute("style", `left: ${startPoint * 0.074}rem; width: ${scheduleWidth * 0.074}rem;`);
                         for (l = 0; l < sheduleLine.length; l++) {
                             if (sheduleLine[l].children[12].classList[1] == dataKey[i] && sheduleLine[l].children[12].classList[2] == driverKey[j]) {
@@ -114,6 +114,17 @@ function drawSchdule() {
                             }
                         }
                     }
+                }
+            }
+        }
+        let scheduleBus = ""
+        for (i = 0; i < sheduleLine.length; i++) {
+            if (sheduleLine[i].children[12].classList.contains("haveSchedule")) {
+                scheduleBus = sheduleLine[i].children[12].innerText.substr(0, 4)
+            }
+            for (j = 0; j < sheduleLine.length; j++) {
+                if (sheduleLine[j].children[12].innerText.substr(0, 4) == scheduleBus && !sheduleLine[j].children[12].classList.contains("haveSchedule")) {
+                    sheduleLine[j].children[12].classList.add("haveSchedule")
                 }
             }
         }
