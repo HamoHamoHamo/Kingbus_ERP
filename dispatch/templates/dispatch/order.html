@@ -75,12 +75,10 @@
 
                 <!-- 변경영역 -->
                 <div class="search_inputArea">
-                    <label for="">그룹</label>
-                    <select name="" id="">
-                        <option value=""></option>
-                    </select>
+                    <label for="">노선이름</label>
+                    <input type="text">
                     <label for="">날짜</label>
-                    <input type="date">
+                    <input type="date" class="searchDate">
                     <div class="dateControllBtnBox">
                         <div class="dateControllBtn">
                             <svg xmlns="http://www.w3.org/2000/svg" width="8.6" height="13" viewBox="0 0 8.6 13">
@@ -124,7 +122,7 @@
                         <td class="InputTd" colspan="3"><input type="text" class="inputText"></td>
                         <td class="InputHeader">입금현황</td>
                         <td class="InputTd">
-                            <select name="" id="" class="inputSelect">
+                            <select name="" id="deposit_status" class="inputSelect">
                                 <option value=""></option>
                             </select>
                         </td>
@@ -156,7 +154,7 @@
                         </td>
                         <td class="InputHeader">비용구분</td>
                         <td class="InputTd">
-                            <select name="" id="" class="inputSelect">
+                            <select name="" id="cost_type" class="inputSelect">
                                 <option value=""></option>
                             </select>
                         </td>
@@ -165,16 +163,18 @@
                     </tr>
                     <tr>
                         <td class="InputHeader InputHeaderBordeTopLeft">차량대수</td>
-                        <td class="InputTd"><input type="number" class="inputText inputTextUnit">대</td>
+                        <td class="InputTd">
+                            <input type="number" class="inputText inputTextUnit inputBusCount">대
+                        </td>
                         <td class="InputHeader">차량종류</td>
                         <td class="InputTd">
-                            <select name="" id="" class="inputSelect">
+                            <select name="" id="bus_type" class="inputSelect">
                                 <option value=""></option>
                             </select>
                         </td>
                         <td class="InputHeader">수금구분</td>
                         <td class="InputTd" colspan="3">
-                            <select name="" id="" class="inputSelect inputSelectfixedWidth">
+                            <select name="" id="collection_type" class="inputSelect inputSelectfixedWidth">
                                 <option value=""></option>
                             </select>
                         </td>
@@ -198,13 +198,13 @@
                     <tr>
                         <td class="InputHeader InputHeaderBordeTopLeft">계약현황</td>
                         <td class="InputTd">
-                            <select name="" id="" class="inputSelect">
+                            <select name="" id="contract_status" class="inputSelect">
                                 <option value=""></option>
                             </select>
                         </td>
                         <td class="InputHeader">운행종류</td>
                         <td class="InputTd">
-                            <select name="" id="" class="inputSelect">
+                            <select name="" id="drive_type" class="inputSelect">
                                 <option value=""></option>
                             </select>
                         </td>
@@ -231,7 +231,7 @@
                     </thead>
                     <tbody>
                         <tr>
-                            <td>1111</td>
+                            <td></td>
                             <td><input type="text" class="inputText inputTextUnit">님</td>
                             <td><input type="text" class="inputText inputTextUnit">원</td>
                             <td><input type="text" class="inputText inputTextUnit">원</td>
@@ -351,5 +351,8 @@
 
 
 {% block script %}
+<script src="{% static 'js/dispatch/oneStepDate.js' %}"></script>
 <script src="{% static 'js/dispatch/bothScroll.js' %}"></script>
+<script src="{% static 'js/dispatch/crateDispatch.js' %}"></script>
+<script src="{% static 'js/dispatch/orderDispatch.js' %}"></script>
 {% endblock %}

@@ -123,6 +123,9 @@
   background-color: #444;
 }
 
+.orderDispatchTable tbody td:nth-child(1) {
+  cursor: pointer;
+}
 
 
 
@@ -165,6 +168,10 @@
 .ListTableBox {
   width: 56%;
   padding: 0;
+}
+
+.listTableScroll .listTable {
+  height: 100%;
 }
 
 .listTableScroll .ListTableBox {

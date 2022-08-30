@@ -79,6 +79,12 @@
   width: 7%;
 }
 
+.listTable tr td:nth-child(3),
+.listTable tr td:nth-child(4),
+.listTable tr td:nth-child(5) {
+  cursor: pointer;
+}
+
 .listTable tr td:nth-child(6),
 .listTable tr td:nth-child(7) {
   width: 10%;
@@ -96,6 +102,12 @@
 .listTable tbody td {
   border-right: 0.1rem solid black;
   border-bottom: 0.1rem solid black;
+}
+
+
+.listTable tbody tr:nth-child(odd):hover,
+.listTable tbody tr:nth-child(even):hover {
+    background-color: #b4b4b4;
 }
 
 
