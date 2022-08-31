@@ -1,5 +1,8 @@
 const searchDate = document.querySelector(".searchDate")
 const dateControllBtn = document.querySelectorAll(".dateControllBtn")
+const scheduleHeader = document.querySelector(".scheduleHeader")
+const listHeader = document.querySelector(".listHeader span")
+const searchForm = document.querySelector(".searchForm")
 
 // 날짜구하기
 const toDay = new Date()
@@ -9,20 +12,28 @@ const date = toDay.getDate()
 
 
 // 기본 날짜
-window.onload = function () {
-    if (month < 10) {
-        if (date < 10) {
-            searchDate.value = `${year}-0${month}-0${date}`
+function inputToDay() {
+    if (window.location.search.split("date=")[1] == undefined) {
+        if (month < 10) {
+            if (date < 10) {
+                searchDate.value = `${year}-0${month}-0${date}`
+            } else {
+                searchDate.value = `${year}-0${month}-${date}`
+            }
         } else {
-            searchDate.value = `${year}-0${month}-${date}`
+            if (date < 10) {
+                searchDate.value = `${year}-${month}-0${date}`
+            } else {
+                searchDate.value = `${year}-${month}-${date}`
+            }
         }
-    } else {
-        if (date < 10) {
-            searchDate.value = `${year}-${month}-0${date}`
-        } else {
-            searchDate.value = `${year}-${month}-${date}`
-        }
+    }else{
+        searchDate.value = window.location.search.split("date=")[1]
     }
+    let week =  ['일', '월', '화', '수', '목', '금', '토'];
+    var dayOfWeek = week[new Date(searchDate.value).getDay()];
+    scheduleHeader.innerText = `${searchDate.value.substr(0,4)}년 ${searchDate.value.substr(5,2)}월 ${searchDate.value.substr(8,2)}일 (${dayOfWeek})`
+    listHeader.innerText = `${searchDate.value.substr(0,4)}년 ${searchDate.value.substr(5,2)}월 ${searchDate.value.substr(8,2)}일 (${dayOfWeek})`
 }
 
 
@@ -54,6 +65,7 @@ function dateToBefore() {
             searchDate.value = `${pickYear}-${pickMonth}-${pickDate}`
         }
     }
+    searchForm.submit()
 }
 
 
@@ -84,4 +96,5 @@ function dateTo() {
             searchDate.value = `${pickYear}-${pickMonth}-${pickDate}`
         }
     }
+    searchForm.submit()
 }

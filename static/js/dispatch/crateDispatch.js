@@ -7,6 +7,7 @@ const ListTableBox = document.querySelectorAll(".ListTableBox")
 const scrollListTableWidth = document.querySelectorAll(".scrollListTableWidth")
 
 window.onload = function () {
+    inputToDay()
     if (inputBusCount.value >= 1) {
         orderDispatch.style.height = `${6 + (inputBusCount.value - 1) * 3}rem`
     }

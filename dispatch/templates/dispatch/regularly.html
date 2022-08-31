@@ -26,7 +26,7 @@
 
     <!-- 스케줄-헤더 -->
     <div class="scheduleHeaderArea">
-      <div class="scheduleHeader">2022년 8월 16일 (화)</div>
+      <div class="scheduleHeader"></div>
     </div>
 
     <!-- 스케줄-바디 -->
@@ -71,7 +71,7 @@
 
       <div class="searchTitle">그룹검색</div>
 
-      <form action="">
+      <form action="" class="searchForm">
 
         <!-- 변경영역 -->
         <div class="search_inputArea">
@@ -123,10 +123,10 @@
           <td class="InputHeader">출/퇴근</td>
           <td class="InputTd">
             <div class="workTypeBox">
-              <input type="radio">
-              <label for="">출근</label>
-              <input type="radio">
-              <label for="">퇴근</label>
+              <input type="radio" id="regularlyWorkStart">
+              <label for="regularlyWorkStart">출근</label>
+              <input type="radio" id="regularlyWorkEnd">
+              <label for="regularlyWorkEnd">퇴근</label>
             </div>
           </td>
           <td class="InputHeader">주차</td>
@@ -138,22 +138,22 @@
           <td class="InputHeader">운행요일</td>
           <td colspan="3">
             <div class="driveDateBox">
-              <input type="checkbox">
-              <label for="">전체</label>
-              <input type="checkbox">
-              <label for="">월</label>
-              <input type="checkbox">
-              <label for="">화</label>
-              <input type="checkbox">
-              <label for="">수</label>
-              <input type="checkbox">
-              <label for="">목</label>
-              <input type="checkbox">
-              <label for="">금</label>
-              <input type="checkbox">
-              <label for="">토</label>
-              <input type="checkbox">
-              <label for="">일</label>
+              <input type="checkbox" id="regularlyCheckAll">
+              <label for="regularlyCheckAll">전체</label>
+              <input type="checkbox" id="regularlyCheckWeek0">
+              <label for="regularlyCheckWeek0">월</label>
+              <input type="checkbox" id="regularlyCheckWeek1">
+              <label for="regularlyCheckWeek1">화</label>
+              <input type="checkbox" id="regularlyCheckWeek2">
+              <label for="regularlyCheckWeek2">수</label>
+              <input type="checkbox" id="regularlyCheckWeek3">
+              <label for="regularlyCheckWeek3">목</label>
+              <input type="checkbox" id="regularlyCheckWeek4">
+              <label for="regularlyCheckWeek4">금</label>
+              <input type="checkbox" id="regularlyCheckWeek5">
+              <label for="regularlyCheckWeek5">토</label>
+              <input type="checkbox" id="regularlyCheckWeek6">
+              <label for="regularlyCheckWeek6">일</label>
             </div>
           </td>
         </tr>
@@ -220,28 +220,25 @@
       <div class="listTableScroll">
         <table class="listTable">
           <tbody>
-            <tr>
+            {% for order in order_list %}
+            <tr onclick="location.href='{% url 'dispatch:regularly' %}?id={{order.id}}'" class="{{order.id}}">
+              <td>{{order.number1}}{% if order.number2 %}- {{order.number2}} {% endif %}</td>
               <td></td>
               <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
+              <td>
+                <select name="" id="selectDriver{{order.id}}" class="orderDriver">
+                  <option value=""></option>
+                </select>
+              </td>
+              <td>
+                <input type="text" class="orderSpareDriver">
+              </td>
               <td></td>
               <td></td>
               <td></td>
               <td></td>
             </tr>
-            <tr>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-            </tr>
+            {% endfor %}
           </tbody>
         </table>
       </div>
@@ -258,7 +255,16 @@
 
 
 {% block script %}
+<script>
+  {% autoescape off %}
+  const data = {{ bus_dict }}
+  const driverObj = {{ driver_dict }}
+  console.log("DATA", data)
+  console.log("driverObj", driverObj)
+  {% endautoescape %}
+</script>
 <script src="{% static 'js/dispatch/oneStepDate.js' %}"></script>
 <script src="{% static 'js/dispatch/checker.js' %}"></script>
 <script src="{% static 'js/dispatch/regularlyDispatch.js' %}"></script>
+<!-- <script src="{% static 'js/dispatch/FullSchedule.js' %}"></script> -->
 {% endblock %}

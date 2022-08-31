@@ -20,6 +20,14 @@
   cursor: pointer;
 }
 
+.searchDate:nth-child(1) {
+  margin-right: 0.6rem;
+}
+
+.searchDate:nth-child(2) {
+  margin-left: 0.6rem;
+}
+
 
 
 
@@ -104,7 +112,7 @@
 }
 
 .orderDispatchTable td {
-  width: calc((100%/11)*2);
+  width: calc((100%/13)*2);
   border-right: 0.1rem solid black;
   border-bottom: 0.1rem solid black;
 }
@@ -114,7 +122,7 @@
 }
 
 .orderDispatchTable td:nth-last-child(1) {
-  width: calc(100%/11);
+  width: calc(100%/13);
   border-right: none;
 }
 
@@ -125,6 +133,12 @@
 
 .orderDispatchTable tbody td:nth-child(1) {
   cursor: pointer;
+}
+
+.orderDriverSelect {
+  height: 2.4rem;
+  margin: 0 0.8rem;
+  outline: none;
 }
 
 

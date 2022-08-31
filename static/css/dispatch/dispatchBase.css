@@ -273,6 +273,7 @@
     height: 2.8rem;
 }
 
+
 .listTable tbody tr:nth-child(even) {
     background-color: #EFEFEF;
 }
