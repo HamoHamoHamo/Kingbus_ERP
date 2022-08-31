@@ -68,7 +68,7 @@ function addFixedDispatch(e) {
 
                     const driverOption = document.createElement('option');
                     driverOption.setAttribute("value", `${e.target.classList[2]}`);
-                    driverOption.innerText = e.target.innerText.split("(")[1].replace(/\)/g, "")
+                    driverOption.innerText = driverObj[e.target.classList[2]]
                     addDispatch[i].parentNode.children[1].appendChild(driverOption);
 
                     for (j = 0; j < addDispatch[i].parentNode.children[1].children.length; j++) {
@@ -134,7 +134,7 @@ function selectCheck(e) {
         let idOptionArr = []
         for (i = 0; i < driverTd.length; i++) {
             if (driverTd[i].classList.contains("ableToDispatch")) {
-                driverOptionArr.push(driverTd[i].innerText.split("(")[1].replace(/\)/g, ""))
+                driverOptionArr.push(driverObj[driverTd[i].classList[2]])
                 idOptionArr.push(driverTd[i].classList[2])
             }
         }

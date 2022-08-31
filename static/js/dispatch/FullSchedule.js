@@ -13,28 +13,11 @@ function getRouteTime() {
 }
 
 
-
-// 요일변경
-for (i = 0; i < scheduleRadio.length; i++) {
-    scheduleRadio[i].addEventListener("change", callSchedule)
-}
-
-function callSchedule() {
-    deleteSchdule()
-    ableToDispatchDelete()
-    drawSchdule()
-    BothDriverDispatch()
-    ableToDispatch()
-}
-
-
 window.onload = function () {
     getRouteTime()
     drawSchdule()
     BothDriverDispatch()
     ableToDispatch()
-    dispatchWeekDelete()
-    dispatchWeekCheker()
     loadData()
 }
 
@@ -138,40 +121,6 @@ function drawSchdule() {
 }
 
 
-
-
-// 스케줄 삭제
-function deleteSchdule() {
-    const scheduleStart = document.querySelectorAll(".regularlyLineStart")
-    const scheduleEnd = document.querySelectorAll(".regularlyLineEnd")
-    for (i = 0; i < scheduleStart.length; i++) {
-        scheduleStart[i].remove()
-    }
-    for (i = 0; i < scheduleEnd.length; i++) {
-        scheduleEnd[i].remove()
-    }
-}
-
-
-
-// 배차가능 차량 초기화
-
-function ableToDispatchDelete() {
-    const have = document.querySelectorAll(".haveSchedule")
-    const able = document.querySelectorAll(".ableToDispatch")
-    for (i = 0; i < have.length; i++) {
-        have[i].classList.remove("haveSchedule")
-    }
-    for (i = 0; i < able.length; i++) {
-        able[i].classList.remove("ableToDispatch")
-    }
-    for (i = 0; i < sheduleLine.length; i++) {
-        sheduleLine[i].classList.remove("scheduleTableTrAble")
-        sheduleLine[i].classList.remove("scheduleTableTrDisable")
-    }
-}
-
-
 // 배차가능 차량
 function ableToDispatch() {
     for (i = 0; i < driverTd.length; i++) {
@@ -180,32 +129,6 @@ function ableToDispatch() {
             driverTd[i].parentNode.classList.add("scheduleTableTrAble")
         } else {
             driverTd[i].parentNode.classList.add("scheduleTableTrDisable")
-        }
-    }
-}
-
-
-// 배차가능 요일 초기화
-function dispatchWeekDelete() {
-    const ableWeek = document.querySelectorAll(".ableWeek")
-    for (i = 0; i < ableWeek.length; i++) {
-        ableWeek[i].classList.remove("ableWeek")
-    }
-    for (i = 7; i < 14; i++) {
-        driveWeek[i].style.backgroundColor = "white"
-        driveWeek[i].style.pointerEvents = "auto"
-    }
-}
-
-
-// 배차가능 요일
-function dispatchWeekCheker() {
-    for (i = 0; i < 7; i++) {
-        if (driveWeek[i].checked) {
-            driveWeek[i + 7].classList.add("ableWeek")
-        } else {
-            driveWeek[i + 7].style.backgroundColor = "#E4E4E4"
-            driveWeek[i + 7].style.pointerEvents = "none"
         }
     }
 }

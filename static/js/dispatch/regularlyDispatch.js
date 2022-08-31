@@ -1,27 +1,50 @@
-const dispatchRouteBus = document.querySelectorAll(".listTable tbody td:nth-child(3)")
-const dispatchRouteDriver = document.querySelectorAll(".listTable tbody td:nth-child(4)")
-const dispatchRouteSpare = document.querySelectorAll(".listTable tbody td:nth-child(5)")
+const routeList = document.querySelectorAll(".listTable tbody tr")
+const routeListBus = document.querySelectorAll(".listTable tbody td:nth-child(3)")
+const orderDriver = document.querySelectorAll(".orderDriver")
+const orderSpareDriver = document.querySelectorAll(".orderSpareDriver")
 
-for (i = 0; i < dispatchRouteBus.length; i++) {
-    dispatchRouteBus[i].addEventListener("click", dispatchCheck)
+
+window.onload = function () {
+    dispatchCheck()
+    inputToDay()
+    useDriver()
 }
 
+// 배차 가능 노선 표시
 function dispatchCheck() {
-    if (!this.classList.contains("checkBus")) {
-        for (i = 0; i < dispatchRouteBus.length; i++) {
-            dispatchRouteBus[i].classList.remove("checkBus")
-            dispatchRouteBus[i].style.backgroundColor = "transparent"
-            dispatchRouteBus[i].parentNode.children[3].style.backgroundColor = "transparent"
-            dispatchRouteBus[i].parentNode.children[4].style.backgroundColor = "transparent"
+    if (window.location.search.substr(0, 3) == "?id") {
+        for (i = 0; i < routeList.length; i++) {
+            if (routeList[i].classList[0] == window.location.search.split("=")[1]) {
+                routeList[i].classList.add("checkBus")
+                routeList[i].children[2].style.backgroundColor = "#0069D9"
+                routeList[i].children[3].style.backgroundColor = "#0069D9"
+                routeList[i].children[4].style.backgroundColor = "#0069D9"
+            }
         }
-        this.style.backgroundColor = "#0069D9"
-        this.parentNode.children[3].style.backgroundColor = "#0069D9"
-        this.parentNode.children[4].style.backgroundColor = "#0069D9"
-        this.classList.add("checkBus")
-    } else {
-        this.classList.remove("checkBus")
-        this.style.backgroundColor = "transparent"
-        this.parentNode.children[3].style.backgroundColor = "transparent"
-        this.parentNode.children[4].style.backgroundColor = "transparent"
     }
+}
+
+
+
+// 운전원, 용역 보이기
+function useDriver(){
+    for(i=0; i<routeList.length; i++){
+        if(window.location.search.split("id=")[1] == routeList[i].classList[0] && routeListBus[i].innerText !== ""){
+            orderDriver[i].style.display = "block"
+            orderSpareDriver[i].style.display = "block"
+        }
+    }    
+}
+
+
+
+
+// 운전원, 용역 변경시 새로고침 막기
+for(i=0; i<orderDriver.length; i++){
+    orderDriver[i].addEventListener("click", stopLink)
+    orderSpareDriver[i].addEventListener("click", stopLink)
+}
+
+function stopLink(e){
+    e.stopPropagation()
 }

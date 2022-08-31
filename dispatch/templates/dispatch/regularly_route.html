@@ -105,7 +105,7 @@
         <tr>
           <td class="InputHeader InputHeaderBordeTopLeft">그룹</td>
           <td class="InputTd">
-            <select name="group" id="" class="inputSelect">
+            <select name="group" id="regularly_route_group_select" class="inputSelect">
               <option></option>
               {% for group in group_list %}
               <option value="{{group.id}}" {% if regularly.group == group %} selected {% endif %}>{{group.name}}</option>
@@ -220,7 +220,7 @@
             <td>
               <div class="fixedDispatchBox" id="fixedDispatch1">
                 <div class="fixedDispatchText driveDateBoxInput"></div>
-                <select name="driver1" id="" class="fixedDispatchSelect">
+                <select name="driver1" id="regularly_route_Sun_select" class="fixedDispatchSelect">
                 </select>
                 <input type="hidden" name="bus1" class="fixedDispatchInput">
               </div>
@@ -228,7 +228,7 @@
             <td>
               <div class="fixedDispatchBox" id="fixedDispatch2">
                 <div class="fixedDispatchText driveDateBoxInput"></div>
-                <select name="driver2" id="" class="fixedDispatchSelect">
+                <select name="driver2" id="regularly_route_Mon_select" class="fixedDispatchSelect">
                 </select>
                 <input type="hidden" name="bus2" class="fixedDispatchInput">
               </div>
@@ -236,7 +236,7 @@
             <td>
               <div class="fixedDispatchBox" id="fixedDispatch3">
                 <div class="fixedDispatchText driveDateBoxInput"></div>
-                <select name="driver3" id="" class="fixedDispatchSelect">
+                <select name="driver3" id="regularly_route_Tue_select" class="fixedDispatchSelect">
                 </select>
                 <input type="hidden" name="bus3" class="fixedDispatchInput">
               </div>
@@ -244,7 +244,7 @@
             <td>
               <div class="fixedDispatchBox" id="fixedDispatch4">
                 <div class="fixedDispatchText driveDateBoxInput"></div>
-                <select name="driver4" id="" class="fixedDispatchSelect">
+                <select name="driver4" id="regularly_route_Wed_select" class="fixedDispatchSelect">
                 </select>
                 <input type="hidden" name="bus4" class="fixedDispatchInput">
               </div>
@@ -252,7 +252,7 @@
             <td>
               <div class="fixedDispatchBox" id="fixedDispatch5">
                 <div class="fixedDispatchText driveDateBoxInput"></div>
-                <select name="driver5" id="" class="fixedDispatchSelect">
+                <select name="driver5" id="regularly_route_Thu_select" class="fixedDispatchSelect">
                 </select>
                 <input type="hidden" name="bus5" class="fixedDispatchInput">
               </div>
@@ -260,7 +260,7 @@
             <td>
               <div class="fixedDispatchBox" id="fixedDispatch6">
                 <div class="fixedDispatchText driveDateBoxInput"></div>
-                <select name="driver6" id="" class="fixedDispatchSelect">
+                <select name="driver6" id="regularly_route_Fri_select" class="fixedDispatchSelect">
                 </select>
                 <input type="hidden" name="bus6" class="fixedDispatchInput">
               </div>
@@ -268,7 +268,7 @@
             <td>
               <div class="fixedDispatchBox" id="fixedDispatch7">
                 <div class="fixedDispatchText driveDateBoxInput"></div>
-                <select name="driver7" id="" class="fixedDispatchSelect">
+                <select name="driver7" id="regularly_route_Sat_select" class="fixedDispatchSelect">
                 </select>
                 <input type="hidden" name="bus7" class="fixedDispatchInput">
               </div>
@@ -286,7 +286,7 @@
 
       <!-- 스케줄-헤더 -->
       <div class="scheduleHeaderArea">
-        <span>2022년 8월 16일 (화)</span>
+        <span>배차가능 목록</span>
         <div class="scheduleHeaderFilterBox">
           <input type="radio" name="date" id="weekSun" class="scheduleRadio">
           <label for="weekSun">일</label>
@@ -339,7 +339,7 @@
               <div class="hourTd"></div>
               <div class="hourTd"></div>
               
-              <div class="driverTd {{data.id}} {{data.driver.id}}">{{data.vehicle_num}}</div>
+              <div class="driverTd {{data.id}} {{data.driver.id}}">{{data.vehicle_num}}({{data.driver_name}})</div>
               
             </div>
             {% endfor %}
@@ -368,7 +368,6 @@
   const connect = {{ connect_list }}
   const driverObj = {{ driver_dict }}
   console.log("DATA", data)
-  console.log("bus, driver", '{{bus_list}}', '{{driver_list}}')
   console.log("connect", connect)
   console.log("driverObj", driverObj)
   {% endautoescape %}
