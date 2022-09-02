@@ -68,8 +68,8 @@
       </form>
       <form action="{% url 'dispatch:regularly_group_create' %}" method="post" class="createGroupForm">
         {% csrf_token %}
-        <input name="number" type="number">
-        <input name="name" type="text">
+        <input name="number" type="number" placeholder="순번">
+        <input name="name" type="text" placeholder="노선이름">
         <input type="submit" class="btnModules" value="등록">
       </form>
     </div>
@@ -339,7 +339,7 @@
               <div class="hourTd"></div>
               <div class="hourTd"></div>
               
-              <div class="driverTd {{data.id}} {{data.driver.id}}">{{data.vehicle_num}}({{data.driver_name}})</div>
+              <div class="driverTd {{data.id}} d{{data.driver.id}}">{{data.vehicle_num}}({{data.driver_name}})</div>
               
             </div>
             {% endfor %}
@@ -364,7 +364,7 @@
 {% block script %}
 <script>
   {% autoescape off %}
-  const data = {{ bus_dict }}
+  const data = {{ dispatch_list }}
   const connect = {{ connect_list }}
   const driverObj = {{ driver_dict }}
   console.log("DATA", data)

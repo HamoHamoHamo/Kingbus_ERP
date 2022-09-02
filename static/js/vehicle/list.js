@@ -222,8 +222,9 @@ function yearChecker(){
     this.value = this.value.substr(0,4)
   }else if(this.value.length <= 3){
     alert("4자리의 숫자를 입력해 주세요.")
-  }else if(this.value.substr(2,) !== 19 && this.value.substr(2,) !== 20){
-    alert("올바른 연도를 입력해 주세요")
-    this.value = ""
   }
+  // else if(this.value.substr(2,) !== 19 && this.value.substr(2,) !== 20){
+  //   alert("올바른 연도를 입력해 주세요")
+  //   this.value = ""
+  // }
 }

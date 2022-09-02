@@ -98,8 +98,7 @@
           {% endif %}
           {% for page in page_range %}
           <div class="page-item {% if page == page_obj.number %} page-activate {% endif %}">
-            <a class="page-link" href="?top_box_selector={{selector}}&search={{searched}}&page={{ page }}">{{ page
-              }}</a>
+            <a class="page-link" href="?top_box_selector={{selector}}&search={{searched}}&page={{ page }}">{{ page }}</a>
           </div>
           {% endfor %}
 
@@ -159,7 +158,7 @@
       </div>
       <div class="PopupDataCell">
         <span class="PopupDataTitle">입사일</span>
-        <input name="entering_date" type="date" class="PopupDataInput PopupDataInputEntering">
+        <input name="entering_date" type="date" max="9999-12-31" class="PopupDataInput PopupDataInputEntering">
       </div>
       <div class="PopupDataCell PopupDataCellLicense">
         <span class="PopupDataTitle">면허번호</span>

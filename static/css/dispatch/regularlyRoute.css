@@ -399,6 +399,10 @@
   box-sizing: border-box;
   cursor: pointer;
 }
+.disableToFixedDispatch{
+  background-color: rgb(173, 173, 173);
+  pointer-events: none;
+}
 
 
 

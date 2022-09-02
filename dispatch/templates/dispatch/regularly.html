@@ -42,6 +42,7 @@
       </div>
       <div class="scheduleTableScroll">
         <div class="scheduleTable">
+          {% for v in vehicles %}
           <div class="scheduleTableTr">
             <div class="hourTd"></div>
             <div class="hourTd"></div>
@@ -50,8 +51,9 @@
             <div class="hourTd"></div>
             <div class="hourTd"></div>
             <div class="hourTd"></div>
-            <div class="driverTd">7846(민병기)</div>
+            <div class="driverTd {{v.id}} d{{v.driver.id}}">{{v.vehicle_num}}({{v.driver_name}})</div>
           </div>
+          {% endfor %}
         </div>
       </div>
     </div>
@@ -76,11 +78,14 @@
         <!-- 변경영역 -->
         <div class="search_inputArea">
           <label for="">그룹</label>
-          <select name="" id="">
-            <option value=""></option>
+          <select name="group" id="">
+            <option></option>
+            {% for group in groups %}
+            <option {% if selected_group == group.id %} selected {% endif %} value="{{group.id}}">{{group.name}}</option>
+            {% endfor %}
           </select>
           <label for="">날짜</label>
-          <input type="date" class="searchDate">
+          <input name="date" type="date" class="searchDate">
           <div class="dateControllBtnBox">
             <div class="dateControllBtn">
               <svg xmlns="http://www.w3.org/2000/svg" width="8.6" height="13" viewBox="0 0 8.6 13">
@@ -115,81 +120,92 @@
           <td class="InputHeader InputHeaderBordeTopLeft">그룹</td>
           <td class="InputTd">
             <select name="" id="selectGroup" class="inputSelect">
-              <option value=""></option>
+              <option></option>
+              {% for group in groups %}
+              <option {% if detail.group.id == group.id %} selected {% endif %} value="{{group.id}}">{{group.name}}</option>
+              {% endfor %}
             </select>
           </td>
           <td class="InputHeader">노선이름</td>
-          <td class="InputTd"><input type="text" class="inputText"></td>
+          <td class="InputTd">
+            <input type="text" class="inputText" value="{{detail.route}}">
+          </td>
           <td class="InputHeader">출/퇴근</td>
           <td class="InputTd">
             <div class="workTypeBox">
-              <input type="radio" id="regularlyWorkStart">
+              <input type="radio" id="regularlyWorkStart" {% if detail.work_type == '출근' %} checked {% endif %}>
               <label for="regularlyWorkStart">출근</label>
-              <input type="radio" id="regularlyWorkEnd">
+              <input type="radio" id="regularlyWorkEnd" {% if detail.work_type == '퇴근' %} checked {% endif %}>
               <label for="regularlyWorkEnd">퇴근</label>
             </div>
           </td>
           <td class="InputHeader">주차</td>
-          <td class="InputTd"><input type="text" class="inputText"></td>
+          <td class="InputTd">
+            <input type="text" class="inputText" value="{{detail.parking}}">
+          </td>
         </tr>
         <tr>
           <td class="InputHeader">출발지</td>
-          <td colspan="3"><input type="text" class="inputText"></td>
+          <td colspan="3">
+            <input type="text" class="inputText" value="{{detail.departure}}">
+          </td>
           <td class="InputHeader">운행요일</td>
           <td colspan="3">
             <div class="driveDateBox">
               <input type="checkbox" id="regularlyCheckAll">
               <label for="regularlyCheckAll">전체</label>
-              <input type="checkbox" id="regularlyCheckWeek0">
-              <label for="regularlyCheckWeek0">월</label>
-              <input type="checkbox" id="regularlyCheckWeek1">
-              <label for="regularlyCheckWeek1">화</label>
-              <input type="checkbox" id="regularlyCheckWeek2">
-              <label for="regularlyCheckWeek2">수</label>
-              <input type="checkbox" id="regularlyCheckWeek3">
-              <label for="regularlyCheckWeek3">목</label>
-              <input type="checkbox" id="regularlyCheckWeek4">
-              <label for="regularlyCheckWeek4">금</label>
-              <input type="checkbox" id="regularlyCheckWeek5">
-              <label for="regularlyCheckWeek5">토</label>
-              <input type="checkbox" id="regularlyCheckWeek6">
+              <input type="checkbox" id="regularlyCheckWeek6" {% if detail and detail.week|in_check:'일' %} checked {% endif %}>
               <label for="regularlyCheckWeek6">일</label>
+              <input type="checkbox" id="regularlyCheckWeek0" {% if detail and detail.week|in_check:'월' %} checked {% endif %}>
+              <label for="regularlyCheckWeek0">월</label>
+              <input type="checkbox" id="regularlyCheckWeek1" {% if detail and detail.week|in_check:'화' %} checked {% endif %}>
+              <label for="regularlyCheckWeek1">화</label>
+              <input type="checkbox" id="regularlyCheckWeek2" {% if detail and detail.week|in_check:'수' %} checked {% endif %}>
+              <label for="regularlyCheckWeek2">수</label>
+              <input type="checkbox" id="regularlyCheckWeek3" {% if detail and detail.week|in_check:'목' %} checked {% endif %}>
+              <label for="regularlyCheckWeek3">목</label>
+              <input type="checkbox" id="regularlyCheckWeek4" {% if detail and detail.week|in_check:'금' %} checked {% endif %}>
+              <label for="regularlyCheckWeek4">금</label>
+              <input type="checkbox" id="regularlyCheckWeek5" {% if detail and detail.week|in_check:'토' %} checked {% endif %}>
+              <label for="regularlyCheckWeek5">토</label>
             </div>
           </td>
         </tr>
         <tr>
           <td class="InputHeader">도착지</td>
-          <td colspan="3"><input type="text" class="inputText"></td>
+          <td colspan="3">
+            <input type="text" class="inputText" value="{{detail.arrival}}">
+          </td>
           <td class="InputHeader">금액</td>
-          <td class="InputTd"><input type="text" class="inputText inputTextUnit">원</td>
+          <td class="InputTd"><input type="text" class="inputText inputTextUnit" value="{{detail.price}}">원</td>
           <td class="InputHeader">기사수당</td>
-          <td class="InputTd"><input type="text" class="inputText inputTextUnit">원</td>
+          <td class="InputTd"><input type="text" class="inputText inputTextUnit" value="{{detail.driver_allowance}}">원</td>
         </tr>
         <tr>
           <td class="InputHeader InputHeaderBordeBottomLeft">순번</td>
           <td class="InputTd">
             <div class="twiceBox">
-              <input type="number" class="inputTextTwice">-<input type="number" class="inputTextTwice">
+              <input value="{{detail.number1}}" type="number" class="inputTextTwice">-<input value="{{detail.number2}}" type="number" class="inputTextTwice">
             </div>
           </td>
           <td class="InputHeader">운행시간</td>
           <td class="InputTd">
             <div class="twiceBox">
               <div class="quarterBox">
-                <input type="text" class="inputTextTwice">
+                <input type="text" class="inputTextTwice" value="{{detail.departure_time|slice:':2'}}">
                 :
-                <input type="text" class="inputTextTwice">
+                <input type="text" class="inputTextTwice" value="{{detail.departure_time|slice:'3:'}}">
               </div>
               ~
               <div class="quarterBox">
-                <input type="text" class="inputTextTwice">
+                <input type="text" class="inputTextTwice" value="{{detail.arrival_time|slice:':2'}}">
                 :
-                <input type="text" class="inputTextTwice">
+                <input type="text" class="inputTextTwice" value="{{detail.arrival_time|slice:'3:'}}">
               </div>
             </div>
           </td>
           <td class="InputHeader">참조사항</td>
-          <td colspan="3"><input type="text" class="inputText"></td>
+          <td colspan="3"><input type="text" class="inputText" value="{{detail.references}}"></td>
         </tr>
       </table>
     </form>
@@ -221,9 +237,9 @@
         <table class="listTable">
           <tbody>
             {% for order in order_list %}
-            <tr onclick="location.href='{% url 'dispatch:regularly' %}?id={{order.id}}'" class="{{order.id}}">
+            <tr onclick="location.href='{% url 'dispatch:regularly' %}?id={{order.id}}&group={{selected_group}}&date={{date}}'" class="{{order.id}}">
               <td>{{order.number1}}{% if order.number2 %}- {{order.number2}} {% endif %}</td>
-              <td></td>
+              <td>{{order.parking}}</td>
               <td></td>
               <td>
                 <select name="" id="selectDriver{{order.id}}" class="orderDriver">
@@ -233,10 +249,11 @@
               <td>
                 <input type="text" class="orderSpareDriver">
               </td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
+              <td>{{order.departure_time}} ~ {{order.arrival_time}}</td>
+              <td>{{order.route}}</td>
+              <td>{{order.departure}}</td>
+              <td>{{order.references}}</td>
+                <input type="hidden">
             </tr>
             {% endfor %}
           </tbody>
@@ -257,7 +274,7 @@
 {% block script %}
 <script>
   {% autoescape off %}
-  const data = {{ bus_dict }}
+  const data = {{ dispatch_list }}
   const driverObj = {{ driver_dict }}
   console.log("DATA", data)
   console.log("driverObj", driverObj)
@@ -265,6 +282,6 @@
 </script>
 <script src="{% static 'js/dispatch/oneStepDate.js' %}"></script>
 <script src="{% static 'js/dispatch/checker.js' %}"></script>
+<script src="{% static 'js/dispatch/FullSchedule.js' %}"></script>
 <script src="{% static 'js/dispatch/regularlyDispatch.js' %}"></script>
-<!-- <script src="{% static 'js/dispatch/FullSchedule.js' %}"></script> -->
 {% endblock %}

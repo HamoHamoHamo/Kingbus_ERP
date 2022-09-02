@@ -5,6 +5,9 @@ const driverTd = document.querySelectorAll(".driverTd")
 const fixedDispatchDelete = document.querySelector(".fixedDispatchDelete")
 const driveWeek = document.querySelectorAll(".driveDateBoxInput")
 const getWeek = document.querySelectorAll(".fixedDispatchTable thead td")
+const weekLabel = document.querySelectorAll(".driveDateBox label")
+const fixedDispatchBox = document.querySelectorAll(".fixedDispatchBox")
+const fixedDispatchWeek = document.querySelectorAll(".fixedDispatchTable thead td")
 
 
 
@@ -15,75 +18,87 @@ for (i = 0; i < fixedDispatchText.length; i++) {
 }
 
 function clickFixedDispatch() {
-    if (this.classList.contains("addDispatch")) {
-        this.classList.remove("addDispatch")
-        this.style.backgroundColor = "white"
-        this.style.color = "black"
-    } else {
-        for (i = 0; i < fixedDispatchText.length; i++) {
-            fixedDispatchText[i].classList.remove("addDispatch")
-            if (fixedDispatchText[i].classList.contains("ableWeek")) {
-                fixedDispatchText[i].style.backgroundColor = "white"
+    if (!this.classList.contains("disableToFixedDispatch")) {
+        if (this.classList.contains("addDispatch")) {
+            this.classList.remove("addDispatch")
+            this.style.backgroundColor = "white"
+            this.style.color = "black"
+        } else {
+            for (i = 0; i < fixedDispatchText.length; i++) {
+                if (!fixedDispatchBox[i].classList.contains("disableToFixedDispatch")) {
+                    fixedDispatchText[i].classList.remove("addDispatch")
+                    fixedDispatchText[i].style.backgroundColor = "white"
+                    fixedDispatchText[i].style.color = "black"
+                }
             }
-            fixedDispatchText[i].style.color = "black"
+            this.classList.add("addDispatch")
+            this.style.backgroundColor = "rgb(0, 105, 217)"
+            this.style.color = "white"
+            for (i = 0; i < scheduleRadio.length; i++) {
+                scheduleRadio[i].checked = false
+            }
+            scheduleRadio[parseInt(this.parentNode.id.substr(13, 1)) - 1].checked = true
+            radioDateChange()
         }
-        this.classList.add("addDispatch")
-        this.style.backgroundColor = "rgb(0, 105, 217)"
-        this.style.color = "white"
-        for (i = 0; i < scheduleRadio.length; i++) {
-            scheduleRadio[i].checked = false
-        }
-        scheduleRadio[parseInt(this.parentNode.id.substr(13, 1)) - 1].checked = true
-        callSchedule()
     }
 }
 
 
 
-// 고정배차에 기사 추가
 
-for (i = 0; i < driverTd.length; i++) {
-    driverTd[i].addEventListener("click", addFixedDispatch)
+// 선택가능한 요일
+function ableFixedDispatch() {
+    let ableFixedDispatchArr = []
+    for (i = 0; i < 7; i++) {
+        if (!driveWeek[i].checked) {
+            ableFixedDispatchArr.push(weekLabel[i + 1].innerText)
+        }
+    }
+    for (i = 0; i < fixedDispatchBox.length; i++) {
+        for (j = 0; j < ableFixedDispatchArr.length; j++) {
+            if (fixedDispatchWeek[i].innerText == ableFixedDispatchArr[j]) {
+                fixedDispatchBox[i].classList.add("disableToFixedDispatch")
+            }
+        }
+    }
 }
 
-function addFixedDispatch(e) {
-    const addDispatch = document.querySelectorAll(".addDispatch")
-    if (window.location.search !== "") {
-        if (!this.classList.contains("haveSchedule")) {
-            for (i = 0; i < addDispatch.length; i++) {
-                if (addDispatch[i].classList.contains("ableWeek")) {
-                    addDispatch[i].parentNode.children[0].innerText = this.innerText.substr(0, 4)
-                    addDispatch[i].parentNode.children[2].value = this.classList[1]
-                    addDispatch[i].classList.remove("addDispatch")
-                    addDispatch[i].style.backgroundColor = "white"
-                    addDispatch[i].style.width = "40%"
-                    addDispatch[i].style.color = "black"
-                    addDispatch[i].parentNode.children[1].style.display = "block"
 
-                    // 옵션 생성
-                    const removeOption = addDispatch[i].parentNode.children[1].querySelectorAll(".fixedDispatchSelect option")
-                    for (j = 0; j < removeOption.length; j++) {
-                        removeOption[j].remove()
-                    }
 
+
+
+// 고정배차
+
+for (i = 0; i < driverTd.length; i++) {
+    driverTd[i].addEventListener("click", fixedDispatch)
+}
+
+function fixedDispatch() {
+    if (!this.parentNode.classList.contains("haveSchedule")) {
+        for (j = 0; j < fixedDispatchText.length; j++) {
+            if (fixedDispatchText[j].classList.contains("addDispatch")) {
+                fixedDispatchText[j].classList.remove("addDispatch")
+                fixedDispatchText[j].style.backgroundColor = "white"
+                fixedDispatchText[j].style.width = "40%"
+                fixedDispatchText[j].style.color = "black"
+                fixedDispatchText[j].parentNode.children[1].style.display = "block"
+                fixedDispatchText[j].innerText = this.innerText.substr(0, 4)
+                fixedDispatchInput[j].value = this.classList[1]
+                if (this.innerText.split("(")[1].replace(/\)/g, "") !== "") {
                     const driverOption = document.createElement('option');
-                    driverOption.setAttribute("value", `${e.target.classList[2]}`);
-                    driverOption.innerText = driverObj[e.target.classList[2]]
-                    addDispatch[i].parentNode.children[1].appendChild(driverOption);
-
-                    for (j = 0; j < addDispatch[i].parentNode.children[1].children.length; j++) {
-                        if (addDispatch[i].parentNode.children[1].children[j].innerText == e.target.innerText.split("(")[1].replace(/\)/g, "")) {
-                            addDispatch[i].parentNode.children[1].children[j].selected = true
-                        }
-                    }
-
-                } else {
-                    alert("배차 가능한 요일이 아닙니다.")
+                    driverOption.setAttribute("value", `${this.classList[2].split("d")[1]}`);
+                    driverOption.innerText = this.innerText.split("(")[1].replace(/\)/g, "")
+                    fixedDispatchText[j].parentNode.children[1].appendChild(driverOption);
                 }
             }
         }
+    } else {
+        alert("배차 불가능한 차량입니다.")
     }
 }
+
+
+
 
 
 
@@ -92,116 +107,114 @@ function addFixedDispatch(e) {
 fixedDispatchDelete.addEventListener("click", deleteFixedDispatch)
 
 function deleteFixedDispatch() {
-    for (i = 0; i < fixedDispatchInput.length; i++) {
-        if (fixedDispatchInput[i].classList.contains("addDispatch")) {
-            fixedDispatchInput[i].id = ""
-        }
-    }
-}
-
-
-
-
-// 셀렉트 선택
-for (i = 0; i < fixedDispatchSelect.length; i++) {
-    fixedDispatchSelect[i].addEventListener("click", selectCheck)
-}
-
-function selectCheck(e) {
-    if (e.target.parentNode.children[0].classList.contains("addDispatch")) {
-        e.target.parentNode.children[0].classList.remove("addDispatch")
-        e.target.parentNode.children[0].style.backgroundColor = "white"
-        e.target.parentNode.children[0].style.color = "black"
-    } else {
-        for (i = 0; i < fixedDispatchText.length; i++) {
-            fixedDispatchText[i].classList.remove("addDispatch")
-            if (fixedDispatchText[i].classList.contains("ableWeek")) {
-                fixedDispatchText[i].style.backgroundColor = "white"
-            }
-            fixedDispatchText[i].style.color = "black"
-        }
-        e.target.parentNode.children[0].classList.add("addDispatch")
-        e.target.parentNode.children[0].style.backgroundColor = "rgb(0, 105, 217)"
-        e.target.parentNode.children[0].style.color = "white"
-        for (i = 0; i < scheduleRadio.length; i++) {
-            scheduleRadio[i].checked = false
-        }
-        scheduleRadio[parseInt(e.target.parentNode.children[0].parentNode.id.substr(13, 1)) - 1].checked = true
-        callSchedule()
-    }
-    if (!this.classList.contains("fullOption")) {
-        let driverOptionArr = []
-        let idOptionArr = []
-        for (i = 0; i < driverTd.length; i++) {
-            if (driverTd[i].classList.contains("ableToDispatch")) {
-                driverOptionArr.push(driverObj[driverTd[i].classList[2]])
-                idOptionArr.push(driverTd[i].classList[2])
-            }
-        }
-        let setDriverOptionArr = new Set(driverOptionArr)
-        driverOptionArr = [...setDriverOptionArr]
-        driverOptionArr = driverOptionArr.filter(current => current !== this.children[0].innerText)
-        let setIdOptionArr = new Set(idOptionArr)
-        idOptionArr = [...setIdOptionArr]
-        idOptionArr = idOptionArr.filter(current => current !== this.children[0].value)
-        for (i = 0; i < driverOptionArr.length; i++) {
-            const driverOption = document.createElement('option');
-            driverOption.setAttribute("value", `${idOptionArr[i]}`);
-            driverOption.innerText = driverOptionArr[i]
-            this.appendChild(driverOption);
-        }
-        this.classList.add("fullOption")
-    }
-}
-
-
-
-// 고정배차 데이터 넣기
-function loadData() {
-    for (i = 0; i < connect.length; i++) {
-        for (j = 0; j < getWeek.length; j++) {
-            if (connect[i].week == getWeek[j].innerText) {
-                fixedDispatchText[j].innerText = connect[i].bus
-                fixedDispatchInput[j].value = connect[i].bus_id
-                fixedDispatchText[j].style.backgroundColor = "white"
-                fixedDispatchText[j].style.width = "40%"
-                fixedDispatchText[j].style.color = "black"
-                fixedDispatchSelect[j].style.display = "block"
-                const loadOption = document.createElement('option');
-                loadOption.setAttribute("value", `${connect[i].driver_id}`);
-                loadOption.innerText = connect[i].driver
-                fixedDispatchSelect[j].appendChild(loadOption);
-            }
-        }
-    }
-}
-
-
-
-
-
-
-// 고정배차 삭제
-fixedDispatchDelete.addEventListener("click", deleteDispatch)
-
-function deleteDispatch() {
-    let deleteAlert = true
     for (i = 0; i < fixedDispatchText.length; i++) {
         if (fixedDispatchText[i].classList.contains("addDispatch")) {
-            deleteAlert = false
+            fixedDispatchText[i].classList.remove("addDispatch")
             fixedDispatchText[i].innerText = ""
-            for (j = 0; j < fixedDispatchText[i].parentNode.children[1].children.length; j++) {
-                fixedDispatchText[i].parentNode.children[1].children[j].remove()
-            }
-            fixedDispatchText[i].parentNode.children[2].value = ""
             fixedDispatchText[i].style.backgroundColor = "white"
             fixedDispatchText[i].style.width = "100%"
             fixedDispatchText[i].style.color = "black"
-            fixedDispatchText[i].classList.remove("addDispatch")
             fixedDispatchText[i].parentNode.children[1].style.display = "none"
+            fixedDispatchInput[i].value = ""
+            for (j = 0; j < fixedDispatchText[i].parentNode.children[1].children.length; j++) {
+                fixedDispatchText[i].parentNode.children[1].children[j].remove()
+            }
         }
     }
-    if(deleteAlert){
-        alert("삭제할 배차를 선택해 주세요.")
+}
+
+
+
+
+
+// 고정배차 데이터 로드
+function loadData() {
+    let weekCheckerArr = ["일", "월", "화", "수", "목", "금", "토"];
+
+    for (i = 0; i < data.length; i++) {
+        if (data[i].route_id == window.location.search.split("id=")[1]) {
+            for (j = 0; j < weekCheckerArr.length; j++) {
+                if (data[i].week == weekCheckerArr[j]) {
+                    fixedDispatchText[j].style.backgroundColor = "white"
+                    fixedDispatchText[j].style.width = "40%"
+                    fixedDispatchText[j].style.color = "black"
+                    fixedDispatchText[j].parentNode.children[1].style.display = "block"
+                    fixedDispatchText[j].innerText = data[i].bus_num
+                    fixedDispatchInput[j].value = data[i].bus_id
+
+                    const driverOption = document.createElement('option');
+                    driverOption.setAttribute("value", `${data[i].driver_id}`);
+                    driverOption.innerText = data[i].driver_name
+                    fixedDispatchText[j].parentNode.children[1].appendChild(driverOption);
+                }
+            }
+        }
     }
+}
+
+
+
+
+
+
+
+// 배차가능 기사 필터
+
+for (i = 0; i < fixedDispatchSelect.length; i++) {
+    fixedDispatchSelect[i].addEventListener("click", DispatcDriverFiilter)
+}
+
+function DispatcDriverFiilter() {
+
+    if (this.children.length == 1) {
+        
+        scheduleBus = []
+
+        // data요일 필터링
+        for (i = 0; i < data.length; i++) {
+            if (data[i].week == scheduleDay) {
+
+                dataStartTime = data[i].departure_time.replace(/\:/g, "")
+                dataEndTime = data[i].arrival_time.replace(/\:/g, "")
+
+                // data기간 필터링
+                if (dataEndTime >= inputStartTime && inputEndTime >= dataStartTime) {
+                    scheduleBus.push(data[i].driver_id)
+                }
+            }
+        }
+
+        // 배차불가 차량 필터링
+        let optionDriver = Object.keys(driverObj)
+        for (i = 0; i < scheduleBus.length; i++) {
+            optionDriver = optionDriver.filter((current) => current !== `${scheduleBus[i]}`)
+        }
+
+        let optionDriverKo = []
+        for (i = 0; i < optionDriver.length; i++) {
+            optionDriverKo.push(driverObj[optionDriver[i]])
+        }
+
+        function ascending(a, b) { return (a < b) ? -1 : (a == b) ? 0 : 1; }
+        optionDriverKo.sort(ascending);
+
+        let optionDriverSort = []
+        for (i = 0; i < optionDriverKo.length; i++) {
+            for (j = 0; j < optionDriver.length; j++) {
+                if (driverObj[optionDriver[j]] == optionDriverKo[i]) {
+                    optionDriverSort.push(optionDriver[j])
+                }
+            }
+        }
+
+
+        // 배차가능 차량 옵션 추가
+        for (i = 0; i < optionDriverKo.length; i++) {
+            const driverOption = document.createElement('option');
+            driverOption.setAttribute("value", `${optionDriverSort[i]}`);
+            driverOption.innerText = optionDriverKo[i]
+            this.appendChild(driverOption);
+        }
+    }
+
 }

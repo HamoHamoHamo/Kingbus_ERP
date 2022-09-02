@@ -10,7 +10,7 @@ class Member(models.Model):
     role = models.CharField(verbose_name='업무', max_length=10, null=False)
     birthdate = models.CharField(verbose_name='생년월일', max_length=10, null=False)
     address = models.CharField(verbose_name='주소', max_length=50, null=False)
-    phone_num = models.CharField(verbose_name='전화번호', max_length=25, null=False)
+    phone_num = models.CharField(verbose_name='전화번호', max_length=25, null=False, blank=True)
     entering_date = models.CharField(verbose_name='입사일', max_length=10, null=False, blank=True)
     license_number = models.CharField(verbose_name='면허번호', max_length=30, null=False, blank=True)
     pub_date = models.DateTimeField(verbose_name="등록날짜", auto_now_add=True, null=False)
