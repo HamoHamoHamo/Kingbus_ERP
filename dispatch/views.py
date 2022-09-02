@@ -211,8 +211,8 @@ class RegularlyDispatchList(generic.ListView):
             group_data = RegularlyGroup.objects.get(id=group)
             dispatch_list = group_data.regularly_info.filter(week__contains=weekday).order_by('number1', 'number2')
         else:
-            dispatch_list = DispatchRegularly.objects.filter(week__contains=weekday).order_by('group', 'number1', 'number2')
-
+            # dispatch_list = DispatchRegularly.objects.filter(week__contains=weekday).order_by('group', 'number1', 'number2')
+            
             print("AAAA", dispatch_list)
         return dispatch_list
 
@@ -221,63 +221,121 @@ class RegularlyDispatchList(generic.ListView):
         context = super().get_context_data(**kwargs)
         date = self.request.GET.get('date', TODAY)
         weekday = WEEK2[datetime.strptime(date, FORMAT).weekday()]
+        selected_group = self.request.GET.get('group', '')
+        detail_id = self.request.GET.get('id')
+        if detail_id:
+            context['detail'] = get_object_or_404(DispatchRegularly, id=detail_id)
+
+
+        if selected_group:
+            context['selected_group'] = int(selected_group)
+        context['date'] = date
         
+        '''
         context['vehicle_list'] = DispatchRegularlyConnect.objects.filter(departure_date__startswith=date).values_list('bus_id__id', 'bus_id__vehicle_num', 'driver_id__id', 'driver_id__name').union(DispatchOrderConnect.objects.exclude(departure_date__gt=f'{date} 24:00').exclude(arrival_date__lt=f'{date} 00:00').values_list('bus_id__id', 'bus_id__vehicle_num', 'driver_id__id', 'driver_id__name').order_by('bus_id__id', 'bus_id__vehicle_num'))
         # context['vehicle_list'] = Vehicle.objects.all().values_list('id', 'vehicle_num', 'driver__id', 'driver__name').union(DispatchRegularlyConnect.objects.all().values_list('bus_id__id', 'bus_id__vehicle_num', 'driver_id__id', 'driver_id__name')).union(DispatchOrderConnect.objects.all().values_list('bus_id__id', 'bus_id__vehicle_num', 'driver_id__id', 'driver_id__name')).order_by('vehicle_num', 'driver_name')
         # vehicles = Vehicle.objects.all().values_list('id', 'vehicle_num', 'driver__id', 'driver__name').union(DispatchRegularlyConnect.objects.filter(departure_date__startswith=date).values_list('bus_id__id', 'bus_id__vehicle_num', 'driver_id__id', 'driver_id__name')).order_by('vehicle_num', 'driver__name')
         # print("TESTTT", vehicles)
         # context['vehicle_list'] = list(chain(vehicles, DispatchOrderConnect.objects.exclude(departure_date__gt=f'{date} 00:00').exclude(arrival_date__lt=f'{date} 24:00').values_list('bus_id__id', 'bus_id__vehicle_num', 'driver_id__id', 'driver_id__name').order_by('bus_id__id', 'bus_id__vehicle_num')))
         print("TEST", context['vehicle_list'])
-        old_bus_id = context['vehicle_list'][0][0]
-        bus_dict = {}
-        driver_dict = {}
-        for vehicle in context['vehicle_list']:
-            if old_bus_id != vehicle[0]:
-                bus_dict[old_bus_id] = driver_dict
-                old_bus_id = vehicle[0]
-                driver_dict = {}
+        if context['vehicle_list']:
+            old_bus_id = context['vehicle_list'][0][0]
+            bus_dict = {}
+            driver_dict = {}
+            for vehicle in context['vehicle_list']:
+                if old_bus_id != vehicle[0]:
+                    bus_dict[old_bus_id] = driver_dict
+                    old_bus_id = vehicle[0]
+                    driver_dict = {}
 
-            bus = get_object_or_404(Vehicle, id=vehicle[0])
-            driver = get_object_or_404(Member, id=vehicle[2])
+                bus = get_object_or_404(Vehicle, id=vehicle[0])
+                driver = get_object_or_404(Member, id=vehicle[2])
+                
+                r_list = DispatchRegularlyConnect.objects.select_related('regularly_id').filter(departure_date__startswith=date).filter(bus_id=bus).filter(driver_id=driver)
+                o_list = DispatchOrderConnect.objects.select_related('order_id').filter(bus_id=bus).filter(driver_id=driver).exclude(departure_date__gt=f'{date} 24:00').exclude(arrival_date__lt=f'{date} 00:00')
+                temp = []
+                for regularly in r_list:
+                    temp.append({
+                        'work_type': regularly.work_type,
+                        'departure_date': regularly.departure_date,
+                        'arrival_date': regularly.arrival_date,
+                        'departure': regularly.regularly_id.departure,
+                        'arrival': regularly.regularly_id.arrival,
+                        # 'week': regularly.week,
+                    })
+                for dispatch in o_list:
+                    temp.append({
+                        'work_type': '일반',
+                        'departure_date': dispatch.departure_date,
+                        'arrival_date': dispatch.arrival_date,
+                        'departure': dispatch.order_id.departure,
+                        'arrival': dispatch.order_id.arrival,
+                        # 'week': regularly.week,
+                    })
+                
+                driver_dict[driver.id] = temp
+                # print("DRIVERDICT", driver_dict)
+                if vehicle == context['vehicle_list'][len(context['vehicle_list']) - 1]:
+                    bus_dict[bus.id] = driver_dict
             
-            r_list = DispatchRegularlyConnect.objects.select_related('regularly_id').filter(departure_date__startswith=date).filter(bus_id=bus).filter(driver_id=driver)
-            o_list = DispatchOrderConnect.objects.select_related('order_id').filter(bus_id=bus).filter(driver_id=driver).exclude(departure_date__gt=f'{date} 24:00').exclude(arrival_date__lt=f'{date} 00:00')
-            temp = []
-            for regularly in r_list:
-                temp.append({
-                    'work_type': regularly.work_type,
-                    'departure_date': regularly.departure_date,
-                    'arrival_date': regularly.arrival_date,
-                    'departure': regularly.regularly_id.departure,
-                    'arrival': regularly.regularly_id.arrival,
-                    # 'week': regularly.week,
-                })
-            for dispatch in o_list:
-                temp.append({
-                    'work_type': '일반',
-                    'departure_date': dispatch.departure_date,
-                    'arrival_date': dispatch.arrival_date,
-                    'departure': dispatch.order_id.departure,
-                    'arrival': dispatch.order_id.arrival,
-                    # 'week': regularly.week,
-                })
-            
-            driver_dict[driver.id] = temp
-            # print("DRIVERDICT", driver_dict)
-            if vehicle == context['vehicle_list'][len(context['vehicle_list']) - 1]:
-                bus_dict[bus.id] = driver_dict
-        
-        print('bus_dict', bus_dict)
-        context['bus_dict'] = bus_dict
+            print('bus_dict', bus_dict)
+            context['bus_dict'] = bus_dict
+        else:
+            context['bus_dict'] = {}
+        '''
+
         driver_list = Member.objects.filter(role='운전원').values_list('id', 'name')
         context['driver_dict'] = {}
         for driver in driver_list:
             context['driver_dict'][driver[0]] = driver[1]
 
-        '''
+        #여기 해야됨
+        r_connect_list = DispatchRegularlyConnect.objects.select_related('regularly_id').exclude(departure_date__gt=f'{date} 24:00').exclude(arrival_date__lt=f'{date} 00:00').filter(regularly_id__week__contains=weekday).filter()
+        dispatch_list = []
+        for rc in r_connect_list:
+            dispatch = rc.regularly_id
+            data = {
+                'work_type': dispatch.work_type,
+                'departure_date': rc.departure_date,
+                'arrival_date': rc.arrival_date,
+                'departure': dispatch.departure,
+                'arrival': dispatch.arrival,
+                # 'week': rc.week,
+                'bus_id': rc.bus_id.id,
+                'bus_num': rc.bus_id.vehicle_num,
+                'driver_id': rc.driver_id.id,
+                'driver_name': rc.driver_id.name,
+            }
+            dispatch_list.append(data)
+        print("DSSD", dispatch_list)
+        connect_list = DispatchOrderConnect.objects.select_related('order_id').exclude(departure_date__gt=f'{date} 24:00').exclude(arrival_date__lt=f'{date} 00:00')
+        for cc in connect_list:
+            dispatch = cc.order_id
+            data = {
+                'work_type': '일반',
+                'departure_date': cc.departure_date,
+                'arrival_date': cc.arrival_date,
+                'departure': dispatch.departure,
+                'arrival': dispatch.arrival,
+                # 'week': cc.week,
+                'bus_id': cc.bus_id.id,
+                'bus_num': cc.bus_id.vehicle_num,
+                'driver_id': cc.driver_id.id,
+                'driver_name': cc.driver_id.name,
+            }
+            dispatch_list.append(data)
+
+        context['dispatch_list'] = dispatch_list
+        #
+
+        context['vehicles'] = Vehicle.objects.filter(use='y').order_by('vehicle_num', 'driver_name')
+        context['groups'] = RegularlyGroup.objects.all().order_by('number')
+        
+        # 14일치 정기배차 고정배차에 있는대로 만들어줌
         for day in range(14):
             cur_date = datetime.strftime(datetime.strptime(date, FORMAT) + timedelta(days=day), FORMAT)
-
+            cur_weekday = WEEK2[datetime.strptime(cur_date, FORMAT).weekday()]
+            print("cur_date", cur_date, cur_weekday)
             try:
                 check = False
                 test = DispatchCheck.objects.get(date=cur_date)
@@ -285,22 +343,26 @@ class RegularlyDispatchList(generic.ListView):
                 check = True
             
             if check:
+    
                 for regularly in DispatchRegularly.objects.all():
-                    fixed = regularly.info_regularly_fixed.filter(week=weekday)
+                    print("REGULARLy", regularly, cur_date)
+                    print("if", DispatchRegularlyConnect.objects.filter(regularly_id=regularly).filter(departure_date__startswith=cur_date))
+                    fixed = regularly.info_regularly_fixed.filter(week=cur_weekday)
                     if fixed and not DispatchRegularlyConnect.objects.filter(regularly_id=regularly).filter(departure_date__startswith=cur_date):
+                        print("ok")
                         connect = DispatchRegularlyConnect(
                             regularly_id = regularly,
-                            bus_id = fixed.bus_id,
-                            driver_id = fixed.driver_id,
-                            departure_date = f'{date} {regularly.departure_time}',
-                            arrival_date = f'{date} {regularly.arrival_time}',
+                            bus_id = fixed[0].bus_id,
+                            driver_id = fixed[0].driver_id,
+                            departure_date = f'{cur_date} {regularly.departure_time}',
+                            arrival_date = f'{cur_date} {regularly.arrival_time}',
                             work_type = regularly.work_type,
                             driver_allowance = regularly.driver_allowance,
                         )
                         connect.save()
                 
-                #DispatchCheck(date=cur_date).save()
-        '''
+                DispatchCheck(date=cur_date).save()
+        
 
 
         return context
@@ -384,7 +446,8 @@ class RegularlyRouteList(generic.ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        
+
+        '''
         context['vehicle_list'] = Vehicle.objects.all().values_list('id', 'vehicle_num', 'driver', 'driver_name').union(DispatchRegularlyFixed.objects.all().values_list('bus_id', 'bus_id__vehicle_num', 'driver_id', 'driver_id__name')).order_by('vehicle_num', 'driver_name')
         old_bus_id = context['vehicle_list'][0][0]
         bus_dict = {}
@@ -396,8 +459,10 @@ class RegularlyRouteList(generic.ListView):
                 driver_dict = {}
 
             bus = get_object_or_404(Vehicle, id=vehicle[0])
-            driver = get_object_or_404(Member, id=vehicle[2])
+            if not vehicle[2]:
+                continue
             
+            driver = get_object_or_404(Member, id=vehicle[2])
             fixed_list = DispatchRegularlyFixed.objects.select_related('regularly_id').filter(bus_id=bus).filter(driver_id=driver)
             temp = []
             for fixed in fixed_list:
@@ -417,7 +482,32 @@ class RegularlyRouteList(generic.ListView):
         
         print('bus_dict', bus_dict)
         context['bus_dict'] = bus_dict
+        '''
 
+        fixed_list = DispatchRegularlyFixed.objects.all()
+
+        dispatch_list = []
+        for fixed in fixed_list:
+            dispatch = fixed.regularly_id
+            data = {
+                'work_type': dispatch.work_type,
+                'departure_time': dispatch.departure_time,
+                'arrival_time': dispatch.arrival_time,
+                'departure': dispatch.departure,
+                'arrival': dispatch.arrival,
+                'week': fixed.week,
+                'bus_id': fixed.bus_id.id,
+                'bus_num': fixed.bus_id.vehicle_num,
+                'driver_id': fixed.driver_id.id,
+                'driver_name': fixed.driver_id.name,
+                'route_id': fixed.regularly_id.id,
+            }
+            dispatch_list.append(data)
+        print("DSSD", dispatch_list)
+        context['dispatch_list'] = dispatch_list
+
+
+        ###
         id = self.request.GET.get('id')
         if id:
             context['regularly'] = get_object_or_404(DispatchRegularly, id=id)
@@ -432,7 +522,7 @@ class RegularlyRouteList(generic.ListView):
                 })
             context['connect_list'] = connect
         context['group_list'] = RegularlyGroup.objects.all().order_by('number', 'name')
-        context['vehicles'] = Vehicle.objects.filter(use='y')
+        context['vehicles'] = Vehicle.objects.filter(use='y').order_by('vehicle_num', 'driver_name')
         driver_list = Member.objects.filter(role='운전원').values_list('id', 'name')
         context['driver_dict'] = {}
         for driver in driver_list:

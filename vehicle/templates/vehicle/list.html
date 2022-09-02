@@ -164,6 +164,7 @@
             <div class="PopupDataCell">
                 <span class="PopupDataTitle">담당기사</span>
                 <select name="driver" class="PopupDataInput">
+                    <option></option>
                     {% for driver in driver_list %}
                     <option value="{{driver.id}}">{{driver.name}}</option>
                     {% endfor %}
@@ -314,6 +315,7 @@
             <div class="PopupDataCell">
                 <span class="PopupDataTitle">담당기사</span>
                 <select name="driver" id="" class="PopupDataInput driver_name">
+                    <option></option>
                     {% for driver in driver_list %}
                     <option value="{{driver.id}}">{{driver.name}}</option>
                     {% endfor %}

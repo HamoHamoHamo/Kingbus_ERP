@@ -15,7 +15,7 @@ class Vehicle(models.Model):
     model_year = models.CharField(verbose_name='연식', max_length=15, null=False)
     release_date = models.CharField(verbose_name='출고일자', max_length=15, null=False)
     driver = models.ForeignKey(Member, verbose_name='기사', on_delete=models.SET_NULL, null=True, related_name="driver", db_column="driver")
-    driver_name = models.CharField(verbose_name='기사이름', max_length=20, null=False)
+    driver_name = models.CharField(verbose_name='기사이름', max_length=20, null=False, blank=True)
     use = models.CharField(verbose_name='사용여부', max_length=1, null=False, default='y')
     passenger_num = models.IntegerField(verbose_name='승차인원', null=False)
 

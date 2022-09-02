@@ -1,137 +1,133 @@
-const sheduleLine = document.querySelectorAll(".scheduleTableTr")
 const scheduleRadio = document.querySelectorAll(".scheduleRadio")
 const scheduleLabel = document.querySelectorAll(".scheduleHeaderFilterBox label")
 const routeTimeInput = document.querySelectorAll(".quarterBox input")
 
-// 노선 운행시간
-let routeTimeStart = 0;
-let routeTimeEnd = 0;
-
-function getRouteTime() {
-    routeTimeStart = parseInt(routeTimeInput[0].value * 60) + parseInt(routeTimeInput[1].value)
-    routeTimeEnd = parseInt(routeTimeInput[2].value * 60) + parseInt(routeTimeInput[3].value)
-}
 
 
 
-// 요일변경
+let scheduleDay = ""
+let inputStartTime = routeTimeInput[0].value + routeTimeInput[1].value
+let inputEndTime = routeTimeInput[2].value + routeTimeInput[3].value
+let dataStartTime = ""
+let dataEndTime = ""
+let scheduleBus = []
+
+
+let dataTimeStart = ""
+let dataTimeEnd = ""
+
+
 for (i = 0; i < scheduleRadio.length; i++) {
-    scheduleRadio[i].addEventListener("change", callSchedule)
+    scheduleRadio[i].addEventListener("change", radioDateChange)
 }
 
-function callSchedule() {
-    deleteSchdule()
-    ableToDispatchDelete()
+function radioDateChange() {
+    resetSchedule()
+    getChekcedDate()
     drawSchdule()
-    BothDriverDispatch()
-    ableToDispatch()
+    DispatcBusFiilter()
 }
 
 
-window.onload = function () {
-    getRouteTime()
-    drawSchdule()
-    BothDriverDispatch()
-    ableToDispatch()
-    dispatchWeekDelete()
-    dispatchWeekCheker()
+
+
+window.onload = function regularly_route() {
     loadData()
+    ableFixedDispatch()
+    getChekcedDate()
+    drawSchdule()
+    DispatcBusFiilter()
 }
 
 
-// 스케줄 메인
+
+
+
+
+
+// 스케줄 그리기
 function drawSchdule() {
-    // 차량 키 배열
-    let dataKey = Object.keys(data)
-
-    if (window.location.search !== "") {
-
-        for (i = 0; i < dataKey.length; i++) {
-
-            // 기사 오브젝트
-            let driverOdj = data[dataKey[i]]
-            // 기사 키 배열
-            let driverKey = Object.keys(driverOdj)
-
-            for (j = 0; j < driverKey.length; j++) {
-
-                // 노선 오브젝트
-                let routeObj = driverOdj[driverKey[j]]
-                // 노선 키 배열
-                let routeKey = Object.keys(routeObj)
 
 
+    for (i = 0; i < data.length; i++) {
 
-                for (k = 0; k < routeKey.length; k++) {
+        if (data[i].week == scheduleDay) {
 
-                    // 요일 오브젝트
-                    let weekObj = routeObj[routeKey[k]]
-                    // 요일 키 배열
-                    let weekKey = Object.keys(weekObj)
+            for (j = 0; j < driverTd.length; j++) {
 
-                    // 스케줄바 위치, 길이
-                    let StartH = parseInt(weekObj[weekKey[1]].substr(0, 2))
-                    let EndH = parseInt(weekObj[weekKey[2]].substr(0, 2))
-                    let StartM = parseInt(weekObj[weekKey[1]].substr(3, 2))
-                    let EndM = parseInt(weekObj[weekKey[2]].substr(3, 2))
-                    let startPoint = StartH * 60 + StartM
-                    let endPoint = EndH * 60 + EndM
-                    let scheduleWidth = (EndH * 60 + EndM) - (StartH * 60 + StartM)
+                if (data[i].bus_id == driverTd[j].classList[1]) {
 
+                    const startWork = document.createElement('div');
 
-                    // 요일체크
-                    let weekChecker = ""
-                    for (l = 0; l < scheduleRadio.length; l++) {
-                        if (scheduleRadio[l].checked) {
-                            weekChecker = scheduleLabel[l].innerText
+                    // 기사 동일여부
+                    if (data[i].driver_id !== parseInt(driverTd[j].classList[2].split("d")[1])) {
+
+                        // 타입구분
+                        if (data[i].work_type == "출근") {
+                            startWork.setAttribute("class", "regularlyLineStart scheduleBar otherDriver");
+                        } else {
+                            startWork.setAttribute("class", "regularlyLineEnd scheduleBar otherDriver");
                         }
-                    }
 
+                    } else {
 
-                    //스케줄바 생성
-                    if (weekChecker == weekObj[weekKey[5]]) {
-
-                        const startWork = document.createElement('div');
-
-                        if (weekObj[weekKey[0]] == "출근") {
+                        // 타입구분
+                        if (data[i].work_type == "출근") {
                             startWork.setAttribute("class", "regularlyLineStart scheduleBar");
-                        }
-                        else {
+                        } else {
                             startWork.setAttribute("class", "regularlyLineEnd scheduleBar");
                         }
 
-                        startWork.setAttribute("title", `${driverObj[driverKey[j]]} || ${weekObj[weekKey[3]]}▶${weekObj[weekKey[4]]}`);
-                        for (l = 0; l < sheduleLine.length; l++) {
-                            if (sheduleLine[l].children[12].classList[1] == dataKey[i]) {
-                                if (driverObj[driverKey[j]] == driverObj[sheduleLine[l].children[12].classList[2]]) {
-                                    startWork.setAttribute("style", `left: ${startPoint * 0.074}rem; width: ${scheduleWidth * 0.074}rem;`);
-                                } else {
-                                    startWork.setAttribute("style", `left: ${startPoint * 0.074}rem; width: ${scheduleWidth * 0.074}rem; border: 0.3rem solid #FF9900; box-sizing: border-box`);
-                                    startWork.classList.add("bothDriver")
-                                }
-                                sheduleLine[l].appendChild(startWork);
-                            }
-                        }
-                        if (endPoint >= routeTimeStart && startPoint <= routeTimeEnd) {
-                            for (l = 0; l < sheduleLine.length; l++) {
-                                if (sheduleLine[l].children[12].classList[1] == dataKey[i]) {
-                                    sheduleLine[l].children[12].classList.add("haveSchedule")
-                                }
-                            }
-                        }
                     }
+
+                    // 스타일 부여
+                    dataTimeStart = parseInt(data[i].departure_time.split(":")[0] * 60) + parseInt(data[i].departure_time.split(":")[1])
+                    dataTimeEnd = parseInt(data[i].arrival_time.split(":")[0] * 60) + parseInt(data[i].arrival_time.split(":")[1])
+
+                    startWork.setAttribute("style", `left: ${dataTimeStart * 0.074}rem; width: ${(dataTimeEnd - dataTimeStart) * 0.074}rem;`);
+
+                    // title 부여
+
+                    startWork.setAttribute("title", `${data[i].driver_name} || ${data[i].departure}▶${data[i].arrival}`);
+
+                    // 스케줄 생성
+                    driverTd[j].parentNode.appendChild(startWork);
                 }
             }
         }
-        let scheduleBus = ""
-        for (i = 0; i < sheduleLine.length; i++) {
-            if (sheduleLine[i].children[12].classList.contains("haveSchedule")) {
-                scheduleBus = sheduleLine[i].children[12].innerText.substr(0, 4)
+    }
+}
+
+
+
+
+
+
+
+// 배차불가 차량 필터
+function DispatcBusFiilter() {
+
+    scheduleBus = []
+
+    // data요일 필터링
+    for (i = 0; i < data.length; i++) {
+        if (data[i].week == scheduleDay) {
+
+            dataStartTime = data[i].departure_time.replace(/\:/g, "")
+            dataEndTime = data[i].arrival_time.replace(/\:/g, "")
+
+            // data기간 필터링
+            if (dataEndTime >= inputStartTime && inputEndTime >= dataStartTime) {
+                scheduleBus.push(data[i].bus_id)
             }
-            for (j = 0; j < sheduleLine.length; j++) {
-                if (sheduleLine[j].children[12].innerText.substr(0, 4) == scheduleBus && !sheduleLine[j].children[12].classList.contains("haveSchedule")) {
-                    sheduleLine[j].children[12].classList.add("haveSchedule")
-                }
+        }
+    }
+
+    // 배차불가 클래스 부여
+    for (i = 0; i < scheduleBus.length; i++) {
+        for (j = 0; j < driverTd.length; j++) {
+            if (driverTd[j].classList[1] == scheduleBus[i]) {
+                driverTd[j].parentNode.classList.add("haveSchedule")
             }
         }
     }
@@ -140,96 +136,32 @@ function drawSchdule() {
 
 
 
-// 스케줄 삭제
-function deleteSchdule() {
-    const scheduleStart = document.querySelectorAll(".regularlyLineStart")
-    const scheduleEnd = document.querySelectorAll(".regularlyLineEnd")
-    for (i = 0; i < scheduleStart.length; i++) {
-        scheduleStart[i].remove()
-    }
-    for (i = 0; i < scheduleEnd.length; i++) {
-        scheduleEnd[i].remove()
-    }
-}
 
 
+// 선택된 요일 구하기
+function getChekcedDate() {
 
-// 배차가능 차량 초기화
-
-function ableToDispatchDelete() {
-    const have = document.querySelectorAll(".haveSchedule")
-    const able = document.querySelectorAll(".ableToDispatch")
-    for (i = 0; i < have.length; i++) {
-        have[i].classList.remove("haveSchedule")
-    }
-    for (i = 0; i < able.length; i++) {
-        able[i].classList.remove("ableToDispatch")
-    }
-    for (i = 0; i < sheduleLine.length; i++) {
-        sheduleLine[i].classList.remove("scheduleTableTrAble")
-        sheduleLine[i].classList.remove("scheduleTableTrDisable")
-    }
-}
-
-
-// 배차가능 차량
-function ableToDispatch() {
-    for (i = 0; i < driverTd.length; i++) {
-        if (!driverTd[i].classList.contains("haveSchedule")) {
-            driverTd[i].classList.add("ableToDispatch")
-            driverTd[i].parentNode.classList.add("scheduleTableTrAble")
-        } else {
-            driverTd[i].parentNode.classList.add("scheduleTableTrDisable")
+    // 선택요일 구하기
+    for (i = 0; i < scheduleRadio.length; i++) {
+        if (scheduleRadio[i].checked) {
+            scheduleDay = scheduleLabel[i].innerText;
         }
     }
 }
 
 
-// 배차가능 요일 초기화
-function dispatchWeekDelete() {
-    const ableWeek = document.querySelectorAll(".ableWeek")
-    for (i = 0; i < ableWeek.length; i++) {
-        ableWeek[i].classList.remove("ableWeek")
-    }
-    for (i = 7; i < 14; i++) {
-        driveWeek[i].style.backgroundColor = "white"
-        driveWeek[i].style.pointerEvents = "auto"
-    }
-}
 
 
-// 배차가능 요일
-function dispatchWeekCheker() {
-    for (i = 0; i < 7; i++) {
-        if (driveWeek[i].checked) {
-            driveWeek[i + 7].classList.add("ableWeek")
-        } else {
-            driveWeek[i + 7].style.backgroundColor = "#E4E4E4"
-            driveWeek[i + 7].style.pointerEvents = "none"
-        }
-    }
-}
 
-
-// 기사변경 배차여부
-function BothDriverDispatch() {
+// 스케줄 초기화
+function resetSchedule() {
     const scheduleBar = document.querySelectorAll(".scheduleBar")
-
-    let bothDriverDispatch = ""
-    let bothDriverWidth = ""
-    let bothDriverStart = ""
     for (i = 0; i < scheduleBar.length; i++) {
-        if (scheduleBar[i].classList.contains("bothDriver")) {
-            bothDriverDispatch = scheduleBar[i].title.split("|")[0].replace(/\ /g, "")
-            bothDriverWidth = parseInt(scheduleBar[i].style.width.split("r")[0]) / 0.074
-            bothDriverStart = parseInt(scheduleBar[i].style.left.split("r")[0]) / 0.074
-        }
+        scheduleBar[i].remove()
     }
-    for (i = 0; i < sheduleLine.length; i++) {
-        if (sheduleLine[i].children[12].innerText.split("(")[1].replace(/\)/g, "") == bothDriverDispatch) {
-            if (bothDriverStart <= routeTimeStart + routeTimeEnd || bothDriverWidth + bothDriverStart >= routeTimeStart) {
-                sheduleLine[i].children[12].classList.add("haveSchedule")
-            }
+    for (i = 0; i < driverTd.length; i++) {
+        if (driverTd[i].parentNode.classList.contains("haveSchedule")) {
+            driverTd[i].parentNode.classList.remove("haveSchedule")
         }
     }
 }

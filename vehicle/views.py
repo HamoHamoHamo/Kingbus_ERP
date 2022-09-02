@@ -93,14 +93,17 @@ def vehicle_create(request):
         vehicle_form = VehicleForm(request.POST)
 
         if vehicle_form.is_valid():
-            driver = get_object_or_404(Member, pk=request.POST.get('driver'))
+            
+
             creator = get_object_or_404(Member, pk=request.session.get('user'))
             vehicle_registration_file = request.FILES.get('vehicle_registration', None)
             insurance_receipt_file = request.FILES.get('insurance_receipt', None)
             
             vehicle = vehicle_form.save(commit=False)
-            vehicle.driver = driver
-            vehicle.driver_name = driver.name
+            if request.POST.get('driver'):
+                driver = get_object_or_404(Member, pk=request.POST.get('driver'))
+                vehicle.driver = driver
+                vehicle.driver_name = driver.name
             vehicle.creator = creator
             vehicle.save()
             if vehicle_registration_file:
@@ -125,9 +128,12 @@ def vehicle_edit(request):
         #insurance_form = VehicleInsuranceForm(request.POST)
         #if vehicle_form.is_valid() and insurance_form.is_valid():
         if vehicle_form.is_valid():
-            vehicle.driver = get_object_or_404(Member, id=request.POST.get('driver', None))
-            vehicle.driver_name = vehicle.driver.name
-
+            if request.POST.get('driver', None):
+                vehicle.driver = get_object_or_404(Member, id=request.POST.get('driver', None))
+                vehicle.driver_name = vehicle.driver.name
+            else:
+                vehicle.driver = None
+                vehicle.driver_name = ''
             vehicle.vehicle_num0 = vehicle_form.cleaned_data['vehicle_num0']
             vehicle.vehicle_num = vehicle_form.cleaned_data['vehicle_num']
             vehicle.vehicle_id = vehicle_form.cleaned_data['vehicle_id']

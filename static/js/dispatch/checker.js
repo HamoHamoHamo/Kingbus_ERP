@@ -2,10 +2,6 @@ const check = document.querySelectorAll(".driveDateBox input")
 
 check[0].addEventListener("change", checkAll)
 
-for(i=1; i<check.length; i++){
-    check[i].addEventListener("change", checkToAllcheck)
-}
-
 function checkAll(){
     if(check[0].checked){
         for(i=1; i<check.length; i++){
@@ -16,6 +12,11 @@ function checkAll(){
             check[i].checked = false
         }
     }
+}
+
+
+for(i=1; i<check.length; i++){
+    check[i].addEventListener("change", checkToAllcheck)
 }
 
 function checkToAllcheck(){
