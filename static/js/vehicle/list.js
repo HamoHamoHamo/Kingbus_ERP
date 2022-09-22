@@ -2,13 +2,13 @@ const openCrete = document.querySelector(".addVehicle")
 const popupAreaModules = document.querySelectorAll(".popupAreaModules")
 const popupBgModules = document.querySelectorAll(".popupBgModules")
 const SidemenuUseClose = document.querySelector(".Sidemenu")
-const PopupCloseBtn = document.querySelectorAll(".PopupBtnBox div:nth-child(1)")
-const openDetail = document.querySelectorAll(".tableBody td:nth-child(2)")
+const PopupCloseBtn = document.querySelectorAll(".closeBtn")
+const openDetail = document.querySelectorAll(".tableBody td:nth-child(3)")
 const editBtn = document.querySelector(".editBtn")
 const saveBtn = document.querySelector(".saveBtn")
-const PopupTitle = document.querySelectorAll(".PopupTitle")
-const PopupDataAreaDetail = document.querySelector(".PopupDataAreaDetail")
-const PopupDataAreaEdit = document.querySelector(".PopupDataAreaEdit")
+const PopupTitle = document.querySelectorAll(".popupTitle")
+const popupSectionDetail = document.querySelector(".popupSectionDetail")
+const PopupDataAreaEdit = document.querySelector(".popupSectionEdit")
 const checkBox = document.querySelectorAll(".tableBody input")
 const vehicleListForm = document.querySelector(".vehicleListForm")
 const PopupData = document.querySelectorAll(".PopupData")
@@ -26,15 +26,20 @@ const motor_type = document.querySelector(".motor_type")
 const rated_output = document.querySelector(".rated_output")
 const insurance_expiry_date = document.querySelector(".insurance_expiry_date")
 const check_duration = document.querySelector(".check_duration")
-const fileBox = document.querySelector("#vehicleFile")
-const fileBox2 = document.querySelector("#insuranceFile")
-const fileNameBox = document.querySelectorAll(".fileNameBox")
 const sendToHidden = document.querySelector(".sendToHidden")
-const fileDeletBtn = document.querySelectorAll(".fileDeletBtn")
-const addUnit1 = document.querySelectorAll(".tableBody td:nth-child(5)")
-const addUnit2 = document.querySelectorAll(".tableBody td:nth-child(6)")
+const fileDeleteBtn = document.querySelectorAll(".fileDeleteBtn")
+const BusLicenseFileText = document.querySelector(".BusLicenseFileText")
+const BusLicenseFileInput = document.querySelector(".BusLicenseFileInput")
+const insuranceFileText = document.querySelector(".insuranceFileText")
+const insuranceFileInput = document.querySelector(".insuranceFileInput")
+const BusLicenseFileTextEdit = document.querySelector(".BusLicenseFileTextEdit")
+const BusLicenseFileInputEdit = document.querySelector(".BusLicenseFileInputEdit")
+const insuranceFileTextEdit = document.querySelector(".insuranceFileTextEdit")
+const insuranceFileInputEdit = document.querySelector(".insuranceFileInputEdit")
+const addUnit1 = document.querySelectorAll(".tableBody td:nth-child(6)")
+const addUnit2 = document.querySelectorAll(".tableBody td:nth-child(7)")
 const PopupDataInput = document.querySelectorAll(".PopupDataInput")
-const createBtn = document.querySelector(".createBtn")
+const createBtn = document.querySelectorAll(".createBtn")
 
 
 //등록팝업 열기
@@ -57,7 +62,7 @@ function closePopup() {
   for (i = 0; i < popupAreaModules.length; i++) {
     popupAreaModules[i].style.display = "none"
   }
-  PopupDataAreaDetail.style.display = "flex"
+  popupSectionDetail.style.display = "flex"
   PopupDataAreaEdit.style.display = "none"
   PopupTitle[1].innerText = "차량상세"
   editBtn.style.display = "flex";
@@ -80,15 +85,14 @@ function openDetailPopup() {
   PopupData[4].innerText = regDatas[this.className].maker
   PopupData[5].innerText = regDatas[this.className].vehicle_type
   PopupData[6].innerText = regDatas[this.className].vehicle_id
-  PopupData[7].innerText = regDatas[this.className].model_year
-  PopupData[8].innerText = regDatas[this.className].release_date
-  PopupData[9].innerText = regDatas[this.className].passenger_num
-  PopupData[10].innerText = regDatas[this.className].motor_type
-  PopupData[11].innerText = regDatas[this.className].rated_output
-  PopupData[12].innerText = regDatas[this.className].insurance_expiry_date
-  PopupData[13].innerText = regDatas[this.className].check_duration
-  PopupData[14].innerText = regDatas[this.className].vehicle_registration
-  PopupData[15].innerText = regDatas[this.className].insurance_receipt
+  PopupData[8].innerText = regDatas[this.className].model_year
+  PopupData[9].innerText = regDatas[this.className].release_date
+  PopupData[10].innerText = regDatas[this.className].passenger_num
+  PopupData[11].innerText = regDatas[this.className].motor_type
+  PopupData[12].innerText = regDatas[this.className].rated_output
+  PopupData[14].innerText = regDatas[this.className].check_duration
+  PopupData[15].innerText = regDatas[this.className].vehicle_registration
+  PopupData[16].innerText = regDatas[this.className].insurance_receipt
   vehicleNum1.value = regDatas[this.className].vehicle_num0
   vehicleNum2.value = regDatas[this.className].vehicle_num
   for (i = 0; i < driver_name.length; i++) {
@@ -111,8 +115,8 @@ function openDetailPopup() {
   rated_output.value = regDatas[this.className].rated_output
   insurance_expiry_date.value = regDatas[this.className].insurance_expiry_date
   check_duration.value = regDatas[this.className].check_duration
-  fileNameBox[0].value = regDatas[this.className].vehicle_registration
-  fileNameBox[1].value = regDatas[this.className].insurance_receipt
+  BusLicenseFileTextEdit.value = regDatas[this.className].vehicle_registration
+  insuranceFileTextEdit.value = regDatas[this.className].insurance_receipt
   sendToHidden.value = this.parentNode.className;
 }
 
@@ -121,11 +125,11 @@ function openDetailPopup() {
 editBtn.addEventListener("click", changeEdit)
 
 function changeEdit() {
-  PopupDataAreaDetail.style.display = "none"
-  PopupDataAreaEdit.style.display = "flex"
+  popupSectionDetail.style.display = "none"
+  PopupDataAreaEdit.style.display = "block"
   PopupTitle[1].innerText = "차량수정"
   editBtn.style.display = "none";
-  saveBtn.style.display = "flex";
+  createBtn[1].style.display = "flex";
 }
 
 
@@ -162,33 +166,49 @@ function deleteData(e) {
 }
 
 
-//파일
-fileBox.addEventListener("change", fileName)
+//파일명 변경
+BusLicenseFileInput.addEventListener("change", changeFileBusLicense)
+insuranceFileInput.addEventListener("change", changeFileinsurance)
+BusLicenseFileInputEdit.addEventListener("change", changeFileLicenseEdit)
+insuranceFileInputEdit.addEventListener("change", changeFileDriverLicenseEdit)
 
-function fileName() {
-  console.log(fileBox)
-  console.log(fileBox.files[0])
-  console.log(fileBox.files[0].name)
-  fileNameBox[0].value = fileBox.files[0].name
+function changeFileBusLicense() {
+  BusLicenseFileText.value = BusLicenseFileInput.files[0].name
+}
+function changeFileinsurance() {
+  insuranceFileText.value = insuranceFileInput.files[0].name
+}
+function changeFileLicenseEdit() {
+  BusLicenseFileTextEdit.value = BusLicenseFileInputEdit.files[0].name
+}
+function changeFileDriverLicenseEdit() {
+  insuranceFileTextEdit.value = insuranceFileInputEdit.files[0].name
 }
 
-fileBox2.addEventListener("change", fileName2)
 
-function fileName2() {
-  fileNameBox[1].value = fileBox2.files[0].name
+
+
+// 파일삭제
+fileDeleteBtn[0].addEventListener("click", deleteFileBusLicense)
+fileDeleteBtn[1].addEventListener("click", deleteFileInsurance)
+fileDeleteBtn[2].addEventListener("click", deleteFileLicensEdit)
+fileDeleteBtn[3].addEventListener("click", deleteFileDriverLicensEdit)
+
+function deleteFileBusLicense() {
+  BusLicenseFileText.value = ""
+  BusLicenseFileInput.value = ""
 }
-
-
-fileDeletBtn[0].addEventListener('click', deletFile1)
-fileDeletBtn[1].addEventListener('click', deletFile2)
-
-
-function deletFile1() {
-  fileNameBox[0].value = ""
+function deleteFileInsurance() {
+  insuranceFileText.value = ""
+  insuranceFileInput.value = ""
 }
-
-function deletFile2() {
-  fileNameBox[1].value = ""
+function deleteFileLicensEdit() {
+  BusLicenseFileTextEdit.value = ""
+  BusLicenseFileInputEdit.value = ""
+}
+function deleteFileDriverLicensEdit() {
+  insuranceFileTextEdit.value = ""
+  insuranceFileInputEdit.value = ""
 }
 
 
@@ -212,7 +232,7 @@ PopupDataInput[7].addEventListener('change', yearChecker)
 
 function busNumChecker(){
   if(this.value.length >= 5){
-    this.value = this.value.substr(0,4)
+    this.value = this.value.substr(0,5)
   }else if(this.value.length <= 3){
     alert("4자리의 숫자를 입력해 주세요.")
   }

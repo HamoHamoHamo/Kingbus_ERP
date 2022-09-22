@@ -1,0 +1,211 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load custom_tags %}
+
+{% block head %}
+
+<meta http-equiv="Cache-Control" content="private, no-cache, no-store, max-age=0, must-revalidate">
+
+<link rel="stylesheet" href="{% static 'css/document/company.css' %}" type="text/css" />
+{% endblock %}
+
+{% block content-header %}
+<div class="HeaderTitle">
+    운행서류
+</div>
+{% endblock %}
+
+{% block content %}
+
+
+
+
+<div class="searchAreaBox">
+    <form action="">
+        <div class="searchTool">
+            <div class="searchTitle">파일검색</div>
+            <label for="">파일이름</label>
+            <input type="text">
+            <input type="submit" value="검색" class="btnModules">
+        </div>
+    </form>
+</div>
+
+
+
+
+
+<form class="contentsAreaBox">
+
+    <div class="btnModules contentsAreaBoxDelete">삭제</div>
+    <div class="btnModules upload">다운로드</div>
+
+    <div class="documentTableBox">
+        <table class="documentTableHeader">
+            <thead>
+                <tr>
+                    <td>
+                        <input type="checkbox">
+                    </td>
+                    <td>파일명</td>
+                    <td>작성자</td>
+                    <td>등록일</td>
+                </tr>
+            </thead>
+        </table>
+        <div class="documentTableBodyBox">
+            <table class="documentCoverTable">
+                <tbody>
+                    <tr>
+                        <td>
+                            <table class="documentContentsTable">
+                                <thead>
+                                    <tr>
+                                        <td>
+                                            <input type="checkbox" class="groupCheck group1"><!-- 장고로 클래스 부여 -->
+                                        </td>
+                                        <td>+</td>
+                                        <td colspan="3">그룹이름</td>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>
+                                            <input type="checkbox" class="fileCheck group1"><!-- 장고로 클래스 부여 -->
+                                        </td>
+                                        <td colspan="2">파일이름</td>
+                                        <td>관리자</td>
+                                        <td>2022.09.15</td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="5">
+                                            <div class="uploadFile">
+                                                <div class="uploadFileIcon">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14"
+                                                        viewBox="0 0 14 14">
+                                                        <g id="그룹_1511" data-name="그룹 1511"
+                                                            transform="translate(-1022.5 -388.5)">
+                                                            <line id="선_691" data-name="선 691" y2="12"
+                                                                transform="translate(1029.5 389.5)" fill="none"
+                                                                stroke="#fff" stroke-linecap="round" stroke-width="2" />
+                                                            <line id="선_692" data-name="선 692" y2="12"
+                                                                transform="translate(1035.5 395.5) rotate(90)"
+                                                                fill="none" stroke="#fff" stroke-linecap="round"
+                                                                stroke-width="2" />
+                                                        </g>
+                                                    </svg>
+                                                </div>
+                                                <span>파일 업로드</span>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="addGroupContainer">
+                <div class="addGroupBox">
+                    <div class="uploadFileIcon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 14 14">
+                            <g id="그룹_1511" data-name="그룹 1511" transform="translate(-1022.5 -388.5)">
+                                <line id="선_691" data-name="선 691" y2="12" transform="translate(1029.5 389.5)"
+                                    fill="none" stroke="#fff" stroke-linecap="round" stroke-width="2" />
+                                <line id="선_692" data-name="선 692" y2="12"
+                                    transform="translate(1035.5 395.5) rotate(90)" fill="none" stroke="#fff"
+                                    stroke-linecap="round" stroke-width="2" />
+                            </g>
+                        </svg>
+                    </div>
+                    <div>그룹추가</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</form>
+
+
+{% endblock %}
+
+
+
+
+
+{% block popup %}
+
+<!--  -->
+<div class="popupAreaModules">
+    <div class="popupBgModules"></div>
+    <form method="post" action="" class="popupContainer">
+        {% csrf_token %}
+        <div class="popupHeader">
+            <div class="popupTitle">파일 업로드</div>
+        </div>
+        <div class="popupBody">
+            <div class="popupSection">
+                <div class="popupArticle">
+                    <label for="" class="popupArticleLabel">파일명</label>
+                    <input type="text" class="popupArticleInput">
+                </div>
+                <div class="popupArticle">
+                    <label for="" class="popupArticleLabel">업로드 파일</label>
+                    <div class="popupArticleFile">
+                        <label for="documentFile">파일 선택</label>
+                        <input type="file" id="documentFile" class="documentFileInput">
+                        <input type="text" class="documentFileText" readonly>
+                        <svg class="fileDeleteBtn" xmlns="http://www.w3.org/2000/svg" width="11.314" height="11.314"
+                            viewBox="0 0 11.314 11.314">
+                            <g id="그룹_1513" data-name="그룹 1513" transform="translate(-442.649 -1001.97) rotate(45)">
+                                <line id="선_691" data-name="선 691" y2="12" transform="translate(1029.5 389.5)"
+                                    fill="none" stroke="#000" stroke-linecap="round" stroke-width="2" />
+                                <line id="선_692" data-name="선 692" y2="12"
+                                    transform="translate(1035.5 395.5) rotate(90)" fill="none" stroke="#000"
+                                    stroke-linecap="round" stroke-width="2" />
+                            </g>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+            <div class="popupFooter">
+                <input type="submit" class="btnModules" value="추가">
+                <div class="btnModules">취소</div>
+            </div>
+        </div>
+    </form>
+</div>
+
+<div class="popupAreaModules">
+    <div class="popupBgModules"></div>
+    <form method="post" action="" class="popupContainer">
+        {% csrf_token %}
+        <div class="popupHeader">
+            <div class="popupTitle">그룹추가</div>
+        </div>
+        <div class="popupBody">
+            <div class="popupSection">
+                <div class="popupArticle">
+                    <label for="" class="popupArticleLabel">그룹이름</label>
+                    <input type="text" class="popupArticleInput">
+                </div>
+            </div>
+            <div class="popupFooter">
+                <input type="submit" class="btnModules" value="추가">
+                <div class="btnModules">취소</div>
+            </div>
+        </div>
+    </form>
+</div>
+
+{% endblock %}
+
+
+
+
+
+{% block script %}
+<script src="{% static 'js/document/uploadPopup.js' %}"></script>
+<script src="{% static 'js/document/gruopChecker.js' %}"></script>
+<script src="{% static 'js/document/openGroup.js' %}"></script>
+{% endblock %}

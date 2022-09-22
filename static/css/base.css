@@ -9,9 +9,17 @@ html {
   overflow-x: hidden;
 }
 
+input[type=date] {
+  font-family: "Noto Sans CJK KR";
+}
+
 body {
   margin: 0;
   background-color: #F5F5F5;
+}
+
+table{
+  border-spacing: 0;
 }
 
 textarea {
@@ -42,6 +50,7 @@ html::-webkit-scrollbar-track {
 
 /*trp*/
 .trp {
+  position: relative;
   display: flex;
   width: 100vw;
   min-width: 102.4rem;
@@ -55,10 +64,10 @@ html::-webkit-scrollbar-track {
 
 /*trp sidemenu*/
 .Sidemenu {
+  position: fixed;
   z-index: 10000;
   width: 22rem;
-  height: auto;
-  min-height: 100vh;
+  height: 100vh;
   background-color: #1C1A4E;
 }
 
@@ -80,7 +89,7 @@ html::-webkit-scrollbar-track {
 
 .logoBox a img {
   width: 12.2rem;
-  height: 4.1rem;
+  aspect-ratio: 3 / 1;
 }
 
 
@@ -116,6 +125,9 @@ html::-webkit-scrollbar-track {
   height: 4.2rem;
   font-size: 1.6rem;
   color: white;
+}
+.nav1BoxMenu img{
+  width: 1.7rem;
 }
 
 .nav1BoxMenuHaveDepth2 {
@@ -173,6 +185,44 @@ html::-webkit-scrollbar-track {
 }
 
 
+/* Manual */
+.manualArea {
+  position: absolute;
+  bottom: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  height: 9.2rem;
+  padding: 1rem 0;
+  box-sizing: border-box;
+}
+
+.manualArea a {
+  width: 90%;
+  height: 3rem;
+}
+
+.manualArea div {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  border: 0.1rem solid white;
+  border-radius: 0.3rem;
+  color: white;
+  font-size: 1.6rem;
+  cursor: pointer;
+}
+
+.manualArea div:hover {
+  background-color: white;
+  color: #1C1A4E;
+}
+
+
 
 
 
@@ -180,6 +230,7 @@ html::-webkit-scrollbar-track {
 /*trpMainContainer*/
 .MainContainer {
   position: relative;
+  left: 22rem;
   display: flex;
   flex-direction: column;
   width: calc(100vw - 22rem);
@@ -227,6 +278,7 @@ html::-webkit-scrollbar-track {
   position: absolute;
   top: 5.2rem;
   right: 3rem;
+  z-index: 100;
   display: none;
   flex-direction: column;
   justify-content: space-around;
@@ -426,6 +478,11 @@ html::-webkit-scrollbar-track {
 }
 
 
+
+
+
+
+
 /*modules*/
 .inputModules {
   height: 2.5rem;
@@ -499,23 +556,15 @@ html::-webkit-scrollbar-track {
   left: calc(50% + 11rem);
   display: flex;
   flex-direction: column;
+  justify-content: flex-start;
   align-items: center;
-  width: 42rem;
-  height: 32rem;
+  width: 64rem;
+  min-height: 19.6rem;
   background-color: white;
-  border-radius: 0.3rem;
   box-shadow: 0 0.2rem 0.4rem rgb(0 0 0 / 16%);
   transform: translate(-50%, -50%);
 }
 
-.HomePopupContainerPw {
-  width: 38rem;
-  height: 38rem;
-}
-
-.HomePopupContainerPw .HomePopupDataCell {
-  margin: 0 auto;
-}
 
 .HomePopupDataArea {
   display: flex;
@@ -553,13 +602,20 @@ html::-webkit-scrollbar-track {
   width: 100%;
 }
 
+.idBox {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 50rem;
+}
+
 .idchecker {
   display: flex;
   justify-content: space-around;
   align-items: center;
   width: 7rem;
-  height: 2.6rem;
-  margin-top: 3.4rem;
+  height: 2.4rem;
+  margin-left: 2rem;
   border-radius: 0.2rem;
   background-color: #444444;
   font-size: 1.3rem;
@@ -580,16 +636,16 @@ html::-webkit-scrollbar-track {
   padding: 0 13.4rem;
   box-sizing: border-box;
 }
-.HomePopupContainerPw .homePopupBtnBox{
-  padding: 0 11.4rem;
-}
-.HomeCloseBtn{
+
+.HomeCloseBtn {
   background-color: #444444;
 }
-.HomeEditBtn{
+
+.HomeEditBtn {
   background-color: #0069D9;
 }
-.homePopupTitle{  
+
+.homePopupTitle {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -599,7 +655,279 @@ html::-webkit-scrollbar-track {
   font-weight: 500;
   border-bottom: 0.1rem solid #191919;
 }
-.HomePopupDataTitle{  
+
+.HomePopupDataTitle {
   font-size: 1.4rem;
   color: #7A7A7A;
+}
+
+
+
+
+
+/* popup */
+.popupContainer {
+  position: fixed;
+  top: 50%;
+  left: calc(50% + 11rem);
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  width: 64rem;
+  min-height: 19.6rem;
+  background-color: white;
+  box-shadow: 0 0.2rem 0.4rem rgb(0 0 0 / 16%);
+  transform: translate(-50%, -50%);
+}
+
+
+.popupHeader {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  width: 100%;
+  height: 3.6rem;
+  padding-left: 2rem;
+  background-color: #444;
+  box-sizing: border-box;
+}
+
+.popupTitle {
+  font-size: 1.5rem;
+  color: white;
+}
+
+.popupBody {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  min-height: 16rem;
+  padding: 0 2rem;
+  background-color: white;
+  box-sizing: border-box;
+}
+
+.popupBodyDispatch{
+  min-height: 24rem;
+  border-left: 0.1rem solid black;
+  border-right: 0.1rem solid black;
+  border-bottom: 0.1rem solid black;
+}
+
+.popupSection {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  min-height: 8.8rem;
+  padding: 3rem 0;
+  box-sizing: border-box;
+}
+
+.popupArticle {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  height: 2.8rem;
+  margin-top: 2rem;
+}
+
+.popupArticle:nth-child(1) {
+  margin-top: 0;
+}
+
+.popupArticleLabel,
+.popupArticleDouble .popupArticleLabel {
+  width: 9rem;
+  text-align: left;
+  font-size: 1.4rem;
+}
+
+.popupArticleInput {
+  width: 50rem;
+  height: 2.4rem;
+  padding-left: 1rem;
+  border: 0.1rem solid #CDCDCE;
+  border-radius: 0.3rem;
+  outline: none;
+  box-sizing: border-box;
+}
+
+.PopupData {
+  display: flex;
+  align-items: center;
+  width: 27rem;
+  height: 2.4rem;
+  padding-left: 1rem;
+  border: 0.1rem solid #CDCDCE;
+  border-radius: 0.3rem;
+  font-size: 1.4rem;
+  outline: none;
+  box-sizing: border-box;
+}
+
+.PopupDataDouble {
+  width: 67rem;
+}
+
+.popupFooter {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  height: 7.2rem;
+  border-top: 0.1rem solid #CDCDCE;
+  box-sizing: border-box;
+}
+
+.popupFooter .btnModules {
+  position: absolute;
+  top: 50%;
+}
+
+.popupFooter input {
+  left: 50%;
+  background-color: #0069D9;
+  transform: translate(-50%, -50%);
+}
+
+.popupFooter .closeBtn {
+  right: 0;
+  background-color: #444;
+  transform: translate(0, -50%);
+}
+
+/* popupDouble */
+.popupContainerDouble {
+  width: 80rem;
+}
+
+.popupArticleBox {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  height: 2.8rem;
+  margin-top: 2rem;
+}
+
+.popupArticleBox:nth-child(1) {
+  margin-top: 0;
+}
+
+.popupArticleDouble {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: calc(50% - 2rem);
+  height: 2.8rem;
+}
+
+.popupArticleDouble .popupArticleInput {
+  width: 27rem;
+  height: 2.4rem;
+  border: 0.1rem solid #CDCDCE;
+  border-radius: 0.3rem;
+  outline: none;
+}
+
+.popupArticleInputDouble {
+  width: 67rem;
+}
+
+.popupArticleFileDouble {
+  position: relative;
+  display: flex;
+  width: 27rem;
+}
+
+
+/* popupFile */
+.popupArticleFile {
+  position: relative;
+  display: flex;
+  width: 50rem;
+}
+
+.popupArticleFile label,
+.popupArticleFileDouble label {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 9rem;
+  height: 2.6rem;
+  border-radius: 0.3rem 0 0 0.3rem;
+  background-color: #444444;
+  color: white;
+  font-size: 1.3rem;
+  box-sizing: border-box;
+  cursor: pointer;
+}
+
+.popupArticleFileDouble label {
+  width: 16rem;
+}
+
+.popupArticleFile input[type=text],
+.popupArticleFileDouble input[type=text] {
+  width: 41rem;
+  padding-left: 1rem;
+  padding-right: 2rem;
+  font-size: 1.4rem;
+  border: 0.1rem solid #CDCDCE;
+  border-left: none;
+  border-radius: 0 0.3rem 0.3rem 0;
+  box-sizing: border-box;
+  outline: none;
+}
+
+.FileTextDouble {
+  width: 16rem;
+  padding-left: 1rem;
+  padding-right: 2rem;
+  font-size: 1.4rem;
+  border: 0.1rem solid #CDCDCE;
+  border-left: none;
+  border-radius: 0 0.3rem 0.3rem 0;
+  box-sizing: border-box;
+  outline: none;
+}
+
+.popupArticleFile input[type=file],
+.popupArticleFileDouble input[type=file] {
+  display: none;
+}
+
+.fileDeleteBtn {
+  position: absolute;
+  top: 50%;
+  right: 1%;
+  transform: translate(0, -50%);
+  cursor: pointer;
+}
+
+.popupArticleFileDouble .fileDeleteBtn {
+  right: 2%;
+}
+
+
+
+
+
+
+
+
+
+
+@media all and (min-width:1460px) and (max-width: 1600px) {
+  html{
+    font-size: 52%;
+  }
+}
+
+@media all and (min-width:1024px) and (max-width: 1460px) {
+  html{
+    font-size: 46.8%;
+  }
 }

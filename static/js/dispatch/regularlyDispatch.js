@@ -3,6 +3,9 @@ const routeListBus = document.querySelectorAll(".listTable tbody td:nth-child(3)
 const orderDriver = document.querySelectorAll(".orderDriver")
 const orderSpareDriver = document.querySelectorAll(".orderSpareDriver")
 const scheduleTableTr = document.querySelectorAll(".scheduleTableTr")
+const driverTd = document.querySelectorAll(".driverTd")
+const routeTimeInput = document.querySelectorAll(".quarterBox input")
+
 
 
 
@@ -49,8 +52,6 @@ function addDDispatch() {
                 routeList[i].children[2].innerText = busNum
                 routeList[i].children[9].value = busId
 
-                orderDriver[i].children[0].remove()
-
                 const driverOption = document.createElement('option');
                 driverOption.setAttribute("value", `${DriverId}`);
                 driverOption.innerText = DriverName
@@ -91,74 +92,9 @@ function stopLink(e) {
 
 
 
+// 시간비교 만들기
+function CreateCompareTime() {
+    inputStartTime = searchDate.value.replace(/\-/g, "") + routeTimeInput[0].value + routeTimeInput[1].value
+    inputEndTime = searchDate.value.replace(/\-/g, "") + routeTimeInput[2].value + routeTimeInput[3].value
 
-// 배차가능 기사 옵션 추가
-for(i=0; i<orderDriver.length; i++){
-    orderDriver[i].addEventListener("click", addDriverOption)
-}
-
-function addDriverOption() {
-
-
-    if (this.children.length == 1) {
-
-        scheduleBus = []
-
-        for (i = 0; i < data.length; i++) {
-
-            dataStartDate = data[i].departure_date.substr(0, 10)
-            dataEndDate = data[i].arrival_date.substr(0, 10)
-            dataStartTime = data[i].departure_date.substr(11, 5).replace(/\:/g, "")
-            dataEndTime = data[i].arrival_date.substr(11, 5).replace(/\:/g, "")
-    
-            // data기간 필터링
-            if (dataStartDate == searchDate.value && dataEndDate !== searchDate.value) {
-                if (inputEndTime >= dataStartTime) {
-                    scheduleBus.push(data[i].driver_id)
-                }
-            } else if (dataEndDate == searchDate.value && dataStartDate !== searchDate.value) {
-                if (dataEndTime >= inputStartTime) {
-                    scheduleBus.push(data[i].driver_id)
-                }
-            } else if (dataStartDate == dataEndDate) {
-                if (dataEndTime >= inputStartTime && inputEndTime >= dataStartTime) {
-                    scheduleBus.push(data[i].driver_id)
-                }
-            } else {
-                scheduleBus.push(data[i].driver_id)
-            }
-        }
-
-        // 배차불가 차량 필터링
-        let optionDriver = Object.keys(driverObj)
-        for (i = 0; i < scheduleBus.length; i++) {
-            optionDriver = optionDriver.filter((current) => current !== `${scheduleBus[i]}`)
-        }
-
-        let optionDriverKo = []
-        for (i = 0; i < optionDriver.length; i++) {
-            optionDriverKo.push(driverObj[optionDriver[i]])
-        }
-
-        function ascending(a, b) { return (a < b) ? -1 : (a == b) ? 0 : 1; }
-        optionDriverKo.sort(ascending);
-
-        let optionDriverSort = []
-        for (i = 0; i < optionDriverKo.length; i++) {
-            for (j = 0; j < optionDriver.length; j++) {
-                if (driverObj[optionDriver[j]] == optionDriverKo[i]) {
-                    optionDriverSort.push(optionDriver[j])
-                }
-            }
-        }
-
-
-        // 배차가능 차량 옵션 추가
-        for (i = 0; i < optionDriverKo.length; i++) {
-            const driverOption = document.createElement('option');
-            driverOption.setAttribute("value", `${optionDriverSort[i]}`);
-            driverOption.innerText = optionDriverKo[i]
-            this.appendChild(driverOption);
-        }
-    }
 }

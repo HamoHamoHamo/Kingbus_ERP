@@ -76,7 +76,9 @@
                         <td>{% if order.VAT == 'y' %}VAT포함{% endif %}</td>
                         <td>{{order.collection_type}}</td>
                         <td class="{{forloop.counter0}}">
-                            <div class="popupOpenBtn">{{order.collection_amount}}</div>
+                            <div class="popupBtnCover">
+                                <div class="popupOpenBtn">{{order.collection_amount}}</div>
+                            </div>
                         </td>
                         <td>{{order.price|minus:order.collection_amount}}</td>
                         <td>{{order.collection_date}}</td>
@@ -98,145 +100,130 @@
 {% block popup %}
 <div class="popupAreaModules">
     <div class="popupBgModules"></div>
-    <form method="post" action="{% url 'accounting:collect_create' %}" class="popupContainer"
-        enctype="multipart/form-data">
+    <form method="post" action="v" class="popupContainer popupContainerDouble" class="popupContainer"
+            enctype="multipart/form-data">
         {% csrf_token %}
-        <div class="PopupTitle">수금등록</div>
-        <div class="PopupDataArea">
-            <div class="PopupDataCell">
-                <span class="PopupDataTitle">수금금액</span>
-                <div class="dateBox">
-                    <input name="collection_amount" type="text" class="PopupDataInput PopupDataInputPrice">
-                </div>
-            </div>
-            <div class="PopupDataCell">
-                <span class="PopupDataTitle">수금일자</span>
-                <div class="dateBox">
-                    <input name="collection_date" type="date" class="PopupDataInput PopupDataInputDate">
-                </div>
-            </div>
-            <div class="PopupDataCell">
-                <span class="PopupDataTitle">입력자</span>
-                <div class="dateBox">
-                    <div class="PopupData">{{ request.session.name }}</div>
-                </div>
-            </div>
-            <div class="PopupDataCell">
-                <span class="PopupDataTitle">출발지</span>
-                <div class="dateBox">
-                    <div class="PopupData"></div>
-                </div>
-            </div>
-            <div class="PopupDataCell">
-                <span class="PopupDataTitle">차량대수</span>
-                <div class="dateBox">
-                    <div class="PopupData"></div>
-                </div>
-            </div>
-            <div class="PopupDataCell">
-                <span class="PopupDataTitle">도착지</span>
-                <div class="dateBox">
-                    <div class="PopupData"></div>
-                </div>
-            </div>
-            <div class="PopupDataCell">
-                <span class="PopupDataTitle">차량종류</span>
-                <div class="dateBox">
-                    <div class="PopupData"></div>
-                </div>
-            </div>
-            <div class="PopupDataCell">
-                <span class="PopupDataTitle">운행시간</span>
-                <div class="dateBox">
-                    <div class="PopupData"></div>
-                </div>
-            </div>
-            <div class="PopupDataCell">
-                <span class="PopupDataTitle">계약현황</span>
-                <div class="dateBox">
-                    <div class="PopupData"></div>
-                </div>
-            </div>
-            <div class="PopupDataCell">
-                <span class="PopupDataTitle">비용구분</span>
-                <div class="dateBox">
-                    <div class="PopupData"></div>
-                </div>
-            </div>
-            <div class="PopupDataCell">
-                <span class="PopupDataTitle">참조사항</span>
-                <div class="dateBox">
-                    <div class="PopupData"></div>
-                </div>
-            </div>
-            <div class="PopupDataCell">
-                <span class="PopupDataTitle">예약자</span>
-                <div class="dateBox">
-                    <div class="PopupData"></div>
-                </div>
-            </div>
-            <div class="PopupDataCell">
-                <span class="PopupDataTitle">전화번호</span>
-                <div class="dateBox">
-                    <div class="PopupData"></div>
-                </div>
-            </div>
-            <div class="PopupDataCell">
-                <span class="PopupDataTitle">계약금액</span>
-                <div class="dateBox">
-                    <div class="PopupData"></div>
-                </div>
-            </div>
-            <div class="PopupDataCell">
-                <span class="PopupDataTitle">입금현황</span>
-                <div class="dateBox">
-                    <div class="PopupData"></div>
-                </div>
-            </div>
-            <div class="PopupDataCell">
-                <span class="PopupDataTitle">입금 예정일</span>
-                <div class="dateBox">
-                    <div class="PopupData"></div>
-                </div>
-            </div>
-            <div class="PopupDataCell">
-                <span class="PopupDataTitle">계산서 발행일</span>
-                <div class="dateBox">
-                    <div class="PopupData"></div>
-                </div>
-            </div>
-            <div class="PopupDataCell">
-                <span class="PopupDataTitle">수금구분</span>
-                <div class="dateBox">
-                    <div class="PopupData"></div>
-                </div>
-            </div>
-            <div class="PopupDataCell">
-                <span class="PopupDataTitle">상여금</span>
-                <div class="dateBox">
-                    <div class="PopupData"></div>
-                </div>
-            </div>
-            <div class="PopupDataCell">
-                <span class="PopupDataTitle">상여금 지급방식</span>
-                <div class="dateBox">
-                    <div class="PopupData"></div>
-                </div>
-            </div>
-            <div class="PopupDataCell">
-                <span class="PopupDataTitle">VAT포함</span>
-                <div class="dateBox">
-                    <div class="PopupData"></div>
-                </div>
-            </div>
-            <input type="hidden" value="" name="id" class="sendToHidden">
+        <div class="popupHeader">
+            <div class="popupTitle">수금등록</div>
         </div>
-        <div class="PopupBtnBox">
-            <div class="btnModules closeBtn">닫기</div>
-            <input type="submit" class="btnModules createBtn" value="등록">
+        <div class="popupBody">
+            <div class="popupSection">
+                <div class="popupArticleBox">
+                    <div class="popupArticleDouble">
+                        <label for="" class="popupArticleLabel">수금금액</label>
+                        <input name="collection_amount" type="text" class="popupArticleInput PopupDataInputPrice">
+                    </div>
+                    <div class="popupArticleDouble">
+                        <label for="" class="popupArticleLabel">수금일자</label>
+                        <input name="collection_date" type="date" class="popupArticleInput PopupDataInputDate">
+                    </div>
+                </div>
+                <div class="popupArticleBox">
+                    <div class="popupArticleDouble">
+                        <label for="" class="popupArticleLabel">입력자</label>
+                        <div class="PopupData">{{ request.session.name }}</div>
+                    </div>
+                    <div class="popupArticleDouble">
+                        <label for="" class="popupArticleLabel">출발지</label>
+                        <div class="PopupData"></div>
+                    </div>
+                </div>
+                <div class="popupArticleBox">
+                    <div class="popupArticleDouble">
+                        <label for="" class="popupArticleLabel">차량대수</label>
+                        <div class="PopupData"></div>
+                    </div>
+                    <div class="popupArticleDouble">
+                        <label for="" class="popupArticleLabel">도착지</label>
+                        <div class="PopupData"></div>
+                    </div>
+                </div>
+                <div class="popupArticleBox">
+                    <div class="popupArticleDouble">
+                        <label for="" class="popupArticleLabel">차량종류</label>
+                        <div class="PopupData"></div>
+                    </div>
+                    <div class="popupArticleDouble">
+                        <label for="" class="popupArticleLabel">운행시간</label>
+                        <div class="PopupData"></div>
+                    </div>
+                </div>
+                <div class="popupArticleBox">
+                    <div class="popupArticleDouble">
+                        <label for="" class="popupArticleLabel">계약현황</label>
+                        <div class="PopupData"></div>
+                    </div>
+                    <div class="popupArticleDouble">
+                        <label for="" class="popupArticleLabel">비용구분</label>
+                        <div class="PopupData"></div>
+                    </div>
+                </div>
+                <div class="popupArticle">
+                    <label for="" class="popupArticleLabel">참조사항</label>
+                    <div class="PopupData PopupDataDouble"></div>
+                </div>
+                <div class="popupArticleBox">
+                    <div class="popupArticleDouble">
+                        <label for="" class="popupArticleLabel">예약자</label>
+                        <div class="PopupData"></div>
+                    </div>
+                    <div class="popupArticleDouble">
+                        <label for="" class="popupArticleLabel">전화번호</label>
+                        <div class="PopupData"></div>
+                    </div>
+                </div>
+                <div class="popupArticleBox">
+                    <div class="popupArticleDouble">
+                        <label for="" class="popupArticleLabel">계약금액</label>
+                        <div class="PopupData"></div>
+                    </div>
+                    <div class="popupArticleDouble">
+                        <label for="" class="popupArticleLabel">입금현황</label>
+                        <div class="PopupData"></div>
+                    </div>
+                </div>
+                <div class="popupArticleBox">
+                    <div class="popupArticleDouble">
+                        <label for="" class="popupArticleLabel">입금예정일</label>
+                        <div class="PopupData"></div>
+                    </div>
+                    <div class="popupArticleDouble">
+                        <label for="" class="popupArticleLabel">계산서 발행일</label>
+                        <div class="PopupData"></div>
+                    </div>
+                </div>
+                <div class="popupArticleBox">
+                    <div class="popupArticleDouble">
+                        <label for="" class="popupArticleLabel">수금구분</label>
+                        <div class="PopupData"></div>
+                    </div>
+                    <div class="popupArticleDouble">
+                        <label for="" class="popupArticleLabel">상여금</label>
+                        <div class="PopupData"></div>
+                    </div>
+                </div>
+                <div class="popupArticleBox">
+                    <div class="popupArticleDouble">
+                        <label for="" class="popupArticleLabel">상여 지급방식</label>
+                        <div class="PopupData"></div>
+                    </div>
+                    <div class="popupArticleDouble">
+                        <label for="" class="popupArticleLabel">VAT 포함여부</label>
+                        <div class="PopupData"></div>
+                    </div>
+                </div>
+                <input type="hidden" value="" name="id" class="sendToHidden">
+            </div>
+            <div class="popupFooter">
+                <input type="submit" class="btnModules createBtn" value="등록">
+                <div class="btnModules closeBtn">취소</div>
+            </div>
         </div>
     </form>
-</div>
+  </div>
+
+
+
 
 {% endblock %}
 

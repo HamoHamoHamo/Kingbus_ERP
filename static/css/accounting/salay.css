@@ -22,10 +22,9 @@
 }
 
 .tableHead {
-    width: calc(100% - 0.2rem);
+    width: 100%;
     height: 4.8rem;
-    border: 0.1rem solid #CDCDCE;
-    border-radius: 0.5rem 0.5rem 0 0;
+    border-spacing: 0;
 }
 
 .tableHead thead {
@@ -34,10 +33,8 @@
 }
 
 table tr {
-    display: flex;
     width: 100%;
     height: 4.8rem;
-    border-bottom: 0.1rem solid #CDCDCE;
 }
 
 .tableHead tr {
@@ -47,14 +44,19 @@ table tr {
     border: none;
     font-size: 1.6rem;
     font-weight: 700;
-    color: #7A7A7A;
+    color: white;
+    background-color: #444444;
 }
 
-table tr:nth-child(odd) {
+.tableHead td{
+    text-align: center;
+}
+
+.tableBody tr:nth-child(odd) {
     background-color: white;
 }
 
-table tr:nth-child(even) {
+.tableBody tr:nth-child(even) {
     background-color: #EFEFEF;
 }
 
@@ -63,7 +65,6 @@ table tr:nth-child(even) {
     height: 64rem;
     margin-top: -0.1rem;
     border: 0.1rem solid #CDCDCE;
-    box-sizing: border-box;
     overflow-y: scroll;
 }
 
@@ -93,15 +94,14 @@ tbody {
 }
 
 .tableBody td {
-    display: flex;
-    align-items: center;
     font-size: 1.4rem;
     color: #191919;
+    border-right: 0.1rem solid #D4D4D4;
+    border-bottom: 0.1rem solid #D4D4D4;
 }
 
 td:nth-child(1) {
-    width: 8%;
-    padding-left: 1rem;
+    width: 6%;
     box-sizing: border-box;
 }
 td:nth-child(1) a{
@@ -110,137 +110,54 @@ td:nth-child(1) a{
 }
 
 td:nth-child(2) {
-    width: 12%;
+    width: 8%;
 }
 
-td:nth-child(3) {
+td:nth-child(3),
+td:nth-child(4),
+td:nth-child(5),
+td:nth-child(6),
+td:nth-child(7),
+td:nth-child(8),
+td:nth-child(9){
     width: 10%;
 }
 
-td:nth-child(4) {
-    width: 10%;
+.tableBody td:nth-child(3),
+.tableBody td:nth-child(4),
+.tableBody td:nth-child(5),
+.tableBody td:nth-child(6),
+.tableBody td:nth-child(7),
+.tableBody td:nth-child(8),
+.tableBody td:nth-child(9){
+    text-align: right;
+    padding-right: 1rem;
+    box-sizing: border-box;
 }
 
-td:nth-child(5) {
-    width: 10%;
-}
-
-td:nth-child(6) {
-    width: 10%;
-}
-
-td:nth-child(7) {
-    width: 10%;
-}
-
-td:nth-child(8) {
-    width: 30%;
-}
-
-.tableBody td:nth-child(8) {
-    width: calc(30% - 0.6rem);
+td:nth-child(10) {
+    width:  calc(26% - 0.6rem);
 }
 
 .tableBody td input {
     width: 98%;
 }
 
+.tableBody td:nth-child(1),
+.tableBody td:nth-child(2){
+    text-align: center;
+}
+
+.tableBody td:nth-child(3),
+.tableBody td:nth-child(4),
+.tableBody td:nth-child(5),
+.tableBody td:nth-child(6),
+.tableBody td:nth-child(7){
+    text-align: right;
+    padding-right: 1rem;
+    box-sizing: border-box;
+}
+
 .btnAreaBox input {
     background-color: #0069d9;
-}
-
-.popupContainer {
-    position: fixed;
-    top: 50%;
-    left: calc(50% + 11rem);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 54.5rem;
-    height: 42rem;
-    background-color: white;
-    border-radius: 0.3rem;
-    box-shadow: 0 0.2rem 0.4rem rgb(0 0 0 / 16%);
-    transform: translate(-50%, -50%);
-}
-
-.PopupTitle {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    height: 4.8rem;
-    border-bottom: 0.1rem solid #191919;
-    font-size: 1.6rem;
-    font-weight: 500;
-}
-
-.PopupDataArea {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    width: 100%;
-    height: calc(100% - 9.7rem);
-    padding: 4.2rem 3rem 0 3rem;
-    box-sizing: border-box;
-}
-
-.PopupDataCell {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    align-items: flex-start;
-    width: 23rem;
-    height: 6rem;
-}
-.PopupDataCell div{
-    width: 100%;
-}
-.PopupDataCell:nth-last-child(1){
-    width: 100%;
-}
-
-.PopupData {
-    width: 100%;
-    padding-bottom: 0.1rem;
-    font-size: 1.4rem;
-    color: #191919;
-    border-bottom: 0.1rem solid #191919;
-}
-
-.PopupDataTitle {
-    font-size: 1.4rem;
-    color: #7A7A7A;
-}
-
-.PopupDataInput {
-    width: 100%;
-    height: 2.6rem;
-    padding-left: 0.6rem;
-    padding-bottom: 0.1rem;
-    font-size: 1.4rem;
-    color: #191919;
-    border: 0.1rem solid #D2D2D2;
-    border-radius: 0.3rem;
-    box-sizing: border-box;
-    outline: none;
-}
-
-.PopupBtnBox {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    height: 4.8rem;
-    box-sizing: border-box;
-}
-
-.closeBtn {
-    background-color: #444444;
-    margin: 1rem;
-}
-
-.createBtn {
-    background-color: #0069D9;
-    margin: 1rem;
 }

@@ -114,9 +114,8 @@
 
     <!-- 입력창 -->
     <form class="input">
-      <input type="submit" value="저장" class="btnModules inputSave">
       <table>
-        <tr>
+        <tr style="pointer-events: none;">
           <td class="InputHeader InputHeaderBordeTopLeft">그룹</td>
           <td class="InputTd">
             <select name="" id="selectGroup" class="inputSelect">
@@ -139,12 +138,12 @@
               <label for="regularlyWorkEnd">퇴근</label>
             </div>
           </td>
-          <td class="InputHeader">주차</td>
+          <td class="InputHeader">위치</td>
           <td class="InputTd">
             <input type="text" class="inputText" value="{{detail.parking}}">
           </td>
         </tr>
-        <tr>
+        <tr style="pointer-events: none;">
           <td class="InputHeader">출발지</td>
           <td colspan="3">
             <input type="text" class="inputText" value="{{detail.departure}}">
@@ -171,7 +170,7 @@
             </div>
           </td>
         </tr>
-        <tr>
+        <tr style="pointer-events: none;">
           <td class="InputHeader">도착지</td>
           <td colspan="3">
             <input type="text" class="inputText" value="{{detail.arrival}}">
@@ -181,7 +180,7 @@
           <td class="InputHeader">기사수당</td>
           <td class="InputTd"><input type="text" class="inputText inputTextUnit" value="{{detail.driver_allowance}}">원</td>
         </tr>
-        <tr>
+        <tr style="pointer-events: none;">
           <td class="InputHeader InputHeaderBordeBottomLeft">순번</td>
           <td class="InputTd">
             <div class="twiceBox">
@@ -216,7 +215,10 @@
     <form class="list">
       <div class="listHeader">
         <span>그룹이름</span>
-        <input type="submit" value="엑셀로 내려받기" class="btnModules listExcel">
+        <div class="listHeaderBtnBox">
+          <input type="submit" value="저장" class="btnModules inputSave">
+          <input type="submit" value="엑셀로 내려받기" class="btnModules listExcel">
+        </div>
       </div>
       <table class="listTable">
         <thead>
@@ -243,7 +245,6 @@
               <td></td>
               <td>
                 <select name="" id="selectDriver{{order.id}}" class="orderDriver">
-                  <option value=""></option>
                 </select>
               </td>
               <td>
@@ -280,8 +281,9 @@
   console.log("driverObj", driverObj)
   {% endautoescape %}
 </script>
+<script src="{% static 'js/dispatch/regularlyAll.js' %}"></script>
 <script src="{% static 'js/dispatch/oneStepDate.js' %}"></script>
 <script src="{% static 'js/dispatch/checker.js' %}"></script>
-<script src="{% static 'js/dispatch/FullSchedule.js' %}"></script>
 <script src="{% static 'js/dispatch/regularlyDispatch.js' %}"></script>
+<script src="{% static 'js/dispatch/FullSchedule.js' %}"></script>
 {% endblock %}

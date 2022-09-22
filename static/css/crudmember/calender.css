@@ -36,22 +36,26 @@
     cursor: pointer;
 }
 
+.controllBtnCell div svg {
+    width: 100%;
+}
+
 .controllBox span {
     font-size: 1.8rem;
 }
 
 .calenderBox {
     width: 100%;
-    height: 100rem;
+    aspect-ratio: 5 / 3;
 }
 
 .calenderTableHeader {
     width: 100%;
     height: 4rem;
     border: 0.1rem solid #D2D2D2;
-    border-radius: 0.5rem 0.5rem 0 0;
     box-sizing: border-box;
     border-spacing: 0;
+    background-color: #444444;
 }
 
 .calenderTableHeader td {
@@ -59,6 +63,8 @@
     font-size: 1.4rem;
     padding-left: 1rem;
     box-sizing: border-box;
+    color: white;
+    text-align: center;
 }
 
 .calenderTableHeader td:nth-child(1) {
@@ -73,7 +79,7 @@
     display: grid;
     grid-template-columns: repeat(7, 1fr);
     width: 100%;
-    height: calc(100% - 3.6rem);
+    height: auto;
     padding-bottom: 1rem;
     box-sizing: border-box;
 }
@@ -98,27 +104,59 @@
 
 .dayBox {
     position: relative;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     width: 100%;
-    height: 100%;
-    padding: 0.4rem;
+    aspect-ratio: 10 / 7;
+    padding: 0.8rem;
     border: 0.1rem solid #D2D2D2;
     box-sizing: border-box;
     font-size: 1.4rem;
 }
 
-.today {
+.dayBox:hover {
+    border: 0.1rem solid #444;
+    background-color: #444;
+}
+
+.dateAndAlarmBox {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    width: 22%;
+    height: 100%;
+}
+
+.claenderDate {
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 2.4rem;
-    height: 2.4rem;
-    font-size: 1.4rem;
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    background-color: #444444;
     color: white;
+    font-size: 1.6rem;
+    border-radius: 0.3rem;
+    box-sizing: border-box;
+}
+
+
+.regularlyLink,
+.orderLink {
+    width: 36%;
+    height: 100%;
+}
+
+.today {
     background-color: #0069D9;
-    border-radius: 100%;
 }
 
 .othereMonth {
+    display: flex;
+    justify-content: center;
+    align-items: center;
     background-color: #e3e3e3;
 }
 
@@ -135,7 +173,8 @@
     padding: 0.6rem;
     box-sizing: border-box;
 }
-.dayDataBoxToday{
+
+.dayDataBoxToday {
     border: 0.2rem solid #0069D9;
 }
 
@@ -147,16 +186,34 @@
     height: 3.2rem;
 }
 
-.dispatchAlarm {
+.dispatchAlarm,
+.vehicleAlarm {
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 3.2rem;
-    height: 3.2rem;
-    border-radius: 100%;
-    background-color: #0069D9;
+    width: 100%;
+    height: 28%;
+    border: 0.1rem dashed #D2D2D2;
+    border-radius: 0.3rem;
+    background-color: white;
     color: white;
+}
+
+.dispatchAlarm {
     cursor: pointer;
+}
+
+.dayBox:hover .dispatchAlarm,
+.dayBox:hover .vehicleAlarm {
+    border: none;
+}
+
+.dispatchAlarm svg {
+    width: 35%;
+}
+
+.vehicleAlarm svg {
+    width: 58%;
 }
 
 .dispatchDataBox {
@@ -177,57 +234,93 @@
 
 .dispatchCell {
     display: flex;
+    flex-direction: column;
     justify-content: space-between;
     align-items: center;
     width: 100%;
-    height: 2.4rem;
-    padding: 0 0.6rem;
-    border-radius: 0.2rem;
+    height: 100%;
+    border: 0.1rem dashed #D2D2D2;
+    border-radius: 0.3rem;
     box-sizing: border-box;
     font-size: 1.4rem;
     cursor: pointer;
     color: black;
-    box-shadow: 0 0 0.2rem rgba(0, 0, 0, 0.3);
+    background-color: white;
+}
+
+.dayBox:hover .dispatchCell {
+    border: none;
+}
+
+.dispatchCellTop {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: center;
+    width: 100%;
+    height: 78%;
+}
+
+.dispatchCellIcon {
+    width: 48%;
+    margin-bottom: 28%;
+}
+
+.dispatchCellIcon svg {
+    width: 100%;
+}
+
+.dispatchCellTitle {
+    font-size: 1.4rem;
+    color: black;
+}
+
+.dispatchCellCount {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 22%;
+    color: black;
 }
 
 
 
 
 /*class바꾸는용*/
-.vehicleAlarmLight {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 3.2rem;
-    height: 3.2rem;
-    margin-right: 0.6rem;
-    border-radius: 100%;
-    background-color: #0069D9;
-    cursor: pointer;
-}
-
+.vehicleAlarmLight,
 .dispatchAlarmLight {
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 3.2rem;
-    height: 3.2rem;
-    border-radius: 100%;
+    width: 100%;
+    height: 28%;
+    border-radius: 0.3rem;
     background-color: #0069D9;
     cursor: pointer;
 }
 
+.vehicleAlarmLight svg {
+    width: 58%;
+}
+
+.dispatchAlarmLight svg {
+    width: 35%;
+}
+
 .dispatchCellInclude {
     display: flex;
+    flex-direction: column;
     justify-content: space-between;
     align-items: center;
     width: 100%;
-    height: 2.4rem;
-    border-radius: 0.2rem;
+    height: 100%;
+    border: none;
+    border-radius: 0.3rem;
     font-size: 1.4rem;
     cursor: pointer;
-    color: white;
-    background-color: #707070;
+    background-color: #b1b1b1;
+    box-sizing: border-box;
 }
 
 
@@ -272,7 +365,8 @@
     box-shadow: 0 0.2rem 0.4rem rgba(0, 0, 0, 0.16);
     transform: translate(-50%, -50%);
 }
-.popupAreaModules .popupContainer{
+
+.popupAreaModules .popupContainer {
     height: 72rem;
     max-height: initial;
 }
@@ -298,7 +392,8 @@
     box-sizing: border-box;
     overflow-y: scroll;
 }
-.popupAreaModules .PopupDataArea{
+
+.popupAreaModules .PopupDataArea {
     max-height: initial;
 }
 
@@ -365,18 +460,21 @@
     color: #191919;
     border-bottom: 0.1rem solid #191919;
 }
-.haveDeleteIcon{
+
+.haveDeleteIcon {
     position: relative;
     width: 100%;
 }
-.haveDeleteIcon svg{
+
+.haveDeleteIcon svg {
     position: absolute;
     top: 50%;
     right: 0;
     transform: translate(0, -50%);
     cursor: pointer;
 }
-.fakeInput{
+
+.fakeInput {
     outline: none;
     border: none;
     border-bottom: 0.1rem solid #191919;
@@ -434,4 +532,114 @@
 
 .PopupBtnBoxDispatch input {
     background-color: #0069D9;
+}
+
+
+
+@media all and (min-width:1600px) and (max-width: 1820px) {
+    .claenderDate {
+        font-size: 1.4rem;
+    }
+
+    .dispatchCellTitle,
+    .dispatchCellCount {
+        font-size: 1.2rem;
+    }
+}
+
+@media all and (min-width:1460px) and (max-width: 1600px) {
+    .claenderDate {
+        font-size: 1.3rem;
+    }
+
+    .dispatchCellTitle,
+    .dispatchCellCount {
+        font-size: 1rem;
+    }
+
+
+    .controllBox {
+        width: 26rem;
+    }
+
+    .todayBtn {
+        width: 7.6rem;
+        height: 3rem;
+        font-size: 1.3rem;
+    }
+
+    .controllBtnCell {
+        width: 6.8rem;
+    }
+
+    .controllBtnCell div {
+        width: 3rem;
+        height: 3rem;
+    }
+
+    .controllBox span {
+        font-size: 1.7rem;
+    }
+
+    .calenderTableHeader {
+        height: 3.6rem;
+    }
+
+    .calenderTableHeader td {
+        font-size: 1.3rem;
+    }
+}
+
+@media all and (min-width:1024px) and (max-width: 1460px) {
+    .claenderDate {
+        font-size: 1rem;
+    }
+
+    .dispatchCellTitle{
+        display: none;
+    }
+    .dispatchCellCount {
+        font-size: 1rem;
+    }
+    .dispatchCellIcon{
+        width: 56%;
+        margin-bottom: -10%;
+    }
+    .dispatchCellTop{
+        height: 60%;
+    }
+    .dispatchCellCount{
+        height: 40%;
+    }
+
+    .controllBox {
+        width: 24rem;
+    }
+
+    .todayBtn {
+        width: 7.2rem;
+        height: 2.8rem;
+        font-size: 1.3rem;
+    }
+
+    .controllBtnCell {
+        width: 6.4rem;
+    }
+
+    .controllBtnCell div {
+        width: 2.8rem;
+        height: 2.8rem;
+    }
+
+    .controllBox span {
+        font-size: 1.6rem;
+    }
+
+    .calenderTableHeader {
+        height: 3.2rem;
+    }
+
+    .calenderTableHeader td {
+        font-size: 1.2rem;
+    }
 }

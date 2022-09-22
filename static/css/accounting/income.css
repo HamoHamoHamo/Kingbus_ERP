@@ -9,12 +9,11 @@
 }
 
 .tableHead {
-    width: calc(100% - 0.2rem);
+    width: 100%;
     height: 4.8rem;
     padding-right: 0.6rem;
-    border: 0.1rem solid #CDCDCE;
-    border-radius: 0.5rem 0.5rem 0 0;
     box-sizing: border-box;
+    border-spacing: 0;
 }
 
 .tableHead thead {
@@ -23,10 +22,8 @@
 }
 
 table tr {
-    display: flex;
     width: 100%;
     height: 4.8rem;
-    border-bottom: 0.1rem solid #CDCDCE;
 }
 
 .tableHead tr {
@@ -36,14 +33,19 @@ table tr {
     border: none;
     font-size: 1.6rem;
     font-weight: 700;
-    color: #7A7A7A;
+    color: white;
+    background-color: #444444;
 }
 
-table tr:nth-child(odd) {
+.tableHead td {
+    text-align: center;
+}
+
+.tableBody tr:nth-child(odd) {
     background-color: white;
 }
 
-table tr:nth-child(even) {
+.tableBody tr:nth-child(even) {
     background-color: #EFEFEF;
 }
 
@@ -82,16 +84,13 @@ tbody {
 }
 
 .tableBody td {
-    display: flex;
-    align-items: center;
     font-size: 1.4rem;
     color: #191919;
+    border-right: 0.1rem solid #D4D4D4;
+    border-bottom: 0.1rem solid #D4D4D4;
 }
 
 td:nth-child(1) {
-    display: flex;
-    justify-content: center;
-    align-items: center;
     width: 10%;
 }
 
@@ -126,12 +125,21 @@ td:nth-child(6) {
 }
 
 td:nth-child(7) {
-    display: flex;
-    justify-content: flex-end;
     width: 14%;
     padding-right: 1rem;
     box-sizing: border-box;
 }
+
+.tableBody td {
+    text-align: right;
+    padding-right: 1rem;
+    box-sizing: border-box;
+}
+
+.tableBody td:nth-child(1) {
+    text-align: center;
+}
+
 
 .tableHead {
     padding-right: 0.6rem;
@@ -151,20 +159,18 @@ td:nth-child(7) {
 }
 
 .totalTable td {
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
     font-size: 1.4rem;
+}
+
+.totalTable td {
+    text-align: right;
+    padding-right: 1rem;
+    box-sizing: border-box;
 }
 
 .totalTable td:nth-child(1) {
-    justify-content: center;
-    background-color: #EFEFEF;
-    font-size: 1.4rem;
-}
-
-.totalTable td:nth-child(7) {
-    justify-content: flex-end;
-    background-color: #EFEFEF;
-    font-size: 1.4rem;
+    text-align: center;
+    background-color: #444444;
+    font-size: 1.5rem;
+    color: white;
 }

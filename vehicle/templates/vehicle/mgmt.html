@@ -87,7 +87,7 @@
 
 
     <div class="contentsAreaBox">
-        <div class="tableTitle">정기점검 만료예정 목록</div>
+        <div class="tableTitle">검사유효기간 만료예정 목록</div>
         <table class="tableHead">
             <thead>
                 <tr class="headerLine testTable">
@@ -174,8 +174,12 @@
                 <div class="PopupData testVehicleNum"></div>
             </div>
             <div class="PopupDataCell">
-                <span class="PopupDataTitle">정비기록</span>
-                <input name="date" class="PopupDataInput testEndDate" type="date">
+                <span class="PopupDataTitle">검사 유효기간 만료일</span>
+                <div class="testDateBox">
+                    <input name="year" class="PopupDataInput testEndDateYear" type="text">
+                    <input name="month" type="text" class="PopupDataInput testEndDateMonth" readonly>
+                    <input name="date" type="text" class="PopupDataInput testEndDateDate" readonly>
+                </div>
             </div>
             <input type="hidden" value="" name="id" class="sendToHidden">
         </div>

@@ -35,14 +35,14 @@ class VehicleList(generic.ListView):
         
         # q = Q()
         if not search:
-            vehicle = Vehicle.objects.order_by('-use', '-pk')
+            vehicle = Vehicle.objects.order_by('-use', 'vehicle_num0', 'vehicle_num')
         else:
             if select == 'vehicle':
-                vehicle = Vehicle.objects.filter(vehicle_num=search).order_by('-use', '-pk')
+                vehicle = Vehicle.objects.filter(vehicle_num=search).order_by('-use', 'vehicle_num0', 'vehicle_num')
             elif select == 'driver':
-                vehicle = Vehicle.objects.filter(driver_name=search).order_by('-use', '-pk')
+                vehicle = Vehicle.objects.filter(driver_name=search).order_by('-use', 'vehicle_num0', 'vehicle_num')
             elif select == 'passenger':
-                vehicle = Vehicle.objects.filter(passenger_num=search).order_by('-use', '-pk')
+                vehicle = Vehicle.objects.filter(passenger_num=search).order_by('-use', 'vehicle_num0', 'vehicle_num')
         return vehicle
 
 
@@ -93,8 +93,6 @@ def vehicle_create(request):
         vehicle_form = VehicleForm(request.POST)
 
         if vehicle_form.is_valid():
-            
-
             creator = get_object_or_404(Member, pk=request.session.get('user'))
             vehicle_registration_file = request.FILES.get('vehicle_registration', None)
             insurance_receipt_file = request.FILES.get('insurance_receipt', None)
@@ -112,7 +110,7 @@ def vehicle_create(request):
             if insurance_receipt_file:
                 vehicle_file_save(insurance_receipt_file, vehicle, "insurance_receipt")
 
-            return redirect('vehicle:list')
+            return redirect(request.META.get('HTTP_REFERER', 'redirect_if_referer_not_found'))
         else:
             return Http404
 
@@ -196,7 +194,7 @@ def vehicle_edit(request):
                 os.remove(cur_insurance_files.file.path)
                 cur_insurance_files.delete()
                 
-            return redirect('vehicle:list')
+            return redirect(request.META.get('HTTP_REFERER', 'redirect_if_referer_not_found'))
         else:
             Http404
     raise Http404

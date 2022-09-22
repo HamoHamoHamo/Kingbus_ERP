@@ -49,7 +49,13 @@ function groupTool() {
         groupoEditeBtn[i].parentNode.parentNode.children[0].children[2].style.border = "none"
         groupoEditeBtn[i].parentNode.parentNode.children[0].children[2].style.width = "24rem"
         groupoEditeBtn[i].parentNode.parentNode.children[0].children[1].style.display = "none"
+        groupoEditeBtn[i].parentNode.parentNode.children[0].children[1].setAttribute("disabled", true)
+        groupoEditeBtn[i].parentNode.parentNode.children[0].children[2].setAttribute("disabled", true)
+        // groupoEditeBtn[i].parentNode.parentNode.children[0].children[1].disabled = true
+        // groupoEditeBtn[i].parentNode.parentNode.children[0].children[2].disabled = true
     }
+    this.parentNode.parentNode.children[0].children[1].removeAttribute("disabled")
+    this.parentNode.parentNode.children[0].children[2].removeAttribute("disabled")
     this.parentNode.parentNode.children[1].children[0].style.display = "none"
     this.parentNode.parentNode.children[1].children[1].style.display = "none"
     this.parentNode.parentNode.children[1].children[2].style.display = "block"

@@ -8,6 +8,8 @@ const getWeek = document.querySelectorAll(".fixedDispatchTable thead td")
 const weekLabel = document.querySelectorAll(".driveDateBox label")
 const fixedDispatchBox = document.querySelectorAll(".fixedDispatchBox")
 const fixedDispatchWeek = document.querySelectorAll(".fixedDispatchTable thead td")
+const fixedDispatchForm = document.querySelector(".fixedDispatch")
+const fixedDispatchSave = document.querySelector(".fixedDispatchSave")
 
 
 
@@ -24,13 +26,13 @@ function clickFixedDispatch() {
             this.style.backgroundColor = "white"
             this.style.color = "black"
         } else {
-            for (i = 0; i < fixedDispatchText.length; i++) {
-                if (!fixedDispatchBox[i].classList.contains("disableToFixedDispatch")) {
-                    fixedDispatchText[i].classList.remove("addDispatch")
-                    fixedDispatchText[i].style.backgroundColor = "white"
-                    fixedDispatchText[i].style.color = "black"
-                }
-            }
+            // for (i = 0; i < fixedDispatchText.length; i++) {
+            //     if (!fixedDispatchBox[i].classList.contains("disableToFixedDispatch")) {
+            //         fixedDispatchText[i].classList.remove("addDispatch")
+            //         fixedDispatchText[i].style.backgroundColor = "white"
+            //         fixedDispatchText[i].style.color = "black"
+            //     }
+            // }
             this.classList.add("addDispatch")
             this.style.backgroundColor = "rgb(0, 105, 217)"
             this.style.color = "white"
@@ -166,8 +168,8 @@ for (i = 0; i < fixedDispatchSelect.length; i++) {
 
 function DispatcDriverFiilter() {
 
-    if (this.children.length == 1) {
-        
+    if (this.children.length <= 1) {
+
         scheduleBus = []
 
         // data요일 필터링
@@ -217,4 +219,27 @@ function DispatcDriverFiilter() {
         }
     }
 
+}
+
+fixedDispatchSave.addEventListener("click", selectCheck)
+
+function selectCheck(e) {
+    e.preventDefault()
+    let visibleSelect = []
+    let optionSelect = []
+    for (i = 0; i < fixedDispatchText.length; i++) {
+        if (fixedDispatchText[i].innerText !== "") {
+            visibleSelect.push(fixedDispatchText[i])
+            for (j = 0; j < fixedDispatchSelect[i].children.length; j++) {
+                if(fixedDispatchSelect[i].children[j].selected){
+                    optionSelect.push(fixedDispatchSelect[i].children[j])
+                }
+            }
+        }
+    }
+    if (visibleSelect.length !== optionSelect.length) {
+        alert("기사를 선택하지 않은 배차가 있습니다.")
+    }else{
+        fixedDispatchForm.submit()
+    }
 }

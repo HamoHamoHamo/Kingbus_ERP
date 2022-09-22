@@ -1,96 +1,123 @@
 /*hr_member_create*/
-#contents_box__input_cell__dd__input_tel1{
+#contents_box__input_cell__dd__input_tel1 {
   width: 29rem;
 }
-#contents_box__input_cell__dd__input_tel2{
+
+#contents_box__input_cell__dd__input_tel2 {
   width: 7.8rem;
   margin-left: 0.4rem;
 }
-#contents_box__input_cell__dd__input__cord{
+
+#contents_box__input_cell__dd__input__cord {
   width: 13.3rem;
 }
-#hr_member__main_contents{
+
+#hr_member__main_contents {
   height: 21rem;
 }
-#hr_member__main_contents__list{
-  height: calc( 100% - (1vh * 4.13));
+
+#hr_member__main_contents__list {
+  height: calc(100% - (1vh * 4.13));
   position: relative;
 }
-#hr_member_list{
+
+#hr_member_list {
   margin-top: 2rem;
 }
-#hr_member__input_cell__dd_position__button{
+
+#hr_member__input_cell__dd_position__button {
   width: 44rem;
   display: flex;
-  justify-content:  flex-end;
+  justify-content: flex-end;
 }
+
 /*hr_member*/
-#nav_cell_hr_member{
+#nav_cell_hr_member {
   width: 18rem;
   border-radius: 0.5rem 0 0 0.5rem;
 }
-#nav_cell_hr_hr{
+
+#nav_cell_hr_hr {
   width: 18rem;
   border-radius: 0 0.5rem 0.5rem 0;
 }
-#hr_member_serch_tool_label__name{
+
+#hr_member_serch_tool_label__name {
   width: 5rem;
 }
-#hr_member_serch_tool_label__number{
+
+#hr_member_serch_tool_label__number {
   width: 5rem;
 }
-#hr_member_serch_tool_label__work{
+
+#hr_member_serch_tool_label__work {
   width: 5rem;
 }
-#hr_member_serch_tool_label__date{
+
+#hr_member_serch_tool_label__date {
   width: 7rem;
 }
-#hr_member_serch_tool_input__name{
+
+#hr_member_serch_tool_input__name {
   width: 16rem;
 }
-#hr_member_serch_tool_input__work{
+
+#hr_member_serch_tool_input__work {
   width: 10rem;
 }
-#hr_member_serch_tool_input__date{
+
+#hr_member_serch_tool_input__date {
   width: 14rem;
 }
-#list_table_cell__hr_member_list{
+
+#list_table_cell__hr_member_list {
   height: 33rem;
 }
-.hr_member_list__check{
-  width: calc( (100vw - 4rem) * 0.06 );
+
+.hr_member_list__check {
+  width: calc((100vw - 4rem) * 0.06);
 }
-.hr_member_list__number{
-  width: calc( (100vw - 4rem) * 0.06 );
+
+.hr_member_list__number {
+  width: calc((100vw - 4rem) * 0.06);
 }
-.hr_member_list__name{
-  width: calc( (100vw - 4rem) * 0.06 );
+
+.hr_member_list__name {
+  width: calc((100vw - 4rem) * 0.06);
 }
-.hr_member_list__tel{
-  width: calc( (100vw - 4rem) * 0.08 );
+
+.hr_member_list__tel {
+  width: calc((100vw - 4rem) * 0.08);
 }
-.hr_member_list__cord{
-  width: calc( (100vw - 4rem) * 0.1 );
+
+.hr_member_list__cord {
+  width: calc((100vw - 4rem) * 0.1);
 }
-.hr_member_list__work{
-  width: calc( (100vw - 4rem) * 0.08 );
+
+.hr_member_list__work {
+  width: calc((100vw - 4rem) * 0.08);
 }
-.hr_member_list__date{
-  width: calc( (100vw - 4rem) * 0.08 );
+
+.hr_member_list__date {
+  width: calc((100vw - 4rem) * 0.08);
 }
-.hr_member_list__address{
-  width: calc( (100vw - 4rem) * 0.22 );
+
+.hr_member_list__address {
+  width: calc((100vw - 4rem) * 0.22);
 }
-.hr_member_list__file{
-  width: calc( (100vw - 4rem) * 0.26 );
+
+.hr_member_list__file {
+  width: calc((100vw - 4rem) * 0.26);
 }
-.hr_member_list__vacation{
+
+.hr_member_list__vacation {
   width: 15rem;
 }
-#hrDeletEnrollment{
+
+#hrDeletEnrollment {
   position: absolute;
-  top: calc( 1vh*3.365*-1);
-  left: calc( 95% - 2rem );
+  top: calc(1vh*3.365*-1);
+  left: calc(95% - 2rem);
   z-index: 1000;
   cursor: pointer;
   width: 5%;
@@ -100,37 +127,44 @@
 .hr_member_list__td_cursor:hover {
   cursor: pointer;
 }
-#list_table_cell__body_last_td_file{
+
+#list_table_cell__body_last_td_file {
   width: 39.6rem;
   padding-right: 1.7rem;
 }
-#list_table_cell__body_last_td_under_file{
+
+#list_table_cell__body_last_td_under_file {
   width: 39.6rem;
 }
 
 
 
-.contents_box_cell_member_list{
+.contents_box_cell_member_list {
   width: 100%;
   height: 26.5rem;
 }
-#inputCellHeightFile{
+
+#inputCellHeightFile {
   height: calc(100% / 3 *2)
 }
-.inputInputBoxMemberFile{
+
+.inputInputBoxMemberFile {
   width: calc(100% - 4rem);
   margin-bottom: 0.5rem;
   background-color: #D6D6D6;
   border-radius: 0.3rem;
 }
-#inputInputBoxInputRegistrationCord{
+
+#inputInputBoxInputRegistrationCord {
   width: calc(50% - 3.75rem);
 }
-.memberListList{
+
+.memberListList {
   margin-top: 2rem;
   height: calc(100% - (1vh*3.92) - 28.5rem);
 }
-.memberListButton{
+
+.memberListButton {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -144,9 +178,10 @@
   border: none;
   font-size: 1.6rem;
 }
-#contents_box_header_member_list{
+
+#contents_box_header_member_list {
   display: flex;
   justify-content: space-between;
-  width: calc( 100% - 3.8rem );
+  width: calc(100% - 3.8rem);
   padding-right: 2rem;
 }

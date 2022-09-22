@@ -1,0 +1,153 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load custom_tags %}
+
+{% block head %}
+
+<meta http-equiv="Cache-Control" content="private, no-cache, no-store, max-age=0, must-revalidate">
+
+<link rel="stylesheet" href="{% static 'css/document/document.css' %}" type="text/css" />
+{% endblock %}
+
+{% block content-header %}
+<div class="HeaderTitle">
+    운행서류
+</div>
+{% endblock %}
+
+{% block content %}
+
+
+
+
+<div class="searchAreaBox">
+    <form action="">
+        <div class="searchTool">
+            <div class="searchTitle">노선검색</div>
+            <label for="">노선이름</label>
+            <input type="text">
+            <label for="">기간</label>
+            <div class="searchDataBox">
+                <input name="date" type="date" class="inputModules" value="{{date}}">
+                ~
+                <input name="date" type="date" class="inputModules" value="{{date}}">
+            </div>
+            <input type="submit" value="검색" class="btnModules">
+        </div>
+    </form>
+</div>
+
+
+
+
+<div class="documentArea">
+    <span class="documentType">출력문서 :</span>
+    <a href="">
+        <span class="btnModules">차량등록증</span>
+    </a>
+    <a href="">
+        <span class="btnModules">확약서</span>
+    </a>
+    <a href="">
+        <span class="btnModules">차량안전 점검표</span>
+    </a>
+    <a href="">
+        <span class="btnModules">학교표찰</span>
+        <!-- A3 -->
+    </a>
+    <a href="">
+        <span class="btnModules">자가 음주측정 보고서</span>
+    </a>
+    <span class="documentType documentTypeLocation">사이트로 이동 :</span>
+    <!-- 전세버스 공제조합 -->
+    <a href="https://nmcb.org/cooperative/user/main.do" target="_blank">
+        <span class="btnModules" title="전세버스 공제조합 사이트로 이동">보험가입 증명서</span>
+    </a>
+    <!-- 전세버스 교통안전정보 공시 시스템 -->
+    <a href="https://www.kotsa.or.kr/safeinfo/mng/auth/loginCertificate.do" target="_blank">
+        <span class="btnModules" title="전세버스 교통안전정보 공시 시스템 사이트로 이동">교통안전조회 결과 통보서</span>
+    </a>
+    <!-- 전세버스 교통안전정보 공시 시스템 -->
+    <a href="http://www.ktbus24.com/home/main.do" target="_blank">
+        <span class="btnModules" title="전세버스 운행기록증 발급 시스템 사이트로 이동">운행기록증</span>
+    </a>
+</div>
+
+
+
+
+
+<div class="contentsAreaBox">
+    <div class="documentTableBox">
+        <table class="documentThead">
+            <thead>
+                <tr>
+                    <td>선택</td>
+                    <td>날짜</td>
+                    <td>운행시간</td>
+                    <td>노선이름</td>
+                    <td>배차차량</td>
+                    <td>차량종류</td>
+                    <td>차량대수</td>
+                    <td>예약자명</td>
+                    <td>예약자 전화번호</td>
+                </tr>
+            </thead>
+        </table>
+        <div class="documentTbodyBox">
+            <table class="documentTbody">
+                <tbody>
+                    {% for order in order_list %}
+                    <tr>
+                        <td>
+                            <input type="radio">
+                        </td>
+                        <td>
+                            {{ departure_date|index:forloop.counter0 }}
+                            {% if departure_date|index:forloop.counter0 != arrival_date|index:forloop.counter0 %}
+                                <br>{{ arrival_date|index:forloop.counter0 }}
+                            {% endif %}
+                            
+                        </td>
+                        <td>
+                            
+                        </td>
+                        <td>
+                            {{order.departure}}▶<br>
+                            {{order.arrival}}
+                        </td>
+                        <td>
+                            {% with connect=connect_list|index:forloop.counter0 %}
+                            {% for c in connect %}
+                            <span>{{c.driver_id.name}}({{c.bus_id.vehicle_num}})</span>
+
+                            {% endfor %}
+                            {% endwith %}
+                        </td>
+                        <td></td>
+                        <td>{{order.bus_cnt}}대</td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+{% endblock %}
+
+
+
+
+
+
+
+{% block script %}
+<script src="{% static 'js/document/loadDate.js' %}"></script>
+{% endblock %}

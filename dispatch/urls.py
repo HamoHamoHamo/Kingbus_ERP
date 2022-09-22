@@ -22,7 +22,7 @@ urlpatterns = [
     path('order/route/edit/check', views.order_edit_check, name="order_edit_check"),
     path('order/route/delete', views.order_delete, name="order_delete"),
     path('schedule', views.ScheduleList.as_view(), name="schedule"),
-    path('document', views.DocumentList.as_view(), name="document"),
+    # path('document', views.DocumentList.as_view(), name="document"),
     # 일정
     path('calendar/create', views.calendar_create, name='calendar_create'),
     path('calendar/delete/1', views.calendar_delete_1, name='calendar_delete1'),

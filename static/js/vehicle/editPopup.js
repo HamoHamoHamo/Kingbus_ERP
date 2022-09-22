@@ -7,7 +7,9 @@ const dispatchCloseBtn = document.querySelectorAll(".PopupBtnBox div")
 const insuranceVehicleNum = document.querySelector(".insuranceVehicleNum")
 const insuranceEndDate = document.querySelector(".insuranceEndDate")
 const testVehicleNum = document.querySelector(".testVehicleNum")
-const testEndDate = document.querySelector(".testEndDate")
+const testEndDateYear = document.querySelector(".testEndDateYear")
+const testEndDateMonth = document.querySelector(".testEndDateMonth")
+const testEndDateDate = document.querySelector(".testEndDateDate")
 const fileNameBox = document.querySelector(".fileNameBox")
 const fileDeletBtn = document.querySelector(".fileDeletBtn")
 const sendToHidden = document.querySelectorAll(".sendToHidden")
@@ -42,9 +44,25 @@ for (i = 0; i < test.length; i++) {
 function openTest() {
     popupAreaModules[1].style.display = "block"
     testVehicleNum.innerText = this.innerText
-    testEndDate.value = this.parentNode.childNodes[5].innerText.substr(0, 10)
+    testEndDateYear.value = this.parentNode.childNodes[5].innerText.substr(0, 4)
+    testEndDateMonth.value = this.parentNode.childNodes[5].innerText.substr(5, 2)
+    testEndDateDate.value = this.parentNode.childNodes[5].innerText.substr(8, 2)
     sendToHidden[1].value = this.className;
 }
+
+
+
+// 검사유효기간 연도수정 유효성
+testEndDateYear.addEventListener("change", testEndDateYearValidation)
+
+function testEndDateYearValidation() {
+    if (testEndDateYear.value < 1950 || testEndDateYear.value > 2150) {
+        alert("올바르지 못한 연도입니다.")
+        testEndDateYear.value = ""
+    }
+}
+
+
 
 
 //팝업닫기
@@ -71,7 +89,7 @@ function deletFile() {
 //파일명 변경
 insuranceFile.addEventListener("change", changeFile)
 
-function changeFile(){
+function changeFile() {
     fileNameBox.value = insuranceFile.files[0].name
 }
 
@@ -88,4 +106,4 @@ window.onload = function () {
             priceUnit[i].innerText = `${priceUnit[i].innerText.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}원`
         }
     }
-  }
+}
