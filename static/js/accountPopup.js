@@ -17,6 +17,7 @@ function openIDPopup() {
     HomePopupAreaModules[0].style.display = "block"
     PopupDataInputPwCheckerId.value = ""
     username_input.value = ""
+    profileBox.style.display = "none"
 
 }
 
@@ -144,6 +145,7 @@ function openPWPopup() {
     PopupDataInputPwCheckerPw.value = ""
     PopupDataInputNewPw.value = ""
     PopupDataInputOverlap.value = ""
+    profileBox.style.display = "none"
 }
 
 

@@ -84,7 +84,7 @@ function drawSchdule() {
                     dataTimeStart = parseInt(data[i].departure_time.split(":")[0] * 60) + parseInt(data[i].departure_time.split(":")[1])
                     dataTimeEnd = parseInt(data[i].arrival_time.split(":")[0] * 60) + parseInt(data[i].arrival_time.split(":")[1])
 
-                    startWork.setAttribute("style", `left: ${dataTimeStart * 0.074}rem; width: ${(dataTimeEnd - dataTimeStart) * 0.074}rem;`);
+                    startWork.setAttribute("style", `left: ${dataTimeStart * 0.076}rem; width: ${(dataTimeEnd - dataTimeStart) * 0.076}rem;`);
 
                     // title 부여
 

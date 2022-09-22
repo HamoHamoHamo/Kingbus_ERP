@@ -69,7 +69,7 @@
       <form action="{% url 'dispatch:regularly_group_create' %}" method="post" class="createGroupForm">
         {% csrf_token %}
         <input name="number" type="number" placeholder="순번">
-        <input name="name" type="text" placeholder="노선이름">
+        <input name="name" type="text" placeholder="그룹이름">
         <input type="submit" class="btnModules" value="등록">
       </form>
     </div>
@@ -125,8 +125,16 @@
               <label for="endWork">퇴근</label>
             </div>
           </td>
-          <td class="InputHeader">주차</td>
-          <td class="InputTd"><input name="parking" value="{{regulalry.parking}}" type="text" class="inputText"></td>
+          <td class="InputHeader">위치</td>
+          <td class="InputTd">
+            <input type="text" list="rocation" class="inputText">
+            <datalist id="rocation">
+              <option value="정문">정문</option>
+              <option value="후문">후문</option>
+              <option value="기타-">기타-</option>
+              <option value="셔틀">셔틀</option>
+            </datalist>
+          </td>
         </tr>
         <tr>
           <td class="InputHeader">출발지</td>
@@ -337,8 +345,7 @@
               <div class="hourTd"></div>
               <div class="hourTd"></div>
               <div class="hourTd"></div>
-              <div class="hourTd"></div>
-              
+              <div class="hourTd"></div>              
               <div class="driverTd {{data.id}} d{{data.driver.id}}">{{data.vehicle_num}}({{data.driver_name}})</div>
               
             </div>

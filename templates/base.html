@@ -76,13 +76,7 @@
                   <li class="sideMenuNav2Menu">출/퇴근 노선관리</li>
                 </a>
                 <a href="{% url 'dispatch:order' %}" class="sideMenuNav2Link">
-                  <li class="sideMenuNav2Menu">일반주문배차</li>
-                </a>
-                <a href="{% url 'dispatch:schedule' %}" class="sideMenuNav2Link">
-                  <li class="sideMenuNav2Menu">배차일정</li>
-                </a>
-                <a href="{% url 'dispatch:document' %}" class="sideMenuNav2Link">
-                  <li class="sideMenuNav2Menu">서류함</li>
+                  <li class="sideMenuNav2Menu">일반배차</li>
                 </a>
               </ul>
             </div>
@@ -130,15 +124,47 @@
             <div class="sideMenuNav2Box">
               <ul class="sideMenuNav2">
                 <a href="{% url 'vehicle:list' %}" class="sideMenuNav2Link">
-                  <li class="sideMenuNav2Menu">차량목록</li>
+                  <li class="sideMenuNav2Menu">차량관리</li>
                 </a>
                 <a href="{% url 'vehicle:mgmt' %}" class="sideMenuNav2Link">
-                  <li class="sideMenuNav2Menu">차량관리</li>
+                  <li class="sideMenuNav2Menu">정비관리</li>
+                </a>
+                <a href="{% url 'vehicle:mgmt' %}" class="sideMenuNav2Link">
+                  <li class="sideMenuNav2Menu">사고관리</li>
+                </a>
+              </ul>
+            </div>
+          </div>
+          <div class="nav1Box">
+            <li class="nav1BoxMenu nav1BoxMenuHaveDepth2">
+              <img src="{% static 'images/document.png' %}" alt="공지사항 아이콘">
+              <div>서류관리</div>
+              <img src="{% static 'images/navArrow.png' %}" alt="메뉴 열림 아이콘">
+            </li>
+            <div class="sideMenuNav2Box">
+              <ul class="sideMenuNav2">
+                <a href="{% url 'document:company' %}" class="sideMenuNav2Link">
+                  <li class="sideMenuNav2Menu">회사서류</li>
+                </a>
+                <a href="{% url 'document:dispatch' %}" class="sideMenuNav2Link">
+                  <li class="sideMenuNav2Menu">운행서류</li>
                 </a>
               </ul>
             </div>
           </div>
         </ul>
+      </div>
+
+
+
+      <!-- Manual -->
+      <div class="manualArea">
+        <a href="../templates/test.pdf" download="trpManual.pdf">
+          <div>메뉴얼</div>
+        </a>
+        <a href="http://kingbuserp.link/">
+        <div>FAQ</div>
+        </a>
       </div>
 
     </div>
@@ -197,65 +223,120 @@
 
       <div class="HomePopupAreaModules">
         <div class="HomePopupBgModules"></div>
-        <form method="post" action="{% url 'crudmember:change_id' %}" class="HomePopupContainer"
+          <form method="post" action="{% url 'crudmember:change_id' %}" class="popupContainer HomePopupContainer"
           enctype="multipart/form-data">
-          {% csrf_token %}
-          <div class="homePopupTitle">아이디 변경</div>
-          <div class="HomePopupDataArea">
-            <div class="HomePopupDataCell">
-              <span class="HomePopupDataTitle">비밀번호</span>
-              <div class="dateBox">
-                <input name="password" type="password" class="HomePopupDataInput PopupDataInputPwCheckerId">
+            {% csrf_token %}
+            <div class="popupHeader">
+                <div class="popupTitle">아이디 변경</div>
+            </div>
+            <div class="popupBody">
+                <div class="popupSection">
+                    <div class="popupArticle">
+                        <label for="" class="popupArticleLabel">비밀번호</label>
+                        <input name="password" type="password" class="popupArticleInput PopupDataInputPwCheckerId">
+                    </div>
+                    <div class="popupArticle">
+                        <label for="" class="popupArticleLabel">새 아이디</label>
+                        <div class="idBox">
+                          <input type="text" check_result="fail" name="user_id" id="id" class="popupArticleInput username_input" placeholder="새 아이디를 입력해 주세요.">
+                          <div class="idchecker" onClick="id_overlap_check()">중복확인</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="popupFooter">
+                    <input type="submit" class="btnModules HomeEditBtn" value="저장">
+                    <div class="btnModules HomeCloseBtn">닫기</div>
+                </div>
               </div>
             </div>
-            <div class="HomePopupDataCell">
-              <span class="HomePopupDataTitle">새 아이디</span>
-              <div class="dateBox">
-                <input type="text" check_result="fail" name="user_id" id="id" placeholder="새 아이디를 입력해 주세요."
-                  class="HomePopupDataInput username_input">
-              </div>
-            </div>
-            <div class="idchecker" onClick="id_overlap_check()">중복확인</div>
-          </div>
-          <div class="homePopupBtnBox">
-            <div class="btnModules HomeCloseBtn">닫기</div>
-            <div class="btnModules HomeEditBtn">저장</div>
-          </div>
         </form>
       </div>
 
+
+
       <div class="HomePopupAreaModules">
         <div class="HomePopupBgModules"></div>
-        <form method="post" action="{% url 'crudmember:change_password' %}" class="HomePopupContainer HomePopupContainerPw"
-          enctype="multipart/form-data">
-          {% csrf_token %}
-          <div class="homePopupTitle">비밀번호 변경</div>
-          <div class="HomePopupDataArea">
-            <div class="HomePopupDataCell">
-              <span class="HomePopupDataTitle">비밀번호</span>
-              <div class="dateBox">
-                <input name="cur_password" type="password" class="HomePopupDataInput PopupDataInputPwCheckerPw">
-              </div>
+        <form method="post"  action="{% url 'crudmember:change_password' %}" class="HomePopupContainer HomePopupContainerPw" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="popupHeader">
+                <div class="popupTitle">비밀번호 변경</div>
             </div>
-            <div class="HomePopupDataCell">
-              <span class="HomePopupDataTitle">새 비밀번호</span>
-              <div class="dateBox">
-                <input name="password1" type="password" class="HomePopupDataInput PopupDataInputNewPw">
-              </div>
+            <div class="popupBody">
+                <div class="popupSection">
+                    <div class="popupArticle">
+                        <label for="" class="popupArticleLabel">비밀번호</label>
+                        <input name="cur_password" type="password" class="popupArticleInput PopupDataInputPwCheckerPw">
+                    </div>
+                    <div class="popupArticle">
+                        <label for="" class="popupArticleLabel">새 비밀번호</label>
+                        <input name="password1" type="password" class="popupArticleInput PopupDataInputNewPw">
+                    </div>
+                    <div class="popupArticle">
+                        <label for="" class="popupArticleLabel">비밀번호 확인</label>
+                        <input name="password2" type="password" class="popupArticleInput PopupDataInputOverlap">
+                    </div>
+                </div>
+                <div class="popupFooter">
+                    <input type="submit" class="btnModules HomeEditBtn" value="추가">
+                    <div class="btnModules HomeCloseBtn">닫기</div>
+                </div>
             </div>
-            <div class="HomePopupDataCell">
-              <span class="HomePopupDataTitle">비밀번호 확인</span>
-              <div class="dateBox">
-                <input name="password2" type="password" class="HomePopupDataInput PopupDataInputOverlap">
-              </div>
-            </div>
-          </div>
-          <div class="homePopupBtnBox">
-            <div class="btnModules HomeCloseBtn">닫기</div>
-            <div class="btnModules HomeEditBtn">저장</div>
-          </div>
         </form>
       </div>
+
+      
+<!--  -->
+<!-- <div class="popupAreaModules">
+  <div class="popupBgModules"></div>
+  <form method="post" action="" class="popupContainer popupContainerDouble">
+      {% csrf_token %}
+      <div class="popupHeader">
+          <div class="popupTitle">팝업이름</div>
+      </div>
+      <div class="popupBody">
+          <div class="popupSection">
+              <div class="popupArticleBox">
+                  <div class="popupArticleDouble">
+                      <label for="" class="popupArticleLabel">항목이름</label>
+                      <input type="text" class="popupArticleInput">
+                  </div>
+                  <div class="popupArticleDouble">
+                      <label for="" class="popupArticleLabel">항목이름</label>
+                      <input type="text" class="popupArticleInput">
+                  </div>
+              </div>
+          </div>
+          <div class="popupFooter">
+              <input type="submit" class="btnModules" value="등록">
+              <div class="btnModules">닫기</div>
+          </div>
+      </div>
+  </form>
+</div>
+
+<div class="popupAreaModules">
+  <div class="popupBgModules"></div>
+  <form method="post" action="" class="popupContainer">
+      {% csrf_token %}
+      <div class="popupHeader">
+          <div class="popupTitle">팝업이름</div>
+      </div>
+      <div class="popupBody">
+          <div class="popupSection">
+              <div class="popupArticle">
+                  <label for="" class="popupArticleLabel">항목이름</label>
+                  <input type="text" class="popupArticleInput">
+              </div>
+          </div>
+          <div class="popupFooter">
+              <input type="submit" class="btnModules" value="등록">
+              <div class="btnModules">닫기</div>
+          </div>
+      </div>
+  </form>
+</div> -->
+
+<!--  -->
 
     </div>
 
@@ -267,10 +348,9 @@
   <script src="{% static 'js/authority.js' %}"></script>
   {% block script %}{% endblock %}
   <script>
-    const authority = {{request.session.authority}}
+    const authority = {{ request.session.authority }}
     console.log(authority)
   </script>
 </body>
 
 </html>
-

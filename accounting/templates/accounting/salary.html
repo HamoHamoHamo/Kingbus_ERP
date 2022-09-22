@@ -45,6 +45,8 @@
                     <td>출근</td>
                     <td>퇴근</td>
                     <td>일반주문</td>
+                    <td>기본급</td>
+                    <td>근속수당</td>
                     <td>기타</td>
                     <td>합계</td>
                     <td>비고</td>
@@ -62,6 +64,8 @@
                         <td>{{salary.member_id.entering_date}}</td>
                         <td>{{salary.attendance}}</td>
                         <td>{{salary.leave}}</td>
+                        <td></td>
+                        <td></td>
                         <td>{{salary.order}}</td>
                         <td>{{salary.additional}}</td>
                         <td>{{salary.total}}</td>
@@ -97,52 +101,50 @@
 {% block popup %}
 <div class="popupAreaModules">
     <div class="popupBgModules"></div>
-    <form method="post" action="{% url 'accounting:salary_create' %}" class="popupContainer"
-        enctype="multipart/form-data">
+    <form method="post" action="{% url 'accounting:salary_create' %}" class="popupContainer popupContainerDouble"
+    enctype="multipart/form-data">
         {% csrf_token %}
-        <div class="PopupTitle">상여등록</div>
-        <div class="PopupDataArea">
-            <div class="PopupDataCell">
-                <span class="PopupDataTitle">이름</span>
-                <div class="salayNameBox">
-                    <select name="member_id" id="" class="PopupDataInput popupSelect">
-                        {% for member in member_list %}
-                        <option value="{{member.id}}">{{member.name}}</option>
-                        {% endfor %}
-                    </select>
-                </div>
-            </div>
-            <div class="PopupDataCell">
-                <span class="PopupDataTitle">입사일자</span>
-                <div class="enteringDateBox">
-                    <div name="" type="text" class="PopupData popupEntering"></div>
-                </div>
-            </div>
-            <div class="PopupDataCell">
-                <span class="PopupDataTitle">날짜</span>
-                <div class="dateBox">
-                    <input name="date" type="date" class="PopupDataInput">
-                </div>
-            </div>
-            <div class="PopupDataCell">
-                <span class="PopupDataTitle">금액</span>
-                <div class="priceBox">
-                    <input name="price" type="text" class="PopupDataInput PopupDataInputPrice">
-                </div>
-            </div>
-            <div class="PopupDataCell">
-                <span class="PopupDataTitle">비고</span>
-                <div class="blanckBox">
-                    <input name="remark" type="text" class="PopupDataInput">
-                </div>
-            </div>
+        <div class="popupHeader">
+            <div class="popupTitle">상여등록</div>
         </div>
-        <div class="PopupBtnBox">
-            <div class="btnModules closeBtn">닫기</div>
-            <input type="submit" class="btnModules createBtn" value="등록">
+        <div class="popupBody">
+            <div class="popupSection">
+                <div class="popupArticleBox">
+                    <div class="popupArticleDouble">
+                        <label for="" class="popupArticleLabel">이름</label>
+                        <select name="member_id" id="" class="popupArticleInput popupSelect">
+                            {% for member in member_list %}
+                            <option value="{{member.id}}">{{member.name}}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="popupArticleDouble">
+                        <label for="" class="popupArticleLabel">입사일자</label>
+                        <div name="" type="text" class="popupArticleInput popupEntering"></div>
+                    </div>
+                </div>
+                <div class="popupArticleBox">
+                    <div class="popupArticleDouble">
+                        <label for="" class="popupArticleLabel">날짜</label>
+                        <input name="date" type="date" class="popupArticleInput">
+                    </div>
+                    <div class="popupArticleDouble">
+                        <label for="" class="popupArticleLabel">금액</label>
+                        <input name="price" type="text" class="popupArticleInput PopupDataInputPrice">
+                    </div>
+                </div>
+                <div class="popupArticle">
+                    <label for="" class="popupArticleLabel">비고</label>
+                    <input name="remark" type="text" class="popupArticleInput popupArticleInputDouble">
+                </div>
+            </div>
+            <div class="popupFooter">
+                <input type="submit" class="btnModules createBtn" value="등록">
+                <div class="btnModules closeBtn">닫기</div>
+            </div>
         </div>
     </form>
-</div>
+  </div>
 
 {% endblock %}
 

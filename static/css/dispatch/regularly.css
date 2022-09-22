@@ -19,6 +19,9 @@
   color: white;
   cursor: pointer;
 }
+.dateControllBtn svg{
+  width: 40%;
+}
 
 
 
@@ -27,18 +30,31 @@
 
 /* 입력창 */
 .input {
-  position: relative;
   height: 12rem;
 }
 
 .inputSave {
-  position: absolute;
-  top: -5.8rem;
-  right: 1rem;
   background-color: #0069D9;
 }
 
+.listHeaderBtnBox {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 21rem;
+}
 
+.input input[type=text],
+.input input[type=number] {
+  border: 0.1rem solid #e2e2e2;
+}
+
+.input select {
+  border: 0.1rem solid #CDCDCE;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none
+}
 
 
 
@@ -90,12 +106,12 @@
 }
 
 .listTable tbody td:nth-child(1) {
-  border-left: 0.1rem solid black;
+  border-left: 0.1rem solid #D4D4D4;
 }
 
 .listTable tbody td {
-  border-right: 0.1rem solid black;
-  border-bottom: 0.1rem solid black;
+  border-right: 0.1rem solid #D4D4D4;
+  border-bottom: 0.1rem solid #D4D4D4;
 }
 
 
@@ -124,5 +140,15 @@
 
 /* 스케줄 */
 .driverTd {
-  width: calc(100% - 25.2rem);
+  width: calc(100% - 23.184rem);
+}
+
+
+
+
+
+@media all and (min-width:1460px) and (max-width: 1600px) {
+}
+
+@media all and (min-width:1024px) and (max-width: 1460px) {
 }

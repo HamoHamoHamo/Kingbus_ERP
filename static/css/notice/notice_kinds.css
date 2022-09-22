@@ -25,23 +25,25 @@ table {
 .tableHead thead {
   width: 100%;
   height: 100%;
+  text-align: center;
 }
 
 .tableHead tr {
   width: 100%;
   height: 100%;
-  align-items: center;
   border: none;
   font-size: 1.6rem;
   font-weight: 700;
-  color: #7A7A7A;
+  color: white;
+  background-color: #444444;
+  box-sizing: border-box;
 }
 
 .tableBody {
   width: calc(100% - 0.2rem);
-  height: 64em;
+  height: 60rem;
   margin-top: -0.1rem;
-  border: 0.1rem solid #CDCDCE
+  border: 0.1rem solid #CDCDCE;
 }
 
 .tableBody::-webkit-scrollbar {
@@ -64,36 +66,32 @@ tbody {
 }
 
 table tr {
-  display: flex;
   width: 100%;
-  height: 6.4rem;
+  height: 4rem;
   border-bottom: 0.1rem solid #CDCDCE;
 }
 
 table tr:nth-child(10) {
   border-bottom: none;
 }
-table tr:nth-child(odd) {
+
+table tbody tr:nth-child(odd) {
   background-color: white;
 }
 
-table tr:nth-child(even) {
+table tbody tr:nth-child(even) {
   background-color: #EFEFEF;
 }
 
-table td {
-  display: flex;
-  align-items: center;
-}
 
 .tableBody td {
   font-size: 1.4rem;
   color: #191919;
+  border-right: 0.1rem solid #D4D4D4;
+  border-bottom: 0.1rem solid #D4D4D4;
 }
 
 td:nth-child(1) {
-  display: flex;
-  justify-content: center;
   width: 6%;
 }
 
@@ -110,14 +108,80 @@ td:nth-child(4) {
 }
 
 td:nth-child(5) {
-  display: flex;
-  justify-content: center;
   width: 6%;
-  padding-right: 2%;
+}
+
+.tableBody td:nth-child(1) {
+  text-align: center;
+}
+
+.tableBody td:nth-child(2) {
+  text-align: left;
+  padding-left: 1rem;
+  box-sizing: border-box;
+}
+
+.tableBody td:nth-child(3) {
+  width: 10%;
+  text-align: center;
+}
+
+.tableBody td:nth-child(4) {
+  width: 16%;
+  text-align: center;
+}
+
+.tableBody td:nth-child(5) {
+  width: 6%;
+  text-align: center;
 }
 
 .checkbox {
   width: 2rem;
   height: 2rem;
   cursor: pointer;
+}
+
+.blankTR {
+  width: 100%;
+  height: 100%;
+}
+
+
+
+
+
+
+
+
+@media all and (min-width:1460px) and (max-width: 1600px) {
+  .tableHead{
+    height: 4.2rem;
+  }
+  .tableHead tr{
+    font-size: 1.4rem;
+    font-weight: 500;
+  }
+  .tableBody{
+    height: 57rem;
+  }
+  table tr {
+    height: 3.8rem;
+  }
+}
+
+@media all and (min-width:1024px) and (max-width: 1460px) {
+  .tableHead{
+    height: 3.6rem;
+  }
+  .tableHead tr{
+    font-size: 1.4rem;
+    font-weight: 500;
+  }
+  .tableBody{
+    height: 57rem;
+  }
+  .table tr{
+    height: 3.8rem;
+  }
 }

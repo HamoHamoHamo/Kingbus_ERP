@@ -2,12 +2,12 @@ const openPopup = document.querySelector('.addPeople');
 const popupAreaModules = document.querySelectorAll('.popupAreaModules');
 const popupBgModules = document.querySelectorAll(".popupBgModules")
 const SidemenuUseClose = document.querySelector(".Sidemenu")
-const popupCloseBtn = document.querySelectorAll(".PopupBtnBox div")
+const popupCloseBtn = document.querySelectorAll(".popupCloseBtn")
 const checkBox = document.querySelectorAll(".tableBody td:nth-child(1) input")
 const hrMemberListForm = document.querySelector(".hrMemberListForm")
-const editMember = document.querySelectorAll(".tableBody td:nth-child(2)")
-const phoneNum = document.querySelectorAll(".tableBody td:nth-child(7)")
-const birthday = document.querySelectorAll(".tableBody td:nth-child(8)")
+const editMember = document.querySelectorAll(".tableBody td:nth-child(3)")
+const phoneNum = document.querySelectorAll(".tableBody td:nth-child(8)")
+const birthday = document.querySelectorAll(".tableBody td:nth-child(9)")
 const hrName = document.querySelector(".hrName")
 const hrRole = document.querySelectorAll(".hrRole option")
 const hrEntering = document.querySelector(".hrEntering")
@@ -30,7 +30,15 @@ const editPopupContainer = document.querySelector(".editPopupContainer")
 const btnModulesCreate = document.querySelector(".btnModulesCreate")
 const PopupDataInputLicense = document.querySelector(".PopupDataInputLicense")
 const hrRoleSelect = document.querySelector(".hrRole")
-
+const fileDeleteBtn = document.querySelectorAll(".fileDeleteBtn")
+const FileTextLicense = document.querySelector(".LicenseFileText")
+const FileInputLicense = document.querySelector(".LicenseFileInput")
+const FileTextDriverLicense = document.querySelector(".DriverLicenseFileText")
+const FileInputDriverLicense = document.querySelector(".DriverLicenseFileInput")
+const FileTextLicenseEdit = document.querySelector(".LicenseFileTextEdit")
+const FileInputLicenseEdit = document.querySelector(".LicenseFileInputEdit")
+const FileTextDriverLicenseEdit = document.querySelector(".DriverLicenseFileTextEdit")
+const FileInputDriverLicenseEdit = document.querySelector(".DriverLicenseFileInputEdit")
 
 
 //직원상세
@@ -235,7 +243,7 @@ PopupDataInputWork.addEventListener('change', showLicense)
 hrRoleSelect.addEventListener('change', showLicenseEdit)
 
 function showLicense() {
-  if (PopupDataInputWork.options[PopupDataInputWork.selectedIndex].text == "운전원") {
+  if (PopupDataInputWork.options[PopupDataInputWork.selectedIndex].text == "운전원" || PopupDataInputWork.options[PopupDataInputWork.selectedIndex].text == "팀장") {
     PopupDataInputLicense.parentNode.style.visibility = "visible"
   } else {
     PopupDataInputLicense.parentNode.style.visibility = "hidden"
@@ -255,4 +263,53 @@ window.onload = function () {
     phoneNum[i].innerText = phoneNum[i].innerText.replace(/^(\d{2,3})(\d{3,4})(\d{4})$/, `$1-$2-$3`)
     birthday[i].innerText = birthday[i].innerText.replace(/^(\d{4})(\d{2})(\d{2})$/, `$1-$2-$3`)
   }
+}
+
+
+
+
+
+//파일명 변경
+FileInputLicense.addEventListener("change", changeFileLicense)
+FileInputDriverLicense.addEventListener("change", changeFileDriverLicense)
+FileInputLicenseEdit.addEventListener("change", changeFileLicenseEdit)
+FileInputDriverLicenseEdit.addEventListener("change", changeFileDriverLicenseEdit)
+
+function changeFileLicense() {
+    FileTextLicense.value = FileInputLicense.files[0].name
+}
+function changeFileDriverLicense() {
+  FileTextDriverLicense.value = FileInputDriverLicense.files[0].name
+}
+function changeFileLicenseEdit() {
+    FileTextLicenseEdit.value = FileInputLicenseEdit.files[0].name
+}
+function changeFileDriverLicenseEdit() {
+  FileTextDriverLicenseEdit.value = FileInputDriverLicenseEdit.files[0].name
+}
+
+
+
+
+// 파일삭제
+fileDeleteBtn[0].addEventListener("click", deleteFileLicens)
+fileDeleteBtn[1].addEventListener("click", deleteFileDriverLicens)
+fileDeleteBtn[2].addEventListener("click", deleteFileLicensEdit)
+fileDeleteBtn[3].addEventListener("click", deleteFileDriverLicensEdit)
+
+function deleteFileLicens() {
+  FileTextLicense.value = ""
+  FileInputLicense.value = ""
+}
+function deleteFileDriverLicens() {
+  FileTextDriverLicense.value = ""
+  FileInputDriverLicense.value = ""
+}
+function deleteFileLicensEdit() {
+  FileTextLicenseEdit.value = ""
+  FileInputLicenseEdit.value = ""
+}
+function deleteFileDriverLicensEdit() {
+  FileTextDriverLicenseEdit.value = ""
+  FileInputDriverLicenseEdit.value = ""
 }

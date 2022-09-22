@@ -26,8 +26,7 @@
 .tableHead {
     width: calc(100% - 0.2rem);
     height: 4.8rem;
-    border: 0.1rem solid #CDCDCE;
-    border-radius: 0.5rem 0.5rem 0 0;
+    border-spacing: 0;
 }
 
 .tableHead thead {
@@ -42,14 +41,16 @@
     border: none;
     font-size: 1.6rem;
     font-weight: 700;
-    color: #7A7A7A;
+    color: white;
+    background-color: #444444;
 }
 
 .tableBody {
     width: calc(100% - 0.2rem);
     height: 64em;
     margin-top: -0.1rem;
-    border: 0.1rem solid #CDCDCE
+    border: 0.1rem solid #CDCDCE;
+    border-spacing: 0;
 }
 
 .tableBody::-webkit-scrollbar {
@@ -71,31 +72,29 @@ tbody {
     height: 100%;
 }
 
-table tr {
-    display: flex;
+table tbody tr {
     width: 100%;
     height: 6.4rem;
     border-bottom: 0.1rem solid #CDCDCE;
 }
 
 
-table tr:nth-child(odd) {
+table tbody tr:nth-child(odd) {
     background-color: white;
 }
 
-table tr:nth-child(even) {
+table tbody tr:nth-child(even) {
     background-color: #EFEFEF;
 }
 
 .tableBody td {
-    display: flex;
-    align-items: center;
     font-size: 1.4rem;
     color: #191919;
+    border-right: 0.1rem solid #D4D4D4;
 }
 
 
-.tableBody td:nth-child(2) {
+.tableBody td:nth-child(3) {
     font-size: 1.4rem;
     color: #0069D9;
     cursor: pointer;
@@ -103,40 +102,59 @@ table tr:nth-child(even) {
 
 
 td:nth-child(1) {
-    display: flex;
-    justify-content: center;
+    text-align: center;
     width: 4%;
 }
 
 td:nth-child(2) {
-    width: 8%;
+    text-align: center;
+    width: 4%;
 }
+
 td:nth-child(3) {
-    width: 10%;
+    text-align: center;
+    width: 4%;
 }
 
 td:nth-child(4) {
-    width: 8%;
+    text-align: center;
+    width: 4%;
 }
 
 td:nth-child(5) {
-    width: 10%;
+    text-align: center;
+    width: 8%;
 }
 
 td:nth-child(6) {
-    width: 12%;
+    text-align: center;
+    width: 6%;
 }
 
 td:nth-child(7) {
-    width: 12%;
+    text-align: center;
+    width: 7%;
 }
 
 td:nth-child(8) {
-    width: 10%;
+    text-align: center;
+    width: 9%;
 }
 
 td:nth-child(9) {
-    width: 26%;
+    text-align: center;
+    width: 10%;
+}
+
+td:nth-child(10) {
+    text-align: center;
+    width: 8%;
+}
+
+td:nth-child(11) {
+    padding-left: 2rem;
+    width: 36%;
+    box-sizing: border-box;
 }
 
 .btnBox div {
@@ -156,117 +174,41 @@ td:nth-child(9) {
 
 
 /*popup*/
-.popupContainer {
-    position: fixed;
-    top: 50%;
-    left: calc(50% + 11rem);
+
+.popupIdBox {
     display: flex;
-    flex-direction: column;
+    justify-content: space-between;
     align-items: center;
-    width: 54.5rem;
-    height: 58rem;
-    background-color: white;
-    border-radius: 0.3rem;
-    box-shadow: 0 0.2rem 0.4rem rgb(0 0 0 / 16%);
-    transform: translate(-50%, -50%);
+    width: 27rem;
+    height: 2.6rem;
+}
+
+.popupIdBox .idchecker {
+    width: 9rem;
+    margin-left: 2rem;
+    height: 2.4rem;
+    margin-top: 0;
+}
+
+.popupArticleDoubleLicense {
+    visibility: hidden;
 }
 
 .editPopupContainer {
     position: fixed;
     top: 50%;
     left: calc(50% + 11rem);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 54.5rem;
-    height: 58rem;
     background-color: white;
-    border-radius: 0.3rem;
-    box-shadow: 0 0.2rem 0.4rem rgb(0 0 0 / 16%);
     transform: translate(-50%, -50%);
 }
 
-.PopupTitle {
+.hrPW {
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 100%;
-    height: 4.8rem;
-    border-bottom: 0.1rem solid #191919;
-    font-size: 1.6rem;
-    font-weight: 500;
-}
-
-.PopupDataArea {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    width: 100%;
-    height: calc(100% - 9.7rem);
-    padding: 4.2rem 3rem 0 3rem;
-    box-sizing: border-box;
-}
-
-.PopupDataCell {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    align-items: flex-start;
-    width: 23rem;
-    height: 6rem;
-}
-
-.PopupDataArea .PopupDataCell:nth-child(7) {
-    width: 100%;
-}
-
-.PopupDataCellLicense{
-    visibility: hidden;
-}
-
-.PopupDataTitle {
-    font-size: 1.4rem;
-    color: #7A7A7A;
-}
-
-.PopupDataInput {
-    width: 100%;
-    height: 2.6rem;
-    padding-left: 0.6rem;
-    padding-bottom: 0.1rem;
-    font-size: 1.4rem;
-    color: #191919;
-    border: 0.1rem solid #D2D2D2;
-    border-radius: 0.3rem;
-    box-sizing: border-box;
-    outline: none;
-}
-
-.PopupBtnBox {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    height: 4.8rem;
-    box-sizing: border-box;
-}
-
-.PopupBtnBox div {
-    background-color: #444444;
-    margin: 0 1rem;
-}
-
-.PopupBtnBox input:nth-child(2) {
-    background-color: #0069D9;
-    margin: 0 1rem;
-}
-.hrPW{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: calc(100% - 2rem);
-    height: 4rem;
-    margin: 2rem 1rem 0 1rem;
+    width: 18rem;
+    height: 3rem;
+    margin: 0 auto;
     font-size: 1.4rem;
     color: white;
     background-color: #444444;
@@ -274,9 +216,39 @@ td:nth-child(9) {
     box-sizing: border-box;
     cursor: pointer;
 }
-.hrPW svg{
+
+.hrPW svg {
     margin-right: 1rem;
 }
-.PopupDataCellPw{
+
+.PopupDataCellPw {
     width: 16rem;
 }
+
+.popupCloseBtn{
+    right: 0;
+    transform: translate(0, -50%);
+    background-color: #444444;
+}
+
+
+
+@media all and (min-width:1600px) and (max-width: 1780px) {
+    .tableHead tr{
+        font-size: 1.4rem;
+    }
+    .tableBody td{
+        font-size: 1.3rem;
+    }
+  }
+@media all and (min-width:1460px) and (max-width: 1600px) {
+    .popupArticleDouble .popupIdBox .popupArticleInput{
+        width: 18.4rem;
+    }
+  }
+  
+  @media all and (min-width:1024px) and (max-width: 1460px) {
+    /* .tableHead tr{
+        font-size: 1.4rem;
+    } */
+  }

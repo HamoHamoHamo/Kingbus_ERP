@@ -59,7 +59,7 @@
 
 .hourMarker {
     display: flex;
-    width: 25.2rem;
+    width: 23.184rem;
     height: 2.2rem;
     font-size: 1.6rem;
 }
@@ -108,7 +108,7 @@
     justify-content: flex-start;
     width: 100%;
     border-spacing: 0;
-    border-top: 0.1rem solid black;
+    border-top: 0.1rem solid #D4D4D4;
 }
 
 .scheduleTableTr {
@@ -124,23 +124,31 @@
 }
 
 .hourTd {
-    width: 3.6rem;
+    width: 3.312rem;
     height: 100%;
-    border-left: 0.1rem solid black;
-    border-bottom: 0.1rem solid black;
+    border-left: 0.1rem solid #D4D4D4;
+    border-bottom: 0.1rem solid #D4D4D4;
     box-sizing: border-box;
 }
 
 .driverTd {
     display: flex;
-    justify-content: center;
+    justify-content: flex-start;
     align-items: center;
+    padding-left: 1rem;
     height: 100%;
     font-size: 1.4rem;
     text-align: center;
     background-color: #0069D9;
     color: white;
     cursor: pointer;
+    box-sizing: border-box;
+}
+
+.driverTd:hover{
+    background-color: #0A39A5;
+    border-top: 0.1rem solid #0A39A5;
+    border-bottom: 0.1rem solid #0A39A5;
 }
 
 .regularlyLineStart {
@@ -377,9 +385,10 @@
 
 .inputSelect {
     width: calc(100% - 1.6rem);
-    height: 1.8rem;
+    height: 2.2rem;
     margin: 0 0.8rem;
     outline: none;
+    box-sizing: border-box;
 }
 
 .inputSelectfixedWidth {

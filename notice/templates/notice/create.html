@@ -36,10 +36,14 @@
         <input type="file" name="file" multiple>
       </div>
     </div>
-    <textarea name="content" required></textarea>
+    <textarea name="content" required class="noticeTextarea"></textarea>
     <div class="createBtnBox">
       <input type="submit" value="등록" class="createBtn">
     </div>
   </form>
 </div>
+{% endblock %}
+
+{% block script %}
+<script src="{% static 'js/notice/textAreaDrag.js' %}"></script>
 {% endblock %}

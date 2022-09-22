@@ -17,8 +17,7 @@
 
 {% block content %}
 
-<div class="regularly_layout">
-
+<div class="orderLayout">
 
 
     <!-- 스케줄 -->
@@ -26,7 +25,14 @@
 
         <!-- 스케줄-헤더 -->
         <div class="scheduleHeaderArea">
-            <div class="scheduleHeader">2022년 8월 16일 (화)</div>
+            <div class="scheduleCloseBtn">
+                <svg xmlns="http://www.w3.org/2000/svg" width="8.6" height="13" viewBox="0 0 8.6 13">
+                    <path id="Icon_ionic-ios-arrow-back" data-name="Icon ionic-ios-arrow-back"
+                        d="M13.843,12.692l5.692-4.915a.839.839,0,0,0,0-1.312,1.2,1.2,0,0,0-1.523,0l-6.449,5.569a.839.839,0,0,0-.031,1.281l6.475,5.608a1.205,1.205,0,0,0,1.523,0,.839.839,0,0,0,0-1.312Z"
+                        transform="translate(-11.25 -6.194)" fill="#fff" />
+                </svg>
+            </div>
+            <div class="scheduleHeader">2022.09.16 (sd)</div>
         </div>
 
         <!-- 스케줄-바디 -->
@@ -41,46 +47,51 @@
                 <div>24</div>
             </div>
             <div class="scheduleTableScroll">
-              <div class="scheduleTable">
-                <div class="scheduleTableTr">
-                  <div class="hourTd"></div>
-                  <div class="hourTd"></div>
-                  <div class="hourTd"></div>
-                  <div class="hourTd"></div>
-                  <div class="hourTd"></div>
-                  <div class="hourTd"></div>
-                  <div class="hourTd"></div>
-                  <div class="driverTd">7846(민병기)</div>
+                <div class="scheduleTable">
+                    {% for v in vehicles %}
+                    <div class="scheduleTableTr">
+                        <div class="hourTd"></div>
+                        <div class="hourTd"></div>
+                        <div class="hourTd"></div>
+                        <div class="hourTd"></div>
+                        <div class="hourTd"></div>
+                        <div class="hourTd"></div>
+                        <div class="hourTd"></div>
+                        <div class="driverTd {{v.id}} d{{v.driver.id}}" title="{{v.vehicle_num0}} {{v.vehicle_num}}">{{v.vehicle_num}}({{v.driver_name}})</div>
+                    </div>
+                    {% endfor %}
                 </div>
-              </div>
             </div>
         </div>
-
+        <div class="scheduleOpenBtn">
+            <svg xmlns="http://www.w3.org/2000/svg" width="8.6" height="13" viewBox="0 0 8.6 13">
+                <path id="Icon_ionic-ios-arrow-back" data-name="Icon ionic-ios-arrow-back"
+                    d="M17.258,12.692,11.566,7.777a.839.839,0,0,1,0-1.312,1.2,1.2,0,0,1,1.523,0l6.448,5.569a.839.839,0,0,1,.031,1.281l-6.475,5.608a1.205,1.205,0,0,1-1.523,0,.839.839,0,0,1,0-1.312Z"
+                    transform="translate(-11.25 -6.194)" fill="#fff" />
+            </svg>
+        </div>
     </div>
 
 
-
-
-
-    <div class="main_Layout">
-
+    <div class="MainLayout">
 
 
         <!-- 검색창 -->
         <div class="search">
 
-            <div class="searchTitle">노선검색</div>
+            <div class="searchTitle">검색</div>
 
             <form action="" class="searchForm">
 
                 <!-- 변경영역 -->
                 <div class="search_inputArea">
-                    <label for="">노선이름</label>
+                    <label for="">노선</label>
                     <input type="text">
                     <label for="">날짜</label>
-                    <input type="date" class="searchDate">~
-                    <input type="date" class="searchDate">
+                    <input type="date" name="date1" class="searchDate" max="9999-12-31">~
+                    <input type="date" name="date2" class="searchDate" max="9999-12-31">
                     <div class="dateControllBtnBox">
+                        <div class="dateToday">오늘</div>
                         <div class="dateControllBtn">
                             <svg xmlns="http://www.w3.org/2000/svg" width="8.6" height="13" viewBox="0 0 8.6 13">
                                 <path id="Icon_ionic-ios-arrow-back" data-name="Icon ionic-ios-arrow-back"
@@ -101,264 +112,476 @@
                 <input type="submit" class="btnModules searchBtn" value="검색">
 
             </form>
+        </div>
+
+
+
+        <div class="inputTableBox">
+
+            {% if detail %}
+            <form action="{% url 'dispatch:order_edit' %}" method="post" class="inputDispatchForm">
+                {% else %}
+                <form action="{% url 'dispatch:order_create' %}" method="post" class="inputDispatchForm">
+                    {% endif %}
+                    {% csrf_token %}
+                    <input name="id" type="hidden" value="{{detail.id}}">
+
+                    <div class="inputTableBtnBox">
+                        <input type="submit" value="저장" class="btnModules inputSave">
+                        {% if detail %}
+                        <input type="submit" value="삭제" class="btnModules inputDelete">
+                        <a href="{% url 'dispatch:order' %}" class="newOrderLink">
+                            <div class="btnModules newOrder">신규</div>
+                        </a>
+                        {% endif %}
+                    </div>
+
+
+
+            <!-- 입력창 -->
+                    <table>
+                        <colgroup>
+                            <col style="width: 7%;">
+                            <col style="width: 18%;">
+                            <col style="width: 7%;">
+                            <col style="width: 18%;">
+                            <col style="width: 7%;">
+                            <col style="width: 18%;">
+                            <col style="width: 7%;">
+                            <col style="width: 5%;">
+                            <col style="width: 7%;">
+                            <col style="width: 5%;">
+                        </colgroup>
+                        <tr>
+                            <td class="tdTypeA">출발지</td>
+                            <td colspan="3" class="tdTypeB">
+                                <input value="{{detail.departure}}" name="departure" type="text" class="inputText">
+                            </td>
+                            <td class="tdTypeA">계약금액</td>
+                            <td class="tdTypeC">
+                                <input value="{{detail.price}}" name="price" type="text"
+                                    class="inputText inputTextUnit inputTextPrice">원
+                            </td>
+                            <td class="tdTypeA">상여금</td>
+                            <td colspan="3" class="tdTypeC">
+                                <input value="{{detail.driver_allowance}}" name="driver_allowance" type="text"
+                                    class="inputText inputTextUnit inputTextDriverAllowance" max="9999-12-31">원
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="tdTypeA">도착지</td>
+                            <td colspan="3" class="tdTypeB">
+                                <input value="{{detail.arrival}}" name="arrival" type="text" class="inputText">
+                            </td>
+                            <td class="tdTypeA">입금현황</td>
+                            <td class="tdTypeC">
+                                <select name="deposit_status" id="deposit_status" class="inputSelect">
+                                    <option value=""></option>
+                                    <option {% if detail.deposit_status == '사무실 입금' %} selected {% endif %}
+                                        value="사무실 입금">사무실 입금</option>
+                                    <option value="최정이">최정이</option>
+                                    <option value="김성태">김성태</option>
+                                    <option value="국민">국민</option>
+                                    <option value="농협">농협(161157)</option>
+                                    <option value="신한">신한</option>
+                                    <option value="기업">기업</option>
+                                </select>
+                            </td>
+                            <td class="tdTypeA">계산서 발행일</td>
+                            <td colspan="3" class="tdTypeC">
+                                <input value="{{detail.bill_date}}" name="bill_date" type="date" class="inputText">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="tdTypeA">운행시간</td>
+                            <td colspan="3" class="tdTypeB">
+                                <div class="twiceBox">
+                                    <div class="quarterBox">
+                                        <input name="departure_date" type="date" class="inputTextquarter"
+                                            value="{{detail.departure_date|slice:':10'}}" max="9999-12-31">
+                                        <div class="deeperBox">
+                                            <input value="{{detail.departure_date|slice:'11:13'}}"
+                                                name="departure_time1" type="text" class="inputTextTwice" maxlength="2">
+                                            :
+                                            <input value="{{detail.departure_date|slice:'14:'}}" name="departure_time2"
+                                                type="text" class="inputTextTwice" maxlength="2">
+                                        </div>
+                                    </div>
+                                    ~
+                                    <div class="quarterBox">
+                                        <input value="{{detail.arrival_date|slice:':10'}}" name="arrival_date"
+                                            type="date" class="inputTextquarter" max="9999-12-31">
+                                        <div class="deeperBox">
+                                            <input value="{{detail.arrival_date|slice:'11:13'}}" name="arrival_time1"
+                                                type="text" class="inputTextTwice" maxlength="2">
+                                            :
+                                            <input value="{{detail.arrival_date|slice:'14:'}}" name="arrival_time2"
+                                                type="text" class="inputTextTwice" maxlength="2">
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="tdTypeA">비용구분</td>
+                            <td class="tdTypeC">
+                                <input name="cost_type" id="highway" type="checkbox" value="고속">
+                                <label for="highway">고속</label>
+                                <input name="cost_type" id="parking" type="checkbox" value="주차">
+                                <label for="parking">주차</label>
+                                <input name="cost_type" id="payment" type="checkbox" value="상여">
+                                <label for="payment">상여</label>
+                            </td>
+                            <td class="tdTypeA">계산서 발행처</td>
+                            <td colspan="3" class="tdTypeC">
+                                <input value="{{detail.bill_place}}" name="bill_place" id="bill_recate" type="text" list="billList" class="inputSelect">
+                                <datalist id="billList">
+                                    <option value=""></option>
+                                    <option value="홈텍스">홈텍스</option>
+                                    <option value="나라장터">나라장터</option>
+                                    <option value="학교장터">학교장터</option>
+                                    <option value="기타-">기타-</option>
+                                </datalist>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="tdTypeA">차량대수</td>
+                            <td class="tdTypeC"><input value="{{detail.bus_cnt}}" name="bus_cnt" type="number" class="inputText inputTextUnit inputBusCount">대
+                            </td>
+                            <td class="tdTypeA">차량종류</td>
+                            <td class="tdTypeC">
+                                <input value="{{detail.bus_type}}" name="bus_type" id="bus_type" type="text" list="depList" class="inputText">
+                            <datalist id="depList">
+                                <option value="45인승 대형버스">45인승 대형버스</option>
+                                <option value="41인승 대형버스">41인승 대형버스</option>
+                                <option value="33인승 중형버스">33인승 중형버스</option>
+                                <option value="28인승 대형우등버스">28인승 대형우등버스</option>
+                                <option value="24인승 미니썬롱">24인승 미니썬롱</option>
+                                <option value="24인승 미니버스">24인승 미니버스</option>
+                                <option value="21인승 프리미엄버스">21인승 프리미엄버스</option>
+                                <option value="21인승 중형우등버스">21인승 중형우등버스</option>
+                                <option value="19인승 미니우등버스">19인승 미니우등버스</option>
+                                <option value="16인승 미니우등버스">16인승 미니우등버스</option>
+                                <option value="14인승 밴">14인승 밴</option>
+                                <option value="10인승 밴">10인승 밴</option>
+                            </datalist>
+                            </td>
+                            <td class="tdTypeA">수금구분</td>
+                            <td class="tdTypeC">
+                                <select name="collection_type" id="collection_type" class="inputSelect">
+                                    <option value=""></option>
+                                    <option {% if detail.collection_type == '현지수금(카드기 지참)' %} selected {% endif %} value="현지수금(카드기 지참)">현지수금(카드기 지참)</option>
+                                    <option {% if detail.collection_type == '회사수금' %} selected {% endif %} value="회사수금">회사수금</option>
+                                </select>
+                            </td>
+                            <td class="tdTypeA">상여금 선지급</td>
+                            <td class="tdTypeD">
+                                <input {% if detail.payment_method == 'y' %} checked {% endif %} name="payment_method" value="y" type="checkbox" id="input_payment_method">
+                                <label for="input_payment_method">선지급</label>
+                            </td>
+                            <td class="tdTypeA">VAT 포함</td>
+                            <td class="tdTypeD">
+                                <input {% if detail.VAT == 'y' %} checked {% endif %} name="VAT" value="y" type="checkbox" id="input_VAT">
+                                <label for="input_VAT">포함</label>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="tdTypeA">예약자</td>
+                            <td class="tdTypeC">
+                                <input value="{{detail.customer}}" name="customer" type="text" class="inputText">
+                            </td>
+                            <td class="tdTypeA">전화번호</td>
+                            <td class="tdTypeC"><input value="{{detail.customer_phone}}" name="customer_phone" type="text" class="inputText inputTextPhoneNum" maxlength="13">
+                            </td>
+                            <td class="tdTypeA">참조사항</td>
+                            <td colspan="5" class="tdTypeB"><input value="{{detail.references}}" name="references" type="text" class="inputText">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="tdTypeA">계약현황</td>
+                            <td class="tdTypeC">
+                                <select name="contract_status" id="contract_status" class="inputSelect">
+                                    <option value=""></option>
+                                    <option {% if detail.contract_status == '확정' %} selected {% endif %} value="확정">확정</option>
+                                    <option {% if detail.contract_status == '보류' %} selected {% endif %} value="보류">보류</option>
+                                    <option {% if detail.contract_status == '변경' %} selected {% endif %} value="변경">변경</option>
+                                    <option {% if detail.contract_status == '취소' %} selected {% endif %} value="취소">취소</option>
+                                </select>
+                            </td>
+                            <td class="tdTypeA">운행종류</td>
+                            <td class="tdTypeC">
+                                <select name="operation_type" id="drive_type" class="inputSelect">
+                                    <option value=""></option>
+                                    <option {% if detail.operation_type == '왕복' %} selected {% endif %} value="왕복">왕복</option>
+                                    <option {% if detail.operation_type == '편도' %} selected {% endif %} value="편도">편도</option>
+                                </select>
+                            </td>
+                            <td class="tdTypeA">표찰정보</td>
+                            <td colspan="5" class="tdTypeB">
+                                <input name="ticketing_info" type="text" value="{{detail.ticketing_info}}" class="inputText">
+                            </td>
+                        </tr>
+                    </table>
+
+                </form>
+
+            <!-- 일반배차 -->
+            <div class="popupAreaModules popupAreaModulesDispatch" id="container">
+                <div class="popupBgModules"></div>
+                <form method="post" action="{% url 'dispatch:order_connect_create' %}" class="popupContainer popupContainerDispatch" id="item">
+                    {% csrf_token %}
+                    <div class="popupHeader">
+                        <div class="popupTitle">일반배차</div>
+                    </div>
+                    <div class="popupBody popupBodyDispatch">
+                        <div class="popupSection popupSectionDispatch">
+                            {% if detail %}
+                            {% for i in detail_connect_list %}
+                            <div class="dispatchBox">
+                                <svg class="removeBtn {{forloop.counter}}" xmlns="http://www.w3.org/2000/svg" width="11.314" height="11.314"
+                                    viewBox="0 0 11.314 11.314">
+                                    <g id="그룹_1513" data-name="그룹 1513" transform="translate(-442.649 -1001.97) rotate(45)">
+                                        <line id="선_691" data-name="선 691" y2="12" transform="translate(1029.5 389.5)"
+                                            fill="none" stroke="#000" stroke-linecap="round" stroke-width="2" />
+                                        <line id="선_692" data-name="선 692" y2="12"
+                                            transform="translate(1035.5 395.5) rotate(90)" fill="none" stroke="#000"
+                                            stroke-linecap="round" stroke-width="2" />
+                                    </g>
+                                </svg>
+                                <table class="dispatcTable">
+                                    <tr>
+                                        <td class="tdTypeA">배차차량</td>
+                                        <td>
+                                            <input value="{{i.bus_id.vehicle_num}}" type="text" class="inputText dispatchBus" readonly>
+                                        </td>
+                                        <td class="tdTypeA">담당기사</td>
+                                        <td>
+                                            <select name="driver" class="inputText orderDriver inputTextUnit dispatchDriver">
+                                                <option value="{{i.driver_id.id}}">{{i.driver_id.name}}</option>
+                                            </select>님
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="tdTypeA">계약금액</td>
+                                        <td>
+                                            <input value="{{i.price}}" name="price" type="text" class="inputText inputTextUnit dispatchPrice">원</td>
+                                        </td>
+                                        <td class="tdTypeA">상여금</td>
+                                        <td>
+                                            <input value="{{i.driver_allowance}}" name="driver_allowance" type="text" class="inputText inputTextUnit dispatchPaymen">원</td>
+                                        </td>
+                                    </tr>
+                                    <input name="bus" value="{{i.bus_id.id}}" type="hidden">
+                                    <input name="id" value="{{detail.id}}" type="hidden">
+                                </table>
+                            </div>
+                            {% endfor %}
+                            {% if detail_connect_cnt > 0 %}
+                            {% for i in "x"|rjust:detail_connect_cnt %}
+                            <div class="dispatchBox">
+                                <svg class="removeBtn" xmlns="http://www.w3.org/2000/svg" width="11.314" height="11.314"
+                                    viewBox="0 0 11.314 11.314">
+                                    <g id="그룹_1513" data-name="그룹 1513" transform="translate(-442.649 -1001.97) rotate(45)">
+                                        <line id="선_691" data-name="선 691" y2="12" transform="translate(1029.5 389.5)"
+                                            fill="none" stroke="#000" stroke-linecap="round" stroke-width="2" />
+                                        <line id="선_692" data-name="선 692" y2="12"
+                                            transform="translate(1035.5 395.5) rotate(90)" fill="none" stroke="#000"
+                                            stroke-linecap="round" stroke-width="2" />
+                                    </g>
+                                </svg>
+                                <table class="dispatcTable">
+                                    <tr>
+                                        <td class="tdTypeA">배차차량</td>
+                                        <td>
+                                            <input type="text" class="inputText dispatchBus" readonly>
+                                        </td>
+                                        <td class="tdTypeA">담당기사</td>
+                                        <td>
+                                            <select name="driver" class="inputText orderDriver inputTextUnit dispatchDriver">
+                                            </select>님
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="tdTypeA">계약금액</td>
+                                        <td>
+                                            <input name="price" type="text" class="inputText inputTextUnit dispatchPrice dispatchPriceBlank">원</td>
+                                        </td>
+                                        <td class="tdTypeA">상여금</td>
+                                        <td>
+                                            <input name="driver_allowance" type="text" class="inputText inputTextUnit dispatchPaymen dispatchPaymenBlank">원</td>
+                                        </td>
+                                    </tr>
+                                    <input name="bus" type="hidden" class="hiddenBus">
+                                    <input name="id" value="{{detail.id}}" type="hidden">
+                                </table>
+                            </div>
+                            {% endfor %}
+                            {% endif %}
+                            {% endif %}
+                        </div>
+                        <div class="popupFooter">
+                            <input type="submit" class="btnModules dispatchSave" value="등록">
+                            <div class="btnModules closeBtn">닫기</div>
+                        </div>
+                    </form>
+                </div>
+              </div>
 
         </div>
 
 
-        <form action="" class="inputDispatchForm">
-            <!-- 입력창 -->
-            <div class="input">
-                <input type="submit" value="저장" class="btnModules inputSave">
-                <table>
-                    <tr>
-                        <td class="InputHeader InputHeaderBordeTopLeft">출발지</td>
-                        <td class="InputTd" colspan="3"><input type="text" class="inputText"></td>
-                        <td class="InputHeader">계약금액</td>
-                        <td class="InputTd"><input type="text" class="inputText inputTextUnit">원</td>
-                        <td class="InputHeader">상여금</td>
-                        <td class="InputTd"><input type="text" class="inputText inputTextUnit">원</td>
-                    </tr>
-                    <tr>
-                        <td class="InputHeader InputHeaderBordeTopLeft">도착지</td>
-                        <td class="InputTd" colspan="3"><input type="text" class="inputText"></td>
-                        <td class="InputHeader">입금현황</td>
-                        <td class="InputTd">
-                            <select name="" id="deposit_status" class="inputSelect">
-                                <option value=""></option>
-                            </select>
-                        </td>
-                        <td class="InputHeader">입금 예정일</td>
-                        <td class="InputTd"><input type="date" class="inputText"></td>
-                    </tr>
-                    <tr>
-                        <td class="InputHeader InputHeaderBordeTopLeft">운행시간</td>
-                        <td class="InputTd" colspan="3">
-                            <div class="twiceBox">
-                                <div class="quarterBox">
-                                    <input type="text" class="inputTextquarter">
-                                    <div class="deeperBox">
-                                        <input type="text" class="inputTextTwice">
-                                        :
-                                        <input type="text" class="inputTextTwice">
-                                    </div>
-                                </div>
-                                ~
-                                <div class="quarterBox">
-                                    <input type="text" class="inputTextquarter">
-                                    <div class="deeperBox">
-                                        <input type="text" class="inputTextTwice">
-                                        :
-                                        <input type="text" class="inputTextTwice">
-                                    </div>
-                                </div>
-                            </div>
-                        </td>
-                        <td class="InputHeader">비용구분</td>
-                        <td class="InputTd">
-                            <select name="" id="cost_type" class="inputSelect">
-                                <option value=""></option>
-                            </select>
-                        </td>
-                        <td class="InputHeader">계산서 발행일</td>
-                        <td class="InputTd"><input type="date" class="inputText"></td>
-                    </tr>
-                    <tr>
-                        <td class="InputHeader InputHeaderBordeTopLeft">차량대수</td>
-                        <td class="InputTd">
-                            <input type="number" class="inputText inputTextUnit inputBusCount">대
-                        </td>
-                        <td class="InputHeader">차량종류</td>
-                        <td class="InputTd">
-                            <select name="" id="bus_type" class="inputSelect">
-                                <option value=""></option>
-                            </select>
-                        </td>
-                        <td class="InputHeader">수금구분</td>
-                        <td class="InputTd" colspan="3">
-                            <select name="" id="collection_type" class="inputSelect inputSelectfixedWidth">
-                                <option value=""></option>
-                            </select>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="InputHeader InputHeaderBordeTopLeft">예약자</td>
-                        <td class="InputTd"><input type="text" class="inputText"></td>
-                        <td class="InputHeader">전화번호</td>
-                        <td class="InputTd"><input type="text" class="inputText"></td>
-                        <td class="InputHeader">상여금 선지급</td>
-                        <td class="InputTd">
-                            <input type="checkbox">
-                            <label for="">선지급</label>
-                        </td>
-                        <td class="InputHeader">VAT 포함</td>
-                        <td class="InputTd">
-                            <input type="checkbox">
-                            <label for="">포함</label>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="InputHeader InputHeaderBordeTopLeft">계약현황</td>
-                        <td class="InputTd">
-                            <select name="" id="contract_status" class="inputSelect">
-                                <option value=""></option>
-                            </select>
-                        </td>
-                        <td class="InputHeader">운행종류</td>
-                        <td class="InputTd">
-                            <select name="" id="drive_type" class="inputSelect">
-                                <option value=""></option>
-                            </select>
-                        </td>
-                        <td class="InputHeader">참조사항</td>
-                        <td class="InputTd" colspan="3"><input type="text" class="inputText"></td>
-                    </tr>
-                </table>
-            </div>
-
-
-
-            <!-- 일반배차 -->
-            <div class="orderDispatch">
-                <table class="orderDispatchTable">
-                    <thead>
-                        <tr>
-                            <td>차량번호</td>
-                            <td>기사이름</td>
-                            <td>용역기사</td>
-                            <td>계약금액</td>
-                            <td>상여금</td>
-                            <td>공제</td>
-                            <td>삭제</td>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td></td>
-                            <td>
-                                <select name="" id="" class="orderDriverSelect inputTextUnit">
-                                    <option value=""></option>
-                                </select>님
-                            </td>
-                            <td><input type="text" class="inputText inputTextUnit">님</td>
-                            <td><input type="text" class="inputText inputTextUnit">원</td>
-                            <td><input type="text" class="inputText inputTextUnit">원</td>
-                            <td><input type="text" class="inputText inputTextUnit">원</td>
-                            <td>
-                                <div class="btnModules orderDispatchDelete">삭제</div>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-
-        </form>
-
-
 
         <!-- 노선목록 -->
-        <form class="list">
-            <div class="listHeader">
-                <span>그룹이름</span>
-                <input type="submit" value="엑셀로 내려받기" class="btnModules listExcel">
+        <div class="orderListBox">
+            <div class="orderListHeader">
+                <span></span>
+                <div class="orderListBtnBox">
+                    <div class="btnModules dispatchBtn">배차</div>
+                    <div class="btnModules printBtn">인쇄</div>
+                    <div class="btnModules docmentBtn">서류함</div>
+                    <div class="btnModules ExcelBtn">엑셀로 내려받기</div>
+                </div>
             </div>
-            <table class="listTable">
-                <thead>
-                    <tr>
-                        <td class="ListTableBox">
-                            <table>
-                                <tr>
-                                    <td class="listTableFixedTd1">운행시간</td>
-                                    <td class="listTableFixedTd2">차량종류</td>
-                                    <td class="listTableFixedTd3">운행종류</td>
-                                    <td class="listTableFixedTd4">업무내용</td>
-                                    <td class="listTableFixedTd5">계약현황</td>
-                                </tr>
-                            </table>
-                        </td>
-                        <td class="scrollListTableBox">
-                            <div class="scrollListTableWidth">
-                                <table class="scrollListTable">
-                                    <tr>
-                                        <td>배차차량</td>
-                                        <td>차량대수</td>
-                                        <td>상여금</td>
-                                        <td>계약금액</td>
-                                        <td>예약정보</td>
-                                        <td>비용구분</td>
-                                        <td>참조사항</td>
-                                        <td>수금금액</td>
-                                        <td>미수금</td>
-                                        <td>수금일자</td>
-                                        <td>입금현황</td>
-                                        <td>VAT포함</td>
-                                        <td>계산서 발행일</td>
-                                        <td>입금 예정일</td>
-                                        <td>입력자</td>
-                                    </tr>
-                                </table>
+            <div class="orderListBody">
+                <div class="orderListMain">
+                    <div class="orderListTableHead">
+                        <div class="orderListMainContents orderListMain1">운행시간</div>
+                        <div class="orderListMainContents orderListMain2">차량종류</div>
+                        <div class="orderListMainContents orderListMain3">운행종류</div>
+                        <div class="orderListMainContents orderListMain4">노선</div>
+                        <div class="orderListMainContents orderListMain5">계약현황</div>
+                    </div>
+                    <div class="orderListSubScroll">
+                        <div class="orderListScrollBox">
+                            {% for order in order_list %}
+                            <div class="orderListItem {{forloop.counter}} {{order.id}}">
+                                <div class="orderListMainContents orderListMain1">
+                                    {{order.departure_date}}<br>{{order.arrival_date}}
+                                </div>
+                                <div class="orderListMainContents orderListMain2">
+                                    {{order.bus_type}}
+                                </div>
+                                <div class="orderListMainContents orderListMain3">
+                                    {{order.operation_type}}
+                                </div>
+                                <div class="orderListMainContents orderListMain4">
+                                    {{order.departure}} ▶ <br>{{order.arrival}}
+                                </div>
+                                <div class="orderListMainContents orderListMain5">
+                                    {{order.contract_status}}
+                                </div>
                             </div>
-                        </td>
-                    </tr>
-                </thead>
-            </table>
-            <div class="listTableScroll">
-                <table class="listTable">
-                    <tbody>
-                        <tr>
-                            <td class="ListTableBox">
-                                <div>
-                                    <table>
-                                        <tr>
-                                            <td class="listTableFixedTd1"></td>
-                                            <td class="listTableFixedTd2"></td>
-                                            <td class="listTableFixedTd3"></td>
-                                            <td class="listTableFixedTd4"></td>
-                                            <td class="listTableFixedTd5"></td>
-                                        </tr>
-                                    </table>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    <div class="orderListTotal">
+                        <div class="orderListMainContents orderListMain1"></div>
+                        <div class="orderListMainContents orderListMain2"></div>
+                        <div class="orderListMainContents orderListMain3"></div>
+                        <div class="orderListMainContents orderListMain4"></div>
+                        <div class="orderListMainContents orderListMain5"></div>
+                    </div>
+                </div>
+                <div class="orderListSub">
+                    <div class="orderListSubScrollX">
+                        <div class="orderListTableHead">
+                            <div class="orderListSubContents">배차차량</div>
+                            <div class="orderListSubContents">차량대수 : 변경(확정)</div>
+                            <div class="orderListSubContents">상여금</div>
+                            <div class="orderListSubContents">계약금액</div>
+                            <div class="orderListSubContents">예약정보</div>
+                            <div class="orderListSubContents">표찰정보</div>
+                            <div class="orderListSubContents">비용구분</div>
+                            <div class="orderListSubContents">참조사항</div>
+                            <div class="orderListSubContents">수금금액</div>
+                            <div class="orderListSubContents">미수금</div>
+                            <div class="orderListSubContents">수금일자</div>
+                            <div class="orderListSubContents">입금현황</div>
+                            <div class="orderListSubContents">VAT포함</div>
+                            <div class="orderListSubContents">계산서 발행일</div>
+                            <div class="orderListSubContents">계산서 발행처</div>
+                            <div class="orderListSubContents">입력자</div>
+                        </div>
+                        <div class="orderListSubScroll">
+                            <div class="orderListScrollBox">
+                                {% for order in order_list %}
+                                <div class="orderListItem {{forloop.counter}} {{order.id}}">
+                                    <div class="orderListSubContents">
+                                        {% for connect in order.info_order.all %}
+                                        {{connect.bus_id.vehicle_num}}({{connect.driver_id.name}})
+                                        {% endfor %}
+                                    </div>
+                                    <div class="orderListSubContents">{{order.info_order.count}} ({{order.bus_cnt}})</div>
+                                    <div class="orderListSubContents">{{order.driver_allowance}}</div>
+                                    <div class="orderListSubContents">{{order.price}}</div>
+                                    <div class="orderListSubContents">{{order.customer}} : {{order.customer_phone}}</div>
+                                    <div class="orderListSubContents">{{order.ticketing_info}}</div>
+                                    <div class="orderListSubContents">{{order.cost_type}}</div>
+                                    <div class="orderListSubContents">{{order.references}}</div>
+                                    <div class="orderListSubContents">{{order.collection_amount}}</div>
+                                    <div class="orderListSubContents"></div>
+                                    <div class="orderListSubContents">{{order.collection_date}}</div>
+                                    <div class="orderListSubContents">{{order.deposit_status}}</div>
+                                    <div class="orderListSubContents">{{order.VAT}}</div>
+                                    <div class="orderListSubContents">{{order.bill_date}}</div>
+                                    <div class="orderListSubContents">{{order.bill_place}}</div>
+                                    <div class="orderListSubContents">{{order.creator.name}}</div>
                                 </div>
-                            </td>
-                            <td class="scrollListTableBox">
-                                <div class="scrollListTableWidth">
-                                    <table class="scrollListTable">
-                                        <tr>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                        </tr>
-                                    </table>
-                                </div>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        <div class="orderListTotal">
+                            <div class="orderListSubContents"></div>
+                            <div class="orderListSubContents"></div>
+                            <div class="orderListSubContents"></div>
+                            <div class="orderListSubContents"></div>
+                            <div class="orderListSubContents"></div>
+                            <div class="orderListSubContents"></div>
+                            <div class="orderListSubContents"></div>
+                            <div class="orderListSubContents"></div>
+                            <div class="orderListSubContents"></div>
+                            <div class="orderListSubContents"></div>
+                            <div class="orderListSubContents"></div>
+                            <div class="orderListSubContents"></div>
+                            <div class="orderListSubContents"></div>
+                            <div class="orderListSubContents"></div>
+                            <div class="orderListSubContents"></div>
+                            <div class="orderListSubContents"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="orderListScrollYBox">
+                    <div></div>
+                </div>
             </div>
+        </div>
+
+
     </div>
-
-    </form>
-
-
-
-
 </div>
 {% endblock %}
 
 
 
 {% block script %}
-<script src="{% static 'js/dispatch/bothScroll.js' %}"></script>
-<script src="{% static 'js/dispatch/crateDispatch.js' %}"></script>
+<script>
+    {% autoescape off %}
+    const data = {% if dispatch_list %} {{ dispatch_list }} {% else %} '' {% endif %}
+    const data2 = {% if dispatch_list2 %} {{ dispatch_list2 }} {% else %} '' {% endif %}
+    const dataList = {% if dispatch_data_list %} {{ dispatch_data_list }} {% else %} '' {% endif %}
+    const driverObj = {{ driver_dict }}
+    console.log("DATA", data)
+    console.log("DATA2", data2)
+    console.log("driverObj", driverObj);
+    console.log('dataList', dataList);
+    {% endautoescape %}
+</script>
+<script src="{% static 'js/dispatch/orderAll.js' %}"></script>
+<script src="{% static 'js/dispatch/layoutChanger.js' %}"></script>
+<script src="{% static 'js/dispatch/scrollLink.js' %}"></script>
+<script src="{% static 'js/dispatch/dispatchPopup.js' %}"></script>
+<script src="{% static 'js/dispatch/orderDateControll.js' %}"></script>
+<script src="{% static 'js/dispatch/LinkDocument.js' %}"></script>
+<script src="{% static 'js/dispatch/orderValidation.js' %}"></script>
+<script src="{% static 'js/dispatch/loadRouteInput.js' %}"></script>
 <script src="{% static 'js/dispatch/orderDispatch.js' %}"></script>
+<script src="{% static 'js/dispatch/FullSchedule.js' %}"></script>
 {% endblock %}

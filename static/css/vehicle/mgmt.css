@@ -38,10 +38,9 @@
 }
 
 .tableHead {
-    width: calc(100% - 0.2rem);
+    width: calc(100% - 0.9rem);
     height: 4.8rem;
-    border: 0.1rem solid #CDCDCE;
-    border-radius: 0.5rem 0.5rem 0 0;
+    border-spacing: 0;
 }
 
 .tableHead thead {
@@ -50,7 +49,6 @@
 }
 
 table tr {
-    display: flex;
     width: 100%;
     height: 6.4rem;
     border-bottom: 0.1rem solid #CDCDCE;
@@ -63,14 +61,19 @@ table tr {
     border: none;
     font-size: 1.6rem;
     font-weight: 700;
-    color: #7A7A7A;
+    color: white;
+    background-color: #444444;
 }
 
-table tr:nth-child(odd) {
+table td{
+    text-align: center;
+}
+
+.tableBody tr:nth-child(odd) {
     background-color: white;
 }
 
-table tr:nth-child(even) {
+.tableBody tr:nth-child(even) {
     background-color: #EFEFEF;
 }
 
@@ -100,6 +103,7 @@ table tr:nth-child(even) {
 .tableBody {
     width: 100%;
     height: auto;
+    border-spacing: 0;
 }
 
 tbody {
@@ -108,10 +112,10 @@ tbody {
 }
 
 .tableBody td {
-    display: flex;
-    align-items: center;
     font-size: 1.4rem;
     color: #191919;
+    border-right: 0.1rem solid #D4D4D4;
+    border-bottom: 0.1rem solid #D4D4D4;
 }
 
 .insuranceTable td:nth-child(1) {
@@ -259,6 +263,17 @@ tbody {
     border-radius: 0.3rem;
     box-sizing: border-box;
     outline: none;
+}
+
+.testDateBox{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+.testDateBox .PopupDataInput{
+    width: 30%;
 }
 
 .PopupBtnBox {

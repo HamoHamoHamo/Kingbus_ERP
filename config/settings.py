@@ -39,7 +39,7 @@ INSTALLED_APPS = [
     'humanresource.apps.HumanresourceConfig',
     'vehicle.apps.VehicleConfig',
     'homepage',
-
+    'document',
     "debug_toolbar",
 ]
 

@@ -59,7 +59,7 @@
 }
 
 .createGroupForm input:nth-child(2) {
-  width: 4.2rem;
+  width: 4.8rem;
 }
 
 .createGroupForm input:nth-child(3) {
@@ -444,7 +444,7 @@
 }
 
 .hourMarker {
-  width: 106.56rem;
+  width: 109.44rem;
 }
 
 .scheduleTableTrAble {
@@ -456,17 +456,22 @@
 }
 
 .hourTd {
-  width: 8.88rem;
+  width: 9.12rem;
 }
 
 .scheduleBodyArea {
   height: calc(100% - 4.2rem);
+  padding-left: 1rem;
 }
 
 .driverTd {
-  width: calc(100% - 106.56rem);
+  width: calc(100% - 109.44rem);
 }
 
 .ableToDispatch{
   background-color: #0069D9;
+}
+
+.scheduleTableScroll{
+  width: calc(100% - 1rem);
 }
