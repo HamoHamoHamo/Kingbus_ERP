@@ -1,5 +1,5 @@
 from django.views import generic
-
+from django.shortcuts import render, redirect, get_object_or_404
 from dispatch.models import DispatchOrder
 
 from datetime import datetime, timedelta, date
@@ -70,3 +70,18 @@ class DocumentList(generic.ListView):
         context['date'] = self.request.GET.get('date', TODAY)
         
         return context
+
+def vehicle_print(request):
+    return render(request, 'document/vehicle_print.html')
+
+def commitment_print(request):
+    return render(request, 'document/commitment_print.html')
+
+def safety_print(request):
+    return render(request, 'document/safety_print.html')
+
+def school_print(request):
+    return render(request, 'document/school_print.html')
+
+def drinking_print(request):
+    return render(request, 'document/drinking_print.html')

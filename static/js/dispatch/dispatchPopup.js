@@ -20,6 +20,10 @@ function openDispatch() {
         MainLayout.style.width = "calc(100% - 38rem)"
         scheduleOpenBtn.classList.remove("scheduleOpenBtnVisible")
     }
+    for (i = 0; i < dispatchPrice.length; i++) {
+        dispatchPrice[i].value = dispatchPrice[i].value.replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
+        dispatchPaymen[i].value = dispatchPaymen[i].value.replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
+    }
     popupAreaModulesDispatch.classList.add("popupAreaModulesVisible")
     for (i = 0; i < dispatchPriceBlank.length; i++) {
         dispatchPriceBlank[i].value = inputTextPrice.value
@@ -40,9 +44,9 @@ dispatchSave.addEventListener("click", dispatchSaveCheck)
 
 function dispatchSaveCheck(e) {
     e.preventDefault()
-    
+
     let selectDriver = []
-    
+
     for (i = 0; i < removeBtn.length; i++) {
         if (dispatchBus.value !== "") {
             for (j = 0; j < dispatchDriver[i].children.length; j++) {
@@ -53,8 +57,8 @@ function dispatchSaveCheck(e) {
         }
     }
 
-    for(i=0; i<selectDriver.length; i++){
-        if(selectDriver[i] == ""){
+    for (i = 0; i < selectDriver.length; i++) {
+        if (selectDriver[i] == "") {
             return alert("담당기사를 배정해 주세요.")
         }
     }

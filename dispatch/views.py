@@ -19,6 +19,10 @@ FORMAT = "%Y-%m-%d"
 WEEK = ['(월)', '(화)', '(수)', '(목)', '(금)', '(토)', '(일)', ]
 WEEK2 = ['월', '화', '수', '목', '금', '토', '일', ]
 
+def order_print(request):
+
+    return render(request, 'dispatch/order_print.html')
+
 def calendar_create(request):
     if request.method == "POST":
         creator = get_object_or_404(Member, id=request.session.get('user'))
@@ -887,12 +891,22 @@ def order_create(request):
             if len(arrival_time2) < 2:
                 arrival_time2 = f'0{arrival_time2}'
             
+            if order_form.cleaned_data['price']:
+                price = int(order_form.cleaned_data['price'].replace(',',''))
+            else:
+                price = 0
+            if order_form.cleaned_data['driver_allowance']:
+                driver_allowance = int(order_form.cleaned_data['driver_allowance'].replace(',',''))
+            else:
+                driver_allowance = 0
+
             order = order_form.save(commit=False)
-            order.price = int(order_form.cleaned_data['price'].replace(',',''))
-            order.driver_allowance = int(order_form.cleaned_data['driver_allowance'].replace(',',''))
+            order.price = price
+            order.driver_allowance = driver_allowance
             order.VAT = request.POST.get('VAT', 'n')
             order.payment_method = request.POST.get('payment_method', 'n')
             order.creator = creator
+            order.cost_type = ' '.join(request.POST.getlist('cost_type'))
             order.departure_date = f"{request.POST.get('departure_date')} {departure_time1}:{departure_time2}"
             order.arrival_date = f"{request.POST.get('arrival_date')} {arrival_time1}:{arrival_time2}"
             order.route = request.POST.get('departure') + " ▶ " + request.POST.get('arrival')
@@ -976,6 +990,15 @@ def order_edit(request):
             #     connect.save()
             #
 
+            if order_form.cleaned_data['price']:
+                price = int(order_form.cleaned_data['price'].replace(',',''))
+            else:
+                price = 0
+            if order_form.cleaned_data['driver_allowance']:
+                driver_allowance = int(order_form.cleaned_data['driver_allowance'].replace(',',''))
+            else:
+                driver_allowance = 0
+
             order.operation_type = order_form.cleaned_data['operation_type']
             order.references = order_form.cleaned_data['references']
             order.departure = order_form.cleaned_data['departure']
@@ -984,10 +1007,10 @@ def order_edit(request):
             order.arrival_date = f'{post_arrival_date} {arrival_time1}:{arrival_time2}'
             order.bus_type = order_form.cleaned_data['bus_type']
             order.bus_cnt = order_form.cleaned_data['bus_cnt']
-            order.price = int(order_form.cleaned_data['price'].replace(',',''))
-            order.driver_allowance = int(order_form.cleaned_data['driver_allowance'].replace(',',''))
+            order.price = price
+            order.driver_allowance = driver_allowance
             order.contract_status = order_form.cleaned_data['contract_status']
-            order.cost_type = order_form.cleaned_data['cost_type']
+            order.cost_type = ' '.join(request.POST.getlist('cost_type'))
             order.customer = order_form.cleaned_data['customer']
             order.customer_phone = order_form.cleaned_data['customer_phone']
             order.deposit_status = order_form.cleaned_data['deposit_status']

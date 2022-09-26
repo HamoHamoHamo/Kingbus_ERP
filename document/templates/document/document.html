@@ -42,20 +42,20 @@
 
 <div class="documentArea">
     <span class="documentType">출력문서 :</span>
-    <a href="">
+    <a href="{% url 'document:vehicle_print' %}">
         <span class="btnModules">차량등록증</span>
     </a>
-    <a href="">
+    <a href="{% url 'document:commitment_print' %}">
         <span class="btnModules">확약서</span>
     </a>
-    <a href="">
+    <a href="{% url 'document:safety_print' %}">
         <span class="btnModules">차량안전 점검표</span>
     </a>
-    <a href="">
+    <a href="{% url 'document:school_print' %}">
         <span class="btnModules">학교표찰</span>
         <!-- A3 -->
     </a>
-    <a href="">
+    <a href="{% url 'document:drinking_print' %}">
         <span class="btnModules">자가 음주측정 보고서</span>
     </a>
     <span class="documentType documentTypeLocation">사이트로 이동 :</span>

@@ -7,6 +7,7 @@ window.onload = function () {
     addCommaList()
     changeVAT()
     pageLoadAddComma()
+    listHeight()
 }
 
 

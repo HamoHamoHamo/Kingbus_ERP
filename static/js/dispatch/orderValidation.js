@@ -2,8 +2,8 @@ const inputTextPhoneNum = document.querySelector(".inputTextPhoneNum")
 const inputTextPrice = document.querySelector(".inputTextPrice")
 const inputTextDriverAllowance = document.querySelector(".inputTextDriverAllowance")
 const inputTextTwice = document.querySelectorAll(".inputTextTwice")
-const dispatchPrice = document.querySelector(".dispatchPrice")
-const dispatchPaymen = document.querySelector(".dispatchPaymen")
+const dispatchPrice = document.querySelectorAll(".dispatchPrice")
+const dispatchPaymen = document.querySelectorAll(".dispatchPaymen")
 const needComma1 = document.querySelectorAll(".listTableScroll .scrollListTable td:nth-child(3)")
 const needComma2 = document.querySelectorAll(".listTableScroll .scrollListTable td:nth-child(4)")
 const needComma3 = document.querySelectorAll(".listTableScroll .scrollListTable td:nth-child(8)")
@@ -33,7 +33,7 @@ function orderPeriod() {
 
 // 운행시간 범위
 for (i = 0; i < inputTextquarter.length; i++) {
-    inputTextquarter[i].addEventListener("change", orderDate)
+    // inputTextquarter[i].addEventListener("change", orderDate)
 }
 
 function orderDate() {
@@ -118,12 +118,14 @@ inputTextPrice.addEventListener("input", onlyNum)
 inputTextDriverAllowance.addEventListener("click", removeComma)
 inputTextDriverAllowance.addEventListener("change", addComma)
 inputTextDriverAllowance.addEventListener("input", onlyNum)
-dispatchPrice.addEventListener("click", removeComma)
-dispatchPrice.addEventListener("change", addComma)
-dispatchPrice.addEventListener("input", onlyNum)
-dispatchPaymen.addEventListener("click", removeComma)
-dispatchPaymen.addEventListener("change", addComma)
-dispatchPaymen.addEventListener("input", onlyNum)
+for (i = 0; i < dispatchPrice.length; i++) {
+    dispatchPrice[i].addEventListener("click", removeComma)
+    dispatchPrice[i].addEventListener("change", addComma)
+    dispatchPrice[i].addEventListener("input", onlyNum)
+    dispatchPaymen[i].addEventListener("click", removeComma)
+    dispatchPaymen[i].addEventListener("change", addComma)
+    dispatchPaymen[i].addEventListener("input", onlyNum)
+}
 
 
 function removeComma() {
@@ -157,12 +159,6 @@ function submitVaildation(e) {
             if (inputTextDriverAllowance.value !== "" && inputTextDriverAllowance.value.length > 3) {
                 inputTextDriverAllowance.value = inputTextDriverAllowance.value.replace(/\,/g, "")
             }
-            if (dispatchPrice.value !== "" && dispatchPrice.value.length > 3) {
-                dispatchPrice.value = dispatchPrice.value.replace(/\,/g, "")
-            }
-            if (dispatchPaymen.value !== "" && dispatchPaymen.value.length > 3) {
-                dispatchPaymen.value = dispatchPaymen.value.replace(/\,/g, "")
-            }
             inputDispatchForm.submit()
         }
     } else {
@@ -171,12 +167,6 @@ function submitVaildation(e) {
         }
         if (inputTextDriverAllowance.value !== "" && inputTextDriverAllowance.value.length > 3) {
             inputTextDriverAllowance.value = inputTextDriverAllowance.value.replace(/\,/g, "")
-        }
-        if (dispatchPrice.value !== "" && dispatchPrice.value.length > 3) {
-            dispatchPrice.value = dispatchPrice.value.replace(/\,/g, "")
-        }
-        if (dispatchPaymen.value !== "" && dispatchPaymen.value.length > 3) {
-            dispatchPaymen.value = dispatchPaymen.value.replace(/\,/g, "")
         }
         inputDispatchForm.submit()
     }
@@ -221,15 +211,15 @@ function pageLoadAddComma() {
     inputTextPrice.value = inputTextPrice.value.replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
     inputTextDriverAllowance.value = inputTextDriverAllowance.value.replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
     for (i = 0; i < ListSub.length; i++) {
-        ListSub[i].children[2].innerText = ListSub[i].children[2].innerText.replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
-        ListSub[i].children[3].innerText = ListSub[i].children[3].innerText.replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
-        ListSub[i].children[8].innerText = ListSub[i].children[8].innerText.replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
-        ListSub[i].children[9].innerText = `${ListSub[i].children[3].innerText.replace(/\,/g, "") - ListSub[i].children[8].innerText.replace(/\,/g, "")}`
-        ListSub[i].children[9].innerText = ListSub[i].children[9].innerText.replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
-        if (ListSub[i].children[12].innerText == "y") {
-            ListSub[i].children[12].innerText = "VAT 포함"
-        }else{
-            ListSub[i].children[12].innerText = "VAT 미포함"
+        ListSub[i].children[5].innerText = ListSub[i].children[5].innerText.replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
+        ListSub[i].children[6].innerText = ListSub[i].children[6].innerText.replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
+        ListSub[i].children[11].innerText = ListSub[i].children[11].innerText.replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
+        ListSub[i].children[12].innerText = `${ListSub[i].children[6].innerText.replace(/\,/g, "") - ListSub[i].children[11].innerText.replace(/\,/g, "")}`
+        ListSub[i].children[12].innerText = ListSub[i].children[12].innerText.replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
+        if (ListSub[i].children[15].innerText == "y") {
+            ListSub[i].children[15].innerText = "VAT 포함"
+        } else {
+            ListSub[i].children[15].innerText = "VAT 미포함"
         }
     }
 }
