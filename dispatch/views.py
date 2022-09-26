@@ -837,6 +837,11 @@ def order_connect_create(request):
     if request.method == "POST":
         creator = get_object_or_404(Member, id=request.session.get('user'))
         order = get_object_or_404(DispatchOrder, id=request.POST.get('id', None))
+        driver_name_list = []
+        for i in range(int(order.bus_cnt)):
+            service_name = request.POST.get(f'driver_name{i}', '')
+            driver_name_list.append(service_name)
+
 
         bus_list = request.POST.getlist('bus')
         driver_list = request.POST.getlist('driver')
@@ -851,6 +856,7 @@ def order_connect_create(request):
             driver = Member.objects.get(id=driver_id)
             price = price_list[count].replace(",","")
             allowance = driver_allowance_list[count].replace(",","")
+            driver_name = driver_name_list[count]
             connect = DispatchOrderConnect(
                 order_id = order,
                 bus_id = vehicle,
@@ -859,7 +865,8 @@ def order_connect_create(request):
                 arrival_date = order.arrival_date,
                 driver_allowance = allowance,
                 price = price,
-                creator = creator
+                creator = creator,
+                driver_name = driver_name
             )
             connect.save()
             count = count + 1

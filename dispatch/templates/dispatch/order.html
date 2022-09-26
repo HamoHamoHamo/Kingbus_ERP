@@ -359,7 +359,7 @@
                                             </select>님
                                         </td>
                                         <td colspan="2" class="tdTypeB">
-                                            <input value="" type="text" class="inputText inputTextUnit ">님
+                                            <input name="driver_name{{forloop.counter0}}" value="{{i.driver_name}}" type="text" class="inputText inputTextUnit ">님
                                         </td>
                                     </tr>
                                     <tr>
@@ -402,7 +402,7 @@
                                             </select>님
                                         </td>
                                         <td colspan="2" class="tdTypeB">
-                                            <input value="" type="text" class="inputText inputTextUnit ">님
+                                            <input name="driver_name{{forloop.counter0|add:detail_connect_list.count}}" value="" type="text" class="inputText inputTextUnit ">님
                                         </td>
                                     </tr>
                                     <tr>
