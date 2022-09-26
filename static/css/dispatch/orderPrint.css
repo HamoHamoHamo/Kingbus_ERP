@@ -1,0 +1,153 @@
+body {
+    margin: 0;
+}
+
+.print {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    width: 138.6rem;
+    height: auto;
+}
+
+.printTitle {
+    position: absolute;
+    top: 1.2rem;
+    left: 50%;
+    font-size: 2rem;
+    font-weight: 700;
+    transform: translate(-50%, -50%);
+}
+
+.printTable {
+    width: 100%;
+    height: auto;
+    margin-top: 3.2rem;
+    border-top: 0.1rem solid black;
+    border-left: 0.1rem solid black;
+}
+
+.printTableHead {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    height: 2.8rem;
+}
+
+.prinTableBody {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    width: 100%;
+    height: auto;
+}
+
+.printTableCell {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    height: 2.8rem;
+}
+
+.item {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    border-bottom: 0.1rem solid black;
+    border-right: 0.1rem solid black;
+}
+
+.printTableHead .item {
+    font-weight: 700;
+    font-size: 0.9rem;
+}
+
+.printTableCell .item {
+    font-size: 0.8rem;
+}
+
+.item:nth-child(1) {
+    width: 6.4rem;
+}
+
+.item:nth-child(2) {
+    width: 19rem;
+}
+
+.item:nth-child(3) {
+    width: 16rem;
+}
+
+.item:nth-child(4),
+.item:nth-child(8) {
+    width: 7rem;
+}
+
+.item:nth-child(5),
+.item:nth-child(16) {
+    width: 4rem;
+}
+
+.item:nth-child(6),
+.item:nth-child(7),
+.item:nth-child(12),
+.item:nth-child(13) {
+    width: 5rem;
+}
+
+.item:nth-child(9) {
+    width: 12rem;
+}
+
+.item:nth-child(10),
+.item:nth-child(15),
+.item:nth-child(17),
+.item:nth-child(18) {
+    width: 6rem;
+}
+
+.item:nth-child(11) {
+    width: 14rem;
+}
+
+.item:nth-child(14) {
+    width: 5.4rem;
+}
+
+
+
+.printTableCell .item:nth-child(2) {
+    width: 18.7rem;
+    justify-content: flex-start;
+    padding-left: 0.3rem;
+}
+
+.printTableCell .item:nth-child(3) {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    width: 15.4rem;
+    height: calc(100% - 0.6rem);
+    padding: 0.3rem;
+}
+
+.printTableCell .item:nth-child(8) {
+    width: 6.7rem;
+    justify-content: flex-start;
+    padding-left: 0.3rem;
+}
+
+.printTableCell .item:nth-child(9) {
+    width: 11.7rem;
+    justify-content: flex-start;
+    padding-left: 0.3rem;
+}
+
+.printTableCell .item:nth-child(11) {
+    width: 13.7rem;
+    justify-content: flex-start;
+    padding-left: 0.3rem;
+}

@@ -28,6 +28,7 @@ urlpatterns = [
     path('calendar/delete/1', views.calendar_delete_1, name='calendar_delete1'),
     path('calendar/delete/2', views.calendar_delete_2, name='calendar_delete2'),
     # 배차지시서
+    path('print/order', views.order_print, name='order_print'),
     path('print/line', views.line_print, name='line_print'),
     path('print/bus', views.bus_print, name='bus_print'),
     path('print/dailylist', views.daily_driving_list, name='daily_driving_list'),

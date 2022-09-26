@@ -32,7 +32,7 @@
                         transform="translate(-11.25 -6.194)" fill="#fff" />
                 </svg>
             </div>
-            <div class="scheduleHeader">2022.09.16 (sd)</div>
+            <div class="scheduleHeader">2022.09.16 ()</div>
         </div>
 
         <!-- 스케줄-바디 -->
@@ -86,7 +86,7 @@
                 <!-- 변경영역 -->
                 <div class="search_inputArea">
                     <label for="">노선</label>
-                    <input type="text">
+                    <input name="route" type="text">
                     <label for="">날짜</label>
                     <input type="date" name="date1" class="searchDate" max="9999-12-31">~
                     <input type="date" name="date2" class="searchDate" max="9999-12-31">
@@ -223,11 +223,11 @@
                             </td>
                             <td class="tdTypeA">비용구분</td>
                             <td class="tdTypeC">
-                                <input name="cost_type" id="highway" type="checkbox" value="고속">
+                                <input {% if detail.cost_type and detail.cost_type|in_check:'고속' %} checked {% endif %} name="cost_type" id="highway" type="checkbox" value="고속">
                                 <label for="highway">고속</label>
-                                <input name="cost_type" id="parking" type="checkbox" value="주차">
+                                <input {% if detail.cost_type and detail.cost_type|in_check:'주차' %} checked {% endif %} name="cost_type" id="parking" type="checkbox" value="주차">
                                 <label for="parking">주차</label>
-                                <input name="cost_type" id="payment" type="checkbox" value="상여">
+                                <input {% if detail.cost_type and detail.cost_type|in_check:'상여' %} checked {% endif %} name="cost_type" id="payment" type="checkbox" value="상여">
                                 <label for="payment">상여</label>
                             </td>
                             <td class="tdTypeA">계산서 발행처</td>
@@ -349,27 +349,30 @@
                                 <table class="dispatcTable">
                                     <tr>
                                         <td class="tdTypeA">배차차량</td>
-                                        <td>
-                                            <input value="{{i.bus_id.vehicle_num}}" type="text" class="inputText dispatchBus" readonly>
+                                        <td colspan="2" class="tdTypeB">
+                                            <input value="{{i.bus_id.vehicle_num}}" type="text" class="inputText dispatchBus " readonly>
                                         </td>
                                         <td class="tdTypeA">담당기사</td>
-                                        <td>
+                                        <td colspan="2" class="tdTypeB">
                                             <select name="driver" class="inputText orderDriver inputTextUnit dispatchDriver">
                                                 <option value="{{i.driver_id.id}}">{{i.driver_id.name}}</option>
                                             </select>님
                                         </td>
+                                        <td colspan="2" class="tdTypeB">
+                                            <input value="" type="text" class="inputText inputTextUnit ">님
+                                        </td>
                                     </tr>
                                     <tr>
                                         <td class="tdTypeA">계약금액</td>
-                                        <td>
+                                        <td colspan="3" class="tdTypeC">
                                             <input value="{{i.price}}" name="price" type="text" class="inputText inputTextUnit dispatchPrice">원</td>
                                         </td>
                                         <td class="tdTypeA">상여금</td>
-                                        <td>
+                                        <td colspan="3" class="tdTypeC">
                                             <input value="{{i.driver_allowance}}" name="driver_allowance" type="text" class="inputText inputTextUnit dispatchPaymen">원</td>
                                         </td>
                                     </tr>
-                                    <input name="bus" value="{{i.bus_id.id}}" type="hidden">
+                                    <input name="bus" value="{{i.bus_id.id}}" type="hidden" class="hiddenBus">
                                     <input name="id" value="{{detail.id}}" type="hidden">
                                 </table>
                             </div>
@@ -390,22 +393,25 @@
                                 <table class="dispatcTable">
                                     <tr>
                                         <td class="tdTypeA">배차차량</td>
-                                        <td>
+                                        <td colspan="2" class="tdTypeB">
                                             <input type="text" class="inputText dispatchBus" readonly>
                                         </td>
                                         <td class="tdTypeA">담당기사</td>
-                                        <td>
+                                        <td colspan="2" class="tdTypeB">
                                             <select name="driver" class="inputText orderDriver inputTextUnit dispatchDriver">
                                             </select>님
+                                        </td>
+                                        <td colspan="2" class="tdTypeB">
+                                            <input value="" type="text" class="inputText inputTextUnit ">님
                                         </td>
                                     </tr>
                                     <tr>
                                         <td class="tdTypeA">계약금액</td>
-                                        <td>
+                                        <td colspan="3" class="tdTypeC">
                                             <input name="price" type="text" class="inputText inputTextUnit dispatchPrice dispatchPriceBlank">원</td>
                                         </td>
                                         <td class="tdTypeA">상여금</td>
-                                        <td>
+                                        <td colspan="3" class="tdTypeC">
                                             <input name="driver_allowance" type="text" class="inputText inputTextUnit dispatchPaymen dispatchPaymenBlank">원</td>
                                         </td>
                                     </tr>
@@ -434,8 +440,9 @@
             <div class="orderListHeader">
                 <span></span>
                 <div class="orderListBtnBox">
+                    
                     <div class="btnModules dispatchBtn">배차</div>
-                    <div class="btnModules printBtn">인쇄</div>
+                    <div class="btnModules printBtn" onclick="openOrderPrint('/dispatch/print/order')">인쇄</div>
                     <div class="btnModules docmentBtn">서류함</div>
                     <div class="btnModules ExcelBtn">엑셀로 내려받기</div>
                 </div>
@@ -444,29 +451,17 @@
                 <div class="orderListMain">
                     <div class="orderListTableHead">
                         <div class="orderListMainContents orderListMain1">운행시간</div>
-                        <div class="orderListMainContents orderListMain2">차량종류</div>
-                        <div class="orderListMainContents orderListMain3">운행종류</div>
-                        <div class="orderListMainContents orderListMain4">노선</div>
-                        <div class="orderListMainContents orderListMain5">계약현황</div>
+                        <div class="orderListMainContents orderListMain2">노선</div>
                     </div>
                     <div class="orderListSubScroll">
                         <div class="orderListScrollBox">
                             {% for order in order_list %}
                             <div class="orderListItem {{forloop.counter}} {{order.id}}">
                                 <div class="orderListMainContents orderListMain1">
-                                    {{order.departure_date}}<br>{{order.arrival_date}}
+                                    {{order.departure_date|slice:'2:'}}<br>{{order.arrival_date|slice:'2:'}}
                                 </div>
                                 <div class="orderListMainContents orderListMain2">
-                                    {{order.bus_type}}
-                                </div>
-                                <div class="orderListMainContents orderListMain3">
-                                    {{order.operation_type}}
-                                </div>
-                                <div class="orderListMainContents orderListMain4">
                                     {{order.departure}} ▶ <br>{{order.arrival}}
-                                </div>
-                                <div class="orderListMainContents orderListMain5">
-                                    {{order.contract_status}}
                                 </div>
                             </div>
                             {% endfor %}
@@ -475,16 +470,16 @@
                     <div class="orderListTotal">
                         <div class="orderListMainContents orderListMain1"></div>
                         <div class="orderListMainContents orderListMain2"></div>
-                        <div class="orderListMainContents orderListMain3"></div>
-                        <div class="orderListMainContents orderListMain4"></div>
-                        <div class="orderListMainContents orderListMain5"></div>
                     </div>
                 </div>
                 <div class="orderListSub">
                     <div class="orderListSubScrollX">
                         <div class="orderListTableHead">
                             <div class="orderListSubContents">배차차량</div>
-                            <div class="orderListSubContents">차량대수 : 변경(확정)</div>
+                            <div class="orderListSubContents">대수(확정)</div>
+                            <div class="orderListSubContents">계약현황</div>
+                            <div class="orderListSubContents">차량종류</div>
+                            <div class="orderListSubContents">운행종류</div>
                             <div class="orderListSubContents">상여금</div>
                             <div class="orderListSubContents">계약금액</div>
                             <div class="orderListSubContents">예약정보</div>
@@ -506,10 +501,13 @@
                                 <div class="orderListItem {{forloop.counter}} {{order.id}}">
                                     <div class="orderListSubContents">
                                         {% for connect in order.info_order.all %}
-                                        {{connect.bus_id.vehicle_num}}({{connect.driver_id.name}})
+                                        <span>{{connect.bus_id.vehicle_num}}({{connect.driver_id.name}})</span>
                                         {% endfor %}
                                     </div>
                                     <div class="orderListSubContents">{{order.info_order.count}} ({{order.bus_cnt}})</div>
+                                    <div class="orderListSubContents">{{order.contract_status}}</div>
+                                    <div class="orderListSubContents">{{order.bus_type}}</div>
+                                    <div class="orderListSubContents">{{order.operation_type}}</div>
                                     <div class="orderListSubContents">{{order.driver_allowance}}</div>
                                     <div class="orderListSubContents">{{order.price}}</div>
                                     <div class="orderListSubContents">{{order.customer}} : {{order.customer_phone}}</div>
@@ -529,6 +527,9 @@
                             </div>
                         </div>
                         <div class="orderListTotal">
+                            <div class="orderListSubContents"></div>
+                            <div class="orderListSubContents"></div>
+                            <div class="orderListSubContents"></div>
                             <div class="orderListSubContents"></div>
                             <div class="orderListSubContents"></div>
                             <div class="orderListSubContents"></div>
@@ -574,6 +575,17 @@
     console.log('dataList', dataList);
     {% endautoescape %}
 </script>
+<script>
+    
+  let targetLink = ""
+
+function openOrderPrint(url){
+    targetLink = `${url}?date=${searchDate[0].value}`
+    window.open(targetLink, `${searchDate[0].value}배차지지서`, "width=1100, height=640")
+}
+
+</script>
+<script src="{% static 'js/lodash.js' %}"></script>
 <script src="{% static 'js/dispatch/orderAll.js' %}"></script>
 <script src="{% static 'js/dispatch/layoutChanger.js' %}"></script>
 <script src="{% static 'js/dispatch/scrollLink.js' %}"></script>

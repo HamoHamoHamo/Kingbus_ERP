@@ -41,7 +41,7 @@ class OrderForm(forms.ModelForm):
             'price',
             'driver_allowance',
             'contract_status',
-            'cost_type',
+            # 'cost_type',
             'customer',
             'customer_phone',
             'deposit_status',

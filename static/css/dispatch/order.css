@@ -312,12 +312,16 @@
   border-bottom: none;
 }
 
-.dispatcTable .tdTypeA{
-  width: 16%;
+.dispatcTable .tdTypeA {
+  width: 12.5%;
 }
 
-.dispatcTable td:nth-child(even) {
-  width: 50%;
+.dispatcTable .tdTypeB {
+  width: 25%;
+}
+
+.dispatcTable .tdTypeC {
+  width: 37.5%;
 }
 
 .dispatcTable td input,
@@ -327,7 +331,7 @@
   box-sizing: border-box;
 }
 
-.dispatcTable td select{
+.dispatcTable td select {
   height: 2rem;
   padding: 0.2rem;
 }
@@ -343,7 +347,7 @@
   background-color: #444;
 }
 
-.popupAreaModulesVisible{
+.popupAreaModulesVisible {
   display: block;
 }
 
@@ -412,7 +416,7 @@
 .orderListMain {
   display: flex;
   flex-direction: column;
-  width: 90rem;
+  width: 54rem;
   height: 100%;
   border-right: 0.1rem solid #CDCDCE;
   box-sizing: border-box;
@@ -421,7 +425,7 @@
 .orderListSub {
   display: flex;
   flex-direction: column;
-  width: calc(100% - 90rem);
+  width: calc(100% - 54rem);
   height: calc(100% + 1rem);
   overflow-x: scroll;
 }
@@ -446,7 +450,7 @@
 .orderListSubScrollX {
   display: flex;
   flex-direction: column;
-  width: 300rem;
+  width: 290rem;
   height: 100%;
 }
 
@@ -496,8 +500,10 @@
 
 .orderListItem {
   display: flex;
+  align-items: center;
   width: 100%;
-  height: 7rem;
+  min-height: 5rem;
+  height: auto;
   border-bottom: 0.1rem solid #CDCDCE;
 }
 
@@ -514,6 +520,10 @@
 .orderListTotal .orderListMainContents,
 .orderListTotal .orderListSubContents {
   border-right: 0.1rem solid #707070;
+}
+
+.orderListSubContents span{
+  margin: 0.3rem 0;
 }
 
 .orderListScrollYBox {
@@ -565,71 +575,79 @@
 }
 
 .orderListMain1 {
-  width: 16%;
+  width: 20%;
 }
 
 .orderListMain2 {
-  width: 14%;
-}
-
-.orderListMain3,
-.orderListMain5 {
-  width: 8%;
-}
-
-.orderListMain5 {
-  border-right: 0;
-}
-
-.orderListTableHead .orderListMain4{
-  justify-content: center;
-}
-
-.orderListMain4 {
   justify-content: flex-start;
-  width: 55%;
-  padding-left: 1rem;
+  width: 80%;
+  padding: 0.6rem  0 0.6rem 1rem;
   box-sizing: border-box;
 }
 
-.orderListSubContents:nth-child(1) {
-  width: 30rem;
-}
-
-.orderListSubContents:nth-child(2),
-.orderListSubContents:nth-child(3),
-.orderListSubContents:nth-child(4),
-.orderListSubContents:nth-child(7),
-.orderListSubContents:nth-child(9),
-.orderListSubContents:nth-child(10),
-.orderListSubContents:nth-child(11),
-.orderListSubContents:nth-child(12),
-.orderListSubContents:nth-child(13),
-.orderListSubContents:nth-child(14),
-.orderListSubContents:nth-child(15),
-.orderListSubContents:nth-child(16) {
-  width: 14rem;
-}
-
-.orderListSubContents:nth-child(5) {
-  width: 22rem;
-}
-
-.orderListSubContents:nth-child(6),
-.orderListSubContents:nth-child(8) {
-  width: 40rem;
-}
 
 
-.orderListTableHead .orderListSubContents:nth-child(5),
-.orderListTableHead .orderListSubContents:nth-child(6),
-.orderListTableHead .orderListSubContents:nth-child(8){
+.orderListTableHead .orderListMain2 {
   justify-content: center;
 }
 
-.orderListSubContents:nth-child(5),
+.orderListSubContents:nth-child(1) {
+  width: 38rem;
+}
+
+.orderListItem .orderListSubContents:nth-child(1) {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  padding: 0.6rem  1rem;
+  box-sizing: border-box;
+}
+
+.orderListSubContents:nth-child(3),
+.orderListSubContents:nth-child(5) {
+  width: 8rem;
+}
+
+.orderListSubContents:nth-child(2),
+.orderListSubContents:nth-child(16),
+.orderListSubContents:nth-child(17),
+.orderListSubContents:nth-child(18),
+.orderListSubContents:nth-child(19) {
+  width: 10rem;
+}
+
+.orderListSubContents:nth-child(4),
 .orderListSubContents:nth-child(6),
+.orderListSubContents:nth-child(7),
+.orderListSubContents:nth-child(10),
+.orderListSubContents:nth-child(12),
+.orderListSubContents:nth-child(13) {
+  width: 12rem;
+}
+
+.orderListSubContents:nth-child(14),
+.orderListSubContents:nth-child(15) {
+  width: 14rem;
+}
+
 .orderListSubContents:nth-child(8) {
+  width: 22rem;
+}
+
+.orderListSubContents:nth-child(9),
+.orderListSubContents:nth-child(11) {
+  width: 32rem;
+}
+
+
+.orderListTableHead .orderListSubContents:nth-child(8),
+.orderListTableHead .orderListSubContents:nth-child(9),
+.orderListTableHead .orderListSubContents:nth-child(11) {
+  justify-content: center;
+}
+
+.orderListSubContents:nth-child(8),
+.orderListSubContents:nth-child(9),
+.orderListSubContents:nth-child(11) {
   justify-content: flex-start;
   padding-left: 1rem;
   box-sizing: border-box;
