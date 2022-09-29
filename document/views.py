@@ -1,8 +1,14 @@
+import urllib
+import os
+import mimetypes
+from django.http import JsonResponse, Http404, HttpResponse, HttpResponseNotAllowed
 from django.views import generic
 from django.shortcuts import render, redirect, get_object_or_404
 from dispatch.models import DispatchOrder
-
+from humanresource.models import Member
+from .models import Document, DocumentGroup
 from datetime import datetime, timedelta, date
+from ERP.settings import BASE_DIR
 
 TODAY = str(datetime.now())[:10]
 FORMAT = "%Y-%m-%d"
@@ -10,9 +16,112 @@ FORMAT = "%Y-%m-%d"
 
 class CompanyDocumentList(generic.ListView):
     template_name = 'document/company.html'
-    context_object_name = 'order_list'
-    model = DispatchOrder
+    context_object_name = 'file_list'
+    model = Document
 
+    def get_queryset(self):
+        filename = self.request.GET.get('filename')
+        if filename:
+            file_list = Document.objects.filter(filename__contains=filename)
+            return file_list
+        else:
+            return super().get_queryset()
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['group_list'] = DocumentGroup.objects.all()
+        return context
+
+def company_document_create(request):
+    upload_file = request.FILES.get('file')
+    filename = request.POST.get('filename')
+    group_id = get_object_or_404(DocumentGroup, id=request.POST.get('group_id'))
+
+
+    file = Document(
+        group_id=group_id,
+        file=upload_file,
+        filename=filename,
+        creator = get_object_or_404(Member, pk=request.session.get('user')),
+    )
+    file.save()
+    return redirect(request.META.get('HTTP_REFERER', 'redirect_if_referer_not_found'))
+
+
+def company_group_create(request):
+    
+    group_name = request.POST.get('group_name')
+    
+    group = DocumentGroup(
+        name = group_name,
+        creator = get_object_or_404(Member, pk=request.session.get('user')),
+    )
+    group.save()
+    return redirect(request.META.get('HTTP_REFERER', 'redirect_if_referer_not_found'))
+
+def company_document_download(request, id):
+    download_file = get_object_or_404(Document, pk=id)
+
+    url = download_file.file.url
+    root = str(BASE_DIR)+url
+    print("\n테스트\n", root)
+
+    if os.path.exists(root):
+        with open(root, 'rb') as fh:
+            quote_file_url = urllib.parse.quote(download_file.filename.encode('utf-8'))
+            response = HttpResponse(fh.read(), content_type=mimetypes.guess_type(url)[0])
+            response['Content-Disposition'] = 'attachment;filename*=UTF-8\'\'%s' % quote_file_url
+            # return response
+            return JsonResponse({'url': quote_file_url})
+        raise Http404
+    else:
+        print("에러")
+        raise Http404
+
+def company_delete(request):
+    file_list = request.POST.getlist('file_check')
+    group_list = request.POST.getlist('group_check')
+
+    for file_id in file_list:
+        file = get_object_or_404(Document, id=file_id)
+        os.remove(file.file.path)
+        file.delete()
+
+    return redirect(request.META.get('HTTP_REFERER', 'redirect_if_referer_not_found'))
+
+def company_group_delete(request):
+    group_list = request.POST.getlist('group_check')
+
+    for group_id in group_list:
+        group = get_object_or_404(DocumentGroup, id=group_id)
+        document_list = group.group_file.all()
+        for document in document_list:
+            os.remove(document.file.path)
+            document.delete()
+        group.delete()
+    
+    return redirect(request.META.get('HTTP_REFERER', 'redirect_if_referer_not_found'))
+
+# def download(request, kinds, notice_id, file_id):
+#     kinds_check(kinds)
+#     download_file = get_object_or_404(NoticeFile, pk=file_id)
+#     if download_file.notice_id == Notice.objects.get(pk=notice_id):
+#         url = download_file.file.url
+#         root = str(BASE_DIR)+url
+#         print("\n테스트\n", root)
+
+#         if os.path.exists(root):
+#             with open(root, 'rb') as fh:
+#                 quote_file_url = urllib.parse.quote(download_file.filename.encode('utf-8'))
+#                 response = HttpResponse(fh.read(), content_type=mimetypes.guess_type(url)[0])
+#                 response['Content-Disposition'] = 'attachment;filename*=UTF-8\'\'%s' % quote_file_url
+#                 return response
+#             raise Http404
+#         else:
+#             print("에러")
+#             raise Http404
+#     else:
+#         raise Http404
 
 class DocumentList(generic.ListView):
     template_name = 'document/document.html'

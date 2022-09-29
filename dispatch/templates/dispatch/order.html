@@ -129,7 +129,7 @@
                     <div class="inputTableBtnBox">
                         <input type="submit" value="저장" class="btnModules inputSave">
                         {% if detail %}
-                        <input type="submit" value="삭제" class="btnModules inputDelete">
+                        <div class="btnModules inputDelete" onclick="deleteUrl()">삭제</div>
                         <a href="{% url 'dispatch:order' %}" class="newOrderLink">
                             <div class="btnModules newOrder">신규</div>
                         </a>
@@ -467,9 +467,9 @@
                             <input type="submit" class="btnModules dispatchSave" value="등록">
                             <div class="btnModules closeBtn">닫기</div>
                         </div>
-                    </form>
-                </div>
-              </div>
+                    </div>
+                </form>
+            </div>
 
         </div>
 
@@ -596,6 +596,7 @@
 
 
     </div>
+    
 </div>
 {% endblock %}
 
@@ -618,12 +619,20 @@
 </script>
 <script>
     
-  let targetLink = ""
+    let targetLink = ""
 
-function openOrderPrint(url){
-    targetLink = `${url}?date1=${searchDate[0].value}&date2=${searchDate[1].value}`
-    window.open(targetLink, `${searchDate[0].value}배차지지서`, "width=1100, height=640")
-}
+    function openOrderPrint(url){
+        targetLink = `${url}?date1=${searchDate[0].value}&date2=${searchDate[1].value}`
+        window.open(targetLink, `${searchDate[0].value}배차지지서`, "width=1100, height=640")
+    }
+
+    const changeForm = document.querySelector(".inputDispatchForm")
+    
+    function deleteUrl(){
+        changeForm.action = 
+        changeForm.submit()
+    }
+
 
 </script>
 <script src="{% static 'js/lodash.js' %}"></script>

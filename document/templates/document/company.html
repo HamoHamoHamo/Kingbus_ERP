@@ -25,7 +25,7 @@
         <div class="searchTool">
             <div class="searchTitle">파일검색</div>
             <label for="">파일이름</label>
-            <input type="text">
+            <input name="filename" type="text">
             <input type="submit" value="검색" class="btnModules">
         </div>
     </form>
@@ -35,11 +35,10 @@
 
 
 
-<form class="contentsAreaBox">
-
-    <div class="btnModules contentsAreaBoxDelete">삭제</div>
-    <div class="btnModules upload">다운로드</div>
-
+<form method="post" action="{% url 'document:company_delete' %}" class="contentsAreaBox">
+    {% csrf_token %}
+    <input type="submit" class="btnModules contentsAreaBoxDelete" value="삭제">
+    <div class="btnModules download">다운로드</div>
     <div class="documentTableBox">
         <table class="documentTableHeader">
             <thead>
@@ -56,29 +55,48 @@
         <div class="documentTableBodyBox">
             <table class="documentCoverTable">
                 <tbody>
+                    {% for group in group_list %}
                     <tr>
                         <td>
                             <table class="documentContentsTable">
                                 <thead>
                                     <tr>
                                         <td>
-                                            <input type="checkbox" class="groupCheck group1"><!-- 장고로 클래스 부여 -->
+                                            <input value="{{group.id}}" name="group_check" type="checkbox"
+                                                class="groupCheck group{{group.id}}"><!-- 장고로 클래스 부여 -->
                                         </td>
-                                        <td>+</td>
-                                        <td colspan="3">그룹이름</td>
+                                        <td colspan="4">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="20"
+                                                viewBox="0 0 22 20">
+                                                <g id="그룹_1649" data-name="그룹 1649" transform="translate(18803 -3628)">
+                                                    <rect id="사각형_11733" data-name="사각형 11733" width="22" height="20"
+                                                        transform="translate(-18803 3628)" fill="rgba(255,255,255,0)" />
+                                                    <path id="Icon_awesome-folder" data-name="Icon awesome-folder"
+                                                        d="M19.938,7.25h-8.25L8.938,4.5H2.063A2.062,2.062,0,0,0,0,6.563V18.938A2.062,2.062,0,0,0,2.063,21H19.938A2.062,2.062,0,0,0,22,18.938V9.313A2.062,2.062,0,0,0,19.938,7.25Z"
+                                                        transform="translate(-18803 3627)" fill="#444" />
+                                                </g>
+                                            </svg>
+                                            <div>
+                                                {{group.name}}
+                                            </div>
+                                        </td>
                                     </tr>
                                 </thead>
-                                <tbody>
+                                <tbody class="documentContentsTableTbody">
+                                    {% for file in group.group_file.all %}
                                     <tr>
                                         <td>
-                                            <input type="checkbox" class="fileCheck group1"><!-- 장고로 클래스 부여 -->
+                                            <input value="{{file.id}}" name="file_check" type="checkbox"
+                                                class="fileCheck group{{group.id}} /media/{{file.file}}">
+                                            <!-- 장고로 클래스 부여 -->
                                         </td>
-                                        <td colspan="2">파일이름</td>
+                                        <td colspan="2">{{file.filename}}</td>
                                         <td>관리자</td>
                                         <td>2022.09.15</td>
                                     </tr>
+                                    {% endfor %}
                                     <tr>
-                                        <td colspan="5">
+                                        <td colspan="6">
                                             <div class="uploadFile">
                                                 <div class="uploadFileIcon">
                                                     <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14"
@@ -103,6 +121,7 @@
                             </table>
                         </td>
                     </tr>
+                    {% endfor %}
                 </tbody>
             </table>
             <div class="addGroupContainer">
@@ -138,7 +157,8 @@
 <!--  -->
 <div class="popupAreaModules">
     <div class="popupBgModules"></div>
-    <form method="post" action="" class="popupContainer">
+    <form method="post" action="{% url 'document:company_document_create' %}" class="popupContainer"
+        enctype="multipart/form-data">
         {% csrf_token %}
         <div class="popupHeader">
             <div class="popupTitle">파일 업로드</div>
@@ -147,13 +167,13 @@
             <div class="popupSection">
                 <div class="popupArticle">
                     <label for="" class="popupArticleLabel">파일명</label>
-                    <input type="text" class="popupArticleInput">
+                    <input name="filename" type="text" class="popupArticleInput">
                 </div>
                 <div class="popupArticle">
                     <label for="" class="popupArticleLabel">업로드 파일</label>
                     <div class="popupArticleFile">
                         <label for="documentFile">파일 선택</label>
-                        <input type="file" id="documentFile" class="documentFileInput">
+                        <input name="file" type="file" id="documentFile" class="documentFileInput">
                         <input type="text" class="documentFileText" readonly>
                         <svg class="fileDeleteBtn" xmlns="http://www.w3.org/2000/svg" width="11.314" height="11.314"
                             viewBox="0 0 11.314 11.314">
@@ -167,6 +187,7 @@
                         </svg>
                     </div>
                 </div>
+                <input name="group_id" type="hidden" class="hiddenGroupId">
             </div>
             <div class="popupFooter">
                 <input type="submit" class="btnModules" value="추가">
@@ -178,7 +199,7 @@
 
 <div class="popupAreaModules">
     <div class="popupBgModules"></div>
-    <form method="post" action="" class="popupContainer">
+    <form method="post" action="{% url 'document:company_group_create' %}" class="popupContainer">
         {% csrf_token %}
         <div class="popupHeader">
             <div class="popupTitle">그룹추가</div>
@@ -187,7 +208,7 @@
             <div class="popupSection">
                 <div class="popupArticle">
                     <label for="" class="popupArticleLabel">그룹이름</label>
-                    <input type="text" class="popupArticleInput">
+                    <input name="group_name" type="text" class="popupArticleInput">
                 </div>
             </div>
             <div class="popupFooter">
@@ -205,7 +226,9 @@
 
 
 {% block script %}
+<script src="{% static 'js/document/download.js' %}"></script>
 <script src="{% static 'js/document/uploadPopup.js' %}"></script>
 <script src="{% static 'js/document/gruopChecker.js' %}"></script>
 <script src="{% static 'js/document/openGroup.js' %}"></script>
+<!-- {% url 'document:company_group_delete' %} -->
 {% endblock %}
