@@ -1,0 +1,78 @@
+* {
+    -webkit-print-color-adjust: exact !important;
+}
+
+body {
+    width: 1587;
+    height: 1122px;
+    margin: 0;
+}
+
+@media print {
+    body {
+        width: 1587;
+        height: 1122px;
+        margin: 0;
+    }
+
+    .print {
+        width: 1587;
+        height: 1122px;
+    }
+}
+
+@page {
+    width: 1587;
+    height: 1122px;
+    size: A3 landscape;
+    margin: 0;
+}
+
+input {
+    border: none;
+    outline: none;
+}
+
+.print {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    width: 1587;
+    height: 1122px;
+    font-size: 8rem;
+    font-weight: 700;
+}
+
+.title{
+    text-align: center;
+    width: 100%;
+    font-size: 9rem;
+    margin-top: 4rem;
+}
+
+.class {
+    width: 100%;
+    display: flex;
+    margin: 3rem 0;
+}
+
+.class input {
+    text-align: center;
+    width: 100%;
+    font-size: 8rem;
+    font-weight: 700;
+}
+
+.school {
+    width: 100%;
+    display: flex;
+}
+
+.school input {
+    text-align: center;
+    width: 100%;
+    font-size: 8rem;
+    font-weight: 700;
+    letter-spacing: -0.2rem;
+}

@@ -1,0 +1,171 @@
+* {
+    -webkit-print-color-adjust: exact !important;
+}
+
+body {
+    margin: 0;
+}
+
+li {
+    list-style: none;
+    margin-bottom: 0.3rem;
+}
+
+@media print {
+    .list table input {
+        border: none;
+    }
+}
+
+@page {
+    margin: 0;
+}
+
+.repeat {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    width: 21cm;
+    height: auto;
+}
+
+.print {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    width: 21cm;
+    height: 29.7cm;
+    padding: 0 2rem;
+    box-sizing: border-box;
+}
+
+.title {
+    width: 100%;
+    text-align: center;
+    font-size: 1.5rem;
+    margin-top: 3rem;
+}
+
+.rule {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    font-size: 0.9rem;
+    margin-top: 2rem;
+    letter-spacing: -0.1rem;
+}
+
+.depth1 {
+    padding: 0;
+}
+
+.depth2 {
+    padding: 0.6rem 0 0.3rem 1.2rem;
+}
+
+.list {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    margin-top: 1rem
+}
+
+.listhead {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    height: 2rem;
+}
+
+.route{
+    display: flex;
+}
+
+.listhead span {
+    font-weight: 700;
+}
+
+.list table {
+    margin-top: 0.6rem;
+    border-spacing: 0;
+}
+
+.list table td {
+    text-align: center;
+    border-bottom: 0.1rem solid black;
+    border-right: 0.1rem solid black;
+}
+
+.list table thead td {
+    border-top: 0.1rem solid black;
+}
+
+.list table tr {
+    height: 1.6rem;
+}
+
+.list table td:nth-child(1) {
+    border-left: 0.1rem solid black;
+}
+
+.list table td:nth-child(1) {
+    width: 12%;
+}
+
+.list table td:nth-child(2) {
+    width: 26%;
+}
+
+.list table td:nth-child(3) {
+    width: 24%;
+}
+
+.list table td:nth-child(4) {
+    width: 38%;
+}
+
+.list table input {
+    width: 94%;
+    height: 70%;
+    text-align: center;
+    font-size: 1rem;
+    padding: 0;
+    border: 0.1rem solid balck;
+    outline: none;
+}
+
+.pledge {
+    position: absolute;
+    bottom: 10rem;
+    left: 50%;
+    width: 100%;
+    text-align: center;
+    transform: translate(-50%, 0);
+}
+
+.company {
+    position: absolute;
+    bottom: 5rem;
+    left: 50%;
+    display: flex;
+    justify-content: space-between;
+    width: 23%;
+    text-align: center;
+    font-size: 1.2rem;
+    font-weight: 700;
+    transform: translate(-50%, 0);
+}
+
+.date {
+    position: absolute;
+    bottom: 3rem;
+    left: 50%;
+    width: 100%;
+    text-align: center;
+    font-weight: 700;
+    transform: translate(-50%, 0);
+}

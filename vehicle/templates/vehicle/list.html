@@ -94,7 +94,7 @@
                     {% endwith %}
                 </tr>
                 {% endfor %}
-                <tr class="balckTr"></tr>
+                <tr class="blanckTr"></tr>
             </tbody>
         </table>
 
@@ -508,6 +508,7 @@
                         </div>
                     </div>
                 </div>
+                <input type="hidden" value="" name="id" class="sendToHidden">
             </div>
             <div class="popupFooter popupFooterDetail">
                 <input type="submit" class="btnModules createBtn" value="등록">
@@ -521,12 +522,12 @@
 
 
 
-<div class="popupAreaModules">
+<!-- <div class="popupAreaModules">
     <div class="popupBgModules"></div>
     <form method="post" action="{% url 'vehicle:vehicle_edit' %}" class="detailPopupContainer"
         enctype="multipart/form-data">
         {% csrf_token %}
-        <div class="PopupTitle">차량상세</div>
+        <div class="PopupTitle">차량수정</div>
         <div class="PopupDataArea PopupDataAreaDetail">
             <div class="PopupDataCell">
                 <span class="PopupDataTitle">차량번호</span>
@@ -702,7 +703,7 @@
             <input type="submit" class="btnModules saveBtn" value="저장">
         </div>
     </form>
-</div>
+</div> -->
 
 {% endblock %}
 

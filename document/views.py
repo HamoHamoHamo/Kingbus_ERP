@@ -20,8 +20,9 @@ class DocumentList(generic.ListView):
     model = DispatchOrder
 
     def get_queryset(self):
-        date = self.request.GET.get('date', TODAY)
-        order_list = DispatchOrder.objects.prefetch_related('info_order').filter(departure_date__lte=f'{date}T24:00').filter(arrival_date__gte=f'{date}T00:00')
+        date1 = self.request.GET.get('date1', TODAY)
+        date2 = self.request.GET.get('date2', TODAY)
+        order_list = DispatchOrder.objects.prefetch_related('info_order').filter(arrival_date__lte=f'{date2} 24:00').filter(departure_date__gte=f'{date1} 00:00')
         return order_list
 
     def get_context_data(self, **kwargs):
@@ -67,21 +68,56 @@ class DocumentList(generic.ListView):
         context['arrival_date'] = arrival_date
         context['num_days'] = num_days
         context['time'] = time
-        context['date'] = self.request.GET.get('date', TODAY)
+        context['date1'] = self.request.GET.get('date1', TODAY)
+        context['date2'] = self.request.GET.get('date2', TODAY)
         
         return context
 
 def vehicle_print(request):
-    return render(request, 'document/vehicle_print.html')
+    id = request.GET.get('id')
+    order = get_object_or_404(DispatchOrder, id=id)
+    file_list = []
+    for connect in order.info_order.all():
+
+        file = connect.bus_id.vehicle_file.all()
+        if file.exists():
+            file_list.append(file.get(type='vehicle_registration'))
+
+    
+
+    return render(request, 'document/vehicle_print.html', {'file_list': file_list})
 
 def commitment_print(request):
-    return render(request, 'document/commitment_print.html')
+    id = request.GET.get('id')
+    order = get_object_or_404(DispatchOrder, id=id)
+    connect_list_all = order.info_order.all()
+    cut = False
+    connect_list = connect_list_all
+    connect_list2 = ''
+    if len(connect_list_all) > 18:
+        cut = True
+        connect_list = connect_list_all[:18]
+        connect_list2 = connect_list_all[19:]
+    
+    return render(request, 'document/commitment_print.html', {'connect_list': connect_list, 'connect_list2': connect_list2, 'order': order, 'cut': cut})
 
 def safety_print(request):
-    return render(request, 'document/safety_print.html')
+    id = request.GET.get('id')
+    order = get_object_or_404(DispatchOrder, id=id)
+    connect_list = order.info_order.all()
+
+    return render(request, 'document/safety_print.html', {'connect_list': connect_list, 'order': order})
 
 def school_print(request):
-    return render(request, 'document/school_print.html')
+    id = request.GET.get('id')
+    order = get_object_or_404(DispatchOrder, id=id)
+
+    return render(request, 'document/school_print.html', {'order': order})
 
 def drinking_print(request):
-    return render(request, 'document/drinking_print.html')
+    id = request.GET.get('id')
+    order = get_object_or_404(DispatchOrder, id=id)
+    connect_list = order.info_order.all()
+
+    
+    return render(request, 'document/drinking_print.html', {'connect_list': connect_list, 'departure_date': order.departure_date[:10], 'order': order})

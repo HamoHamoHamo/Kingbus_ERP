@@ -91,6 +91,7 @@ table tbody tr:nth-child(even) {
     font-size: 1.4rem;
     color: #191919;
     border-right: 0.1rem solid #D4D4D4;
+    border-bottom: 0.1rem solid #D4D4D4;
 }
 
 
@@ -225,30 +226,36 @@ td:nth-child(11) {
     width: 16rem;
 }
 
-.popupCloseBtn{
+.popupCloseBtn {
     right: 0;
     transform: translate(0, -50%);
     background-color: #444444;
 }
 
+.blanckTr {
+    width: 100%;
+    height: 100%;
+}
 
 
 @media all and (min-width:1600px) and (max-width: 1780px) {
-    .tableHead tr{
+    .tableHead tr {
         font-size: 1.4rem;
     }
-    .tableBody td{
+
+    .tableBody td {
         font-size: 1.3rem;
     }
-  }
+}
+
 @media all and (min-width:1460px) and (max-width: 1600px) {
-    .popupArticleDouble .popupIdBox .popupArticleInput{
+    .popupArticleDouble .popupIdBox .popupArticleInput {
         width: 18.4rem;
     }
-  }
-  
-  @media all and (min-width:1024px) and (max-width: 1460px) {
+}
+
+@media all and (min-width:1024px) and (max-width: 1460px) {
     /* .tableHead tr{
         font-size: 1.4rem;
     } */
-  }
+}

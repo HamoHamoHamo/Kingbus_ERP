@@ -254,3 +254,9 @@
     font-size: 1.4rem;
     cursor: pointer;
 }
+
+.popupFooter div{
+    transform: translate(0, -50%);
+    right: 0;
+    background-color: #444444;
+}

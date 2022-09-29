@@ -1,11 +1,13 @@
 const dispatchLine = document.querySelectorAll(".dispatcTable")
 const orderDriver = document.querySelectorAll(".orderDriver")
+const orderOutSoursing = document.querySelectorAll(".orderOutSoursing")
 const driverTd = document.querySelectorAll(".driverTd")
 const removeBtn = document.querySelectorAll(".removeBtn")
 const dispatchBus = document.querySelectorAll(".dispatchBus")
 const dispatchDriver = document.querySelectorAll(".dispatchDriver")
 const hiddenBus = document.querySelectorAll(".hiddenBus")
 const scheduleTableTr = document.querySelectorAll(".scheduleTableTr")
+const dispatchPaymentCheckbox = document.querySelectorAll(".dispatchPaymentCheckbox")
 
 
 
@@ -86,6 +88,8 @@ function addOrderDispatch() {
                         dispatchLine[j].children[0].children[0].children[1].children[0].value = busNum
                         dispatchLine[j].children[0].children[2].value = busId
 
+                        orderDriver[j].innerText = ""
+
                         const driverOption = document.createElement('option');
                         driverOption.setAttribute("value", `${DriverId}`);
                         driverOption.innerText = DriverName
@@ -154,8 +158,10 @@ function deleteOrderDispatch() {
     }
     dispatchBus[dispatchCounter].value = ""
     dispatchDriver[dispatchCounter].innerText = ""
+    orderOutSoursing[dispatchCounter].innerText = ""
     dispatchPrice[dispatchCounter].innerText = `${inputTextPrice.value}원`
     dispatchPaymen[dispatchCounter].innerText = `${inputTextDriverAllowance.value}원`
+    dispatchPaymentCheckbox[dispatchCounter].checked = false
     hiddenBus[dispatchCounter].value = ""
 
 }
@@ -163,129 +169,285 @@ function deleteOrderDispatch() {
 
 
 
-let functionCounter = true;
+let useSelect = true;
 
-// 배차가능 기사 옵션 추가
+// 배차가능 기사 필터(기사-옵션)
 for (i = 0; i < orderDriver.length; i++) {
     orderDriver[i].addEventListener("click", addDriverOption);
 }
 
-
 function addDriverOption() {
-    if (functionCounter == true || functionCounter !== this) {
+    if (this.parentNode.parentNode.parentNode.children[1].children[0].value !== "") {
+        if (useSelect == true || useSelect !== this) {
 
+            // 1. 선택된 기사존재여부 -> 첫번째 옵션 저장
 
-        //배차가능 기사 필터링
-        optionDriver = []
+            let firstOption = [] 
 
-        for (i = 0; i < dataList.length; i++) {
-            dataStartTime = dataList[i].departure_date.substr(0, 10).replace(/\-/g, "") + dataList[i].departure_date.substr(11, 5).replace(/\:/g, "")
-            dataEndTime = dataList[i].arrival_date.substr(0, 10).replace(/\-/g, "") + dataList[i].arrival_date.substr(11, 5).replace(/\:/g, "")
-            CreateCompareTime()
-            // data기간 필터링
-            if (dataEndTime >= inputStartTime && dataStartTime <= inputEndTime) {
-                optionDriver.push(`${dataList[i].driver_id}`)
+            if (this.children.length !== 0) {
+                for (i = 0; i < this.children.length; i++) {
+                    console.log(this.children[i])
+                    if (this.children[i].selected) {
+                        firstOption.push(this.children[i].value)
+                        firstOption.push(this.children[i].innerText)
+                    }
+                }
+            } else {
+                firstOption.push("")
+                firstOption.push("")
             }
-        }
 
-        // 등록하지 않고 선택만한 기사도 옵션에서 제거
-        for (i = 0; i < dispatchLine.length; i++) {
-            for (j = 0; j < dispatchLine[i].children[0].children[0].children[3].children[0].children.length; j++) {
-                if (dispatchLine[i].children[0].children[0].children[3].children[0].children[j].selected) {
-                    if (optionDriver.indexOf(dispatchLine[i].children[0].children[0].children[3].children[0].children[j].value) == -1) {
-                        optionDriver.push(dispatchLine[i].children[0].children[0].children[3].children[0].children[j].value)
+            // 2. this 옵션 삭제
+
+            this.innerText = ""
+
+            // 3. 배차불가 기사 추출 -> 기간 필터링
+
+            let periodFilter = []
+
+            for (i = 0; i < dataList.length; i++) {
+                if (dataList[i].outSoursing !== "y") {
+                    dataStartTime = dataList[i].departure_date.substr(0, 10).replace(/\-/g, "") + dataList[i].departure_date.substr(11, 5).replace(/\:/g, "")
+                    dataEndTime = dataList[i].arrival_date.substr(0, 10).replace(/\-/g, "") + dataList[i].arrival_date.substr(11, 5).replace(/\:/g, "")
+                }
+                CreateCompareTime()
+                if (dataEndTime >= inputStartTime && dataStartTime <= inputEndTime) {
+                    periodFilter.push(`${dataList[i].driver_id}`)
+                }
+            }
+
+            // 4. 다른 차량의 기사목록 추출 -> 배차불가 기사
+
+            let selectedDriver = []
+
+            for (i = 0; i < orderDriver.length; i++) {
+                for (j = 0; j < orderDriver[i].children.length; j++) {
+                    if (orderDriver[i].children[j].selected) {
+                        orderDriver[i].children[j]
+                        selectedDriver.push(orderDriver[i].children[j].value)
                     }
                 }
             }
-        }
 
+            // 5. 배차가능 기사 추출 -> 기사데이터 - 3번 - 4번
 
+            let useDriver = []
 
+            for (i = 0; i < Object.keys(driverObj).length; i++) {
+                useDriver.push(Object.keys(driverObj)[i])
+            }
 
-        // 고정기사 저장
+            for (i = 0; i < periodFilter.length; i++) {
+                useDriver = useDriver.filter(current => current !== periodFilter[i])
+            }
 
-        let selectDriver = []
-        if (this.children[0].value !== "") {
-            for (i = 0; i < this.children.length; i++) {
-                if (this.children[i].selected) {
-                    selectDriver.push(this.children[i].value)
-                    selectDriver.push(this.children[i].innerText)
+            for (i = 0; i < periodFilter.length; i++) {
+                useDriver = useDriver.filter(current => current !== selectedDriver[i])
+            }
+
+            // 5-2. 배차가능 기사 추출 -> 현재 선택기사 제거
+            useDriver = useDriver.filter(current => current !== firstOption[0])
+
+            // 6. 배차가능 배열 오브젝트로 변경
+
+            let useDriverSort = []
+
+            for (i = 0; i < Object.keys(driverObj).length; i++) {
+                for (j = 0; j < useDriver.length; j++) {
+                    if (Object.keys(driverObj)[i] == useDriver[j]) {
+                        let useDriveObj = {
+                            name: `${Object.keys(driverObj)[i]}`,
+                            driver: `${Object.values(driverObj)[i]}`
+                        }
+                        useDriverSort.push(useDriveObj)
+                    }
                 }
             }
-        } else if (this.children[0].value == "" && this.children.length > 1) {
-            selectDriver.push(this.children[1].value)
-            selectDriver.push(this.children[1].innerText)
-        }
 
+            // 7. 배차가능 오브젝트 정렬
 
-        let useDriver = _.cloneDeep(driverObj)
+            useDriverSort.sort(function (a, b) {
+                return a.driver < b.driver ? -1 : a.driver > b.driver ? 1 : 0;
+            });
 
-        // // 배차불가 기사 제거
-        for (i = 0; i < Object.keys(useDriver).length; i++) {
-            for (j = 0; j < optionDriver.length; j++) {
-                if (Object.keys(useDriver)[i] == optionDriver[j]) {
-                    let deletKey = ""
-                    deletKey = Object.keys(useDriver)[i]
-                    delete useDriver[`${deletKey}`]
-                }
-            }
-        }
+            // 8. 첫번째 옵션 생성 -> 1번
 
-        // 옵션 정렬
-        let sortArr = []
+            const driverOption = document.createElement('option');
+            driverOption.setAttribute("value", `${firstOption[0]}`);
+            driverOption.innerText = `${firstOption[1]}`
+            this.appendChild(driverOption);
 
-        for (i = 0; i < Object.keys(useDriver).length; i++) {
-            let sortObject = {
-                name: `${Object.keys(useDriver)[i]}`,
-                driver: `${Object.values(useDriver)[i]}`
-            }
-            sortArr.push(sortObject)
-        }
+            // 9. 선택가능 기사 옵션 생성 -> 5번
 
-        sortArr.sort(function (a, b) {
-            return a.driver < b.driver ? -1 : a.driver > b.driver ? 1 : 0;
-        });
-
-
-
-        this.innerText = ""
-
-        // // 선택옵션 빈칸/고정기사
-        if (selectDriver.length !== 0) {
-
-            // 선택기사 추가
-            const firstOption = {
-                name: `${selectDriver[0]}`,
-                driver: `${selectDriver[1]}`
+            for (i = 0; i < useDriverSort.length; i++) {
+                const driverOption = document.createElement('option');
+                driverOption.setAttribute("value", `${useDriverSort[i].name}`);
+                driverOption.innerText = `${useDriverSort[i].driver}`
+                this.appendChild(driverOption);
             }
 
-            sortArr.unshift(firstOption)
-
+            useSelect = this
         } else {
-            const driverOption = document.createElement('option');
-            driverOption.setAttribute("value", "");
-            driverOption.innerText = ""
-            this.appendChild(driverOption);
+            useSelect = true
         }
-
-
-
-        // 배차가능 기사 생성
-        for (i = 0; i < Object.keys(sortArr).length; i++) {
-            const driverOption = document.createElement('option');
-            driverOption.setAttribute("value", `${sortArr[i].name}`);
-            driverOption.innerText = sortArr[i].driver
-            this.appendChild(driverOption);
-        }
-
-        functionCounter = this;
-
-    } else {
-        functionCounter = true;
+        useOutSoursing = true
     }
-
 }
 
+
+
+
+// 배차가능 기사 필터(용역 비우기)
+for (i = 0; i < orderDriver.length; i++) {
+    orderDriver[i].addEventListener("change", removeOutSoursing);
+}
+
+function removeOutSoursing() {
+    this.parentNode.parentNode.children[5].children[0].innerText = ""
+
+    const driverOption = document.createElement('option');
+    driverOption.setAttribute("value", "");
+    driverOption.innerText = ""
+    this.parentNode.parentNode.children[5].children[0].appendChild(driverOption);
+}
+
+
+
+
+
+let useOutSoursing = true;
+
+// 배차가능 용역 필터(용역-옵션)
+for (i = 0; i < orderOutSoursing.length; i++) {
+    orderOutSoursing[i].addEventListener("click", addorderOutSoursingOption);
+}
+
+function addorderOutSoursingOption() {
+    if (this.parentNode.parentNode.parentNode.children[1].children[0].value !== "") {
+        if (useOutSoursing == true || useOutSoursing !== this) {
+
+            // 1. 선택된 기사존재여부 -> 첫번째 옵션 저장
+
+            let firstOption = []
+
+            for (i = 0; i < this.children.length; i++) {
+                if (this.children[i].selected) {
+                    firstOption.push(this.children[i].value)
+                    firstOption.push(this.children[i].innerText)
+                }
+            }
+
+            // 2. this 옵션 삭제
+
+            this.innerText = ""
+
+            // 3. 배차불가 기사 추출 -> 기간 필터링
+
+            let periodFilter = []
+
+            for (i = 0; i < dataList.length; i++) {
+                if (dataList[i].outSoursing !== "정규") {
+                    dataStartTime = dataList[i].departure_date.substr(0, 10).replace(/\-/g, "") + dataList[i].departure_date.substr(11, 5).replace(/\:/g, "")
+                    dataEndTime = dataList[i].arrival_date.substr(0, 10).replace(/\-/g, "") + dataList[i].arrival_date.substr(11, 5).replace(/\:/g, "")
+                }
+                CreateCompareTime()
+                if (dataEndTime >= inputStartTime && dataStartTime <= inputEndTime) {
+                    periodFilter.push(`${dataList[i].driver_id}`)
+                }
+            }
+
+            // 4. 다른 차량의 기사목록 추출 -> 배차불가 기사
+
+            let selectedDriver = []
+
+            for (i = 0; i < orderOutSoursing.length; i++) {
+                for (j = 0; j < orderOutSoursing[i].children.length; j++) {
+                    if (orderOutSoursing[i].children[j].selected) {
+                        orderOutSoursing[i].children[j]
+                        selectedDriver.push(orderOutSoursing[i].children[j].value)
+                    }
+                }
+            }
+
+            // 5. 배차가능 기사 추출 -> 기사데이터 - 3번 - 4번
+
+            let useDriver = []
+
+            for (i = 0; i < Object.keys(outsourcingObj).length; i++) {
+                useDriver.push(Object.keys(outsourcingObj)[i])
+            }
+
+            for (i = 0; i < periodFilter.length; i++) {
+                useDriver = useDriver.filter(current => current !== periodFilter[i])
+            }
+
+            for (i = 0; i < periodFilter.length; i++) {
+                useDriver = useDriver.filter(current => current !== selectedDriver[i])
+            }
+
+            // 6. 배차가능 배열 오브젝트로 변경
+
+            let useDriverSort = []
+
+            for (i = 0; i < Object.keys(outsourcingObj).length; i++) {
+                for (j = 0; j < useDriver.length; j++) {
+                    if (Object.keys(outsourcingObj)[i] == useDriver[j]) {
+                        let useDriveObj = {
+                            name: `${Object.keys(outsourcingObj)[i]}`,
+                            driver: `${Object.values(outsourcingObj)[i]}`
+                        }
+                        useDriverSort.push(useDriveObj)
+                    }
+                }
+            }
+
+            // 7. 배차가능 오브젝트 정렬
+
+            useDriverSort.sort(function (a, b) {
+                return a.driver < b.driver ? -1 : a.driver > b.driver ? 1 : 0;
+            });
+
+            // 8. 첫번째 옵션 생성 -> 1번
+
+            const driverOption = document.createElement('option');
+            driverOption.setAttribute("value", `${firstOption[0]}`);
+            driverOption.innerText = `${firstOption[1]}`
+            this.appendChild(driverOption);
+
+            // 9. 선택가능 기사 옵션 생성 -> 5번
+
+            for (i = 0; i < useDriverSort.length; i++) {
+                const driverOption = document.createElement('option');
+                driverOption.setAttribute("value", `${useDriverSort[i].name}`);
+                driverOption.innerText = `${useDriverSort[i].driver}`
+                this.appendChild(driverOption);
+            }
+
+            useOutSoursing = this
+        } else {
+            useOutSoursing = true
+        }
+        useSelect = true
+    }
+}
+
+
+
+
+// 배차가능 기사 필터(정규 비우기)
+for (i = 0; i < orderOutSoursing.length; i++) {
+    orderOutSoursing[i].addEventListener("change", removeRegular);
+}
+
+
+function removeRegular() {
+    this.parentNode.parentNode.children[3].children[0].innerText = ""
+
+    const driverOption = document.createElement('option');
+    driverOption.setAttribute("value", "");
+    driverOption.innerText = ""
+    this.parentNode.parentNode.children[3].children[0].appendChild(driverOption);
+}
 
 
 
@@ -390,10 +552,6 @@ function rangePopup() {
 
 
 }
-
-
-
-
 
 
 

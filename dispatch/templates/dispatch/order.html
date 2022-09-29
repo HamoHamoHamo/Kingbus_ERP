@@ -119,12 +119,12 @@
         <div class="inputTableBox">
 
             {% if detail %}
-            <form action="{% url 'dispatch:order_edit' %}" method="post" class="inputDispatchForm">
+            <form action="{% url 'dispatch:order_edit' %}" method="post" class="inputDispatchForm" id="editForm">
                 {% else %}
                 <form action="{% url 'dispatch:order_create' %}" method="post" class="inputDispatchForm">
                     {% endif %}
                     {% csrf_token %}
-                    <input name="id" type="hidden" value="{{detail.id}}">
+                    <input name="id" type="hidden" value="{{detail.id}}" class="inputHidden">
 
                     <div class="inputTableBtnBox">
                         <input type="submit" value="저장" class="btnModules inputSave">
@@ -142,15 +142,13 @@
                     <table>
                         <colgroup>
                             <col style="width: 7%;">
-                            <col style="width: 18%;">
+                            <col style="width: 17%;">
                             <col style="width: 7%;">
-                            <col style="width: 18%;">
+                            <col style="width: 17%;">
                             <col style="width: 7%;">
-                            <col style="width: 18%;">
+                            <col style="width: 17%;">
                             <col style="width: 7%;">
-                            <col style="width: 5%;">
-                            <col style="width: 7%;">
-                            <col style="width: 5%;">
+                            <col style="width: 17%;">
                         </colgroup>
                         <tr>
                             <td class="tdTypeA">출발지</td>
@@ -163,7 +161,7 @@
                                     class="inputText inputTextUnit inputTextPrice">원
                             </td>
                             <td class="tdTypeA">상여금</td>
-                            <td colspan="3" class="tdTypeC">
+                            <td class="tdTypeC">
                                 <input value="{{detail.driver_allowance}}" name="driver_allowance" type="text"
                                     class="inputText inputTextUnit inputTextDriverAllowance" max="9999-12-31">원
                             </td>
@@ -173,7 +171,26 @@
                             <td colspan="3" class="tdTypeB">
                                 <input value="{{detail.arrival}}" name="arrival" type="text" class="inputText">
                             </td>
-                            <td class="tdTypeA">입금현황</td>
+                            <td class="tdTypeA">버스옵션</td>
+                            <td colspan="3" class="tdTypeB">
+                                <input {% if detail.option and detail.option|in_check:'음향' %} checked {% endif %} name="option" value="음향" type="checkbox" id="sound">
+                                <label for="sound">음향</label>
+                                <input {% if detail.option and detail.option|in_check:'TV' %} checked {% endif %} name="option" value="TV" type="checkbox"id="TV">
+                                <label for="TV">TV</label>
+                                <input {% if detail.option and detail.option|in_check:'정수기' %} checked {% endif %} name="option" value="정수기" type="checkbox" id="waterPurifier">
+                                <label for="waterPurifier">정수기</label>
+                                <input {% if detail.option and detail.option|in_check:'USB' %} checked {% endif %} name="option" value="USB" type="checkbox" id="USB">
+                                <label for="USB">USB</label>
+                                <input {% if detail.option and detail.option|in_check:'와이파이' %} checked {% endif %} name="option" value="와이파이" type="checkbox" id="Wi-Fi">
+                                <label for="Wi-Fi">와이파이</label>
+                                <input {% if detail.option and detail.option|in_check:'냉장고' %} checked {% endif %} name="option" value="냉장고" type="checkbox" id="refrigerator">
+                                <label for="refrigerator">냉장고</label>
+                                <input {% if detail.option and detail.option|in_check:'카시트' %} checked {% endif %} name="option" value="카시트" type="checkbox" id="carsite">
+                                <label for="carsite">카시트</label>
+                                <input {% if detail.option and detail.option|in_check:'카드기' %} checked {% endif %} name="option" value="카드기" type="checkbox" id="card">
+                                <label for="card">카드기</label>
+                            </td>
+                            <!-- <td class="tdTypeA">입금현황</td>
                             <td class="tdTypeC">
                                 <select name="deposit_status" id="deposit_status" class="inputSelect">
                                     <option value=""></option>
@@ -188,9 +205,9 @@
                                 </select>
                             </td>
                             <td class="tdTypeA">계산서 발행일</td>
-                            <td colspan="3" class="tdTypeC">
+                            <td class="tdTypeC">
                                 <input value="{{detail.bill_date}}" name="bill_date" type="date" class="inputText">
-                            </td>
+                            </td> -->
                         </tr>
                         <tr>
                             <td class="tdTypeA">운행시간</td>
@@ -231,7 +248,7 @@
                                 <label for="payment">상여</label>
                             </td>
                             <td class="tdTypeA">계산서 발행처</td>
-                            <td colspan="3" class="tdTypeC">
+                            <td class="tdTypeC">
                                 <input value="{{detail.bill_place}}" name="bill_place" id="bill_recate" type="text" list="billList" class="inputSelect">
                                 <datalist id="billList">
                                     <option value=""></option>
@@ -268,17 +285,12 @@
                             <td class="tdTypeC">
                                 <select name="collection_type" id="collection_type" class="inputSelect">
                                     <option value=""></option>
-                                    <option {% if detail.collection_type == '현지수금(카드기 지참)' %} selected {% endif %} value="현지수금(카드기 지참)">현지수금(카드기 지참)</option>
+                                    <option {% if detail.collection_type == '현지수금' %} selected {% endif %} value="현지수금">현지수금</option>
                                     <option {% if detail.collection_type == '회사수금' %} selected {% endif %} value="회사수금">회사수금</option>
                                 </select>
                             </td>
-                            <td class="tdTypeA">상여금 선지급</td>
-                            <td class="tdTypeD">
-                                <input {% if detail.payment_method == 'y' %} checked {% endif %} name="payment_method" value="y" type="checkbox" id="input_payment_method">
-                                <label for="input_payment_method">선지급</label>
-                            </td>
                             <td class="tdTypeA">VAT 포함</td>
-                            <td class="tdTypeD">
+                            <td class="tdTypeC">
                                 <input {% if detail.VAT == 'y' %} checked {% endif %} name="VAT" value="y" type="checkbox" id="input_VAT">
                                 <label for="input_VAT">포함</label>
                             </td>
@@ -292,7 +304,7 @@
                             <td class="tdTypeC"><input value="{{detail.customer_phone}}" name="customer_phone" type="text" class="inputText inputTextPhoneNum" maxlength="13">
                             </td>
                             <td class="tdTypeA">참조사항</td>
-                            <td colspan="5" class="tdTypeB"><input value="{{detail.references}}" name="references" type="text" class="inputText">
+                            <td colspan="3" class="tdTypeB"><input value="{{detail.references}}" name="references" type="text" class="inputText">
                             </td>
                         </tr>
                         <tr>
@@ -308,14 +320,19 @@
                             </td>
                             <td class="tdTypeA">운행종류</td>
                             <td class="tdTypeC">
-                                <select name="operation_type" id="drive_type" class="inputSelect">
+                                <input value="{{detail.operation_type}}" name="operation_type" id="drive_type" type="text" list="driveType" class="inputText">
+                                <datalist id="driveType" class="inputSelect">
                                     <option value=""></option>
-                                    <option {% if detail.operation_type == '왕복' %} selected {% endif %} value="왕복">왕복</option>
-                                    <option {% if detail.operation_type == '편도' %} selected {% endif %} value="편도">편도</option>
-                                </select>
+                                    <option value="왕복">왕복</option>
+                                    <option value="편도출발">편도출발</option>
+                                    <option value="편도복귀">편도복귀</option>
+                                    <option value="기사동행(1박2일)">기사동행(1박2일)</option>
+                                    <option value="기사동행(2박3일)">기사동행(2박3일)</option>
+                                    <option value="기사동행(전체일정)">기사동행(전체일정)</option>
+                                </datalist>
                             </td>
                             <td class="tdTypeA">표찰정보</td>
-                            <td colspan="5" class="tdTypeB">
+                            <td colspan="3" class="tdTypeB">
                                 <input name="ticketing_info" type="text" value="{{detail.ticketing_info}}" class="inputText">
                             </td>
                         </tr>
@@ -349,28 +366,42 @@
                                 <table class="dispatcTable">
                                     <tr>
                                         <td class="tdTypeA">배차차량</td>
-                                        <td colspan="2" class="tdTypeB">
+                                        <td class="tdTypeB">
                                             <input value="{{i.bus_id.vehicle_num}}" type="text" class="inputText dispatchBus " readonly>
                                         </td>
                                         <td class="tdTypeA">담당기사</td>
-                                        <td colspan="2" class="tdTypeB">
-                                            <select name="driver" class="inputText orderDriver inputTextUnit dispatchDriver">
-                                                <option value="{{i.driver_id.id}}">{{i.driver_id.name}}</option>
-                                            </select>님
+                                        <td class="tdTypeB">
+                                                <select name="driver" class="inputText orderDriver dispatchDriver">
+                                                    {% if i.outsourcing == 'n' %}<option value="{{i.driver_id.id}}">{{i.driver_id.name}}</option>{% endif %}
+                                                </select>
                                         </td>
-                                        <td colspan="2" class="tdTypeB">
-                                            <input name="driver_name{{forloop.counter0}}" value="{{i.driver_name}}" type="text" class="inputText inputTextUnit ">님
+                                        <td class="tdTypeA">용역</td>
+                                        <td class="tdTypeB">
+                                                <select name="outsourcing{{forloop.counter0}}" class="inputText orderOutSoursing dispatchDriver">
+                                                    {% if i.outsourcing == 'y' %}<option value="{{i.driver_id.id}}">{{i.driver_id.name}}</option>{% endif %}
+                                                    <option></option>
+                                                </select>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td class="tdTypeA">계약금액</td>
-                                        <td colspan="3" class="tdTypeC">
+                                        <td class="tdTypeB">
                                             <input value="{{i.price}}" name="price" type="text" class="inputText inputTextUnit dispatchPrice">원</td>
                                         </td>
                                         <td class="tdTypeA">상여금</td>
-                                        <td colspan="3" class="tdTypeC">
+                                        <td class="tdTypeB">
                                             <input value="{{i.driver_allowance}}" name="driver_allowance" type="text" class="inputText inputTextUnit dispatchPaymen">원</td>
                                         </td>
+                                        <td class="tdTypeA">상여지급</td>
+                                        <td class="tdTypeB">
+                                            <input {% if i.payment_method == 'y' %} checked {% endif %} name="payment_method{{forloop.counter0}}" value="y" type="checkbox" class="dispatchPaymentCheckbox">
+                                            <label for="">선지급</label>
+                                        </td>
+                                        <!-- <td class="tdTypeA">상여금 선지급</td>
+                                        <td class="tdTypeD">
+                                            <input {% if detail.payment_method == 'y' %} checked {% endif %} name="payment_method" value="y" type="checkbox" id="input_payment_method">
+                                            <label for="input_payment_method">선지급</label>
+                                        </td> -->
                                     </tr>
                                     <input name="bus" value="{{i.bus_id.id}}" type="hidden" class="hiddenBus">
                                     <input name="id" value="{{detail.id}}" type="hidden">
@@ -393,26 +424,35 @@
                                 <table class="dispatcTable">
                                     <tr>
                                         <td class="tdTypeA">배차차량</td>
-                                        <td colspan="2" class="tdTypeB">
+                                        <td class="tdTypeB">
                                             <input type="text" class="inputText dispatchBus" readonly>
                                         </td>
                                         <td class="tdTypeA">담당기사</td>
-                                        <td colspan="2" class="tdTypeB">
-                                            <select name="driver" class="inputText orderDriver inputTextUnit dispatchDriver">
-                                            </select>님
+                                        <td class="tdTypeB">
+                                                <select name="driver" class="inputText orderDriver dispatchDriver">
+                                                    <option value="{{i.driver_id.id}}">{{i.driver_id.name}}</option>
+                                                </select>
                                         </td>
-                                        <td colspan="2" class="tdTypeB">
-                                            <input name="driver_name{{forloop.counter0|add:detail_connect_list.count}}" value="" type="text" class="inputText inputTextUnit ">님
+                                        <td class="tdTypeA">용역</td>
+                                        <td class="tdTypeB">
+                                                <select name="outsourcing{{forloop.counter0|add:detail_connect_list.count}}" class="inputText orderOutSoursing dispatchDriver">
+                                                    <option></option>
+                                                </select>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td class="tdTypeA">계약금액</td>
-                                        <td colspan="3" class="tdTypeC">
+                                        <td class="tdTypeC">
                                             <input name="price" type="text" class="inputText inputTextUnit dispatchPrice dispatchPriceBlank">원</td>
                                         </td>
                                         <td class="tdTypeA">상여금</td>
-                                        <td colspan="3" class="tdTypeC">
+                                        <td class="tdTypeC">
                                             <input name="driver_allowance" type="text" class="inputText inputTextUnit dispatchPaymen dispatchPaymenBlank">원</td>
+                                        </td>
+                                        <td class="tdTypeA">상여지급</td>
+                                        <td class="tdTypeB">
+                                            <input {% if i.payment_method == 'y' %} checked {% endif %} name="payment_method{{forloop.counter0|add:detail_connect_list.count}}" value='y' type="checkbox" class="dispatchPaymentCheckbox">
+                                            <label for="">선지급</label>
                                         </td>
                                     </tr>
                                     <input name="bus" type="hidden" class="hiddenBus">
@@ -468,8 +508,7 @@
                         </div>
                     </div>
                     <div class="orderListTotal">
-                        <div class="orderListMainContents orderListMain1"></div>
-                        <div class="orderListMainContents orderListMain2"></div>
+                        <div class="orderListMainContents orderListMainTotal"></div>
                     </div>
                 </div>
                 <div class="orderListSub">
@@ -528,18 +567,18 @@
                         </div>
                         <div class="orderListTotal">
                             <div class="orderListSubContents"></div>
+                            <div class="orderListSubContents">{{total.c_bus_cnt}} ({{total.bus_cnt}})</div>
+                            <div class="orderListSubContents"></div>
+                            <div class="orderListSubContents"></div>
+                            <div class="orderListSubContents"></div>
+                            <div class="orderListSubContents">{{total.driver_allowance}}</div>
+                            <div class="orderListSubContents">{{total.price}}</div>
                             <div class="orderListSubContents"></div>
                             <div class="orderListSubContents"></div>
                             <div class="orderListSubContents"></div>
                             <div class="orderListSubContents"></div>
-                            <div class="orderListSubContents"></div>
-                            <div class="orderListSubContents"></div>
-                            <div class="orderListSubContents"></div>
-                            <div class="orderListSubContents"></div>
-                            <div class="orderListSubContents"></div>
-                            <div class="orderListSubContents"></div>
-                            <div class="orderListSubContents"></div>
-                            <div class="orderListSubContents"></div>
+                            <div class="orderListSubContents">{{total.collection_amount}}</div>
+                            <div class="orderListSubContents">{{total.outstanding_amount}}</div>
                             <div class="orderListSubContents"></div>
                             <div class="orderListSubContents"></div>
                             <div class="orderListSubContents"></div>
@@ -569,9 +608,11 @@
     const data2 = {% if dispatch_list2 %} {{ dispatch_list2 }} {% else %} '' {% endif %}
     const dataList = {% if dispatch_data_list %} {{ dispatch_data_list }} {% else %} '' {% endif %}
     const driverObj = {{ driver_dict }}
+    const outsourcingObj = {{ outsourcing_dict }}
     console.log("DATA", data)
     console.log("DATA2", data2)
     console.log("driverObj", driverObj);
+    console.log("outsourcingObj", outsourcingObj);
     console.log('dataList', dataList);
     {% endautoescape %}
 </script>
@@ -580,7 +621,7 @@
   let targetLink = ""
 
 function openOrderPrint(url){
-    targetLink = `${url}?date=${searchDate[0].value}`
+    targetLink = `${url}?date1=${searchDate[0].value}&date2=${searchDate[1].value}`
     window.open(targetLink, `${searchDate[0].value}배차지지서`, "width=1100, height=640")
 }
 

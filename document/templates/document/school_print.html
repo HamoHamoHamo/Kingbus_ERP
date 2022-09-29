@@ -1,1 +1,21 @@
-school
+{% load static %}
+
+{% block head %}
+<meta http-equiv="Cache-Control" content="private, no-cache, no-store, max-age=0, must-revalidate">
+<link rel="stylesheet" href="{% static 'css/document/school.css' %}" type="text/css" />
+
+{% endblock %}
+
+
+<div class="print">
+    <div class="title">학생현장교육차량</div>
+    <div class="class">
+        <input type="text" value="학년 반">
+    </div>
+    <div class="school">
+        <input type="text" value="학교명 : {{order.customer}}">
+    </div>
+</div>
+
+{% block script %}
+{% endblock %}

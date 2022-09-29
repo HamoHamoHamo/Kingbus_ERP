@@ -12,6 +12,7 @@ const changeToVAT = document.querySelectorAll(".listTableScroll .scrollListTable
 const inputSave = document.querySelector(".inputSave")
 const inputDispatchForm = document.querySelector(".inputDispatchForm")
 const ListSub = document.querySelectorAll(".orderListSub .orderListItem")
+const inputHidden = document.querySelector(".inputHidden")
 
 
 // 검색 날짜 역전 방지
@@ -148,6 +149,7 @@ function submitVaildation(e) {
     if (inputTextquarter[0].value.replace(/\-/g, "") > inputTextquarter[1].value.replace(/\-/g, "")) {
         alert("잘못된 범위입니다. 날짜를 다시 확인해 주세요.")
         inputTextquarter[1].value = ""
+        return
     } else if (inputTextquarter[0].value == inputTextquarter[1].value) {
         if (inputTextTwice[0].value + inputTextTwice[1].value >= inputTextTwice[2].value + inputTextTwice[3].value) {
             alert("잘못된 범위입니다. 시간을 다시 확인해 주세요.")
@@ -159,7 +161,7 @@ function submitVaildation(e) {
             if (inputTextDriverAllowance.value !== "" && inputTextDriverAllowance.value.length > 3) {
                 inputTextDriverAllowance.value = inputTextDriverAllowance.value.replace(/\,/g, "")
             }
-            inputDispatchForm.submit()
+            // inputDispatchForm.submit()
         }
     } else {
         if (inputTextPrice.value !== "" && inputTextPrice.value.length > 3) {
@@ -168,8 +170,38 @@ function submitVaildation(e) {
         if (inputTextDriverAllowance.value !== "" && inputTextDriverAllowance.value.length > 3) {
             inputTextDriverAllowance.value = inputTextDriverAllowance.value.replace(/\,/g, "")
         }
+        // inputDispatchForm.submit()
+    }
+    console.log('form action', inputDispatchForm.action)
+    if (inputDispatchForm.action == 'http://kingbuserp.link/dispatch/order/route/edit') {
+        $.ajax({
+            url: "/dispatch/order/route/edit/check",
+            method: "POST",
+            data: {
+                "departure_date": `${inputTextquarter[0].value} ${inputTextTwice[0].value}:${inputTextTwice[1].value}`,
+                "arrival_date": `${inputTextquarter[1].value} ${inputTextTwice[2].value}:${inputTextTwice[3].value}`,
+                "id": inputHidden.value,
+                'csrfmiddlewaretoken': csrftoken
+            },
+            datatype: 'json',
+            success: function (data) {
+                if (data['status'] == "fail") {
+                    alert(`${data.route} ${data.driver} ${data.bus} \n운행시간이 중복됩니다.`);
+                    return;
+                } else {
+                    // alert(`${data.status}ss data${data.departure_date} ${data.arrival_date}`);
+                    inputDispatchForm.submit();
+                }
+            },
+            error: function (request, status, error) {
+                console.log("CODE:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
+                // ajax 처리가 결과가 에러이면 전송 여부는 false // 앞서 초기값을 false로 해 놓았지만 한번 더 선언을 한다.
+            },
+        });
+    } else {
         inputDispatchForm.submit()
     }
+    
 }
 
 

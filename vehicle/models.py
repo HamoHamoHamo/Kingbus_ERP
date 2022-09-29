@@ -19,8 +19,9 @@ class Vehicle(models.Model):
     use = models.CharField(verbose_name='사용여부', max_length=1, null=False, default='y')
     passenger_num = models.IntegerField(verbose_name='승차인원', null=False)
 
-    check_duration = models.CharField(verbose_name='정기점검정비기록', max_length=30, null=False, blank=True)
-    insurance_expiry_date = models.CharField(verbose_name='보험만료일', max_length=30, null=False, blank=True)
+    check_date = models.CharField(verbose_name='정기점검 검사일', max_length=30, null=False, blank=True)
+    expiration_date = models.CharField(verbose_name='검사유효기간 만료일', max_length=30, null=False, blank=True)
+    # insurance_expiry_date = models.CharField(verbose_name='보험만료일', max_length=30, null=False, blank=True)
     # inspection_duration(검사유효기간)
     # vehicle_registration = models.CharField(verbose_name='차량등록증', max_length=30, null=False, blank=True)
     # insurance_receipt = models.CharField(verbose_name='보험영수증', max_length=30, null=False, blank=True)

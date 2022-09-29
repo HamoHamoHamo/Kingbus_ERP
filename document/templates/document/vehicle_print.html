@@ -1,1 +1,23 @@
-vehicle
+{% load static %}
+
+{% block head %}
+<meta http-equiv="Cache-Control" content="private, no-cache, no-store, max-age=0, must-revalidate">
+<link rel="stylesheet" href="{% static 'css/document/vechicle.css' %}" type="text/css" />
+
+{% endblock %}
+
+{% for file in file_list %}
+<div class="repeat">
+    <div class="print">
+        <img src="{{file.file.url}}" alt="">
+    </div>
+</div>
+{% endfor %}
+
+{% block script %}
+<script>
+    window.onload = function () {
+        window.print()
+    }
+</script>
+{% endblock %}

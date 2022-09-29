@@ -217,11 +217,6 @@
   font-size: 1.4rem;
 }
 
-.tdTypeD {
-  width: 5.5%;
-  font-size: 1.4rem;
-}
-
 .inputTableBox input[type=checkbox] {
   margin: 0;
   margin-left: 0.6rem;
@@ -318,6 +313,9 @@
 
 .dispatcTable .tdTypeB {
   width: 25%;
+}
+.DriverSelectBox{
+  display: flex;
 }
 
 .dispatcTable .tdTypeC {
@@ -522,7 +520,7 @@
   border-right: 0.1rem solid #707070;
 }
 
-.orderListSubContents span{
+.orderListSubContents span {
   margin: 0.3rem 0;
 }
 
@@ -581,8 +579,12 @@
 .orderListMain2 {
   justify-content: flex-start;
   width: 80%;
-  padding: 0.6rem  0 0.6rem 1rem;
+  padding: 0.6rem 0 0.6rem 1rem;
   box-sizing: border-box;
+}
+
+.orderListMainTotal{
+  width: 100%;
 }
 
 
@@ -598,7 +600,7 @@
 .orderListItem .orderListSubContents:nth-child(1) {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  padding: 0.6rem  1rem;
+  padding: 0.6rem 1rem;
   box-sizing: border-box;
 }
 
@@ -613,6 +615,11 @@
 .orderListSubContents:nth-child(18),
 .orderListSubContents:nth-child(19) {
   width: 10rem;
+}
+
+.orderListSubContents:nth-child(4) {
+  text-align: center;
+  word-break: keep-all;
 }
 
 .orderListSubContents:nth-child(4),
@@ -651,4 +658,8 @@
   justify-content: flex-start;
   padding-left: 1rem;
   box-sizing: border-box;
+}
+
+.thisRoute {
+  background-color: #29b68b;
 }
