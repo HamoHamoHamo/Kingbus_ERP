@@ -22,16 +22,18 @@ function moveCheck(e) {
 
 function listHeight() {
     for (i = 0; i < mainContents.length; i++) {
-        if (mainContents[i].offsetHeight !== subContents[i].offsetHeight) {
-            if (mainContents[i].offsetHeight > subContents[i].offsetHeight) {
-                subContents[i].style.height = `${(mainContents[i].offsetHeight - 1) * 0.1}rem`
-            } else {
-                mainContents[i].style.height = `${(subContents[i].offsetHeight - 1) * 0.1}rem`
+        if (subContents[i].children[0].clientHeight >= 50) {
+            mainContents[i].children[0].style.height = `${subContents[i].children[0].clientHeight * 0.1}rem`
+            mainContents[i].children[1].style.height = `${subContents[i].children[0].clientHeight * 0.1}rem`
+            for (j = 0; j < subContents[i].children.length; j++) {
+                subContents[i].children[j].style.height = `${(subContents[i].children[0].clientHeight + 2) * 0.1}rem`
+            }
+        } else {
+            mainContents[i].children[0].style.height = "5.2rem"
+            mainContents[i].children[1].style.height = "5.2rem"
+            for (j = 0; j < subContents[i].children.length; j++) {
+                subContents[i].children[j].style.height = "5.2rem"
             }
         }
-        for (j = 1; j < 19; j++) {
-            subContents[i].children[j].style.height = `${subContents[i].children[0].offsetHeight * 0.1}rem`
-        }
-        mainContents[i].children[0].style.height = `${subContents[i].children[0].offsetHeight * 0.1}rem`
     }
 }

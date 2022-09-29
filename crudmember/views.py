@@ -116,28 +116,28 @@ class Calendar(generic.ListView):
 
         vehicle = Vehicle.objects.order_by('-use', '-pk')
         i_next_month = (datetime.strptime(TODAY, FORMAT) + relativedelta(months=1)).strftime(FORMAT)
-        context['insurance_list'] = vehicle.exclude(insurance_expiry_date='').filter(insurance_expiry_date__lte=i_next_month).order_by('insurance_expiry_date')
+        # context['insurance_list'] = vehicle.exclude(insurance_expiry_date='').filter(insurance_expiry_date__lte=i_next_month).order_by('insurance_expiry_date')
 
         
         #검사유효기간 11달 후부터 보여주기 = today -11달 보다 작을때
-        c_next_month = datetime.strptime(TODAY, FORMAT) - relativedelta(months=11)
-        c_next_month = c_next_month.strftime(FORMAT)
+        # c_next_month = datetime.strptime(TODAY, FORMAT) - relativedelta(months=11)
+        # c_next_month = c_next_month.strftime(FORMAT)
         
-        context['check_list'] = vehicle.exclude(check_duration__lte='').filter(check_duration__lte=c_next_month).order_by('check_duration')
+        # context['check_list'] = vehicle.exclude(check_duration__lte='').filter(check_duration__lte=c_next_month).order_by('check_duration')
         
-        duration = []
-        expire = []
+        # duration = []
+        # expire = []
 
-        for vehicle in context['check_list']:
-            v_month = datetime.strptime(vehicle.check_duration, FORMAT) + relativedelta(months=11)
-            year = v_month + relativedelta(months=2)
-            v_month = v_month.strftime(FORMAT)
-            year = year.strftime(FORMAT)
+        # for vehicle in context['check_list']:
+        #     v_month = datetime.strptime(vehicle.check_duration, FORMAT) + relativedelta(months=11)
+        #     year = v_month + relativedelta(months=2)
+        #     v_month = v_month.strftime(FORMAT)
+        #     year = year.strftime(FORMAT)
 
-            duration.append(month)
-            expire.append(year)
-        context['duration'] = duration
-        context['expire'] = expire
+        #     duration.append(month)
+        #     expire.append(year)
+        # context['duration'] = duration
+        # context['expire'] = expire
 
         check_list = DispatchCheck.objects.filter(date__startswith=month[:7]).order_by('date')
         for check in check_list:

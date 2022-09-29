@@ -28,9 +28,26 @@
             <input type="text">
             <label for="">기간</label>
             <div class="searchDataBox">
-                <input name="date" type="date" class="inputModules" value="{{date}}">
+                <input name="date1" type="date" class="inputModules" value="{{date1}}">
                 ~
-                <input name="date" type="date" class="inputModules" value="{{date}}">
+                <input name="date2" type="date" class="inputModules" value="{{date2}}">
+            </div>
+            <div class="dateControllBtnBox">
+                <div class="dateToday">오늘</div>
+                <div class="dateControllBtn">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="8.6" height="13" viewBox="0 0 8.6 13">
+                        <path id="Icon_ionic-ios-arrow-back" data-name="Icon ionic-ios-arrow-back"
+                            d="M13.843,12.692l5.692-4.915a.839.839,0,0,0,0-1.312,1.2,1.2,0,0,0-1.523,0l-6.449,5.569a.839.839,0,0,0-.031,1.281l6.475,5.608a1.205,1.205,0,0,0,1.523,0,.839.839,0,0,0,0-1.312Z"
+                            transform="translate(-11.25 -6.194)" fill="#fff" />
+                    </svg>
+                </div>
+                <div class="dateControllBtn">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="8.6" height="13" viewBox="0 0 8.6 13">
+                        <path id="Icon_ionic-ios-arrow-back" data-name="Icon ionic-ios-arrow-back"
+                            d="M17.258,12.692,11.566,7.777a.839.839,0,0,1,0-1.312,1.2,1.2,0,0,1,1.523,0l6.448,5.569a.839.839,0,0,1,.031,1.281l-6.475,5.608a1.205,1.205,0,0,1-1.523,0,.839.839,0,0,1,0-1.312Z"
+                            transform="translate(-11.25 -6.194)" fill="#fff" />
+                    </svg>
+                </div>
             </div>
             <input type="submit" value="검색" class="btnModules">
         </div>
@@ -42,22 +59,17 @@
 
 <div class="documentArea">
     <span class="documentType">출력문서 :</span>
-    <a href="{% url 'document:vehicle_print' %}">
-        <span class="btnModules">차량등록증</span>
-    </a>
-    <a href="{% url 'document:commitment_print' %}">
-        <span class="btnModules">확약서</span>
-    </a>
-    <a href="{% url 'document:safety_print' %}">
-        <span class="btnModules">차량안전 점검표</span>
-    </a>
-    <a href="{% url 'document:school_print' %}">
-        <span class="btnModules">학교표찰</span>
-        <!-- A3 -->
-    </a>
-    <a href="{% url 'document:drinking_print' %}">
-        <span class="btnModules">자가 음주측정 보고서</span>
-    </a>
+
+    <span class="btnModules" onclick="openVehicleRegistrationPrint('/document/print/vehicle')">차량등록증-A4</span>
+
+    <span class="btnModules" onclick="openPledgePrint('/document/print/commitment')">확약서-A4</span>
+
+    <span class="btnModules" onclick="openBuscheckPrint('/document/print/safety')" >차량안전 점검표-A4</span>
+
+    <span class="btnModules" onclick="openSchoolPrint('/document/print/school')">학교표찰-A3</span>
+
+    <span class="btnModules" onclick="openDrinkingPrint('/document/print/drinking')">자가 음주측정 보고서-A4</span>
+
     <span class="documentType documentTypeLocation">사이트로 이동 :</span>
     <!-- 전세버스 공제조합 -->
     <a href="https://nmcb.org/cooperative/user/main.do" target="_blank">
@@ -83,7 +95,6 @@
             <thead>
                 <tr>
                     <td>선택</td>
-                    <td>날짜</td>
                     <td>운행시간</td>
                     <td>노선이름</td>
                     <td>배차차량</td>
@@ -100,32 +111,28 @@
                     {% for order in order_list %}
                     <tr>
                         <td>
-                            <input type="radio">
+                            <input type="radio" name="route" class="routeRadio {{order.id}}">
                         </td>
                         <td>
-                            {{ departure_date|index:forloop.counter0 }}
-                            {% if departure_date|index:forloop.counter0 != arrival_date|index:forloop.counter0 %}
-                                <br>{{ arrival_date|index:forloop.counter0 }}
-                            {% endif %}
-                            
-                        </td>
-                        <td>
-                            
+                            {{order.departure_date}}<br>
+                            {{order.arrival_date}}
                         </td>
                         <td>
                             {{order.departure}}▶<br>
                             {{order.arrival}}
                         </td>
                         <td>
-                            {% with connect=connect_list|index:forloop.counter0 %}
-                            {% for c in connect %}
-                            <span>{{c.driver_id.name}}({{c.bus_id.vehicle_num}})</span>
+                            <div class="documentDispatch">
+                                {% with connect=connect_list|index:forloop.counter0 %}
+                                {% for c in connect %}
+                                <span>{{c.driver_id.name}}({{c.bus_id.vehicle_num}})</span>
 
-                            {% endfor %}
-                            {% endwith %}
+                                {% endfor %}
+                                {% endwith %}
+                            </div>
                         </td>
                         <td></td>
-                        <td>{{order.bus_cnt}}대</td>
+                        <td>{{order.info_order.count}} ({{order.bus_cnt}})대</td>
                         <td></td>
                         <td></td>
                     </tr>
@@ -149,5 +156,85 @@
 
 
 {% block script %}
+<script>
+    const routeRadio = document.querySelectorAll(".routeRadio")
+
+    let routeId = ""
+        
+    let targetLink = ""
+
+    function openVehicleRegistrationPrint(url){
+        for(i=0; i<routeRadio.length; i++){
+            if(routeRadio[i].checked){
+                routeId = routeRadio[i].classList[1];
+                targetLink = `${url}?id=${routeId}`
+                window.open(targetLink, `차량등록증`, "width=800, height=860")
+                return
+            }
+            if(i+1 == routeRadio.length){
+                alert("노선을 선택해 주세요!")
+            }
+        }
+    }
+
+    function openPledgePrint(url){
+        for(i=0; i<routeRadio.length; i++){
+            if(routeRadio[i].checked){
+                routeId = routeRadio[i].classList[1];
+                targetLink = `${url}?id=${routeId}`
+                window.open(targetLink, `확약서`, "width=800, height=860")
+                return
+            }
+            if(i+1 == routeRadio.length){
+                alert("노선을 선택해 주세요!")
+            }
+        }
+    }
+
+    function openBuscheckPrint(url){
+        for(i=0; i<routeRadio.length; i++){
+            if(routeRadio[i].checked){
+                routeId = routeRadio[i].classList[1];
+                targetLink = `${url}?id=${routeId}`
+                window.open(targetLink, `차량안전 점검표`, "width=800, height=860")
+                return
+            }
+            if(i+1 == routeRadio.length){
+                alert("노선을 선택해 주세요!")
+            }
+        }
+    }
+
+    function openSchoolPrint(url){
+        for(i=0; i<routeRadio.length; i++){
+            if(routeRadio[i].checked){
+                routeId = routeRadio[i].classList[1];
+                targetLink = `${url}?id=${routeId}`
+                window.open(targetLink, `학교표찰`, "width=1030, height=742.5")
+                return
+            }
+            if(i+1 == routeRadio.length){
+                alert("노선을 선택해 주세요!")
+            }
+        }
+    }
+
+    function openDrinkingPrint(url){
+        for(i=0; i<routeRadio.length; i++){
+            if(routeRadio[i].checked){
+                routeId = routeRadio[i].classList[1];
+                targetLink = `${url}?id=${routeId}`
+                window.open(targetLink, `자가 음주측정 보고서`, "width=800, height=860")
+                return
+            }
+            if(i+1 == routeRadio.length){
+                alert("노선을 선택해 주세요!")
+            }
+        }
+    }
+
+</script>
 <script src="{% static 'js/document/loadDate.js' %}"></script>
+<script src="{% static 'js/document/List.js' %}"></script>
+<script src="{% static 'js/document/orderDateControll.js' %}"></script>
 {% endblock %}

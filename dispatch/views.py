@@ -20,8 +20,17 @@ WEEK = ['(월)', '(화)', '(수)', '(목)', '(금)', '(토)', '(일)', ]
 WEEK2 = ['월', '화', '수', '목', '금', '토', '일', ]
 
 def order_print(request):
-
-    return render(request, 'dispatch/order_print.html')
+    
+    date1 = request.GET.get('date1', TODAY)
+    date2 = request.GET.get('date2', TODAY)
+    order_list = DispatchOrder.objects.prefetch_related('info_order').exclude(arrival_date__lt=f'{date1} 00:00').exclude(departure_date__gt=f'{date2} 24:00').order_by('departure_date')
+    
+    context = {
+        'date1': date1,
+        'date2': date2,
+        'order_list': order_list,
+    }
+    return render(request, 'dispatch/order_print.html', context)
 
 def calendar_create(request):
     if request.method == "POST":
@@ -763,6 +772,11 @@ class OrderList(generic.ListView):
         context['driver_dict'] = {}
         for driver in driver_list:
             context['driver_dict'][driver[0]] = driver[1]
+
+        outsourcing_list = Member.objects.filter(role='용역').values_list('id', 'name')
+        context['outsourcing_dict'] = {}
+        for outsourcing in outsourcing_list:
+            context['outsourcing_dict'][outsourcing[0]] = outsourcing[1]
         #
         #출발일 ~ 도착일 범위로 한번만 돌면서 for문 안에서 현재 connect date 따라서 list에 appned
         if detail_id:
@@ -812,6 +826,7 @@ class OrderList(generic.ListView):
                 'bus_num': cc.bus_id.vehicle_num,
                 'driver_id': cc.driver_id.id,
                 'driver_name': cc.driver_id.name,
+                'outsourcing': cc.outsourcing,
             }
             if detail_id:
                 if context['detail'].departure_date[:10] in dispatch.arrival_date[:10]:
@@ -826,8 +841,24 @@ class OrderList(generic.ListView):
         context['dispatch_data_list'] = dispatch_data_list
         #
         
+        total = {}
+        total['c_bus_cnt'] = 0
+        total['bus_cnt'] = 0
+        total['driver_allowance'] = 0
+        total['price'] = 0
+        total['collection_amount'] = 0
+        
+        for order in context['order_list']:
+            total['c_bus_cnt'] += int(order.info_order.count())
+            total['bus_cnt'] += int(order.bus_cnt)
+            total['driver_allowance'] += int(order.driver_allowance)
+            total['price'] += int(order.price)
+            total['collection_amount'] += int(order.collection_amount)
+            
+        total['outstanding_amount'] = total['price'] - total['collection_amount']
+        context['total'] = total
+        
         context['vehicles'] = Vehicle.objects.filter(use='y').order_by('vehicle_num', 'driver_name')
-
         context['selected_date1'] = self.request.GET.get('date1')
         context['selected_date2'] = self.request.GET.get('date2')
 
@@ -837,11 +868,15 @@ def order_connect_create(request):
     if request.method == "POST":
         creator = get_object_or_404(Member, id=request.session.get('user'))
         order = get_object_or_404(DispatchOrder, id=request.POST.get('id', None))
-        driver_name_list = []
+        outsourcing_list = []
+        payment_method_list = []
         for i in range(int(order.bus_cnt)):
-            service_name = request.POST.get(f'driver_name{i}', '')
-            driver_name_list.append(service_name)
+            outsourcing_id = request.POST.get(f'outsourcing{i}', '')
+            outsourcing_list.append(outsourcing_id)
 
+            post_payment_method = request.POST.get(f'payment_method{i}', '')
+            payment_method_list.append(post_payment_method)
+        
 
         bus_list = request.POST.getlist('bus')
         driver_list = request.POST.getlist('driver')
@@ -852,21 +887,30 @@ def order_connect_create(request):
         connect.delete()
         count = 0
         for bus, driver_id in zip(bus_list, driver_list):
+            if not bus:
+                continue
             vehicle = Vehicle.objects.get(id=bus)
-            driver = Member.objects.get(id=driver_id)
+            if outsourcing_list[count]:
+                driver = Member.objects.get(id=outsourcing_list[count])
+                outsourcing = 'y'
+            else:
+                driver = Member.objects.get(id=driver_id)
+                outsourcing = 'n'
+
             price = price_list[count].replace(",","")
             allowance = driver_allowance_list[count].replace(",","")
-            driver_name = driver_name_list[count]
+            
             connect = DispatchOrderConnect(
                 order_id = order,
                 bus_id = vehicle,
                 driver_id = driver,
+                payment_method = payment_method_list[count],
+                outsourcing = outsourcing,
                 departure_date = order.departure_date,
                 arrival_date = order.arrival_date,
                 driver_allowance = allowance,
                 price = price,
                 creator = creator,
-                driver_name = driver_name
             )
             connect.save()
             count = count + 1
@@ -877,7 +921,7 @@ def order_connect_create(request):
         return HttpResponseNotAllowed(['post'])
 
 
-def order_create(request):    
+def order_create(request):
     if request.method == "POST":
         creator = get_object_or_404(Member, pk=request.session.get('user'))
         order_form = OrderForm(request.POST)
@@ -911,9 +955,9 @@ def order_create(request):
             order.price = price
             order.driver_allowance = driver_allowance
             order.VAT = request.POST.get('VAT', 'n')
-            order.payment_method = request.POST.get('payment_method', 'n')
             order.creator = creator
             order.cost_type = ' '.join(request.POST.getlist('cost_type'))
+            order.option = ' '.join(request.POST.getlist('option'))
             order.departure_date = f"{request.POST.get('departure_date')} {departure_time1}:{departure_time2}"
             order.arrival_date = f"{request.POST.get('arrival_date')} {arrival_time1}:{arrival_time2}"
             order.route = request.POST.get('departure') + " ▶ " + request.POST.get('arrival')
@@ -930,24 +974,34 @@ def order_edit_check(request):
     #
     connects = order.info_order.all()
     # r_connects = order.info_regularly.all()
+    post_departure_date = request.POST.get('departure_date', None)
+    post_arrival_date = request.POST.get('arrival_date', None)
+
     for connect in connects:
         bus = connect.bus_id
-        # r_connects = bus.info_regulary_bus_id.all()
+        # r_connects = bus.info_regularly_bus_id.all()
 
-        post_departure_date = request.POST.get('departure_date', None)
-        post_arrival_date = request.POST.get('arrival_date', None)
+        
 
         format = '%Y-%m-%d %H:%M'
         if datetime.strptime(post_departure_date, format) > datetime.strptime(post_arrival_date, format):
             print("term begin > term end")
             raise Http404
-        
-        if bus.info_bus_id.exclude(arrival_date__lt=post_departure_date).exclude(departure_date__gt=post_arrival_date).exclude(id__in=connects):
-            return JsonResponse({"status": "fail"})
-        if bus.info_regulary_bus_id.exclude(arrival_date__lt=post_departure_date).exclude(departure_date__gt=post_arrival_date):
-            return JsonResponse({"status": "fail"})
+        o_connect = bus.info_bus_id.exclude(arrival_date__lt=post_departure_date).exclude(departure_date__gt=post_arrival_date).exclude(id__in=connects)
+        if o_connect:
+            return JsonResponse({
+                "status": "fail",
+                'route': o_connect[0].order_id.route,
+                'driver': o_connect[0].driver_id.name,
+                'bus': o_connect[0].bus_id.vehicle_num,
+                'arrival_date': o_connect[0].arrival_date,
+                'departure_date': o_connect[0].departure_date,
+            })
+        r_connect = bus.info_regularly_bus_id.exclude(arrival_date__lt=post_departure_date).exclude(departure_date__gt=post_arrival_date)
+        if r_connect:
+            return JsonResponse({"status": "fail", 'connect': r_connect})
     
-    return JsonResponse({'status': 'success'})
+    return JsonResponse({'status': 'success', 'departure_date': post_departure_date, 'arrival_date': post_arrival_date})
 
 def order_edit(request):
     pk = request.POST.get('id')
@@ -1018,15 +1072,13 @@ def order_edit(request):
             order.driver_allowance = driver_allowance
             order.contract_status = order_form.cleaned_data['contract_status']
             order.cost_type = ' '.join(request.POST.getlist('cost_type'))
+            order.option = ' '.join(request.POST.getlist('option'))
             order.customer = order_form.cleaned_data['customer']
             order.customer_phone = order_form.cleaned_data['customer_phone']
-            order.deposit_status = order_form.cleaned_data['deposit_status']
             order.bill_place = order_form.cleaned_data['bill_place']
             order.ticketing_info = order_form.cleaned_data['ticketing_info']
-            order.bill_date = order_form.cleaned_data['bill_date']
             order.collection_type = order_form.cleaned_data['collection_type']
             
-            order.payment_method = request.POST.get('payment_method', 'n')
             order.VAT = request.POST.get('VAT', 'n')
             order.route = order_form.cleaned_data['departure'] + " ▶ " + order_form.cleaned_data['arrival']
             order.creator = creator

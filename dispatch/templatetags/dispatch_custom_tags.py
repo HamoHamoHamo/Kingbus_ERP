@@ -24,6 +24,13 @@ def obj(indexable, i):
     #print("TEMPLATEINDEX", "LIST : ", indexable, "I : ", i)
     return indexable[i]
 
+@register.filter
+def sub(value, i):
+    #print("TEMPLATEINDEX", "LIST : ", indexable, "I : ", i)
+    # if not i:
+    #     i = 0
+    return int(value)-int(i)
+
 # @register.filter
 # def regularly_cnt(order, date):
 #     return order.objects.filter(departure_date__startswith=date).count()

@@ -8,6 +8,7 @@ window.onload = function () {
     changeVAT()
     pageLoadAddComma()
     listHeight()
+    thisRoute()
 }
 
 

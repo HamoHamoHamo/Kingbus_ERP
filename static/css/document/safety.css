@@ -1,0 +1,78 @@
+* {
+    -webkit-print-color-adjust: exact !important;
+}
+
+body {
+    margin: 0;
+}
+
+.repeat {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    width: 21cm;
+    height: auto;
+}
+
+.print {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    width: 21cm;
+    height: 29.7cm;
+    background-image: url(../../images/safetyPrint.png);
+    background-size: contain;
+    background-repeat: no-repeat;
+}
+
+.print:last-child {
+    page-break-after: auto;
+}
+
+.input {
+    position: absolute;
+    border: none;
+    outline: none;
+}
+
+.data {
+    top: 16.39%;
+    right: 9%;
+    width: 7.6rem;
+    font-size: 0.9rem;
+    font-weight: 700;
+}
+
+.bus {
+    top: 18.8%;
+    left: 19%;
+    font-size: 1.1rem;
+    font-weight: 600;
+}
+
+.driver {
+    top: 20.8%;
+    left: 27.6%;
+    font-size: 1.1rem;
+    font-weight: 600;
+}
+
+.school {
+    top: 28.2%;
+    right: 22.5%;
+    width: 9rem;
+    height: 1.5rem;
+    font-size: 1rem;
+    font-weight: 700;
+    text-align: center;
+    font-family: "돋움";
+    resize: none;
+}
+
+@page {
+    size: A4 portrait;
+    margin: 0;
+}

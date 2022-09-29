@@ -4,6 +4,7 @@ const scheduleHeader = document.querySelector(".scheduleHeader")
 const listHeader = document.querySelector(".orderListHeader span")
 const inputTextquarter = document.querySelectorAll(".inputTextquarter")
 const dateToday = document.querySelector(".dateToday")
+const inputModules = document.querySelector(".inputModules")
 
 // 날짜구하기
 const toDay = new Date()

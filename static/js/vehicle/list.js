@@ -113,7 +113,6 @@ function openDetailPopup() {
   passenger_num.value = regDatas[this.className].passenger_num
   motor_type.value = regDatas[this.className].motor_type
   rated_output.value = regDatas[this.className].rated_output
-  insurance_expiry_date.value = regDatas[this.className].insurance_expiry_date
   check_duration.value = regDatas[this.className].check_duration
   BusLicenseFileTextEdit.value = regDatas[this.className].vehicle_registration
   insuranceFileTextEdit.value = regDatas[this.className].insurance_receipt
@@ -227,24 +226,24 @@ window.onload = function () {
 }
 
 //차량번호, 연식
-PopupDataInput[1].addEventListener('change', busNumChecker)
-PopupDataInput[7].addEventListener('change', yearChecker)
+// PopupDataInput[1].addEventListener('change', busNumChecker)
+// PopupDataInput[7].addEventListener('change', yearChecker)
 
-function busNumChecker(){
-  if(this.value.length >= 5){
-    this.value = this.value.substr(0,5)
-  }else if(this.value.length <= 3){
-    alert("4자리의 숫자를 입력해 주세요.")
-  }
-}
-function yearChecker(){
-  if(this.value.length >= 5){
-    this.value = this.value.substr(0,4)
-  }else if(this.value.length <= 3){
-    alert("4자리의 숫자를 입력해 주세요.")
-  }
+// function busNumChecker(){
+//   if(this.value.length >= 5){
+//     this.value = this.value.substr(0,5)
+//   }else if(this.value.length <= 3){
+//     alert("4자리의 숫자를 입력해 주세요.")
+//   }
+// }
+// function yearChecker(){
+//   if(this.value.length >= 5){
+//     this.value = this.value.substr(0,4)
+//   }else if(this.value.length <= 3){
+//     alert("4자리의 숫자를 입력해 주세요.")
+//   }
   // else if(this.value.substr(2,) !== 19 && this.value.substr(2,) !== 20){
   //   alert("올바른 연도를 입력해 주세요")
   //   this.value = ""
   // }
-}
+// }

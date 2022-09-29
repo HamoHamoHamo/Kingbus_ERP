@@ -143,8 +143,8 @@ def vehicle_edit(request):
             vehicle.release_date = vehicle_form.cleaned_data['release_date']
             vehicle.use = vehicle_form.cleaned_data['use']
             vehicle.passenger_num = vehicle_form.cleaned_data['passenger_num']
-            vehicle.check_duration = vehicle_form.cleaned_data['check_duration']
-            vehicle.insurance_expiry_date = vehicle_form.cleaned_data['insurance_expiry_date']
+            vehicle.check_date = vehicle_form.cleaned_data['check_date']
+            vehicle.expiration_date = vehicle_form.cleaned_data['expiration_date']
             vehicle.save()
 
             # 파일

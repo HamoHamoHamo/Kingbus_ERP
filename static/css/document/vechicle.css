@@ -1,0 +1,32 @@
+* {
+    -webkit-print-color-adjust: exact !important;
+}
+
+body {
+    margin: 0;
+}
+
+@page {
+    margin: 0;
+}
+
+.repeat {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    width: 21cm;
+    height: auto;
+}
+
+.print {
+    width: 21cm;
+    height: 29.7cm;
+    background-size: contain;
+    background-repeat: no-repeat;
+}
+
+.print img {
+    width: 100%;
+    height: 100%;
+}

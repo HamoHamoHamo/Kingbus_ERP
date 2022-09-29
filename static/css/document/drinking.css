@@ -1,0 +1,162 @@
+* {
+    -webkit-print-color-adjust: exact !important;
+}
+
+body {
+    margin: 0;
+}
+
+@page {
+    margin: 0;
+}
+
+table {
+    width: 90%;
+    border-spacing: 0;
+    margin: 0;
+    margin-top: 3rem;
+    padding: 0;
+}
+
+table tr:nth-child(1) td {
+    border-top: 0.13rem solid black;
+}
+
+table tr td:nth-child(1) {
+    border-left: 0.13rem solid black;
+}
+
+table td {
+    border-right: 0.13rem solid black;
+    border-bottom: 0.13rem solid black;
+}
+
+.print {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    width: 21cm;
+    height: 29.7cm;
+}
+
+.title {
+    font-size: 2rem;
+    font-weight: 700;
+    margin-top: 2rem;
+}
+
+.companyTable tr {
+    height: 2.6rem;
+}
+
+.companyTable td:nth-child(1) {
+    width: 20%;
+    font-weight: 700;
+    text-align: center;
+}
+
+.companyTable td:nth-child(2) {
+    width: 80%;
+    text-align: left;
+    padding-left: 2rem;
+    box-sizing: border-box;
+}
+
+.companyTable td span {
+    font-weight: 700;
+}
+
+
+
+
+.busTable tr {
+    height: 2.6rem;
+}
+
+.busTable thead {
+    font-weight: 700;
+}
+
+.busTable tbody tr:nth-child(1) td {
+    border-top: none;
+}
+
+.busTable td {
+    text-align: center;
+}
+
+.busTable td:nth-child(1) {
+    width: 10%;
+}
+
+.busTable td:nth-child(2) {
+    width: 22%;
+}
+
+.busTable td:nth-child(3) {
+    width: 28%;
+}
+
+.busTable td:nth-child(4) {
+    width: 22%;
+}
+
+.busTable td:nth-child(5) {
+    width: 18%;
+}
+
+.busTable input {
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    border: none;
+    outline: none;
+    font-size: 16px
+}
+
+.report {
+    position: absolute;
+    bottom: 8rem;
+    left: 50%;
+    text-align: center;
+    letter-spacing: 0.1rem;
+    font-family: "굴림";
+    margin: 3rem 0;
+    line-height: 1.4rem;
+    transform: translate(-50%, 0);
+}
+
+.date {
+    position: absolute;
+    bottom: 7rem;
+    left: 50%;
+    transform: translate(-50%, 0);
+}
+
+.sent {
+    position: absolute;
+    bottom: 2rem;
+    left: 50%;
+    display: flex;
+    transform: translate(-50%, 0);
+    font-size: 1.4rem;
+    font-weight: 700;
+}
+
+.sent input {
+    text-align: center;
+    font-size: 1.4rem;
+    font-weight: 700;
+    border: none;
+    outline: none;
+}
+
+.schoolName{
+    padding: 0;
+    font-size: 1rem;
+    height: 2rem;
+    border: none;
+    outline: none;
+}

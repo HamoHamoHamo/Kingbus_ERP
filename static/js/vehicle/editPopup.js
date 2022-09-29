@@ -12,7 +12,7 @@ const testEndDateMonth = document.querySelector(".testEndDateMonth")
 const testEndDateDate = document.querySelector(".testEndDateDate")
 const fileNameBox = document.querySelector(".fileNameBox")
 const fileDeletBtn = document.querySelector(".fileDeletBtn")
-const sendToHidden = document.querySelectorAll(".sendToHidden")
+const sendToHidden = document.querySelector(".sendToHidden")
 const insuranceFile = document.querySelector("#insuranceFile")
 const roundUnit = document.querySelectorAll(".insuranceTable td:nth-child(3)")
 const priceUnit = document.querySelectorAll(".insuranceTable td:nth-child(4)")
@@ -32,7 +32,7 @@ function openInsurance() {
     } else {
         fileNameBox.value = insurance_list[this.className]
     }
-    sendToHidden[0].value = this.className;
+    sendToHidden.value = this.className;
 }
 
 
@@ -47,7 +47,7 @@ function openTest() {
     testEndDateYear.value = this.parentNode.childNodes[5].innerText.substr(0, 4)
     testEndDateMonth.value = this.parentNode.childNodes[5].innerText.substr(5, 2)
     testEndDateDate.value = this.parentNode.childNodes[5].innerText.substr(8, 2)
-    sendToHidden[1].value = this.className;
+    sendToHidden.value = this.className;
 }
 
 
