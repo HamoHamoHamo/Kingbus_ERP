@@ -9,6 +9,7 @@ const FileText = document.querySelector(".documentFileText")
 const fileDeleteBtn = document.querySelector(".fileDeleteBtn")
 const popupArticleInput = document.querySelectorAll(".popupArticleInput")
 const addGroupBox = document.querySelector(".addGroupBox")
+const hiddenGroupId = document.querySelector(".hiddenGroupId")
 
 
 
@@ -19,6 +20,7 @@ for (i = 0; i < upload.length; i++) {
 
 function uploadOpen() {
     popupAreaModules[0].style.display = 'block'
+    hiddenGroupId.value = this.parentNode.parentNode.parentNode.parentNode.children[0].children[0].children[0].children[0].classList[1].split("group")[1]
 }
 
 
@@ -67,6 +69,7 @@ function removeData() {
 FileInput.addEventListener("change", changeFile)
 
 function changeFile() {
+    popupArticleInput[0].value = FileInput.files[0].name
     FileText.value = FileInput.files[0].name
 }
 

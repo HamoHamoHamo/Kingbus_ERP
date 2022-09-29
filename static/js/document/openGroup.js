@@ -7,11 +7,10 @@ for (i = 0; i < groupOpen.length; i++) {
 }
 
 function openFileArea() {
-    if (this.innerText === "+") {
-        this.parentNode.parentNode.parentNode.children[1].style.display = "table-row-group"
-        this.innerText = "-"
+    console.log(!this.parentNode.parentNode.parentNode.children[1].classList.contains("openFolder"))
+    if (!this.parentNode.parentNode.parentNode.children[1].classList.contains("openFolder")) {
+        this.parentNode.parentNode.parentNode.children[1].classList.add("openFolder")
     }else{
-        this.parentNode.parentNode.parentNode.children[1].style.display = "none"
-        this.innerText = "+"
+        this.parentNode.parentNode.parentNode.children[1].classList.remove("openFolder")
     }
 }

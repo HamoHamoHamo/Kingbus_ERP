@@ -17,6 +17,265 @@
 
 {% block content %}
 
+<div class="routeLayout">
+
+
+
+
+
+
+  <div class="groupLayout">
+
+    <div class="groupList">
+      <div class="groupListHead">
+        <span class="groupListTitle">그룹목록</span>
+        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 22 22">
+          <g id="그룹_1628" data-name="그룹 1628" transform="translate(-542 -76)">
+            <rect id="사각형_11725" data-name="사각형 11725" width="22" height="22" rx="11" transform="translate(542 76)"
+              fill="#fff" />
+            <path id="패스_327" data-name="패스 327" d="M0,5.873,4.823,0,10,5.873"
+              transform="translate(546.063 92) rotate(-90)" fill="none" stroke="#444" stroke-linecap="round"
+              stroke-linejoin="round" stroke-width="2" />
+            <path id="패스_329" data-name="패스 329" d="M0,5.873H10" transform="translate(549.063 92) rotate(-90)"
+              fill="none" stroke="#444" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" />
+            <path id="패스_330" data-name="패스 330" d="M0,5.873H10" transform="translate(552.063 92) rotate(-90)"
+              fill="none" stroke="#444" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" />
+          </g>
+        </svg>
+      </div>
+      <div class="groupListBody">
+        <div class="groupListItem">
+          <div class="groupNum">1</div>
+          <div class="groupName">출퇴근</div>
+        </div>
+      </div>
+    </div>
+
+    <form class="groupCreate">
+      <div class="groupCreateHead">그룹등록</div>
+      <div class="groupCreateBody">
+        <div class="groupCreateInput">
+          <input type="text" placeholder="순번" class="groupNumCreate">
+          <input type="text" placeholder="그룹이름" class="groupNameCreate">
+        </div>
+        <div class="groupCreateBtnBox">
+          <a href="{% url 'dispatch:regularly_route' %}">
+            <div class="btnModules groupCreateNew">신규</div>
+          </a>
+          <input type="submit" class="btnModules groupCreateSave" value="저장">
+          <div class="btnModules groupCreateDelete" onclick="groupCreateDeleteUrl()">삭제</div>
+        </div>
+      </div>
+    </form>
+
+    <div class="foldGroup">
+      <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 30 30">
+        <g id="그룹_1629" data-name="그룹 1629" transform="translate(-13664 -4980)">
+          <rect id="사각형_11725" data-name="사각형 11725" width="30" height="30" rx="15" transform="translate(13664 4980)"
+            fill="#444" />
+          <path id="패스_327" data-name="패스 327" d="M0,0,5.788,7.048,12,0"
+            transform="translate(13681.063 5001) rotate(-90)" fill="none" stroke="#fff" stroke-linecap="round"
+            stroke-linejoin="round" stroke-width="3" />
+          <path id="패스_329" data-name="패스 329" d="M0,0H12" transform="translate(13677.063 5001) rotate(-90)" fill="none"
+            stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="3" />
+          <path id="패스_330" data-name="패스 330" d="M0,0H12" transform="translate(13673.063 5001) rotate(-90)" fill="none"
+            stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="3" />
+        </g>
+      </svg>
+    </div>
+
+  </div>
+
+
+
+
+
+
+  <div class="mainLayout">
+
+
+
+    {% if request.get_full_path != '/dispatch/regularly/route' %}
+    <form action="{% url 'dispatch:regularly_route_create' %}" method="post" class="routeInput">
+    {% else %}
+    <form action="{% url 'dispatch:regularly_route_create' %}" method="post" class="routeInput">
+    {% endif %}
+      {% csrf_token %}
+      <div class="routeInputHead">
+        <span>노선등록</span>
+        <div class="routeInputBtnBox">
+          <a href="{% url 'dispatch:regularly_route' %}">
+            <div class="btnModules routeInputNew">신규</div>
+          </a>
+          <input type="submit" class="btnModules routeInputSave" value="저장">
+          <div class="btnModules routeInputDelete" onclick="routeInputDeleteUrl()">삭제</div>
+        </div>
+      </div>
+
+      <table class="dispatcTable">
+        <colgroup>
+          <col style="width: 7%;">
+          <col style="width: 18%;">
+          <col style="width: 7%;">
+          <col style="width: 18%;">
+          <col style="width: 7%;">
+          <col style="width: 18%;">
+          <col style="width: 7%;">
+          <col style="width: 18%;">
+        </colgroup>
+        <tr>
+          <td class="tdTypeA">그룹</td>
+          <td colspan="3" class="tdTypeB">
+            <select name="group" class="inputSelect">
+              {% for g in group_list %}
+              <option value="{{g.id}}">{{g.name}}</option>
+              {% endfor %}
+            </select>
+          </td>
+          <td class="tdTypeA">출/퇴근</td>
+          <td class="tdTypeC">
+            <input name="work_type" id="workStart" type="radio">
+            <label for="workStart">출근</label>
+            <input name="work_type" id="workEnd" type="radio">
+            <label for="workEnd">퇴근</label>
+          </td>
+          <td class="tdTypeA">위치</td>
+          <td class="tdTypeC">
+            <input value="" type="text" class="inputText">
+          </td>
+        </tr>
+        <tr>
+          <td class="tdTypeA">출발지</td>
+          <td colspan="3" class="tdTypeB">
+            <input name="departure" type="text" class="inputText">
+          </td>
+          <td class="tdTypeA">운행요일</td>
+          <td colspan="3" class="tdTypeB">
+            <div class="routeWeek">
+              <div>
+                <input id="all" type="checkbox">
+                <label for="all">모두</label>
+              </div>
+              <div>
+                <input name="week" value="월" id="mon" type="checkbox">
+                <label for="mon">월</label>
+                <input name="week" value="화" id="tue" type="checkbox">
+                <label for="tue">화</label>
+                <input name="week" value="수" id="wed" type="checkbox">
+                <label for="wed">수</label>
+                <input name="week" value="목" id="thu" type="checkbox">
+                <label for="thu">목</label>
+                <input name="week" value="금" id="fri" type="checkbox">
+                <label for="fri">금</label>
+                <input name="week" value="토" id="sat" type="checkbox">
+                <label for="sat">토</label>
+                <input name="week" value="일" id="sun" type="checkbox">
+                <label for="sun">일</label>
+              </div>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td class="tdTypeA">도착지</td>
+          <td colspan="3" class="tdTypeB">
+            <input name="arrival" type="text" class="inputText">
+          </td>
+          <td class="tdTypeA">금액</td>
+          <td class="tdTypeC">
+            <input name="price" type="text" class="inputText">
+          </td>
+          <td class="tdTypeA">수당단가</td>
+          <td class="tdTypeC">
+            <input name="driver_allowance" type="text" class="inputText">
+          </td>
+        </tr>
+        <tr>
+          <td class="tdTypeA">순번</td>
+          <td class="tdTypeC">
+            <div class="routeNumber">
+              <input name="number1" type="text" class="inputText">-
+              <input name="number2" type="text" class="inputText">
+            </div>
+          </td>
+          <td class="tdTypeA">운행시간</td>
+          <td class="tdTypeC">
+            <div class="routeTime">
+              <input name="departure_time1" type="text" class="inputText">:
+              <input name="departure_time2" type="text" class="inputText">~
+              <input name="arrival_time1" type="text" class="inputText">:
+              <input name="arrival_time2" type="text" class="inputText">
+            </div>
+          </td>
+          <td class="tdTypeA">참조사항</td>
+          <td colspan="3" class="tdTypeB">
+            <input name="references" type="text" class="inputText">
+          </td>
+        </tr>
+      </table>
+
+    </form>
+
+
+
+
+    <form class="routListSearch">
+      <label for="routeListsearch">노선검색</label>
+      <input type="text" id="routeListsearch">
+      <input type="submit" class="btnModules routeListSearchBtn" value="검색">
+    </form>
+
+
+
+
+    <div class="RouteList">
+
+      <table class="RouteListHeader">
+        <thead>
+          <tr>
+            <td>순번</td>
+            <td>노선이름</td>
+            <td>요일</td>
+            <td>운행타입</td>
+            <td>운행시간</td>
+            <td>위치</td>
+            <td>수당단가</td>
+            <td>금액</td>
+            <td>참조사항</td>
+          </tr>
+        </thead>
+      </table>
+
+      <div class="RouteListScroll">
+        <table class="RouteListBody">
+          <tbody>
+            <tr class="RouteListBodyTr">
+              <td>셔틀-22</td>
+              <td></td>
+              <td>월화수목금토일</td>
+              <td>출근</td>
+              <td>08:05 ~ 11:20</td>
+              <td></td>
+              <td>1,000,000</td>
+              <td>1,000,000</td>
+              <td></td>
+            </tr>
+            <tr class="blanckTr"></tr>
+          </tbody>
+        </table>
+      </div>
+
+    </div>
+
+  </div>
+
+
+
+
+
+
+</div>
+
+<!--
 <div class="regularly_layout">
 
 
@@ -24,7 +283,7 @@
   <div class="group_layout">
 
 
-    <!-- 그룹목록 -->
+    그룹목록
     <div class="groupList">
       <div class="groupListHeadre">그룹목록</div>
       <form method="post" action="{% url 'dispatch:regularly_group_edit' %}" class="groupListForm">
@@ -85,7 +344,7 @@
 
 
 
-    <!-- 입력창 -->
+    입력창
     {% if request.get_full_path != '/dispatch/regularly/route' %}
     <form action="{% url 'dispatch:regularly_route_edit' %}" method="post" class="input">
     {% else %}
@@ -200,7 +459,7 @@
 
 
 
-    <!-- 고정배차 -->
+    고정배차
     <form action="{% url 'dispatch:regularly_fixed_create' %}" method="post" class="fixedDispatch">
       {% csrf_token %}
       <input name="id" type="hidden" value="{{ request.get_full_path|slice:'29:' }}">
@@ -289,10 +548,10 @@
 
 
 
-    <!-- 스케줄 -->
+    스케줄
     <div class="schedule mainSchedule">
 
-      <!-- 스케줄-헤더 -->
+      스케줄-헤더
       <div class="scheduleHeaderArea">
         <span>배차가능 목록</span>
         <div class="scheduleHeaderFilterBox">
@@ -313,7 +572,7 @@
         </div>
       </div>
 
-      <!-- 스케줄-바디 -->
+      스케줄-바디
       <div class="scheduleBodyArea">
         <div class="hourMarker">
           <div>0</div>
@@ -363,13 +622,13 @@
 
 
 
-</div>
+</div>-->
 {% endblock %}
 
 
 
 {% block script %}
-<script>
+<!-- <script>
   {% autoescape off %}
   const data = {{ dispatch_list }}
   const connect = {{ connect_list }}
@@ -378,10 +637,28 @@
   console.log("connect", connect)
   console.log("driverObj", driverObj)
   {% endautoescape %}
+</script> -->
+<script>
+
+  const groupCreateChangeForm = document.querySelector(".groupCreate")
+
+  function groupCreateDeleteUrl() {
+    groupCreateChangeForm.action =
+    groupCreateChangeForm.submit()
+  }
+
+  const routeInputChangeForm = document.querySelector(".routeInput")
+
+  function routeInputDeleteUrl() {
+    routeInputChangeForm.action =
+    routeInputChangeForm.submit()
+  }
+
 </script>
-<script src="{% static 'js/dispatch/group.js' %}"></script>
+<script src="{% static 'js/dispatch/routeLayoutChanger.js' %}"></script>
+<!--<script src="{% static 'js/dispatch/group.js' %}"></script>
 <script src="{% static 'js/dispatch/fixedDispatch.js' %}"></script>
 <script src="{% static 'js/dispatch/scheduleFilter.js' %}"></script>
 <script src="{% static 'js/dispatch/checker.js' %}"></script>
-<script src="{% static 'js/dispatch/input.js' %}"></script>
+<script src="{% static 'js/dispatch/input.js' %}"></script> -->
 {% endblock %}

@@ -222,7 +222,8 @@ def vehicle_file_save(upload_file, vehicle, type):
         vehicle_id=vehicle,
         file=upload_file,
         filename=upload_file.name,
-        type=type
+        type=type,
+        creator = get_object_or_404(Member, pk=self.request.session.get('user'))
     )
     vehicle_file.save()
     # print(vehicle_file)
