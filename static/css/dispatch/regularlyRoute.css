@@ -56,6 +56,8 @@
 }
 
 .groupListBody {
+  display: flex;
+  flex-direction: column;
   width: 100%;
   height: calc(100% - 3.6rem);
   overflow-y: scroll;
@@ -80,6 +82,10 @@
   align-items: center;
   width: 100%;
   height: 3.6rem;
+  order: 2;
+}
+.fixedGroup{
+  order: 1;
 }
 
 .groupNum {
@@ -99,11 +105,22 @@
   display: flex;
   justify-content: flex-start;
   align-items: center;
-  width: calc(100% - 3.6rem);
+  width: calc(100% - 7.2rem);
   height: 100%;
   padding-left: 1rem;
   box-sizing: border-box;
   font-size: 1.4rem;
+  border-bottom: 0.1rem solid #CDCDCE;
+  cursor: pointer;
+}
+
+.groupFixe{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 3.6rem;
+  height: 3.6rem;
+  box-sizing: border-box;
   border-bottom: 0.1rem solid #CDCDCE;
   cursor: pointer;
 }
@@ -174,12 +191,8 @@
   box-sizing: border-box;
 }
 
-.groupNumCreate {
-  width: 6.2rem;
-}
-
 .groupNameCreate {
-  width: calc(100% - 7.2rem);
+  width: 100%;
 }
 
 .groupCreateBtnBox {
@@ -247,7 +260,7 @@
   display: flex;
   flex-direction: column;
   width: 100%;
-  height: 15.9rem;
+  height: 19rem;
   box-sizing: border-box;
   background-color: white;
   border-radius: 0.2rem;
@@ -328,6 +341,26 @@
   font-size: 1.4rem;
 }
 
+#workStart{
+  margin-left: 2rem;
+}
+#workEnd{
+  margin-left: 1.6rem;
+}
+
+.routeWeek{
+  align-items: center;
+  width: 100%;
+  height: 100%;
+}
+
+.routeWeek input:nth-child(1){
+  margin-left: 2rem;
+}
+.routeWeek label:nth-child(2){
+  margin-right: 1.6rem;
+}
+
 .routeWeek,
 .routeNumber,
 .routeTime{
@@ -348,6 +381,7 @@
 
 /* 노선목록 검색 */
 .routListSearch {
+  position: relative;
   display: flex;
   justify-content: flex-start;
   align-items: center;
@@ -378,6 +412,13 @@
   background-color: #444;
 }
 
+.excelUpload{
+  position: absolute;
+  right: 1rem;
+  width: 8.6rem;
+  background-color: #444;
+}
+
 
 
 
@@ -388,7 +429,7 @@
   flex-direction: column;
   align-items: flex-start;
   width: 100%;
-  height: calc(100% - 22.5rem);
+  height: calc(100% - 25.6rem);
   box-sizing: border-box;
   background-color: white;
   border-radius: 0.2rem;
@@ -401,34 +442,47 @@
 }
 
 .RouteList table td:nth-child(1) {
-  width: 4%;
+  width: 3%;
 }
 
 .RouteList table td:nth-child(2),
-.RouteList table td:nth-child(9) {
-  width: 26%;
+.RouteList table td:nth-child(7){
+  width: 9%;
 }
 
 .RouteList table td:nth-child(3),
-.RouteList table td:nth-child(5) {
-  width: 8%;
+.RouteList table td:nth-child(10),
+.RouteList table td:nth-child(11) {
+  width: 17%;
 }
 
-.RouteList table td:nth-child(4) {
-  width: 6%;
+.RouteList table td:nth-child(4){
+  width: 7%;
 }
-
 .RouteList table td:nth-child(6) {
-  width: 10%;
+  width: 6%;
 }
 
-.RouteList table td:nth-child(7),
-.RouteList table td:nth-child(8) {
-  width: 6%;
+.RouteList table td:nth-child(5) {
+  width: 4%;
+}
+
+.RouteList table td:nth-child(8),
+.RouteList table td:nth-child(9) {
+  width: 5.5%;
+}
+
+.RouteListHeadScroll{
+  width: calc(100% - 0.6rem);
+  height: 3.6rem;
+  overflow-x: scroll;
+}
+.RouteListHeadScroll::-webkit-scrollbar {
+  display: none;
 }
 
 .RouteListHeader {
-  width: calc(100% - 0.6rem);
+  width: 160%;
   height: 3.6rem;
 }
 
@@ -442,10 +496,12 @@
   width: 100%;
   height: calc(100% - 3.6rem);
   overflow-y: scroll;
+  overflow-x: scroll;
 }
 
 .RouteListScroll::-webkit-scrollbar {
   width: 0.6rem;
+  height: 1rem;
 }
 
 .RouteListScroll::-webkit-scrollbar-thumb {
@@ -459,7 +515,7 @@
 }
 
 .RouteListBody {
-  width: 100%;
+  width: 160%;
   height: 100%;
 }
 
@@ -477,14 +533,15 @@
 }
 
 .RouteListBody td {
-  font-size: 1.2rem;
+  font-size: 1.4rem;
   border-right: 0.1rem solid #CDCDCE;
   border-bottom: 0.1rem solid #CDCDCE;
 }
 
-.RouteListBody td:nth-child(2),
-.RouteListBody td:nth-child(6),
-.RouteListBody td:nth-child(9){
+.RouteListBody td:nth-child(3),
+.RouteListBody td:nth-child(7),
+.RouteListBody td:nth-child(10),
+.RouteListBody td:nth-child(11){
   text-align: left;
   padding-left: 1rem;
 }

@@ -18,7 +18,13 @@ for (i = 0; i < driverTd.length; i++) {
 
 
 function addOrderDispatch() {
-    if (popupAreaModulesDispatch.classList.contains("popupAreaModulesVisible")) {
+    let dispatchDoneCount = 0
+    for (i = 0; i < dispatchBus.length; i++) {
+        if(dispatchBus[i].value !== ""){
+            dispatchDoneCount = dispatchDoneCount + 1
+        }
+    }
+    if (popupAreaModulesDispatch.classList.contains("popupAreaModulesVisible") && dispatchBus.length !== dispatchDoneCount) {
         let targetBus = this
 
         let busNum = ""
@@ -84,7 +90,11 @@ function addOrderDispatch() {
             function addOrderDispatch() {
                 targetBus.parentNode.classList.add("haveSchedule")
                 for (j = 0; j < dispatchLine.length; j++) {
+                    dispatchLine[j].style.backgroundColor = "white"
+                }
+                for (j = 0; j < dispatchLine.length; j++) {
                     if (dispatchLine[j].children[0].children[0].children[1].children[0].value == "") {
+                        dispatchLine[j].style.backgroundColor = "#CDCDCD"
                         dispatchLine[j].children[0].children[0].children[1].children[0].value = busNum
                         dispatchLine[j].children[0].children[2].value = busId
 
@@ -177,12 +187,12 @@ for (i = 0; i < orderDriver.length; i++) {
 }
 
 function addDriverOption() {
-    if (this.parentNode.parentNode.parentNode.children[1].children[0].value !== "") {
+    if (this.parentNode.parentNode.children[1].children[0].value !== "") {
         if (useSelect == true || useSelect !== this) {
 
             // 1. 선택된 기사존재여부 -> 첫번째 옵션 저장
 
-            let firstOption = [] 
+            let firstOption = []
 
             if (this.children.length !== 0) {
                 for (i = 0; i < this.children.length; i++) {
@@ -241,7 +251,7 @@ function addDriverOption() {
                 useDriver = useDriver.filter(current => current !== periodFilter[i])
             }
 
-            for (i = 0; i < periodFilter.length; i++) {
+            for (i = 0; i < selectedDriver.length; i++) {
                 useDriver = useDriver.filter(current => current !== selectedDriver[i])
             }
 
@@ -559,4 +569,16 @@ function rangePopup() {
 function CreateCompareTime() {
     inputStartTime = inputTextquarter[0].value.replace(/\-/g, "") + inputTextTwice[0].value + inputTextTwice[1].value
     inputEndTime = inputTextquarter[1].value.replace(/\-/g, "") + inputTextTwice[2].value + inputTextTwice[3].value
+}
+
+
+// 배차중인 영역 표시
+for(i=0; i<dispatchBox.length; i++){
+    dispatchBox[i].addEventListener("click", dispatchBoxFoucs)
+}
+function dispatchBoxFoucs(){
+    for(i=0; i<dispatchBox.length; i++){
+        dispatchBox[i].children[1].style.backgroundColor = "white"
+    }
+    this.children[1].style.backgroundColor = "#CDCDCD"
 }

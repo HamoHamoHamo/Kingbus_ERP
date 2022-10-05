@@ -20,16 +20,23 @@
 .scheduleHeaderArea {
   position: relative;
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
   width: 100%;
-  height: 5.8rem;
-  padding: 0;
+  height: 4.2rem;
+  padding: 0 2rem;
+  margin-bottom: 1.6rem;
+  background-color: #444;
+  box-sizing: border-box;
+}
+
+.scheduleHeader{
+  color: white;
 }
 
 .scheduleCloseBtn {
   position: absolute;
-  left: 1rem;
+  right: 1rem;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -610,10 +617,9 @@
 }
 
 .orderListSubContents:nth-child(2),
+.orderListSubContents:nth-child(15),
 .orderListSubContents:nth-child(16),
-.orderListSubContents:nth-child(17),
-.orderListSubContents:nth-child(18),
-.orderListSubContents:nth-child(19) {
+.orderListSubContents:nth-child(17) {
   width: 10rem;
 }
 
@@ -625,15 +631,10 @@
 .orderListSubContents:nth-child(4),
 .orderListSubContents:nth-child(6),
 .orderListSubContents:nth-child(7),
-.orderListSubContents:nth-child(10),
-.orderListSubContents:nth-child(12),
-.orderListSubContents:nth-child(13) {
+.orderListSubContents:nth-child(11),
+.orderListSubContents:nth-child(13),
+.orderListSubContents:nth-child(14) {
   width: 12rem;
-}
-
-.orderListSubContents:nth-child(14),
-.orderListSubContents:nth-child(15) {
-  width: 14rem;
 }
 
 .orderListSubContents:nth-child(8) {
@@ -641,9 +642,11 @@
 }
 
 .orderListSubContents:nth-child(9),
-.orderListSubContents:nth-child(11) {
-  width: 32rem;
+.orderListSubContents:nth-child(10),
+.orderListSubContents:nth-child(12) {
+  width: 34rem;
 }
+
 
 
 .orderListTableHead .orderListSubContents:nth-child(8),

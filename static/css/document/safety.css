@@ -6,6 +6,18 @@ body {
     margin: 0;
 }
 
+@media print {
+    .addStemp {
+        display: none !important;
+    }
+}
+
+.stempBox {
+    position: relative;
+    width: 21cm;
+    height: auto;
+}
+
 .repeat {
     display: flex;
     flex-direction: column;
@@ -13,6 +25,33 @@ body {
     align-items: center;
     width: 21cm;
     height: auto;
+}
+
+.addStemp {
+    position: absolute;
+    top: 1rem;
+    left: 2rem;
+    z-index: 10;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 5rem;
+    padding: 0.2rem 0.2rem;
+    background-color: rgb(155, 151, 151);
+    font-size: 0.9rem;
+    color: white;
+    border-radius: 0.2rem;
+    cursor: pointer;
+}
+
+.stemp {
+    position: absolute;
+    left: 57%;
+    top: 18.4rem;
+    z-index: 1000;
+    display: block;
+    width: 69px;
+    transform: translate(-50%, 0);
 }
 
 .print {

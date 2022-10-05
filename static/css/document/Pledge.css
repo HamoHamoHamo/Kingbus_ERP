@@ -13,12 +13,21 @@ li {
 
 @media print {
     .list table input {
-        border: none;
+        border: none !important;
+    }
+    .addStemp{
+        display: none !important;
     }
 }
 
 @page {
     margin: 0;
+}
+
+.stempBox{
+    position: relative;
+    width: 21cm;
+    height: auto;
 }
 
 .repeat {
@@ -28,6 +37,23 @@ li {
     align-items: center;
     width: 21cm;
     height: auto;
+}
+
+.addStemp{
+    position: absolute;
+    top: 1rem;
+    left: 2rem;
+    z-index: 10;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 5rem;
+    padding: 0.2rem 0.2rem;
+    background-color: rgb(155, 151, 151);
+    font-size: 0.9rem;
+    color: white;
+    border-radius: 0.2rem;
+    cursor: pointer;
 }
 
 .print {
@@ -85,6 +111,10 @@ li {
     display: flex;
 }
 
+.routeLabel{
+    margin-right: 0.4rem;
+}
+
 .listhead span {
     font-weight: 700;
 }
@@ -134,7 +164,7 @@ li {
     text-align: center;
     font-size: 1rem;
     padding: 0;
-    border: 0.1rem solid balck;
+    border: 0.1rem solid black;
     outline: none;
 }
 
@@ -157,6 +187,15 @@ li {
     text-align: center;
     font-size: 1.2rem;
     font-weight: 700;
+    transform: translate(-50%, 0);
+}
+
+.company img{
+    position: absolute;
+    left: 94%;
+    bottom: -1.2rem;
+    display: block;
+    width: 69px;
     transform: translate(-50%, 0);
 }
 

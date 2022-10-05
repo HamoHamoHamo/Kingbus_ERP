@@ -24,7 +24,210 @@
   height: 100%;
 }
 
+/* 그룹목록 */
+.groupList {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+  background-color: white;
+  border-radius: 0.2rem;
+  box-shadow: 0.1rem 0.1rem 0.6rem rgba(0, 0, 0, 0.3);
+}
 
+.groupListHead {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  height: 3.6rem;
+  padding: 0 1rem;
+  background-color: #444;
+  box-sizing: border-box;
+  border-radius: 0.2rem 0.2rem 0 0;
+}
+
+.groupListTitle {
+  font-size: 1.4rem;
+  color: white;
+}
+
+.groupListHeadBtnBox {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 9.2rem;
+  height: 100%;
+}
+
+.groupListHeadBtnBox svg {
+  cursor: pointer;
+}
+
+.groupListBody {
+  width: 100%;
+  height: calc(100% - 3.6rem);
+  overflow-y: scroll;
+}
+
+.groupListBody::-webkit-scrollbar {
+  width: 0.6rem;
+}
+
+.groupListBody::-webkit-scrollbar-thumb {
+  height: 17%;
+  background-color: #444444;
+  border-radius: 1rem;
+}
+
+.groupListBody::-webkit-scrollbar-track {
+  background-color: #D2D2D2;
+}
+
+.groupListItemBox {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  width: 100%;
+  height: auto;
+}
+
+.groupListItem {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  height: 3.6rem;
+  background-color: #EFEFEF;
+}
+
+.groupOpen {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 3.6rem;
+  height: 100%;
+  box-sizing: border-box;
+  border-right: 0.1rem solid #CDCDCE;
+  border-bottom: 0.1rem solid #CDCDCE;
+}
+
+.groupName {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  width: calc(100% - 3.6rem);
+  height: 100%;
+  padding-left: 1rem;
+  box-sizing: border-box;
+  font-size: 1.4rem;
+  border-bottom: 0.1rem solid #CDCDCE;
+  cursor: pointer;
+}
+
+.routeItem {
+  display: none;
+  align-items: center;
+  width: 100%;
+  height: 3.2rem;
+}
+
+.routeItem:hover{
+  background-color: #EFEFEF;
+}
+
+.routeGap {
+  width: 3.6rem;
+  height: 100%;
+  box-sizing: border-box;
+  border-bottom: 0.1rem solid #CDCDCE;
+}
+
+.routeName {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  width: calc(100% - 3.6rem);
+  height: 100%;
+  padding-left: 1rem;
+  box-sizing: border-box;
+  font-size: 1.4rem;
+  border-bottom: 0.1rem solid #CDCDCE;
+  cursor: pointer;
+}
+
+
+
+
+
+
+/* 스케줄 */
+.schedule {
+  display: none;
+  flex-direction: column;
+  height: 100%;
+}
+
+.scheduleHeaderArea {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  height: 4.2rem;
+  padding: 0 1rem 0 2rem;
+  margin-bottom: 1.6rem;
+  background-color: #444;
+  box-sizing: border-box;
+}
+
+.scheduleHeader {
+  color: white;
+}
+
+.scheduleHeaderBtnBox {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 9.2rem;
+  height: 100%;
+}
+
+.scheduleHeaderBtnBox svg {
+  cursor: pointer;
+}
+
+.driverTd {
+  width: calc(100% - 23.184rem);
+}
+
+
+
+
+
+
+
+/* 사이드 레이아웃 접힘 */
+.sideLayoutOpenBox {
+  display: none;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  width: 6rem;
+  height: 100%;
+  cursor: pointer;
+}
+
+.sideLayoutOpenBox div {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: calc(50% - 1rem);
+  background-color: #444;
+  border-radius: 0.2rem 1rem 1rem 0.2rem;
+  cursor: pointer;
+}
 
 
 
@@ -41,4 +244,420 @@
   align-items: center;
   width: calc(100% - 38rem);
   height: 100%;
+}
+
+
+/* 검색창 */
+.toolbar {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  width: 100%;
+  height: 3.6rem;
+  padding-left: 1rem;
+  box-sizing: border-box;
+  background-color: white;
+  border-radius: 0.2rem;
+  box-shadow: 0.1rem 0.1rem 0.6rem rgba(0, 0, 0, 0.3);
+}
+
+.toolbarTitle {
+  font-size: 1.4rem;
+  margin-right: 1rem;
+}
+
+.searchDate {
+  width: 16rem;
+  height: 2.4rem;
+  padding-left: 0.3rem;
+  margin: 0 0.6rem;
+  border: 0.1rem solid #B5B5B5;
+  border-radius: 0.2rem;
+  font-size: 1.5rem;
+  box-sizing: border-box;
+  outline: none;
+}
+
+.dateControllBtnBox {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 10rem;
+  margin-left: 1.2rem;
+}
+
+.dateToday {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 4.2rem;
+  height: 2.4rem;
+  background-color: #444;
+  color: white;
+  font-size: 1.4rem;
+  border-radius: 0.3rem;
+  cursor: pointer;
+}
+
+.dateControllBtn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 2.4rem;
+  height: 2.4rem;
+  border-radius: 100%;
+  background-color: #444;
+  font-size: 1.6rem;
+  color: white;
+  cursor: pointer;
+}
+
+.dateControllBtn svg {
+  width: 40%;
+}
+
+
+
+
+
+
+
+
+
+
+/* 노선정보창 */
+.routeDataArea {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 15.5rem;
+  box-sizing: border-box;
+  background-color: white;
+  border-radius: 0.2rem;
+  box-shadow: 0.1rem 0.1rem 0.6rem rgba(0, 0, 0, 0.3);
+}
+
+.routeDataAreaCover {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: black;
+  opacity: 0.2;
+}
+
+.dispatcTable {
+  width: 100%;
+  height: 12.3rem;
+  table-layout: fixed;
+}
+
+.dispatcTable tr {
+  width: 100%;
+  height: 3.1rem;
+  box-sizing: border-box;
+}
+
+.dispatcTable tr:nth-child(1) td:nth-child(2),
+.dispatcTable tr:nth-child(1) td:nth-child(4),
+.dispatcTable tr:nth-child(1) td:nth-child(6) {
+  border-top: 0.1rem solid #CDCDCE;
+}
+
+.dispatcTable td {
+  padding: 0;
+  font-size: 1.4rem;
+  border-bottom: 0.1rem solid #CDCDCE;
+}
+
+.tdTypeA {
+  text-align: center;
+  background-color: #444;
+  color: white;
+  font-size: 1.4rem;
+  width: 7%;
+}
+
+.tdTypeB {
+  width: 43%;
+  font-size: 1.4rem;
+}
+
+.tdTypeC {
+  width: 18%;
+  font-size: 1.4rem;
+}
+
+.routeWeek {
+  align-items: center;
+  width: 100%;
+  height: 100%;
+}
+
+.routeWeek,
+.routeNumber,
+.routeTime {
+  display: flex;
+}
+
+.inputSelect {
+  width: calc(100% - 1.6rem);
+  height: 2.4rem;
+  margin: 0 0.8rem;
+  outline: none;
+}
+
+
+
+
+
+
+
+
+
+/* 노선목록 */
+.RouteList {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: calc(100% - 23.1rem);
+  box-sizing: border-box;
+  background-color: white;
+  border-radius: 0.2rem;
+  box-shadow: 0.1rem 0.1rem 0.6rem rgba(0, 0, 0, 0.3);
+}
+
+.RouteListHead {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  height: 3.6rem;
+  padding: 0 1rem;
+  box-sizing: border-box;
+}
+
+.RouteListHead span {
+  font-size: 1.4rem;
+}
+
+.RouteListHeadBtnBox {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 64rem;
+  height: 100%;
+}
+
+.dispatchDeletBtn {
+  background-color: #444;
+}
+
+.dispatchSaveBtn {
+  background-color: #0069D9;
+}
+
+.RouteListHeadBtnBox div {
+  width: auto;
+  padding: 0 1rem;
+  background-color: #444;
+  box-sizing: border-box;
+}
+
+.RouteListHBody {
+  width: 100%;
+  height: calc(100% - 3.6rem);
+}
+
+.RouteListHBody table {
+  width: 100%;
+  height: 100%;
+  border-spacing: 0;
+}
+
+.RouteListHBody thead tr {
+  height: 3.6rem;
+  background-color: #444;
+}
+
+.RouteListHBody thead td {
+  color: white;
+  font-size: 1.4rem;
+}
+
+.RouteListHBody td {
+  text-align: center;
+}
+
+.RouteListHBodyTr {
+  height: 3.6rem;
+}
+
+.RouteListHBody tbody td {
+  border-right: 0.1rem solid #CDCDCE;
+  border-bottom: 0.1rem solid #CDCDCE;
+}
+
+.blanckTr {
+  width: 100%;
+  height: 100%;
+}
+
+.RouteListHBody td:nth-child(1) {
+  width: 4%;
+}
+
+.RouteListHBody td:nth-child(2) {
+  width: 5%;
+}
+
+.RouteListHBody td:nth-child(3) {
+  width: 18%;
+}
+
+.RouteListHBody td:nth-child(4) {
+  width: 10%;
+}
+
+.RouteListHBody td:nth-child(5),
+.RouteListHBody td:nth-child(6),
+.RouteListHBody td:nth-child(7) {
+  width: 10%;
+}
+
+.RouteListHBody td:nth-child(8) {
+  width: 33%;
+}
+
+.RouteListHBody tbody td:nth-child(8) {
+  text-align: left;
+  padding-left: 1rem;
+  box-sizing: border-box;
+}
+
+
+
+
+
+
+
+
+/* 배차내역 */
+.popupContainerDispatchHistory {
+  width: 80rem;
+}
+
+.weekTable {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 10.8rem;
+  font-size: 1.4rem;
+}
+
+.weekTableHeader {
+  display: flex;
+  background-color: #444;
+  height: 3.6rem;
+}
+
+.weekTableHeader div {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 13%;
+  height: 100%;
+  color: white;
+}
+
+.weekTableHeader div:nth-child(1) {
+  width: 9%;
+}
+
+.weekTableBody {
+  display: flex;
+  width: 100%;
+  height: 7.2rem;
+}
+
+.historyItemTitle {
+  display: flex;
+  flex-direction: column;
+  width: 9%;
+  height: 100%;
+  border-bottom: 0.1rem solid #CDCDCE;
+  border-right: 0.1rem solid #CDCDCE;
+  border-left: 0.1rem solid #CDCDCE;
+}
+
+.historyItem {
+  display: flex;
+  flex-direction: column;
+  width: 13%;
+  height: 100%;
+  border-bottom: 0.1rem solid #CDCDCE;
+  border-right: 0.1rem solid #CDCDCE;
+  cursor: pointer;
+  background-color: white;
+}
+
+.checkHistoryItem {
+  background-color: #0069D9;
+}
+
+.historyBus {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 50%;
+  border-bottom: 0.1rem solid #CDCDCE;
+}
+
+.historyDriver {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  height: 50%;
+  padding: 0 1rem;
+  box-sizing: border-box;
+}
+
+.historyDriverTItle {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 50%;
+  padding: 0 1rem;
+  box-sizing: border-box;
+}
+
+.secondWeek {
+  margin-top: 2rem;
+}
+
+.driverType {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 2.2rem;
+  height: 2.2rem;
+  border-radius: 0.3rem;
+  color: white;
+}
+
+.typeRegular {
+  background-color: #0069D9;
+}
+
+.typeOutsourcing {
+  background-color: #444;
+}
+
+.popupCloseBtn {
+  background-color: #444;
 }

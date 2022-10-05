@@ -5,16 +5,22 @@
 <link rel="stylesheet" href="{% static 'css/document/safety.css' %}" type="text/css" />
 
 {% endblock %}
-
-{% for connect in connect_list %}
-<div class="repeat">
-    <div class="print">
-        <input type="text" readonly class="input data" value="{{connect.departure_date|slice:':4'}}년{{connect.departure_date|slice:'5:7'}}월{{connect.departure_date|slice:'8:10'}}일">
-        <input type="text" readonly class="input bus" value="{{connect.bus_id.vehicle_num0}} {{connect.bus_id.vehicle_num}}">
-        <input type="text" class="input driver" value="{{connect.driver_id.name}}">
-        <textarea class="input school" maxlength="15">{{order.customer}}</textarea>
+<div class="stempBox">
+    <div class="btnModules addStemp">도장빼기</div>
+    {% for connect in connect_list %}
+    <div class="repeat">
+        <div class="print">
+        <img class="stemp" src="{% static 'images/stemp.png' %}" alt="">
+            <input type="text" readonly class="input data"
+                value="{{connect.departure_date|slice:':4'}}년{{connect.departure_date|slice:'5:7'}}월{{connect.departure_date|slice:'8:10'}}일">
+            <input type="text" class="input bus"
+                value="{{connect.bus_id.vehicle_num0}} {{connect.bus_id.vehicle_num}}">
+            <input type="text" class="input driver" value="{{connect.driver_id.name}}">
+            <textarea class="input school" maxlength="15">{{order.customer}}</textarea>
+        </div>
     </div>
 </div>
+
 {% endfor %}
 
 {% block script %}
@@ -24,4 +30,5 @@
     }
 </script>
 <script src="{% static 'js/document/schoolNameLink.js' %}"></script>
+<script src="{% static 'js/document/stemp.js' %}"></script>
 {% endblock %}

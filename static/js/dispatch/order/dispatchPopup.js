@@ -40,6 +40,9 @@ closeBtn.addEventListener("click", dispatchPopupClose)
 
 function dispatchPopupClose() {
     popupAreaModulesDispatch.classList.remove("popupAreaModulesVisible")
+    for(i=0; i<dispatchBox.length; i++){
+        dispatchBox[i].children[1].style.backgroundColor = "white"
+    }
 }
 
 // 등록 필수 항목 검사

@@ -245,13 +245,13 @@ function pageLoadAddComma() {
     for (i = 0; i < ListSub.length; i++) {
         ListSub[i].children[5].innerText = ListSub[i].children[5].innerText.replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
         ListSub[i].children[6].innerText = ListSub[i].children[6].innerText.replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
-        ListSub[i].children[11].innerText = ListSub[i].children[11].innerText.replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
-        ListSub[i].children[12].innerText = `${ListSub[i].children[6].innerText.replace(/\,/g, "") - ListSub[i].children[11].innerText.replace(/\,/g, "")}`
         ListSub[i].children[12].innerText = ListSub[i].children[12].innerText.replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
-        if (ListSub[i].children[15].innerText == "y") {
-            ListSub[i].children[15].innerText = "VAT 포함"
+        ListSub[i].children[13].innerText = `${ListSub[i].children[6].innerText.replace(/\,/g, "") - ListSub[i].children[12].innerText.replace(/\,/g, "")}`
+        ListSub[i].children[13].innerText = ListSub[i].children[13].innerText.replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
+        if (ListSub[i].children[14].innerText == "y") {
+            ListSub[i].children[14].innerText = "VAT 포함"
         } else {
-            ListSub[i].children[15].innerText = "VAT 미포함"
+            ListSub[i].children[14].innerText = "VAT 미포함"
         }
     }
 }

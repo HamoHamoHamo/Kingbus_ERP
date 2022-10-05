@@ -25,7 +25,7 @@
         <div class="searchTool">
             <div class="searchTitle">노선검색</div>
             <label for="">노선이름</label>
-            <input type="text">
+            <input name="route" value="{{route}}" type="text">
             <label for="">기간</label>
             <div class="searchDataBox">
                 <input name="date1" type="date" class="inputModules" value="{{date1}}">
@@ -60,15 +60,15 @@
 <div class="documentArea">
     <span class="documentType">출력문서 :</span>
 
-    <span class="btnModules" onclick="openVehicleRegistrationPrint('/document/print/vehicle')">차량등록증-A4</span>
+    <span class="btnModules" onclick="openVehicleRegistrationPrint('/document/print/vehicle')">차량등록증</span>
 
-    <span class="btnModules" onclick="openPledgePrint('/document/print/commitment')">확약서-A4</span>
+    <span class="btnModules" onclick="openPledgePrint('/document/print/commitment')">확약서</span>
 
-    <span class="btnModules" onclick="openBuscheckPrint('/document/print/safety')" >차량안전 점검표-A4</span>
+    <span class="btnModules" onclick="openBuscheckPrint('/document/print/safety')" >차량안전 점검표</span>
 
-    <span class="btnModules" onclick="openSchoolPrint('/document/print/school')">학교표찰-A3</span>
+    <span class="btnModules" onclick="openSchoolPrint('/document/print/school')">학교표찰</span>
 
-    <span class="btnModules" onclick="openDrinkingPrint('/document/print/drinking')">자가 음주측정 보고서-A4</span>
+    <span class="btnModules" onclick="openDrinkingPrint('/document/print/drinking')">자가 음주측정 보고서</span>
 
     <span class="documentType documentTypeLocation">사이트로 이동 :</span>
     <!-- 전세버스 공제조합 -->
@@ -237,4 +237,5 @@
 <script src="{% static 'js/document/loadDate.js' %}"></script>
 <script src="{% static 'js/document/List.js' %}"></script>
 <script src="{% static 'js/document/orderDateControll.js' %}"></script>
+<script src="{% static 'js/document/matchDispatch.js' %}"></script>
 {% endblock %}

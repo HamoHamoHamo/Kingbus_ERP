@@ -2,12 +2,54 @@
     -webkit-print-color-adjust: exact !important;
 }
 
+html{
+    font-size: 62.5%;
+}
+
 body {
     margin: 0;
 }
 
 @page {
     margin: 0;
+}
+
+@media print {
+    .addStemp {
+        display: none !important;
+    }
+}
+
+.stempBox {
+    position: relative;
+    width: 21cm;
+    height: auto;
+}
+
+.addStemp {
+    position: absolute;
+    top: 1rem;
+    left: 2rem;
+    z-index: 10;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 8rem;
+    padding: 0.4rem 0.3rem;
+    background-color: rgb(155, 151, 151);
+    font-size: 1.4rem;
+    color: white;
+    border-radius: 0.3rem;
+    cursor: pointer;
+}
+
+.stemp {
+    position: absolute;
+    left: 37%;
+    top: 12.4rem;
+    display: block;
+    width: 69px;
+    transform: translate(-50%, 0);
 }
 
 table {
@@ -42,17 +84,18 @@ table td {
 }
 
 .title {
-    font-size: 2rem;
+    font-size: 3.3rem;
     font-weight: 700;
     margin-top: 2rem;
 }
 
 .companyTable tr {
-    height: 2.6rem;
+    height: 4.2rem;
 }
 
 .companyTable td:nth-child(1) {
     width: 20%;
+    font-size: 1.86rem;
     font-weight: 700;
     text-align: center;
 }
@@ -60,6 +103,7 @@ table td {
 .companyTable td:nth-child(2) {
     width: 80%;
     text-align: left;
+    font-size: 1.6rem;
     padding-left: 2rem;
     box-sizing: border-box;
 }
@@ -72,7 +116,8 @@ table td {
 
 
 .busTable tr {
-    height: 2.6rem;
+    font-size: 1.6rem;
+    height: 3.6rem;
 }
 
 .busTable thead {
@@ -118,44 +163,45 @@ table td {
 
 .report {
     position: absolute;
-    bottom: 8rem;
+    bottom: 20rem;
     left: 50%;
     text-align: center;
     letter-spacing: 0.1rem;
     font-family: "굴림";
     margin: 3rem 0;
-    line-height: 1.4rem;
+    line-height: 2.2rem;
     transform: translate(-50%, 0);
+    font-size: 1.6rem;
 }
 
 .date {
     position: absolute;
-    bottom: 7rem;
+    bottom: 12rem;
     left: 50%;
     transform: translate(-50%, 0);
+    font-size: 1.6rem;
+    font-weight: 700;
 }
 
 .sent {
     position: absolute;
-    bottom: 2rem;
+    bottom: 4rem;
     left: 50%;
     display: flex;
     transform: translate(-50%, 0);
-    font-size: 1.4rem;
-    font-weight: 700;
 }
 
 .sent input {
     text-align: center;
-    font-size: 1.4rem;
+    font-size: 2.66rem;
     font-weight: 700;
     border: none;
     outline: none;
 }
 
-.schoolName{
+.schoolName {
     padding: 0;
-    font-size: 1rem;
+    font-size: 1.6rem;
     height: 2rem;
     border: none;
     outline: none;

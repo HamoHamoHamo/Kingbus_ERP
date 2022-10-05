@@ -10,6 +10,7 @@ urlpatterns = [
     path('company/document/download/<int:id>', views.company_document_download, name='company_document_download'),
     path('company/delete', views.company_delete, name='company_delete'),
     path('company/group/delete', views.company_group_delete, name='company_group_delete'),
+    path('company/group/edit', views.company_group_edit, name='company_group_edit'),
 
     path('dispatch', views.DocumentList.as_view(), name="dispatch"),
     

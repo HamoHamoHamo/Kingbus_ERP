@@ -404,70 +404,16 @@ class RegularlyRouteList(generic.ListView):
     # paginate_by = 10
     model = DispatchRegularly
 
+    def get_queryset(self):
+        group = self.request.GET.get('group') 
+        if not group:
+            return super().get_queryset()
+        
+        # DispatchRegularly.objects.
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-
-        '''
-        context['vehicle_list'] = Vehicle.objects.all().values_list('id', 'vehicle_num', 'driver', 'driver_name').union(DispatchRegularlyFixed.objects.all().values_list('bus_id', 'bus_id__vehicle_num', 'driver_id', 'driver_id__name')).order_by('vehicle_num', 'driver_name')
-        old_bus_id = context['vehicle_list'][0][0]
-        bus_dict = {}
-        driver_dict = {}
-        for vehicle in context['vehicle_list']:
-            if old_bus_id != vehicle[0]:
-                bus_dict[old_bus_id] = driver_dict
-                old_bus_id = vehicle[0]
-                driver_dict = {}
-
-            bus = get_object_or_404(Vehicle, id=vehicle[0])
-            if not vehicle[2]:
-                continue
-            
-            driver = get_object_or_404(Member, id=vehicle[2])
-            fixed_list = DispatchRegularlyFixed.objects.select_related('regularly_id').filter(bus_id=bus).filter(driver_id=driver)
-            temp = []
-            for fixed in fixed_list:
-                dispatch = fixed.regularly_id
-                temp.append({
-                    'work_type': dispatch.work_type,
-                    'departure_time': dispatch.departure_time,
-                    'arrival_time': dispatch.arrival_time,
-                    'departure': dispatch.departure,
-                    'arrival': dispatch.arrival,
-                    'week': fixed.week,
-                })
-            driver_dict[driver.id] = temp
-            # print("DRIVERDICT", driver_dict)
-            if vehicle == context['vehicle_list'][len(context['vehicle_list']) - 1]:
-                bus_dict[bus.id] = driver_dict
         
-        print('bus_dict', bus_dict)
-        context['bus_dict'] = bus_dict
-        '''
-
-        fixed_list = DispatchRegularlyFixed.objects.all()
-
-        dispatch_list = []
-        for fixed in fixed_list:
-            dispatch = fixed.regularly_id
-            data = {
-                'work_type': dispatch.work_type,
-                'departure_time': dispatch.departure_time,
-                'arrival_time': dispatch.arrival_time,
-                'departure': dispatch.departure,
-                'arrival': dispatch.arrival,
-                'week': fixed.week,
-                'bus_id': fixed.bus_id.id,
-                'bus_num': fixed.bus_id.vehicle_num,
-                'driver_id': fixed.driver_id.id,
-                'driver_name': fixed.driver_id.name,
-                'route_id': fixed.regularly_id.id,
-            }
-            dispatch_list.append(data)
-        print("DSSD", dispatch_list)
-        context['dispatch_list'] = dispatch_list
-
-
-        ###
         id = self.request.GET.get('id')
         if id:
             context['regularly'] = get_object_or_404(DispatchRegularly, id=id)
@@ -1098,7 +1044,7 @@ def order_delete(request):
             order = get_object_or_404(DispatchOrder, id=id)
             order.delete()
 
-        return redirect(request.META.get('HTTP_REFERER', 'redirect_if_referer_not_found'))
+        return redirect('dispatch:order')
     else:
         return HttpResponseNotAllowed(['post'])
 

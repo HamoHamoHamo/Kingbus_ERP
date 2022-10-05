@@ -1,6 +1,7 @@
 const allChecker = document.querySelector(".documentTableHeader input")
 const groupChecker = document.querySelectorAll(".groupCheck")
 const fileChecker = document.querySelectorAll(".fileCheck")
+const file = document.querySelectorAll(".documentContentsTableTbody td:nth-child(2)")
 
 
 
@@ -77,9 +78,23 @@ for (i = 0; i < fileChecker.length; i++) {
 }
 
 function makeCheck() {
-    if (this.checked) {
+}
+
+for(i=0; i<file.length; i++){
+    file[i].addEventListener("click", checkLink)
+}
+
+function checkLink(){
+    if(this.parentNode.children[0].children[0].checked == false){
+        this.parentNode.children[0].children[0].checked = true
+    }else{
+        this.parentNode.children[0].children[0].checked = false
+    }
+
+    
+    if (this.parentNode.children[0].children[0].checked) {
         // 파일선택시 해당 그룹 체크박스와 연동
-        const oneGroup = document.querySelectorAll(`.${this.classList[1]}`)
+        const oneGroup = document.querySelectorAll(`.${this.parentNode.children[0].children[0].classList[1]}`)
         let checkCount = []
         for (i = 0; i < oneGroup.length; i++) {
             if (oneGroup[i].checked) {
@@ -88,7 +103,7 @@ function makeCheck() {
         }
         if ((oneGroup.length - 1) === checkCount.length) {
             for (i = 0; i < groupChecker.length; i++) {
-                if (groupChecker[i].classList.contains(`${this.classList[1]}`)) {
+                if (groupChecker[i].classList.contains(`${this.parentNode.children[0].children[0].classList[1]}`)) {
                     groupChecker[i].checked = true
                 }
             }
@@ -105,7 +120,7 @@ function makeCheck() {
         }
     } else {
         // 파일선택시 해당 그룹 체크박스와 연동
-        const oneGroup = document.querySelectorAll(`.${this.classList[1]}`)
+        const oneGroup = document.querySelectorAll(`.${this.parentNode.children[0].children[0].classList[1]}`)
         if (oneGroup[0].checked) {
             oneGroup[0].checked = false
         }
