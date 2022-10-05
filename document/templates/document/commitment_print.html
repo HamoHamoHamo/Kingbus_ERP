@@ -5,56 +5,59 @@
 <link rel="stylesheet" href="{% static 'css/document/Pledge.css' %}" type="text/css" />
 
 {% endblock %}
-{% if cut %}
-{% for i in "x"|rjust:"2" %}
-<div class="repeat">
-    <div class="print">
-        <div class="title">차량운행 안전 서약서(배차현황 포함)</div>
+<div class="stempBox">
+    <div class="btnModules addStemp">도장빼기</div>
+    {% if cut %}
+    {% for i in "x"|rjust:"2" %}
+    <div class="repeat">
+        <div class="print">
+            <div class="title">차량운행 안전 서약서(배차현황 포함)</div>
 
-        <div class="rule">
-            <div>1. 현장체험 학습 실시 따른 관광버스 운행 시 각종 안전 사고를 예방하고자 아래 사항을 확인하여 주시기 바랍니다.</div>
-            <ul class="depth1">
-                <li>
-                    가. 차량이동에 따른 안전수칙 준수
-                    <ul class="depth2">
-                        <li>- 대열을 짓지 말고 분산하여 운행</li>
-                        <li>- 이동시각 및 경로의 정확한 숙지로 무리한 운행금지</li>
-                        <li>- 이동시 안전거리 확보</li>
-                    </ul>
-                </li>
-                <li>나. 운전자의 경력이 최소한 4년 이상이고 대리인 운전절대금지</li>
-                <li>다. 재생타이어 사용하지 않음</li>
-                <li>라. 차량정비기록부를 비치하여 수시로 점검 및 기록하고 있음</li>
-                <li>마. 운전자 건강 검진 이상 없음</li>
-            </ul>
-        </div>
-
-        <div class="list">
-            <div class="listhead">
-                <div>2. 운행 배차 현황</div>
-                <div class="route">
-                    <span>노선</span>
-                    <div class="departure">{{order.departure}}</div>
-                    <span>-></span>
-                    <div class="arrival">{{order.arrival}}</div>
-                </div>
+            <div class="rule">
+                <div>1. 현장체험 학습 실시 따른 관광버스 운행 시 각종 안전 사고를 예방하고자 아래 사항을 확인하여 주시기 바랍니다.</div>
+                <ul class="depth1">
+                    <li>
+                        가. 차량이동에 따른 안전수칙 준수
+                        <ul class="depth2">
+                            <li>- 대열을 짓지 말고 분산하여 운행</li>
+                            <li>- 이동시각 및 경로의 정확한 숙지로 무리한 운행금지</li>
+                            <li>- 이동시 안전거리 확보</li>
+                        </ul>
+                    </li>
+                    <li>나. 운전자의 경력이 최소한 4년 이상이고 대리인 운전절대금지</li>
+                    <li>다. 재생타이어 사용하지 않음</li>
+                    <li>라. 차량정비기록부를 비치하여 수시로 점검 및 기록하고 있음</li>
+                    <li>마. 운전자 건강 검진 이상 없음</li>
+                </ul>
             </div>
-            <table>
-                <thead>
-                    <tr>
-                        <td>번호</td>
-                        <td>차량번호</td>
-                        <td>운전기사명</td>
-                        <td>운전기사 연락처(H.P)</td>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% if forloop.counter == 1 %}
+
+            <div class="list">
+                <div class="listhead">
+                    <div>2. 운행 배차 현황</div>
+                    <div class="route">
+                        <span class="routeLabel">노선 |</span>
+                        <div class="departure">{{order.departure}}</div>
+                        <span>-></span>
+                        <div class="arrival">{{order.arrival}}</div>
+                    </div>
+                </div>
+                <table>
+                    <thead>
+                        <tr>
+                            <td>번호</td>
+                            <td>차량번호</td>
+                            <td>운전기사명</td>
+                            <td>운전기사 연락처(H.P)</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% if forloop.counter == 1 %}
                         {% for connect in connect_list %}
                         <tr>
                             <td>{{forloop.counter}}</td>
                             <td>
-                                <input type="text" value="{{connect.bus_id.vehicle_num0}} {{connect.bus_id.vehicle_num}}">
+                                <input type="text"
+                                    value="{{connect.bus_id.vehicle_num0}} {{connect.bus_id.vehicle_num}}">
                             </td>
                             <td>
                                 <input type="text" value="{{connect.driver_id.name}}">
@@ -64,12 +67,13 @@
                             </td>
                         </tr>
                         {% endfor %}
-                    {% else %}
+                        {% else %}
                         {% for connect in connect_list2 %}
                         <tr>
                             <td>{{forloop.counter}}</td>
                             <td>
-                                <input type="text" value="{{connect.bus_id.vehicle_num0}} {{connect.bus_id.vehicle_num}}">
+                                <input type="text"
+                                    value="{{connect.bus_id.vehicle_num0}} {{connect.bus_id.vehicle_num}}">
                             </td>
                             <td>
                                 <input type="text" value="{{connect.driver_id.name}}">
@@ -79,86 +83,99 @@
                             </td>
                         </tr>
                         {% endfor %}
-                    {% endif %}
-                </tbody>
-            </table>
-        </div>
-        <div class="pledge">위 사항에 대하여 확인 결과 이상이 없으면 준수사항을 성실히 이행할 것을 확약합니다.</div>
-        <div class="company"><span>(주)성화투어</span> <span>(인)</span></div>
-        <div class="date">{{order.departure_date|slice:':4'}}년 {{order.departure_date|slice:'5:7'}}월
-            {{order.departure_date|slice:'8:10'}}일</div>
-    </div>
-</div>
-{% endfor %}
-{% else %}
-<div class="repeat">
-    <div class="print">
-        <div class="title">차량운행 안전 서약서(배차현황 포함)</div>
-
-        <div class="rule">
-            <div>1. 현장체험 학습 실시 따른 관광버스 운행 시 각종 안전 사고를 예방하고자 아래 사항을 확인하여 주시기 바랍니다.</div>
-            <ul class="depth1">
-                <li>
-                    가. 차량이동에 따른 안전수칙 준수
-                    <ul class="depth2">
-                        <li>- 대열을 짓지 말고 분산하여 운행</li>
-                        <li>- 이동시각 및 경로의 정확한 숙지로 무리한 운행금지</li>
-                        <li>- 이동시 안전거리 확보</li>
-                    </ul>
-                </li>
-                <li>나. 운전자의 경력이 최소한 4년 이상이고 대리인 운전절대금지</li>
-                <li>다. 재생타이어 사용하지 않음</li>
-                <li>라. 차량정비기록부를 비치하여 수시로 점검 및 기록하고 있음</li>
-                <li>마. 운전자 건강 검진 이상 없음</li>
-            </ul>
-        </div>
-
-        <div class="list">
-            <div class="listhead">
-                <div>2. 운행 배차 현황</div>
-                <div class="route">
-                    <span>노선</span>
-                    <div class="departure">{{order.departure}}</div>
-                    <span>-></span>
-                    <div class="arrival">{{order.arrival}}</div>
-                </div>
+                        {% endif %}
+                    </tbody>
+                </table>
             </div>
-            <table>
-                <thead>
-                    <tr>
-                        <td>번호</td>
-                        <td>차량번호</td>
-                        <td>운전기사명</td>
-                        <td>운전기사 연락처(H.P)</td>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for connect in connect_list %}
-                    <tr>
-                        <td>{{forloop.counter}}</td>
-                        <td>
-                            <input type="text" value="{{connect.bus_id.vehicle_num0}} {{connect.bus_id.vehicle_num}}">
-                        </td>
-                        <td>
-                            <input type="text" value="{{connect.driver_id.name}}">
-                        </td>
-                        <td>
-                            <input type="text" value="{{connect.driver_id.phone_num}}">
-                        </td>
-                    </tr>
-                    
-                    {% endfor %}
-                </tbody>
-            </table>
+            <div class="pledge">위 사항에 대하여 확인 결과 이상이 없으면 준수사항을 성실히 이행할 것을 확약합니다.</div>
+            <div class="company">
+                <span>(주)성화투어</span>
+                <span>(인)</span>
+                <img src="{% static 'images/stemp.png' %}" alt="">
+            </div>
+            <div class="date">{{order.departure_date|slice:':4'}}년 {{order.departure_date|slice:'5:7'}}월
+                {{order.departure_date|slice:'8:10'}}일</div>
         </div>
-        <div class="pledge">위 사항에 대하여 확인 결과 이상이 없으면 준수사항을 성실히 이행할 것을 확약합니다.</div>
-        <div class="company"><span>(주)성화투어</span> <span>(인)</span></div>
-        <div class="date">{{order.departure_date|slice:':4'}}년 {{order.departure_date|slice:'5:7'}}월
-            {{order.departure_date|slice:'8:10'}}일</div>
+    </div>
+    {% endfor %}
+    {% else %}
+    <div class="repeat">
+        <div class="print">
+            <div class="title">차량운행 안전 서약서(배차현황 포함)</div>
+
+            <div class="rule">
+                <div>1. 현장체험 학습 실시 따른 관광버스 운행 시 각종 안전 사고를 예방하고자 아래 사항을 확인하여 주시기 바랍니다.</div>
+                <ul class="depth1">
+                    <li>
+                        가. 차량이동에 따른 안전수칙 준수
+                        <ul class="depth2">
+                            <li>- 대열을 짓지 말고 분산하여 운행</li>
+                            <li>- 이동시각 및 경로의 정확한 숙지로 무리한 운행금지</li>
+                            <li>- 이동시 안전거리 확보</li>
+                        </ul>
+                    </li>
+                    <li>나. 운전자의 경력이 최소한 4년 이상이고 대리인 운전절대금지</li>
+                    <li>다. 재생타이어 사용하지 않음</li>
+                    <li>라. 차량정비기록부를 비치하여 수시로 점검 및 기록하고 있음</li>
+                    <li>마. 운전자 건강 검진 이상 없음</li>
+                </ul>
+            </div>
+
+            <div class="list">
+                <div class="listhead">
+                    <div>2. 운행 배차 현황</div>
+                    <div class="route">
+                        <span class="routeLabel">노선 |</span>
+                        <div class="departure">{{order.departure}}</div>
+                        <span>-></span>
+                        <div class="arrival">{{order.arrival}}</div>
+                    </div>
+                </div>
+                <table>
+                    <thead>
+                        <tr>
+                            <td>번호</td>
+                            <td>차량번호</td>
+                            <td>운전기사명</td>
+                            <td>운전기사 연락처(H.P)</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for connect in connect_list %}
+                        <tr>
+                            <td>{{forloop.counter}}</td>
+                            <td>
+                                <input type="text"
+                                    value="{{connect.bus_id.vehicle_num0}} {{connect.bus_id.vehicle_num}}">
+                            </td>
+                            <td>
+                                <input type="text" value="{{connect.driver_id.name}}">
+                            </td>
+                            <td>
+                                <input type="text" value="{{connect.driver_id.phone_num}}">
+                            </td>
+                        </tr>
+
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            <div class="pledge">위 사항에 대하여 확인 결과 이상이 없으면 준수사항을 성실히 이행할 것을 확약합니다.</div>
+            <div class="company">
+                <span>(주)성화투어</span>
+                <span>(인)</span>
+                <img class="stemp" src="{% static 'images/stemp.png' %}" alt="">
+            </div>
+            <div class="date">{{order.departure_date|slice:':4'}}년 {{order.departure_date|slice:'5:7'}}월
+                {{order.departure_date|slice:'8:10'}}일</div>
+        </div>
     </div>
 </div>
+
+
 {% endif %}
 
 {% block script %}
 <script src="{% static 'js/document/splitRoute.js' %}"></script>
+<script src="{% static 'js/document/stemp.js' %}"></script>
 {% endblock %}

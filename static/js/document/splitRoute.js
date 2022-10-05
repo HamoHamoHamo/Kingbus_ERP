@@ -1,9 +1,7 @@
-const departure = document.querySelectorAll(".departure")
-const arrival = document.querySelectorAll(".arrival")
+const departure = document.querySelector(".departure")
+const arrival = document.querySelector(".arrival")
 
 window.onload = function(){
-    departure[0].innerText = departure[0].innerText.split("<")[0]
-    arrival[0].innerText = arrival[0].innerText.split("<")[0]
-    departure[1].innerText = departure[1].innerText.split("<")[0]
-    arrival[1].innerText = arrival[1].innerText.split("<")[0]
+    departure.innerText = departure.innerText.split("<")[0]
+    arrival.innerText = arrival.innerText.split("<")[0]
 }

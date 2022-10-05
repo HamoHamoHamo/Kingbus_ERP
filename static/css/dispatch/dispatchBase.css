@@ -157,7 +157,7 @@
     left: 10rem;
     width: 4rem;
     height: 2.2rem;
-    background-color: #514EA1;
+    background-color: #399DDF;
     transform: translate(0, -50%);
 }
 
@@ -166,7 +166,7 @@
     top: 50%;
     left: 10rem;
     height: 2.2rem;
-    background-color: #0A39A5;
+    background-color: #399DDF;
     transform: translate(0, -50%);
 }
 
@@ -174,7 +174,7 @@
     position: absolute;
     top: 50%;
     height: 2.2rem;
-    background-color: #1C1A4E;
+    background-color: #FEBE01;
     transform: translate(0, -50%);
 }
 
@@ -187,7 +187,7 @@
 }
 
 .otherDriver{
-    border: 0.3rem solid #FF9900;
+    border: 0.2rem solid black;
     box-sizing: border-box;
 }
 

@@ -28,8 +28,9 @@ class DispatchRegularly(models.Model):
     # contract_end_date = models.CharField(verbose_name='계약종료일', max_length=10, null=False, blank=True)
     work_type = models.CharField(verbose_name='출/퇴근', max_length=2, null=False)
     route = models.CharField(verbose_name='노선이름', max_length=100, null=False)
-    parking = models.CharField(verbose_name='주차', max_length=100, null=False, blank=True)
-
+    location = models.CharField(verbose_name='위치', max_length=50, null=False, blank=True)
+    detailed_route = models.CharField(verbose_name='상세노선', max_length=50, null=False, blank=True)
+    
     # bus_id = models.ForeignKey(Vehicle, on_delete=models.SET_NULL, related_name="regulary_bus_id", null=True)
     # driver_id = models.ForeignKey(Member, on_delete=models.SET_NULL, related_name="regularly_driver_id", null=True)
 

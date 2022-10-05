@@ -23,8 +23,8 @@ function moveCheck(e) {
 function listHeight() {
     for (i = 0; i < mainContents.length; i++) {
         if (subContents[i].children[0].clientHeight >= 50) {
-            mainContents[i].children[0].style.height = `${subContents[i].children[0].clientHeight * 0.1}rem`
-            mainContents[i].children[1].style.height = `${subContents[i].children[0].clientHeight * 0.1}rem`
+            mainContents[i].children[0].style.height = `${(subContents[i].children[0].clientHeight + 4) * 0.1}rem`
+            mainContents[i].children[1].style.height = `${(subContents[i].children[0].clientHeight + 4) * 0.1}rem`
             for (j = 0; j < subContents[i].children.length; j++) {
                 subContents[i].children[j].style.height = `${(subContents[i].children[0].clientHeight + 2) * 0.1}rem`
             }

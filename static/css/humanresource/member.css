@@ -227,8 +227,6 @@ td:nth-child(11) {
 }
 
 .popupCloseBtn {
-    right: 0;
-    transform: translate(0, -50%);
     background-color: #444444;
 }
 

@@ -22,8 +22,10 @@ class RegularlyForm(forms.ModelForm):
             # 'customer_phone',
             # 'contract_start_date',
             # 'contract_end_date',
-            'route',
             'work_type',
+            'route',
+            'location',
+            'detailed_route',
             ]
 
 class OrderForm(forms.ModelForm):

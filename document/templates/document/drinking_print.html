@@ -6,60 +6,64 @@
 
 {% endblock %}
 
-
-<div class="print">
-    <div class="title">자가음주측정 보고서</div>
-    <table class="companyTable">
-        <tr>
-            <td>업체명</td>
-            <td>㈜ 성화투어</td>
-        </tr>
-        <tr>
-            <td>대표자</td>
-            <td>김 성 태 <span>(인)</span></td>
-        </tr>
-        <tr>
-            <td>출발일시</td>
-            <td>{{departure_date|slice:':4'}}년 {{departure_date|slice:'5:7'}}월 {{departure_date|slice:'8:10'}}일</td>
-        </tr>
-        <tr>
-            <td>운행 대상 교명</td>
-            <td>
-                <input type="text" class="schoolName" value="{{order.customer}}">
-            </td>
-        </tr>
-    </table>
-    <table class="busTable">
-        <thead>
+<div class="stempBox">
+    <div class="btnModules addStemp">도장빼기</div>
+    <div class="print">
+        <img class="stemp" src="{% static 'images/stemp.png' %}" alt="">
+        <div class="title">자가음주측정 보고서</div>
+        <table class="companyTable">
             <tr>
-                <td>호차</td>
-                <td>기사명</td>
-                <td>차량번호</td>
-                <td>음주여부</td>
-                <td>비고</td>
+                <td>업체명</td>
+                <td>㈜ 성화투어</td>
             </tr>
-        </thead>
-        <tbody>
-            {% for connect in connect_list %}
             <tr>
-                <td>{{forloop.counter}}</td>
+                <td>대표자</td>
+                <td>김 성 태 <span>(인)</span></td>
+            </tr>
+            <tr>
+                <td>출발일시</td>
+                <td>{{departure_date|slice:':4'}}년 {{departure_date|slice:'5:7'}}월 {{departure_date|slice:'8:10'}}일</td>
+            </tr>
+            <tr>
+                <td>운행 대상 교명</td>
                 <td>
-                    <input type="text" value="{{connect.driver_id.name}}">
+                    <input type="text" class="schoolName" value="{{order.customer}}">
                 </td>
-                <td>{{connect.bus_id.vehicle_num0}} {{connect.bus_id.vehicle_num}}</td>
-                <td>이상 없음</td>
-                <td></td>
             </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-    <div class="report">
-        상기 운전자들은 출발 전 자체음주측정을 한 바<br>
-        이상 없음을 확인하고 보고합니다.
-    </div>
-    <div class="date">{{departure_date|slice:':4'}}. {{departure_date|slice:'5:7'}}. {{departure_date|slice:'8:10'}}.</div>
-    <div class="sent">
-        <input type="text" value="{{order.customer}}장 귀하">
+        </table>
+        <table class="busTable">
+            <thead>
+                <tr>
+                    <td>호차</td>
+                    <td>기사명</td>
+                    <td>차량번호</td>
+                    <td>음주여부</td>
+                    <td>비고</td>
+                </tr>
+            </thead>
+            <tbody>
+                {% for connect in connect_list %}
+                <tr>
+                    <td>{{forloop.counter}}</td>
+                    <td>
+                        <input type="text" value="{{connect.driver_id.name}}">
+                    </td>
+                    <td>{{connect.bus_id.vehicle_num0}} {{connect.bus_id.vehicle_num}}</td>
+                    <td>이상 없음</td>
+                    <td></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <div class="report">
+            상기 운전자들은 출발 전 자체음주측정을 한 바<br>
+            이상 없음을 확인하고 보고합니다.
+        </div>
+        <div class="date">{{departure_date|slice:':4'}}. {{departure_date|slice:'5:7'}}.
+            {{departure_date|slice:'8:10'}}.</div>
+        <div class="sent">
+            <input type="text" value="{{order.customer}}장 귀하">
+        </div>
     </div>
 </div>
 
@@ -70,4 +74,5 @@
     }
 </script>
 <script src="{% static 'js/document/schoolDrink.js' %}"></script>
+<script src="{% static 'js/document/stemp.js' %}"></script>
 {% endblock %}

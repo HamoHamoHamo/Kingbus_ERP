@@ -10,11 +10,12 @@ class LoginCheckMiddleware(object):
         self.get_response = get_response
         self.check_url = [
             "/notice",
-            "/accounting",
             "/dispatch",
             "/HR",
+            "/accounting",
             "/vehicle",
             "/service",
+            "/document",
         ]
         # One-time configuration and initialization.
     def __call__(self, request):

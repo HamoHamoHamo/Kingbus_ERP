@@ -19,15 +19,13 @@
             <div class="item">상여금</div>
             <div class="item">계약금액</div>
             <div class="item">예약정보</div>
+            <div class="item">버스옵션</div>
             <div class="item">표찰정보</div>
             <div class="item">비용구분</div>
             <div class="item">참조사항</div>
             <div class="item">수금금액</div>
             <div class="item">미수금</div>
-            <div class="item">수금일자</div>
-            <div class="item">입금현황</div>
             <div class="item">VAT포함</div>
-            <div class="item">계산서 발행일</div>
             <div class="item">계산서 발행처</div>
         </div>
         <div class="prinTableBody">
@@ -63,6 +61,9 @@
                     {% if order.customer_phone %} {{order.customer_phone}} {% endif %}
                 </div>
                 <div class="item">
+                    <span></span>
+                </div>
+                <div class="item">
                     {{order.ticketing_info}}
                 </div>
                 <div class="item">
@@ -80,16 +81,7 @@
                     {{order.price|sub:order.collection_amount}}
                 </div>
                 <div class="item">
-                    {{order.collection_date}}
-                </div>
-                <div class="item">
-                    {{order.deposit_status}}
-                </div>
-                <div class="item">
                     {% if order.VAT == 'y' %} VAT포함 {% endif %}
-                </div>
-                <div class="item">
-                    {{order.bill_date}}
                 </div>
                 <div class="item">
                     {{order.bill_place}}

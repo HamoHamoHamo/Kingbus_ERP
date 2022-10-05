@@ -9,7 +9,7 @@ const FileText = document.querySelector(".documentFileText")
 const fileDeleteBtn = document.querySelector(".fileDeleteBtn")
 const popupArticleInput = document.querySelectorAll(".popupArticleInput")
 const addGroupBox = document.querySelector(".addGroupBox")
-const hiddenGroupId = document.querySelector(".hiddenGroupId")
+const hiddenGroupId = document.querySelector(".hiddenGroupIdUpload")
 
 
 
@@ -19,8 +19,9 @@ for (i = 0; i < upload.length; i++) {
 }
 
 function uploadOpen() {
+    let targetId = this.parentNode.parentNode.parentNode.parentNode.querySelector(".groupCheck")
     popupAreaModules[0].style.display = 'block'
-    hiddenGroupId.value = this.parentNode.parentNode.parentNode.parentNode.children[0].children[0].children[0].children[0].classList[1].split("group")[1]
+    hiddenGroupId.value = targetId.classList[1].split("group")[1]
 }
 
 
@@ -59,6 +60,7 @@ function removeData() {
     popupArticleInput[0].value = ""
     popupArticleInput[1].value = ""
     FileText.value = ""
+    FileInput.value = ""
 }
 
 
@@ -82,4 +84,31 @@ fileDeleteBtn.addEventListener("click", deleteFile)
 function deleteFile() {
     FileText.value = ""
     FileInput.value = ""
+}
+
+
+
+
+// 드래그&드롭 파일업로드
+FileText.addEventListener('dragover', dragoverFile);
+
+function dragoverFile(e){
+    e.preventDefault();
+}
+
+FileText.addEventListener('dragenter', dragenterFile);
+
+function dragenterFile(e){
+    this.style.backgroundColor = "#CDCDCE"
+    this.style.border = "0.1rem solid #CDCDCE"
+}
+
+FileText.addEventListener('drop', dropFile);
+
+function dropFile(e){
+    e.preventDefault();
+    this.style.backgroundColor = "white"
+    popupArticleInput[0].value = e.dataTransfer.files[0].name
+    this.value = e.dataTransfer.files[0].name
+    FileInput.files = e.dataTransfer.files
 }

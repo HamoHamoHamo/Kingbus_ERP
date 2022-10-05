@@ -9,6 +9,7 @@ window.onload = function () {
     pageLoadAddComma()
     listHeight()
     thisRoute()
+    matchDispatch()
 }
 
 

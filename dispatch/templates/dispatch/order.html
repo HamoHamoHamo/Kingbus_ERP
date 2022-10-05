@@ -25,14 +25,19 @@
 
         <!-- 스케줄-헤더 -->
         <div class="scheduleHeaderArea">
-            <div class="scheduleCloseBtn">
-                <svg xmlns="http://www.w3.org/2000/svg" width="8.6" height="13" viewBox="0 0 8.6 13">
-                    <path id="Icon_ionic-ios-arrow-back" data-name="Icon ionic-ios-arrow-back"
-                        d="M13.843,12.692l5.692-4.915a.839.839,0,0,0,0-1.312,1.2,1.2,0,0,0-1.523,0l-6.449,5.569a.839.839,0,0,0-.031,1.281l6.475,5.608a1.205,1.205,0,0,0,1.523,0,.839.839,0,0,0,0-1.312Z"
-                        transform="translate(-11.25 -6.194)" fill="#fff" />
-                </svg>
-            </div>
             <div class="scheduleHeader">2022.09.16 ()</div>
+            <div class="scheduleCloseBtn">
+                <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 26 26">
+                    <g id="그룹_1650" data-name="그룹 1650" transform="translate(-21005 -13821)">
+                      <rect id="사각형_11727" data-name="사각형 11727" width="26" height="26" rx="6" transform="translate(21005 13821)" fill="#fff"/>
+                      <g id="그룹_1648" data-name="그룹 1648" transform="translate(12.639 64.5)">
+                        <path id="패스_331" data-name="패스 331" d="M-4.053,0l-7.086,5.457,7.086,5.358" transform="translate(21008.5 13764.5)" fill="none" stroke="#444" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+                        <path id="패스_332" data-name="패스 332" d="M0,0V10.814" transform="translate(21009.307 13764.5)" fill="none" stroke="#444" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+                        <path id="패스_333" data-name="패스 333" d="M0,0V10.814" transform="translate(21013.123 13764.5)" fill="none" stroke="#444" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+                      </g>
+                    </g>
+                  </svg>                  
+            </div>
         </div>
 
         <!-- 스케줄-바디 -->
@@ -522,15 +527,13 @@
                             <div class="orderListSubContents">상여금</div>
                             <div class="orderListSubContents">계약금액</div>
                             <div class="orderListSubContents">예약정보</div>
+                            <div class="orderListSubContents">버스옵션</div>
                             <div class="orderListSubContents">표찰정보</div>
                             <div class="orderListSubContents">비용구분</div>
                             <div class="orderListSubContents">참조사항</div>
                             <div class="orderListSubContents">수금금액</div>
                             <div class="orderListSubContents">미수금</div>
-                            <div class="orderListSubContents">수금일자</div>
-                            <div class="orderListSubContents">입금현황</div>
                             <div class="orderListSubContents">VAT포함</div>
-                            <div class="orderListSubContents">계산서 발행일</div>
                             <div class="orderListSubContents">계산서 발행처</div>
                             <div class="orderListSubContents">입력자</div>
                         </div>
@@ -540,7 +543,7 @@
                                 <div class="orderListItem {{forloop.counter}} {{order.id}}">
                                     <div class="orderListSubContents">
                                         {% for connect in order.info_order.all %}
-                                        <span>{{connect.bus_id.vehicle_num}}({{connect.driver_id.name}})</span>
+                                        <span title="{{connect.driver_id.phone_num}}">{{connect.bus_id.vehicle_num}}({{connect.driver_id.name}})</span><!--tilte="기사 전화번호 추가"-->
                                         {% endfor %}
                                     </div>
                                     <div class="orderListSubContents">{{order.info_order.count}} ({{order.bus_cnt}})</div>
@@ -550,15 +553,15 @@
                                     <div class="orderListSubContents">{{order.driver_allowance}}</div>
                                     <div class="orderListSubContents">{{order.price}}</div>
                                     <div class="orderListSubContents">{{order.customer}} : {{order.customer_phone}}</div>
+                                    <div class="orderListSubContents">
+                                        <span></span>
+                                    </div>
                                     <div class="orderListSubContents">{{order.ticketing_info}}</div>
                                     <div class="orderListSubContents">{{order.cost_type}}</div>
                                     <div class="orderListSubContents">{{order.references}}</div>
                                     <div class="orderListSubContents">{{order.collection_amount}}</div>
                                     <div class="orderListSubContents"></div>
-                                    <div class="orderListSubContents">{{order.collection_date}}</div>
-                                    <div class="orderListSubContents">{{order.deposit_status}}</div>
                                     <div class="orderListSubContents">{{order.VAT}}</div>
-                                    <div class="orderListSubContents">{{order.bill_date}}</div>
                                     <div class="orderListSubContents">{{order.bill_place}}</div>
                                     <div class="orderListSubContents">{{order.creator.name}}</div>
                                 </div>
@@ -579,8 +582,6 @@
                             <div class="orderListSubContents"></div>
                             <div class="orderListSubContents">{{total.collection_amount}}</div>
                             <div class="orderListSubContents">{{total.outstanding_amount}}</div>
-                            <div class="orderListSubContents"></div>
-                            <div class="orderListSubContents"></div>
                             <div class="orderListSubContents"></div>
                             <div class="orderListSubContents"></div>
                             <div class="orderListSubContents"></div>
@@ -629,21 +630,22 @@
     const changeForm = document.querySelector(".inputDispatchForm")
     
     function deleteUrl(){
-        changeForm.action = 
+        changeForm.action = '/dispatch/order/route/delete'
         changeForm.submit()
     }
 
 
 </script>
 <script src="{% static 'js/lodash.js' %}"></script>
-<script src="{% static 'js/dispatch/orderAll.js' %}"></script>
-<script src="{% static 'js/dispatch/layoutChanger.js' %}"></script>
-<script src="{% static 'js/dispatch/scrollLink.js' %}"></script>
-<script src="{% static 'js/dispatch/dispatchPopup.js' %}"></script>
-<script src="{% static 'js/dispatch/orderDateControll.js' %}"></script>
-<script src="{% static 'js/dispatch/LinkDocument.js' %}"></script>
-<script src="{% static 'js/dispatch/orderValidation.js' %}"></script>
-<script src="{% static 'js/dispatch/loadRouteInput.js' %}"></script>
-<script src="{% static 'js/dispatch/orderDispatch.js' %}"></script>
-<script src="{% static 'js/dispatch/FullSchedule.js' %}"></script>
+<script src="{% static 'js/dispatch/order/orderAll.js' %}"></script>
+<script src="{% static 'js/dispatch/order/layoutChanger.js' %}"></script>
+<script src="{% static 'js/dispatch/order/scrollLink.js' %}"></script>
+<script src="{% static 'js/dispatch/order/dispatchPopup.js' %}"></script>
+<script src="{% static 'js/dispatch/order/orderDateControll.js' %}"></script>
+<script src="{% static 'js/dispatch/order/LinkDocument.js' %}"></script>
+<script src="{% static 'js/dispatch/order/orderValidation.js' %}"></script>
+<script src="{% static 'js/dispatch/order/loadRouteInput.js' %}"></script>
+<script src="{% static 'js/dispatch/order/orderDispatch.js' %}"></script>
+<script src="{% static 'js/dispatch/common/FullSchedule.js' %}"></script>
+<script src="{% static 'js/dispatch/order/matchDispatch.js' %}"></script>
 {% endblock %}
