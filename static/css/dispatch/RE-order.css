@@ -71,7 +71,7 @@ input[type=date] {
   
   
   /* 입력창 */
-  .input {
+  .input{
     position: relative;
     height: 18rem;
   }
@@ -119,7 +119,7 @@ input[type=date] {
     width: 40%;
   }
   
-  .input label {
+  .inputlabel {
     cursor: pointer;
   }
   

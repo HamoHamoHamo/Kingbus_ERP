@@ -1,6 +1,6 @@
 const fixedDispatchText = document.querySelectorAll(".fixedDispatchText")
 const fixedDispatchSelect = document.querySelectorAll(".fixedDispatchSelect")
-const fixedDispatchInput = document.querySelectorAll(".fixedDispatchInput")
+const fixedDispatchinput= document.querySelectorAll(".fixedDispatchInput")
 const driverTd = document.querySelectorAll(".driverTd")
 const fixedDispatchDelete = document.querySelector(".fixedDispatchDelete")
 const driveWeek = document.querySelectorAll(".driveDateBoxInput")

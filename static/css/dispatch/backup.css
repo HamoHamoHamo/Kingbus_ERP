@@ -12,7 +12,7 @@
     margin-right: 4rem;
   }
   
-  .routeFilterBox input {
+  .routeFilterBox input{
     width: 18rem;
   }
   
@@ -30,7 +30,7 @@
     margin-right: 1rem;
   }
   
-  .dateFilterBox input {
+  .dateFilterBox input{
     width: 15rem;
   }
   
@@ -413,7 +413,7 @@
     background-color: #444444;
   }
   
-  .regularyCreatePopupBtnBox input {
+  .regularyCreatePopupBtnBox input{
     background-color: #0069D9;
   }
   
@@ -544,7 +544,7 @@
     background-color: #0069D9;
   }
   
-  .routePopupBtnBox input {
+  .routePopupBtnBox input{
     background-color: #0069D9;
   }
   
@@ -574,7 +574,7 @@
   }
   
   .routePopupDataDriveTime input,
-  .routePopupDataContractPeriod input {
+  .routePopupDataContractPeriod input{
     width: 10.8rem;
   }
   

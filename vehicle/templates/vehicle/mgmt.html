@@ -29,14 +29,14 @@
                     <option {% if select == 'driver' %} selected {% endif %} value="driver">담당기사</option>
                     <option {% if select == 'passenger' %} selected {% endif %} value="passenger">승차인원</option>
                 </select>
-                <input value="{{search}}" name="search" type="text" class="inputModules" list="hrFilter" autocomplete="off">
+                <input autocomplete="off" value="{{search}}" name="search" type="text" class="inputModules" list="hrFilter" autocomplete="off">
                 <datalist id="hrFilter">
                     {% for member in member_list %}
                     <option value="{{member.name}}"></option>
                     {% endfor %}
                 </datalist>
             </div>
-            <input type="submit" value="검색" class="btnModules">
+            <input autocomplete="off" type="submit" value="검색" class="btnModules">
         </div>
     </form>
 </div>
@@ -137,27 +137,27 @@
             </div>
             <div class="PopupDataCell">
                 <span class="PopupDataTitle">만료일</span>
-                <input name="date" class="PopupDataInput insuranceEndDate" type="date">
+                <input autocomplete="off" name="date" class="PopupDataInput insuranceEndDate" type="date">
             </div>
             <div class="PopupDataCell">
                 <span class="PopupDataTitle">보험 영수증</span>
                 <div class="fileForm">
                     <label for="insuranceFile" class="fileLabel">파일찾기</label>
-                    <input name="insurance_receipt_name" class="PopupDataInput fileNameBox" readonly>
+                    <input autocomplete="off" name="insurance_receipt_name" class="PopupDataInput fileNameBox" readonly>
                     <svg class="fileDeletBtn" xmlns="http://www.w3.org/2000/svg" width="14.829" height="14.542" viewBox="0 0 14.829 14.542">
                         <g id="그룹_930" data-name="그룹 930" transform="translate(-3537.086 5807.914)">
                           <line id="선_624" data-name="선 624" x2="11.706" y2="11.714" transform="translate(3538.5 -5806.5)" fill="none" stroke="#707070" stroke-linecap="round" stroke-width="2"/>
                           <line id="선_625" data-name="선 625" x1="11.706" y2="11.714" transform="translate(3538.794 -5806.5)" fill="none" stroke="#707070" stroke-linecap="round" stroke-width="2"/>
                         </g>
                       </svg>
-                    <input name="insurance_receipt" id="insuranceFile" type="file">
+                    <input autocomplete="off" name="insurance_receipt" id="insuranceFile" type="file">
                 </div>
             </div>
-            <input type="hidden" value="" name="id" class="sendToHidden">
+            <input autocomplete="off" type="hidden" value="" name="id" class="sendToHidden">
         </div>
         <div class="PopupBtnBox">
             <div class="btnModules">닫기</div>
-            <input type="submit" class="btnModules saveBtn" value="저장">
+            <input autocomplete="off" type="submit" class="btnModules saveBtn" value="저장">
         </div>
     </form>
 </div>
@@ -176,16 +176,16 @@
             <div class="PopupDataCell">
                 <span class="PopupDataTitle">검사 유효기간 만료일</span>
                 <div class="testDateBox">
-                    <input name="year" class="PopupDataInput testEndDateYear" type="text">
-                    <input name="month" type="text" class="PopupDataInput testEndDateMonth" readonly>
-                    <input name="date" type="text" class="PopupDataInput testEndDateDate" readonly>
+                    <input autocomplete="off" name="year" class="PopupDataInput testEndDateYear" type="text">
+                    <input autocomplete="off" name="month" type="text" class="PopupDataInput testEndDateMonth" readonly>
+                    <input autocomplete="off" name="date" type="text" class="PopupDataInput testEndDateDate" readonly>
                 </div>
             </div>
-            <input type="hidden" value="" name="id" class="sendToHidden">
+            <input autocomplete="off"type="hidden" value="" name="id" class="sendToHidden">
         </div>
         <div class="PopupBtnBox">
             <div class="btnModules">닫기</div>
-            <input type="submit" class="btnModules saveBtn" value="저장">
+            <input autocomplete="off"type="submit" class="btnModules saveBtn" value="저장">
         </div>
     </form>
 </div>

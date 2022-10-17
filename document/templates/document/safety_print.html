@@ -11,11 +11,11 @@
     <div class="repeat">
         <div class="print">
         <img class="stemp" src="{% static 'images/stemp.png' %}" alt="">
-            <input type="text" readonly class="input data"
+            <input autocomplete="off" type="text" readonly class="input data"
                 value="{{connect.departure_date|slice:':4'}}년{{connect.departure_date|slice:'5:7'}}월{{connect.departure_date|slice:'8:10'}}일">
-            <input type="text" class="input bus"
+            <input autocomplete="off" type="text" class="input bus"
                 value="{{connect.bus_id.vehicle_num0}} {{connect.bus_id.vehicle_num}}">
-            <input type="text" class="input driver" value="{{connect.driver_id.name}}">
+            <input autocomplete="off" type="text" class="input driver" value="{{connect.driver_id.name}}">
             <textarea class="input school" maxlength="15">{{order.customer}}</textarea>
         </div>
     </div>
@@ -24,11 +24,6 @@
 {% endfor %}
 
 {% block script %}
-<script>
-    window.onload = function () {
-        window.print()
-    }
-</script>
 <script src="{% static 'js/document/schoolNameLink.js' %}"></script>
 <script src="{% static 'js/document/stemp.js' %}"></script>
 {% endblock %}

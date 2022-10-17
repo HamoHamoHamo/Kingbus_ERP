@@ -255,7 +255,7 @@
 
 
 /* 입력창 */
-.input {
+.input{
   flex-direction: column;
   justify-content: flex-start;
   height: 16.2rem;
@@ -294,7 +294,7 @@
   background-color: #444;
 }
 
-.input table tr:nth-child(1) td {
+.inputtable tr:nth-child(1) td {
   border-top: 0.1rem solid black;
 }
 
@@ -429,7 +429,7 @@
   align-items: center;
 }
 
-.scheduleHeaderFilterBox input {
+.scheduleHeaderFilterBox input{
   cursor: pointer;
 }
 

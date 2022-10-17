@@ -13,7 +13,7 @@ const regularlyCheckbox = () => {
             $(".group_order__tbody").append(tr);
             $(".group_order__tbody .list_table_cell__tbody__tr:last-child").append(td_route);
             //노선 값 히든인풋
-            $(".group_order__tbody .list_table_cell__tbody__tr:last-child").append($(`<input type="hidden" name="route" value="${value}">`))
+            $(".group_order__tbody .list_table_cell__tbody__tr:last-child").append($(`<inputtype="hidden" name="route" value="${value}">`))
 
         } else {
             "aaa", $(`input[type=hidden][value=${value}]`).parent().remove();

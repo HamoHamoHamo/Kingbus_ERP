@@ -91,7 +91,7 @@ function openPopup() {
       dispatchBoxList[i].children[0].style.pointerEvents = "auto"
       dispatchBoxList[i].children[0].classList.remove("addDriver")
       dispatchBoxList[i].children[0].classList.add("removeDriver")
-      const newInput = document.createElement('input');
+      const newinput= document.createElement('input');
       newInput.setAttribute("type", "hidden");
       newInput.setAttribute("value", dispatchBoxList[i].className);
       newInput.setAttribute("name", 'vehicle');
@@ -141,7 +141,7 @@ function pickDispatch() {
       dispatchSpan.appendChild(disparchDriver);
       addDispatchBtn.appendChild(dispatchSpan);
 
-      const newInput = document.createElement('input');
+      const newinput= document.createElement('input');
       newInput.setAttribute("type", "hidden");
       newInput.setAttribute("value", this.parentNode.className);
       newInput.setAttribute("name", 'vehicle');

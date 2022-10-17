@@ -1,0 +1,239 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load accounting_custom_tags %}
+
+{% block head %}
+<meta http-equiv="Cache-Control" content="private, no-cache, no-store, max-age=0, must-revalidate">
+
+<link rel="stylesheet" href="{% static 'css/accounting/regularly_collect.css' %}" type="text/css" />
+{% endblock %}
+
+{% block content-header %}
+<div class="HeaderTitle">
+    출/퇴근 수금관리
+</div>
+{% endblock %}
+
+{% block content %}
+
+
+
+<div class="searchAreaBox">
+    <form action="">
+        <div class="searchTool">
+            <label class="searchName">날짜검색</label>
+            <input autocomplete="off" name="date" type="date" value="" class="inputModules">
+            <input autocomplete="off" type="submit" value="검색" class="btnModules dateSearchBtn">
+        </div>
+    </form>
+</div>
+
+
+
+<form method="post" action="" class="collectForm">
+    <div class="btnModules loadDepositBtn">입금내역 불러오기</div>
+    {% csrf_token %}
+    <div class="collectHead">
+        <div class="selectDate">2022년 09월</div>
+        <div class="visibelOption">
+            <input autocomplete="off" type="checkbox" id="collectUnprocessed" checked>
+            <label for="collectUnprocessed">미처리 보기</label>
+            <input autocomplete="off" type="checkbox" id="collectprocessed" checked>
+            <label for="collectprocessed">완료 보기</label>
+        </div>
+    </div>
+    <div class="collectBody">
+        <table class="collectTableHead">
+            <thead>
+                <tr>
+                    <td>선택</td>
+                    <td>노선명</td>
+                    <td>출발지 ▶ 도착지</td>
+                    <td>요일</td>
+                    <td>출/퇴근</td>
+                    <td>운행시간</td>
+                    <td>계약금액</td>
+                    <td>VAT포함</td>
+                    <td>공급가액</td>
+                    <td>부가세</td>
+                    <td>합계</td>
+                    <td>전표번호</td>
+                    <td>상태</td>
+                    <td>미수금</td>
+                </tr>
+            </thead>
+        </table>
+        <div class="collectScrollBox">
+            <table class="collectTable">
+                <tr class="collectDateBox collectionUnprocessed">
+                    <td>
+                        <input autocomplete="off"type="radio" name="loadPrice" class="routeSelect">
+                    </td>
+                    <td>
+                        <div>동수원</div>
+                    </td>
+                    <td>
+                        <div>동수원 [06시 새벽조출, 퇴근]장안구청 앞 ▶</div>
+                        <div>한국 쓰리엠 출근</div>
+                    </td>
+                    <td>
+                        <div>월화수목금토일</div>
+                    </td>
+                    <td>출근</td>
+                    <td>04:30 ~ 07:00</td>
+                    <td>1,250,000</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>
+                        <span class="chit"></span>
+                    </td>
+                    <td></td>
+                    <td></td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    <table class="selectTotal">
+        <colgroup>
+            <col style="width: 42%;">
+            <col style="width: 6%;">
+            <col style="width: 4%;">
+            <col style="width: 6%;">
+            <col style="width: 4%;">
+            <col style="width: 6%;">
+            <col style="width: 6%;">
+            <col style="width: 6%;">
+            <col style="width: 20%;">
+        </colgroup>
+        <tbody>
+            <tr>
+                <td>건수</td>
+                <td class="tatalCount">0</td>
+                <td></td>
+                <td class="tatalPrice">0</td>
+                <td></td>
+                <td class="tatalSupplyPrice">0</td>
+                <td class="tatalVat">0</td>
+                <td class="tatalCollect">0</td>
+                <td></td>
+            </tr>
+        </tbody>
+    </table>
+</form>
+
+<!-- <form method="post" action="{% url 'accounting:remark_edit' %}" class="collectForm">
+</form> -->
+
+
+{% endblock %}
+
+
+
+
+{% block popup %}
+<div class="popupAreaModules collectingPopupAreaModules">
+    <div class="popupBgModules popupBgModulesCollect"></div>
+    <form method="post" action="" class="popupContainer">
+        {% csrf_token %}
+        <div class="popupHeader">
+            <div class="popupTitle">입금내역 불러오기</div>
+        </div>
+        <div class="popupBody">
+            <div class="popupSection">
+                <div class="popupSearch">
+                    <input autocomplete="off"type="date" class="inputModules">~
+                    <input autocomplete="off"type="date" class="inputModules">
+                    <div class="btnModules">검색</div>
+                </div>
+                <div class="popupArticle popupArticleCollectiong">
+                    <table class="collectingPopupHeader">
+                        <tr>
+                            <td>일자</td>
+                            <td>결재방법</td>
+                            <td>입금액</td>
+                            <td>입금자명</td>
+                        </tr>
+                    </table>
+                    <div class="collectingPopupScrollBox">
+                        <table>
+                            <tr class="depositItem">
+                                <td>2022.09.16</td>
+                                <td>현금</td>
+                                <td>250,000</td>
+                                <td>호매실중학교</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="popupFooter">
+                <input autocomplete="off"type="submit" class="btnModules" value="등록">
+                <div class="btnModules collectPopupCloseBtn">닫기</div>
+            </div>
+        </div>
+    </form>
+  </div>
+
+  
+<div class="popupAreaModules historyPopupAreaModules">
+    <div class="popupBgModules popupBgModulesHistory"></div>
+    <form method="post" action="" class="popupContainer">
+        {% csrf_token %}
+        <div class="popupHeader">
+            <div class="popupTitle">입금내역 불러오기</div>
+        </div>
+        <div class="popupBody">
+            <div class="popupSection">
+                <div class="popupArticle popupArticleHistory">
+                    <table class="historyingPopupHeader">
+                        <tr>
+                            <td>순서</td>
+                            <td>전표번호</td>
+                            <td>일자</td>
+                            <td>현금/카드</td>
+                            <td>은행명</td>
+                            <td>계좌명</td>
+                            <td>가맹점수수료</td>
+                            <td>입금액</td>
+                            <td>입금자명</td>
+                            <td>상태</td>
+                        </tr>
+                    </table>
+                    <div class="historyingPopupScrollBox">
+                        <table>
+                            <tr>
+                                <td>1</td>
+                                <td>22/09/12-01</td>
+                                <td>2022.09.12</td>
+                                <td>현금</td>
+                                <td>농협</td>
+                                <td>농협30582</td>
+                                <td>8,520</td>
+                                <td>391,480</td>
+                                <td>비씨카드</td>
+                                <td>미처리</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="popupFooter">
+                <input autocomplete="off"type="submit" class="btnModules" value="등록">
+                <div class="btnModules historyPopupCloseBtn">닫기</div>
+            </div>
+        </div>
+    </form>
+  </div>
+{% endblock %}
+
+
+
+
+{% block script %}
+<script src="{% static 'js/accounting/total.js' %}"></script>
+<script src="{% static 'js/accounting/collecting.js' %}"></script>
+<script src="{% static 'js/accounting/collectOption.js' %}"></script>
+<script src="{% static 'js/accounting/history.js' %}"></script>
+{% endblock %}

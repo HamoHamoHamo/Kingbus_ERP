@@ -23,9 +23,9 @@
         <div class="searchTool">
             <span class="searchName">날짜검색</span>
             <div class="FilterBox">
-                <input name="month" type="month" value="{{selected_month}}" class="inputModules">
+                <input autocomplete="off"name="month" type="month" value="{{selected_month}}" class="inputModules">
             </div>
-            <input type="submit" value="검색" class="btnModules">
+            <input autocomplete="off"type="submit" value="검색" class="btnModules">
         </div>
     </form>
     <div class="addSalay">상여등록</div>
@@ -70,8 +70,8 @@
                         <td>{{salary.additional}}</td>
                         <td>{{salary.total}}</td>
                         <td>
-                            <input name="remark" value="{{salary.remark}}" type="text" class="inputModules">
-                            <input type="hidden" value="{{salary.id}}" name="id">
+                            <input autocomplete="off"name="remark" value="{{salary.remark}}" type="text" class="inputModules">
+                            <input autocomplete="off"type="hidden" value="{{salary.id}}" name="id">
                         </td>
                     </tr>
                     {% endfor %}
@@ -81,7 +81,7 @@
 
         <div class="btnAreaBox">
             <div class="btnBox">
-                <input type="submit" value="저장" class="btnModules">
+                <input autocomplete="off"type="submit" value="저장" class="btnModules">
             </div>
 
         </div>
@@ -112,7 +112,7 @@
                 <div class="popupArticleBox">
                     <div class="popupArticleDouble">
                         <label for="" class="popupArticleLabel">이름</label>
-                        <select name="member_id" id="" class="popupArticleInput popupSelect">
+                        <select name="member_id" id="" class="popupArticleinput popupSelect">
                             {% for member in member_list %}
                             <option value="{{member.id}}">{{member.name}}</option>
                             {% endfor %}
@@ -120,26 +120,26 @@
                     </div>
                     <div class="popupArticleDouble">
                         <label for="" class="popupArticleLabel">입사일자</label>
-                        <div name="" type="text" class="popupArticleInput popupEntering"></div>
+                        <div name="" type="text" class="popupArticleinput popupEntering"></div>
                     </div>
                 </div>
                 <div class="popupArticleBox">
                     <div class="popupArticleDouble">
                         <label for="" class="popupArticleLabel">날짜</label>
-                        <input name="date" type="date" class="popupArticleInput">
+                        <input autocomplete="off"name="date" type="date" class="popupArticleinput ">
                     </div>
                     <div class="popupArticleDouble">
                         <label for="" class="popupArticleLabel">금액</label>
-                        <input name="price" type="text" class="popupArticleInput PopupDataInputPrice">
+                        <input autocomplete="off"name="price" type="text" class="popupArticleinput PopupDatainputPrice">
                     </div>
                 </div>
                 <div class="popupArticle">
                     <label for="" class="popupArticleLabel">비고</label>
-                    <input name="remark" type="text" class="popupArticleInput popupArticleInputDouble">
+                    <input autocomplete="off"name="remark" type="text" class="popupArticleinput popupArticleinputDouble">
                 </div>
             </div>
             <div class="popupFooter">
-                <input type="submit" class="btnModules createBtn" value="등록">
+                <input autocomplete="off"type="submit" class="btnModules createBtn" value="등록">
                 <div class="btnModules closeBtn">닫기</div>
             </div>
         </div>

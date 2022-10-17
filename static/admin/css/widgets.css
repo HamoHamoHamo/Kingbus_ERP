@@ -58,7 +58,7 @@
     line-height: 1;
 }
 
-.selector .selector-available input {
+.selector .selector-available input{
     width: 320px;
     margin-left: 8px;
 }
@@ -184,7 +184,7 @@ a.active.selector-clearall:focus, a.active.selector-clearall:hover {
     margin-bottom: 0;
 }
 
-.stacked .selector-available input {
+.stacked .selector-available input{
     width: 422px;
 }
 
@@ -354,7 +354,7 @@ p.file-upload {
     margin-left: 5px;
 }
 
-span.clearable-file-input label {
+span.clearable-file-inputlabel {
     color: #333;
     font-size: 11px;
     display: inline;

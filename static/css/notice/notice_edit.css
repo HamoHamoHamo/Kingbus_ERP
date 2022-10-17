@@ -35,7 +35,7 @@
   color: #191919;
 }
 
-.inputCell input {
+.inputCell input{
   border: 0.1rem solid #D2D2D2;
   border-radius: 0.3rem;
   outline: none;
@@ -122,7 +122,7 @@
   background-color: #F5F5F5;
 }
 
-.radiobox input {
+.radiobox input{
   width: 1.6rem;
   height: 1.6rem;
   margin: 0.3rem 1rem 0 0;

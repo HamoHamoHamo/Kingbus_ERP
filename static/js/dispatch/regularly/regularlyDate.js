@@ -1,8 +1,6 @@
 const searchDate = document.querySelector(".searchDate")
 const dateControllBtn = document.querySelectorAll(".dateControllBtn")
 const scheduleHeader = document.querySelector(".scheduleHeader")
-const listHeader = document.querySelector(".listHeader span")
-const searchForm = document.querySelector(".searchForm")
 
 // 날짜구하기
 const toDay = new Date()
@@ -34,7 +32,6 @@ function inputToDay() {
     let week = ['일', '월', '화', '수', '목', '금', '토'];
     var dayOfWeek = week[new Date(searchDate.value).getDay()];
     scheduleHeader.innerText = `${searchDate.value.substr(0, 4)}년 ${searchDate.value.substr(5, 2)}월 ${searchDate.value.substr(8, 2)}일 (${dayOfWeek})`
-    listHeader.innerText = `${searchDate.value.substr(0, 4)}년 ${searchDate.value.substr(5, 2)}월 ${searchDate.value.substr(8, 2)}일 (${dayOfWeek})`
 }
 
 
@@ -65,10 +62,15 @@ function dateToBefore() {
     }
 
 
+
     if (!window.location.search) {
         location.href = `${window.location}?date=${controllDate}`
-    } else {
+    } else if (window.location.search.split("date=")[0] == "?") {
         location.href = `${location.href.split("date=")[0]}date=${controllDate}`
+    } else if (window.location.search.split("date=")[0].slice(-1) == "&") {
+        location.href = `${location.href.split("date=")[0]}date=${controllDate}`
+    } else {
+        location.href = `${location.href}&date=${controllDate}`
     }
 
 }
@@ -102,12 +104,16 @@ function dateTo() {
         }
     }
 
-    
-    
+
+
     if (!window.location.search) {
-        location.href = `${window.location}` + "?" + `date=${controllDate}`
-    } else {
+        location.href = `${window.location}?date=${controllDate}`
+    } else if (window.location.search.split("date=")[0] == "?") {
         location.href = `${location.href.split("date=")[0]}date=${controllDate}`
+    } else if (window.location.search.split("date=")[0].slice(-1) == "&") {
+        location.href = `${location.href.split("date=")[0]}date=${controllDate}`
+    } else {
+        location.href = `${location.href}&date=${controllDate}`
     }
 
 }

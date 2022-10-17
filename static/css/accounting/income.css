@@ -1,176 +1,164 @@
-.FilterBox input {
-    width: 14rem;
-    padding: 0;
-    margin-right: 1rem;
-}
-
-.searchTool input[type=submit] {
-    background-color: #444444;
-}
-
-.tableHead {
-    width: 100%;
-    height: 4.8rem;
-    padding-right: 0.6rem;
-    box-sizing: border-box;
-    border-spacing: 0;
-}
-
-.tableHead thead {
-    width: 100%;
-    height: 100%;
-}
-
-table tr {
-    width: 100%;
-    height: 4.8rem;
-}
-
-.tableHead tr {
-    width: 100%;
-    height: 100%;
+.searchAreaBox {
+    display: flex;
+    justify-content: flex-start;
     align-items: center;
-    border: none;
-    font-size: 1.6rem;
-    font-weight: 700;
-    color: white;
-    background-color: #444444;
-}
-
-.tableHead td {
-    text-align: center;
-}
-
-.tableBody tr:nth-child(odd) {
-    background-color: white;
-}
-
-.tableBody tr:nth-child(even) {
-    background-color: #EFEFEF;
-}
-
-.tableScrollBox {
-    width: calc(100% - 0.2rem);
-    height: 64rem;
-    margin-top: -0.1rem;
-    border: 0.1rem solid #CDCDCE;
-    box-sizing: border-box;
-    overflow-y: scroll;
-}
-
-.tableScrollBox::-webkit-scrollbar {
-    width: 0.6rem;
-}
-
-.tableScrollBox::-webkit-scrollbar-thumb {
-    height: 17%;
-    background-color: #444444;
-    border-radius: 1rem;
-}
-
-.tableScrollBox::-webkit-scrollbar-track {
-    background-color: #F5F5F5;
-}
-
-.tableBody {
     width: 100%;
-    height: auto;
-    border-spacing: 0;
+    height: 4rem;
+    padding-left: 1rem;
+    box-sizing: border-box;
+    background-color: white;
+    border-radius: 0.2rem;
+    box-shadow: 0.1rem 0.1rem 0.6rem rgb(0 0 0 / 30%);
 }
 
-tbody {
+.searchTool {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
     width: 100%;
     height: 100%;
 }
 
-.tableBody td {
+.searchName {
     font-size: 1.4rem;
-    color: #191919;
-    border-right: 0.1rem solid #D4D4D4;
-    border-bottom: 0.1rem solid #D4D4D4;
+    margin-right: 2rem;
+    font-weight: normal;
 }
 
-td:nth-child(1) {
-    width: 10%;
-}
-
-td:nth-child(2) {
-    width: 14%;
-    padding-left: 2rem;
-    box-sizing: border-box;
-}
-
-td:nth-child(3) {
-    width: 14%;
-    padding-left: 2rem;
-    box-sizing: border-box;
-}
-
-td:nth-child(4) {
-    width: 14%;
-    padding-left: 2rem;
-    box-sizing: border-box;
-}
-
-td:nth-child(5) {
-    width: 14%;
-    padding-left: 2rem;
-    box-sizing: border-box;
-}
-
-td:nth-child(6) {
-    width: 20%;
-    padding-left: 2rem;
-    box-sizing: border-box;
-}
-
-td:nth-child(7) {
-    width: 14%;
-    padding-right: 1rem;
-    box-sizing: border-box;
-}
-
-.tableBody td {
-    text-align: right;
-    padding-right: 1rem;
-    box-sizing: border-box;
-}
-
-.tableBody td:nth-child(1) {
-    text-align: center;
+.dateSearchBtn {
+    margin-left: 1rem;
+    background-color: #444;
 }
 
 
-.tableHead {
-    padding-right: 0.6rem;
-    box-sizing: border-box;
-}
 
-.totalTable {
+
+
+.dashboardContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
     width: 100%;
-    border: 0.1rem solid #CDCDCE;
-    border-spacing: 0;
-    padding-right: 0.6rem;
-    background-color: #EFEFEF;
+    height: 75rem;
 }
 
-.totalTable tr {
-    border: none;
+.dashboardBox {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
 }
 
-.totalTable td {
+.mainDataArea {
+    height: 30rem;
+}
+
+.SubDataArea {
+    height: 43rem;
+}
+
+.dashboardArticle {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    height: 100%;
+    box-sizing: border-box;
+    background-color: white;
+    border-radius: 0.2rem;
+    box-shadow: 0.1rem 0.1rem 0.6rem rgb(0 0 0 / 30%);
+}
+
+.monthData {
+    width: 43rem;
+}
+
+.yearData {
+    width: calc(100% - 45rem);
+}
+
+.kategoriData {
+    width: 70rem;
+}
+
+.otherData {
+    width: calc(100% - 72rem);
+}
+
+.dashboardHeader {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    width: 100%;
+    height: 3.6rem;
+    background-color: #444;
+    padding-left: 1rem;
+    box-sizing: border-box;
     font-size: 1.4rem;
+    color: white;
 }
 
-.totalTable td {
-    text-align: right;
-    padding-right: 1rem;
+.dashboardBody {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: calc(100% - 3.6rem);
+}
+
+.monthData .dashboardBody {
+    position: relative;
+    padding: 0 2rem;
     box-sizing: border-box;
 }
 
-.totalTable td:nth-child(1) {
-    text-align: center;
-    background-color: #444444;
-    font-size: 1.5rem;
-    color: white;
+.yearData .dashboardBody {
+    padding: 0 2rem;
+    box-sizing: border-box;
+}
+
+.kategoriData .dashboardBody {
+    padding: 2rem;
+    box-sizing: border-box;
+}
+
+.otherData .dashboardBody {
+    position: relative;
+    display: flex;
+    padding-right: 2rem;
+    box-sizing: border-box;
+}
+
+.dashboardBodyCoulmnCell {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    width: 30rem;
+    height: 100%;
+}
+
+.chartTitle {
+    position: absolute;
+    left: 55%;
+    font-size: 2.4rem;
+    color: #666666;
+}
+
+.totalPrice{
+    position: absolute;
+    right: 3%;
+    bottom: 3%;
+    font-size: 1.4rem;
+    color: #666666;
+}
+
+.accountsReceivable{
+    position: absolute;
+    right: 3%;
+    bottom: 10%;
+    font-size: 1.4rem;
+    color: #666666;
 }

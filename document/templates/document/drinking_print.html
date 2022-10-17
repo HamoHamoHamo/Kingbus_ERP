@@ -27,7 +27,7 @@
             <tr>
                 <td>운행 대상 교명</td>
                 <td>
-                    <input type="text" class="schoolName" value="{{order.customer}}">
+                    <input autocomplete="off" type="text" class="schoolName" value="{{order.customer}}">
                 </td>
             </tr>
         </table>
@@ -46,9 +46,11 @@
                 <tr>
                     <td>{{forloop.counter}}</td>
                     <td>
-                        <input type="text" value="{{connect.driver_id.name}}">
+                        <input autocomplete="off" type="text" value="{{connect.driver_id.name}}">
                     </td>
-                    <td>{{connect.bus_id.vehicle_num0}} {{connect.bus_id.vehicle_num}}</td>
+                    <td>
+                        <input autocomplete="off" type="text" value="{{connect.bus_id.vehicle_num0}} {{connect.bus_id.vehicle_num}}">
+                    </td>
                     <td>이상 없음</td>
                     <td></td>
                 </tr>
@@ -62,7 +64,7 @@
         <div class="date">{{departure_date|slice:':4'}}. {{departure_date|slice:'5:7'}}.
             {{departure_date|slice:'8:10'}}.</div>
         <div class="sent">
-            <input type="text" value="{{order.customer}}장 귀하">
+            <input autocomplete="off" type="text" value="{{order.customer}}장 귀하">
         </div>
     </div>
 </div>

@@ -6152,7 +6152,7 @@
         // Add properties assigned by `RegExp#exec`.
         if (length && typeof array[0] == 'string' && hasOwnProperty.call(array, 'index')) {
           result.index = array.index;
-          result.input = array.input;
+          result.input= array.input;
         }
         return result;
       }
@@ -8756,7 +8756,7 @@
        *
        * _([1, 2, 3])
        *  .tap(function(array) {
-       *    // Mutate input array.
+       *    // Mutate inputarray.
        *    array.pop();
        *  })
        *  .reverse()

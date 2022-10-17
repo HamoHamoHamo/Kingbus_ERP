@@ -25,12 +25,12 @@
         <div class="searchTool">
             <div class="searchTitle">노선검색</div>
             <label for="">노선이름</label>
-            <input name="route" value="{{route}}" type="text">
+            <input autocomplete="off" name="route" value="{{route}}" type="text">
             <label for="">기간</label>
             <div class="searchDataBox">
-                <input name="date1" type="date" class="inputModules" value="{{date1}}">
+                <input autocomplete="off" name="date1" type="date" class="inputModules" value="{{date1}}">
                 ~
-                <input name="date2" type="date" class="inputModules" value="{{date2}}">
+                <input autocomplete="off" name="date2" type="date" class="inputModules" value="{{date2}}">
             </div>
             <div class="dateControllBtnBox">
                 <div class="dateToday">오늘</div>
@@ -49,7 +49,7 @@
                     </svg>
                 </div>
             </div>
-            <input type="submit" value="검색" class="btnModules">
+            <input autocomplete="off" type="submit" value="검색" class="btnModules">
         </div>
     </form>
 </div>
@@ -66,7 +66,7 @@
 
     <span class="btnModules" onclick="openBuscheckPrint('/document/print/safety')" >차량안전 점검표</span>
 
-    <span class="btnModules" onclick="openSchoolPrint('/document/print/school')">학교표찰</span>
+    <span class="btnModules" onclick="openSchoolPrint('/document/print/school')">표찰</span>
 
     <span class="btnModules" onclick="openDrinkingPrint('/document/print/drinking')">자가 음주측정 보고서</span>
 
@@ -111,7 +111,7 @@
                     {% for order in order_list %}
                     <tr>
                         <td>
-                            <input type="radio" name="route" class="routeRadio {{order.id}}">
+                            <input autocomplete="off" type="radio" name="route" class="routeRadio {{order.id}}">
                         </td>
                         <td>
                             {{order.departure_date}}<br>

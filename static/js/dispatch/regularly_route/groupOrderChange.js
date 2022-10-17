@@ -3,13 +3,22 @@ const groupFixe = document.querySelectorAll(".groupFixe")
 const groupListBodys = document.querySelector(".groupListBody")
 
 
-window.onload = function () {
+function visivleFix() {
     for (i = 0; i < groupListItems.length; i++) {
         if (groupListItems[i].classList.contains("fixedGroup")) {
-            groupListItems[i].children.children[2].children[0].children[0].style.fill = "#444"
+            groupListItems[i].children[2].children[0].children[0].style.fill = "#444"
+        }
+        if(window.location.search !== ""){
+            if(window.location.search.split("group=")[1].split("&")[0] == groupListItems[i].classList[1]){
+                groupListItems[i].style.backgroundColor = "#CDCDCE"
+            }
         }
     }
 }
+
+
+let orderArr = []
+let fixeCounter = 0
 
 
 
@@ -21,7 +30,7 @@ groupListItems.forEach(groupListItem => {
 
     groupListItem.addEventListener("dragend", () => {
         groupListItem.classList.remove("dragging");
-        postGroupId()
+        makeData()
     });
 });
 
@@ -95,25 +104,46 @@ function fixedGroup() {
         this.children[0].children[0].style.fill = "#444"
         this.parentNode.classList.add("fixedGroup")
     }
-    postGroupId()
+    makeData()
 }
 
 
+// makeData
 
-
-
-// fetch
-
-let orderArr = []
-
-async function postGroupId() {
+function makeData() {
+    let orderArr = []
+    let fixeCounter = 0
     const groupListItem = document.querySelectorAll(".groupListItem")
     for (i = 0; i < groupListItem.length; i++) {
         orderArr.push(groupListItem[i].classList[1])
     }
+    for (i = 0; i < groupListItem.length; i++) {
+        if (groupListItem[i].classList.contains("fixedGroup")) {
+            fixeCounter = fixeCounter + 1
+        }
+    }
+    data = {
+        order: orderArr,
+        fix: fixeCounter
+    }
+    postGroupId(url = "group/fix", data)
+}
+
+
+
+// fetch
+async function postGroupId(url, data) {
+    var headers = new Headers();
+    var csrftoken = getCookie('csrftoken');
+    headers.append('X-CSRFToken', csrftoken);
+    headers.append('Accept', 'application/json, text/plain, */*');
+    headers.append('Content-Type', 'application/x-www-form-urlencoded, application/json');
+
     const response = await fetch(url, {
         method: "post",
-        body: `${orderArr}`
+        credentials: "include",
+        headers: headers,
+        body: JSON.stringify(data)
     })
         .then((response) => response.json())
         .then((result) => {
@@ -121,9 +151,6 @@ async function postGroupId() {
         })
         .catch((error) => {
             alert('위치변경에 실패했습니다.', error)
+            console.log(data)
         });
 }
-
-// fetch or ajax로 클릭할때마다 전송(hidden에 그룹 아이디)
-// fixe 데이터를 받으면 html 그릴때 groupListItem fixedGroup클래스 부여
-//groupListItem 클래스가 있으면 path에 fill 변경

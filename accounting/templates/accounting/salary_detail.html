@@ -25,9 +25,9 @@
         <div class="searchTool">
             <span class="searchName">날짜검색</span>
             <div class="FilterBox">
-                <input name="month" type="month" value="{{selected_month}}" class="inputModules">
+                <input autocomplete="off"name="month" type="month" value="{{selected_month}}" class="inputModules">
             </div>
-            <input type="submit" value="검색" class="btnModules">
+            <input autocomplete="off"type="submit" value="검색" class="btnModules">
         </div>
     </form>
     <div class="addSalay">상여등록</div>
@@ -73,7 +73,7 @@
                     {% with additional=additional_list|index:forloop.counter0 %}
                     <td>
                         {% if additional %}
-                        <input name="check" value="{{additional.id}}" type="checkbox">
+                        <input autocomplete="off"name="check" value="{{additional.id}}" type="checkbox">
                         {% endif %}
                     </td>
                     <td>{{i}}</td>
@@ -115,7 +115,7 @@
 
         <div class="btnAreaBox">
             <div class="btnBox">
-                <input type="submit" value="삭제" class="btnModules">
+                <input autocomplete="off"type="submit" value="삭제" class="btnModules">
                 
             </div>
 
@@ -147,7 +147,7 @@
                 <div class="popupArticleBox">
                     <div class="popupArticleDouble">
                         <label for="" class="popupArticleLabel">이름</label>
-                        <select name="member_id" id="" class="popupArticleInput popupSelect">
+                        <select name="member_id" id="" class="popupArticleinput popupSelect">
                             {% for member in member_list %}
                             <option value="{{member.id}}">{{member.name}}</option>
                             {% endfor %}
@@ -155,26 +155,26 @@
                     </div>
                     <div class="popupArticleDouble">
                         <label for="" class="popupArticleLabel">입사일자</label>
-                        <div name="" type="text" class="popupArticleInput popupEntering"></div>
+                        <div name="" type="text" class="popupArticleinput popupEntering"></div>
                     </div>
                 </div>
                 <div class="popupArticleBox">
                     <div class="popupArticleDouble">
                         <label for="" class="popupArticleLabel">날짜</label>
-                        <input name="date" type="date" class="popupArticleInput">
+                        <input autocomplete="off"name="date" type="date" class="popupArticleinput ">
                     </div>
                     <div class="popupArticleDouble">
                         <label for="" class="popupArticleLabel">금액</label>
-                        <input name="price" type="text" class="popupArticleInput PopupDataInputCeratePrice">
+                        <input autocomplete="off"name="price" type="text" class="popupArticleinput PopupDatainputCeratePrice">
                     </div>
                 </div>
                 <div class="popupArticle">
                     <label for="" class="popupArticleLabel">비고</label>
-                    <input name="remark" type="text" class="popupArticleInput popupArticleInputDouble">
+                    <input autocomplete="off"name="remark" type="text" class="popupArticleinput popupArticleinputDouble">
                 </div>
             </div>
             <div class="popupFooter">
-                <input type="submit" class="btnModules createBtn" value="등록">
+                <input autocomplete="off"type="submit" class="btnModules createBtn" value="등록">
                 <div class="btnModules closeBtn">닫기</div>
             </div>
         </div>
@@ -195,7 +195,7 @@
                 <div class="popupArticleBox">
                     <div class="popupArticleDouble">
                         <label for="" class="popupArticleLabel">이름</label>
-                        <select name="member_id" id="" class="popupArticleInput popupSelectEdit PopupDataInput">
+                        <select name="member_id" id="" class="popupArticleinput popupSelectEdit PopupDatainput">
                             {% for member in member_list %}
                             <option value="{{member.id}}">{{member.name}}</option>
                             {% endfor %}
@@ -203,26 +203,26 @@
                     </div>
                     <div class="popupArticleDouble">
                         <label for="" class="popupArticleLabel">입사일자</label>
-                        <div name="" type="text" class="popupArticleInput popupEntering"></div>
+                        <div name="" type="text" class="popupArticleinput popupEntering"></div>
                     </div>
                 </div>
                 <div class="popupArticleBox">
                     <div class="popupArticleDouble">
                         <label for="" class="popupArticleLabel">날짜</label>
-                        <input name="date" type="date" class="popupArticleInput PopupDataInput PopupDataInputDate">
+                        <input autocomplete="off"name="date" type="date" class="popupArticleinput PopupDatainput PopupDatainputDate">
                     </div>
                     <div class="popupArticleDouble">
                         <label for="" class="popupArticleLabel">금액</label>
-                        <input name="price" type="text" class="popupArticleInput PopupDataInput PopupDataInputPrice">
+                        <input autocomplete="off"name="price" type="text" class="popupArticleinput PopupDatainput PopupDatainputPrice">
                     </div>
                 </div>
                 <div class="popupArticle">
                     <label for="" class="popupArticleLabel">비고</label>
-                    <input name="remark" type="text" class="popupArticleInput popupArticleInputDouble PopupDataInput PopupDataInputBlanck">
+                    <input autocomplete="off"name="remark" type="text" class="popupArticleinput popupArticleinputDouble PopupDatainput PopupDatainputBlanck">
                 </div>
             </div>
             <div class="popupFooter">
-                <input type="submit" class="btnModules createBtn" value="등록">
+                <input autocomplete="off"type="submit" class="btnModules createBtn" value="등록">
                 <div class="btnModules closeBtn">닫기</div>
             </div>
         </div>

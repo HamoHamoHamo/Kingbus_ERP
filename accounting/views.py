@@ -317,7 +317,10 @@ class IncomeList(generic.ListView):
 
         return context
 
-
+class RegularlyCollectList(generic.ListView):
+    template_name = 'accounting/regularly_collect.html'
+    context_object_name = 'dispatch_list'
+    model = DispatchOrder
 
 class CollectList(generic.ListView):
     template_name = 'accounting/collect.html'
@@ -383,3 +386,8 @@ def collect_create(request):
         return redirect('accounting:collect')
     else:
         return HttpResponseNotAllowed(['post'])
+
+class DepositList(generic.ListView):
+    template_name = 'accounting/deposit.html'
+    context_object_name = 'deposit'
+    model = DispatchOrder

@@ -98,19 +98,25 @@
           <div class="nav1Box">
             <li class="nav1BoxMenu nav1BoxMenuHaveDepth2">
               <img src="{% static 'images/accountingSystem.png' %}" alt="경리시스템 아이콘">
-              <div>경리시스템</div>
+              <div>매출관리</div>
               <img src="{% static 'images/navArrow.png' %}" alt="메뉴 열림 아이콘">
             </li>
             <div class="sideMenuNav2Box">
               <ul class="sideMenuNav2">
-                <a href="{% url 'accounting:salary' %}" class="sideMenuNav2Link">
+                <!-- <a href="{% url 'accounting:salary' %}" class="sideMenuNav2Link">
                   <li class="sideMenuNav2Menu">급여관리</li>
-                </a>
+                </a> -->
                 <a href="{% url 'accounting:income' %}" class="sideMenuNav2Link">
-                  <li class="sideMenuNav2Menu">수입현황</li>
+                  <li class="sideMenuNav2Menu">매출현황</li>
+                </a>
+                <a href="{% url 'accounting:deposit' %}" class="sideMenuNav2Link">
+                  <li class="sideMenuNav2Menu">입금관리</li>
                 </a>
                 <a href="{% url 'accounting:collect' %}" class="sideMenuNav2Link">
-                  <li class="sideMenuNav2Menu">수금관리</li>
+                  <li class="sideMenuNav2Menu">일반 수금관리</li>
+                </a>
+                <a href="{% url 'accounting:regularly_collect' %}" class="sideMenuNav2Link">
+                  <li class="sideMenuNav2Menu">출/퇴근 수금관리</li>
                 </a>
               </ul>
             </div>
@@ -126,10 +132,10 @@
                 <a href="{% url 'vehicle:list' %}" class="sideMenuNav2Link">
                   <li class="sideMenuNav2Menu">차량관리</li>
                 </a>
-                <a href="{% url 'vehicle:mgmt' %}" class="sideMenuNav2Link">
+                <a href="{% url 'vehicle:maintenance' %}" class="sideMenuNav2Link">
                   <li class="sideMenuNav2Menu">정비관리</li>
                 </a>
-                <a href="{% url 'vehicle:mgmt' %}" class="sideMenuNav2Link">
+                <a href="{% url 'vehicle:accident' %}" class="sideMenuNav2Link">
                   <li class="sideMenuNav2Menu">사고관리</li>
                 </a>
               </ul>
@@ -233,18 +239,18 @@
                 <div class="popupSection">
                     <div class="popupArticle">
                         <label for="" class="popupArticleLabel">비밀번호</label>
-                        <input name="password" type="password" class="popupArticleInput PopupDataInputPwCheckerId">
+                        <input autocomplete="off" name="password" type="password" class="popupArticleinput PopupDatainputPwCheckerId">
                     </div>
                     <div class="popupArticle">
                         <label for="" class="popupArticleLabel">새 아이디</label>
                         <div class="idBox">
-                          <input type="text" check_result="fail" name="user_id" id="id" class="popupArticleInput username_input" placeholder="새 아이디를 입력해 주세요.">
+                          <input autocomplete="off" type="text" check_result="fail" name="user_id" id="id" class="popupArticleinput username_input" placeholder="새 아이디를 입력해 주세요.">
                           <div class="idchecker" onClick="id_overlap_check()">중복확인</div>
                         </div>
                     </div>
                 </div>
                 <div class="popupFooter">
-                    <input type="submit" class="btnModules HomeEditBtn" value="저장">
+                    <input autocomplete="off" type="submit" class="btnModules HomeEditBtn" value="저장">
                     <div class="btnModules HomeCloseBtn">닫기</div>
                 </div>
               </div>
@@ -265,19 +271,19 @@
                 <div class="popupSection">
                     <div class="popupArticle">
                         <label for="" class="popupArticleLabel">비밀번호</label>
-                        <input name="cur_password" type="password" class="popupArticleInput PopupDataInputPwCheckerPw">
+                        <input autocomplete="off"name="cur_password" type="password" class="popupArticleinput PopupDatainputPwCheckerPw">
                     </div>
                     <div class="popupArticle">
                         <label for="" class="popupArticleLabel">새 비밀번호</label>
-                        <input name="password1" type="password" class="popupArticleInput PopupDataInputNewPw">
+                        <input autocomplete="off"name="password1" type="password" class="popupArticleinput PopupDatainputNewPw">
                     </div>
                     <div class="popupArticle">
                         <label for="" class="popupArticleLabel">비밀번호 확인</label>
-                        <input name="password2" type="password" class="popupArticleInput PopupDataInputOverlap">
+                        <input autocomplete="off"name="password2" type="password" class="popupArticleinput PopupDatainputOverlap">
                     </div>
                 </div>
                 <div class="popupFooter">
-                    <input type="submit" class="btnModules HomeEditBtn" value="추가">
+                    <input autocomplete="off"type="submit" class="btnModules HomeEditBtn" value="추가">
                     <div class="btnModules HomeCloseBtn">닫기</div>
                 </div>
             </div>
@@ -298,16 +304,16 @@
               <div class="popupArticleBox">
                   <div class="popupArticleDouble">
                       <label for="" class="popupArticleLabel">항목이름</label>
-                      <input type="text" class="popupArticleInput">
+                      <input autocomplete="off"type="text" class="popupArticleinput">
                   </div>
                   <div class="popupArticleDouble">
                       <label for="" class="popupArticleLabel">항목이름</label>
-                      <input type="text" class="popupArticleInput">
+                      <input autocomplete="off"type="text" class="popupArticleinput">
                   </div>
               </div>
           </div>
           <div class="popupFooter">
-              <input type="submit" class="btnModules" value="등록">
+              <input autocomplete="off"type="submit" class="btnModules" value="등록">
               <div class="btnModules">닫기</div>
           </div>
       </div>
@@ -325,11 +331,11 @@
           <div class="popupSection">
               <div class="popupArticle">
                   <label for="" class="popupArticleLabel">항목이름</label>
-                  <input type="text" class="popupArticleInput">
+                  <input autocomplete="off"type="text" class="popupArticleinput">
               </div>
           </div>
           <div class="popupFooter">
-              <input type="submit" class="btnModules" value="등록">
+              <input autocomplete="off"type="submit" class="btnModules" value="등록">
               <div class="btnModules">닫기</div>
           </div>
       </div>
@@ -345,12 +351,7 @@
   <script src="{% static 'js/sideNavMenu.js' %}"></script>
   <script src="{% static 'js/profile.js' %}"></script>
   <script src="{% static 'js/accountPopup.js' %}"></script>
-  <script src="{% static 'js/authority.js' %}"></script>
   {% block script %}{% endblock %}
-  <script>
-    const authority = {{ request.session.authority }}
-    console.log(authority)
-  </script>
 </body>
 
 </html>

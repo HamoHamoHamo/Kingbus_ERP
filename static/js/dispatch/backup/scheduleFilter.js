@@ -1,6 +1,6 @@
 const scheduleRadio = document.querySelectorAll(".scheduleRadio")
 const scheduleLabel = document.querySelectorAll(".scheduleHeaderFilterBox label")
-const routeTimeInput = document.querySelectorAll(".quarterBox input")
+const routeTimeinput= document.querySelectorAll(".quarterBox input")
 
 
 

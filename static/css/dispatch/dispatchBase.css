@@ -338,7 +338,7 @@
 
 
 /* 입력창 */
-.input {
+.input{
     display: flex;
     align-items: center;
     width: 100%;
@@ -348,21 +348,21 @@
     box-shadow: 0.1rem 0.1rem 0.6rem rgba(0, 0, 0, 0.3);
 }
 
-.input table {
+.inputtable {
     width: 100%;
     border-spacing: 0;
     border-radius: 0.2rem;
 }
 
-.input table tr {
+.inputtable tr {
     height: 3rem;
 }
 
-.input table tr:nth-last-child(1) td {
+.inputtable tr:nth-last-child(1) td {
     border: none;
 }
 
-.input table tr td {
+.inputtable tr td {
     border-bottom: 0.1rem solid black;
     font-size: 1.4rem;
 }
@@ -439,7 +439,7 @@
     align-items: center;
 }
 
-.workTypeBox input {
+.workTypeBox input{
     margin-left: 0.8rem;
 }
 
@@ -453,7 +453,7 @@
     align-items: center;
 }
 
-.driveDateBox input {
+.driveDateBox input{
     margin-left: 0.8rem;
 }
 

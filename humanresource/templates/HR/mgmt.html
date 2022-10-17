@@ -25,14 +25,14 @@
         <div class="searchTool">
             <span class="searchName">직원검색</span>
             <div class="routeFilterBox">
-                <input value="{{name}}" name="name" type="text" class="inputModules" list="hrFilter" placeholder="직원이름" autocomplete="off">
+                <input autocomplete="off"value="{{name}}" name="name" type="text" class="inputModules" list="hrFilter" placeholder="직원이름" autocomplete="off">
                 <datalist id="hrFilter">
                     {% for member in member_list %}
                     <option value="{{member.name}}"></option>
                     {% endfor %}
                 </datalist>
             </div>
-            <input type="submit" value="검색" class="btnModules">
+            <input autocomplete="off"type="submit" value="검색" class="btnModules">
         </div>
     </form>
     <div class="addState">근태등록</div>
@@ -66,7 +66,7 @@
                 {% with m=hr.member_id.id %}
                 <tr class="{{hr.id}}">
                     <td>
-                        <input type="checkbox">
+                        <input autocomplete="off"type="checkbox">
                     </td>
                     <td class="{{ forloop.counter0 }}">{{hr.member_id.name}}</td>
                     <td>{{hr.member_id.phone_num}}</td>
@@ -120,7 +120,7 @@
                 {% endif %}
             </div>
             <div class="btnBox">
-                <input type="submit" value="삭제" class="btnModules">
+                <input autocomplete="off"type="submit" value="삭제" class="btnModules">
             </div>
 
         </div>
@@ -146,7 +146,7 @@
         <div class="PopupDataArea">
             <div class="PopupDataCell">
                 <span class="PopupDataTitle">이름</span>
-                <select name="member_id" class="PopupDataInput">
+                <select name="member_id" class="PopupDatainput">
                     {% for member in member_list %}
                     <option value="{{member.id}}">{{member.name}}</option>
                     {% endfor %}
@@ -172,7 +172,7 @@
             </div>
             <div class="PopupDataCell">
                 <span class="PopupDataTitle">구분</span>
-                <input name="hr_type" class="PopupDataInput" list="hrCreateType">
+                <input autocomplete="off"name="hr_type" class="PopupDatainput" list="hrCreateType">
                 <datalist id="hrCreateType">
                     <option value="연차"></option>
                     <option value="반차"></option>
@@ -184,20 +184,20 @@
             </div>
             <div class="PopupDataCell">
                 <span class="PopupDataTitle">시작일</span>
-                <input name="start_date" type="date" class="PopupDataInput">
+                <input autocomplete="off"name="start_date" type="date" class="PopupDatainput">
             </div>
             <div class="PopupDataCell">
                 <span class="PopupDataTitle">종료일</span>
-                <input name="end_date" type="date" class="PopupDataInput">
+                <input autocomplete="off"name="end_date" type="date" class="PopupDatainput">
             </div>
             <div class="PopupDataCell">
                 <span class="PopupDataTitle">내용</span>
-                <input name="reason" type="text" class="PopupDataInput">
+                <input autocomplete="off"name="reason" type="text" class="PopupDatainput">
             </div>
         </div>
         <div class="PopupBtnBox">
             <div class="btnModules">닫기</div>
-            <input type="submit" class="btnModules" value="등록">
+            <input autocomplete="off"type="submit" class="btnModules" value="등록">
         </div>
     </form>
 </div>
@@ -250,13 +250,13 @@
                             <tr>
                                 <td>연차</td>
                                 <td>
-                                    <input type="date" value="2022.01.01" disabled>
+                                    <input autocomplete="off"type="date" value="2022.01.01" disabled>
                                 </td>
                                 <td>
-                                    <input type="date" value="2022.01.01" disabled>
+                                    <input autocomplete="off"type="date" value="2022.01.01" disabled>
                                 </td>
                                 <td>
-                                    <input type="text" value="내용내용내용내용" disabled>
+                                    <input autocomplete="off"type="text" value="내용내용내용내용" disabled>
                                 </td>
                                 <td>
                                     <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 14 14">
@@ -266,18 +266,18 @@
                                     </svg>
                                 </td>
                                 <td>
-                                    <input type="submit" value="">
+                                    <input autocomplete="off"type="submit" value="">
                                 </td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
             </div>
-            <input type="hidden" value="" name="id" class="sendToHidden">
+            <input autocomplete="off"type="hidden" value="" name="id" class="sendToHidden">
         </div>
         <div class="PopupBtnBox">
             <div class="btnModules">닫기</div>
-            <input type="submit" class="btnModules" value="저장">
+            <input autocomplete="off"type="submit" class="btnModules" value="저장">
         </div>
     </form>
 </div>

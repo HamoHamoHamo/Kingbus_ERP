@@ -29,7 +29,7 @@
 
 
 /* 입력창 */
-.input {
+.input{
   height: 12rem;
 }
 
@@ -44,12 +44,12 @@
   width: 21rem;
 }
 
-.input input[type=text],
-.input input[type=number] {
+.inputinput[type=text],
+.inputinput[type=number] {
   border: 0.1rem solid #e2e2e2;
 }
 
-.input select {
+.inputselect {
   border: 0.1rem solid #CDCDCE;
   -webkit-appearance: none;
   -moz-appearance: none;

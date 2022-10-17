@@ -82,7 +82,7 @@
     color: #666;
 }
 
-#toolbar form input {
+#toolbar form input{
     border-radius: 4px;
     font-size: 14px;
     padding: 5px;
@@ -274,7 +274,7 @@
     border-right: none;
 }
 
-#changelist table input {
+#changelist table input{
     margin: 0;
     vertical-align: baseline;
 }

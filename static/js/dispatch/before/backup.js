@@ -56,7 +56,7 @@ function addVehicle() {
       newDiv.appendChild(newText);
       regularyCreatePopupResult.appendChild(newDiv);
 
-      const newInput = document.createElement('input');
+      const newinput= document.createElement('input');
       newInput.setAttribute("type", "hidden");
       newInput.setAttribute("value", this.parentNode.className);
       newInput.setAttribute("name", 'vehicle');
@@ -167,7 +167,7 @@ function openRegularlyDispatch() {
         newDiv.appendChild(newText);
         regularyCreatePopupResult.appendChild(newDiv);
 
-        const newInput = document.createElement('input');
+        const newinput= document.createElement('input');
         newInput.setAttribute("type", "hidden");
         newInput.setAttribute("value", dispatchVehicle[j].parentNode.className);
         newInput.setAttribute("name", 'vehicle');

@@ -1,6 +1,6 @@
 const inputDelete = document.querySelector(".inputDelete")
 const inputSave = document.querySelector(".inputSave")
-const input = document.querySelector(".input")
+const input= document.querySelector(".input")
 const inputHidden = document.querySelector(".inputHidden")
 const inputTime = document.querySelectorAll(".quarterBox .inputTextTwice")
 

@@ -9,7 +9,7 @@
     border-bottom: 1px solid #eee;
 }
 
-.form-row img, .form-row input {
+.form-row img, .form-row input{
     vertical-align: middle;
 }
 
@@ -96,7 +96,7 @@ form ul.inline li {
     width: auto;
 }
 
-.aligned .form-row input {
+.aligned .form-row input{
     margin-bottom: 0;
 }
 
@@ -135,10 +135,10 @@ form .aligned div.help:last-child {
     padding-bottom: 0;
 }
 
-form .aligned input + p.help,
+form .aligned input+ p.help,
 form .aligned textarea + p.help,
 form .aligned select + p.help,
-form .aligned input + div.help,
+form .aligned input+ div.help,
 form .aligned textarea + div.help,
 form .aligned select + div.help {
     margin-left: 160px;
@@ -189,8 +189,8 @@ fieldset .fieldBox {
 }
 
 form .wide p,
-form .wide input + p.help,
-form .wide input + div.help {
+form .wide input+ p.help,
+form .wide input+ div.help {
     margin-left: 200px;
 }
 
@@ -261,7 +261,7 @@ body.popup .submit-row {
     overflow: auto;
 }
 
-.submit-row input {
+.submit-row input{
     height: 35px;
     line-height: 15px;
     margin: 0 0 0 5px;
@@ -522,6 +522,6 @@ form .related-widget-wrapper ul {
     padding-left: 0;
 }
 
-.clearable-file-input input {
+.clearable-file-inputinput{
     margin-top: 0;
 }

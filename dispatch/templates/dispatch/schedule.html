@@ -26,13 +26,13 @@
                     <option {% if select == "driver" %} selected {% endif %} value="driver">기사이름</option>
                     <option {% if select == "vehicle" %} selected {% endif %} value="vehicle">차량번호</option>
                 </select>
-                <input value="{{search_d}}" name="search_d" type="text" class="inputModules" list="diverFilter" autocomplete="off">
+                <input autocomplete="off"value="{{search_d}}" name="search_d" type="text" class="inputModules" list="diverFilter" autocomplete="off">
                 <datalist id="diverFilter">
                     {% for driver in datalist_driver %}
                     <option value="{{driver.name}}"></option>
                     {% endfor %}
                 </datalist>
-                <input value="{{search_v}}" name="search_v" type="text" class="inputModules" list="busFilter" autocomplete="off">
+                <input autocomplete="off"value="{{search_v}}" name="search_v" type="text" class="inputModules" list="busFilter" autocomplete="off">
                 <datalist id="busFilter">
                     {% for vehicle in datalist_vehicle %}
                     <option value="{{vehicle.vehicle_num}}"></option>
@@ -41,9 +41,9 @@
             </div>
             <div class="dateFilterBox">
                 <span>날짜</span>
-                <input value="{{date}}" name="date" type="date" class="inputModules">
+                <input autocomplete="off"value="{{date}}" name="date" type="date" class="inputModules">
             </div>
-            <input type="submit" value="검색" class="btnModules">
+            <input autocomplete="off"type="submit" value="검색" class="btnModules">
         </div>
     </form>
     <div class="optionBtnBox">

@@ -29,17 +29,16 @@ const check_duration = document.querySelector(".check_duration")
 const sendToHidden = document.querySelector(".sendToHidden")
 const fileDeleteBtn = document.querySelectorAll(".fileDeleteBtn")
 const BusLicenseFileText = document.querySelector(".BusLicenseFileText")
-const BusLicenseFileInput = document.querySelector(".BusLicenseFileInput")
-const insuranceFileText = document.querySelector(".insuranceFileText")
-const insuranceFileInput = document.querySelector(".insuranceFileInput")
+const BusLicenseFileinput= document.querySelector(".BusLicenseFileInput")
 const BusLicenseFileTextEdit = document.querySelector(".BusLicenseFileTextEdit")
 const BusLicenseFileInputEdit = document.querySelector(".BusLicenseFileInputEdit")
-const insuranceFileTextEdit = document.querySelector(".insuranceFileTextEdit")
-const insuranceFileInputEdit = document.querySelector(".insuranceFileInputEdit")
 const addUnit1 = document.querySelectorAll(".tableBody td:nth-child(6)")
 const addUnit2 = document.querySelectorAll(".tableBody td:nth-child(7)")
-const PopupDataInput = document.querySelectorAll(".PopupDataInput")
+const PopupDatainput= document.querySelectorAll(".PopupDataInput")
 const createBtn = document.querySelectorAll(".createBtn")
+const ableBusEdit = document.querySelector("#ableBusEdit")
+const disableBusEdit = document.querySelector("#disableBusEdit")
+const deleteBusEdit = document.querySelector("#deleteBusEdit")
 
 
 //등록팝업 열기
@@ -66,7 +65,11 @@ function closePopup() {
   PopupDataAreaEdit.style.display = "none"
   PopupTitle[1].innerText = "차량상세"
   editBtn.style.display = "flex";
-  saveBtn.style.display = "none";
+  createBtn[1].style.display = "none";
+  BusLicenseFileText.value = ""
+  BusLicenseFileInput.value = ""
+  BusLicenseFileTextEdit.value = ""
+  BusLicenseFileInputEdit.value = ""
 }
 
 
@@ -81,18 +84,26 @@ function openDetailPopup() {
   PopupData[0].innerText = regDatas[this.className].vehicle_num0
   PopupData[1].innerText = regDatas[this.className].vehicle_num
   PopupData[2].innerText = regDatas[this.className].driver_name
-  PopupData[3].innerText = regDatas[this.className].use
-  PopupData[4].innerText = regDatas[this.className].maker
+  PopupData[3].innerText = regDatas[this.className].maker
+  if(regDatas[this.className].use == "y"){
+    PopupData[4].innerText = "사용"
+  }else if(regDatas[this.className].use == "n"){
+    PopupData[4].innerText = "미사용"
+  }else{
+    PopupData[4].innerText = "삭제"
+  }
   PopupData[5].innerText = regDatas[this.className].vehicle_type
-  PopupData[6].innerText = regDatas[this.className].vehicle_id
+  PopupData[6].innerText = regDatas[this.className].passenger_num
+  PopupData[7].innerText = "regDatas[this.className]."
   PopupData[8].innerText = regDatas[this.className].model_year
-  PopupData[9].innerText = regDatas[this.className].release_date
-  PopupData[10].innerText = regDatas[this.className].passenger_num
+  PopupData[9].innerText = regDatas[this.className].vehicle_id
+  PopupData[10].innerText = regDatas[this.className].release_date
   PopupData[11].innerText = regDatas[this.className].motor_type
   PopupData[12].innerText = regDatas[this.className].rated_output
-  PopupData[14].innerText = regDatas[this.className].check_duration
-  PopupData[15].innerText = regDatas[this.className].vehicle_registration
-  PopupData[16].innerText = regDatas[this.className].insurance_receipt
+  PopupData[13].innerText = "regDatas[this.className]."
+  PopupData[14].innerText = regDatas[this.className].vehicle_registration
+
+
   vehicleNum1.value = regDatas[this.className].vehicle_num0
   vehicleNum2.value = regDatas[this.className].vehicle_num
   for (i = 0; i < driver_name.length; i++) {
@@ -100,22 +111,24 @@ function openDetailPopup() {
       driver_name[i].selected = true;
     }
   }
-  for (i = 0; i < use.length; i++) {
-    if (use[i].innerText == regDatas[this.className].use) {
-      use[i].selected = true;
-    }
+  if(regDatas[this.className].use == "y"){
+    ableBusEdit.checked = true
+  }else if(regDatas[this.className].use == "n"){
+    disableBusEdit.checked = true
+  }else{
+    deleteBusEdit.checked = true
   }
   maker.value = regDatas[this.className].maker
   vehicle_type.value = regDatas[this.className].vehicle_type
-  vehicle_id.value = regDatas[this.className].vehicle_id
-  model_year.value = regDatas[this.className].model_year
-  release_date.value = regDatas[this.className].release_date
   passenger_num.value = regDatas[this.className].passenger_num
+  // 형식
+  model_year.value = regDatas[this.className].model_year
+  vehicle_id.value = regDatas[this.className].vehicle_id
+  release_date.value = regDatas[this.className].release_date
   motor_type.value = regDatas[this.className].motor_type
   rated_output.value = regDatas[this.className].rated_output
-  check_duration.value = regDatas[this.className].check_duration
+  // check_duration.value = regDatas[this.className].check_duration
   BusLicenseFileTextEdit.value = regDatas[this.className].vehicle_registration
-  insuranceFileTextEdit.value = regDatas[this.className].insurance_receipt
   sendToHidden.value = this.parentNode.className;
 }
 
@@ -129,6 +142,7 @@ function changeEdit() {
   PopupTitle[1].innerText = "차량수정"
   editBtn.style.display = "none";
   createBtn[1].style.display = "flex";
+  
 }
 
 
@@ -167,47 +181,29 @@ function deleteData(e) {
 
 //파일명 변경
 BusLicenseFileInput.addEventListener("change", changeFileBusLicense)
-insuranceFileInput.addEventListener("change", changeFileinsurance)
 BusLicenseFileInputEdit.addEventListener("change", changeFileLicenseEdit)
-insuranceFileInputEdit.addEventListener("change", changeFileDriverLicenseEdit)
 
 function changeFileBusLicense() {
   BusLicenseFileText.value = BusLicenseFileInput.files[0].name
 }
-function changeFileinsurance() {
-  insuranceFileText.value = insuranceFileInput.files[0].name
-}
 function changeFileLicenseEdit() {
+  console.log("A")
   BusLicenseFileTextEdit.value = BusLicenseFileInputEdit.files[0].name
 }
-function changeFileDriverLicenseEdit() {
-  insuranceFileTextEdit.value = insuranceFileInputEdit.files[0].name
-}
-
 
 
 
 // 파일삭제
 fileDeleteBtn[0].addEventListener("click", deleteFileBusLicense)
-fileDeleteBtn[1].addEventListener("click", deleteFileInsurance)
-fileDeleteBtn[2].addEventListener("click", deleteFileLicensEdit)
-fileDeleteBtn[3].addEventListener("click", deleteFileDriverLicensEdit)
+fileDeleteBtn[1].addEventListener("click", deleteFileLicensEdit)
 
 function deleteFileBusLicense() {
   BusLicenseFileText.value = ""
   BusLicenseFileInput.value = ""
 }
-function deleteFileInsurance() {
-  insuranceFileText.value = ""
-  insuranceFileInput.value = ""
-}
 function deleteFileLicensEdit() {
   BusLicenseFileTextEdit.value = ""
   BusLicenseFileInputEdit.value = ""
-}
-function deleteFileDriverLicensEdit() {
-  insuranceFileTextEdit.value = ""
-  insuranceFileInputEdit.value = ""
 }
 
 

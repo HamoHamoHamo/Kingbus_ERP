@@ -152,7 +152,7 @@ table td {
     width: 18%;
 }
 
-.busTable input {
+.busTable input{
     width: 100%;
     height: 100%;
     text-align: center;
@@ -191,7 +191,7 @@ table td {
     transform: translate(-50%, 0);
 }
 
-.sent input {
+.sent input{
     text-align: center;
     font-size: 2.66rem;
     font-weight: 700;

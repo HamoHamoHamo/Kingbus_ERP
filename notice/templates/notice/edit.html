@@ -18,21 +18,21 @@
     <div class="creteHeader">
       <div class="inputCell">
         <span class="inputName">제목</span>
-        <input type="text" name="title" value="{{ notice.title }}" required>
+        <input autocomplete="off" type="text" name="title" value="{{ notice.title }}" required>
       </div>
       <div class="inputCell">
         <span class="inputName">구분</span>
         <div class="radiobox">
-          <input type="radio" id="driver" value="driver" name="kinds" {% if notice.kinds == 'driver' %} checked {% endif %}>
+          <input autocomplete="off" type="radio" id="driver" value="driver" name="kinds" {% if notice.kinds == 'driver' %} checked {% endif %}>
           <label for="driver">기사님</label>
-          <input type="radio" id="office" value="office" name="kinds" {% if notice.kinds == 'office' %} checked {% endif %}>
+          <input autocomplete="off" type="radio" id="office" value="office" name="kinds" {% if notice.kinds == 'office' %} checked {% endif %}>
           <label for="office">사무실</label>
         </div>
       </div>
       <div class="inputCell inputCellFile">
         <span class="inputName">첨부파일</span>
         <div class="fileEditer">
-          <input type="file" name="file" multiple>
+          <input autocomplete="off" type="file" name="file" multiple>
           {% if notice_files %}
             <div class="createdFileBox">
               {% for file in notice_files %}
@@ -50,7 +50,7 @@
     </div>
     <textarea name="content" required>{{notice.content}}</textarea>
     <div class="createBtnBox">
-      <input type="submit" value="저장" class="createBtn">
+      <input autocomplete="off" type="submit" value="저장" class="createBtn">
     </div>
   </form>
 </div>

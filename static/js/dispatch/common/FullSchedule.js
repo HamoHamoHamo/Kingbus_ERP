@@ -1,6 +1,7 @@
 const sheduleLine = document.querySelectorAll(".scheduleTableTr")
 const scheduleRadio = document.querySelectorAll(".scheduleRadio")
 const scheduleLabel = document.querySelectorAll(".scheduleHeaderFilterBox label")
+const regularlyTime = document.querySelectorAll(".routeTime .inputText")
 
 
 
@@ -11,18 +12,18 @@ let dataStartTime = ""
 let dataEndTime = ""
 let scheduleBus = []
 
-let routeTimeStart = 0;
-let routeTimeEnd = 0;
+// let routeTimeStart = 0;
+// let routeTimeEnd = 0;
 
 
 
 
-// 노선 운행시간
+// // 노선 운행시간
 
-function getRouteTime() {
-    routeTimeStart = parseInt(routeTimeInput[0].value * 60) + parseInt(routeTimeInput[1].value)
-    routeTimeEnd = parseInt(routeTimeInput[2].value * 60) + parseInt(routeTimeInput[3].value)
-}
+// function getRouteTime() {
+//     routeTimeStart = parseInt(routeTimeInput[0].value * 60) + parseInt(routeTimeInput[1].value)
+//     routeTimeEnd = parseInt(routeTimeInput[2].value * 60) + parseInt(routeTimeInput[3].value)
+// }
 
 
 
@@ -98,7 +99,7 @@ function drawSchdule() {
 
 
 
-// 배차불가 차량 필터
+// 배차불가 차량 필터(일반배차)
 function DispatcBusFilter() {
 
     scheduleBus = []
@@ -117,6 +118,41 @@ function DispatcBusFilter() {
         }
     }
 
+
+    // 배차불가 클래스 부여
+    if (inputStartTime !== "" && inputEndTime !== "") {
+        for (i = 0; i < scheduleBus.length; i++) {
+            for (j = 0; j < driverTd.length; j++) {
+                if (driverTd[j].classList[1] == scheduleBus[i]) {
+                    driverTd[j].parentNode.classList.add("haveSchedule")
+                }
+            }
+        }
+    }
+}
+
+
+
+// 배차불가 차량 필터(출퇴근배차)
+function DispatcBusFilterRegularly() {
+
+    scheduleBus = []
+
+    inputStartTime = parseInt(`${regularlyTime[0].value}${regularlyTime[1].value}`)
+    inputEndTime = parseInt(`${regularlyTime[2].value}${regularlyTime[3].value}`)
+
+    for (i = 0; i < data.length; i++) {
+
+        dataStartTime = parseInt(data[i].departure_date.split(" ")[1].replace(/\:/g, ""))
+        dataEndTime = parseInt(data[i].arrival_date.split(" ")[1].replace(/\:/g, ""))
+
+
+        // data기간 필터링
+        if (inputEndTime >= dataStartTime && inputStartTime <= dataEndTime) {
+            scheduleBus.push(data[i].bus_id)
+        }
+
+    }
 
     // 배차불가 클래스 부여
     if (inputStartTime !== "" && inputEndTime !== "") {

@@ -25,8 +25,8 @@
         <div class="searchTool">
             <!-- <div class="searchTitle">파일검색</div> -->
             <label for="">파일이름</label>
-            <input value="{{search}}" name="filename" type="text">
-            <input type="submit" value="검색" class="btnModules">
+            <input autocomplete="off" value="{{search}}" name="filename" type="text">
+            <input autocomplete="off" type="submit" value="검색" class="btnModules">
         </div>
     </form>
 </div>
@@ -37,7 +37,7 @@
 
 <form method="post" action="{% url 'document:company_delete' %}" class="contentsAreaBox">
     {% csrf_token %}
-    <input type="submit" class="btnModules contentsAreaBoxDelete" value="삭제">
+    <input autocomplete="off" type="submit" class="btnModules contentsAreaBoxDelete" value="삭제">
     <div class="btnModules print">인쇄</div>
     <div class="btnModules download">다운로드</div>
     <div class="documentTableBox">
@@ -45,7 +45,7 @@
             <thead>
                 <tr>
                     <td>
-                        <input type="checkbox">
+                        <input autocomplete="off" type="checkbox">
                     </td>
                     <td>파일명</td>
                     <td>작성자</td>
@@ -65,7 +65,7 @@
                                 <thead>
                                     <tr>
                                         <td>
-                                            <input value="{{group.id}}" name="group_check" type="checkbox"
+                                            <input autocomplete="off" value="{{group.id}}" name="group_check" type="checkbox"
                                                 class="groupCheck group{{group.id}}"><!-- 장고로 클래스 부여 -->
                                         </td>
                                         <td colspan="2">
@@ -77,7 +77,7 @@
                                                         transform="translate(0 -4.5)" fill="#444" />
                                                 </svg>
                                                 <div>
-                                                    <input name="name" type="text" value="{{group.name}}" class="groupName" tabindex="-1" disabled>
+                                                    <input autocomplete="off" name="name" type="text" value="{{group.name}}" class="groupName" tabindex="-1" disabled>
                                                 </div>
                                                 <div class="groupNameEditBtn">
                                                     <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15.12" viewBox="0 0 15 15.12">
@@ -128,7 +128,7 @@
                                     {% if file.group_id == group %}
                                     <tr>
                                         <td>
-                                            <input value="{{file.id}}" name="file_check" type="checkbox"
+                                            <input autocomplete="off" value="{{file.id}}" name="file_check" type="checkbox"
                                                 class="fileCheck group{{group.id}} {% url 'document:company_document_download' file.id %}">
                                             <!-- 장고로 클래스 부여 -->
                                         </td>
@@ -142,7 +142,7 @@
                                     {% for file in group.group_file.all %}
                                     <tr>
                                         <td>
-                                            <input value="{{file.id}}" name="file_check" type="checkbox"
+                                            <input autocomplete="off" value="{{file.id}}" name="file_check" type="checkbox"
                                                 class="fileCheck group{{group.id}} {% url 'document:company_document_download' file.id %}">
                                             <!-- 장고로 클래스 부여 -->
                                         </td>
@@ -199,7 +199,7 @@
             </div>
         </div>
     </div>
-    <input type="hidden" name="id" class="hiddenGroupId">
+    <input autocomplete="off" type="hidden" name="id" class="hiddenGroupId">
 
 </form>
 
@@ -225,14 +225,14 @@
             <div class="popupSection">
                 <div class="popupArticle">
                     <label for="" class="popupArticleLabel">파일명</label>
-                    <input name="filename" type="text" class="popupArticleInput">
+                    <input autocomplete="off" name="filename" type="text" class="popupArticleInput">
                 </div>
                 <div class="popupArticle">
                     <label for="" class="popupArticleLabel">업로드 파일</label>
                     <div class="popupArticleFile">
                         <label for="documentFile">파일 선택</label>
-                        <input name="file" type="file" id="documentFile" class="documentFileInput">
-                        <input type="text" class="documentFileText" readonly>
+                        <input autocomplete="off" name="file" type="file" id="documentFile" class="documentFileInput">
+                        <input autocomplete="off" type="text" class="documentFileText" readonly>
                         <svg class="fileDeleteBtn" xmlns="http://www.w3.org/2000/svg" width="11.314" height="11.314"
                             viewBox="0 0 11.314 11.314">
                             <g id="그룹_1513" data-name="그룹 1513" transform="translate(-442.649 -1001.97) rotate(45)">
@@ -245,10 +245,10 @@
                         </svg>
                     </div>
                 </div>
-                <input name="group_id" type="hidden" class="hiddenGroupIdUpload">
+                <input autocomplete="off" name="group_id" type="hidden" class="hiddenGroupIdUpload">
             </div>
             <div class="popupFooter">
-                <input type="submit" class="btnModules" value="추가">
+                <input autocomplete="off" type="submit" class="btnModules" value="추가">
                 <div class="btnModules">취소</div>
             </div>
         </div>
@@ -266,11 +266,11 @@
             <div class="popupSection">
                 <div class="popupArticle">
                     <label for="" class="popupArticleLabel">그룹이름</label>
-                    <input name="group_name" type="text" class="popupArticleInput">
+                    <input autocomplete="off" name="group_name" type="text" class="popupArticleInput">
                 </div>
             </div>
             <div class="popupFooter">
-                <input type="submit" class="btnModules" value="추가">
+                <input autocomplete="off" type="submit" class="btnModules" value="추가">
                 <div class="btnModules">취소</div>
             </div>
         </div>
