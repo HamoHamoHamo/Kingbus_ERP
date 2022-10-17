@@ -318,7 +318,7 @@
     width: 50%;
   }
   
-  .dispatcTable td input {
+  .dispatcTable td input{
     border: 0.1rem solid #444;
     border-radius: 0.2rem;
   }

@@ -1981,7 +1981,7 @@ S2.define('select2/selection/search',[
   Search.prototype.render = function (decorated) {
     var $search = $(
       '<li class="select2-search select2-search--inline">' +
-        '<input class="select2-search__field" type="search" tabindex="-1"' +
+        '<inputclass="select2-search__field" type="search" tabindex="-1"' +
         ' autocomplete="off" autocorrect="off" autocapitalize="none"' +
         ' spellcheck="false" role="searchbox" aria-autocomplete="list" />' +
       '</li>'
@@ -2168,7 +2168,7 @@ S2.define('select2/selection/search',[
     this.resizeSearch();
 
     if (!this._keyUpPrevented) {
-      var input = this.$search.val();
+      var input= this.$search.val();
 
       this.trigger('query', {
         term: input
@@ -4081,7 +4081,7 @@ S2.define('select2/dropdown/search',[
 
     var $search = $(
       '<span class="select2-search select2-search--dropdown">' +
-        '<input class="select2-search__field" type="search" tabindex="-1"' +
+        '<inputclass="select2-search__field" type="search" tabindex="-1"' +
         ' autocomplete="off" autocorrect="off" autocapitalize="none"' +
         ' spellcheck="false" role="searchbox" aria-autocomplete="list" />' +
       '</span>'
@@ -4169,7 +4169,7 @@ S2.define('select2/dropdown/search',[
 
   Search.prototype.handleSearch = function (evt) {
     if (!this._keyUpPrevented) {
-      var input = this.$search.val();
+      var input= this.$search.val();
 
       this.trigger('query', {
         term: input
@@ -6233,7 +6233,7 @@ S2.define('select2/compat/inputData',[
     if ($element.prop('type') === 'hidden') {
       if (options.get('debug') && console && console.warn) {
         console.warn(
-          'Select2: Using a hidden input with Select2 is no longer ' +
+          'Select2: Using a hidden inputwith Select2 is no longer ' +
           'supported and may stop working in the future. It is recommended ' +
           'to use a `<select>` element instead.'
         );

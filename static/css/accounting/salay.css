@@ -1,4 +1,4 @@
-.FilterBox input {
+.FilterBox input{
     width: 14rem;
     padding: 0;
     margin-right: 1rem;
@@ -139,7 +139,7 @@ td:nth-child(10) {
     width:  calc(26% - 0.6rem);
 }
 
-.tableBody td input {
+.tableBody td input{
     width: 98%;
 }
 
@@ -158,6 +158,6 @@ td:nth-child(10) {
     box-sizing: border-box;
 }
 
-.btnAreaBox input {
+.btnAreaBox input{
     background-color: #0069d9;
 }

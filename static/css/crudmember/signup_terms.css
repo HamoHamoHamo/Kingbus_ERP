@@ -9,7 +9,7 @@
   cursor: pointer;
 }
 
-.allcheck input {
+.allcheck input{
   width: 1.8rem;
   height: 1.8rem;
   margin-right: 0.8rem;
@@ -58,7 +58,7 @@
   cursor: pointer;
 }
 
-.checkBox input {
+.checkBox input{
   width: 1.8rem;
   height: 1.8rem;
   margin-right: 0.8rem;

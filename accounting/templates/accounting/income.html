@@ -9,7 +9,7 @@
 
 {% block content-header %}
 <div class="HeaderTitle">
-    수입현황
+    매출현황
 </div>
 {% endblock %}
 
@@ -23,76 +23,50 @@
         <div class="searchTool">
             <span class="searchName">날짜검색</span>
             <div class="FilterBox">
-                <input name="month" type="month" value="{{month}}" class="inputModules">
+                <input autocomplete="off"name="month" type="month" value="{{month}}" class="inputModules">
             </div>
-            <input type="submit" value="검색" class="btnModules">
+            <input autocomplete="off"type="submit" value="검색" class="btnModules dateSearchBtn">
         </div>
     </form>
 </div>
 
-
-
-
-<form method="post" action="{% url 'accounting:remark_edit' %}" class="salaryForm">
-    {% csrf_token %}
-    <div class="contentsAreaBox">
-        <table class="tableHead">
-            <thead>
-                <tr class="headerLine">
-                    <td>날짜</td>
-                    <td>출근</td>
-                    <td>퇴근</td>
-                    <td>일반주문</td>
-                    <td>수금액</td>
-                    <td>미수금액</td>
-                    <td>합계</td>
-                </tr>
-            </thead>
-        </table>
-        <div class="tableScrollBox">
-            <table class="tableBody">
-                <tbody>
-                    {% for i in "x"|rjust:last_day %}
-                    <tr>
-                        <td>{{forloop.counter}}</td>
-                        <td>{% if e_order_list|index:forloop.counter0 != 0 %} {{e_order_list|index:forloop.counter0}} {% endif %}</td>
-                        <td>{% if c_order_list|index:forloop.counter0 != 0 %} {{c_order_list|index:forloop.counter0}} {% endif %}</td>
-                        <td>{% if order_list|index:forloop.counter0 != 0 %} {{order_list|index:forloop.counter0}} {% endif %}</td>
-                        <td>{% if collect_list|index:forloop.counter0 != 0 %} {{collect_list|index:forloop.counter0}} {% endif %}</td>
-                        <td>{% if n_collect_list|index:forloop.counter0 != 0 %} {{n_collect_list|index:forloop.counter0}} {% endif %}</td>
-                        {% with e=e_order_list|index:forloop.counter0 %}
-                        {% with c=c_order_list|index:forloop.counter0 %}
-                        {% with o=order_list|index:forloop.counter0 %}
-                        <td>{{e|add:c|add:o}}</td>
-                        {% endwith %}
-                        {% endwith %}
-                        {% endwith %}
-
-                    </tr>
-                    {% endfor %}
-                    
-                </tbody>
-            </table>
+<div class="dashboardContainer">
+    <div class="dashboardBox mainDataArea">
+        <div class="dashboardArticle monthData">
+            <div class="dashboardHeader">~월 매출</div>
+            <div class="dashboardBody">
+                <canvas id="monthChart" width="360" height="360"></canvas>
+                <div class="accountsReceivable">미수금  5,000,000</div>
+                <div class="totalPrice">총 매출  25,000,000</div>
+            </div>
         </div>
-
-        <div class="btnAreaBox">
-            <table class="totalTable">
-                <thead>
-                    <tr>
-                        <td>합계</td>
-                        <td>{{ e_order_list_total }}</td>
-                        <td>{{ c_order_list_total }}</td>
-                        <td>{{ order_list_total }}</td>
-                        <td>{{ collect_list_total }}</td>
-                        <td>{{ n_collect_list_total }}</td>
-                        <td>{{ e_order_list_total|add:c_order_list_total|add:order_list_total }}</td>
-                    </tr>
-                </thead>
-            </table>
+        <div class="dashboardArticle yearData">
+            <div class="dashboardHeader"></div>
+            <div class="dashboardBody">
+                <canvas id="yearChart" width="1000" height="220"></canvas>
+            </div>
         </div>
     </div>
-</form>
-
+    <div class="dashboardBox SubDataArea">
+        <div class="dashboardArticle kategoriData">
+            <div class="dashboardHeader">일반매출 이용 유형</div>
+            <div class="dashboardBody">
+                <canvas id="kategoriChart" width="700" height="390"></canvas>
+            </div>
+        </div>
+        <div class="dashboardArticle otherData">
+            <div class="dashboardHeader">유형별 비율</div>
+            <div class="dashboardBody">
+                <div class="dashboardBodyCoulmnCell">
+                    <canvas id="otherChartWay" width="260" height="180"></canvas>
+                    <canvas id="otherChartPayment" width="260" height="180"></canvas>
+                </div>
+                <canvas id="otherChartBus" width="580" height="340"></canvas>
+                <div class="chartTitle">버스 종류</div>
+            </div>
+        </div>
+    </div>
+</div>
 
 {% endblock %}
 
@@ -100,5 +74,8 @@
 
 
 {% block script %}
-<script src="{% static 'js/accounting/income.js' %}"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
+<script src="{% static 'js/accounting/chart.js' %}"></script>
+<script src="{% static 'js/accounting/monthAndYear.js' %}"></script>
 {% endblock %}

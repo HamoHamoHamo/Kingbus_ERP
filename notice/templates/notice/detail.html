@@ -39,10 +39,10 @@
     {% if notice.creator.id == request.session.user %}
     <div class="createBtnBox">
       <form action="{% url 'notice:delete' notice.kinds notice.id %}" class="deleteForm" onsubmit="return confirm('정말로 삭제하시겠습니까?');">
-        <input type="submit" value="삭제" class="deleteBtn">
+        <input autocomplete="off" type="submit" value="삭제" class="deleteBtn">
       </form>
       <form action="{% url 'notice:edit' notice.kinds notice.id %}" class="noticeDetailEdit">
-        <input type="submit" value="수정" class="editBtn">
+        <input autocomplete="off" type="submit" value="수정" class="editBtn">
       </form>
     </div>
     {% endif %}
@@ -60,7 +60,7 @@
       {% if request.session.user == comment.creator.id %}
       <form method="post" action="{% url 'notice:comment_del' notice.kinds notice.id comment.id %}" onsubmit="return confirm('정말로 삭제하시겠습니까?');">
         {% csrf_token %}
-        <input type="submit" class="commentDeleteBtn" value="삭제">
+        <input autocomplete="off" type="submit" class="commentDeleteBtn" value="삭제">
       </form>
       {% endif %}
     </div>
@@ -79,7 +79,7 @@
       <textarea name="content" required></textarea>
     </div>
     <div class="commentCreateBtnCell">
-      <input type="submit" value="등록" class="createBtn">
+      <input autocomplete="off" type="submit" value="등록" class="createBtn">
     </div>
   </form>
 </div>

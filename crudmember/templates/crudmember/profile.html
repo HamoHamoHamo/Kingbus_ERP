@@ -5,10 +5,10 @@
 비번변경
 <form action="." method="POST">
     {% csrf_token %}
-    <div>현재비번<input type="password" name="old_password"></div>
-    <div>바꿀비번<input type="password" name="new_password1"></div>
-    <div>다시한번<input type="password" name="new_password2"></div>
-    <input type="submit" value="ㄱ" name="cngpw">
+    <div>현재비번<input autocomplete="off"type="password" name="old_password"></div>
+    <div>바꿀비번<input autocomplete="off"type="password" name="new_password1"></div>
+    <div>다시한번<input autocomplete="off"type="password" name="new_password2"></div>
+    <input autocomplete="off"type="submit" value="ㄱ" name="cngpw">
 </form>
 {{error}}
 

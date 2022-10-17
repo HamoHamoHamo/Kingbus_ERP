@@ -3,6 +3,9 @@ const popupBg = document.querySelector(".popupBgModules")
 const dispatchHistory = document.querySelector(".dispatchHistory")
 const popupCloseBtn = document.querySelector(".popupCloseBtn")
 const historyItem = document.querySelectorAll(".historyItem")
+const historyHiddenRoute = document.querySelector(".historyHiddenRoute")
+const historyHiddenBus = document.querySelector(".historyHiddenBus")
+const historyHiddenDriver = document.querySelector(".historyHiddenDriver")
 
 
 
@@ -11,7 +14,13 @@ const historyItem = document.querySelectorAll(".historyItem")
 dispatchHistory.addEventListener("click", openDispatchHistory)
 
 function openDispatchHistory() {
-    popup.style.display = "block"
+    if (window.location.search !== "") {
+        let queryId = window.location.search.split("id=")[1].split("&")[0]
+        if (queryId !== "") {
+            popup.style.display = "block"
+            historyHidden.value = queryId
+        }
+    }
 }
 
 
@@ -44,4 +53,6 @@ function HistoryCheck() {
         }
         this.classList.add("checkHistoryItem")
     }
+    historyHiddenBus.value = this.children[0].classList[1]
+    historyHiddenDriver.value = this.children[1].classList[1]
 }

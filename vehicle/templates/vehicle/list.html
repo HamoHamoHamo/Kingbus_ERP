@@ -10,7 +10,7 @@
 
 {% block content-header %}
 <div class="HeaderTitle">
-    차량목록
+    차량관리
 </div>
 {% endblock %}
 
@@ -29,15 +29,14 @@
                     <option {% if select == 'driver' %} selected {% endif %} value="driver">담당기사</option>
                     <option {% if select == 'passenger' %} selected {% endif %} value="passenger">승차인원</option>
                 </select>
-                <input value="{{search}}" name="search" type="text" class="inputModules" list="hrFilter"
-                    autocomplete="off">
+                <input autocomplete="off" value="{{search}}" name="search" type="text" class="inputModules" list="hrFilter">
                 <datalist id="hrFilter">
                     {% for member in member_list %}
                     <option value="{{member.name}}"></option>
                     {% endfor %}
                 </datalist>
             </div>
-            <input type="submit" value="검색" class="btnModules">
+            <input autocomplete="off" type="submit" value="검색" class="btnModules">
         </div>
     </form>
     <div class="addVehicle">차량등록</div>
@@ -56,12 +55,16 @@
                     <td>순번</td>
                     <td>차량번호</td>
                     <td>담당기사</td>
+                    <td>제조사</td>
                     <td>차량이름</td>
                     <td>승차인원</td>
-                    <td>년식</td>
+                    <td>형식</td>
+                    <td>모델연도</td>
+                    <td>차대번호</td>
                     <td>출고일자</td>
+                    <td>정기점검일</td>
                     <td>차량등록증</td>
-                    <td>보험영수증</td>
+                    <td>사용여부</td>
                 </tr>
             </thead>
         </table>
@@ -71,26 +74,31 @@
                 {% for vehicle in vehicle_list %}
                 <tr class="{{vehicle.id}}">
                     <td>
-                        <input name="check" value="{{vehicle.id}}" type="checkbox">
+                        <input autocomplete="off" name="check" value="{{vehicle.id}}" type="checkbox">
                     </td>
                     <td></td>
                     <td class="{{ forloop.counter0 }}">
                         <div>{{vehicle.vehicle_num0}} {{vehicle.vehicle_num}}</div>
                     </td>
-                    <td>{{vehicle.driver_name}}</td>
+                    <td>{{vehicle.driver_name}} 담당기사</td>
+                    <td>제조사</td>
                     <td>{{vehicle.vehicle_type}}</td>
                     <td>{{vehicle.passenger_num}}</td>
-                    <td>{{vehicle.model_year}}</td>
-                    <td>{{vehicle.release_date}}</td>
+                    <!-- <td>{{vehicle.release_date}}</td> -->
+                    <td>HD2-452-17PaZ6-T</td>
                     {% with list=file_list|index:forloop.counter0 %}
+                    <td>{{vehicle.model_year}}
+                    </td>
+                    <td>
+                        KNGGBK6X1HK013689
+                    </td>
+                    <td>2022-09-13</td>
+                    <td>2022-09-13</td>
                     <td>
                         <div onclick="openViweBlankVehilcle('/vehicle/list/image/{{list.0.id}}')">{{list.0.filename}}
                         </div>
                     </td>
-                    <td>
-                        <div onclick="openViweBlankInsurance('/vehicle/list/image/{{list.1.id}}')">{{list.1.filename}}
-                        </div>
-                    </td>
+                    <td>미사용</td>
                     {% endwith %}
                 </tr>
                 {% endfor %}
@@ -135,7 +143,7 @@
                 {% endif %}
             </div>
             <div class="btnBox">
-                <input type="submit" value="삭제" class="btnModules">
+                <input autocomplete="off" type="submit" value="삭제" class="btnModules">
             </div>
 
         </div>
@@ -167,13 +175,13 @@
                     <div class="popupArticleDouble">
                         <label for="" class="popupArticleLabel">차량번호</label>
                         <div class="vehicleNumBox">
-                            <input name="vehicle_num0" type="text" class="popupArticleInput">
-                            <input name="vehicle_num" type="text" class="popupArticleInput">
+                            <input autocomplete="off" name="vehicle_num0" type="text" class="popupArticleinput">
+                            <input autocomplete="off" name="vehicle_num" type="text" class="popupArticleinput">
                         </div>
                     </div>
                     <div class="popupArticleDouble">
                         <label for="" class="popupArticleLabel">담당기사</label>
-                        <select name="driver" class="popupArticleInput">
+                        <select name="driver" class="popupArticleinput">
                             <option></option>
                             {% for driver in driver_list %}
                             <option value="{{driver.id}}">{{driver.name}}</option>
@@ -183,92 +191,72 @@
                 </div>
                 <div class="popupArticleBox">
                     <div class="popupArticleDouble">
-                        <label for="" class="popupArticleLabel">사용여부</label>
-                        <select name="use" id="" class="popupArticleInput">
-                            <option value="y">사용</option>
-                            <option value="n">미사용</option>
-                        </select>
+                        <label for="" class="popupArticleLabel">제조사</label>
+                        <input autocomplete="off" name="maker" type="text" class="popupArticleinput">
                     </div>
                     <div class="popupArticleDouble">
-                        <label for="" class="popupArticleLabel">제조사</label>
-                        <input name="maker" type="text" class="popupArticleInput">
+                        <label for="" class="popupArticleLabel">사용여부</label>
+                        <div class="albleRadioBox">
+                            <input autocomplete="off" type="radio" id="ableBus" name="ableRadio" checked>
+                            <label for="ableBus">사용</label>
+                            <input autocomplete="off" type="radio" id="disableBus" name="ableRadio">
+                            <label for="disableBus">미사용</label>
+                            <input autocomplete="off" type="radio" id="deleteBus" name="ableRadio">
+                            <label for="deleteBus">삭제</label>
+                        </div>
                     </div>
                 </div>
                 <div class="popupArticleBox">
                     <div class="popupArticleDouble">
                         <label for="" class="popupArticleLabel">차량이름</label>
-                        <input name="vehicle_type" type="text" class="popupArticleInput">
-                    </div>
-                    <div class="popupArticleDouble">
-                        <label for="" class="popupArticleLabel">차대번호</label>
-                        <input name="vehicle_id" type="text" class="popupArticleInput">
-                    </div>
-                </div>
-                <div class="popupArticleBox">
-                    <div class="popupArticleDouble">
-                        <label for="" class="popupArticleLabel">???</label>
-                        <input type="text" class="popupArticleInput">
-                    </div>
-                    <div class="popupArticleDouble">
-                        <label for="" class="popupArticleLabel">연식</label>
-                        <input name="model_year" type="number" class="popupArticleInput">
-                    </div>
-                </div>
-                <div class="popupArticleBox">
-                    <div class="popupArticleDouble">
-                        <label for="" class="popupArticleLabel">출고일자</label>
-                        <input name="release_date" type="date" class="popupArticleInput" max="9999-12-31">
+                        <input autocomplete="off" name="vehicle_type" type="text" class="popupArticleinput">
                     </div>
                     <div class="popupArticleDouble">
                         <label for="" class="popupArticleLabel">승차인원</label>
-                        <input name="passenger_num" type="text" class="popupArticleInput">
+                        <input autocomplete="off" name="passenger_num" type="text" class="popupArticleinput">
+                    </div>
+                </div>
+                <div class="popupArticleBox">
+                    <div class="popupArticleDouble">
+                        <label for="" class="popupArticleLabel">형식</label>
+                        <input autocomplete="off" type="text" class="popupArticleinput">
+                    </div>
+                    <div class="popupArticleDouble">
+                        <label for="" class="popupArticleLabel">모델연도</label>
+                        <input autocomplete="off" name="model_year" type="number" class="popupArticleinput">
+                    </div>
+                </div>
+                <div class="popupArticleBox">
+                    <div class="popupArticleDouble">
+                        <label for="" class="popupArticleLabel">차대번호</label>
+                        <input autocomplete="off" name="vehicle_id" type="text" class="popupArticleinput">
+                    </div>
+                    <div class="popupArticleDouble">
+                        <label for="" class="popupArticleLabel">출고일자</label>
+                        <input autocomplete="off" name="release_date" type="date" class="popupArticleinput" max="9999-12-31">
                     </div>
                 </div>
                 <div class="popupArticleBox">
                     <div class="popupArticleDouble">
                         <label for="" class="popupArticleLabel">원동기형식</label>
-                        <input name="motor_type" type="text" class="popupArticleInput">
+                        <input autocomplete="off" name="motor_type" type="text" class="popupArticleinput">
                     </div>
                     <div class="popupArticleDouble">
                         <label for="" class="popupArticleLabel">정격출력</label>
-                        <input name="rated_output" type="text" class="popupArticleInput">
+                        <input autocomplete="off" name="rated_output" type="text" class="popupArticleinput">
                     </div>
                 </div>
                 <div class="popupArticleBox">
                     <div class="popupArticleDouble">
-                        <label for="" class="popupArticleLabel">정기점검<br>검사일</label>
-                        <input name="" type="date" class="popupArticleInput" max="9999-12-31">
+                        <label for="" class="popupArticleLabel">정기점검일</label>
+                        <input autocomplete="off" name="" type="date" class="popupArticleinput" max="9999-12-31">
                     </div>
-                    <div class="popupArticleDouble">
-                        <label for="" class="popupArticleLabel">검사 유효기간 만료일</label>
-                        <input name="check_duration" type="date" class="popupArticleInput" max="9999-12-31">
-                    </div>
-                </div>
-                <div class="popupArticleBox">
                     <div class="popupArticleDouble">
                         <label for="" class="popupArticleLabel">차량등록증</label>
                         <div class="popupArticleFileDouble">
                             <label for="BusLicenseFile">파일 선택</label>
-                            <input name="vehicle_registration" id="BusLicenseFile" type="file" class="popupArticleInput BusLicenseFileInput">
-                            <input type="text" class="BusLicenseFileText" readonly>
-                            <svg class="fileDeleteBtn" xmlns="http://www.w3.org/2000/svg" width="11.314" height="11.314"
-                                viewBox="0 0 11.314 11.314">
-                                <g id="그룹_1513" data-name="그룹 1513" transform="translate(-442.649 -1001.97) rotate(45)">
-                                    <line id="선_691" data-name="선 691" y2="12" transform="translate(1029.5 389.5)"
-                                        fill="none" stroke="#000" stroke-linecap="round" stroke-width="2" />
-                                    <line id="선_692" data-name="선 692" y2="12"
-                                        transform="translate(1035.5 395.5) rotate(90)" fill="none" stroke="#000"
-                                        stroke-linecap="round" stroke-width="2" />
-                                </g>
-                            </svg>
-                        </div>
-                    </div>
-                    <div class="popupArticleDouble">
-                        <label for="" class="popupArticleLabel">보험영수증</label>
-                        <div class="popupArticleFileDouble">
-                            <label for="insuranceFile">파일 선택</label>
-                            <input name="insurance_receipt" id="insuranceFile" type="file" class="popupArticleInput insuranceFileInput">
-                            <input type="text" class="insuranceFileText" readonly>
+                            <input autocomplete="off" name="vehicle_registration" id="BusLicenseFile" type="file" class="popupArticleinputBusLicenseFileinput">
+                            <input autocomplete="off" type="text" class="BusLicenseFileText" readonly>
                             <svg class="fileDeleteBtn" xmlns="http://www.w3.org/2000/svg" width="11.314" height="11.314"
                                 viewBox="0 0 11.314 11.314">
                                 <g id="그룹_1513" data-name="그룹 1513" transform="translate(-442.649 -1001.97) rotate(45)">
@@ -284,7 +272,7 @@
                 </div>
             </div>
             <div class="popupFooter">
-                <input type="submit" class="btnModules createBtn" value="등록">
+                <input autocomplete="off" type="submit" class="btnModules createBtn" value="등록">
                 <div class="btnModules closeBtn">닫기</div>
             </div>
         </div>
@@ -319,11 +307,11 @@
                 </div>
                 <div class="popupArticleBox">
                     <div class="popupArticleDouble">
-                        <label for="" class="popupArticleLabel">사용여부</label>
+                        <label for="" class="popupArticleLabel">제조사</label>
                         <div class="PopupData"></div>
                     </div>
                     <div class="popupArticleDouble">
-                        <label for="" class="popupArticleLabel">제조사</label>
+                        <label for="" class="popupArticleLabel">사용여부</label>
                         <div class="PopupData"></div>
                     </div>
                 </div>
@@ -333,27 +321,27 @@
                         <div class="PopupData"></div>
                     </div>
                     <div class="popupArticleDouble">
+                        <label for="" class="popupArticleLabel">승차인원</label>
+                        <div class="PopupData"></div>
+                    </div>
+                </div>
+                <div class="popupArticleBox">
+                    <div class="popupArticleDouble">
+                        <label for="" class="popupArticleLabel">형식</label>
+                        <div class="PopupData"></div>
+                    </div>
+                    <div class="popupArticleDouble">
+                        <label for="" class="popupArticleLabel">모델연도</label>
+                        <div class="PopupData"></div>
+                    </div>
+                </div>
+                <div class="popupArticleBox">
+                    <div class="popupArticleDouble">
                         <label for="" class="popupArticleLabel">차대번호</label>
                         <div class="PopupData"></div>
                     </div>
-                </div>
-                <div class="popupArticleBox">
-                    <div class="popupArticleDouble">
-                        <label for="" class="popupArticleLabel">???</label>
-                        <div class="PopupData"></div>
-                    </div>
-                    <div class="popupArticleDouble">
-                        <label for="" class="popupArticleLabel">연식</label>
-                        <div class="PopupData"></div>
-                    </div>
-                </div>
-                <div class="popupArticleBox">
                     <div class="popupArticleDouble">
                         <label for="" class="popupArticleLabel">출고일자</label>
-                        <div class="PopupData"></div>
-                    </div>
-                    <div class="popupArticleDouble">
-                        <label for="" class="popupArticleLabel">승차인원</label>
                         <div class="PopupData"></div>
                     </div>
                 </div>
@@ -369,21 +357,11 @@
                 </div>
                 <div class="popupArticleBox">
                     <div class="popupArticleDouble">
-                        <label for="" class="popupArticleLabel">정기점검<br>검사일</label>
+                        <label for="" class="popupArticleLabel">정기점검일</label>
                         <div class="PopupData"></div>
                     </div>
-                    <div class="popupArticleDouble">
-                        <label for="" class="popupArticleLabel">검사 유효기간 만료일</label>
-                        <div class="PopupData"></div>
-                    </div>
-                </div>
-                <div class="popupArticleBox">
                     <div class="popupArticleDouble">
                         <label for="" class="popupArticleLabel">차량등록증</label>
-                        <div class="PopupData"></div>
-                    </div>
-                    <div class="popupArticleDouble">
-                        <label for="" class="popupArticleLabel">보험영수증</label>
                         <div class="PopupData"></div>
                     </div>
                 </div>
@@ -393,13 +371,13 @@
                     <div class="popupArticleDouble">
                         <label for="" class="popupArticleLabel">차량번호</label>
                         <div class="vehicleNumBox">
-                            <input name="vehicle_num0" type="text" class="popupArticleInput vehicleNum1">
-                            <input name="vehicle_num" type="text" class="popupArticleInput vehicleNum2">
+                            <input autocomplete="off" name="vehicle_num0" type="text" class="popupArticleinputvehicleNum1">
+                            <input autocomplete="off" name="vehicle_num" type="text" class="popupArticleinputvehicleNum2">
                         </div>
                     </div>
                     <div class="popupArticleDouble">
                         <label for="" class="popupArticleLabel">담당기사</label>
-                        <select name="driver" class="popupArticleInput driver_name">
+                        <select name="driver" class="popupArticleinput">
                             <option></option>
                             {% for driver in driver_list %}
                             <option value="{{driver.id}}">{{driver.name}}</option>
@@ -409,92 +387,72 @@
                 </div>
                 <div class="popupArticleBox">
                     <div class="popupArticleDouble">
-                        <label for="" class="popupArticleLabel">사용여부</label>
-                        <select name="use" id="" class="popupArticleInput use">
-                            <option value="y">사용</option>
-                            <option value="n">미사용</option>
-                        </select>
+                        <label for="" class="popupArticleLabel">제조사</label>
+                        <input autocomplete="off" name="maker" type="text" class="popupArticleinputmaker">
                     </div>
                     <div class="popupArticleDouble">
-                        <label for="" class="popupArticleLabel">제조사</label>
-                        <input name="maker" type="text" class="popupArticleInput maker">
+                        <label for="" class="popupArticleLabel">사용여부</label>
+                        <div class="albleRadioBox">
+                            <input autocomplete="off" type="radio" id="ableBusEdit" name="ableRadio">
+                            <label for="ableBusEdit">사용</label>
+                            <input autocomplete="off" type="radio" id="disableBusEdit" name="ableRadio">
+                            <label for="disableBusEdit">미사용</label>
+                            <input autocomplete="off" type="radio" id="deleteBusEdit" name="ableRadio">
+                            <label for="deleteBusEdit">삭제</label>
+                        </div>
                     </div>
                 </div>
                 <div class="popupArticleBox">
                     <div class="popupArticleDouble">
                         <label for="" class="popupArticleLabel">차량이름</label>
-                        <input name="vehicle_type" type="text" class="popupArticleInput vehicle_type">
-                    </div>
-                    <div class="popupArticleDouble">
-                        <label for="" class="popupArticleLabel">차대번호</label>
-                        <input name="vehicle_id" type="text" class="popupArticleInput vehicle_id">
-                    </div>
-                </div>
-                <div class="popupArticleBox">
-                    <div class="popupArticleDouble">
-                        <label for="" class="popupArticleLabel">???</label>
-                        <input type="text" class="popupArticleInput">
-                    </div>
-                    <div class="popupArticleDouble">
-                        <label for="" class="popupArticleLabel">연식</label>
-                        <input name="model_year" type="number" class="popupArticleInput model_year">
-                    </div>
-                </div>
-                <div class="popupArticleBox">
-                    <div class="popupArticleDouble">
-                        <label for="" class="popupArticleLabel">출고일자</label>
-                        <input name="release_date" type="date" class="popupArticleInput release_date" max="9999-12-31">
+                        <input autocomplete="off "name="vehicle_type" type="text" class="popupArticleinput vehicle_type">
                     </div>
                     <div class="popupArticleDouble">
                         <label for="" class="popupArticleLabel">승차인원</label>
-                        <input name="passenger_num" type="text" class="popupArticleInput passenger_num">
+                        <input autocomplete="off" name="passenger_num" type="text" class="popupArticleinput passenger_num">
+                    </div>
+                </div>
+                <div class="popupArticleBox">
+                    <div class="popupArticleDouble">
+                        <label for="" class="popupArticleLabel">형식</label>
+                        <input autocomplete="off" type="text" class="popupArticleinput">
+                    </div>
+                    <div class="popupArticleDouble">
+                        <label for="" class="popupArticleLabel">모델연도</label>
+                        <input autocomplete="off" name="model_year" type="number" class="popupArticleinput model_year">
+                    </div>
+                </div>
+                <div class="popupArticleBox">
+                    <div class="popupArticleDouble">
+                        <label for="" class="popupArticleLabel">차대번호</label>
+                        <input autocomplete="off" name="vehicle_id" type="text" class="popupArticleinput vehicle_id">
+                    </div>
+                    <div class="popupArticleDouble">
+                        <label for="" class="popupArticleLabel">출고일자</label>
+                        <input autocomplete="off" name="release_date" type="date" class="popupArticleinput release_date" max="9999-12-31">
                     </div>
                 </div>
                 <div class="popupArticleBox">
                     <div class="popupArticleDouble">
                         <label for="" class="popupArticleLabel">원동기형식</label>
-                        <input name="motor_type" type="text" class="popupArticleInput motor_type">
+                        <input autocomplete="off" name="motor_type" type="text" class="popupArticleinput motor_type">
                     </div>
                     <div class="popupArticleDouble">
                         <label for="" class="popupArticleLabel">정격출력</label>
-                        <input name="rated_output" type="text" class="popupArticleInput rated_output">
+                        <input autocomplete="off" name="rated_output" type="text" class="popupArticleinput rated_output">
                     </div>
                 </div>
                 <div class="popupArticleBox">
                     <div class="popupArticleDouble">
-                        <label for="" class="popupArticleLabel">정기점검<br>검사일</label>
-                        <input name="" type="date" class="popupArticleInput" max="9999-12-31">
+                        <label for="" class="popupArticleLabel">정기점검일</label>
+                        <input autocomplete="off" name="" type="date" class="popupArticleinput" max="9999-12-31">
                     </div>
-                    <div class="popupArticleDouble">
-                        <label for="" class="popupArticleLabel">검사 유효기간 만료일</label>
-                        <input name="check_duration" type="date" class="popupArticleInput check_duration" max="9999-12-31">
-                    </div>
-                </div>
-                <div class="popupArticleBox">
                     <div class="popupArticleDouble">
                         <label for="" class="popupArticleLabel">차량등록증</label>
                         <div class="popupArticleFileDouble">
                             <label for="BusLicenseFileEdit">파일 선택</label>
-                            <input name="vehicle_registration" id="BusLicenseFileEdit" type="file" class="popupArticleInput BusLicenseFileInputEdit">
-                            <input type="text" class="BusLicenseFileTextEdit" readonly>
-                            <svg class="fileDeleteBtn" xmlns="http://www.w3.org/2000/svg" width="11.314" height="11.314"
-                                viewBox="0 0 11.314 11.314">
-                                <g id="그룹_1513" data-name="그룹 1513" transform="translate(-442.649 -1001.97) rotate(45)">
-                                    <line id="선_691" data-name="선 691" y2="12" transform="translate(1029.5 389.5)"
-                                        fill="none" stroke="#000" stroke-linecap="round" stroke-width="2" />
-                                    <line id="선_692" data-name="선 692" y2="12"
-                                        transform="translate(1035.5 395.5) rotate(90)" fill="none" stroke="#000"
-                                        stroke-linecap="round" stroke-width="2" />
-                                </g>
-                            </svg>
-                        </div>
-                    </div>
-                    <div class="popupArticleDouble">
-                        <label for="" class="popupArticleLabel">보험영수증</label>
-                        <div class="popupArticleFileDouble">
-                            <label for="insuranceFileEdit">파일 선택</label>
-                            <input name="insurance_receipt" id="insuranceFileEdit" type="file" class="popupArticleInput insuranceFileInputEdit">
-                            <input type="text" class="insuranceFileTextEdit" readonly>
+                            <input autocomplete="off" name="vehicle_registration" id="BusLicenseFileEdit" type="file" class="popupArticleinput BusLicenseFileinputEdit">
+                            <input autocomplete="off" type="text" class="BusLicenseFileTextEdit" readonly>
                             <svg class="fileDeleteBtn" xmlns="http://www.w3.org/2000/svg" width="11.314" height="11.314"
                                 viewBox="0 0 11.314 11.314">
                                 <g id="그룹_1513" data-name="그룹 1513" transform="translate(-442.649 -1001.97) rotate(45)">
@@ -508,10 +466,10 @@
                         </div>
                     </div>
                 </div>
-                <input type="hidden" value="" name="id" class="sendToHidden">
+                <input autocomplete="off" type="hidden" value="" name="id" class="sendToHidden">
             </div>
             <div class="popupFooter popupFooterDetail">
-                <input type="submit" class="btnModules createBtn" value="등록">
+                <input autocomplete="off" type="submit" class="btnModules createBtn" value="등록">
                 <div class="btnModules editBtn">수정</div>
                 <div class="btnModules closeBtn">닫기</div>
             </div>
@@ -519,191 +477,6 @@
     </form>
 </div>
 
-
-
-
-<!-- <div class="popupAreaModules">
-    <div class="popupBgModules"></div>
-    <form method="post" action="{% url 'vehicle:vehicle_edit' %}" class="detailPopupContainer"
-        enctype="multipart/form-data">
-        {% csrf_token %}
-        <div class="PopupTitle">차량수정</div>
-        <div class="PopupDataArea PopupDataAreaDetail">
-            <div class="PopupDataCell">
-                <span class="PopupDataTitle">차량번호</span>
-                <div class="vehicleNumBox">
-                    <div class="PopupData"></div>
-                    <div class="PopupData"></div>
-                </div>
-            </div>
-            <div class="PopupDataCell">
-                <span class="PopupDataTitle">담당기사</span>
-                <div class="PopupData"></div>
-            </div>
-            <div class="PopupDataCell">
-                <span class="PopupDataTitle">사용여부</span>
-                <div class="PopupData"></div>
-            </div>
-            <div class="PopupDataCell">
-                <span class="PopupDataTitle">제조사</span>
-                <div class="PopupData"></div>
-            </div>
-            <div class="PopupDataCell">
-                <span class="PopupDataTitle">차량이름</span>
-                <div class="PopupData"></div>
-            </div>
-            <div class="PopupDataCell">
-                <span class="PopupDataTitle">차대번호</span>
-                <div class="PopupData"></div>
-            </div>
-            <div class="PopupDataCell">
-                <span class="PopupDataTitle">연식</span>
-                <div class="PopupData"></div>
-            </div>
-            <div class="PopupDataCell">
-                <span class="PopupDataTitle">출고일자</span>
-                <div class="PopupData"></div>
-            </div>
-            <div class="PopupDataCell">
-                <span class="PopupDataTitle">승차인원</span>
-                <div class="PopupData"></div>
-            </div>
-            <div class="PopupDataCell">
-                <span class="PopupDataTitle">원동기형식</span>
-                <div class="PopupData"></div>
-            </div>
-            <div class="PopupDataCell">
-                <span class="PopupDataTitle">정격출력</span>
-                <div class="PopupData"></div>
-            </div>
-            <div class="PopupDataCell">
-                <span class="PopupDataTitle">보험 만료일</span>
-                <div class="PopupData"></div>
-            </div>
-            <div class="PopupDataCell">
-                <span class="PopupDataTitle">검사 유효기간 만료일</span>
-                <div class="PopupData"></div>
-            </div>
-            <div class="PopupDataCell">
-                <span class="PopupDataTitle">차량 등록증</span>
-                <div class="PopupData"></div>
-            </div>
-            <div class="PopupDataCell">
-                <span class="PopupDataTitle">보험영수증</span>
-                <div class="PopupData"></div>
-            </div>
-        </div>
-        <div class="PopupDataArea PopupDataAreaEdit">
-            <div class="PopupDataCell">
-                <span class="PopupDataTitle">차량번호</span>
-                <div class="vehicleNumBox">
-                    <input name="vehicle_num0" type="text" class="PopupDataInput vehicleNum1">
-                    <input name="vehicle_num" type="text" class="PopupDataInput vehicleNum2">
-                </div>
-            </div>
-            <div class="PopupDataCell">
-                <span class="PopupDataTitle">담당기사</span>
-                <select name="driver" id="" class="PopupDataInput driver_name">
-                    <option></option>
-                    {% for driver in driver_list %}
-                    <option value="{{driver.id}}">{{driver.name}}</option>
-                    {% endfor %}
-                </select>
-            </div>
-            <div class="PopupDataCell">
-                <span class="PopupDataTitle">사용여부</span>
-                <select name="use" id="" class="PopupDataInput use">
-                    <option value="y">사용</option>
-                    <option value="n">미사용</option>
-                </select>
-            </div>
-            <div class="PopupDataCell">
-                <span class="PopupDataTitle">제조사</span>
-                <input name="maker" type="text" class="PopupDataInput maker">
-            </div>
-            <div class="PopupDataCell">
-                <span class="PopupDataTitle">차량이름</span>
-                <input name="vehicle_type" type="text" class="PopupDataInput vehicle_type">
-            </div>
-            <div class="PopupDataCell">
-                <span class="PopupDataTitle">차대번호</span>
-                <input name="vehicle_id" type="text" class="PopupDataInput vehicle_id">
-            </div>
-            <div class="PopupDataCell">
-                <span class="PopupDataTitle">연식</span>
-                <input name="model_year" type="text" class="PopupDataInput model_year">
-            </div>
-            <div class="PopupDataCell">
-                <span class="PopupDataTitle">출고일자</span>
-                <input name="release_date" type="date" class="PopupDataInput release_date">
-            </div>
-            <div class="PopupDataCell">
-                <span class="PopupDataTitle">승차인원</span>
-                <input name="passenger_num" type="number" class="PopupDataInput passenger_num">
-            </div>
-            <div class="PopupDataCell">
-                <span class="PopupDataTitle">원동기형식</span>
-                <input name="motor_type" type="text" class="PopupDataInput motor_type">
-            </div>
-            <div class="PopupDataCell">
-                <span class="PopupDataTitle">정격출력</span>
-                <input name="rated_output" type="text" class="PopupDataInput rated_output">
-            </div>
-            <div class="PopupDataCell">
-                <span class="PopupDataTitle">보험만료일</span>
-                <input name="insurance_expiry_date" type="date" class="PopupDataInput insurance_expiry_date">
-            </div>
-            <div class="PopupDataCell">
-                <span class="PopupDataTitle">검사 유효기간 만료일</span>
-                <input name="check_duration" type="date" class="PopupDataInput check_duration">
-            </div>
-            <div class="PopupDataCell">
-                <span class="PopupDataTitle">차량 등록증</span>
-                <div class="fileForm">
-                    <label for="vehicleFile" class="fileLabel">파일찾기</label>
-                    <input name="vehicle_registration_name" class="PopupDataInput fileNameBox" readonly>
-                    <svg class="fileDeletBtn" xmlns="http://www.w3.org/2000/svg" width="14.829" height="14.542"
-                        viewBox="0 0 14.829 14.542">
-                        <g id="그룹_930" data-name="그룹 930" transform="translate(-3537.086 5807.914)">
-                            <line id="선_624" data-name="선 624" x2="11.706" y2="11.714"
-                                transform="translate(3538.5 -5806.5)" fill="none" stroke="#707070"
-                                stroke-linecap="round" stroke-width="2" />
-                            <line id="선_625" data-name="선 625" x1="11.706" y2="11.714"
-                                transform="translate(3538.794 -5806.5)" fill="none" stroke="#707070"
-                                stroke-linecap="round" stroke-width="2" />
-                        </g>
-                    </svg>
-                    <input name="vehicle_registration" id="vehicleFile" type="file">
-                </div>
-            </div>
-            <div class="PopupDataCell">
-                <span class="PopupDataTitle">보험영수증</span>
-                <div class="fileForm">
-                    <label for="insuranceFile" class="fileLabel">파일찾기</label>
-                    <input name="insurance_receipt_name" class="PopupDataInput fileNameBox" readonly>
-                    <svg class="fileDeletBtn" xmlns="http://www.w3.org/2000/svg" width="14.829" height="14.542"
-                        viewBox="0 0 14.829 14.542">
-                        <g id="그룹_930" data-name="그룹 930" transform="translate(-3537.086 5807.914)">
-                            <line id="선_624" data-name="선 624" x2="11.706" y2="11.714"
-                                transform="translate(3538.5 -5806.5)" fill="none" stroke="#707070"
-                                stroke-linecap="round" stroke-width="2" />
-                            <line id="선_625" data-name="선 625" x1="11.706" y2="11.714"
-                                transform="translate(3538.794 -5806.5)" fill="none" stroke="#707070"
-                                stroke-linecap="round" stroke-width="2" />
-                        </g>
-                    </svg>
-                    <input name="insurance_receipt" id="insuranceFile" type="file">
-                </div>
-            </div>
-            <input type="hidden" value="" name="id" class="sendToHidden">
-        </div>
-        <div class="PopupBtnBox">
-            <div class="btnModules closeBtn">닫기</div>
-            <div class="btnModules editBtn">수정</div>
-            <input type="submit" class="btnModules saveBtn" value="저장">
-        </div>
-    </form>
-</div> -->
 
 {% endblock %}
 
@@ -743,9 +516,6 @@
 
     function openViweBlankVehilcle(url) {
         window.open(url, "차량등록증", "width=630, height=891")
-    }
-    function openViweBlankInsurance(url) {
-        window.open(url, "보험영수증", "width=630, height=891")
     }
 
 </script>

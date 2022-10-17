@@ -3,7 +3,7 @@ const HomePopupBgModules = document.querySelectorAll(".HomePopupBgModules")
 const HomeCloseBtn = document.querySelectorAll(".HomeCloseBtn")
 const profileMenuCell = document.querySelectorAll(".profileMenuCell")
 const HomeEditBtn = document.querySelectorAll(".HomeEditBtn")
-const username_input = document.querySelector('.username_input');
+const username_input= document.querySelector('.username_input');
 const PopupDataInputPwCheckerId = document.querySelector('.PopupDataInputPwCheckerId');
 const PopupDataInputPwCheckerPw = document.querySelector('.PopupDataInputPwCheckerPw');
 const PopupDataInputNewPw = document.querySelector('.PopupDataInputNewPw');
@@ -115,7 +115,8 @@ function pw_overlap_check_id() {
         data: {
             'user_id': username_input.value,
             'password': PopupDataInputPwCheckerId.value,
-            'csrfmiddlewaretoken': csrftoken
+            'csrfmiddlewaretoken': csrftoken,
+            'X-CSRFToken': csrftoken
         },
         datatype: 'json',
         success: function (data) {

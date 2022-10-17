@@ -4,7 +4,7 @@
     margin-right: 1rem;
 }
 
-.FilterBox input {
+.FilterBox input{
     margin-right: 1rem;
 }
 
@@ -27,18 +27,18 @@
 
 .tableHead {
     width: 100%;
-    height: 4.8rem;
+    height: 3.6rem;
     border-spacing: 0;
 }
 
-.tableHead thead {
+.tableHead thead{
     width: 100%;
     height: 100%;
 }
 
 table tr {
     width: 100%;
-    height: 6.4rem;
+    height: 6.2rem;
     border-bottom: 0.1rem solid #CDCDCE;
 }
 
@@ -48,7 +48,6 @@ table tr {
     align-items: center;
     border: none;
     font-size: 1.6rem;
-    font-weight: 700;
     color: white;
     background-color: #444444;
 }
@@ -72,7 +71,7 @@ table tr:nth-child(10) {
 
 .tableBody {
     width: 100%;
-    height: 64em;
+    height: 62em;
     margin-top: -0.1rem;
     border: 0.1rem solid #CDCDCE;
     border-spacing: 0;
@@ -90,59 +89,59 @@ tbody {
     border-bottom: 0.1rem solid #D4D4D4;
 }
 
-td:nth-child(1) {
-    width: 6%;
-}
-
 tbody td:nth-child(3),
-tbody td:nth-child(9),
-tbody td:nth-child(10) {
+tbody td:nth-child(13) {
     color: #0069D9;
     cursor: pointer;
 }
 
+td:nth-child(1),
 td:nth-child(2) {
-    width: 4%;
+    width: 3%;
 }
 
 td:nth-child(3) {
-    width: 12%;
+    width: 8%;
 }
 
 td:nth-child(4) {
-    width: 10%;
+    width: 6%;
 }
 
-td:nth-child(5) {
-    width: 12%;
+td:nth-child(5),
+td:nth-child(11),
+td:nth-child(12) {
+    width: 7%;
 }
 
 td:nth-child(6) {
     justify-content: center;
-    width: 6%;
+    width: 10%;
 }
 
 td:nth-child(7) {
-    width: 8%;
+    width: 4%;
 }
 
-td:nth-child(8) {
-    width: 12%;
-}
-
-td:nth-child(9) {
-    width: 15%;
-}
-
+td:nth-child(8),
 td:nth-child(10) {
-    width: 15%;
+    width: 13%;
+}
+
+td:nth-child(9),
+td:nth-child(14) {
+    width: 5%;
+}
+
+td:nth-child(13) {
+    width: 10%;
 }
 
 .tableBody td {
     text-align: center;
 }
 
-.btnBox input {
+.btnBox input{
     background-color: #444444;
 }
 
@@ -177,4 +176,14 @@ td:nth-child(10) {
 .blanckTr{
     width: 100%;
     height: 100%;
+}
+
+.albleRadioBox{
+    width: calc(100% - 9rem);
+}
+
+.albleRadioBox label{
+    font-size: 1.4rem;
+    margin-right: 1rem;
+    cursor: pointer;
 }

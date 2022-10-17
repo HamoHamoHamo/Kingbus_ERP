@@ -71,7 +71,7 @@ body {
     page-break-after: auto;
 }
 
-.input {
+.input{
     position: absolute;
     border: none;
     outline: none;
@@ -109,6 +109,7 @@ body {
     text-align: center;
     font-family: "돋움";
     resize: none;
+    word-break: keep-all;
 }
 
 @page {

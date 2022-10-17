@@ -25,13 +25,13 @@
     <div class="searchTool">
       <span class="searchName">노선검색</span>
       <div class="routeFilterBox">
-        <input value="{{group}}" name="group" type="text" class="inputModules" list="groupFilter" placeholder="그룹이름" autocomplete="off">
+        <input autocomplete="off"value="{{group}}" name="group" type="text" class="inputModules" list="groupFilter" placeholder="그룹이름" autocomplete="off">
         <datalist id="groupFilter">
           {% for group in group_list %}
           <option value="{{group.name}}"></option>
           {% endfor %}
         </datalist>
-        <input value="{{route}}" name="route" type="text" class="inputModules" list="routeFilter" placeholder="노선이름" autocomplete="off">
+        <input autocomplete="off"value="{{route}}" name="route" type="text" class="inputModules" list="routeFilter" placeholder="노선이름" autocomplete="off">
         <datalist id="routeFilter">
           {% for order in order_list %}
           <option value="{{order.route}}"></option>
@@ -40,9 +40,9 @@
       </div>
       <div class="dateFilterBox">
         <span>날짜</span>
-        <input value="{{date}}" name='date' type="date" class="inputModules">
+        <input autocomplete="off"value="{{date}}" name='date' type="date" class="inputModules">
       </div>
-      <input type="submit" value="검색" class="btnModules">
+      <input autocomplete="off"type="submit" value="검색" class="btnModules">
     </div>
   </form>
 </div>
@@ -188,10 +188,10 @@
     </div>
     <div class="regularyCreatePopupBtnBox">
       <div class="btnModules">닫기</div>
-      <input type="submit" class="btnModules" value="등록">
+      <input autocomplete="off"type="submit" class="btnModules" value="등록">
     </div>
-    <input type="hidden" name="id" value="" class="dispatchHidden">
-    <input type="hidden" name="date" value="{{date}}">
+    <input autocomplete="off"type="hidden" name="id" value="" class="dispatchHidden">
+    <input autocomplete="off"type="hidden" name="date" value="{{date}}">
   </form>
 </div>
 

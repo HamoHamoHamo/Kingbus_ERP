@@ -1,4 +1,4 @@
-const input = document.querySelectorAll(".inputCell input")
+const input= document.querySelectorAll(".inputCell input")
 const nextStepBtn = document.querySelector(".nextStepBtn")
 const cTel = document.querySelector("#cTel")
 const tel = document.querySelector("#tel")
@@ -63,7 +63,7 @@ function id_overlap_check() {
     return;
   }
 
-  id_overlap_input = document.querySelector('input[name="user_id"]');
+  id_overlap_input= document.querySelector('input[name="user_id"]');
 
   $.ajax({
     url: "/member/id-check",

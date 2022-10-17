@@ -991,7 +991,7 @@ function siblingCheck( a, b ) {
 }
 
 /**
- * Returns a function to use in pseudos for input types
+ * Returns a function to use in pseudos for inputtypes
  * @param {String} type
  */
 function createInputPseudo( type ) {
@@ -1093,7 +1093,7 @@ function createPositionalPseudo( fn ) {
 /**
  * Checks a node for validity as a Sizzle context
  * @param {Element|Object=} context
- * @returns {Element|Object|Boolean} The input node if acceptable, otherwise a falsy value
+ * @returns {Element|Object|Boolean} The inputnode if acceptable, otherwise a falsy value
  */
 function testContext( context ) {
 	return context && typeof context.getElementsByTagName !== "undefined" && context;
@@ -1353,9 +1353,9 @@ setDocument = Sizzle.setDocument = function( node ) {
 			// Adding a temporary attribute to the document before the selection works
 			// around the issue.
 			// Interestingly, IE 10 & older don't seem to have the issue.
-			input = document.createElement( "input" );
+			input= document.createElement( "input" );
 			input.setAttribute( "name", "" );
-			el.appendChild( input );
+			el.appendChild( input);
 			if ( !el.querySelectorAll( "[name='']" ).length ) {
 				rbuggyQSA.push( "\\[" + whitespace + "*name" + whitespace + "*=" +
 					whitespace + "*(?:''|\"\")" );
@@ -1387,9 +1387,9 @@ setDocument = Sizzle.setDocument = function( node ) {
 
 			// Support: Windows 8 Native Apps
 			// The type and name attributes are restricted during .innerHTML assignment
-			var input = document.createElement( "input" );
+			var input= document.createElement( "input" );
 			input.setAttribute( "type", "hidden" );
-			el.appendChild( input ).setAttribute( "name", "D" );
+			el.appendChild( input).setAttribute( "name", "D" );
 
 			// Support: IE8
 			// Enforce case-sensitivity of name attribute
@@ -1480,7 +1480,7 @@ setDocument = Sizzle.setDocument = function( node ) {
 			return 0;
 		}
 
-		// Sort on method existence if only one input has compareDocumentPosition
+		// Sort on method existence if only one inputhas compareDocumentPosition
 		var compare = !a.compareDocumentPosition - !b.compareDocumentPosition;
 		if ( compare ) {
 			return compare;
@@ -1521,7 +1521,7 @@ setDocument = Sizzle.setDocument = function( node ) {
 			}
 
 			// Maintain original order
-			return sortInput ?
+			return sortinput?
 				( indexOf( sortInput, a ) - indexOf( sortInput, b ) ) :
 				0;
 		}
@@ -1555,7 +1555,7 @@ setDocument = Sizzle.setDocument = function( node ) {
 				/* eslint-enable eqeqeq */
 				aup ? -1 :
 				bup ? 1 :
-				sortInput ?
+				sortinput?
 				( indexOf( sortInput, a ) - indexOf( sortInput, b ) ) :
 				0;
 
@@ -1689,7 +1689,7 @@ Sizzle.uniqueSort = function( results ) {
 
 	// Unless we *know* we can detect duplicates, assume their presence
 	hasDuplicate = !support.detectDuplicates;
-	sortInput = !support.sortStable && results.slice( 0 );
+	sortinput= !support.sortStable && results.slice( 0 );
 	results.sort( sortOrder );
 
 	if ( hasDuplicate ) {
@@ -1703,9 +1703,9 @@ Sizzle.uniqueSort = function( results ) {
 		}
 	}
 
-	// Clear input after sorting to release objects
+	// Clear inputafter sorting to release objects
 	// See https://github.com/jquery/sizzle/pull/225
-	sortInput = null;
+	sortinput= null;
 
 	return results;
 };
@@ -2090,7 +2090,7 @@ Expr = Sizzle.selectors = {
 			// Trim the selector passed to compile
 			// to avoid treating leading and trailing
 			// spaces as combinators
-			var input = [],
+			var input= [],
 				results = [],
 				matcher = compile( selector.replace( rtrim, "$1" ) );
 
@@ -2219,7 +2219,7 @@ Expr = Sizzle.selectors = {
 			return !Expr.pseudos[ "empty" ]( elem );
 		},
 
-		// Element/input types
+		// Element/inputtypes
 		"header": function( elem ) {
 			return rheader.test( elem.nodeName );
 		},
@@ -2297,7 +2297,7 @@ Expr = Sizzle.selectors = {
 
 Expr.pseudos[ "nth" ] = Expr.pseudos[ "eq" ];
 
-// Add button/input type pseudos
+// Add button/inputtype pseudos
 for ( i in { radio: true, checkbox: true, file: true, password: true, image: true } ) {
 	Expr.pseudos[ i ] = createInputPseudo( i );
 }
@@ -4906,7 +4906,7 @@ var rscriptType = ( /^$|^module$|\/(?:java|ecma)script/i );
 ( function() {
 	var fragment = document.createDocumentFragment(),
 		div = fragment.appendChild( document.createElement( "div" ) ),
-		input = document.createElement( "input" );
+		input= document.createElement( "input" );
 
 	// Support: Android 4.0 - 4.3 only
 	// Check state lost if the name is set (#11217)
@@ -4916,7 +4916,7 @@ var rscriptType = ( /^$|^module$|\/(?:java|ecma)script/i );
 	input.setAttribute( "checked", "checked" );
 	input.setAttribute( "name", "t" );
 
-	div.appendChild( input );
+	div.appendChild( input);
 
 	// Support: Android <=4.1 only
 	// Older WebKit doesn't clone checked state correctly in fragments
@@ -7952,7 +7952,7 @@ jQuery.fn.delay = function( time, type ) {
 
 
 ( function() {
-	var input = document.createElement( "input" ),
+	var input= document.createElement( "input" ),
 		select = document.createElement( "select" ),
 		opt = select.appendChild( document.createElement( "option" ) );
 
@@ -7967,8 +7967,8 @@ jQuery.fn.delay = function( time, type ) {
 	support.optSelected = opt.selected;
 
 	// Support: IE <=11 only
-	// An input loses its value after becoming a radio
-	input = document.createElement( "input" );
+	// An inputloses its value after becoming a radio
+	input= document.createElement( "input" );
 	input.value = "t";
 	input.type = "radio";
 	support.radioValue = input.value === "t";

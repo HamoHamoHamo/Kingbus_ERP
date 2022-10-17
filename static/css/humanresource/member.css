@@ -175,12 +175,41 @@ td:nth-child(11) {
 
 
 /*popup*/
+.popupContainerDouble {
+    width: 84rem;
+}
+
+.popupArticleLabel,
+.popupArticleDouble .popupArticleLabel {
+    width: 10rem;
+}
+
+.popupArticleFileDouble {
+    width: 28rem;
+}
+
+.popupArticleDouble .popupArticleinput {
+    width: 28rem;
+}
+
+.popupArticleCategori {
+    width: 100%;
+    padding-bottom: 0.4rem;
+    margin-top: 2rem;
+    font-size: 1.4rem;
+    font-weight: bold;
+    border-bottom: 0.1rem solid black;
+}
+
+.popupArticleCategori:nth-child(1) {
+    margin-top: 0;
+}
 
 .popupIdBox {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    width: 27rem;
+    width: 28rem;
     height: 2.6rem;
 }
 
@@ -235,6 +264,10 @@ td:nth-child(11) {
     height: 100%;
 }
 
+.popupArticleInputDouble {
+    width: 70rem;
+}
+
 
 @media all and (min-width:1600px) and (max-width: 1780px) {
     .tableHead tr {
@@ -247,7 +280,7 @@ td:nth-child(11) {
 }
 
 @media all and (min-width:1460px) and (max-width: 1600px) {
-    .popupArticleDouble .popupIdBox .popupArticleInput {
+    .popupArticleDouble .popupIdBox .popupArticleinput {
         width: 18.4rem;
     }
 }

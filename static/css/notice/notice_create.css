@@ -34,7 +34,7 @@
   color: #191919;
 }
 
-.inputCell input {
+.inputCell input{
   border: 0.1rem solid #D2D2D2;
   border-radius: 0.3rem;
   outline: none;
@@ -58,7 +58,7 @@
   width: calc(100% - 11rem);
 }
 
-.radiobox input {
+.radiobox input{
   width: 1.6rem;
   height: 1.6rem;
   margin: 0.3rem 1rem 0 0;
@@ -175,7 +175,7 @@
   margin-right: 0.6rem;
 }
 
-.commentUserDataCell input {
+.commentUserDataCell input{
   display: flex;
   justify-content: center;
   align-items: center;

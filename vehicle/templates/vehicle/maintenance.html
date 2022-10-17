@@ -1,0 +1,211 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load custom_tags %}
+{% block head %}
+<meta http-equiv="Cache-Control" content="private, no-cache, no-store, max-age=0, must-revalidate">
+
+<link rel="stylesheet" href="{% static 'css/vehicle/maintenance.css' %}" type="text/css" />
+<link rel="stylesheet" href="{% static 'css/pagination.css' %}" type="text/css" />
+{% endblock %}
+
+{% block content-header %}
+<div class="HeaderTitle">
+    정비관리
+</div>
+{% endblock %}
+
+{% block content %}
+
+<div class="maintenanceContainer">
+
+    <div class="searchAreaBox">
+        <form action="">
+            <div class="searchTool">
+                <span class="searchName">차량검색</span>
+                <div class="FilterBox">
+                    <input autocomplete="off" type="text" list="busList">
+                    <datalist id="busList">
+                        <option value="경기 70바 7163">
+                    </datalist>
+                </div>
+                <input autocomplete="off" type="submit" value="검색" class="btnModules busSearchBtn">
+            </div>
+            <div class="btnModules maintenanceCreateBtn">정비등록</div>
+        </form>
+    </div>
+
+    <div class="dataArticle">
+        <table>
+            <tbody>
+                <tr>
+                    <td>차량번호</td>
+                    <td></td>
+                    <td>제조사</td>
+                    <td></td>
+                    <td>사용여부</td>
+                    <td></td>
+                    <td>차량이름</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>승차인원</td>
+                    <td></td>
+                    <td>형식</td>
+                    <td></td>
+                    <td>모델연도</td>
+                    <td></td>
+                    <td>차대번호</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>출고일자</td>
+                    <td></td>
+                    <td>원동기형식</td>
+                    <td></td>
+                    <td>정격출력</td>
+                    <td></td>
+                    <td>정기점검일</td>
+                    <td></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="maintenanceArticle">
+        <table class="maintenanceHeader">
+            <thead>
+                <tr>
+                    <td>정비일자</td>
+                    <td>정비항목</td>
+                    <td>구분</td>
+                    <td>부품명</td>
+                    <td>일련번호</td>
+                    <td>수량</td>
+                    <td>금액</td>
+                    <td>주행거리(km)</td>
+                    <td>정비처</td>
+                </tr>
+            </thead>
+        </table>
+        <div class="maintenanceScrollBox">
+            <table>
+                <tbody>
+                    <tr>
+                        <td>2022-09-10</td>
+                        <td>엔진오일</td>
+                        <td>교환</td>
+                        <td></td>
+                        <td>35255465</td>
+                        <td>1</td>
+                        <td>50,000</td>
+                        <td>45,000</td>
+                        <td>TBX</td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr class="blanckTr"></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</div>
+
+
+{% endblock %}
+
+
+
+
+
+{% block popup %}
+<div class="popupAreaModules">
+    <div class="popupBgModules"></div>
+    <form method="post" action="" class="popupContainer popupContainerDouble">
+        {% csrf_token %}
+        <div class="popupHeader">
+            <div class="popupTitle">팝업이름</div>
+        </div>
+        <div class="popupBody">
+            <div class="popupSection">
+                <div class="popupArticleBox">
+                    <div class="popupArticleDouble">
+                        <label for="" class="popupArticleLabel">정비일자</label>
+                        <input autocomplete="off" type="date" class="popupArticleinput">
+                    </div>
+                    <div class="popupArticleDouble">
+                        <label for="" class="popupArticleLabel">정비항목</label>
+                        <input autocomplete="off" type="text" class="popupArticleinput">
+                    </div>
+                </div>
+                <div class="popupArticleBox">
+                    <div class="popupArticleDouble">
+                        <label for="" class="popupArticleLabel">구분</label>
+                        <select name="" id="" class="popupArticleinput">
+                            <option value="">교환</option>
+                            <option value="">점검</option>
+                        </select>
+                    </div>
+                    <div class="popupArticleDouble">
+                        <label for="" class="popupArticleLabel">부품명</label>
+                        <input autocomplete="off" type="text" class="popupArticleinput">
+                    </div>
+                </div>
+                <div class="popupArticleBox">
+                    <div class="popupArticleDouble">
+                        <label for="" class="popupArticleLabel">일련번호</label>
+                        <input autocomplete="off" type="text" class="popupArticleinput">
+                    </div>
+                    <div class="popupArticleDouble">
+                        <label for="" class="popupArticleLabel">수량</label>
+                        <input autocomplete="off" type="text" class="popupArticleinput">
+                    </div>
+                </div>
+                <div class="popupArticleBox">
+                    <div class="popupArticleDouble">
+                        <label for="" class="popupArticleLabel">금액</label>
+                        <input autocomplete="off" type="text" class="popupArticleinput">
+                    </div>
+                    <div class="popupArticleDouble">
+                        <label for="" class="popupArticleLabel">주행거리(km)</label>
+                        <input autocomplete="off" type="text" class="popupArticleinput">
+                    </div>
+                </div>
+                <div class="popupArticleBox">
+                    <div class="popupArticleDouble">
+                        <label for="" class="popupArticleLabel">정비처</label>
+                        <input autocomplete="off" type="text" class="popupArticleinput">
+                    </div>
+                    <div class="popupArticleDouble">
+                        <input autocomplete="off" type="hidden" name="busId">
+                    </div>
+                </div>
+            </div>
+            <div class="popupFooter">
+                <input autocomplete="off" type="submit" class="btnModules" value="등록">
+                <div class="btnModules maintenanceCloseBtn">닫기</div>
+            </div>
+        </div>
+    </form>
+  </div>
+{% endblock %}
+
+
+
+
+
+
+
+
+{% block script %}
+<script src="{% static 'js/vehicle/maintenance.js' %}"></script>
+{% endblock %}

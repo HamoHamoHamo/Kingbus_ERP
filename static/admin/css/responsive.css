@@ -268,7 +268,7 @@ input[type="submit"], button {
         margin: 0 8px 0 0;
     }
 
-    .selector .selector-filter input {
+    .selector .selector-filter input{
         width: auto;
         min-height: 0;
         flex: 1 1;
@@ -387,7 +387,7 @@ input[type="submit"], button {
         width: 100%;
     }
 
-    .datetime input {
+    .datetime input{
         width: 50%;
         max-width: 120px;
     }
@@ -603,7 +603,7 @@ input[type="submit"], button {
         align-items: center;
     }
 
-    .aligned .checkbox-row input {
+    .aligned .checkbox-row input{
         flex: 0 1 auto;
         margin: 0;
     }
@@ -625,11 +625,11 @@ input[type="submit"], button {
         font-size: 13px;
     }
 
-    span.clearable-file-input {
+    span.clearable-file-input{
         margin-left: 15px;
     }
 
-    span.clearable-file-input label {
+    span.clearable-file-inputlabel {
         font-size: 13px;
         padding-bottom: 0;
     }
@@ -899,7 +899,7 @@ input[type="submit"], button {
         display: none;
     }
 
-    .login .submit-row input {
+    .login .submit-row input{
         margin: 0;
         text-transform: uppercase;
     }

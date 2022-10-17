@@ -62,7 +62,7 @@ Requires core.js and SelectBox.js.
 
             filter_p.appendChild(document.createTextNode(' '));
 
-            const filter_input = quickElement('input', filter_p, '', 'type', 'text', 'placeholder', gettext("Filter"));
+            const filter_input= quickElement('input', filter_p, '', 'type', 'text', 'placeholder', gettext("Filter"));
             filter_input.id = field_id + '_input';
 
             selector_available.appendChild(from_box);

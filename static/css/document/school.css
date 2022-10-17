@@ -19,6 +19,10 @@ body {
         width: 1587;
         height: 1122px;
     }
+
+    .makeText{
+        display: none !important;
+    }
 }
 
 @page {
@@ -28,51 +32,58 @@ body {
     margin: 0;
 }
 
-input {
-    border: none;
+input{
     outline: none;
 }
 
 .print {
+    position: relative;
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
     align-items: center;
     width: 1587;
     height: 1122px;
-    font-size: 8rem;
+    padding-top: 4rem;
+    box-sizing: border-box;
+    font-size: 7rem;
     font-weight: 700;
-}
-
-.title{
     text-align: center;
-    width: 100%;
-    font-size: 9rem;
-    margin-top: 4rem;
 }
 
-.class {
-    width: 100%;
+.printText{
+    margin-bottom: 2rem;
+}
+
+.first{
+    font-size: 10rem;
+}
+
+.makeText{
+    position: absolute;
+    top: 32%;
+    left: 17%;
+    z-index: 10;
     display: flex;
-    margin: 3rem 0;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 30rem;
+    height: 14rem;
+    padding: 1rem;
+    box-sizing: border-box;
+    transform: translate(0, -50%);
+    background-color: white;
+    border: 0.1rem solid #CDCDCE;
+    border-radius: 0.3rem;
+    box-shadow: 0 0.2rem 0.4rem rgb(0 0 0 / 16%);
 }
 
-.class input {
-    text-align: center;
-    width: 100%;
-    font-size: 8rem;
+.makeText input{
+    height: 2rem;
+    font-size: 1.3rem;
+}
+
+.makeTextTitle{
+    font-size: 1.4rem;
     font-weight: 700;
-}
-
-.school {
-    width: 100%;
-    display: flex;
-}
-
-.school input {
-    text-align: center;
-    width: 100%;
-    font-size: 8rem;
-    font-weight: 700;
-    letter-spacing: -0.2rem;
 }

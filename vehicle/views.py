@@ -22,6 +22,17 @@ def document_image(request, file_id):
     }
     return render(request, 'vehicle/document_img.html', context)
 
+class MaintenanceList(generic.ListView):
+    template_name = 'vehicle/maintenance.html'
+    context_object_name = 'vehicle_list'
+    model = Vehicle
+    paginate_by = 10
+
+class AccidentList(generic.ListView):
+    template_name = 'vehicle/accident.html'
+    context_object_name = 'vehicle_list'
+    model = Vehicle
+    paginate_by = 10
 
 class VehicleList(generic.ListView):
     template_name = 'vehicle/list.html'

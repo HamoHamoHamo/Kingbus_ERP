@@ -29,7 +29,7 @@
         </div>
         <div class="headerCell">
             <div>
-                <input type="checkbox">
+                <input autocomplete="off" type="checkbox">
             </div>
             <div>차량번호</div>
             <div>기사명</div>
@@ -43,7 +43,7 @@
                     {% for vehicle in vehicle_list %}
                     <tr class="{{vehicle.id}}">
                         <td>
-                            <input type="checkbox">
+                            <input autocomplete="off" type="checkbox">
                         </td>
                         <td>{{vehicle.vehicle_num}}</td>
                         <td>{{vehicle.driver_name}}</td>

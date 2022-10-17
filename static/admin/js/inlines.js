@@ -231,7 +231,7 @@
         const initPrepopulatedFields = function(row) {
             row.find('.prepopulated_field').each(function() {
                 const field = $(this),
-                    input = field.find('input, select, textarea'),
+                    input= field.find('input, select, textarea'),
                     dependency_list = input.data('dependency_list') || [],
                     dependencies = [];
                 $.each(dependency_list, function(i, field_name) {
@@ -296,7 +296,7 @@
         const initPrepopulatedFields = function(row) {
             row.find('.prepopulated_field').each(function() {
                 const field = $(this),
-                    input = field.find('input, select, textarea'),
+                    input= field.find('input, select, textarea'),
                     dependency_list = input.data('dependency_list') || [],
                     dependencies = [];
                 $.each(dependency_list, function(i, field_name) {

@@ -474,7 +474,7 @@
     cursor: pointer;
 }
 
-.fakeInput {
+.fakeinput{
     outline: none;
     border: none;
     border-bottom: 0.1rem solid #191919;
@@ -530,7 +530,7 @@
     background-color: #444444;
 }
 
-.PopupBtnBoxDispatch input {
+.PopupBtnBoxDispatch input{
     background-color: #0069D9;
 }
 

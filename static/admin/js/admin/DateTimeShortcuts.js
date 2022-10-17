@@ -1,7 +1,7 @@
 /*global Calendar, findPosX, findPosY, get_format, gettext, gettext_noop, interpolate, ngettext, quickElement*/
 // Inserts shortcut buttons after all of the following:
-//     <input type="text" class="vDateField">
-//     <input type="text" class="vTimeField">
+//     <inputtype="text" class="vDateField">
+//     <inputtype="text" class="vTimeField">
 'use strict';
 {
     const DateTimeShortcuts = {
@@ -351,7 +351,7 @@
             const cal_link = document.getElementById(DateTimeShortcuts.calendarLinkName + num);
             const inp = DateTimeShortcuts.calendarInputs[num];
 
-            // Determine if the current value in the input has a valid date.
+            // Determine if the current value in the inputhas a valid date.
             // If so, draw the calendar with that date's year and month.
             if (inp.value) {
                 const format = get_format('DATE_INPUT_FORMATS')[0];

@@ -53,6 +53,7 @@
         </div>
       </div>
       <div class="groupListBody">
+        {% for group in group_list %}
         <div class="groupListItemBox">
           <div class="groupListItem">
             <div class="groupOpen">
@@ -62,13 +63,17 @@
                   transform="translate(0 -4.5)" fill="#444" />
               </svg>
             </div>
-            <div class="groupName">출퇴근</div>
+            <div class="groupName">{{group.name}}</div>
           </div>
-          <div class="routeItem"><!--클래스에 노선 아이디 추가-->
+          {% for route in group.regularly_info.all %}
+          <div class="routeItem {{route.id}}">
+            <!--클래스에 노선 아이디 추가-->
             <div class="routeGap"></div>
-            <div class="routeName">1-1 노선명</div>
+            <div onclick="location.href='{% url 'dispatch:regularly' %}?id={{route.id}}&group={{group.id}}'" class="routeName">{{route.route}}</div>
           </div>
+          {% endfor %}
         </div>
+        {% endfor %}
       </div>
     </div>
 
@@ -179,7 +184,7 @@
 
     <form class="toolbar">
       <span class="toolbarTitle">날짜검색</span>
-      <input type="date" name="date1" class="searchDate" max="9999-12-31">
+      <input autocomplete="off" type="date" name="date" class="searchDate" max="9999-12-31">
       <div class="dateControllBtnBox">
         <div class="dateToday">오늘</div>
         <div class="dateControllBtn">
@@ -197,7 +202,7 @@
           </svg>
         </div>
       </div>
-      <input type="submit" class="btnModules searchBtn" value="검색">
+      <input autocomplete="off" type="submit" class="btnModules searchBtn" value="검색">
     </form>
 
 
@@ -219,48 +224,48 @@
           <td colspan="3" class="tdTypeB">
             <select name="group" class="inputSelect">
               {% for g in group_list %}
-              <option value="{{g.id}}">{{g.name}}</option>
+              <option {% if group.id == g.id %} selected {% endif %} value="{{g.id}}">{{g.name}}</option>
               {% endfor %}
             </select>
           </td>
           <td class="tdTypeA">출/퇴근</td>
           <td class="tdTypeC">
-            <input name="work_type" id="workStart" type="radio">
+            <input autocomplete="off" {% if detail.work_type == '출근' %} checked {% endif %} name="work_type" id="workStart" type="radio">
             <label for="workStart">출근</label>
-            <input name="work_type" id="workEnd" type="radio">
+            <input autocomplete="off" {% if detail.work_type == '퇴근' %} checked {% endif %} name="work_type" id="workEnd" type="radio">
             <label for="workEnd">퇴근</label>
           </td>
           <td class="tdTypeA">위치</td>
           <td class="tdTypeC">
-            <input value="" type="text" class="inputText">
+            <input autocomplete="off" value="{{detail.location}}" type="text" class="inputText">
           </td>
         </tr>
         <tr>
           <td class="tdTypeA">노선명</td>
           <td colspan="3" class="tdTypeB">
-            <input name="" type="text" class="inputText">
+            <input autocomplete="off" value="{{detail.route}}" name="" type="text" class="inputText">
           </td>
           <td class="tdTypeA">운행요일</td>
           <td colspan="3" class="tdTypeB">
             <div class="routeWeek">
               <div>
-                <input id="all" type="checkbox">
+                <input autocomplete="off" id="all" type="checkbox">
                 <label for="all">모두</label>
               </div>
               <div>
-                <input name="week" value="월" id="mon" type="checkbox">
+                <input autocomplete="off" {% if detail.week and detail.week|in_check:'월' %} checked {% endif %} name="week" value="월" id="mon" type="checkbox">
                 <label for="mon">월</label>
-                <input name="week" value="화" id="tue" type="checkbox">
+                <input autocomplete="off" {% if detail.week and detail.week|in_check:'화' %} checked {% endif %} name="week" value="화" id="tue" type="checkbox">
                 <label for="tue">화</label>
-                <input name="week" value="수" id="wed" type="checkbox">
+                <input autocomplete="off" {% if detail.week and detail.week|in_check:'수' %} checked {% endif %} name="week" value="수" id="wed" type="checkbox">
                 <label for="wed">수</label>
-                <input name="week" value="목" id="thu" type="checkbox">
+                <input autocomplete="off" {% if detail.week and detail.week|in_check:'목' %} checked {% endif %} name="week" value="목" id="thu" type="checkbox">
                 <label for="thu">목</label>
-                <input name="week" value="금" id="fri" type="checkbox">
+                <input autocomplete="off" {% if detail.week and detail.week|in_check:'금' %} checked {% endif %} name="week" value="금" id="fri" type="checkbox">
                 <label for="fri">금</label>
-                <input name="week" value="토" id="sat" type="checkbox">
+                <input autocomplete="off" {% if detail.week and detail.week|in_check:'토' %} checked {% endif %} name="week" value="토" id="sat" type="checkbox">
                 <label for="sat">토</label>
-                <input name="week" value="일" id="sun" type="checkbox">
+                <input autocomplete="off" {% if detail.week and detail.week|in_check:'일' %} checked {% endif %} name="week" value="일" id="sun" type="checkbox">
                 <label for="sun">일</label>
               </div>
             </div>
@@ -269,60 +274,62 @@
         <tr>
           <td class="tdTypeA">출발지</td>
           <td colspan="3" class="tdTypeB">
-            <input name="departure" type="text" class="inputText">
+            <input autocomplete="off" value="{{detail.departure}}" name="departure" type="text" class="inputText">
           </td>
           <td class="tdTypeA">상세노선</td>
           <td colspan="3" class="tdTypeB">
-            <input name="" type="text" class="inputText">
+            <input autocomplete="off" value="{{detail.detailed_route}}" name="" type="text" class="inputText">
           </td>
         </tr>
         <tr>
           <td class="tdTypeA">도착지</td>
           <td colspan="3" class="tdTypeB">
-            <input name="arrival" type="text" class="inputText">
+            <input autocomplete="off" value="{{detail.arrival}}" name="arrival" type="text" class="inputText">
           </td>
           <td class="tdTypeA">금액</td>
           <td class="tdTypeC">
-            <input name="price" type="text" class="inputText">
+            <input autocomplete="off" value="{{detail.price}}" name="price" type="text" class="inputText">
           </td>
           <td class="tdTypeA">수당단가</td>
           <td class="tdTypeC">
-            <input name="driver_allowance" type="text" class="inputText">
+            <input autocomplete="off" value="{{detail.driver_allowance}}" name="driver_allowance" type="text" class="inputText">
           </td>
         </tr>
         <tr>
           <td class="tdTypeA">순번</td>
           <td class="tdTypeC">
             <div class="routeNumber">
-              <input name="number1" type="text" class="inputText">-
-              <input name="number2" type="text" class="inputText">
+              <input autocomplete="off" value="{{detail.number1}}" name="number1" type="text" class="inputText">-
+              <input autocomplete="off" value="{{detail.number2}}" name="number2" type="text" class="inputText">
             </div>
           </td>
           <td class="tdTypeA">운행시간</td>
           <td class="tdTypeC">
             <div class="routeTime">
-              <input name="departure_time1" type="text" class="inputText">:
-              <input name="departure_time2" type="text" class="inputText">~
-              <input name="arrival_time1" type="text" class="inputText">:
-              <input name="arrival_time2" type="text" class="inputText">
+              <input autocomplete="off" value="{{detail.departure_time|slice:':2'}}" name="departure_time1" type="text" class="inputText">:
+              <input autocomplete="off" value="{{detail.departure_time|slice:'3:'}}" name="departure_time2" type="text" class="inputText">~
+              <input autocomplete="off" value="{{detail.arrival_time|slice:':2'}}" name="arrival_time1" type="text" class="inputText">:
+              <input autocomplete="off" value="{{detail.arrival_time|slice:'3:'}}" name="arrival_time2" type="text" class="inputText">
             </div>
           </td>
           <td class="tdTypeA">참조사항</td>
           <td colspan="3" class="tdTypeB">
-            <input name="references" type="text" class="inputText">
+            <input autocomplete="off" value="{{detail.references}}" name="references" type="text" class="inputText">
           </td>
         </tr>
       </table>
     </div>
 
 
-    <form class="RouteList">
-
+    <form method="post" action="{% url 'dispatch:regularly_connect_create' %}" class="RouteList">
+      {% csrf_token %}
+      <input autocomplete="off" value="{{detail.id}}" name="id" type="hidden">
+      <input autocomplete="off" value="{{date}}" name="date" type="hidden">
       <div class="RouteListHead">
-        <span>그룹이름</span>
+        <span>{{group.name}}</span>
         <div class="RouteListHeadBtnBox">
-          <input type="submit" class="btnModules dispatchDeletBtn" value="배차삭제">
-          <input type="submit" class="btnModules dispatchSaveBtn" value="저장">
+          <div class="btnModules dispatchDeletBtn">배차삭제</div>
+          <input autocomplete="off" type="submit" class="btnModules dispatchSaveBtn" value="저장">
           <div class="btnModules dispatchHistory">배차내역</div>
           <div class="btnModules">2주 전 배차 불러오기</div>
           <div class="btnModules">1주 전 배차 불러오기</div>
@@ -334,29 +341,68 @@
         <table>
           <thead>
             <tr>
-              <td>선택</td>
+              <td>
+                <input autocomplete="off" type="checkbox" class="allChecker">
+              </td>
               <td>순번</td>
               <td>노선명</td>
               <td>운행시간</td>
               <td>차량</td>
               <td>운전원</td>
               <td>용역</td>
-              <td>노선</td>
+              <td>출발지 ▶ 도착지</td>
             </tr>
           </thead>
-          <tbody>
-            <tr class="RouteListHBodyTr"><!--클래스에 노선 아이디 추가-->
+        </table>
+      </div>
+      <div class="RouteListScrollBody">
+        <table>
+          <tbody class="RouteListTBody">
+            {% for order in order_list %}
+            {% with bus=group_bus_list|index:forloop.counter0 %}
+            {% with driver=group_driver_list|index:forloop.counter0 %}
+            {% with outsourcing=group_outsourcing_list|index:forloop.counter0 %}
+
+            
+            <tr class="RouteListHBodyTr {{order.id}} {{forloop.counter}}">
               <td>
-                <input type="checkbox">
+                <input autocomplete="off" value="{{order.id}}" name="check" type="checkbox">
               </td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
+              <td onclick="location.href='{% url 'dispatch:regularly' %}?id={{order.id}}&group={{group.id}}&height={{forloop.counter}}'">{{order.number1}}{% if order.number2 %} - {{order.number2}}{% endif %}</td>
+              <td onclick="location.href='{% url 'dispatch:regularly' %}?id={{order.id}}&group={{group.id}}&height={{forloop.counter}}'">{{order.route}}</td>
+              <td onclick="location.href='{% url 'dispatch:regularly' %}?id={{order.id}}&group={{group.id}}&height={{forloop.counter}}'">{{order.departure_time}} ~ {{order.arrival_time}}</td>
+              <td {% if detail.id != order.id %} onclick="location.href='{% url 'dispatch:regularly' %}?id={{order.id}}&group={{group.id}}'"{% endif %}>
+                {% if detail.id == order.id %}
+                  <input autocomplete="off" value="{{bus.vehicle_num}}" type="text">
+                  <input autocomplete="off" value="{{bus.id}}" name="bus" type="hidden">
+                {% else %}
+                  {{bus.vehicle_num}}
+                {% endif %}
+              </td>
+              <td {% if detail.id != order.id %} onclick="location.href='{% url 'dispatch:regularly' %}?id={{order.id}}&group={{group.id}}&height={{forloop.counter}}'"{% endif %}>
+                {% if detail.id == order.id %} 
+                  <select name="driver">
+                    <option value="{{driver.id}}">{{driver.name}}</option>
+                  </select>
+                {% else %}
+                  {{driver.name}}
+                {% endif %}
+              </td>
+              <td {% if detail.id != order.id %} onclick="location.href='{% url 'dispatch:regularly' %}?id={{order.id}}&group={{group.id}}&height={{forloop.counter}}'"{% endif %}>
+                {% if detail.id == order.id %}
+                <select name="outsourcing">
+                  <option value="{{outsourcing.id}}">{{outsourcing.name}}</option>
+                </select>
+                {% else %}
+                  {{outsourcing.name}}
+                {% endif %}
+              </td>
+              <td onclick="location.href='{% url 'dispatch:regularly' %}?id={{order.id}}&group={{group.id}}&height={{forloop.counter}}'">{{order.departure}} ▶ {{order.arrival}}</td>
             </tr>
+            {% endwith %}
+            {% endwith %}
+            {% endwith %}
+            {% endfor %}
             <tr class="blanckTr"></tr>
           </tbody>
         </table>
@@ -390,8 +436,8 @@
                   <div class="historyDriverTItle">기사</div>
                 </div>
                 <div class="historyItem">
-                  <div class="historyBus">1111</div>
-                  <div class="historyDriver">
+                  <div class="historyBus">1111</div><!--차량 아이디-->
+                  <div class="historyDriver"><!--기사 아이디-->
                     <div class="driverType typeRegular">정</div>
                     <span>이도울</span>
                   </div>
@@ -399,7 +445,7 @@
                 <div class="historyItem">
                   <div class="historyBus">1111</div>
                   <div class="historyDriver">
-                    <div class="driverType typeRegular">정</div>
+                    <div class="driverType typeOutsourcing">용</div>
                     <span>이도울</span>
                   </div>
                 </div>
@@ -507,9 +553,12 @@
                 </div>
               </div>
             </div>
+            <input autocomplete="off" type="hidden" name="id" class="historyHiddenRoute">
+            <input autocomplete="off" type="hidden" name="bus" class="historyHiddenBus">
+            <input autocomplete="off" type="hidden" name="driver" class="historyHiddenDriver">
           </div>
           <div class="popupFooter">
-            <input type="submit" class="btnModules" value="배차">
+            <input autocomplete="off" type="submit" class="btnModules" value="배차">
             <div class="btnModules popupCloseBtn">닫기</div>
           </div>
         </div>
@@ -520,276 +569,29 @@
 
 </div>
 
-<!-- <div class="regularly_layout">
-
-
-
-  스케줄
-  <div class="schedule">
-
-    스케줄-헤더
-    <div class="scheduleHeaderArea">
-      <div class="scheduleHeader"></div>
-    </div>
-
-    스케줄-바디
-    <div class="scheduleBodyArea">
-      <div class="hourMarker">
-        <div>0</div>
-        <div>4</div>
-        <div>8</div>
-        <div>12</div>
-        <div>16</div>
-        <div>20</div>
-        <div>24</div>
-      </div>
-      <div class="scheduleTableScroll">
-        <div class="scheduleTable">
-          {% for v in vehicles %}
-          <div class="scheduleTableTr">
-            <div class="hourTd"></div>
-            <div class="hourTd"></div>
-            <div class="hourTd"></div>
-            <div class="hourTd"></div>
-            <div class="hourTd"></div>
-            <div class="hourTd"></div>
-            <div class="hourTd"></div>
-            <div class="driverTd {{v.id}} d{{v.driver.id}}">{{v.vehicle_num}}({{v.driver_name}})</div>
-          </div>
-          {% endfor %}
-        </div>
-      </div>
-    </div>
-
-  </div>
-
-
-
-
-
-  <div class="main_Layout">
-
-
-
-    검색창
-    <div class="search">
-
-      <div class="searchTitle">그룹검색</div>
-
-      <form action="" class="searchForm">
-
-        변경영역
-        <div class="search_inputArea">
-          <label for="">그룹</label>
-          <select name="group" id="">
-            <option></option>
-            {% for group in groups %}
-            <option {% if selected_group == group.id %} selected {% endif %} value="{{group.id}}">{{group.name}}</option>
-            {% endfor %}
-          </select>
-          <label for="">날짜</label>
-          <input name="date" type="date" class="searchDate">
-          <div class="dateControllBtnBox">
-            <div class="dateControllBtn">
-              <svg xmlns="http://www.w3.org/2000/svg" width="8.6" height="13" viewBox="0 0 8.6 13">
-                <path id="Icon_ionic-ios-arrow-back" data-name="Icon ionic-ios-arrow-back"
-                  d="M13.843,12.692l5.692-4.915a.839.839,0,0,0,0-1.312,1.2,1.2,0,0,0-1.523,0l-6.449,5.569a.839.839,0,0,0-.031,1.281l6.475,5.608a1.205,1.205,0,0,0,1.523,0,.839.839,0,0,0,0-1.312Z"
-                  transform="translate(-11.25 -6.194)" fill="#fff" />
-              </svg>
-            </div>
-            <div class="dateControllBtn">
-              <svg xmlns="http://www.w3.org/2000/svg" width="8.6" height="13" viewBox="0 0 8.6 13">
-                <path id="Icon_ionic-ios-arrow-back" data-name="Icon ionic-ios-arrow-back"
-                  d="M17.258,12.692,11.566,7.777a.839.839,0,0,1,0-1.312,1.2,1.2,0,0,1,1.523,0l6.448,5.569a.839.839,0,0,1,.031,1.281l-6.475,5.608a1.205,1.205,0,0,1-1.523,0,.839.839,0,0,1,0-1.312Z"
-                  transform="translate(-11.25 -6.194)" fill="#fff" />
-              </svg>
-            </div>
-          </div>
-        </div>
-
-        <input type="submit" class="btnModules searchBtn" value="검색">
-
-      </form>
-
-    </div>
-
-
-
-    입력창
-    <form class="input">
-      <table>
-        <tr style="pointer-events: none;">
-          <td class="InputHeader InputHeaderBordeTopLeft">그룹</td>
-          <td class="InputTd">
-            <select name="" id="selectGroup" class="inputSelect">
-              <option></option>
-              {% for group in groups %}
-              <option {% if detail.group.id == group.id %} selected {% endif %} value="{{group.id}}">{{group.name}}</option>
-              {% endfor %}
-            </select>
-          </td>
-          <td class="InputHeader">노선이름</td>
-          <td class="InputTd">
-            <input type="text" class="inputText" value="{{detail.route}}">
-          </td>
-          <td class="InputHeader">출/퇴근</td>
-          <td class="InputTd">
-            <div class="workTypeBox">
-              <input type="radio" id="regularlyWorkStart" {% if detail.work_type == '출근' %} checked {% endif %}>
-              <label for="regularlyWorkStart">출근</label>
-              <input type="radio" id="regularlyWorkEnd" {% if detail.work_type == '퇴근' %} checked {% endif %}>
-              <label for="regularlyWorkEnd">퇴근</label>
-            </div>
-          </td>
-          <td class="InputHeader">위치</td>
-          <td class="InputTd">
-            <input type="text" class="inputText" value="{{detail.parking}}">
-          </td>
-        </tr>
-        <tr style="pointer-events: none;">
-          <td class="InputHeader">출발지</td>
-          <td colspan="3">
-            <input type="text" class="inputText" value="{{detail.departure}}">
-          </td>
-          <td class="InputHeader">운행요일</td>
-          <td colspan="3">
-            <div class="driveDateBox">
-              <input type="checkbox" id="regularlyCheckAll">
-              <label for="regularlyCheckAll">전체</label>
-              <input type="checkbox" id="regularlyCheckWeek6" {% if detail and detail.week|in_check:'일' %} checked {% endif %}>
-              <label for="regularlyCheckWeek6">일</label>
-              <input type="checkbox" id="regularlyCheckWeek0" {% if detail and detail.week|in_check:'월' %} checked {% endif %}>
-              <label for="regularlyCheckWeek0">월</label>
-              <input type="checkbox" id="regularlyCheckWeek1" {% if detail and detail.week|in_check:'화' %} checked {% endif %}>
-              <label for="regularlyCheckWeek1">화</label>
-              <input type="checkbox" id="regularlyCheckWeek2" {% if detail and detail.week|in_check:'수' %} checked {% endif %}>
-              <label for="regularlyCheckWeek2">수</label>
-              <input type="checkbox" id="regularlyCheckWeek3" {% if detail and detail.week|in_check:'목' %} checked {% endif %}>
-              <label for="regularlyCheckWeek3">목</label>
-              <input type="checkbox" id="regularlyCheckWeek4" {% if detail and detail.week|in_check:'금' %} checked {% endif %}>
-              <label for="regularlyCheckWeek4">금</label>
-              <input type="checkbox" id="regularlyCheckWeek5" {% if detail and detail.week|in_check:'토' %} checked {% endif %}>
-              <label for="regularlyCheckWeek5">토</label>
-            </div>
-          </td>
-        </tr>
-        <tr style="pointer-events: none;">
-          <td class="InputHeader">도착지</td>
-          <td colspan="3">
-            <input type="text" class="inputText" value="{{detail.arrival}}">
-          </td>
-          <td class="InputHeader">금액</td>
-          <td class="InputTd"><input type="text" class="inputText inputTextUnit" value="{{detail.price}}">원</td>
-          <td class="InputHeader">기사수당</td>
-          <td class="InputTd"><input type="text" class="inputText inputTextUnit" value="{{detail.driver_allowance}}">원</td>
-        </tr>
-        <tr style="pointer-events: none;">
-          <td class="InputHeader InputHeaderBordeBottomLeft">순번</td>
-          <td class="InputTd">
-            <div class="twiceBox">
-              <input value="{{detail.number1}}" type="number" class="inputTextTwice">-<input value="{{detail.number2}}" type="number" class="inputTextTwice">
-            </div>
-          </td>
-          <td class="InputHeader">운행시간</td>
-          <td class="InputTd">
-            <div class="twiceBox">
-              <div class="quarterBox">
-                <input type="text" class="inputTextTwice" value="{{detail.departure_time|slice:':2'}}">
-                :
-                <input type="text" class="inputTextTwice" value="{{detail.departure_time|slice:'3:'}}">
-              </div>
-              ~
-              <div class="quarterBox">
-                <input type="text" class="inputTextTwice" value="{{detail.arrival_time|slice:':2'}}">
-                :
-                <input type="text" class="inputTextTwice" value="{{detail.arrival_time|slice:'3:'}}">
-              </div>
-            </div>
-          </td>
-          <td class="InputHeader">참조사항</td>
-          <td colspan="3"><input type="text" class="inputText" value="{{detail.references}}"></td>
-        </tr>
-      </table>
-    </form>
-
-
-
-    노선목록
-    <form class="list">
-      <div class="listHeader">
-        <span>그룹이름</span>
-        <div class="listHeaderBtnBox">
-          <input type="submit" value="저장" class="btnModules inputSave">
-          <input type="submit" value="엑셀로 내려받기" class="btnModules listExcel">
-        </div>
-      </div>
-      <table class="listTable">
-        <thead>
-          <tr>
-            <td>순번</td>
-            <td>주차</td>
-            <td>차량</td>
-            <td>운전원</td>
-            <td>용역</td>
-            <td>운행시간</td>
-            <td>노선이름</td>
-            <td>출발지</td>
-            <td>참조사항</td>
-          </tr>
-        </thead>
-      </table>
-      <div class="listTableScroll">
-        <table class="listTable">
-          <tbody>
-            {% for order in order_list %}
-            <tr onclick="location.href='{% url 'dispatch:regularly' %}?id={{order.id}}&group={{selected_group}}&date={{date}}'" class="{{order.id}}">
-              <td>{{order.number1}}{% if order.number2 %}- {{order.number2}} {% endif %}</td>
-              <td>{{order.parking}}</td>
-              <td></td>
-              <td>
-                <select name="" id="selectDriver{{order.id}}" class="orderDriver">
-                </select>
-              </td>
-              <td>
-                <input type="text" class="orderSpareDriver">
-              </td>
-              <td>{{order.departure_time}} ~ {{order.arrival_time}}</td>
-              <td>{{order.route}}</td>
-              <td>{{order.departure}}</td>
-              <td>{{order.references}}</td>
-                <input type="hidden">
-            </tr>
-            {% endfor %}
-          </tbody>
-        </table>
-      </div>
-  </div>
-
-  </form>
-
-
-
-
-</div> -->
 {% endblock %}
 
 
 
 {% block script %}
-<script src="{% static 'js/dispatch/regularly/loadRoute.js' %}"></script>
-<script src="{% static 'js/dispatch/regularly/groupControll.js' %}"></script>
-<script src="{% static 'js/dispatch/regularly/regularlyChangeLayout.js' %}"></script>
-<script src="{% static 'js/dispatch/regularly/regularlyHistory.js' %}"></script>
-<script src="{% static 'js/dispatch/common/oneStepDate.js' %}"></script>
-<!-- <script>
+<script>
   {% autoescape off %}
   const data = {{ dispatch_list }}
   const driverObj = {{ driver_dict }}
+  const outsourcingObj = {{ outsourcing_dict }}
   console.log("DATA", data)
   console.log("driverObj", driverObj)
+  console.log("outsourcingObj", outsourcingObj)
   {% endautoescape %}
-</script>
-<script src="{% static 'js/dispatch/regularlyAll.js' %}"></script>
-<script src="{% static 'js/dispatch/regularlyDispatch.js' %}"></script>
-<script src="{% static 'js/dispatch/FullSchedule.js' %}"></script> -->
+ </script>
+<script src="{% static 'js/dispatch/regularly/regularlyOnload.js' %}"></script>
+<script src="{% static 'js/dispatch/regularly/groupControll.js' %}"></script>
+<script src="{% static 'js/dispatch/regularly/regularlyChangeLayout.js' %}"></script>
+<script src="{% static 'js/dispatch/regularly/regularlyHistory.js' %}"></script>
+<script src="{% static 'js/dispatch/regularly/regularlyDate.js' %}"></script>
+<script src="{% static 'js/dispatch/regularly/selectRoute.js' %}"></script>
+<script src="{% static 'js/dispatch/regularly/routeChecker.js' %}"></script>
+<script src="{% static 'js/dispatch/common/FullSchedule.js' %}"></script>
+<script src="{% static 'js/dispatch/regularly/regularlyDispatch.js' %}"></script>
+<script src="{% static 'js/dispatch/regularly/dispatchDelete.js' %}"></script>
 {% endblock %}

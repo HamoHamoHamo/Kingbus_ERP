@@ -7,7 +7,7 @@ from crudmember import views as member_view
 
 urlpatterns = [
     path('', include('homepage.urls')),
-    path('service/', member_view.Calendar.as_view(), name='home'),
+    path('service', member_view.Calendar.as_view(), name='home'),
     path('admin/', admin.site.urls),
     path('member/', include('crudmember.urls')),
     path('notice/', include('notice.urls')),

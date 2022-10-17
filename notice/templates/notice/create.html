@@ -20,25 +20,25 @@
     <div class="creteHeader">
       <div class="inputCell">
         <span class="inputName">제목</span>
-        <input type="text" name="title" required>
+        <input autocomplete="off" type="text" name="title" required>
       </div>
       <div class="inputCell">
         <span class="inputName">구분</span>
         <div class="radiobox">
-          <input type="radio" id="driver" value="driver" name="kinds" {% if kinds == "driver" %}checked{% endif %}>
+          <input autocomplete="off" type="radio" id="driver" value="driver" name="kinds" {% if kinds == "driver" %}checked{% endif %}>
           <label for="driver">기사님</label>
-          <input type="radio" id="office" value="office" name="kinds" {% if kinds == "office" %}checked{% endif %}>
+          <input autocomplete="off" type="radio" id="office" value="office" name="kinds" {% if kinds == "office" %}checked{% endif %}>
           <label for="office">사무실</label>
         </div>
       </div>
       <div class="inputCell inputCellFile">
         <span class="inputName">첨부파일</span>
-        <input type="file" name="file" multiple>
+        <input autocomplete="off" type="file" name="file" multiple>
       </div>
     </div>
     <textarea name="content" required class="noticeTextarea"></textarea>
     <div class="createBtnBox">
-      <input type="submit" value="등록" class="createBtn">
+      <input autocomplete="off" type="submit" value="등록" class="createBtn">
     </div>
   </form>
 </div>

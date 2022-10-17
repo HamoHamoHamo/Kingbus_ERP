@@ -7,7 +7,7 @@ const groupLayout = document.querySelector(".groupLayout")
 const mainLayout = document.querySelector(".mainLayout")
 
 
-// 스케줄 닫기
+// 그룹 닫기
 groupCloseBtn.addEventListener("click", groupClose)
 
 function groupClose(){
@@ -20,7 +20,7 @@ function groupClose(){
 
 
 
-// 스케줄 열기
+// 그룹 열기
 groupOpenBtn.addEventListener("click", groupOpen)
 
 function groupOpen(){

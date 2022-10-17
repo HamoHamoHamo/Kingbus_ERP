@@ -20,7 +20,7 @@ for (i = 0; i < driverTd.length; i++) {
 function addOrderDispatch() {
     let dispatchDoneCount = 0
     for (i = 0; i < dispatchBus.length; i++) {
-        if(dispatchBus[i].value !== ""){
+        if (dispatchBus[i].value !== "") {
             dispatchDoneCount = dispatchDoneCount + 1
         }
     }
@@ -167,7 +167,7 @@ function deleteOrderDispatch() {
         }
     }
     dispatchBus[dispatchCounter].value = ""
-    dispatchDriver[dispatchCounter].innerText = ""
+    orderDriver[dispatchCounter].innerText = ""
     orderOutSoursing[dispatchCounter].innerText = ""
     dispatchPrice[dispatchCounter].innerText = `${inputTextPrice.value}원`
     dispatchPaymen[dispatchCounter].innerText = `${inputTextDriverAllowance.value}원`
@@ -187,6 +187,7 @@ for (i = 0; i < orderDriver.length; i++) {
 }
 
 function addDriverOption() {
+
     if (this.parentNode.parentNode.children[1].children[0].value !== "") {
         if (useSelect == true || useSelect !== this) {
 
@@ -196,7 +197,6 @@ function addDriverOption() {
 
             if (this.children.length !== 0) {
                 for (i = 0; i < this.children.length; i++) {
-                    console.log(this.children[i])
                     if (this.children[i].selected) {
                         firstOption.push(this.children[i].value)
                         firstOption.push(this.children[i].innerText)
@@ -206,6 +206,7 @@ function addDriverOption() {
                 firstOption.push("")
                 firstOption.push("")
             }
+            
 
             // 2. this 옵션 삭제
 
@@ -333,18 +334,23 @@ for (i = 0; i < orderOutSoursing.length; i++) {
 }
 
 function addorderOutSoursingOption() {
-    if (this.parentNode.parentNode.parentNode.children[1].children[0].value !== "") {
+    if (this.parentNode.parentNode.children[1].children[0].value !== "") {
         if (useOutSoursing == true || useOutSoursing !== this) {
 
             // 1. 선택된 기사존재여부 -> 첫번째 옵션 저장
 
             let firstOption = []
 
-            for (i = 0; i < this.children.length; i++) {
-                if (this.children[i].selected) {
-                    firstOption.push(this.children[i].value)
-                    firstOption.push(this.children[i].innerText)
+            if (this.children.length !== 0) {
+                for (i = 0; i < this.children.length; i++) {
+                    if (this.children[i].selected) {
+                        firstOption.push(this.children[i].value)
+                        firstOption.push(this.children[i].innerText)
+                    }
                 }
+            } else {
+                firstOption.push("")
+                firstOption.push("")
             }
 
             // 2. this 옵션 삭제
@@ -373,7 +379,6 @@ function addorderOutSoursingOption() {
             for (i = 0; i < orderOutSoursing.length; i++) {
                 for (j = 0; j < orderOutSoursing[i].children.length; j++) {
                     if (orderOutSoursing[i].children[j].selected) {
-                        orderOutSoursing[i].children[j]
                         selectedDriver.push(orderOutSoursing[i].children[j].value)
                     }
                 }
@@ -394,6 +399,10 @@ function addorderOutSoursingOption() {
             for (i = 0; i < periodFilter.length; i++) {
                 useDriver = useDriver.filter(current => current !== selectedDriver[i])
             }
+
+            
+            // 5-2. 배차가능 기사 추출 -> 현재 선택기사 제거
+            useDriver = useDriver.filter(current => current !== firstOption[0])
 
             // 6. 배차가능 배열 오브젝트로 변경
 
@@ -573,11 +582,11 @@ function CreateCompareTime() {
 
 
 // 배차중인 영역 표시
-for(i=0; i<dispatchBox.length; i++){
+for (i = 0; i < dispatchBox.length; i++) {
     dispatchBox[i].addEventListener("click", dispatchBoxFoucs)
 }
-function dispatchBoxFoucs(){
-    for(i=0; i<dispatchBox.length; i++){
+function dispatchBoxFoucs() {
+    for (i = 0; i < dispatchBox.length; i++) {
         dispatchBox[i].children[1].style.backgroundColor = "white"
     }
     this.children[1].style.backgroundColor = "#CDCDCD"
