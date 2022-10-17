@@ -11,11 +11,9 @@ from django.contrib import messages
 from ERP.settings import BASE_DIR
 
 from datetime import datetime
-
 from vehicle.models import Vehicle
-
 from .forms import MemberForm
-from .models import Member
+from .models import Member, MemberFile
 from utill.decorator import option_year_deco
 
 TODAY = str(datetime.now())[:10]
@@ -62,6 +60,29 @@ class MemberList(generic.ListView):
         context['page_range'] = page_range
         #페이징 끝
 
+        member_list = context['member_list']
+        data_list = []
+        for member in member_list:
+            bus_license_name = ''
+            license_name = ''
+            for file in member.member_file.all():
+                if file.type == '면허증':
+                    license_name = file.filename
+                elif file.type == '버스운전 자격증':
+                    bus_license_name = file.filename
+                    
+            data_list.append({
+                'name': member.name,
+                'role': member.role,
+                'birthdate': member.birthdate,
+                'address': member.address,
+                'phone_num': member.phone_num,
+                'entering_date': member.entering_date,
+                'id': member.user_id,
+                'license': license_name,
+                'bus_license': bus_license_name,
+            })
+        context['data_list'] = data_list
         context['name'] = self.request.GET.get('name', '')
         context['member_all'] = Member.objects.order_by('name')
         
@@ -94,8 +115,10 @@ def member_create(request):
             
             if req_auth <= user_auth and user_auth != 0:
                 return HttpResponseBadRequest()
+            creator = Member.objects.get(pk=request.session.get('user'))
             member = member_form.save(commit=False)
-            member.creator = Member.objects.get(pk=request.session.get('user'))
+            member.num = Member.objects.count() + 1
+            member.creator = creator
             user_id = request.POST.get('user_id', None)
             if Member.objects.filter(user_id=user_id).exists(): #아이디 중복체크
                 raise Http404
@@ -104,9 +127,31 @@ def member_create(request):
             member.password = make_password('0000')
             member.save()
 
+            license = request.FILES.get('license_file', None)
+            bus_license = request.FILES.get('bus_license_file', None)
+
+            if license:
+                member_file_save(license, member, '면허증', creator)
+            
+            if bus_license:
+                member_file_save(bus_license, member, '버스운전 자격증', creator)
+
+
             return redirect('HR:member')
     else:
         return HttpResponseNotAllowed(['post'])
+
+def member_file_save(upload_file, member, type, creator):
+    member_file = MemberFile(
+        member_id=member,
+        file=upload_file,
+        filename=upload_file.name,
+        type=type,
+        creator=creator,
+    )
+    member_file.save()
+    # print(vehicle_file)
+    return
 
 def member_edit(request):
     if request.session.get('authority') >= 3:
@@ -146,7 +191,6 @@ def member_edit(request):
             member.name = member_form.cleaned_data['name']
             member.role = member_form.cleaned_data['role']
             member.entering_date = member_form.cleaned_data['entering_date']
-            member.license_number = member_form.cleaned_data['license_number']
             member.phone_num = member_form.cleaned_data['phone_num']
             member.birthdate = member_form.cleaned_data['birthdate']
             member.address = member_form.cleaned_data['address']
@@ -154,7 +198,57 @@ def member_edit(request):
             
             member.save()
 
-            return redirect('HR:member')
+            # 파일
+            creator = Member.objects.get(pk=request.session.get('user'))
+            license_file = request.FILES.get('license_file', None)
+            bus_license_file = request.FILES.get('bus_license_file', None)
+            l_file_name = request.POST.get('license', None)
+            b_file_name = request.POST.get('bus_license', None)
+
+            cur_files = MemberFile.objects.filter(member_id=member)
+            try:
+                cur_license_file = cur_files.get(type='면허증')
+            except:
+                cur_license_file = None
+            try:
+                cur_bus_license_file = cur_files.get(type='버스운전 자격증')
+            except:
+                cur_bus_license_file = None
+
+            if license_file:
+                if cur_license_file:
+                    os.remove(cur_license_file.file.path)
+                    cur_license_file.delete()
+                file = MemberFile(
+                    member_id=member,
+                    file=license_file,
+                    filename=license_file.name,
+                    type='면허증',
+                    creator=creator,
+                )
+                file.save()
+            elif not l_file_name and cur_license_file:
+                os.remove(cur_license_file.file.path)
+                cur_license_file.delete()
+
+            if bus_license_file:
+                if cur_bus_license_file:
+                    os.remove(cur_bus_license_file.file.path)
+                    cur_bus_license_file.delete()
+
+                file = MemberFile(
+                    member_id=member,
+                    file=bus_license_file,
+                    filename=bus_license_file.name,
+                    type='버스운전 자격증',
+                    creator=creator,
+                )
+                file.save()
+            elif not b_file_name and cur_bus_license_file:
+                os.remove(cur_bus_license_file.file.path)
+                cur_bus_license_file.delete()
+                
+            return redirect(request.META.get('HTTP_REFERER', 'redirect_if_referer_not_found'))
         else:
             return HttpResponseBadRequest()
     else:

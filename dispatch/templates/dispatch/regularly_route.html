@@ -304,6 +304,43 @@
 
 
 
+{% block popup %}
+<div class="popupAreaModules">
+  <div class="popupBgModules"></div>
+  <form method="post" action="" class="popupContainer">
+      {% csrf_token %}
+      <div class="popupHeader">
+          <div class="popupTitle">엑셀 업로드</div>
+      </div>
+      <div class="popupBody">
+          <div class="popupSection">
+              <div class="popupArticleFileDouble">
+                  <label for="excelUploadFile" class="popupArticleLabel">파일선택</label>
+                  <input autocomplete="off" name="" type="file" id="excelUploadFile" class="excelUploadFile">
+                  <input autocomplete="off" name="" type="text" class="excelUploadFileText" readonly>
+                  <svg class="fileDeleteBtn" xmlns="http://www.w3.org/2000/svg" width="11.314" height="11.314"
+                      viewBox="0 0 11.314 11.314">
+                      <g id="그룹_1513" data-name="그룹 1513" transform="translate(-442.649 -1001.97) rotate(45)">
+                          <line id="선_691" data-name="선 691" y2="12" transform="translate(1029.5 389.5)"
+                              fill="none" stroke="#000" stroke-linecap="round" stroke-width="2" />
+                          <line id="선_692" data-name="선 692" y2="12"
+                              transform="translate(1035.5 395.5) rotate(90)" fill="none" stroke="#000"
+                              stroke-linecap="round" stroke-width="2" />
+                      </g>
+                  </svg>
+              </div>
+          </div>
+          <div class="popupFooter">
+              <input autocomplete="off"type="submit" class="btnModules" value="등록">
+              <div class="btnModules excelPopupCloseBtn">닫기</div>
+          </div>
+      </div>
+  </form>
+</div>
+{% endblock %}
+
+
+
 {% block script %}
 <script>
 
@@ -347,8 +384,5 @@
 <script src="{% static 'js/dispatch/regularly_route/routeScrollLink.js' %}"></script>
 <script src="{% static 'js/dispatch/regularly_route/groupOrderChange.js' %}"></script>
 <script src="{% static 'js/dispatch/regularly_route/checker.js' %}"></script>
-<!--<script src="{% static 'js/dispatch/group.js' %}"></script>
-<script src="{% static 'js/dispatch/fixedDispatch.js' %}"></script>
-<script src="{% static 'js/dispatch/scheduleFilter.js' %}"></script>
-<script src="{% static 'js/dispatch/input.js' %}"></script> -->
+<script src="{% static 'js/dispatch/regularly_route/uploadExcel.js' %}"></script>
 {% endblock %}

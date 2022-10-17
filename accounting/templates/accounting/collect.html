@@ -86,9 +86,9 @@
                     <td>현금</td>
                     <td>{{order.price}}</td>
                     <td>{% if order.VAT == 'y' %}포함{% endif %}</td>
-                    <td>100,000</td>
-                    <td>100,000</td>
-                    <td>100,000</td>
+                    <td class="SupplyPrice">100,000</td>
+                    <td class="Vat">100,000</td>
+                    <td class="Collect">100,000</td>
                     <td>
                         <span class="chit">[1] 22/09/12-01</span>
                     </td>
@@ -115,9 +115,9 @@
                     <td>현금</td>
                     <td>{{order.price}}</td>
                     <td>{% if order.VAT == 'y' %}포함{% endif %}</td>
-                    <td>100,000</td>
-                    <td>100,000</td>
-                    <td>100,000</td>
+                    <td class="SupplyPrice">100,000</td>
+                    <td class="Vat">100,000</td>
+                    <td class="Collect">100,000</td>
                     <td>
                         <span class="chit">[1] 22/09/12-01</span>
                     </td>
@@ -168,7 +168,7 @@
 {% block popup %}
 <div class="popupAreaModules collectingPopupAreaModules">
     <div class="popupBgModules popupBgModulesCollect"></div>
-    <form method="post" action="" class="popupContainer">
+    <form method="post" action="" class="popupContainer collectingPopupContainer">
         {% csrf_token %}
         <div class="popupHeader">
             <div class="popupTitle">입금내역 불러오기</div>
@@ -183,19 +183,23 @@
                 <div class="popupArticle popupArticleCollectiong">
                     <table class="collectingPopupHeader">
                         <tr>
+                            <td>전표번호</td>
                             <td>일자</td>
                             <td>결재방법</td>
                             <td>입금액</td>
                             <td>입금자명</td>
+                            <td>미수금액</td>
                         </tr>
                     </table>
                     <div class="collectingPopupScrollBox">
                         <table>
                             <tr class="depositItem">
+                                <td>22/09/12-01</td>
                                 <td>2022.09.16</td>
                                 <td>현금</td>
                                 <td>250,000</td>
                                 <td>호매실중학교</td>
+                                <td>120,000</td>
                             </tr>
                         </table>
                     </div>

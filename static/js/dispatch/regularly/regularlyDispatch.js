@@ -58,7 +58,7 @@ function regularlyDispatch() {
         }
 
         if (rangeCounter == rangeBeforeArr.length + rangeAfterArr.length) {
-            const businput= document.querySelector(".selectRoute input[type=text]")
+            const businput = document.querySelector(".selectRoute input[type=text]")
             const driverSelect = document.querySelector(".selectRoute select[name=driver]")
             const busIdHidden = document.querySelector(".RouteList input[name=bus]")
 
@@ -67,7 +67,7 @@ function regularlyDispatch() {
             DriverName = this.innerText.split("(")[1].replace(/\)/g, "")
             DriverId = this.classList[2].substr(1,)
 
-            busInput.value = busNum;
+            businput.value = busNum;
             busIdHidden.value = busId;
 
             driverSelect.innerText = ""
@@ -108,7 +108,7 @@ let useSelect = true;
 driverSelect.addEventListener("click", addDriverOption);
 
 function addDriverOption() {
-    if (busInput.value !== "") {
+    if (businput.value !== "") {
         if (useSelect == true || useSelect !== this) {
 
             // 1. 선택된 기사존재여부 -> 첫번째 옵션 저장
@@ -222,7 +222,7 @@ let useOutsourcingSelect = true;
 outsorcingSelect.addEventListener("click", addorderOutSoursingOption);
 
 function addorderOutSoursingOption() {
-    if (busInput.value !== "") {
+    if (businput.value !== "") {
         if (useOutsourcingSelect == true || useOutsourcingSelect !== this) {
 
             // 1. 선택된 기사존재여부 -> 첫번째 옵션 저장

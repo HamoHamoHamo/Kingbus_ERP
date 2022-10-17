@@ -11,7 +11,6 @@ const birthday = document.querySelectorAll(".tableBody td:nth-child(9)")
 const hrName = document.querySelector(".hrName")
 const hrRole = document.querySelectorAll(".hrRole option")
 const hrEntering = document.querySelector(".hrEntering")
-const hrLicense = document.querySelector(".hrLicense")
 const hrPhone = document.querySelector(".hrPhone")
 const hrBirth = document.querySelector(".hrBirth")
 const hrAddress = document.querySelector(".hrAddress")
@@ -35,10 +34,12 @@ const FileTextLicense = document.querySelector(".LicenseFileText")
 const FileInputLicense = document.querySelector(".LicenseFileInput")
 const FileTextDriverLicense = document.querySelector(".DriverLicenseFileText")
 const FileInputDriverLicense = document.querySelector(".DriverLicenseFileInput")
-const FileTextLicenseEdit = document.querySelector(".LicenseFileTextEdit")
-const FileInputLicenseEdit = document.querySelector(".LicenseFileInputEdit")
-const FileTextDriverLicenseEdit = document.querySelector(".DriverLicenseFileTextEdit")
-const FileInputDriverLicenseEdit = document.querySelector(".DriverLicenseFileInputEdit")
+
+const LicenseFileTextEdit = document.querySelector(".LicenseFileTextEdit")
+const LicenseFileInputEdit = document.querySelector(".LicenseFileInputEdit")
+
+const DriverLicenseFileTextEdit = document.querySelector(".DriverLicenseFileTextEdit")
+const DriverLicenseFileInputEdit = document.querySelector(".DriverLicenseFileInputEdit")
 
 
 //직원상세
@@ -55,17 +56,13 @@ function openDetailPopup() {
     }
   }
   hrEntering.value = regDatas[this.className].entering_date;
-  hrLicense.value = regDatas[this.className].license_number;
   hrPhone.value = regDatas[this.className].phone_num;
   hrBirth.value = regDatas[this.className].birthdate;
   hrAddress.value = regDatas[this.className].address;
   hrID.value = regDatas[this.className].id
+  LicenseFileTextEdit.value = regDatas[this.className].license
+  DriverLicenseFileTextEdit.value = regDatas[this.className].bus_license
   sendToHidden.value = this.parentNode.className;
-  if (hrRoleSelect.options[hrRoleSelect.selectedIndex].text == "운전원") {
-    hrLicense.parentNode.style.visibility = "visible"
-  } else {
-    hrLicense.parentNode.style.visibility = "hidden"
-  }
 }
 
 
@@ -120,9 +117,9 @@ function createChecker(e) {
 //전화번호
 PopupDataInputPhoneNum.addEventListener('change', phoneNumChecker)
 
-function phoneNumChecker(){
+function phoneNumChecker() {
   this.value.replace(onlyNumber, "")
-  if(this.value.length <= 8 || this.value.length >= 12){
+  if (this.value.length <= 8 || this.value.length >= 12) {
     alert("형식에 맞지않는 전화번호 입니다.")
     this.value = ""
   }
@@ -133,8 +130,8 @@ function phoneNumChecker(){
 //생년월일
 PopupDataInputBirth.addEventListener('change', birthChecker)
 
-function birthChecker(){
-  if(!birthPAttern.test(this.value)){
+function birthChecker() {
+  if (!birthPAttern.test(this.value)) {
     alert("형식에 맞지 않습니다.")
     this.value = ""
   }
@@ -272,20 +269,22 @@ window.onload = function () {
 //파일명 변경
 FileInputLicense.addEventListener("change", changeFileLicense)
 FileInputDriverLicense.addEventListener("change", changeFileDriverLicense)
-FileInputLicenseEdit.addEventListener("change", changeFileLicenseEdit)
-FileInputDriverLicenseEdit.addEventListener("change", changeFileDriverLicenseEdit)
+LicenseFileInputEdit.addEventListener("change", changeFileLicenseEdit)
+DriverLicenseFileInputEdit.addEventListener("change", changeFileDriverLicenseEdit)
 
 function changeFileLicense() {
-    FileTextLicense.value = FileInputLicense.files[0].name
+  FileTextLicense.value = FileInputLicense.files[0].name
 }
 function changeFileDriverLicense() {
   FileTextDriverLicense.value = FileInputDriverLicense.files[0].name
 }
 function changeFileLicenseEdit() {
-    FileTextLicenseEdit.value = FileInputLicenseEdit.files[0].name
+  console.log('a');
+  
+  LicenseFileTextEdit.value = LicenseFileInputEdit.files[0].name
 }
 function changeFileDriverLicenseEdit() {
-  FileTextDriverLicenseEdit.value = FileInputDriverLicenseEdit.files[0].name
+  DriverLicenseFileTextEdit.value = DriverLicenseFileInputEdit.files[0].name
 }
 
 
@@ -306,10 +305,10 @@ function deleteFileDriverLicens() {
   FileInputDriverLicense.value = ""
 }
 function deleteFileLicensEdit() {
-  FileTextLicenseEdit.value = ""
-  FileInputLicenseEdit.value = ""
+  LicenseFileTextEdit.value = ""
+  LicenseFileInputEdit.value = ""
 }
 function deleteFileDriverLicensEdit() {
-  FileTextDriverLicenseEdit.value = ""
-  FileInputDriverLicenseEdit.value = ""
+  DriverLicenseFileTextEdit.value = ""
+  DriverLicenseFileInputEdit.value = ""
 }

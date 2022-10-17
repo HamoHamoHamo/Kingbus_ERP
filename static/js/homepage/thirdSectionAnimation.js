@@ -49,7 +49,7 @@ function thirdAnimation(e) {
     if (eventContinue) {
         setTimeout(function () {
             eventContinue = false
-            if (e.deltaY > 0) {
+            if (e.deltaY > 0 && scrolling <= 3) {
                 if (scrolling == 1) {
                     scrolling = scrolling + 1
                     window.scrollTo({ left: 0, top: scrolling * window.innerHeight, behavior: "smooth" });
@@ -62,8 +62,10 @@ function thirdAnimation(e) {
                         scrolling = scrolling + 1
                         window.scrollTo({ left: 0, top: scrolling * window.innerHeight, behavior: "smooth" });
                     }
-                    console.log(thirdBg);
-                } else {
+                }else if(scrolling == 3){
+                    scrolling = scrolling + 1
+                    window.scrollTo({ left: 0, top: (scrolling - 1) * window.innerHeight + 64, behavior: "smooth" });
+                }else {
                     scrolling = scrolling + 1
                     window.scrollTo({ left: 0, top: scrolling * window.innerHeight, behavior: "smooth" });
                 }

@@ -421,6 +421,10 @@
   background-color: #444;
 }
 
+.excelPopupCloseBtn{
+  background-color: #444;
+}
+
 
 
 
@@ -552,4 +556,16 @@
 .blanckTr{
   width: 100%;
   height: 100%;
+}
+
+
+/* 팝업 */
+.popupContainer{
+  width: 50rem;
+}
+.popupArticleFileDouble{
+  width: 100%;
+}
+.popupArticleFileDouble label{
+  width: 10rem;
 }
