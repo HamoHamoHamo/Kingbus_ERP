@@ -1,3 +1,4 @@
+import pandas as pd
 from django.db.models import Q
 from django.http import Http404, JsonResponse, HttpResponse, HttpResponseBadRequest, HttpResponseNotAllowed
 from django.shortcuts import render, redirect, get_object_or_404
@@ -13,6 +14,8 @@ from vehicle.models import Vehicle
 
 from datetime import datetime, timedelta, date
 # from utill.decorator import option_year_deco
+
+
 
 TODAY = str(datetime.now())[:10]
 FORMAT = "%Y-%m-%d"

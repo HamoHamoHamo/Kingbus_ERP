@@ -272,6 +272,7 @@
                             <td class="tdTypeC">
                                 <input autocomplete="off" value="{{detail.bus_type}}" name="bus_type" id="bus_type" type="text" list="depList" class="inputText">
                             <datalist id="depList">
+                                <option value="41~45인승 대형버스">41~45인승 대형버스</option>
                                 <option value="45인승 대형버스">45인승 대형버스</option>
                                 <option value="41인승 대형버스">41인승 대형버스</option>
                                 <option value="33인승 중형버스">33인승 중형버스</option>
@@ -296,7 +297,11 @@
                             </td>
                             <td class="tdTypeA">VAT 포함</td>
                             <td class="tdTypeC">
+                                {% if detail %}
                                 <input autocomplete="off" {% if detail.VAT == 'y' %} checked {% endif %} name="VAT" value="y" type="checkbox" id="input_VAT">
+                                {% else %}
+                                <input autocomplete="off" checked name="VAT" value="y" type="checkbox" id="input_VAT">
+                                {% endif %}
                                 <label for="input_VAT">포함</label>
                             </td>
                         </tr>

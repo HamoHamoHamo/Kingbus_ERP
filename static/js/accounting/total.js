@@ -5,12 +5,19 @@ const tatalPrice = document.querySelector(".tatalPrice")
 const tatalSupplyPrice = document.querySelector(".tatalSupplyPrice")
 const tatalVat = document.querySelector(".tatalVat")
 const tatalCollect = document.querySelector(".tatalCollect")
+const SupplyPrice = document.querySelectorAll(".SupplyPrice")
+const Vat = document.querySelectorAll(".Vat")
+const Collect = document.querySelectorAll(".Collect")
 
 window.onload = function () {
     calcTotal()
 }
 
 function calcTotal() {
+    for (i = 0; i < Collect.length; i++){ 
+        Collect[i].innerText = parseInt(SupplyPrice[i].innerText.replace(/\,/g,"")) + parseInt(Vat[i].innerText.replace(/\,/g,""))
+        Collect[i].innerText = Collect[i].innerText.replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
+    };
     tatalCount.innerText = 0
     tatalPrice.innerText = 0
     tatalSupplyPrice.innerText = 0

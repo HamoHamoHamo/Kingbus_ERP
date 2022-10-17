@@ -116,10 +116,10 @@ def vehicle_create(request):
             vehicle.creator = creator
             vehicle.save()
             if vehicle_registration_file:
-                vehicle_file_save(vehicle_registration_file, vehicle, "vehicle_registration")
+                vehicle_file_save(vehicle_registration_file, vehicle, "vehicle_registration", creator)
 
             if insurance_receipt_file:
-                vehicle_file_save(insurance_receipt_file, vehicle, "insurance_receipt")
+                vehicle_file_save(insurance_receipt_file, vehicle, "insurance_receipt", creator)
 
             return redirect(request.META.get('HTTP_REFERER', 'redirect_if_referer_not_found'))
         else:
@@ -228,13 +228,13 @@ def vehicle_delete(request):
     else:
         raise Http404
 
-def vehicle_file_save(upload_file, vehicle, type):
+def vehicle_file_save(upload_file, vehicle, type, creator):
     vehicle_file = VehicleDocument(
         vehicle_id=vehicle,
         file=upload_file,
         filename=upload_file.name,
         type=type,
-        creator = get_object_or_404(Member, pk=self.request.session.get('user'))
+        creator=creator,
     )
     vehicle_file.save()
     # print(vehicle_file)

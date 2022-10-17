@@ -37,11 +37,11 @@ window.onload = function () {
     } else {
         pageTitleDate.innerText = `${getUrlDate}일`
     }
-    pageTitleWeek.innerText = `(${toDay})`
-    console.log(printSizeCss)
-    if(window.location.search.substr(22,2) == "A4"){
-        printSizeCss.href = "../../../static/css/dispatch/printA4.css"
-    }else{
-        printSizeCss.href = "../../../static/css/dispatch/printA3.css"
-    }
+    // pageTitleWeek.innerText = `(${toDay})`
+    // console.log(printSizeCss)
+    // if(window.location.search.substr(22,2) == "A4"){
+    //     printSizeCss.href = "../../../static/css/dispatch/printA4.css"
+    // }else{
+    //     printSizeCss.href = "../../../static/css/dispatch/printA3.css"
+    // }
 }

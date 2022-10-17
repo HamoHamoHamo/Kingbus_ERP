@@ -151,9 +151,12 @@ td:nth-child(13) {
     justify-content: space-between;
     width: 27rem;
 }
-
-.popupArticleDouble .vehicleNumBox .popupArticleInput{
-    width: 13rem;
+.popupArticleinputTwice{
+    width: 12.4rem;
+    height: 2.4rem;
+    border: 0.1rem solid #CDCDCE;
+    border-radius: 0.3rem;
+    outline: none;
 }
 
 .popupSectionEdit{
