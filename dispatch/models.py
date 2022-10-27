@@ -76,9 +76,18 @@ class DispatchOrder(models.Model):
     collection_date = models.CharField(verbose_name='수금날짜', max_length=10, null=False, blank=True)
     collection_creator = models.CharField(verbose_name='수금입력자', max_length=50, null=False, blank=True)
     pub_date = models.DateTimeField(auto_now_add=True, verbose_name='작성시간')
-    creator = models.ForeignKey(Member, on_delete=models.CASCADE, related_name="dispatch_creator", db_column="creator_id", null=True)
+    creator = models.ForeignKey(Member, on_delete=models.SET_NULL, related_name="dispatch_creator", db_column="creator_id", null=True)
     def __str__(self):
         return self.route
+class DispatchOrderWaypoint(models.Model):
+    order_id = models.ForeignKey(DispatchOrder, on_delete=models.CASCADE, related_name="waypoint", db_column="order_id", null=False)
+    waypoint = models.CharField(verbose_name='경유지', max_length=100, null=False)
+    time = models.CharField(verbose_name='시간', max_length=5, null=False)
+    delegate = models.CharField(verbose_name='인솔자', max_length=50, null=False, blank=True)
+    delegate_phone = models.CharField(verbose_name='인솔자 전화번호', max_length=50, null=False, blank=True)
+    
+    pub_date = models.DateTimeField(auto_now_add=True, verbose_name='작성시간')
+    creator = models.ForeignKey(Member, on_delete=models.SET_NULL, related_name="waypoint_creator", db_column="creator_id", null=True)
 
 class DispatchOrderConnect(models.Model):
     order_id = models.ForeignKey(DispatchOrder, on_delete=models.CASCADE, related_name="info_order", db_column="order_id", null=False)
@@ -110,8 +119,7 @@ class DispatchRegularlyConnect(models.Model):
         return f'{self.regularly_id.route} / {self.departure_date[2:10]}'
         
 class DispatchCheck(models.Model):
-    member_id1 = models.ForeignKey(Member, on_delete=models.SET_NULL, related_name="dispatch_check_member1", db_column="member_id1", null=True)
-    member_id2 = models.ForeignKey(Member, on_delete=models.SET_NULL, related_name="dispatch_check_member2", db_column="member_id2", null=True)
+    member_id = models.ForeignKey(Member, on_delete=models.SET_NULL, related_name="dispatch_check_member", db_column="member_id", null=True)
     date = models.CharField(verbose_name='날짜', max_length=10, null=False)
     dispatch_check = models.CharField(verbose_name='확인완료', max_length=1, null=False, default='n')
     pub_date = models.DateTimeField(auto_now_add=True, verbose_name='작성시간')

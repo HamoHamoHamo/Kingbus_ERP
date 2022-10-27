@@ -1,3 +1,4 @@
+import json
 import pandas as pd
 from django.db.models import Q
 from django.http import Http404, JsonResponse, HttpResponse, HttpResponseBadRequest, HttpResponseNotAllowed
@@ -6,7 +7,7 @@ from django.urls import reverse
 from django.views import generic
 
 from .forms import OrderForm, ConnectForm, RegularlyForm
-from .models import DispatchCheck, DispatchOrderConnect, DispatchOrder, DispatchRegularly, RegularlyGroup, DispatchRegularlyConnect
+from .models import DispatchCheck, DispatchOrderConnect, DispatchOrder, DispatchRegularly, RegularlyGroup, DispatchRegularlyConnect, DispatchOrderWaypoint
 from accounting.models import Salary
 from humanresource.models import Member
 from itertools import chain
@@ -21,6 +22,19 @@ TODAY = str(datetime.now())[:10]
 FORMAT = "%Y-%m-%d"
 WEEK = ['(월)', '(화)', '(수)', '(목)', '(금)', '(토)', '(일)', ]
 WEEK2 = ['월', '화', '수', '목', '금', '토', '일', ]
+
+def regularly_print(request):
+    
+    # date1 = request.GET.get('date1', TODAY)
+    # date2 = request.GET.get('date2', TODAY)
+    # order_list = DispatchOrder.objects.prefetch_related('info_order').exclude(arrival_date__lt=f'{date1} 00:00').exclude(departure_date__gt=f'{date2} 24:00').order_by('departure_date')
+    
+    # context = {
+    #     'date1': date1,
+    #     'date2': date2,
+    #     'order_list': order_list,
+    # }
+    return render(request, 'dispatch/regularly_print.html')
 
 def order_print(request):
     
@@ -357,17 +371,21 @@ def regularly_connect_create(request):
             creator = creator
         )
         r_connect.save()
-        return redirect(request.META.get('HTTP_REFERER', 'redirect_if_referer_not_found'))
+        group = request.POST.get('group')
+        date = request.POST.get('date')
+        return redirect(reverse('dispatch:regularly') + f'?group={group}&date={date}')
     else:
         return HttpResponseNotAllowed(['post'])
 
 def regularly_connect_delete(request):
     if request.method == "POST":
         check_list = request.POST.getlist('check')
+        date = request.POST.get('date')
 
         for order_id in check_list:
-            order = DispatchOrder.objects.prefetch_related('info_order').get(id=order_id)
-            order.info_order.all().delete()
+            order = DispatchRegularly.objects.prefetch_related('info_regularly').get(id=order_id)
+            connect = order.info_regularly.get(departure_date__startswith=date)
+            connect.delete()
 
         return redirect(request.META.get('HTTP_REFERER', 'redirect_if_referer_not_found'))
     else:
@@ -569,6 +587,56 @@ def regularly_order_edit(request):
     else:
         return HttpResponseNotAllowed(['post'])
 
+def regularly_order_upload(request):
+    # post_data = json.loads(request.body.decode("utf-8"))
+    # post_data.get('excel')
+    # count = 0
+    # for data in post_data:
+    #     count = count + 1
+    post_data = json.loads(request.body)
+    
+    group_list = RegularlyGroup.objects.values('name')
+    print(post_data)
+
+    count = 1
+    for data in post_data:
+        overlap = False
+        for group in group_list:
+            if group['name'] == data['group']:
+                overlap = True
+            
+        if overlap == False:
+            return JsonResponse({'group_error': data['group'], 'line': count})
+        count += 1
+
+    count = 0
+    try:
+        for data in post_data:
+            group = get_object_or_404(RegularlyGroup, name=data['group'])
+            regularly = DispatchRegularly(
+                group = group,
+                references = data['references'],
+                departure = data['departure'],
+                arrival = data['arrival'],
+                departure_time = data['departure_time'],
+                arrival_time = data['arrival_time'],
+                price = data['price'],
+                driver_allowance = data['driver_allowance'],
+                number1 = data['number1'],
+                number2 = data['number2'],
+                week = data['week'],
+                work_type = data['work_type'],
+                route = data['route'],
+                location = data['location'],
+                detailed_route = data['detailed_route'],
+                creator = get_object_or_404(Member, pk=request.session['user']),
+            )
+            regularly.save()
+            count += 1
+        return JsonResponse({'status': 'success', 'count': count})
+    except Exception as e:
+        return JsonResponse({'status': 'fail', 'error': e})
+
 def regularly_order_delete(request):
     if request.method == "POST":
         id = request.POST.get("id")
@@ -615,7 +683,7 @@ def regularly_group_delete(request):
 
 def regularly_group_fix(request):
     if request.method == "POST":
-        import json
+        
         post_data = json.loads(request.body.decode("utf-8"))
 
         group_list = post_data['order']
@@ -839,9 +907,14 @@ def order_create(request):
     if request.method == "POST":
         creator = get_object_or_404(Member, pk=request.session.get('user'))
         order_form = OrderForm(request.POST)
-        print("POST", request.POST)
-        if order_form.is_valid():
+        waypoint_list = request.POST.getlist('waypoint')
+        waypoint_time_list = request.POST.getlist('waypoint_time')
+        delegate_list = request.POST.getlist('delegate')
+        delegate_phone_list = request.POST.getlist('delegate_phone')
 
+
+        print("POST", request.POST)
+        if order_form.is_valid() and len(waypoint_list) == len(waypoint_time_list):
             departure_time1 = request.POST.get('departure_time1')
             departure_time2 = request.POST.get('departure_time2')
             arrival_time1 = request.POST.get('arrival_time1')
@@ -876,6 +949,18 @@ def order_create(request):
             order.arrival_date = f"{request.POST.get('arrival_date')} {arrival_time1}:{arrival_time2}"
             order.route = request.POST.get('departure') + " ▶ " + request.POST.get('arrival')
             order.save()
+
+            for i in range(len(waypoint_list)):
+                waypoint = DispatchOrderWaypoint(
+                    order_id=order,
+                    waypoint=waypoint_list[i],
+                    time=waypoint_time_list[i],
+                    delegate=delegate_list[i] if delegate_list[i] != " " else '',
+                    delegate_phone=delegate_phone_list[i] if delegate_phone_list[i] != " " else '',
+                    creator=creator,
+                )
+                waypoint.save()
+
             return redirect(request.META.get('HTTP_REFERER', 'redirect_if_referer_not_found'))
         else:
             raise Http404
@@ -924,6 +1009,12 @@ def order_edit(request):
     if request.method == 'POST':
         creator = get_object_or_404(Member, pk=request.session.get('user'))
         order_form = OrderForm(request.POST)
+
+        waypoint_list = request.POST.getlist('waypoint')
+        waypoint_time_list = request.POST.getlist('waypoint_time')
+        delegate_list = request.POST.getlist('delegate')
+        delegate_phone_list = request.POST.getlist('delegate_phone')
+
 
         if order_form.is_valid():
             post_departure_date = request.POST.get('departure_date', None)
@@ -998,6 +1089,19 @@ def order_edit(request):
             order.creator = creator
             print("ORDER", order)
             order.save()
+
+            order.waypoint.all().delete()
+
+            for i in range(len(waypoint_list)):
+                waypoint = DispatchOrderWaypoint(
+                    order_id=order,
+                    waypoint=waypoint_list[i],
+                    time=waypoint_time_list[i],
+                    delegate=delegate_list[i] if delegate_list[i] != " " else '',
+                    delegate_phone=delegate_phone_list[i] if delegate_phone_list[i] != " " else '',
+                    creator=creator,
+                )
+                waypoint.save()
 
             return redirect(request.META.get('HTTP_REFERER', 'redirect_if_referer_not_found'))
         else:

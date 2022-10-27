@@ -22,11 +22,25 @@
 <div class="searchAreaBox">
     <form action="">
         <div class="searchTool">
-            <label class="searchName">날짜검색</label>
-            <input autocomplete="off"name="month" type="month" value="{{month}}" class="inputModules">
+            <label class="searchName">입금일 : </label>
+            <input autocomplete="off" name="" type="date" class="inputModules">~
+            <input autocomplete="off" name="" type="date" class="inputModules">
+            <select class="searchType">
+                <option value="입금자명">입금자명</option>
+                <option value="은행명">은행명</option>
+                <option value="입금액">입금액</option>
+            </select>
+            <input autocomplete="off" name="" type="text" class="inputModules">
+            <label class="searchName">지급방식 : </label>
+            <select  class="pymentType">
+                <option value="카드">카드</option>
+                <option value="계좌">계좌</option>
+                <option value="현금">현금</option>
+            </select>
             <input autocomplete="off"type="submit" value="검색" class="btnModules dateSearchBtn">
         </div>
     </form>
+    <div class="btnModules depositBtn">입금내역 등록</div>
 </div>
 
 
@@ -47,12 +61,13 @@
                 <tr>
                     <td>전표번호</td>
                     <td>일자</td>
-                    <td>현금/카드</td>
+                    <td>입금자명</td>
+                    <td>지급방식</td>
                     <td>은행명</td>
                     <td>계좌명</td>
                     <td>가맹점수수료</td>
                     <td>입금액</td>
-                    <td>입금자명</td>
+                    <td>처리된 금액</td>
                     <td>상태</td>
                 </tr>
             </thead>
@@ -63,43 +78,52 @@
                     <td>
                         <table class="depositDateTable">
                             <colgroup>
-                                <col style="width: 12%">
-                                <col style="width: 12%">
-                                <col style="width: 8%">
-                                <col style="width: 8%">
-                                <col style="width: 20%">
-                                <col style="width: 8%">
+                                <col style="width: 10%">
+                                <col style="width: 10%">
+                                <col style="width: 16%">
                                 <col style="width: 8%">
                                 <col style="width: 16%">
+                                <col style="width: 8%">
+                                <col style="width: 8%">
+                                <col style="width: 8%">
+                                <col style="width: 8%">
                                 <col style="width: 8%">
                             </colgroup>
                             <tr class="depositCell depositProcessedCell">
                                 <td>22/09/12-01</td>
                                 <td>2022.09.12</td>
+                                <td>비씨카드</td>
                                 <td>현금</td>
                                 <td>농협</td>
                                 <td>농협30582</td>
                                 <td>8,520</td>
                                 <td>391,480</td>
-                                <td>비씨카드</td>
+                                <td>391,480</td>
                                 <td>완료</td>
                             </tr>
                             <tr class="depositCell depositUnprocessedCell">
                                 <td>22/09/12-01</td>
                                 <td>2022.09.12</td>
+                                <td>비씨카드</td>
                                 <td>현금</td>
                                 <td>농협</td>
                                 <td>농협30582</td>
                                 <td>8,520</td>
                                 <td>391,480</td>
-                                <td>비씨카드</td>
+                                <td>391,480</td>
                                 <td>미처리</td>
                             </tr>
                             <tr class="dayTotal">
-                                <td colspan="2">2022.09.12</td>
-                                <td colspan="4">0</td>
+                                <td></td>
+                                <td>2022.09.12</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
                                 <td>0</td>
-                                <td colspan="2"></td>
+                                <td>0</td>
+                                <td>0</td>
+                                <td></td>
                             </tr>
                         </table>
                     </td>
@@ -120,8 +144,120 @@
 {% endblock %}
 
 
+
+{% block popup %}
+
+<div class="popupAreaModules">
+  <div class="popupBgModules"></div>
+  <form method="post" action="" class="popupContainer popupContainerDouble" enctype="multipart/form-data">
+      {% csrf_token %}
+      <div class="popupHeader">
+          <div class="popupTitle">입금내역 등록</div>
+      </div>
+      <div class="popupBody">
+          <div class="popupSection">
+              <div class="popupArticleBox">
+                  <div class="popupArticleDouble">
+                      <label for="" class="popupArticleLabel">일자</label>
+                      <input autocomplete="off" name="" type="text" class="popupArticleinput">
+                  </div>
+                  <div class="popupArticleDouble">
+                      <label for="" class="popupArticleLabel">지급방식</label>
+                      <select name="" id="" class="popupArticleinput">
+                        <option value="카드">카드</option>
+                        <option value="계좌">계좌</option>
+                        <option value="현금">현금</option>
+                      </select>
+                  </div>
+              </div>
+              <div class="popupArticleBox">
+                  <div class="popupArticleDouble">
+                      <label for="" class="popupArticleLabel">은행명</label>
+                      <input autocomplete="off" name="" type="text" class="popupArticleinput">
+                  </div>
+                  <div class="popupArticleDouble">
+                      <label for="" class="popupArticleLabel">계좌명</label>
+                      <input autocomplete="off" name="" type="text" class="popupArticleinput">
+                  </div>
+              </div>
+              <div class="popupArticleBox">
+                  <div class="popupArticleDouble">
+                      <label for="" class="popupArticleLabel">가맹점 수수료</label>
+                      <input autocomplete="off" name="" type="text" class="popupArticleinput">
+                  </div>
+                  <div class="popupArticleDouble">
+                      <label for="" class="popupArticleLabel">입금액</label>
+                      <input autocomplete="off" name="" type="text" class="popupArticleinput">
+                  </div>
+              </div>
+              <div class="popupArticleBox">
+                  <div class="popupArticleDouble">
+                      <label for="" class="popupArticleLabel">입금자명</label>
+                      <input autocomplete="off" name="" type="text" class="popupArticleinput">
+                  </div>
+              </div>
+          </div>
+          <div class="popupFooter">
+              <input autocomplete="off"type="submit" class="btnModules btnModulesCreate" value="등록">
+              <div class="btnModules popupCloseBtn">취소</div>
+          </div>
+      </div>
+  </form>
+</div>
+
+<div class="popupAreaModules">
+    <div class="popupBgModules"></div>
+    <form method="post" action="" class="popupContainer popupContainerDouble" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="popupHeader">
+            <div class="popupTitle">[전표번호]처리내역</div>
+        </div>
+        <div class="popupBody">
+            <div class="popupSection">
+                <div class="amountProcessedPopupArticleBox">
+                    <div class="scrolling_table-list_header">
+                        <table class="table-list">
+                          <thead>
+                            <tr class="table-list_head-tr">
+                              <td class="table-list_head-tr_td"></td>
+                              <td class="table-list_head-tr_td"></td>
+                              <td class="table-list_head-tr_td"></td>
+                              <td class="table-list_head-tr_td"></td>
+                              <td class="table-list_head-tr_td"></td>
+                              <td class="table-list_head-tr_td"></td>
+                            </tr>
+                          </thead>
+                        </table>
+                      </div>
+                      <div class="scrolling_table-list_body">
+                        <table class="table-list">
+                          <tbody>
+                            <tr class="table-list_body-tr">
+                              <td class="table-list_body-tr_td"></td>
+                            </tr>
+                            <tr class="table-list_body-tr">
+                              <td class="table-list_body-tr_td"></td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                </div>
+            </div>
+            <div class="popupFooter">
+                <input autocomplete="off"type="submit" class="btnModules btnModulesCreate" value="등록">
+                <div class="btnModules amountProcessedCloseBtn">취소</div>
+            </div>
+        </div>
+    </form>
+  </div>
+
+{% endblock %}
+
+
 {% block script %}
 <script src="{% static 'js/accounting/option.js' %}"></script>
 <script src="{% static 'js/accounting/selectTotal.js' %}"></script>
 <script src="{% static 'js/accounting/dateTotal.js' %}"></script>
+<script src="{% static 'js/accounting/popup.js' %}"></script>
+<script src="{% static 'js/accounting/amountProcessed.js' %}"></script>
 {% endblock %}

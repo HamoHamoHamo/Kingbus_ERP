@@ -11,6 +11,7 @@ urlpatterns = [
     # path('regularly/fixed/create', views.regularly_fixed_create, name="regularly_fixed_create"),
     path('regularly/route/create', views.regularly_order_create, name="regularly_route_create"),
     path('regularly/route/edit', views.regularly_order_edit, name="regularly_route_edit"),
+    path('regularly/route/upload', views.regularly_order_upload, name="regularly_route_upload"),
     # path('regularly/route/edit/check', views.regularly_order_edit_check, name="regularly_route_edit_check"),
     path('regularly/route/delete', views.regularly_order_delete, name="regularly_route_delete"),
     path('regularly/group/create', views.regularly_group_create, name="regularly_group_create"),
@@ -31,6 +32,7 @@ urlpatterns = [
     path('calendar/delete/1', views.calendar_delete_1, name='calendar_delete1'),
     path('calendar/delete/2', views.calendar_delete_2, name='calendar_delete2'),
     # 배차지시서
+    path('print/regularly', views.regularly_print, name='regularly_print'),
     path('print/order', views.order_print, name='order_print'),
     path('print/line', views.line_print, name='line_print'),
     path('print/bus', views.bus_print, name='bus_print'),

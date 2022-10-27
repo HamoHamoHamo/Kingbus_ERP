@@ -35,15 +35,36 @@
         <div class="dashboardArticle monthData">
             <div class="dashboardHeader">~월 매출</div>
             <div class="dashboardBody">
-                <canvas id="monthChart" width="360" height="360"></canvas>
-                <div class="accountsReceivable">미수금  5,000,000</div>
-                <div class="totalPrice">총 매출  25,000,000</div>
+                <div class="totalSalseBox">
+                    <div class="totalSalsTitle">총 매출</div>
+                    <div class="totalSalsValue">23,136,260원</div>
+                </div>
+                <div class="salseArticle">
+                    <div class="orderSalseBox">
+                        <div class="SalseTitle">일반 매출</div>
+                        <div class="SalseValue">23,136,260원</div>
+                    </div>
+                    <div class="regularlySalseBox">
+                        <div class="SalseTitle">출/퇴근 매출</div>
+                        <div class="SalseValue">23,136,260원</div>
+                    </div>
+                </div>
+                <div class="accountsReceivableArticle">
+                    <div class="orderAccountsReceivableBox">
+                        <div class="accountsReceivableTitle">미수금</div>
+                        <div class="accountsReceivableValue">3,136,260원</div>
+                    </div>
+                    <div class="regularlyAccountsReceivableBox">
+                        <div class="accountsReceivableTitle">미수금</div>
+                        <div class="accountsReceivableValue">3,136,260원</div>
+                    </div>
+                </div>
             </div>
         </div>
         <div class="dashboardArticle yearData">
             <div class="dashboardHeader"></div>
             <div class="dashboardBody">
-                <canvas id="yearChart" width="1000" height="220"></canvas>
+                <canvas id="yearChart" width="1000" height="260"></canvas>
             </div>
         </div>
     </div>
@@ -51,18 +72,57 @@
         <div class="dashboardArticle kategoriData">
             <div class="dashboardHeader">일반매출 이용 유형</div>
             <div class="dashboardBody">
-                <canvas id="kategoriChart" width="700" height="390"></canvas>
+                <canvas id="kategoriChart" width="500" height="300"></canvas>
+                <table class="table-list">
+                    <thead>
+                      <tr class="table-list_head-tr">
+                        <td class="table-list_head-tr_td">유형</td>
+                        <td class="table-list_head-tr_td">건수</td>
+                        <td class="table-list_head-tr_td">매출</td>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr class="table-list_body-tr">
+                        <td class="table-list_body-tr_td">산악회, 동호회 모임</td>
+                        <td class="table-list_body-tr_td">20</td>
+                        <td class="table-list_body-tr_td">8,000,000</td>
+                      </tr>
+                      <tr class="table-list_body-tr">
+                        <td class="table-list_body-tr_td">산악회, 동호회 모임</td>
+                        <td class="table-list_body-tr_td">20</td>
+                        <td class="table-list_body-tr_td">8,000,000</td>
+                      </tr>
+                      <tr class="table-list_body-tr">
+                        <td class="table-list_body-tr_td">산악회, 동호회 모임</td>
+                        <td class="table-list_body-tr_td">20</td>
+                        <td class="table-list_body-tr_td">8,000,000</td>
+                      </tr>
+                      <tr class="table-list_body-tr">
+                        <td class="table-list_body-tr_td">산악회, 동호회 모임</td>
+                        <td class="table-list_body-tr_td">20</td>
+                        <td class="table-list_body-tr_td">8,000,000</td>
+                      </tr>
+                      <tr class="table-list_body-tr">
+                        <td class="table-list_body-tr_td">산악회, 동호회 모임</td>
+                        <td class="table-list_body-tr_td">20</td>
+                        <td class="table-list_body-tr_td">8,000,000</td>
+                      </tr>
+                      <tr class="table-list_body-tr">
+                        <td class="table-list_body-tr_td">산악회, 동호회 모임</td>
+                        <td class="table-list_body-tr_td">20</td>
+                        <td class="table-list_body-tr_td">8,000,000</td>
+                      </tr>
+                    </tbody>
+                  </table>
             </div>
         </div>
         <div class="dashboardArticle otherData">
             <div class="dashboardHeader">유형별 비율</div>
             <div class="dashboardBody">
                 <div class="dashboardBodyCoulmnCell">
-                    <canvas id="otherChartWay" width="260" height="180"></canvas>
-                    <canvas id="otherChartPayment" width="260" height="180"></canvas>
+                    <canvas id="otherChartWay" width="260" height="220"></canvas>
+                    <canvas id="otherChartPayment" width="260" height="220"></canvas>
                 </div>
-                <canvas id="otherChartBus" width="580" height="340"></canvas>
-                <div class="chartTitle">버스 종류</div>
             </div>
         </div>
     </div>

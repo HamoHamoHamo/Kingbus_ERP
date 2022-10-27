@@ -1,3 +1,8 @@
+const driveTimeSh = document.querySelector(".routeTime input:nth-child(1)")
+const driveTimeSM = document.querySelector(".routeTime input:nth-child(2)")
+const driveTimeEh = document.querySelector(".routeTime input:nth-child(3)")
+const driveTimeEM = document.querySelector(".routeTime input:nth-child(4)")
+
 for (i = 0; i < driverTd.length; i++) {
     driverTd[i].addEventListener("click", regularlyDispatch)
 }
@@ -46,12 +51,12 @@ function regularlyDispatch() {
         let rangeCounter = 0
         if (rangeBeforeArr.length !== 0 || rangeAfterArr.length !== 0) {
             for (i = 0; i < rangeBeforeArr.length; i++) {
-                if (confirm(`운행시작 1시간 이내에 노선이 있습니다. 배차하시겠습니까?\n[${rangeBeforeArr[i].bus}(${rangeBeforeArr[i].driver}) || ${rangeBeforeArr[i].start} ~ ${rangeBeforeArr[i].end}]`)) {
+                if (confirm(`운행시작 1시간 이내에 노선이 있습니다. 배차하시겠습니까?\n[${rangeBeforeArr[i].bus}(${rangeBeforeArr[i].driver}) || ${rangeBeforeArr[i].start.substr(0, 2)}:${rangeBeforeArr[i].start.substr(2, 2)} ~ ${rangeBeforeArr[i].end.substr(0, 2)}:${rangeBeforeArr[i].end.substr(2, 2)}]`)) {
                     rangeCounter = rangeCounter + 1
                 }
             };
             for (i = 0; i < rangeAfterArr.length; i++) {
-                if (confirm(`운행시작 1시간 이내에 노선이 있습니다. 배차하시겠습니까?\n[${rangeAfterArr[i].bus}(${rangeAfterArr[i].driver}) || ${rangeAfterArr[i].start} ~ ${rangeAfterArr[i].end}]`)) {
+                if (confirm(`운행시작 1시간 이내에 노선이 있습니다. 배차하시겠습니까?\n[${rangeAfterArr[i].bus}(${rangeAfterArr[i].driver}) || ${rangeAfterArr[i].start.substr(0, 2)}:${rangeAfterArr[i].start.substr(2, 2)} ~ ${rangeAfterArr[i].end.substr(0, 2)}:${rangeAfterArr[i].end.substr(2, 2)}]`)) {
                     rangeCounter = rangeCounter + 1
                 }
             };
@@ -70,16 +75,35 @@ function regularlyDispatch() {
             businput.value = busNum;
             busIdHidden.value = busId;
 
-            driverSelect.innerText = ""
-            const driverOption = document.createElement('option');
-            driverOption.setAttribute("value", `${DriverId}`);
-            driverOption.innerText = DriverName
-            driverSelect.appendChild(driverOption);
+
+            let departureInput = `${driveTimeSh.value}` + `${driveTimeSM.value}`
+            let arrivalInput = `${driveTimeEh.value}` + `${driveTimeEM.value}`
+            let arrivalDate = ""
+            let departureDate = ""
+            let makeSelect = true
+
+            for (i = 0; i < data.length; i++) {
+                departureDate = data[i].departure_date.split(" ")[1].replace(/\:/g, "")
+                arrivalDate = data[i].arrival_date.split(" ")[1].replace(/\:/g, "")
+                if (this.innerText.split("(")[1].replace(/\)/g, "") == data[i].driver_name) {
+                    if (arrivalInput >= departureDate && departureInput <= arrivalDate) {
+                        return makeSelect = false
+                    }
+                }
+            };
+
+            if (makeSelect) {
+                driverSelect.innerText = ""
+                const driverOption = document.createElement('option');
+                driverOption.setAttribute("value", `${DriverId}`);
+                driverOption.innerText = DriverName
+                driverSelect.appendChild(driverOption);
+            }
         }
     }
 }
 
-const businput= document.querySelector(".RouteListHBodyTr input[type=text]")
+const businput = document.querySelector(".RouteListHBodyTr input[type=text]")
 const driverSelect = document.querySelector(".RouteListHBodyTr select[name=driver]")
 const outsorcingSelect = document.querySelector(".RouteListHBodyTr select[name=outsourcing]")
 
@@ -87,13 +111,13 @@ const outsorcingSelect = document.querySelector(".RouteListHBodyTr select[name=o
 // 운전원&용역 하나만 선택
 driverSelect.addEventListener("change", removeOutsourcing)
 
-function removeOutsourcing(){
+function removeOutsourcing() {
     outsorcingSelect.innerText = ""
 }
 
 outsorcingSelect.addEventListener("change", removeDrive)
 
-function removeDrive(){
+function removeDrive() {
     driverSelect.innerText = ""
 }
 

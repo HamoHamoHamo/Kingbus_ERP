@@ -11,14 +11,57 @@
     box-shadow: 0.1rem 0.1rem 0.6rem rgb(0 0 0 / 30%);
 }
 
+.searchTool input[type=text],
+.searchTool input[type=date],
+.searchTool input[type=number] {
+    width: 13rem;
+    margin-right: 1rem;
+}
+
+.searchType{
+    width: 10rem;
+    height: 2.5rem;
+    padding-left: 1rem;
+    background-color: white;
+    border: 0.1rem solid #D2D2D2;
+    border-radius: 0.2rem;
+    box-sizing: border-box;
+    font-size: 1.4rem;
+    color: #191919;
+    outline: none;
+    margin: 0 1rem;
+}
+
+.pymentType{
+    width: 8rem;
+    height: 2.5rem;
+    padding-left: 1rem;
+    background-color: white;
+    border: 0.1rem solid #D2D2D2;
+    border-radius: 0.2rem;
+    box-sizing: border-box;
+    font-size: 1.4rem;
+    color: #191919;
+    outline: none;
+}
+
+.searchTool input:nth-child(3) {
+    margin-left: 1rem;
+}
+
 .searchName {
     font-size: 1.4rem;
-    margin-right: 2rem;
+    margin-left: 2rem;
+    margin-right: 1.2rem;
     font-weight: normal;
 }
 
+.searchName:nth-child(1) {
+    margin-left: 0;
+}
+
 .dateSearchBtn {
-    margin-left: 1rem;
+    margin-left: 2rem;
     background-color: #444;
 }
 
@@ -69,6 +112,13 @@
     margin-right: 1rem;
 }
 
+.depositBtn {
+    position: absolute;
+    right: 0;
+    width: 10.6rem;
+    background-color: #0069D9;
+    transform: translate(-50%, 0);
+}
 
 
 
@@ -92,38 +142,24 @@
     font-size: 1.4rem;
 }
 
-.depositTableHead td:nth-child(1),
-.depositDateTable td:nth-child(1),
-.depositTableHead td:nth-child(2),
-.depositDateTable td:nth-child(2) {
-    width: 12%;
+.depositBody td:nth-child(1),
+.depositBody td:nth-child(2){
+    width: 10%;
 }
 
-.depositTableHead td:nth-child(3),
-.depositDateTable td:nth-child(3),
-.depositTableHead td:nth-child(4),
-.depositDateTable td:nth-child(4),
-.depositTableHead td:nth-child(6),
-.depositDateTable td:nth-child(6),
-.depositTableHead td:nth-child(7),
-.depositDateTable td:nth-child(7),
-.depositTableHead td:nth-child(9),
-.depositDateTable td:nth-child(9) {
-    width: 8%;
-}
-
-.depositTableHead td:nth-child(5),
-.depositDateTable td:nth-child(5) {
-    width: 20%;
-}
-
-.depositTableHead td:nth-child(8),
-.depositDateTable td:nth-child(8) {
+.depositBody td:nth-child(3),
+.depositBody td:nth-child(5){
     width: 16%;
 }
 
-
-
+.depositBody td:nth-child(4),
+.depositBody td:nth-child(6),
+.depositBody td:nth-child(7),
+.depositBody td:nth-child(8),
+.depositBody td:nth-child(9),
+.depositBody td:nth-child(10){
+    width: 8%;
+}
 
 
 
@@ -190,15 +226,19 @@
     text-align: center;
 }
 
-.depositCell td:nth-child(6),
-.depositCell td:nth-child(7) {
+.depositCell td:nth-child(7),
+.depositCell td:nth-child(8),
+.depositCell td:nth-child(9) {
     text-align: right;
     padding-right: 1rem;
     box-sizing: border-box;
 }
 
+.depositCell td:nth-child(9){
+    color: #0069D9;
+}
 
-.depositUnprocessedCell td:nth-child(9) {
+.depositUnprocessedCell td:nth-child(10) {
     color: red;
 }
 
@@ -218,6 +258,15 @@
     box-sizing: border-box;
 }
 
+.dayTotal td:nth-child(1),
+.dayTotal td:nth-child(2),
+.dayTotal td:nth-child(3),
+.dayTotal td:nth-child(4),
+.dayTotal td:nth-child(6),
+.dayTotal td:nth-child(5){
+    border-right: none;
+}
+
 .selectTotal {
     display: flex;
     justify-content: space-between;
@@ -235,8 +284,21 @@
     display: none;
 }
 
-.selecting td:nth-child(6),
-.selecting td:nth-child(7){
+.selecting td:nth-child(7),
+.selecting td:nth-child(8) {
     background-color: #0069D9;
     color: white;
+}
+
+.popupCloseBtn{
+    background-color: #444;
+}
+
+.amountProcessedPopupArticleBox{
+    display: flex;
+    flex-direction: column;
+}
+
+.amountProcessedCloseBtn{
+    background-color: #444;
 }

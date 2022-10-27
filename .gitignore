@@ -7,3 +7,4 @@ migrations
 my_settings.py
 .venv/
 .vscode/
+/dispatch/static

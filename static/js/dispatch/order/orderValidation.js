@@ -13,17 +13,19 @@ const inputSave = document.querySelector(".inputSave")
 const inputDispatchForm = document.querySelector(".inputDispatchForm")
 const ListSub = document.querySelectorAll(".orderListSub .orderListItem")
 const inputHidden = document.querySelector(".inputHidden")
+const searchForm = document.querySelector(".searchForm")
+const searchBtn = document.querySelector(".searchBtn")
 
 
 // 검색 날짜 역전 방지
-for (i = 0; i < searchDate.length; i++) {
-    searchDate[i].addEventListener("change", orderPeriod)
-}
+searchBtn.addEventListener("click", orderPeriod)
 
 function orderPeriod() {
     if (searchDate[0].value.replace(/\-/g, "") > searchDate[1].value.replace(/\-/g, "")) {
         alert("잘못된 범위입니다. 날짜를 다시 확인해 주세요.")
         searchDate[1].value = ""
+    }else{
+        searchForm.submit()
     }
 }
 
@@ -201,7 +203,7 @@ function submitVaildation(e) {
     } else {
         inputDispatchForm.submit()
     }
-    
+
 }
 
 

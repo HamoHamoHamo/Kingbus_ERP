@@ -14,7 +14,8 @@ const dispatchBox = document.querySelectorAll(".dispatchBox")
 dispatchBtn.addEventListener("click", openDispatch)
 
 function openDispatch() {
-    if (window.location.search.split("&")[0].substr(0, 3) == "?id") {
+    let parms = new URLSearchParams(location.search)    
+    if (parms.has("id")) {
         if (scheduleOpenBtn.classList.contains("scheduleOpenBtnVisible")) {
             schedule.children[0].style.display = "flex"
             schedule.children[1].style.display = "flex"

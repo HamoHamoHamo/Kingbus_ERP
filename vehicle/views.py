@@ -155,24 +155,18 @@ def vehicle_edit(request):
             vehicle.use = vehicle_form.cleaned_data['use']
             vehicle.passenger_num = vehicle_form.cleaned_data['passenger_num']
             vehicle.check_date = vehicle_form.cleaned_data['check_date']
-            vehicle.expiration_date = vehicle_form.cleaned_data['expiration_date']
+            vehicle.type = vehicle_form.cleaned_data['type']
             vehicle.save()
 
             # 파일
             vehicle_file = request.FILES.get('vehicle_registration', None)
-            insurance_file = request.FILES.get('insurance_receipt', None)
             v_file_name = request.POST.get('vehicle_registration_name', None)
-            i_file_name = request.POST.get('insurance_receipt_name', None)
 
             cur_files = VehicleDocument.objects.filter(vehicle_id=vehicle)
             try:
                 cur_vehicle_files = cur_files.get(type='vehicle_registration')
             except:
                 cur_vehicle_files = None
-            try:
-                cur_insurance_files = cur_files.get(type='insurance_receipt')
-            except:
-                cur_insurance_files = None
 
             if vehicle_file:
                 if cur_vehicle_files:
@@ -189,21 +183,6 @@ def vehicle_edit(request):
                 os.remove(cur_vehicle_files.file.path)
                 cur_vehicle_files.delete()
 
-            if insurance_file:
-                if cur_insurance_files:
-                    os.remove(cur_insurance_files.file.path)
-                    cur_insurance_files.delete()
-
-                file = VehicleDocument(
-                    vehicle_id=vehicle,
-                    file=insurance_file,
-                    filename=insurance_file.name,
-                    type='insurance_receipt',
-                )
-                file.save()
-            elif not i_file_name and cur_insurance_files:
-                os.remove(cur_insurance_files.file.path)
-                cur_insurance_files.delete()
                 
             return redirect(request.META.get('HTTP_REFERER', 'redirect_if_referer_not_found'))
         else:

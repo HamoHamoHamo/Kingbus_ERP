@@ -1,4 +1,4 @@
-const headerBox = document.querySelector(".headerBox")
+const headerBox = document.querySelector("header")
 const seconedSection = document.querySelector(".seconedSection")
 const  menu = document.querySelectorAll(".menuBox li")
 const transparentBoxLoge = document.querySelector(".transparentBoxLoge")

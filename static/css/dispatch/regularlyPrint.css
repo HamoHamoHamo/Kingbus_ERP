@@ -1,0 +1,181 @@
+* {
+    list-style: none;
+    text-decoration: none;
+}
+
+html {
+    font-size: 62.5%;
+    font-family: "Noto Sans CJK KR";
+    overflow-x: hidden;
+}
+
+body {
+    margin: 0;
+    background-color: white;
+}
+
+table {
+    border-spacing: 0;
+}
+
+td {
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.dispatchTable {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    width: 41.8cm;
+    height: 28.7cm;
+    margin-left: 0.5cm;
+    margin-top: 0.2cm;
+    box-sizing: border-box;
+}
+
+.dispatchTableHeader {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 3.8rem;
+    margin-bottom: 1rem;
+    font-size: 2rem;
+    font-weight: 700;
+}
+
+.adminCheck {
+    position: absolute;
+    right: 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 20rem;
+    height: 2.4rem;
+    padding-top: 0.4rem;
+    font-size: 1.6rem;
+    box-sizing: border-box;
+}
+
+table {
+    width: 100%;
+    height: auto;
+    font-size: 1.3rem;
+}
+
+thead tr {
+    width: 100%;
+    height: 3.2rem;
+}
+
+thead td {
+    font-weight: 700;
+    text-align: center;
+    border-top: 0.2rem solid black;
+    border-bottom: 0.2rem solid black;
+    border-left: 0.1rem solid black;
+}
+
+thead td:nth-child(1) {
+    border-left: 0.2rem solid black;
+}
+
+thead td:nth-last-child(1) {
+    border-right: 0.2rem solid black;
+}
+
+tbody tr {
+    width: 100%;
+    height: 3.2rem;
+}
+
+tbody tr:nth-child(odd) {
+    background-color: #CDCDCE;
+}
+
+tbody tr:nth-child(even) {
+    background-color: white;
+}
+
+tbody td {
+    text-align: center;
+    border-bottom: 0.1rem solid black;
+    border-left: 0.1rem solid black;
+}
+
+tbody tr:nth-last-child(1) td {
+    border-bottom: 0.2rem solid black;
+}
+
+td:nth-child(1),
+td:nth-child(10) {
+    width: 3%;
+}
+
+td:nth-child(2),
+td:nth-child(3),
+td:nth-child(4) {
+    width: 5%;
+}
+
+td:nth-child(5) {
+    width: 10%;
+}
+
+td:nth-child(6),
+td:nth-child(7),
+td:nth-child(9) {
+    width: 4%;
+}
+
+td:nth-child(8) {
+    width: 12%;
+}
+
+td:nth-child(11),
+td:nth-child(12),
+td:nth-child(13),
+td:nth-child(14),
+td:nth-child(15) {
+    width: 6%;
+}
+
+td:nth-child(16) {
+    width: 15%;
+}
+
+td:nth-child(1) {
+    border-left: 0.2rem solid black;
+    border-right: 0.2rem solid black;
+}
+
+td:nth-child(11) {
+    border-left: 0.2rem solid black;
+}
+
+td:nth-child(15) {
+    border-right: 0.2rem solid black;
+}
+
+td:nth-child(16) {
+    border-right: 0.2rem solid black;
+}
+
+td:nth-child(2),
+td:nth-child(3),
+td:nth-child(4),
+td:nth-child(6),
+td:nth-child(7),
+td:nth-child(9) {
+    font-weight: 700;
+}
+
+.page {
+    position: absolute;
+    bottom: 0;
+    font-size: 1.6rem;
+}

@@ -24,6 +24,8 @@ const release_date = document.querySelector(".release_date")
 const passenger_num = document.querySelector(".passenger_num")
 const motor_type = document.querySelector(".motor_type")
 const rated_output = document.querySelector(".rated_output")
+const type = document.querySelector(".type")
+const checkdate = document.querySelector(".checkdate")
 const insurance_expiry_date = document.querySelector(".insurance_expiry_date")
 const check_duration = document.querySelector(".check_duration")
 const sendToHidden = document.querySelector(".sendToHidden")
@@ -94,13 +96,13 @@ function openDetailPopup() {
   }
   PopupData[5].innerText = regDatas[this.className].vehicle_type
   PopupData[6].innerText = regDatas[this.className].passenger_num
-  PopupData[7].innerText = "regDatas[this.className]."
+  PopupData[7].innerText = regDatas[this.className].type
   PopupData[8].innerText = regDatas[this.className].model_year
   PopupData[9].innerText = regDatas[this.className].vehicle_id
   PopupData[10].innerText = regDatas[this.className].release_date
   PopupData[11].innerText = regDatas[this.className].motor_type
   PopupData[12].innerText = regDatas[this.className].rated_output
-  PopupData[13].innerText = "regDatas[this.className]."
+  PopupData[13].innerText = regDatas[this.className].check_date
   PopupData[14].innerText = regDatas[this.className].vehicle_registration
 
 
@@ -121,13 +123,13 @@ function openDetailPopup() {
   maker.value = regDatas[this.className].maker
   vehicle_type.value = regDatas[this.className].vehicle_type
   passenger_num.value = regDatas[this.className].passenger_num
-  // 형식
+  type.value = regDatas[this.className].type
   model_year.value = regDatas[this.className].model_year
   vehicle_id.value = regDatas[this.className].vehicle_id
   release_date.value = regDatas[this.className].release_date
   motor_type.value = regDatas[this.className].motor_type
   rated_output.value = regDatas[this.className].rated_output
-  // check_duration.value = regDatas[this.className].check_duration
+  checkdate.value = regDatas[this.className].check_date
   BusLicenseFileTextEdit.value = regDatas[this.className].vehicle_registration
   sendToHidden.value = this.parentNode.className;
 }
