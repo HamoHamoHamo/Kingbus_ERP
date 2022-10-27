@@ -80,25 +80,25 @@
                     <td class="{{ forloop.counter0 }}">
                         <div>{{vehicle.vehicle_num0}} {{vehicle.vehicle_num}}</div>
                     </td>
-                    <td>{{vehicle.driver_name}} 담당기사</td>
-                    <td>제조사</td>
+                    <td>{{vehicle.driver_name}}</td>
+                    <td>{{vehicle.maker}}</td>
                     <td>{{vehicle.vehicle_type}}</td>
                     <td>{{vehicle.passenger_num}}</td>
                     <!-- <td>{{vehicle.release_date}}</td> -->
-                    <td>HD2-452-17PaZ6-T</td>
+                    <td>{{vehicle.type}}</td>
                     {% with list=file_list|index:forloop.counter0 %}
                     <td>{{vehicle.model_year}}
                     </td>
                     <td>
-                        KNGGBK6X1HK013689
+                        {{vehicle.vehicle_id}}
                     </td>
-                    <td>2022-09-13</td>
-                    <td>2022-09-13</td>
+                    <td>{{vehicle.release_date}}</td>
+                    <td>{{vehicle.check_date}}</td>
                     <td>
                         <div onclick="openViweBlankVehilcle('/vehicle/list/image/{{list.0.id}}')">{{list.0.filename}}
                         </div>
                     </td>
-                    <td>미사용</td>
+                    <td>{% if vehicle.use == 'y' %}사용{% else %}미사용{% endif %}</td>
                     {% endwith %}
                 </tr>
                 {% endfor %}
@@ -197,12 +197,10 @@
                     <div class="popupArticleDouble">
                         <label for="" class="popupArticleLabel">사용여부</label>
                         <div class="albleRadioBox">
-                            <input autocomplete="off" type="radio" id="ableBus" name="ableRadio" checked>
+                            <input autocomplete="off" type="radio" value="y" id="ableBus" name="use" checked>
                             <label for="ableBus">사용</label>
-                            <input autocomplete="off" type="radio" id="disableBus" name="ableRadio">
+                            <input autocomplete="off" type="radio" value="n" id="disableBus" name="use">
                             <label for="disableBus">미사용</label>
-                            <input autocomplete="off" type="radio" id="deleteBus" name="ableRadio">
-                            <label for="deleteBus">삭제</label>
                         </div>
                     </div>
                 </div>
@@ -219,7 +217,7 @@
                 <div class="popupArticleBox">
                     <div class="popupArticleDouble">
                         <label for="" class="popupArticleLabel">형식</label>
-                        <input autocomplete="off" type="text" class="popupArticleinput">
+                        <input autocomplete="off" name="type" type="text" class="popupArticleinput">
                     </div>
                     <div class="popupArticleDouble">
                         <label for="" class="popupArticleLabel">모델연도</label>
@@ -249,14 +247,14 @@
                 <div class="popupArticleBox">
                     <div class="popupArticleDouble">
                         <label for="" class="popupArticleLabel">정기점검일</label>
-                        <input autocomplete="off" name="" type="date" class="popupArticleinput" max="9999-12-31">
+                        <input autocomplete="off" name="check_date" type="date" class="popupArticleinput" max="9999-12-31">
                     </div>
                     <div class="popupArticleDouble">
                         <label for="" class="popupArticleLabel">차량등록증</label>
                         <div class="popupArticleFileDouble">
                             <label for="BusLicenseFile">파일 선택</label>
                             <input autocomplete="off" name="vehicle_registration" id="BusLicenseFile" type="file" class="popupArticleinput BusLicenseFileInput">
-                            <input autocomplete="off" type="text" class="BusLicenseFileText" readonly>
+                            <input autocomplete="off" name="vehicle_registration_name" type="text" class="BusLicenseFileText" readonly>
                             <svg class="fileDeleteBtn" xmlns="http://www.w3.org/2000/svg" width="11.314" height="11.314"
                                 viewBox="0 0 11.314 11.314">
                                 <g id="그룹_1513" data-name="그룹 1513" transform="translate(-442.649 -1001.97) rotate(45)">
@@ -393,11 +391,11 @@
                     <div class="popupArticleDouble">
                         <label for="" class="popupArticleLabel">사용여부</label>
                         <div class="albleRadioBox">
-                            <input autocomplete="off" type="radio" id="ableBusEdit" name="ableRadio">
+                            <input autocomplete="off" type="radio" id="ableBusEdit" name="use" value="y">
                             <label for="ableBusEdit">사용</label>
-                            <input autocomplete="off" type="radio" id="disableBusEdit" name="ableRadio">
+                            <input autocomplete="off" type="radio" id="disableBusEdit" name="use" value="n">
                             <label for="disableBusEdit">미사용</label>
-                            <input autocomplete="off" type="radio" id="deleteBusEdit" name="ableRadio">
+                            <input autocomplete="off" type="radio" id="deleteBusEdit" name="use" value="d">
                             <label for="deleteBusEdit">삭제</label>
                         </div>
                     </div>
@@ -415,7 +413,7 @@
                 <div class="popupArticleBox">
                     <div class="popupArticleDouble">
                         <label for="" class="popupArticleLabel">형식</label>
-                        <input autocomplete="off" type="text" class="popupArticleinput">
+                        <input name="type" autocomplete="off" type="text" class="popupArticleinput type">
                     </div>
                     <div class="popupArticleDouble">
                         <label for="" class="popupArticleLabel">모델연도</label>
@@ -445,14 +443,14 @@
                 <div class="popupArticleBox">
                     <div class="popupArticleDouble">
                         <label for="" class="popupArticleLabel">정기점검일</label>
-                        <input autocomplete="off" name="" type="date" class="popupArticleinput" max="9999-12-31">
+                        <input autocomplete="off" name="check_date" type="date" class="popupArticleinput checkdate" max="9999-12-31">
                     </div>
                     <div class="popupArticleDouble">
                         <label for="" class="popupArticleLabel">차량등록증</label>
                         <div class="popupArticleFileDouble">
                             <label for="BusLicenseFileEdit">파일 선택</label>
                             <input autocomplete="off" name="vehicle_registration" id="BusLicenseFileEdit" type="file" class="popupArticleinput BusLicenseFileInputEdit">
-                            <input autocomplete="off" type="text" class="BusLicenseFileTextEdit" readonly>
+                            <input autocomplete="off" name="vehicle_registration_name" type="text" class="BusLicenseFileTextEdit" readonly>
                             <svg class="fileDeleteBtn" xmlns="http://www.w3.org/2000/svg" width="11.314" height="11.314"
                                 viewBox="0 0 11.314 11.314">
                                 <g id="그룹_1513" data-name="그룹 1513" transform="translate(-442.649 -1001.97) rotate(45)">
@@ -503,11 +501,10 @@
             driver_name: "{{ vehicle.driver_name }}",
             use: "{{ vehicle.use }}",
             passenger_num: "{{ vehicle.passenger_num }}",
-            check_duration: "{{ vehicle.check_duration }}",
-            insurance_expiry_date: "{{ vehicle.insurance_expiry_date }}",
+            check_date: "{{ vehicle.check_date }}",
+            type: "{{ vehicle.type }}",
             {% with list=file_list|index:forloop.counter0 %}
             vehicle_registration: "{{list.0.filename}}",
-            insurance_receipt: "{{list.1.filename}}",
             {% endwith %}
           },
         {% endfor %}

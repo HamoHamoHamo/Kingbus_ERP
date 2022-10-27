@@ -4,8 +4,12 @@ const RouteListTBody = document.querySelector(".RouteListTBody")
 
 // 선택노선 최상단으로 이동, 색 변경, 클래스 추가
 function selectRoute() {
+    let parms = new URLSearchParams(location.search)
     if (window.location.search !== "") {
-        let queryId = window.location.search.split("id=")[1].split("&")[0]
+        let queryId = ""
+        if(parms.has("id")){
+            queryId = parms.has("id")
+        }
         if (queryId !== "") {
             for (i = 0; i < RouteListHBodyTr.length; i++) {
                 if (RouteListHBodyTr[i].classList[1] == queryId) {

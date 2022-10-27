@@ -13,6 +13,7 @@ class MemberForm(forms.ModelForm):
             'address',
             'phone_num',
             'entering_date',
+            'note',
         ]
 
 # class HRForm(forms.ModelForm):

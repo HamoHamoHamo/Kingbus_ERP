@@ -4,5 +4,4 @@ RouteListScroll.addEventListener("scroll", scrollLink)
 
 function scrollLink() {
     RouteListHeadScroll.scrollLeft = RouteListScroll.scrollLeft
-    console.log(RouteListScroll.scrollTop);
 }

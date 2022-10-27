@@ -1,151 +1,3 @@
-.searchName {
-    margin-right: 1rem;
-}
-
-.searchAreaBox .btnModules {
-    background-color: #444444;
-    margin-left: 2rem;
-}
-
-.addPeople {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 10rem;
-    height: 3.8rem;
-    border-radius: 0.2rem;
-    background-color: #444444;
-    font-size: 1.4rem;
-    color: white;
-    cursor: pointer;
-}
-
-
-
-/*tableHead*/
-.tableHead {
-    width: 100%;
-    height: 4.8rem;
-    border-spacing: 0;
-    box-sizing: border-box;
-}
-
-.tableHead tr {
-    width: 100%;
-    height: 100%;
-    font-size: 1.4rem;
-    color: white;
-    background-color: #444444;
-}
-
-.tableHead td{
-    text-align: center;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-.tableBody {
-    width: 100%;
-    height: 64em;
-    border-spacing: 0;
-    box-sizing: border-box;
-}
-
-table tbody tr {
-    width: 100%;
-    height: 6.4rem;
-    font-size: 1.4rem;
-    color: #191919;
-}
-
-table tbody tr:nth-child(odd) {
-    background-color: white;
-}
-
-table tbody tr:nth-child(even) {
-    background-color: #EFEFEF;
-}
-
-.tableBody td:nth-child(1){
-    border-left: 0.1rem solid #D4D4D4;
-}
-
-.tableBody td {
-    border-right: 0.1rem solid #D4D4D4;
-    border-bottom: 0.1rem solid #D4D4D4;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-
-.tableBody td:nth-child(3) {
-    font-size: 1.4rem;
-    color: #0069D9;
-    cursor: pointer;
-}
-
-
-td:nth-child(1),
-td:nth-child(2),
-td:nth-child(3),
-td:nth-child(4){
-    width: 4%;
-}
-
-td:nth-child(5),
-td:nth-child(7),
-td:nth-child(8),
-td:nth-child(9){
-    width: 8%;
-}
-
-td:nth-child(6) {
-    width: 6%;
-}
-
-td:nth-child(10) {
-    width: 28%;
-}
-
-td:nth-child(11),
-td:nth-child(12) {
-    width: 9%;
-}
-
-td:nth-child(1),
-td:nth-child(2),
-td:nth-child(3),
-td:nth-child(4),
-td:nth-child(5),
-td:nth-child(6),
-td:nth-child(7),
-td:nth-child(8),
-td:nth-child(9),
-td:nth-child(11),
-td:nth-child(12) {
-    text-align: center;
-}
-.tableBody td:nth-child(10){
-    text-align: left;
-    padding-left: 1rem;
-}
-
-.btnBox div {
-    background-color: #444444;
-}
-
-.btnBox input {
-    background-color: #444444;
-    outline: none;
-    box-sizing: border-box;
-    text-align: center;
-}
-
-
-
-
-
-
 /*popup*/
 .popupContainerDouble {
     width: 84rem;
@@ -196,6 +48,10 @@ td:nth-child(12) {
     visibility: hidden;
 }
 
+.DriverLicenseLabel {
+    word-break: keep-all;
+}
+
 .editPopupContainer {
     position: fixed;
     top: 50%;
@@ -241,24 +97,217 @@ td:nth-child(12) {
 }
 
 
-@media all and (min-width:1600px) and (max-width: 1780px) {
-    .tableHead tr {
-        font-size: 1.4rem;
-    }
 
-    .tableBody td {
-        font-size: 1.3rem;
-    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+.main-layout_container {
+    position: relative;
+    display: block;
+    width: 100%;
+    height: 74rem;
+    border-radius: 0.2rem;
+    box-shadow: 0rem 0.1rem 0.4rem rgb(0 0 0 / 30%);
+    background-color: white;
 }
 
-@media all and (min-width:1460px) and (max-width: 1600px) {
-    .popupArticleDouble .popupIdBox .popupArticleinput {
-        width: 18.4rem;
-    }
+.filter-area {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    width: 100%;
+    height: 4rem;
+    padding: 0 1rem;
+    box-sizing: border-box;
 }
 
-@media all and (min-width:1024px) and (max-width: 1460px) {
-    /* .tableHead tr{
-        font-size: 1.4rem;
-    } */
+.filter-area input {
+    width: 1.4rem;
+    height: 1.4rem;
+}
+
+.filter-area label {
+    font-size: 1.4rem;
+    margin-left: 1rem;
+    cursor: pointer;
+}
+
+.member-delete {
+    position: absolute;
+    top: -5.3rem;
+    right: 19rem;
+    margin-right: 1rem;
+}
+
+.member-create {
+    margin-right: 1rem;
+    background-color: #0069D9;
+}
+
+.table-list-area {
+    width: 100%;
+    height: 64rem;
+}
+
+.member-height {
+    height: 4rem;
+}
+
+.table-list_head-tr_td:nth-child(6){
+    cursor: pointer;
+}
+
+.member-height td:nth-child(1),
+.member-height td:nth-child(2),
+.member-height td:nth-child(3),
+.member-height td:nth-child(4) {
+    width: 4%;
+}
+
+.member-height td:nth-child(5),
+.member-height td:nth-child(7),
+.member-height td:nth-child(8) {
+    width: 8%;
+}
+
+.member-height td:nth-child(6) {
+    width: 6%;
+}
+
+.member-height td:nth-child(9) {
+    width: 6%;
+}
+
+.member-height td:nth-child(10) {
+    width: 28%;
+}
+
+.member-height td:nth-child(11),
+.member-height td:nth-child(12) {
+    width: 10%;
+}
+
+
+.table-list_body-tr_td:nth-child(3) {
+    color: #0069D9;
+}
+
+.table-list_body-tr_td:nth-child(3),
+.table-list_body-tr_td:nth-child(11),
+.table-list_body-tr_td:nth-child(12) {
+    cursor: pointer;
+}
+
+.pagenation-area {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 6rem;
+    padding: 1rem;
+    box-sizing: border-box;
+}
+
+.pagenation {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    font-size: 1.6rem;
+}
+
+.prev_btn,
+.next_btn {
+    font-size: 1.6rem;
+    font-weight: 700;
+    margin: 1.6rem;
+    cursor: pointer;
+}
+
+.pagenation-numbering-box{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+}
+
+.pagenation span {
+    margin: 0 0.8rem;
+    cursor: pointer;
+}
+
+.thisPage{
+    color: #0069D9;
+}
+
+.popupArticleUpload{
+    position: relative;
+    display: flex;
+    width: 50rem;
+}
+
+.popupArticleUpload label{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 9rem;
+    height: 2.6rem;
+    border-radius: 0.3rem 0 0 0.3rem;
+    background-color: #444444;
+    color: white;
+    font-size: 1.3rem;
+    box-sizing: border-box;
+    cursor: pointer;
+}
+
+.uploadFileText,
+.uploadLicenseFileText,
+.uploadDriverLicenseFileText{
+    width: 41rem;
+    padding-left: 1rem;
+    padding-right: 2rem;
+    font-size: 1.4rem;
+    border: 0.1rem solid #CDCDCE;
+    border-left: none;
+    border-radius: 0 0.3rem 0.3rem 0;
+    box-sizing: border-box;
+    outline: none;
+}
+
+.uploadFile,
+.uploadLicenseFile,
+.uploadDriverLicenseFile{
+    display: none;
+}
+
+.uploadDeleteBtn{
+    position: absolute;
+    top: 50%;
+    right: 0;
+    transform: translate(-50%, -50%);
+    cursor: pointer;
+}
+
+.saveUpload{
+    margin-right: 1rem;
+    background-color: #0069D9;
+}
+
+.uploadFormat{
+    position: absolute;
+    left: 2rem;
+    background-color: #444444;
+}
+.uploadFormat{
+    color: white;
 }

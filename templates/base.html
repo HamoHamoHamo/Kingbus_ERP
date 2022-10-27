@@ -229,8 +229,7 @@
 
       <div class="HomePopupAreaModules">
         <div class="HomePopupBgModules"></div>
-          <form method="post" action="{% url 'crudmember:change_id' %}" class="popupContainer HomePopupContainer"
-          enctype="multipart/form-data">
+          <div class="popupContainer HomePopupContainer">
             {% csrf_token %}
             <div class="popupHeader">
                 <div class="popupTitle">아이디 변경</div>
@@ -239,7 +238,7 @@
                 <div class="popupSection">
                     <div class="popupArticle">
                         <label for="" class="popupArticleLabel">비밀번호</label>
-                        <input autocomplete="off" name="password" type="password" class="popupArticleinput PopupDatainputPwCheckerId">
+                        <input autocomplete="off" name="password" type="password" class="popupArticleinput PopupDataInputPwCheckerId">
                     </div>
                     <div class="popupArticle">
                         <label for="" class="popupArticleLabel">새 아이디</label>
@@ -255,14 +254,14 @@
                 </div>
               </div>
             </div>
-        </form>
+          </div>
       </div>
 
 
 
       <div class="HomePopupAreaModules">
         <div class="HomePopupBgModules"></div>
-        <form method="post"  action="{% url 'crudmember:change_password' %}" class="HomePopupContainer HomePopupContainerPw" enctype="multipart/form-data">
+        <div class="HomePopupContainer HomePopupContainerPw">
             {% csrf_token %}
             <div class="popupHeader">
                 <div class="popupTitle">비밀번호 변경</div>
@@ -271,24 +270,108 @@
                 <div class="popupSection">
                     <div class="popupArticle">
                         <label for="" class="popupArticleLabel">비밀번호</label>
-                        <input autocomplete="off"name="cur_password" type="password" class="popupArticleinput PopupDatainputPwCheckerPw">
+                        <input autocomplete="off"name="cur_password" type="password" class="popupArticleinput PopupDataInputPwCheckerPw">
                     </div>
                     <div class="popupArticle">
                         <label for="" class="popupArticleLabel">새 비밀번호</label>
-                        <input autocomplete="off"name="password1" type="password" class="popupArticleinput PopupDatainputNewPw">
+                        <input autocomplete="off"name="password1" type="password" class="popupArticleinput PopupDataInputNewPw">
                     </div>
                     <div class="popupArticle">
                         <label for="" class="popupArticleLabel">비밀번호 확인</label>
-                        <input autocomplete="off"name="password2" type="password" class="popupArticleinput PopupDatainputOverlap">
+                        <input autocomplete="off"name="password2" type="password" class="popupArticleinput PopupDataInputOverlap">
                     </div>
                 </div>
                 <div class="popupFooter">
-                    <input autocomplete="off"type="submit" class="btnModules HomeEditBtn" value="추가">
+                    <input autocomplete="off"type="submit" class="btnModules HomeEditBtn" value="저장">
                     <div class="btnModules HomeCloseBtn">닫기</div>
                 </div>
             </div>
-        </form>
+        </div>
       </div>
+
+      <!-- 검색모듈 -->
+      <!-- 
+        <div class="search-Container">
+          <form method="post" action="" class="search-Form">
+            <label for="" class="search-Form_label">검색라벨</label>
+            <input autocomplete="off" type="text" class="search-Form_input">
+            <input type="submit" class="search-Form_search-btn" value="검색">
+          </form>
+          <div class="popup-area-box">
+            <div class="popup-area-box_btn">팝업이름</div>
+          </div>
+        </div>
+       -->
+
+
+
+      <!-- 일반 테이블리스트 -->
+      <!-- 
+        <table class="table-list">
+          <thead>
+            <tr class="table-list_head-tr">
+              <td class="table-list_head-tr_td"></td>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="table-list_body-tr">
+              <td class="table-list_body-tr_td"></td>
+            </tr>
+            <tr class="table-list_body-tr">
+              <td class="table-list_body-tr_td"></td>
+            </tr>
+            <tr class="table-list_body-tr">
+              <td class="table-list_body-tr_td"></td>
+            </tr>
+            <tr class="table-list_body-tr">
+              <td class="table-list_body-tr_td"></td>
+            </tr>
+          </tbody>
+        </table>
+       -->
+
+       
+
+
+      <!-- 스크롤 테이블리스트 -->
+      <!-- 
+        <div class="scrolling_table-list_header">
+          <table class="table-list">
+            <thead>
+              <tr class="table-list_head-tr">
+                <td class="table-list_head-tr_td"></td>
+              </tr>
+            </thead>
+          </table>
+        </div>
+        <div class="scrolling_table-list_body">
+          <table class="table-list">
+            <tbody>
+              <tr class="table-list_body-tr">
+                <td class="table-list_body-tr_td"></td>
+              </tr>
+              <tr class="table-list_body-tr">
+                <td class="table-list_body-tr_td"></td>
+              </tr>
+              <tr class="table-list_body-tr">
+                <td class="table-list_body-tr_td"></td>
+              </tr>
+              <tr class="table-list_body-tr">
+                <td class="table-list_body-tr_td"></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+       -->
+
+       
+
+
+      <!-- 버튼 모듈 -->
+      <!-- 
+        <div class="btnModules"></div>
+       -->
+      
 
       
 <!--  -->

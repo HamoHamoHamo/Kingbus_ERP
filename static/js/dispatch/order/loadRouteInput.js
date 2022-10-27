@@ -3,8 +3,9 @@ const orderListMain = document.querySelectorAll(".orderListMain .orderListScroll
 const orderListSub = document.querySelectorAll(".orderListSub .orderListScrollBox .orderListItem")
 
 function thisRoute() {
+    let parms = new URLSearchParams(location.search)    
     for (i = 0; i < orderListMain.length; i++) {
-        if (orderListMain[i].classList[2] == window.location.search.split("&")[0].substr(4,)) {
+        if (orderListMain[i].classList[2] == parms.get("id")) {
             orderListMain[i].classList.add("thisRoute")
             orderListSub[i].classList.add("thisRoute")
         }
@@ -22,9 +23,9 @@ for (i = 0; i < orderListMain.length; i++) {
 
 function ListOver() {
     if (!this.classList.contains("thisRoute")) {
-        this.style.backgroundColor = "#29b68b"
-        orderListMain[this.classList[1] - 1].style.backgroundColor = "#29b68b"
-        orderListSub[this.classList[1] - 1].style.backgroundColor = "#29b68b"
+        this.style.backgroundColor = "#FFF2CC"
+        orderListMain[this.classList[1] - 1].style.backgroundColor = "#FFF2CC"
+        orderListSub[this.classList[1] - 1].style.backgroundColor = "#FFF2CC"
     }
 }
 
@@ -40,5 +41,10 @@ function ListOut() {
 
 
 function selectList() {
-    location.href = `/dispatch/order?id=${this.classList[2]}&date1=${searchDate[0].value}&date2=${searchDate[1].value}`
+    let parms = new URLSearchParams(location.search)
+    if(parms.has("route")){
+        location.href = `/dispatch/order?route=${parms.get("route")}&id=${this.classList[2]}&date1=${searchDate[0].value}&date2=${searchDate[1].value}`
+    }else{
+        location.href = `/dispatch/order?id=${this.classList[2]}&date1=${searchDate[0].value}&date2=${searchDate[1].value}`
+    }
 }

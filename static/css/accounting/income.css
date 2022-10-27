@@ -51,11 +51,11 @@
 }
 
 .mainDataArea {
-    height: 30rem;
+    height: 34rem;
 }
 
 .SubDataArea {
-    height: 43rem;
+    height: 39rem;
 }
 
 .dashboardArticle {
@@ -79,11 +79,11 @@
 }
 
 .kategoriData {
-    width: 70rem;
+    width: 100rem;
 }
 
 .otherData {
-    width: calc(100% - 72rem);
+    width: calc(100% - 102rem);
 }
 
 .dashboardHeader {
@@ -110,7 +110,9 @@
 
 .monthData .dashboardBody {
     position: relative;
-    padding: 0 2rem;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 1rem 2rem;
     box-sizing: border-box;
 }
 
@@ -120,6 +122,9 @@
 }
 
 .kategoriData .dashboardBody {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     padding: 2rem;
     box-sizing: border-box;
 }
@@ -127,24 +132,128 @@
 .otherData .dashboardBody {
     position: relative;
     display: flex;
-    padding-right: 2rem;
     box-sizing: border-box;
+}
+
+.totalSalseBox{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 12rem;
+    box-sizing: border-box;
+    background-color: white;
+    border-radius: 0.2rem;
+    box-shadow: 0.1rem 0.1rem 0.6rem rgb(0 0 0 / 30%);
+}
+
+.totalSalsTitle{
+    font-size: 2rem;
+    color: #828282;
+    margin-top: -1rem;
+}
+
+.totalSalsValue{
+    font-size: 3rem;
+    font-weight: 700;
+    color: black;
+    margin-top: 1rem;
+}
+
+.salseArticle{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    height: 9rem;
+}
+
+.orderSalseBox,
+.regularlySalseBox{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: flex-end;
+    width: calc(50% - 1rem);
+    height: 100%;
+    padding: 2rem 2rem;
+    box-sizing: border-box;
+    background-color: white;
+    border-radius: 0.2rem;
+    box-shadow: 0.1rem 0.1rem 0.6rem rgb(0 0 0 / 30%);
+}
+
+.SalseTitle{
+    font-size: 1.4rem;
+    color: #828282;
+}
+
+.SalseValue{
+    font-size: 2rem;
+    font-weight: 700;
+    color: black;
+}
+
+.accountsReceivableArticle{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    height: 4.4rem;
+}
+
+.orderAccountsReceivableBox,
+.regularlyAccountsReceivableBox{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: calc(50% - 1rem);
+    height: 100%;
+    padding: 0 2rem;
+    box-sizing: border-box;
+    background-color: white;
+    border-radius: 0.2rem;
+    box-shadow: 0.1rem 0.1rem 0.6rem rgb(0 0 0 / 30%);
+}
+
+.accountsReceivableTitle{
+    font-size: 1.3rem;
+    color: #828282;
+}
+
+.accountsReceivableValue{
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: black;
+}
+
+.table-list{
+    margin-left: 4rem;
+}
+
+.table-list tr{
+    height: 3.6rem;
+}
+
+.table-list td:nth-child(1){
+    width: 45%;
+}
+
+.table-list td:nth-child(2){
+    width: 20%;
+}
+
+.table-list td:nth-child(3){
+    width: 35%;
 }
 
 .dashboardBodyCoulmnCell {
     display: flex;
-    flex-direction: column;
     justify-content: space-around;
     align-items: center;
-    width: 30rem;
+    width: 100%;
     height: 100%;
-}
-
-.chartTitle {
-    position: absolute;
-    left: 55%;
-    font-size: 2.4rem;
-    color: #666666;
 }
 
 .totalPrice{

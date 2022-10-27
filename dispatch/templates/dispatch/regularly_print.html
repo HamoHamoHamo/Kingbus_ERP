@@ -1,0 +1,74 @@
+{% load dispatch_custom_tags %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <title>TRP</title>
+    <link href="{% static 'css/dispatch/regularlyPrint.css' %}" rel="stylesheet" type="text/css" />
+    <link href="" id="printSizeCss" rel="stylesheet" type="text/css" />
+</head>
+
+<body>
+
+    <div class="dispatchTable">
+        <div class="dispatchTableHeader">
+            <div class="tilte"></div>
+            <!-- 2022년 10월 18일 (화요일) - 한국 쓰리엠 출근 배차표 -->
+            <div class="adminCheck">
+                <div class="checkLable">관리자 확인</div>
+                <div class="checkSign">(인)</div>
+            </div>
+        </div>
+        <table>
+            <thead>
+                <tr>
+                    <td>순번</td>
+                    <td>차량</td>
+                    <td>기사명</td>
+                    <td>용역기사</td>
+                    <td>연락처</td>
+                    <td>시간</td>
+                    <td>출근노선</td>
+                    <td>점호</td>
+                    <td>정문/후문</td>
+                    <td>셔틀</td>
+                    <td>서명</td>
+                    <td>출근시간</td>
+                    <td>음주측정</td>
+                    <td>체온측정</td>
+                    <td>제복</td>
+                    <td>비고</td>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>89</td>
+                    <td>8989</td>
+                    <td>일이삼사</td>
+                    <td>일이삼사</td>
+                    <td>010-8989-8989</td>
+                    <td>06:27</td>
+                    <td>병점 8</td>
+                    <td>곡반정축산물센터</td>
+                    <td>정문</td>
+                    <td>o</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <!-- 1페이지에 30줄 -->
+            </tbody>
+        </table>
+        <div class="page">1/2</div>
+    </div>
+
+</body>
+
+
+</html>

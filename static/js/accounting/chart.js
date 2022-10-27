@@ -1,67 +1,3 @@
-const monthChart = new Chart(
-    document.getElementById('monthChart'),
-    {
-        plugins: [ChartDataLabels], // chartjs-plugin-datalabels 불러오기
-        type: 'doughnut', // 차트 타입 지정
-        data: {
-            labels: [
-                '일반 매출',
-                '일반  미수금',
-                '출/퇴근 매출',
-                '출/퇴근 미수금'
-            ],
-            datasets: [{
-                label: 'My First dataset',
-                backgroundColor: ["#F69F3C", "#DFCAB3", "#1E64CC", "#A1B4CF"],
-                borderColor: 'rgba(255, 255, 255, 0)',
-                data: [1700000, 300000, 800000, 200000],
-                cutout: "30%"
-            }]
-        },
-        options: {
-            plugins: {
-                legend: {
-                    display: true,
-                    labels: {
-                        color: 'black',
-                        boxWidth: 20,
-                        boxHeight: 20,
-                        font: {
-                            size: 14
-                        }
-                    },
-                    position: "right"
-                },
-                animation: { // 차트 애니메이션 사용 안 함 (옵션)
-                    duration: 0,
-                },
-                datalabels: { // datalables 플러그인 세팅
-                    formatter: function (value) {
-                        // 출력 텍스트
-                        value = `${value}`.replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",")
-                        return value + "원";
-                    },
-                    align: 'center', // 도넛 차트에서 툴팁이 잘리는 경우 사용
-                    color: "white",
-                    font: {
-                        size: 14
-                    }
-                },
-            },
-            responsive: false,
-        },
-    }
-);
-
-
-
-
-
-
-
-
-
-
 var chartdata = {
     labels: ["1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월", "9월", "10월", "11월", "12월"],
     datasets: [
@@ -145,8 +81,8 @@ var chartOptions = {
             display: true,
             labels: {
                 color: 'black',
-                boxWidth: 18,
-                boxHeight: 18,
+                boxWidth: 16,
+                boxHeight: 16,
                 font: {
                     size: 14
                 }
@@ -234,8 +170,8 @@ const kategoriChart = new Chart(
                     display: true,
                     labels: {
                         color: 'black',
-                        boxWidth: 20,
-                        boxHeight: 20,
+                        boxWidth: 16,
+                        boxHeight: 16,
                         font: {
                             size: 14
                         }
@@ -276,7 +212,7 @@ const otherChartWay = new Chart(
     document.getElementById('otherChartWay'),
     {
         plugins: [ChartDataLabels], // chartjs-plugin-datalabels 불러오기
-        type: 'pie', // 차트 타입 지정
+        type: 'doughnut', // 차트 타입 지정
         data: {
             labels: [
                 '왕복',
@@ -341,7 +277,7 @@ const otherChartPayment = new Chart(
     document.getElementById('otherChartPayment'),
     {
         plugins: [ChartDataLabels], // chartjs-plugin-datalabels 불러오기
-        type: 'pie', // 차트 타입 지정
+        type: 'doughnut', // 차트 타입 지정
         data: {
             labels: [
                 '카드',
@@ -383,70 +319,6 @@ const otherChartPayment = new Chart(
                     formatter: function (value) {
                         // 출력 텍스트
                         return value + '%';
-                    },
-                    align: 'center', // 도넛 차트에서 툴팁이 잘리는 경우 사용
-                    color: "white"
-                },
-            },
-            responsive: false,
-        },
-    }
-);
-
-
-
-
-
-
-
-
-
-
-const otherChartBus = new Chart(
-    document.getElementById('otherChartBus'),
-    {
-        plugins: [ChartDataLabels], // chartjs-plugin-datalabels 불러오기
-        type: 'doughnut', // 차트 타입 지정
-        data: {
-            labels: [
-                '45인승',
-                '41인승',
-                '31인승',
-                '28인승',
-                '22인승',
-                'EX노블'
-            ],
-            datasets: [{
-                label: 'My First dataset',
-                backgroundColor: ["#F69F3C", "#1E64CC", "#4CAF50", "#677283", "#A544C8", "#C84444"],
-                borderColor: 'rgba(255, 255, 255, 0)',
-                data: [20, 12, 16, 14, 24, 3],
-                cutout: "50%"
-            }]
-        },
-        options: {
-            plugins: {
-                legend: {
-                    display: true,
-                    labels: {
-                        color: 'black',
-                        boxWidth: 20,
-                        boxHeight: 20,
-                        font: {
-                            size: 14
-                        }
-                    },
-                    position: "right"
-                },
-                animation: { // 차트 애니메이션 사용 안 함 (옵션)
-                    duration: 0,
-                },
-                datalabels: { // datalables 플러그인 세팅
-                    formatter: function (value, context) {
-                        var idx = context.dataIndex; // 각 데이터 인덱스
-
-                        // 출력 텍스트
-                        return value + "건";
                     },
                     align: 'center', // 도넛 차트에서 툴팁이 잘리는 경우 사용
                     color: "white"

@@ -1,6 +1,7 @@
 const searchDate = document.querySelector(".searchDate")
 const dateControllBtn = document.querySelectorAll(".dateControllBtn")
 const scheduleHeader = document.querySelector(".scheduleHeader")
+const dateToday = document.querySelector(".dateToday")
 
 // 날짜구하기
 const toDay = new Date()
@@ -116,4 +117,17 @@ function dateTo() {
         location.href = `${location.href}&date=${controllDate}`
     }
 
+}
+
+// 날짜이동 "오늘"
+dateToday.addEventListener("click", turnbackToday)
+
+function turnbackToday(){
+    let parms = new URLSearchParams(location.search)
+    if(parms.has("group")){
+        let groupUrl = window.location.search.split("group=")[1].split("&")[0]
+        location.href = `${window.location.href.split("?")[0]}?group=${groupUrl}`
+    }else{
+        location.href = window.location.href.split("?")[0]
+    }
 }

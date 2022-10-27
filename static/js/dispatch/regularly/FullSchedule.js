@@ -12,31 +12,14 @@ let dataStartTime = ""
 let dataEndTime = ""
 let scheduleBus = []
 
-// let routeTimeStart = 0;
-// let routeTimeEnd = 0;
-
-
-
-
-// // 노선 운행시간
-
-// function getRouteTime() {
-//     routeTimeStart = parseInt(routeTimeInput[0].value * 60) + parseInt(routeTimeInput[1].value)
-//     routeTimeEnd = parseInt(routeTimeInput[2].value * 60) + parseInt(routeTimeInput[3].value)
-// }
-
-
-
 
 
 // 스케줄 그리기
-function drawSchdule() {
-
+function drawSchdule() {    
 
     for (i = 0; i < data.length; i++) {
 
         for (j = 0; j < driverTd.length; j++) {
-
 
             if (data[i].bus_id == driverTd[j].classList[1]) {
 
@@ -89,43 +72,6 @@ function drawSchdule() {
 
                 // 스케줄 생성
                 driverTd[j].parentNode.appendChild(startWork);
-            }
-        }
-    }
-}
-
-
-
-
-
-
-// 배차불가 차량 필터(일반배차)
-function DispatcBusFilter() {
-
-    scheduleBus = []
-
-    for (i = 0; i < dataList.length; i++) {
-
-        dataStartTime = dataList[i].departure_date.substr(0, 10).replace(/\-/g, "") + dataList[i].departure_date.substr(11, 5).replace(/\:/g, "")
-        dataEndTime = dataList[i].arrival_date.substr(0, 10).replace(/\-/g, "") + dataList[i].arrival_date.substr(11, 5).replace(/\:/g, "")
-
-
-        CreateCompareTime()
-
-        // data기간 필터링
-        if (dataEndTime >= inputStartTime && dataStartTime <= inputEndTime) {
-            scheduleBus.push(dataList[i].bus_id)
-        }
-    }
-
-
-    // 배차불가 클래스 부여
-    if (inputStartTime !== "" && inputEndTime !== "") {
-        for (i = 0; i < scheduleBus.length; i++) {
-            for (j = 0; j < driverTd.length; j++) {
-                if (driverTd[j].classList[1] == scheduleBus[i]) {
-                    driverTd[j].parentNode.classList.add("haveSchedule")
-                }
             }
         }
     }

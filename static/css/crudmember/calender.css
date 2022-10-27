@@ -1,645 +1,473 @@
-.controllBox {
-    display: flex;
+/* 검색 */
+.search-Container {
     justify-content: space-between;
+}
+
+.controllArea {
+    display: flex;
+    justify-content: flex-start;
     align-items: center;
-    width: 27rem;
+}
+
+.controllArea form {
+    display: none;
+}
+
+.search-Container form {
+    margin-right: 3rem;
+}
+
+.dayController {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 12.6rem;
+    height: 2.6rem;
+}
+
+.dayController svg {
+    cursor: pointer;
 }
 
 .todayBtn {
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 8rem;
-    height: 3.2rem;
-    border-radius: 1.6rem;
+    width: 6rem;
+    height: 2.6rem;
+    border-radius: 0.2rem;
     background-color: #444444;
     font-size: 1.4rem;
     color: white;
     cursor: pointer;
+    margin-right: 1rem;
 }
 
-.controllBtnCell {
+.prevBtn {
+    margin-right: 0.4rem;
+}
+
+.searchAreaSide {
+    display: flex;
+}
+
+.printArea {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    width: 7.2rem;
+    width: 42rem;
+    margin-right: 2rem;
 }
 
-.controllBtnCell div {
+.addSchedule {
+    background-color: #0069D9;
+    margin-left: 2rem;
+}
+
+.print,
+.alarm {
+    font-size: 1.4rem;
+    margin-right: 1rem;
+}
+
+.prinBtn {
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 3.2rem;
-    height: 3.2rem;
-    border-radius: 1.6rem;
-    background-color: #444444;
+    width: 8rem;
+    height: 2.6rem;
+    font-size: 1.4rem;
+    color: white;
+    border-radius: 0.2rem;
+    background-color: #444;
     cursor: pointer;
 }
 
-.controllBtnCell div svg {
-    width: 100%;
+.morelonger {
+    width: 9rem;
 }
 
-.controllBox span {
-    font-size: 1.8rem;
+.alarmArea {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 9rem;
 }
 
-.calenderBox {
-    width: 100%;
-    aspect-ratio: 5 / 3;
+.vhicleCheck {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 2.6rem;
+    height: 2.6rem;
+    background-color: #B5B5B5;
+    border-radius: 0.2rem;
+    cursor: pointer;
 }
 
-.calenderTableHeader {
+
+
+
+
+
+
+
+
+
+
+
+/* calender */
+.contentsAreaBox {
+    position: relative;
     width: 100%;
-    height: 4rem;
-    border: 0.1rem solid #D2D2D2;
+    padding: 0;
+}
+
+.changeFormatBtn {
+    position: absolute;
+    top: 0.8rem;
+    right: 1rem;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    width: 9rem;
+    height: 2.6rem;
+    padding: 0 0.4rem;
     box-sizing: border-box;
-    border-spacing: 0;
-    background-color: #444444;
-}
-
-.calenderTableHeader td {
-    width: calc(100%/7);
     font-size: 1.4rem;
-    padding-left: 1rem;
-    box-sizing: border-box;
     color: white;
-    text-align: center;
+    background-color: #0069D9;
+    border-radius: 0.2rem;
+    cursor: pointer;
 }
 
-.calenderTableHeader td:nth-child(1) {
+.dateTitle {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 4.2rem;
+    font-size: 1.6rem;
+}
+
+.calenderHaed {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    height: 3.6rem;
+}
+
+.calenderHaed div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: calc(100%/7);
+    height: 100%;
+    background-color: #444;
+    color: white;
+    font-size: 1.4rem;
+}
+
+.calenderHaed div:nth-child(1) {
     color: #DC1E1E;
 }
 
-.calenderTableHeader td:nth-child(7) {
+.calenderHaed div:nth-last-child(1) {
     color: #0069D9;
 }
 
-.calenderCreteTbody {
+.calender {
     display: grid;
     grid-template-columns: repeat(7, 1fr);
     width: 100%;
     height: auto;
-    padding-bottom: 1rem;
-    box-sizing: border-box;
 }
 
-.calenderCreteTbody .dayBox:nth-child(1) span,
-.calenderCreteTbody .dayBox:nth-child(8) span,
-.calenderCreteTbody .dayBox:nth-child(15) span,
-.calenderCreteTbody .dayBox:nth-child(22) span,
-.calenderCreteTbody .dayBox:nth-child(29) span,
-.calenderCreteTbody .dayBox:nth-child(36) span {
-    color: #DC1E1E;
-}
-
-.calenderCreteTbody .dayBox:nth-child(7) span,
-.calenderCreteTbody .dayBox:nth-child(14) span,
-.calenderCreteTbody .dayBox:nth-child(21) span,
-.calenderCreteTbody .dayBox:nth-child(28) span,
-.calenderCreteTbody .dayBox:nth-child(35) span,
-.calenderCreteTbody .dayBox:nth-child(42) span {
-    color: #0069D9;
-}
-
-.dayBox {
-    position: relative;
+.calenderDateBox {
     display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: 100%;
-    aspect-ratio: 10 / 7;
-    padding: 0.8rem;
-    border: 0.1rem solid #D2D2D2;
-    box-sizing: border-box;
-    font-size: 1.4rem;
-}
-
-.dayBox:hover {
-    border: 0.1rem solid #444;
-    background-color: #444;
-}
-
-.dateAndAlarmBox {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    align-items: center;
-    width: 22%;
-    height: 100%;
-}
-
-.claenderDate {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    aspect-ratio: 1 / 1;
-    background-color: #444444;
-    color: white;
-    font-size: 1.6rem;
-    border-radius: 0.3rem;
-    box-sizing: border-box;
-}
-
-
-.regularlyLink,
-.orderLink {
-    width: 36%;
-    height: 100%;
-}
-
-.today {
-    background-color: #0069D9;
-}
-
-.othereMonth {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: #e3e3e3;
-}
-
-.dayDataBox {
-    position: absolute;
-    top: 0;
-    right: 0;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    align-items: flex-end;
-    width: 100%;
-    height: 16rem;
-    padding: 0.6rem;
-    box-sizing: border-box;
-}
-
-.dayDataBoxToday {
-    border: 0.2rem solid #0069D9;
-}
-
-.iconDataBox {
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
-    width: 100%;
-    height: 3.2rem;
-}
-
-.dispatchAlarm,
-.vehicleAlarm {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    height: 28%;
-    border: 0.1rem dashed #D2D2D2;
-    border-radius: 0.3rem;
-    background-color: white;
-    color: white;
-}
-
-.dispatchAlarm {
-    cursor: pointer;
-}
-
-.dayBox:hover .dispatchAlarm,
-.dayBox:hover .vehicleAlarm {
-    border: none;
-}
-
-.dispatchAlarm svg {
-    width: 35%;
-}
-
-.vehicleAlarm svg {
-    width: 58%;
-}
-
-.dispatchDataBox {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: flex-end;
-    width: 100%;
-    height: 4.8rem;
-    padding: 0.6rem 0;
-}
-
-.dispatchDataBox a {
-    width: 100%;
-    height: 2.4rem;
-    margin: 0.3rem 0;
-}
-
-.dispatchCell {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    align-items: center;
-    width: 100%;
-    height: 100%;
-    border: 0.1rem dashed #D2D2D2;
-    border-radius: 0.3rem;
-    box-sizing: border-box;
-    font-size: 1.4rem;
-    cursor: pointer;
-    color: black;
-    background-color: white;
-}
-
-.dayBox:hover .dispatchCell {
-    border: none;
-}
-
-.dispatchCellTop {
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-end;
-    align-items: center;
-    width: 100%;
-    height: 78%;
-}
-
-.dispatchCellIcon {
-    width: 48%;
-    margin-bottom: 28%;
-}
-
-.dispatchCellIcon svg {
-    width: 100%;
-}
-
-.dispatchCellTitle {
-    font-size: 1.4rem;
-    color: black;
-}
-
-.dispatchCellCount {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    height: 22%;
-    color: black;
-}
-
-
-
-
-/*class바꾸는용*/
-.vehicleAlarmLight,
-.dispatchAlarmLight {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    height: 28%;
-    border-radius: 0.3rem;
-    background-color: #0069D9;
-    cursor: pointer;
-}
-
-.vehicleAlarmLight svg {
-    width: 58%;
-}
-
-.dispatchAlarmLight svg {
-    width: 35%;
-}
-
-.dispatchCellInclude {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    align-items: center;
-    width: 100%;
-    height: 100%;
-    border: none;
-    border-radius: 0.3rem;
-    font-size: 1.4rem;
-    cursor: pointer;
-    background-color: #b1b1b1;
-    box-sizing: border-box;
-}
-
-
-
-
-
-
-
-/*popup*/
-.popupAreaModules,
-.popupAreaModulesDispatch {
-    position: absolute;
-    top: 0;
-    right: 0;
-    display: none;
-    width: 100%;
-    height: 100%;
-}
-
-.popupBgModules {
-    position: absolute;
-    top: 0;
-    right: 0;
-    z-index: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.16);
-}
-
-.popupContainer {
-    position: fixed;
-    top: 50%;
-    left: calc(50% + 11rem);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 80rem;
-    height: auto;
-    max-height: 38.7rem;
-    background-color: white;
-    border-radius: 0.3rem;
-    box-shadow: 0 0.2rem 0.4rem rgba(0, 0, 0, 0.16);
-    transform: translate(-50%, -50%);
-}
-
-.popupAreaModules .popupContainer {
-    height: 72rem;
-    max-height: initial;
-}
-
-.PopupTitle {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    height: 4.8rem;
-    font-size: 1.6rem;
-    font-weight: 500;
-    border-bottom: 0.1rem solid #191919;
-}
-
-.PopupDataArea {
     flex-direction: column;
     justify-content: flex-start;
+    align-items: center;
+    width: calc(100% - 2.4rem);
+    height: 16.6rem;
+    margin: 0.5rem;
+    padding: 0.5rem;
+    border: 0.2rem solid white;
+    border-radius: 0.5rem;
+    box-shadow: 0rem 0.1rem 0.4rem rgb(0 0 0 / 30%);
+    cursor: pointer;
+}
+
+.selectDataBox {
+    border: 0.2rem solid #0069D9
+}
+
+.beforeMonth {
+    background-color: #EFEFEF;
+}
+
+.date {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
     width: 100%;
-    height: calc(100% - 9.7rem);
-    max-height: 29rem;
-    padding: 4.2rem 3rem 3rem 3rem;
-    box-sizing: border-box;
+    height: 2.2rem;
+    font-size: 1.4rem;
+}
+
+.date div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 2.2rem;
+    height: 2.2rem;
+    border-radius: 1.1rem;
+}
+
+.hiidenModuleBox {
+    display: none;
+}
+
+.basicContentesArea {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    width: 100%;
+    height: calc(100% - 4.7rem);
+    margin-top: 2.5rem;
+}
+
+.orderContentesArea {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    width: calc(100% - 0.6rem);
+    height: calc(100% - 2.7rem);
+    margin-top: 0.5rem;
+}
+
+.orderListBox {
+    width: 100%;
+    height: calc(100% - 3rem);
+    border-top: 0.1rem solid #D2D2D2;
+    border-bottom: 0.1rem solid #D2D2D2;
     overflow-y: scroll;
+    box-sizing: border-box;
 }
 
-.popupAreaModules .PopupDataArea {
-    max-height: initial;
-}
-
-.PopupDataArea::-webkit-scrollbar {
+.orderListBox::-webkit-scrollbar {
     width: 0.6rem;
 }
 
-.PopupDataArea::-webkit-scrollbar-thumb {
+.orderListBox::-webkit-scrollbar-thumb {
     height: 17%;
     background-color: #828282;
-    border-radius: 10px;
+    border-radius: 1rem;
 }
 
-.PopupDataArea::-webkit-scrollbar-track {
+.orderListBox::-webkit-scrollbar-track {
     background-color: #F5F5F5;
 }
 
-.PopupDataAreaDispatch {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    width: 100%;
-    height: calc(100% - 9.7rem);
-    padding: 4.2rem 3rem 3rem 3rem;
-    box-sizing: border-box;
-}
-
-.PopupDataBox {
+.orderListCell {
     display: flex;
     justify-content: space-between;
     align-items: center;
     width: 100%;
-    height: 6rem;
-    margin-bottom: 3.6rem;
-}
-
-.PopupDataCell {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    align-items: flex-start;
-    width: 23rem;
-    height: 6rem;
-}
-
-.PopupDataTitle {
+    height: 2.8rem;
     font-size: 1.4rem;
-    color: #7A7A7A;
-}
-
-.PopupDataCell a {
-    width: 100%;
-}
-
-.PopupDataCell a .PopupData {
-    color: #0069D9;
-}
-
-.PopupData {
-    width: 100%;
-    height: 2rem;
-    padding-bottom: 0.1rem;
-    font-size: 1.4rem;
-    color: #191919;
-    border-bottom: 0.1rem solid #191919;
-}
-
-.haveDeleteIcon {
-    position: relative;
-    width: 100%;
-}
-
-.haveDeleteIcon svg {
-    position: absolute;
-    top: 50%;
-    right: 0;
-    transform: translate(0, -50%);
+    padding: 0 1rem 0 0.6rem;
+    margin: 0.1rem 0;
+    box-sizing: border-box;
+    border-radius: 0.2rem;
+    box-shadow: 0rem 0.1rem 0.4rem rgb(0 0 0 / 30%);
     cursor: pointer;
 }
 
-.fakeinput{
-    outline: none;
-    border: none;
-    border-bottom: 0.1rem solid #191919;
-}
-
-.printBox {
+.totalBox {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    width: 54rem;
-    padding: 3.6rem 10rem 0 10rem;
+    width: 100%;
+    height: 2.6rem;
+    margin-top: 0.4rem;
+    font-size: 1.4rem;
+    padding: 0 1rem 0 0.6rem;
+    box-sizing: border-box;
+    background-color: #EFEFEF;
+    border-radius: 0.2rem;
 }
 
-.printCell {
+.dataCell {
     display: flex;
-    justify-content: space-around;
+    justify-content: space-between;
     align-items: center;
-    width: 12rem;
-    height: 3.4rem;
-    border: 0.11rem solid #191919;
+    width: 100%;
+    height: 3.6rem;
+    padding: 0 1rem 0 0.6rem;
+    font-size: 1.4rem;
+    border-radius: 0.2rem;
+    /* border: 0.1rem solid #0069D9; */
+    box-shadow: 0 0 0.4rem rgba(0, 0, 0, 0.3);
+    box-sizing: border-box;
+    cursor: pointer;
+}
+
+.dataCell:hover {
+    background-color: #EFEFEF;
+}
+
+.dataTitleBox {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.needCheck {
+    padding: 0.2rem 0.6rem;
+    background-color: #59C8AA;
+    color: white;
     border-radius: 0.3rem;
-    box-sizing: border-box;
+}
+
+.dataTitleBox svg {
+    margin-right: 1rem;
+}
+
+.checkMark {
+    position: absolute;
+    top: -4.6rem;
+    right: 0.2rem;
     cursor: pointer;
 }
 
-.printCell span {
+
+
+
+
+
+
+
+
+/* 체크팝업 */
+.checkerCloseBtn {
+    background-color: #444;
+}
+
+.checkerDataBox {
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-end;
+    width: 27rem;
+    height: 2.4rem;
+    padding-left: 1rem;
+    padding-bottom: 0.2rem;
     font-size: 1.4rem;
-}
-
-.PopupBtnBox {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    height: 4.8rem;
-}
-
-.PopupBtnBoxDispatch {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: 100%;
-    height: 4.8rem;
-    padding: 0 32.5rem;
     box-sizing: border-box;
+    border-bottom: 0.1rem solid #CDCDCE;
 }
 
-.PopupBtnBox div {
-    background-color: #444444;
+
+
+
+
+/* 일정등록 팝업 */
+.scheduleForm label {
+    width: 5rem;
 }
 
-.PopupBtnBoxDispatch div {
-    background-color: #444444;
+.scheduleContents {
+    width: 56rem;
 }
 
-.PopupBtnBoxDispatch input{
+.scheduleDate {
+    width: 14rem;
+    margin-right: 42rem;
+}
+
+.addScheduleBtn {
     background-color: #0069D9;
 }
 
-
-
-@media all and (min-width:1600px) and (max-width: 1820px) {
-    .claenderDate {
-        font-size: 1.4rem;
-    }
-
-    .dispatchCellTitle,
-    .dispatchCellCount {
-        font-size: 1.2rem;
-    }
+.scheduleCloseBtn {
+    background-color: #444;
+    margin-left: 1rem;
 }
 
-@media all and (min-width:1460px) and (max-width: 1600px) {
-    .claenderDate {
-        font-size: 1.3rem;
-    }
-
-    .dispatchCellTitle,
-    .dispatchCellCount {
-        font-size: 1rem;
-    }
 
 
-    .controllBox {
-        width: 26rem;
-    }
 
-    .todayBtn {
-        width: 7.6rem;
-        height: 3rem;
-        font-size: 1.3rem;
-    }
 
-    .controllBtnCell {
-        width: 6.8rem;
-    }
 
-    .controllBtnCell div {
-        width: 3rem;
-        height: 3rem;
-    }
-
-    .controllBox span {
-        font-size: 1.7rem;
-    }
-
-    .calenderTableHeader {
-        height: 3.6rem;
-    }
-
-    .calenderTableHeader td {
-        font-size: 1.3rem;
-    }
+/* 정기점검 팝업 */
+.alarmAble {
+    background-color: #444;
 }
 
-@media all and (min-width:1024px) and (max-width: 1460px) {
-    .claenderDate {
-        font-size: 1rem;
-    }
+.inspectionCloseBtn {
+    background-color: #444;
+}
 
-    .dispatchCellTitle{
-        display: none;
-    }
-    .dispatchCellCount {
-        font-size: 1rem;
-    }
-    .dispatchCellIcon{
-        width: 56%;
-        margin-bottom: -10%;
-    }
-    .dispatchCellTop{
-        height: 60%;
-    }
-    .dispatchCellCount{
-        height: 40%;
-    }
+.inspectionForm .scrolling_table-list_body {
+    height: 14.4rem;
+}
 
-    .controllBox {
-        width: 24rem;
-    }
+.inspectionForm td:nth-child(1) {
+    width: 7%;
+}
 
-    .todayBtn {
-        width: 7.2rem;
-        height: 2.8rem;
-        font-size: 1.3rem;
-    }
+.inspectionForm td:nth-child(2),
+.inspectionForm td:nth-child(3),
+.inspectionForm td:nth-child(4) {
+    width: 31%;
+}
 
-    .controllBtnCell {
-        width: 6.4rem;
-    }
+.inspectionForm .table-list_body-tr{
+    cursor: pointer;
+}
 
-    .controllBtnCell div {
-        width: 2.8rem;
-        height: 2.8rem;
-    }
+.inspectionForm .table-list_body-tr:hover{
+    background-color: #CDCDCE;
+}
 
-    .controllBox span {
-        font-size: 1.6rem;
-    }
 
-    .calenderTableHeader {
-        height: 3.2rem;
-    }
 
-    .calenderTableHeader td {
-        font-size: 1.2rem;
-    }
+
+
+
+
+/* 일정목록 팝업 */
+.scheduleListForm{
+    width: 80rem;
+}
+.scheduleListCloseBtn {
+    background-color: #444;
+}
+
+.scheduleListForm .scrolling_table-list_body {
+    height: 14.4rem;
+}
+
+.scheduleListForm td:nth-child(1) {
+    width: 7%;
+}
+
+.scheduleListForm td:nth-child(2){
+    width: 69%;
+}
+
+.scheduleListForm td:nth-child(3){
+    width: 10%;
+}
+
+.scheduleListForm td:nth-child(4) {
+    width: 18%;
+}
+
+.scheduleListForm .scrolling_table-list_body td:nth-child(2){
+    text-align: left;
+    padding-left: 1rem;
 }

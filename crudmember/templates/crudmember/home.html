@@ -14,49 +14,398 @@
 {% endblock %}
 
 {% block content %}
+<div class="search-Container">
 
-<form action="" method="get" id="sendMonth">
-  <div class="searchAreaBox">
-    <div class="controllBox">
-      <div class="todayBtn">Today</div>
-      <div class="controllBtnCell">
-        <div>
-          <svg xmlns="http://www.w3.org/2000/svg" width="8" height="13.993" viewBox="0 0 8 13.993">
-            <path id="Icon_ionic-ios-arrow-back" data-name="Icon ionic-ios-arrow-back"
-              d="M13.662,13.188,18.957,7.9a1,1,0,1,0-1.416-1.412l-6,5.995a1,1,0,0,0-.029,1.379L17.536,19.9a1,1,0,1,0,1.416-1.412Z"
-              transform="translate(-11.251 -6.194)" fill="#fff" />
-          </svg>
-        </div>
-        <div>
-          <svg xmlns="http://www.w3.org/2000/svg" width="8" height="13.993" viewBox="0 0 8 13.993">
-            <path id="Icon_ionic-ios-arrow-back" data-name="Icon ionic-ios-arrow-back"
-              d="M16.839,13.188,11.544,7.9a1,1,0,0,1,1.416-1.412l6,5.995a1,1,0,0,1,.029,1.379L12.965,19.9a1,1,0,0,1-1.416-1.412Z"
-              transform="translate(-11.251 -6.194)" fill="#fff" />
-          </svg>
-        </div>
+  <div class="controllArea">
+    <form method="get" action="" class="search-Form">
+      <label for="" class="search-Form_label">일반배차 노선</label>
+      <input autocomplete="off" type="text" class="search-Form_input">
+      <input type="submit" class="search-Form_search-btn" value="검색">
+    </form>
+
+    <div class="dayController">
+      <div class="todayBtn">오늘</div>
+      <svg class="prevBtn" id="그룹_1823" data-name="그룹 1823" xmlns="http://www.w3.org/2000/svg" width="26" height="26"
+        viewBox="0 0 26 26">
+        <g id="그룹_1822" data-name="그룹 1822">
+          <rect id="사각형_8546" data-name="사각형 8546" width="26" height="26" rx="13" fill="#444" />
+        </g>
+        <path id="Icon_ionic-ios-arrow-back" data-name="Icon ionic-ios-arrow-back"
+          d="M13.662,13.188,18.957,7.9a1,1,0,1,0-1.416-1.412l-6,5.995a1,1,0,0,0-.029,1.379L17.536,19.9a1,1,0,1,0,1.416-1.412Z"
+          transform="translate(-3.251 0.81)" fill="#fff" />
+      </svg>
+      <svg class="nextBtn" xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 26 26">
+        <g id="그룹_1823" data-name="그룹 1823" transform="translate(-579 -103)">
+          <g id="그룹_1822" data-name="그룹 1822" transform="translate(301 -30)">
+            <rect id="사각형_8546" data-name="사각형 8546" width="26" height="26" rx="13" transform="translate(278 133)"
+              fill="#444" />
+          </g>
+          <path id="Icon_ionic-ios-arrow-back" data-name="Icon ionic-ios-arrow-back"
+            d="M16.839,13.188,11.544,7.9a1,1,0,0,1,1.416-1.412l6,5.995a1,1,0,0,1,.029,1.379L12.965,19.9a1,1,0,0,1-1.416-1.412Z"
+            transform="translate(577.75 103.81)" fill="#fff" />
+        </g>
+      </svg>
+    </div>
+  </div>
+
+  <div class="searchAreaSide">
+    <div class="printArea">
+
+      <div class="print">프린트</div>
+
+      <div class="prinBtn" onclick="openLinePrint()">
+        <span>노선별(A4)</span>
+      </div>
+      <div class="prinBtn" onclick="openBusPrintA4()">
+        <span>호수별(A4)</span>
+      </div>
+      <div class="prinBtn" onclick="openBusPrintA3()">
+        <span>호수별(A3)</span>
+      </div>
+      <div class="prinBtn morelonger" onclick="openDrivingListPrint()">
+        <span>운행일보(A4)</span>
+      </div>
+    </div>
+    <div class="alarmArea">
+      <div class="alarm">정기점검</div>
+      <div class="vhicleCheck"><!-- alarmAble -->
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20">
+          <path id="Icon_awesome-bus" data-name="Icon awesome-bus"
+            d="M19.063,5H18.75V3.125C18.75,1.375,14.875,0,10,0S1.25,1.375,1.25,3.125V5H.938A.937.937,0,0,0,0,5.938V9.063A.938.938,0,0,0,.938,10H1.25v6.25A1.25,1.25,0,0,0,2.5,17.5v1.25A1.25,1.25,0,0,0,3.75,20H5a1.25,1.25,0,0,0,1.25-1.25V17.5h7.5v1.25A1.25,1.25,0,0,0,15,20h1.25a1.25,1.25,0,0,0,1.25-1.25V17.5h.25a.986.986,0,0,0,1-1V10h.313A.938.938,0,0,0,20,9.063V5.938A.937.937,0,0,0,19.063,5ZM4.375,15.625a1.25,1.25,0,1,1,1.25-1.25A1.25,1.25,0,0,1,4.375,15.625ZM5,11.25A1.25,1.25,0,0,1,3.75,10V5A1.25,1.25,0,0,1,5,3.75H15A1.25,1.25,0,0,1,16.25,5v5A1.25,1.25,0,0,1,15,11.25Zm10.625,4.375a1.25,1.25,0,1,1,1.25-1.25A1.25,1.25,0,0,1,15.625,15.625Z"
+            fill="#fff" />
+        </svg>
+      </div>
+    </div>
+
+    <div class="btnModules addSchedule">일정등록</div>
+  </div>
+
+</div>
+
+<div class="contentsAreaBox">
+
+  <div class="changeFormatBtn">
+    <svg xmlns="http://www.w3.org/2000/svg" width="16.318" height="15.631" viewBox="0 0 16.318 15.631">
+      <g id="그룹_1831" data-name="그룹 1831" transform="translate(4207.824 16178.492)">
+        <path id="패스_360" data-name="패스 360"
+          d="M5.209,8.35a.827.827,0,1,0,1.17-1.17L5.308,6.118h9.885a1.285,1.285,0,0,1,1.31,1.26V8.35a.824.824,0,1,0,1.648,0V7.378A2.933,2.933,0,0,0,15.193,4.47H5.308L6.379,3.408a.827.827,0,1,0-1.17-1.17L2.738,4.709a.824.824,0,0,0,0,1.17Z"
+          transform="translate(-4210.318 -16180.486)" fill="#fff" />
+        <path id="패스_361" data-name="패스 361"
+          d="M5.457,17.766h9.885l-1.071,1.063A.827.827,0,1,0,15.441,20l2.471-2.471a.824.824,0,0,0,0-1.17l-2.471-2.471a.827.827,0,1,0-1.17,1.17l1.071,1.063H5.457a1.285,1.285,0,0,1-1.31-1.26V13.643a.824.824,0,1,0-1.648,0v1.216a2.933,2.933,0,0,0,2.957,2.908Z"
+          transform="translate(-4209.662 -16183.103)" fill="#fff" />
+      </g>
+    </svg>
+    <span>배차달력</span>
+  </div>
+
+  <div class="dateTitle"></div>
+  <div class="calenderHaed">
+    <div>일</div>
+    <div>월</div>
+    <div>화</div>
+    <div>수</div>
+    <div>목</div>
+    <div>금</div>
+    <div>토</div>
+  </div>
+  <div class="calender">
+    <div class="calenderDateBox">
+      <div class="date">
+        <div></div>
+      </div>
+    </div>
+    <div class="calenderDateBox">
+      <div class="date">
+        <div></div>
+      </div>
+    </div>
+    <div class="calenderDateBox">
+      <div class="date">
+        <div></div>
+      </div>
+    </div>
+    <div class="calenderDateBox">
+      <div class="date">
+        <div></div>
+      </div>
+    </div>
+    <div class="calenderDateBox">
+      <div class="date">
+        <div></div>
+      </div>
+    </div>
+    <div class="calenderDateBox">
+      <div class="date">
+        <div></div>
+      </div>
+    </div>
+    <div class="calenderDateBox">
+      <div class="date">
+        <div></div>
+      </div>
+    </div>
+    <div class="calenderDateBox">
+      <div class="date">
+        <div></div>
+      </div>
+    </div>
+    <div class="calenderDateBox">
+      <div class="date">
+        <div></div>
+      </div>
+    </div>
+    <div class="calenderDateBox">
+      <div class="date">
+        <div></div>
+      </div>
+    </div>
+    <div class="calenderDateBox">
+      <div class="date">
+        <div></div>
+      </div>
+    </div>
+    <div class="calenderDateBox">
+      <div class="date">
+        <div></div>
+      </div>
+    </div>
+    <div class="calenderDateBox">
+      <div class="date">
+        <div></div>
+      </div>
+    </div>
+    <div class="calenderDateBox">
+      <div class="date">
+        <div></div>
+      </div>
+    </div>
+    <div class="calenderDateBox">
+      <div class="date">
+        <div></div>
+      </div>
+    </div>
+    <div class="calenderDateBox">
+      <div class="date">
+        <div></div>
+      </div>
+    </div>
+    <div class="calenderDateBox">
+      <div class="date">
+        <div></div>
+      </div>
+    </div>
+    <div class="calenderDateBox">
+      <div class="date">
+        <div></div>
+      </div>
+    </div>
+    <div class="calenderDateBox">
+      <div class="date">
+        <div></div>
+      </div>
+    </div>
+    <div class="calenderDateBox">
+      <div class="date">
+        <div></div>
+      </div>
+    </div>
+    <div class="calenderDateBox">
+      <div class="date">
+        <div></div>
+      </div>
+    </div>
+    <div class="calenderDateBox">
+      <div class="date">
+        <div></div>
+      </div>
+    </div>
+    <div class="calenderDateBox">
+      <div class="date">
+        <div></div>
+      </div>
+    </div>
+    <div class="calenderDateBox">
+      <div class="date">
+        <div></div>
+      </div>
+    </div>
+    <div class="calenderDateBox">
+      <div class="date">
+        <div></div>
+      </div>
+    </div>
+    <div class="calenderDateBox">
+      <div class="date">
+        <div></div>
+      </div>
+    </div>
+    <div class="calenderDateBox">
+      <div class="date">
+        <div></div>
+      </div>
+    </div>
+    <div class="calenderDateBox">
+      <div class="date">
+        <div></div>
+      </div>
+    </div>
+    <div class="calenderDateBox">
+      <div class="date">
+        <div></div>
+      </div>
+    </div>
+    <div class="calenderDateBox">
+      <div class="date">
+        <div></div>
+      </div>
+    </div>
+    <div class="calenderDateBox">
+      <div class="date">
+        <div></div>
+      </div>
+    </div>
+    <div class="calenderDateBox">
+      <div class="date">
+        <div></div>
+      </div>
+    </div>
+    <div class="calenderDateBox">
+      <div class="date">
+        <div></div>
+      </div>
+    </div>
+    <div class="calenderDateBox">
+      <div class="date">
+        <div></div>
+      </div>
+    </div>
+    <div class="calenderDateBox">
+      <div class="date">
+        <div></div>
+      </div>
+    </div>
+    <div class="calenderDateBox">
+      <div class="date">
+        <div></div>
+      </div>
+    </div>
+    <div class="calenderDateBox">
+      <div class="date">
+        <div></div>
+      </div>
+    </div>
+    <div class="calenderDateBox">
+      <div class="date">
+        <div></div>
+      </div>
+    </div>
+    <div class="calenderDateBox">
+      <div class="date">
+        <div></div>
+      </div>
+    </div>
+    <div class="calenderDateBox">
+      <div class="date">
+        <div></div>
+      </div>
+    </div>
+    <div class="calenderDateBox">
+      <div class="date">
+        <div></div>
+      </div>
+    </div>
+    <div class="calenderDateBox">
+      <div class="date">
+        <div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="hiidenModuleBox">
+  <div class="basicContentesArea">
+    <svg class="checkMark" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20">
+      <path id="Icon_awesome-check-circle" data-name="Icon awesome-check-circle"
+        d="M20.563,10.563a10,10,0,1,1-10-10A10,10,0,0,1,20.563,10.563ZM9.406,15.857l7.419-7.419a.645.645,0,0,0,0-.912l-.912-.912a.645.645,0,0,0-.912,0L8.95,12.664,6.125,9.839a.645.645,0,0,0-.912,0l-.912.912a.645.645,0,0,0,0,.912l4.194,4.194a.645.645,0,0,0,.912,0Z"
+        transform="translate(-0.563 -0.563)" fill="#b5b5b5" />
+    </svg>
+    <div class="dataCell">
+      <div class="dataTitleBox">
+        <svg xmlns="http://www.w3.org/2000/svg" width="27.171" height="28.109" viewBox="0 0 27.171 28.109">
+          <path id="Icon_awesome-bell" data-name="Icon awesome-bell"
+            d="M8.976,20.517a2.564,2.564,0,0,0,2.563-2.565H6.413A2.564,2.564,0,0,0,8.976,20.517Zm8.631-6c-.774-.832-2.223-2.083-2.223-6.183a6.328,6.328,0,0,0-5.127-6.218V1.282a1.281,1.281,0,1,0-2.563,0v.835A6.328,6.328,0,0,0,2.568,8.335c0,4.1-1.449,5.351-2.223,6.183a1.252,1.252,0,0,0-.345.87A1.283,1.283,0,0,0,1.286,16.67H16.666a1.283,1.283,0,0,0,1.286-1.282A1.251,1.251,0,0,0,17.607,14.518Z"
+            transform="translate(10.941 0.683) rotate(30)" fill="#fff" stroke="#000" stroke-width="1" />
+        </svg>
+        <span>일정</span>
       </div>
       <span></span>
     </div>
-    <input autocomplete="off" type="hidden" name="month" class="hiddenMonth">
+    <div class="dataCell">
+      <div class="dataTitleBox">
+        <svg id="그룹_1789" data-name="그룹 1789" xmlns="http://www.w3.org/2000/svg" width="26.629" height="21.419"
+          viewBox="0 0 26.629 21.419">
+          <g id="그룹_1383" data-name="그룹 1383">
+            <g id="사각형_11242" data-name="사각형 11242" transform="translate(0 2.895)" fill="#fff" stroke="#000"
+              stroke-width="1">
+              <rect width="26.629" height="18.525" rx="2" stroke="none" />
+              <rect x="0.5" y="0.5" width="25.629" height="17.525" rx="1.5" fill="none" />
+            </g>
+            <g id="패스_313" data-name="패스 313" transform="translate(7.526)" fill="#fff">
+              <path
+                d="M 10.42022895812988 3.531958341598511 L 1.157809138298035 3.531958341598511 C 0.4999991059303284 3.531958341598511 0.4999991059303284 3.305578231811523 0.4999991059303284 3.183958292007446 L 0.4999991059303284 1.157798290252686 C 0.4999991059303284 0.7950883507728577 0.7950891256332397 0.4999983310699463 1.157809138298035 0.4999983310699463 L 10.42022895812988 0.4999983310699463 C 10.78294944763184 0.4999983310699463 11.07803916931152 0.7950883507728577 11.07803916931152 1.157798290252686 L 11.07803916931152 3.183958292007446 C 11.07803916931152 3.305578231811523 11.07803916931152 3.531958341598511 10.42022895812988 3.531958341598511 Z"
+                stroke="none" />
+              <path
+                d="M 1.157798767089844 0.9999983310699463 C 1.070789337158203 0.9999983310699463 0.9999990463256836 1.070788383483887 0.9999990463256836 1.157798290252686 L 0.9999990463256836 3.024377822875977 C 1.041525840759277 3.028810024261475 1.093605995178223 3.031958341598511 1.157798767089844 3.031958341598511 L 10.42022895812988 3.031958341598511 C 10.48442459106445 3.031958341598511 10.5365104675293 3.028808832168579 10.57803916931152 3.024375677108765 L 10.57803916931152 1.157798290252686 C 10.57803916931152 1.070788383483887 10.507248878479 0.9999983310699463 10.42022895812988 0.9999983310699463 L 1.157798767089844 0.9999983310699463 M 1.157798767089844 -1.430511474609375e-06 L 10.42022895812988 -1.430511474609375e-06 C 11.05966949462891 -1.430511474609375e-06 11.57803916931152 0.5183682441711426 11.57803916931152 1.157798290252686 L 11.57803916931152 3.183958292007446 C 11.57803916931152 3.823388338088989 11.05966949462891 4.031958103179932 10.42022895812988 4.031958103179932 L 1.157798767089844 4.031958103179932 C 0.5183687210083008 4.031958103179932 -9.5367431640625e-07 3.823388338088989 -9.5367431640625e-07 3.183958292007446 L -9.5367431640625e-07 1.157798290252686 C -9.5367431640625e-07 0.5183682441711426 0.5183687210083008 -1.430511474609375e-06 1.157798767089844 -1.430511474609375e-06 Z"
+                stroke="none" fill="#000" />
+            </g>
+          </g>
+          <path id="패스_314" data-name="패스 314" d="M0,0,13.006,5.552,25.472,0" transform="translate(0.579 7.526)"
+            fill="none" stroke="#000" stroke-width="1" />
+          <g id="사각형_11245" data-name="사각형 11245" transform="translate(9.841 9.841)" fill="#fff" stroke="#000"
+            stroke-width="1">
+            <rect width="6.947" height="4.631" rx="1" stroke="none" />
+            <rect x="0.5" y="0.5" width="5.947" height="3.631" rx="0.5" fill="none" />
+          </g>
+        </svg>
+        <span>출/퇴근 배차</span>
+      </div>
+      <span></span>
+    </div>
+    <div class="dataCell">
+      <div class="dataTitleBox">
+        <svg xmlns="http://www.w3.org/2000/svg" width="28.201" height="25.418" viewBox="0 0 28.201 25.418">
+          <path id="Icon_awesome-map-marked-alt" data-name="Icon awesome-map-marked-alt"
+            d="M13.6,0A5.95,5.95,0,0,0,7.65,5.95c0,2.657,3.889,7.5,5.379,9.257a.745.745,0,0,0,1.143,0c1.49-1.758,5.379-6.6,5.379-9.257A5.95,5.95,0,0,0,13.6,0Zm0,7.934A1.983,1.983,0,1,1,15.584,5.95,1.983,1.983,0,0,1,13.6,7.934ZM.95,10.2A1.511,1.511,0,0,0,0,11.6V23.423a.756.756,0,0,0,1.036.7l6.52-2.968V10.15a14.3,14.3,0,0,1-1-2.192ZM13.6,16.985a2.256,2.256,0,0,1-1.724-.8c-.928-1.1-1.916-2.343-2.809-3.623v8.595l9.067,3.022V12.562c-.893,1.279-1.88,2.527-2.809,3.623A2.258,2.258,0,0,1,13.6,16.985ZM26.165,7.611l-6.52,2.968v13.6l6.606-2.642a1.511,1.511,0,0,0,.95-1.4V8.313A.756.756,0,0,0,26.165,7.611Z"
+            transform="translate(0.5 0.5)" fill="#fff" stroke="#000" stroke-width="1" />
+        </svg>
+        <span>일반 배차</span>
+      </div>
+      <span></span>
+    </div>
   </div>
-</form>
-
-<div class="contentsAreaBox">
-  <div class="calenderBox">
-    <table class="calenderTableHeader">
-      <thead>
-        <tr>
-          <td>Sun</td>
-          <td>Mon</td>
-          <td>Tue</td>
-          <td>Wed</td>
-          <td>Thu</td>
-          <td>Fri</td>
-          <td>Sat</td>
-        </tr>
-      </thead>
-    </table>
-    <div class="calenderCreteTbody"></div>
+  <div class="orderContentesArea">
+    <div class="orderListBox">
+      <div class="orderListCell">
+        <span>와우초등학교</span>
+        <span>3</span>
+      </div>
+      <div class="orderListCell">
+        <span>와우초</span>
+        <span>3</span>
+      </div>
+      <div class="orderListCell">
+        <span>와우초</span>
+        <span>3</span>
+      </div>
+      <div class="orderListCell">
+        <span>와우초</span>
+        <span>3</span>
+      </div>
+    </div>
+    <div class="totalBox">
+      <span>총 건수</span>
+      <span>40</span>
+    </div>
   </div>
 </div>
 
@@ -66,177 +415,241 @@
 
 
 {% block popup %}
+<div class="popupAreaModules">
+  <div class="popupBgModules"></div>
+  <form method="post" action="" class="popupContainer checkForm">
+      {% csrf_token %}
+      <div class="popupHeader">
+          <div class="popupTitle">배차확인</div>
+      </div>
+      <div class="popupBody">
+          <div class="popupSection">
+            <div class="popupArticleBox">
+                <div class="popupArticleDouble">
+                    <label for="" class="popupArticleLabel">담당자</label>
+                    <div class="checkerDataBox"></div>
+                </div>
+                <div class="popupArticleDouble">
+                    <label for="" class="popupArticleLabel">확인시간</label>
+                    <div class="checkerDataBox"></div>
+                </div>
+            </div>
+          </div>
+          <div class="popupFooter">
+              <div class="btnModules addChecker">등록</div>
+              <div class="btnModules checkerCloseBtn">닫기</div>
+          </div>
+          <input type="hidden" name="date" class="checkDateData">
+      </div>
+  </form>
+</div>
+
 
 <div class="popupAreaModules">
   <div class="popupBgModules"></div>
-  <form class="popupContainer">
-
-    <div class="PopupTitle">보험/정비알림</div>
-
-    <div class="PopupDataArea">
-    </div>
-
-    <div class="PopupBtnBox">
-      <div class="btnModules">닫기</div>
-    </div>
-
+  <form method="post" action="" class="popupContainer scheduleForm">
+      {% csrf_token %}
+      <div class="popupHeader">
+          <div class="popupTitle">일정등록</div>
+      </div>
+      <div class="popupBody">
+          <div class="popupSection">
+            <div class="popupArticle">
+                <label for="" class="popupArticleLabel">날짜</label>
+                <input autocomplete="off" type="date" class="popupArticleinput scheduleDate">
+            </div>
+            <div class="popupArticle">
+                <label for="" class="popupArticleLabel">내용</label>
+                <input autocomplete="off" type="text" class="popupArticleinput scheduleContents">
+            </div>
+          </div>
+          <div class="popupFooter">
+              <div class="btnModules addScheduleBtn">등록</div>
+              <div class="btnModules scheduleCloseBtn">닫기</div>
+          </div>
+          <input type="hidden" name="date" class="scheduleDateData">
+      </div>
   </form>
 </div>
 
-<div class="popupAreaModulesDispatch">
+
+<div class="popupAreaModules">
   <div class="popupBgModules"></div>
-  <form method="post" action="{% url 'dispatch:calendar_create' %}" class="popupContainer">
-    {% csrf_token %}
-    <div class="PopupTitle">배차지시서</div>
-
-    <div class="PopupDataAreaDispatch">
-      <div class="PopupDataCell">
-        <span class="PopupDataTitle">날짜</span>
-        <input autocomplete="off" name="date" type="text" class="PopupData fakeInput" readonly>
+  <form method="post" action="" class="popupContainer inspectionForm">
+      {% csrf_token %}
+      <div class="popupHeader">
+          <div class="popupTitle">차량 정기점검일</div>
       </div>
-      <div class="PopupDataCell">
-        <span class="PopupDataTitle">확인1</span>
-        <div class="haveDeleteIcon">
-          <div class="PopupData check1"></div>
-          <svg class="fileDeletBtn" xmlns="http://www.w3.org/2000/svg" width="14.829" height="14.542"
-            viewBox="0 0 14.829 14.542">
-            <g id="그룹_930" data-name="그룹 930" transform="translate(-3537.086 5807.914)">
-              <line id="선_624" data-name="선 624" x2="11.706" y2="11.714" transform="translate(3538.5 -5806.5)"
-                fill="none" stroke="#707070" stroke-linecap="round" stroke-width="2" />
-              <line id="선_625" data-name="선 625" x1="11.706" y2="11.714" transform="translate(3538.794 -5806.5)"
-                fill="none" stroke="#707070" stroke-linecap="round" stroke-width="2" />
-            </g>
-          </svg>
-        </div>
-      </div>
-      <div class="PopupDataCell">
-        <span class="PopupDataTitle">확인2</span>
-        <div class="haveDeleteIcon">
-          <div class="PopupData check2"></div>
-          <svg class="fileDeletBtn" xmlns="http://www.w3.org/2000/svg" width="14.829" height="14.542"
-            viewBox="0 0 14.829 14.542">
-            <g id="그룹_930" data-name="그룹 930" transform="translate(-3537.086 5807.914)">
-              <line id="선_624" data-name="선 624" x2="11.706" y2="11.714" transform="translate(3538.5 -5806.5)"
-                fill="none" stroke="#707070" stroke-linecap="round" stroke-width="2" />
-              <line id="선_625" data-name="선 625" x1="11.706" y2="11.714" transform="translate(3538.794 -5806.5)"
-                fill="none" stroke="#707070" stroke-linecap="round" stroke-width="2" />
-            </g>
-          </svg>
-        </div>
-      </div>
-      <div class="printBox">
-          <div class="printCell" onclick="openLinePrint('/dispatch/print/line')">
-            <svg xmlns="http://www.w3.org/2000/svg" width="23.1" height="20" viewBox="0 0 23.1 20">
-              <path id="Icon_zocial-print" data-name="Icon zocial-print"
-                d="M.18,23.96V15.635l2.9-3.225H5.2v1.6H3.8l-2,2.225V22.36H21.68V16.235l-2-2.225h-1.4v-1.6H20.4l2.875,3.225V23.96H.18ZM5.2,15.985V7.735L8.98,3.96h9.3V15.985H5.2ZM6.7,14.46H16.78v-9h-6.3V9.235H6.7Z"
-                transform="translate(-0.18 -3.961)" />
-            </svg>
-            <span>노선별A4</span>
+      <div class="popupBody">
+          <div class="popupSection">
+            <div class="scrolling_table-list_header">
+              <table class="table-list">
+                <thead>
+                  <tr class="table-list_head-tr">
+                    <td class="table-list_head-tr_td">순번</td>
+                    <td class="table-list_head-tr_td">차량번호</td>
+                    <td class="table-list_head-tr_td">출고일자</td>
+                    <td class="table-list_head-tr_td">정기점검일</td>
+                  </tr>
+                </thead>
+              </table>
+            </div>
+            <div class="scrolling_table-list_body">
+              <table class="table-list">
+                <tbody>
+                  <tr class="table-list_body-tr">
+                    <td class="table-list_body-tr_td">1</td>
+                    <td class="table-list_body-tr_td">경기70바 7163</td>
+                    <td class="table-list_body-tr_td">2016-04-21</td>
+                    <td class="table-list_body-tr_td">2023-04-20</td>
+                  </tr>
+                  <tr class="table-list_body-tr">
+                    <td class="table-list_body-tr_td">1</td>
+                    <td class="table-list_body-tr_td">경기70바 7163</td>
+                    <td class="table-list_body-tr_td">2016-04-21</td>
+                    <td class="table-list_body-tr_td">2023-04-20</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
           </div>
-          <div class="printCell" onclick="openBusPrintA4('/dispatch/print/bus')">
-            <svg xmlns="http://www.w3.org/2000/svg" width="23.1" height="20" viewBox="0 0 23.1 20">
-              <path id="Icon_zocial-print" data-name="Icon zocial-print"
-                d="M.18,23.96V15.635l2.9-3.225H5.2v1.6H3.8l-2,2.225V22.36H21.68V16.235l-2-2.225h-1.4v-1.6H20.4l2.875,3.225V23.96H.18ZM5.2,15.985V7.735L8.98,3.96h9.3V15.985H5.2ZM6.7,14.46H16.78v-9h-6.3V9.235H6.7Z"
-                transform="translate(-0.18 -3.961)" />
-            </svg>
-            <span>호수별A4</span>
-          </div>
-          <div class="printCell" onclick="openBusPrintA3('/dispatch/print/bus')">
-            <svg xmlns="http://www.w3.org/2000/svg" width="23.1" height="20" viewBox="0 0 23.1 20">
-              <path id="Icon_zocial-print" data-name="Icon zocial-print"
-                d="M.18,23.96V15.635l2.9-3.225H5.2v1.6H3.8l-2,2.225V22.36H21.68V16.235l-2-2.225h-1.4v-1.6H20.4l2.875,3.225V23.96H.18ZM5.2,15.985V7.735L8.98,3.96h9.3V15.985H5.2ZM6.7,14.46H16.78v-9h-6.3V9.235H6.7Z"
-                transform="translate(-0.18 -3.961)" />
-            </svg>
-            <span>호수별A3</span>
-          </div>
-          <div class="printCell" onclick="openDrivingListPrint('/dispatch/print/dailylist')">
-            <svg xmlns="http://www.w3.org/2000/svg" width="23.1" height="20" viewBox="0 0 23.1 20">
-              <path id="Icon_zocial-print" data-name="Icon zocial-print"
-                d="M.18,23.96V15.635l2.9-3.225H5.2v1.6H3.8l-2,2.225V22.36H21.68V16.235l-2-2.225h-1.4v-1.6H20.4l2.875,3.225V23.96H.18ZM5.2,15.985V7.735L8.98,3.96h9.3V15.985H5.2ZM6.7,14.46H16.78v-9h-6.3V9.235H6.7Z"
-                transform="translate(-0.18 -3.961)" />
-            </svg>
-            <span>운행일보A4</span>
+          <div class="popupFooter">
+              <div class="btnModules inspectionCloseBtn">닫기</div>
           </div>
       </div>
-      <input autocomplete="off" type="hidden" class="sendToHiddenChecker">
-    </div>
-
-    <div class="PopupBtnBoxDispatch">
-      <div class="btnModules">닫기</div>
-      <input autocomplete="off" type="submit" value="배차확인" class="btnModules">
-    </div>
-
   </form>
 </div>
 
+<div class="popupAreaModules">
+  <div class="popupBgModules"></div>
+  <form method="post" action="" class="popupContainer scheduleListForm">
+      {% csrf_token %}
+      <div class="popupHeader">
+          <div class="popupTitle">일정</div>
+      </div>
+      <div class="popupBody">
+          <div class="popupSection">
+            <div class="scrolling_table-list_header">
+              <table class="table-list">
+                <thead>
+                  <tr class="table-list_head-tr">
+                    <td class="table-list_head-tr_td">순번</td>
+                    <td class="table-list_head-tr_td">내용</td>
+                    <td class="table-list_head-tr_td">작성자</td>
+                    <td class="table-list_head-tr_td">작성일</td>
+                  </tr>
+                </thead>
+              </table>
+            </div>
+            <div class="scrolling_table-list_body">
+              <table class="table-list">
+                <tbody>
+                  <tr class="table-list_body-tr">
+                    <td class="table-list_body-tr_td">1</td>
+                    <td class="table-list_body-tr_td">경기70바 7163</td>
+                    <td class="table-list_body-tr_td">이도울A</td>
+                    <td class="table-list_body-tr_td">2023-04-20</td>
+                  </tr>
+                  <tr class="table-list_body-tr">
+                    <td class="table-list_body-tr_td">1</td>
+                    <td class="table-list_body-tr_td">경기70바 7163</td>
+                    <td class="table-list_body-tr_td">이도울A</td>
+                    <td class="table-list_body-tr_td">2023-04-20</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div class="popupFooter">
+              <div class="btnModules scheduleListCloseBtn">닫기</div>
+          </div>
+      </div>
+  </form>
+</div>
 
 {% endblock %}
 
 
-
-
-
-
 {% block script %}
 <script>
-  const totalBusCnt = {{ total_bus_cnt }}
-  const curBusCnt = {{ cur_bus_cnt }}
-  const r_totalBusCnt = {{ r_total_bus_cnt }}
-  const r_curBusCnt = {{ r_cur_bus_cnt }}
+  // const totalBusCnt = {{ total_bus_cnt }}
+  // const curBusCnt = {{ cur_bus_cnt }}
+  // const r_totalBusCnt = {{ r_total_bus_cnt }}
+  // const r_curBusCnt = {{ r_cur_bus_cnt }}
 
-  console.log("일반배차 총 :", totalBusCnt)
-  console.log("일반배차 :", curBusCnt)
-  console.log("정기배차 총 :", r_totalBusCnt)
-  console.log("정기배차 :", r_curBusCnt)
+  // console.log("일반배차 총 :", totalBusCnt)
+  // console.log("일반배차 :", curBusCnt)
+  // console.log("정기배차 총 :", r_totalBusCnt)
+  // console.log("정기배차 :", r_curBusCnt)
 
-  {% autoescape off %}
+  // {% autoescape off %}
   // console.log("AAAAAA", {{insurance_list}})
   // console.log("AAAAAA", {{check_list}})
   // console.log("AAAAAA", {{duration}})
   // console.log("AAAAAA", {{expire}})
 
-  const alarm = [
-    {% for vehicle in insurance_list %}
-  {
-    type: '보험',
-      num : '{{vehicle.vehicle_num}}',
-        duration: '{{vehicle.insurance_expiry_date}}'
-  },
-  {% endfor %}
-  {% for vehicle in check_list %}
-  ,{
-    type: '차량정비',
-      num : '{{vehicle.vehicle_num}}',
-        duration: '{{duration|index:forloop.counter0}} ~ {{expire|index:forloop.counter0}}'
-  }
-  {% endfor %}
-  ]
-  const name1 = {{ check_id1 }}
-  const name2 = {{ check_id2 }}
-  console.log("alarm", alarm)
-  console.log("name1", name1)
-  console.log("name2", name2)
-  {% endautoescape %}
+  // const alarm = [
+  //   {% for vehicle in insurance_list %}
+  // {
+  //   type: '보험',
+  //     num : '{{vehicle.vehicle_num}}',
+  //       duration: '{{vehicle.insurance_expiry_date}}'
+  // },
+  // {% endfor %}
+  // {% for vehicle in check_list %}
+  // , {
+  //   type: '차량정비',
+  //     num : '{{vehicle.vehicle_num}}',
+  //       duration: '{{duration|index:forloop.counter0}} ~ {{expire|index:forloop.counter0}}'
+  // }
+  // {% endfor %}
+  // ]
+  // const name1 = {{ check_id1 }}
+  // const name2 = {{ check_id2 }}
+  // console.log("alarm", alarm)
+  // console.log("name1", name1)
+  // console.log("name2", name2)
+  // {% endautoescape %}
 
   let targetLink = ""
 
-  function openLinePrint(url){
-        targetLink = `${url}?date=${fakeInput.value}`
-        window.open(targetLink, "노선별A4", "width=800, height=640")
+  function openLinePrint(url) {
+    if(thisDateData !== ""){
+    targetLink = `${url}?date=${thisDateData}`
+    window.open(targetLink, "노선별A4", "width=800, height=640")
+    }else{
+      alert("날짜를 선택해 주세요.")
     }
-  function openBusPrintA4(url){
-        targetLink = `${url}?date=${fakeInput.value}&size=A4`
-        window.open(targetLink, "호수별A4", "width=1170, height=640")
+  }
+  function openBusPrintA4(url) {
+    if(thisDateData !== ""){
+    targetLink = `${url}?date=${thisDateData}&size=A4`
+    window.open(targetLink, "호수별A4", "width=1170, height=640")
+    }else{
+      alert("날짜를 선택해 주세요.")
     }
-  function openBusPrintA3(url){
-        targetLink = `${url}?date=${fakeInput.value}&size=A3`
-        window.open(targetLink, "호수별A3", "width=1660, height=640")
+  }
+  function openBusPrintA3(url) {
+    if(thisDateData !== ""){
+    targetLink = `${url}?date=${thisDateData}&size=A3`
+    window.open(targetLink, "호수별A3", "width=1660, height=640")
+    }else{
+      alert("날짜를 선택해 주세요.")
     }
-  function openDrivingListPrint(url){
-        targetLink = `${url}?date=${fakeInput.value}`
-        window.open(targetLink, "운행일보A4", "width=1200, height=640")
+  }
+  function openDrivingListPrint(url) {
+    if(thisDateData !== ""){
+    targetLink = `${url}?date=${thisDateData}`
+    window.open(targetLink, "운행일보A4", "width=1200, height=640")
+    }else{
+      alert("날짜를 선택해 주세요.")
     }
+  }
 
 </script>
 <script src="{% static 'js/crudmember/calender.js' %}"></script>
+<script src="{% static 'js/crudmember/checker.js' %}"></script>
+<script src="{% static 'js/crudmember/addSchedule.js' %}"></script>
+<script src="{% static 'js/crudmember/inspection.js' %}"></script>
+<script src="{% static 'js/crudmember/scheduleList.js' %}"></script>
 {% endblock %}

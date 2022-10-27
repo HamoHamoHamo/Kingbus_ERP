@@ -18,7 +18,7 @@ class VehicleForm(forms.ModelForm):
             'use',
             'passenger_num',
             'check_date',
-            'expiration_date',
+            'type',
         ]
 
 # class VehicleInsuranceForm(forms.ModelForm):

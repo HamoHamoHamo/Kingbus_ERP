@@ -316,7 +316,7 @@
           <div class="popupSection">
               <div class="popupArticleFileDouble">
                   <label for="excelUploadFile" class="popupArticleLabel">파일선택</label>
-                  <input autocomplete="off" name="" type="file" id="excelUploadFile" class="excelUploadFile">
+                  <input autocomplete="off" name="" type="file" id="excelUploadFile" class="excelUploadFile" onchange="readExcel()">
                   <input autocomplete="off" name="" type="text" class="excelUploadFileText" readonly>
                   <svg class="fileDeleteBtn" xmlns="http://www.w3.org/2000/svg" width="11.314" height="11.314"
                       viewBox="0 0 11.314 11.314">
@@ -331,7 +331,7 @@
               </div>
           </div>
           <div class="popupFooter">
-              <input autocomplete="off"type="submit" class="btnModules" value="등록">
+              <input autocomplete="off"type="submit" class="btnModules uploadCrateBtn" value="등록">
               <div class="btnModules excelPopupCloseBtn">닫기</div>
           </div>
       </div>
@@ -378,11 +378,12 @@
   
 
 </script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.15.5/xlsx.full.min.js"></script>
+<script src="{% static 'js/dispatch/regularly_route/uploadExcel.js' %}"></script>
 <script src="{% static 'js/dispatch/regularly_route/targetRoute.js' %}"></script>
 <script src="{% static 'js/dispatch/regularly_route/routeListValidation.js' %}"></script>
 <script src="{% static 'js/dispatch/regularly_route/routeLayoutChanger.js' %}"></script>
 <script src="{% static 'js/dispatch/regularly_route/routeScrollLink.js' %}"></script>
 <script src="{% static 'js/dispatch/regularly_route/groupOrderChange.js' %}"></script>
 <script src="{% static 'js/dispatch/regularly_route/checker.js' %}"></script>
-<script src="{% static 'js/dispatch/regularly_route/uploadExcel.js' %}"></script>
 {% endblock %}

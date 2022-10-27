@@ -22,11 +22,11 @@
   align-items: center;
   width: 36rem;
   height: 100%;
-}
+} 
 
 /* 그룹목록 */
 .groupList {
-  display: flex;
+  display: none;
   flex-direction: column;
   width: 100%;
   height: 100%;
@@ -113,6 +113,18 @@
   border-bottom: 0.1rem solid #CDCDCE;
 }
 
+.groupOpen{
+  cursor: pointer;
+}
+
+.openGroup #Icon_awesome-folder{
+  fill: #0069D9;
+}
+
+.groupOpen:hover #Icon_awesome-folder{
+  fill: #0069D9;
+}
+
 .groupName {
   display: flex;
   justify-content: flex-start;
@@ -144,7 +156,7 @@
   border-bottom: 0.1rem solid #CDCDCE;
 }
 
-.routeName {
+.routeNameBox {
   display: flex;
   justify-content: flex-start;
   align-items: center;
@@ -156,6 +168,9 @@
   border-bottom: 0.1rem solid #CDCDCE;
   cursor: pointer;
 }
+.routeName{
+  margin-left: 1rem;
+}
 
 
 
@@ -164,7 +179,7 @@
 
 /* 스케줄 */
 .schedule {
-  display: none;
+  display: flex;
   flex-direction: column;
   height: 100%;
 }
@@ -447,7 +462,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  width: 64rem;
+  width: 56rem;
   height: 100%;
 }
 

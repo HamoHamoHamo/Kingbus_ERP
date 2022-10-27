@@ -367,7 +367,7 @@ html::-webkit-scrollbar-track {
   color: #191919;
 }
 
-.searchToolinput{
+.searchToolinput {
   height: 2.3rem;
   padding: 0;
   padding-left: 1rem;
@@ -485,6 +485,174 @@ html::-webkit-scrollbar-track {
 
 
 /*modules*/
+
+/* 검색창 모듈 */
+.search-Container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  height: 4rem;
+  margin-bottom : 2rem;
+  padding: 0 1rem;
+  border-radius: 0.2rem;
+  box-shadow: 0rem 0.1rem 0.4rem rgb(0 0 0 / 30%);
+  background-color: white;
+  box-sizing: border-box;
+}
+
+.search-Form{
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  height: 100%;
+}
+
+.search-Form_label{
+  font-size: 1.4rem;
+  margin-right: 2rem;
+}
+
+.search-Form_input{
+  width: 18rem;
+  height: 2.6rem;
+  padding-left: 1rem;
+  box-sizing: border-box;
+  border: 0.1rem solid #D2D2D2;
+  border-radius: 0.2rem;
+  outline: none;
+  font-family: "Noto Sans CJK KR";
+  font-size: 1.4rem;
+}
+
+.search-Form_search-btn{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 2.6rem;
+  margin-left: 2rem;
+  padding: 0 1.8rem;
+  border : none;
+  border-radius: 0.2rem;
+  font-size: 1.4rem;
+  color: white;
+  background-color: #444444;
+  cursor: pointer;
+}
+
+.popup-area-box{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 100%;
+}
+
+.popup-area-box_btn{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 2.6rem;
+  padding: 0 1.2rem;
+  border-radius: 0.2rem;
+  border: none;
+  background-color: #444444;
+  color: white;
+  font-size: 1.4rem;
+  cursor: pointer;
+}
+
+
+
+
+/* 테이블 모듈 */
+.table-list{
+  width: 100%;
+  height: auto;
+  border-spacing: 0;
+}
+
+.table-list_head-tr{
+  width: 100%;
+  height: 3.6rem;
+  background-color: #444444;
+  color: white;
+  font-size: 1.4rem;
+}
+
+.table-list_head-tr_td{
+  height: 100%;
+  text-align: center;
+  box-sizing: border-box;
+}
+
+.table-list_body-tr{
+  width: 100%;
+  height: 3.6rem;
+  font-size: 1.4rem;
+}
+
+.table-list_body-tr:nth-child(odd){
+  background-color: white;
+}
+
+.table-list_body-tr:nth-child(even){
+  background-color: #EFEFEF;
+}
+
+.table-list_body-tr:nth-child(1) .td{
+  border-top: 0.1rem solid #D2D2D2;
+}
+
+.table-list_body-tr_td{
+  height: 100%;
+  text-align: center;
+  border-right: 0.1rem solid #D2D2D2;
+  border-bottom: 0.1rem solid #D2D2D2;
+  box-sizing: border-box;
+}
+
+.table-list_body-tr_td:nth-child(1){
+  border-left: 0.1rem solid #D2D2D2;
+}
+
+
+
+
+/* 스크롤 테이블 모듈 */
+.scrolling_table-list_header{
+  width: 100%;
+  height: 3.6rem;
+  background-color: #444444;
+}
+
+.scrolling_table-list_header .table-list{
+  width: calc(100% - 0.6rem);
+}
+
+.scrolling_table-list_body{
+  width: 100%;
+  overflow-y: scroll;
+}
+
+.scrolling_table-list_body::-webkit-scrollbar{
+  width: 0.6rem;
+}
+
+.scrolling_table-list_body::-webkit-scrollbar-thumb{
+  height: 17%;
+  background-color: #444444;
+  border-radius: 1rem;  
+}
+
+.scrolling_table-list_body::-webkit-scrollbar-track{
+  background-color: #F5F5F5;
+}
+
+
+
+
+
+
 .inputModules {
   height: 2.5rem;
   padding-left: 1rem;
@@ -501,11 +669,11 @@ html::-webkit-scrollbar-track {
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 6.5rem;
+  min-width: 6rem;
   height: 2.5rem;
-  padding: 0;
+  padding: 0 1.2rem;
   border: none;
-  border-radius: 0.3rem;
+  border-radius: 0.2rem;
   font-size: 1.4rem;
   color: white;
   cursor: pointer;
@@ -577,7 +745,7 @@ html::-webkit-scrollbar-track {
   box-sizing: border-box;
 }
 
-.HomePopupDatainput{
+.HomePopupDatainput {
   width: 100%;
   height: 2.6rem;
   padding-left: 0.6rem;
@@ -746,7 +914,7 @@ html::-webkit-scrollbar-track {
   font-size: 1.4rem;
 }
 
-.popupArticleinput{
+.popupArticleinput {
   width: 50rem;
   height: 2.4rem;
   padding-left: 1rem;
@@ -783,7 +951,7 @@ html::-webkit-scrollbar-track {
   box-sizing: border-box;
 }
 
-.popupFooter input{
+.popupFooter input {
   background-color: #0069D9;
   margin-right: 1rem;
 }
@@ -818,7 +986,7 @@ html::-webkit-scrollbar-track {
   height: 2.8rem;
 }
 
-.popupArticleDouble .popupArticleinput{
+.popupArticleDouble .popupArticleinput {
   width: 27rem;
   height: 2.4rem;
   border: 0.1rem solid #CDCDCE;

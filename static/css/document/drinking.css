@@ -81,6 +81,8 @@ table td {
     align-items: center;
     width: 21cm;
     height: 29.7cm;
+    padding-top: 3rem;
+    box-sizing: border-box;
 }
 
 .title {

@@ -11,7 +11,8 @@ const thirdMainTitle = document.querySelector(".thirdMainTitle")
 const visibleFirst = document.querySelector(".visibleFirst")
 const visibleFirstTitle = document.querySelector(".visibleFirst span:nth-child(1)")
 const visibleFirstSubTitle = document.querySelector(".visibleFirst span:nth-child(2)")
-const visibleFirstIcon = document.querySelector(".visibleFirst img")
+const visibleFirstIcon = document.querySelector(".visibleFirst img:nth-child(3)")
+const visibleFirstIconSmall = document.querySelector(".visibleFirst img:nth-child(4)")
 
 const visibleSecond = document.querySelector(".visibleSecond")
 const visibleSecondTitle = document.querySelector(".visibleSecondTitle")
@@ -33,54 +34,89 @@ const visibleSixth = document.querySelector(".visibleSixth")
 const visibleSixthTitle = document.querySelector(".visibleSixthTitle")
 const visibleSixthContents = document.querySelector(".visibleSixthContents")
 
+const body = document.querySelector("body")
 
+window.onload = function size() {
+    if (window.innerWidth < 768) {
+        body.style.height  = "100%"
+        body.style.overflow = "hidden"
+        body.style.touchAction  = "none"
+    }
+    console.log();
+}
 
 window.addEventListener("wheel", function (e) {
     e.preventDefault();
 }, { passive: false });
 
+
 window.addEventListener("wheel", thirdAnimation)
+
+window.addEventListener("touchstart", mobileTouchStart)
+window.addEventListener("touchend", mobileTouchEnd)
+
+let startPoint = ""
+function mobileTouchStart(event) {
+    startPoint = event.changedTouches[0].clientY
+}
+
+let endPoint = ""
+function mobileTouchEnd(event) {
+    endPoint = event.changedTouches[0].clientY
+    mobileFunction()
+}
 
 let scrolling = 0
 let thirdBg = 0
 let eventContinue = true
 
-function thirdAnimation(e) {
+
+
+
+function mobileFunction() {
+    let upScroll = false
+    let downScroll = false
+    if (startPoint - endPoint > 10) {
+        upScroll = true
+    } else if(startPoint - endPoint < -10){
+        downScroll = true
+    }
     if (eventContinue) {
         setTimeout(function () {
             eventContinue = false
-            if (e.deltaY > 0 && scrolling <= 3) {
+            if (upScroll && scrolling <= 3) {
                 if (scrolling == 1) {
                     scrolling = scrolling + 1
-                    window.scrollTo({ left: 0, top: scrolling * window.innerHeight, behavior: "smooth" });
+                    scrollingAnimation(scrolling)
                     thirdAnimationFirst()
                 } else if (scrolling == 2) {
-                    if(thirdBg <= 4){
+                    if (thirdBg <= 4) {
                         thirdBg = thirdBg + 1
                         BgUp()
-                    }else{
+                    } else {
                         scrolling = scrolling + 1
-                        window.scrollTo({ left: 0, top: scrolling * window.innerHeight, behavior: "smooth" });
+                        scrollingAnimation(scrolling)
                     }
-                }else if(scrolling == 3){
+                } else if (scrolling == 3) {
                     scrolling = scrolling + 1
-                    window.scrollTo({ left: 0, top: (scrolling - 1) * window.innerHeight + 64, behavior: "smooth" });
-                }else {
+                    scrollingAnimation(scrolling)
+                } else {
                     scrolling = scrolling + 1
-                    window.scrollTo({ left: 0, top: scrolling * window.innerHeight, behavior: "smooth" });
+                    scrollingAnimation(scrolling)
                 }
-            } else if (e.deltaY < 0 && scrolling >= 0) {
+            } else if (downScroll && scrolling >= 0) {
                 if (scrolling == 2) {
-                    if (thirdBg == 0) {
+                    if (thirdBg <= 0) {
+                        thirdBg = 0
                         scrolling = scrolling - 1
-                        window.scrollTo({ left: 0, top: scrolling * window.innerHeight, behavior: "smooth" });
+                        scrollingAnimation(scrolling)
                     } else {
                         BgDown()
+                        thirdBg = thirdBg - 1
                     }
-                    thirdBg = thirdBg - 1
                 } else {
                     scrolling = scrolling - 1
-                    window.scrollTo({ left: 0, top: scrolling * window.innerHeight, behavior: "smooth" });
+                    scrollingAnimation(scrolling)
                 }
             }
             setTimeout(() => eventContinue = true, 600)
@@ -88,7 +124,60 @@ function thirdAnimation(e) {
     }
 }
 
+function thirdAnimation(e) {
+    if (window.innerWidth >= 768) {
+        if (eventContinue) {
+            setTimeout(function () {
+                eventContinue = false
+                if (e.deltaY > 0 && scrolling <= 3) {
+                    if (scrolling == 1) {
+                        scrolling = scrolling + 1
+                        scrollingAnimation(scrolling)
+                        thirdAnimationFirst()
+                    } else if (scrolling == 2) {
+                        if (thirdBg <= 4) {
+                            thirdBg = thirdBg + 1
+                            BgUp()
+                        } else {
+                            scrolling = scrolling + 1
+                            scrollingAnimation(scrolling)
+                        }
+                    } else if (scrolling == 3) {
+                        scrolling = scrolling + 1
+                        scrollingAnimation(scrolling)
+                    } else {
+                        scrolling = scrolling + 1
+                        scrollingAnimation(scrolling)
+                    }
+                } else if (e.deltaY < 0 && scrolling >= 0) {
+                    if (scrolling == 2) {
+                        if (thirdBg <= 0) {
+                            thirdBg = 0
+                            scrolling = scrolling - 1
+                            scrollingAnimation(scrolling)
+                        } else {
+                            BgDown()
+                            thirdBg = thirdBg - 1
+                        }
+                    } else {
+                        scrolling = scrolling - 1
+                        scrollingAnimation(scrolling)
+                    }
+                }
+                setTimeout(() => eventContinue = true, 600)
+            }, 0)
+        }
+    }
+}
+
+
+function scrollingAnimation(scrolling) {
+    window.scrollTo({ left: 0, top: scrolling * document.documentElement.clientHeight, behavior: "smooth" });
+}
+
+
 function BgUp() {
+    
     if (thirdBg == 1) {
         thirdSectionBg2.style.top = "0%"
         thirdAnimationSecond()
@@ -127,29 +216,72 @@ function BgDown() {
 }
 
 function thirdAnimationFirst() {
-    thirdMainTitle.style.width = "100rem"
+    if (window.innerWidth > 1560) {
+        thirdMainTitle.style.width = "100rem"
+    } else if (window.innerWidth <= 1560 && window.innerWidth >= 1024) {
+        thirdMainTitle.style.width = "80rem"
+    } else if (window.innerWidth < 1024) {
+        thirdMainTitle.style.width = "80%"
+    } else if (window.innerWidth < 440) {
+        thirdMainTitle.style.width = "92%"
+    }
     visibleFirstTitle.style.top = "10%"
     visibleFirstTitle.style.opacity = "1"
-    visibleFirstSubTitle.style.top = "30%"
     visibleFirstSubTitle.style.opacity = "1"
-    visibleFirstIcon.style.top = "56%"
-    visibleFirstIcon.style.opacity = "1"
+    if (window.innerWidth >= 768) {
+        visibleFirstIcon.style.top = "56%"
+        visibleFirstSubTitle.style.top = "30%"
+        visibleFirstIcon.style.opacity = "1"
+    } else if (window.innerWidth < 768) {
+        visibleFirstSubTitle.style.top = "26%"
+        visibleFirstIconSmall.style.top = "50%"
+        visibleFirstIconSmall.style.opacity = "1"
+    }
 }
 
 function thirdAnimationSecond() {
     visibleFirst.style.opacity = "0"
-    thirdMainTitle.style.height = "28rem"
+
+    if (window.innerWidth > 1560) {
+        thirdMainTitle.style.height = "28rem"
+    } else if (window.innerWidth <= 1560 && window.innerWidth >= 1024) {
+        thirdMainTitle.style.height = "26rem"
+    } else if (window.innerWidth < 1024 && window.innerWidth >= 768) {
+        thirdMainTitle.style.height = "26rem"
+    } else if (window.innerWidth < 768 && window.innerWidth >= 560) {
+        thirdMainTitle.style.height = "24rem"
+    } else if (window.innerWidth < 560 && window.innerWidth >= 440) {
+        thirdMainTitle.style.height = "20rem"
+    }
     setTimeout(function () {
         thirdMainTitle.style.transitionDelay = "1.4s"
         setTimeout(function () {
             visibleFirst.style.display = "none"
             visibleSecond.style.display = "flex"
-            thirdMainTitle.style.top = "60%"
-            thirdMainTitle.style.left = "50rem"
+
+            if (window.innerWidth >= 1024) {
+                thirdMainTitle.style.top = "60%"
+            } else if (window.innerWidth < 1024 && window.innerWidth >= 768) {
+                thirdMainTitle.style.top = "50%"
+            }
+
+            console.log(window.innerWidth);
+            if (window.innerWidth > 1560) {
+                thirdMainTitle.style.left = "50rem"
+            } else if (window.innerWidth <= 1560 && window.innerWidth >= 1024) {
+                thirdMainTitle.style.left = "40rem"
+            } else if (window.innerWidth < 1024 && window.innerWidth >= 768) {
+                thirdMainTitle.style.left = "50%"
+            }
             setTimeout(function () {
                 visibleSecondTitle.style.top = "20%"
                 visibleSecondTitle.style.opacity = "1"
-                visibleSecondContents.style.top = "60%"
+                if (window.innerWidth >= 768) {
+                } else if (window.innerWidth < 768 && window.innerWidth >= 560) {
+                    visibleSecondContents.style.top = "68%"
+                } else if (window.innerWidth < 560 && window.innerWidth >= 440) {
+                    visibleSecondContents.style.top = "64%"
+                }
                 visibleSecondContents.style.opacity = "1"
             }, 800)
         }, 0)
@@ -157,25 +289,33 @@ function thirdAnimationSecond() {
 }
 
 function returnSecond() {
-    setTimeout(function(){
+    setTimeout(function () {
         visibleSecond.style.display = "none"
         thirdMainTitle.style.transitionDelay = "0.6s"
         visibleSecondTitle.style.top = "16%"
         visibleSecondTitle.style.opacity = "0"
         visibleSecondContents.style.top = "56%"
         visibleSecondContents.style.opacity = "0"
-        setTimeout(function(){
+        setTimeout(function () {
             thirdMainTitle.style.top = "50%"
             thirdMainTitle.style.left = "50%"
-            setTimeout(function(){
-                thirdMainTitle.style.height = "42rem"
-                setTimeout(function(){
+            setTimeout(function () {
+                if (window.innerWidth >= 1024) {
+                    thirdMainTitle.style.height = "42rem"
+                } else if (window.innerWidth < 1024 && window.innerWidth >= 768) {
+                    thirdMainTitle.style.height = "36rem"
+                } else if (window.innerWidth < 768 && window.innerWidth >= 560) {
+                    thirdMainTitle.style.height = "40rem"
+                } else if (window.innerWidth < 560 && window.innerWidth >= 440) {
+                    thirdMainTitle.style.height = "30rem"
+                }
+                setTimeout(function () {
                     visibleFirst.style.opacity = "1"
                     visibleFirst.style.display = "flex"
-                },1400)
-            },600)
-        },0)
-    },200)
+                }, 1400)
+            }, 600)
+        }, 0)
+    }, 200)
 }
 
 
@@ -191,14 +331,14 @@ function thirdAnimationThird() {
 }
 
 function returnThird() {
-    setTimeout(function(){
+    setTimeout(function () {
         visibleSecond.style.display = "flex"
         visibleThird.style.display = "none"
         visibleThirdTitle.style.top = "16%"
         visibleThirdTitle.style.opacity = "0"
         visibleThirdContents.style.top = "56%"
         visibleThirdContents.style.opacity = "0"
-    },200)
+    }, 200)
 }
 
 function thirdAnimationFourth() {
@@ -213,14 +353,14 @@ function thirdAnimationFourth() {
 }
 
 function returnFourth() {
-    setTimeout(function(){
+    setTimeout(function () {
         visibleThird.style.display = "flex"
         visibleFourth.style.display = "none"
         visibleFourthTitle.style.top = "16%"
         visibleFourthTitle.style.opacity = "0"
         visibleFourthContents.style.top = "56%"
         visibleFourthContents.style.opacity = "0"
-    },200)
+    }, 200)
 }
 
 function thirdAnimationFifth() {
@@ -235,14 +375,14 @@ function thirdAnimationFifth() {
 }
 
 function returnFifth() {
-    setTimeout(function(){
+    setTimeout(function () {
         visibleFourth.style.display = "flex"
         visibleFifth.style.display = "none"
         visibleFifthTitle.style.top = "16%"
         visibleFifthTitle.style.opacity = "0"
         visibleFifthContents.style.top = "56%"
         visibleFifthContents.style.opacity = "0"
-    },200)
+    }, 200)
 }
 
 function thirdAnimationSixth() {
@@ -257,12 +397,12 @@ function thirdAnimationSixth() {
 }
 
 function returnSixth() {
-    setTimeout(function(){
+    setTimeout(function () {
         visibleFifth.style.display = "flex"
         visibleSixth.style.display = "none"
         visibleSixthTitle.style.top = "16%"
         visibleSixthTitle.style.opacity = "0"
         visibleSixthContents.style.top = "56%"
         visibleSixthContents.style.opacity = "0"
-    },200)
+    }, 200)
 }

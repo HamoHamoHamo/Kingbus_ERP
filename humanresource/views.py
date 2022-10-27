@@ -22,7 +22,7 @@ class MemberList(generic.ListView):
     template_name = 'HR/member.html'
     context_object_name = 'member_list'
     model = Member
-    paginate_by = 10
+    # paginate_by = 10
 
     def get(self, request, **kwargs):
         if request.session.get('authority') >= 3:
@@ -46,18 +46,18 @@ class MemberList(generic.ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        paginator = context['paginator']
-        page_numbers_range = 5
-        max_index = len(paginator.page_range)
-        page = self.request.GET.get('page')
-        current_page = int(page) if page else 1
+        # paginator = context['paginator']
+        # page_numbers_range = 5
+        # max_index = len(paginator.page_range)
+        # page = self.request.GET.get('page')
+        # current_page = int(page) if page else 1
 
-        start_index = int((current_page - 1) / page_numbers_range) * page_numbers_range
-        end_index = start_index + page_numbers_range
-        if end_index >= max_index:
-            end_index = max_index
-        page_range = paginator.page_range[start_index:end_index]
-        context['page_range'] = page_range
+        # start_index = int((current_page - 1) / page_numbers_range) * page_numbers_range
+        # end_index = start_index + page_numbers_range
+        # if end_index >= max_index:
+        #     end_index = max_index
+        # page_range = paginator.page_range[start_index:end_index]
+        # context['page_range'] = page_range
         #페이징 끝
 
         member_list = context['member_list']
@@ -81,6 +81,8 @@ class MemberList(generic.ListView):
                 'id': member.user_id,
                 'license': license_name,
                 'bus_license': bus_license_name,
+                'note': member.note,
+                'user_id': member.id,
             })
         context['data_list'] = data_list
         context['name'] = self.request.GET.get('name', '')
@@ -119,6 +121,7 @@ def member_create(request):
             member = member_form.save(commit=False)
             member.num = Member.objects.count() + 1
             member.creator = creator
+            member.authority = req_auth
             user_id = request.POST.get('user_id', None)
             if Member.objects.filter(user_id=user_id).exists(): #아이디 중복체크
                 raise Http404
@@ -194,6 +197,7 @@ def member_edit(request):
             member.phone_num = member_form.cleaned_data['phone_num']
             member.birthdate = member_form.cleaned_data['birthdate']
             member.address = member_form.cleaned_data['address']
+            member.note = member_form.cleaned_data['note']
             member.authority = req_auth
             
             member.save()

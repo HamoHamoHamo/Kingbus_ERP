@@ -1,546 +1,748 @@
-/* ALL */
-input[type=date] {
-    font-family: "Noto Sans CJK KR";
-  }
-  
-  /* 검색창 변경영역 */
-  .dateControllBtnBox {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: 10rem;
-    margin-left: 1.2rem;
-  }
-  
-  .dateToday {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 4.2rem;
-    height: 2.4rem;
-    background-color: #444;
-    color: white;
-    font-size: 1.4rem;
-    border-radius: 0.3rem;
-    cursor: pointer;
-  }
-  
-  .dateControllBtn {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 2.4rem;
-    height: 2.4rem;
-    border-radius: 100%;
-    background-color: #444;
-    font-size: 1.6rem;
-    color: white;
-    cursor: pointer;
-  }
-  
-  .dateControllBtn svg{
-    width: 40%;
-  }
-  
-  .search_inputArea input:nth-child(4) {
-    margin-right: 0.6rem;
-  }
-  
-  .search_inputArea input:nth-child(5) {
-    margin-left: 0.6rem;
-  }
-  
-  
-  
-  
-  
-  
-  
-  /* 입력 배차 form */
-  .inputDispatchForm {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    align-items: center;
-    width: 100%;
-    height: 26rem;
-  }
-  
-  
-  
-  
-  
-  /* 입력창 */
-  .input{
-    position: relative;
-    height: 18rem;
-  }
-  
-  .inputSave {
-    position: absolute;
-    top: -5.8rem;
-    right: 1rem;
-    background-color: #0069D9;
-  }
-  
-  .inputDelete {
-    position: absolute;
-    top: -5.8rem;
-    right: 8rem;
-    background-color: #444444;
-  }
-  
-  .newOrderLink {
-    position: absolute;
-    top: -5.8rem;
-    right: 15rem;
-  }
-  
-  .newOrder {
-    background-color: #0069D9;
-  }
-  
-  .InputHeader {
-    width: 11rem;
-  }
-  
-  .quarterBox {
-    justify-content: space-between;
-  }
-  
-  .inputTextquarter {
-    width: 55%;
-    height: 1.8rem;
-    margin: 0 0.8rem;
-    outline: none;
-  }
-  
-  .deeperBox {
-    width: 40%;
-  }
-  
-  .inputlabel {
-    cursor: pointer;
-  }
-  
-  
-  
-  
-  
-  /* 일반배차 */
-  .orderDispatch {
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    width: 100%;
-    height: 6rem;
-    background-color: white;
-    border-radius: 0.2rem;
-    box-shadow: 0.1rem 0.1rem 0.6rem rgba(0, 0, 0, 0.3);
-    box-sizing: border-box;
-  }
-  
-  .orderDispatchTable {
-    width: calc(100% - 0.6rem);
-    border-spacing: 0;
-    font-size: 1.4rem;
-    text-align: center;
-    border-spacing: 0;
-  }
-  
-  .orderDispatchTable tr {
-    height: 3rem;
-  }
-  
-  .orderDispatchTable thead tr {
-    background-color: #444;
-    color: white;
-  }
-  
-  .orderDispatchTable td {
-    width: calc((100%/13)*2);
-  }
-  
-  .orderDispatchTableBox .orderDispatchTable td {
-    width: calc((100%/13)*2);
-    border-right: 0.1rem solid black;
-    border-bottom: 0.1rem solid black;
-  }
-  
-  .orderDispatchTable tbody tr:nth-last-child(1) td {
-    border-bottom: none;
-  }
-  
-  .orderDispatchTable td:nth-last-child(1) {
-    width: calc(100%/13);
-    border-right: none;
-  }
-  
-  .orderDispatchDelete {
-    margin: 0 auto;
-    background-color: #444;
-  }
-  
-  
-  .orderDriverSelect {
-    height: 2.4rem;
-    margin: 0 0.8rem;
-    outline: none;
-  }
-  
-  .orderDispatchTableBox {
-    width: 100%;
-    height: auto;
-    max-height: 30rem;
-    overflow-y: scroll;
-  }
-  
-  .orderDispatchTableBox table {
-    width: 100%;
-  }
-  
-  
-  /* 스크롤바 설정*/
-  .orderDispatchTableBox::-webkit-scrollbar {
-    width: 0.6rem;
-  }
-  
-  /* 스크롤바 막대 설정*/
-  .orderDispatchTableBox::-webkit-scrollbar-thumb {
-    height: 17%;
-    background-color: #444444;
-    border-radius: 1rem;
-  }
-  
-  /* 스크롤바 뒷 배경 설정*/
-  .orderDispatchTableBox::-webkit-scrollbar-track {
-    background-color: #D2D2D2;
-  }
-  
-  .orderDispatchTable tbody td:nth-last-child() td {
-    width: calc((100%/13)*2 - 0.6rem);
-  }
-  
-  
-  
-  
-  
-  /* 노선목록 */
-  .list {
-    position: relative;
-    height: calc(100% - 35.2rem);
-  }
-  
-  .listHeader {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: 100%;
-    height: 4.2rem;
-  }
-  
-  .listHeader span {
-    font-size: 1.6rem;
-    margin-left: 0.8rem;
-  }
-  
-  .listHeaderBtnBox {
-    display: flex;
-    justify-content: space-between;
-    width: 20.5rem;
-  }
-  
-  .listHeaderBtnBox .btnModules:nth-child(1) {
-    background-color: #444;
-  }
-  
-  .listExcel {
-    width: 12rem;
-    margin-right: 0.8rem;
-    background-color: #444;
-  }
-  
-  .listTable {
-    width: 100%;
-    height: 2.8rem;
-  }
-  
-  .listTableScroll {
-    height: 39.5rem;
-    overflow-y: hidden;
-  }
-  
-  .ListTableBox {
-    width: 62%;
-    padding: 0;
-  }
-  
-  tbody .ListTableBox tr {
-    cursor: pointer;
-  }
-  
-  .listTableScroll .listTable tr {
-    height: 100%;
-    height: 4.6rem;
-  }
-  
-  .listTableScroll .scrollListTableBox tr {
-    height: 100%;
-    height: 4.6rem;
-  }
-  
-  .listTableScroll .ListTableBox {
-    display: flex;
-    width: 100%;
-    height: 31.2rem;
-    padding: 0;
-    overflow-y: hidden;
-  }
-  
-  .listTableScroll .ListTableBox::-webkit-scrollbar {
-    display: none;
-  }
-  
-  .listTableScroll .ListTableBox::-webkit-scrollbar-thumb {
-    display: none;
-  }
-  
-  .listTableScroll .ListTableBox::-webkit-scrollbar-track {
-    display: none;
-  }
-  
-  .listTableScroll .ListTableBox table {
-    table-layout: fixed;
-  }
-  
-  .ListTableBox table {
-    width: 100%;
-    border-spacing: 0;
-  }
-  
-  .listTableFixedTd1 {
-    width: 17%;
-    box-sizing: border-box;
-  }
-  
-  .listTableFixedTd2 {
-    width: 10%;
-    box-sizing: border-box;
-  }
-  
-  .listTableFixedTd3,
-  .listTableFixedTd5 {
-    width: 8%;
-    box-sizing: border-box;
-  }
-  
-  .listTableFixedTd4 {
-    width: 57%;
-  }
-  
-  .listTableScroll .listTableFixedTd4 {
-    text-align: left;
-    padding-left: 1rem;
-    box-sizing: border-box;
-  }
-  
-  .listTableFixedTd5 {
-    border-right: 0.1rem solid white;
-  }
-  
-  .scrollListTableBox {
-    width: 38%;
-    padding: 0;
-  }
-  
-  .scrollListTableWidth {
-    width: 100%;
-    overflow: scroll;
-  }
-  
-  .listTable thead .scrollListTableWidth {
-    width: 100%;
-    padding-right: 1rem;
-    box-sizing: border-box;
-    overflow: scroll;
-  }
-  
-  .listTableScroll .scrollListTableWidth {
-    height: 38.8rem;
-    padding-bottom: 0.8rem;
-    overflow: scroll;
-  }
-  
-  .scrollListTableBox table {
-    width: 500%;
-    border-spacing: 0;
-  }
-  
-  .listTable thead .scrollListTableBox table {
-    width: 500%;
-  }
-  
-  .listTable thead .scrollListTableWidth::-webkit-scrollbar {
-    display: none;
-  }
-  
-  .listTable thead .scrollListTableWidth::-webkit-scrollbar-thumb {
-    display: none;
-  }
-  
-  .listTable thead .scrollListTableWidth::-webkit-scrollbar-track {
-    display: none;
-  }
-  
-  .scrollListTableWidth::-webkit-scrollbar {
-    width: 1rem;
-    height: 1rem;
-  }
-  
-  .scrollListTableWidth::-webkit-scrollbar-thumb {
-    height: 17%;
-    background-color: #444444;
-    border-radius: 10px;
-  }
-  
-  .scrollListTableWidth::-webkit-scrollbar-track {
-    background-color: #D2D2D2;
-  }
-  
-  .listTable tbody .ListTableBox td,
-  .listTable tbody .scrollListTable td {
-    border-right: 0.1rem solid #D4D4D4;
-    border-bottom: 0.1rem solid #D4D4D4;
-  }
-  
-  .listTable tbody .ListTableBox {
-    padding-bottom: 1.7rem;
-  }
-  
-  .scrollListTable td:nth-child(2),
-  .scrollListTable td:nth-child(3),
-  .scrollListTable td:nth-child(4),
-  .scrollListTable td:nth-child(6),
-  .scrollListTable td:nth-child(8),
-  .scrollListTable td:nth-child(9),
-  .scrollListTable td:nth-child(10),
-  .scrollListTable td:nth-child(11),
-  .scrollListTable td:nth-child(12),
-  .scrollListTable td:nth-child(13),
-  .scrollListTable td:nth-child(14),
-  .scrollListTable td:nth-child(15) {
-    width: calc(100% / 22);
-  }
-  
-  .scrollListTable td:nth-child(5) {
-    width: calc(200% / 22);
-  }
-  
-  .scrollListTable td:nth-child(7) {
-    width: calc(400% / 22);
-  }
-  
-  .scrollListTable td:nth-child(1) {
-    width: calc(300% / 22);
-  }
-  
-  .routeTableTotal {
-    position: absolute;
-    display: flex;
-    bottom: 0.5rem;
-    width: calc(100% - 1rem);
-    height: 5rem;
-    overflow: hidden;
-    background-color: white;
-  }
-  
-  .routeMainTableTotal {
-    width: 57%;
-  }
-  
-  .routeMainTableTotal td:nth-child(1) {
-    width: 19%;
-  }
-  
-  .routeMainTableTotal td:nth-child(2) {
-    width: 11%;
-  }
-  
-  .routeMainTableTotal td:nth-child(3) {
-    width: 9%;
-  }
-  
-  .routeMainTableTotal td:nth-child(4) {
-    width: 52%;
-  }
-  
-  .routeMainTableTotal td:nth-child(5) {
-    width: 9%;
-  }
-  
-  .routeTableTotalScrolBox table {
-    width: 500%;
-  }
-  
-  .routeTableTotal table {
-    height: 100%;
-    border-spacing: 0;
-  }
-  
-  .routeTableTotal tr {
-    background-color: #EFEFEF;
-  }
-  
-  .routeTableTotal td {
-    border-right: 0.1rem solid #D4D4D4;
-    border-top: 0.1rem solid #444;
-    border-bottom: 0.1rem solid #444;
-  }
-  
-  .routeTableTotalScrolBox {
-    width: 44%;
-    overflow-y: scroll;
-    -ms-overflow-style: none;
-    scrollbar-width: none;
-  }
-  
-  .routeTableTotalScrolBox::-webkit-scrollbar {
-    display: none;
-  }
-  
-  .routeTableTotalScrolBox td:nth-child(2),
-  .routeTableTotalScrolBox td:nth-child(3),
-  .routeTableTotalScrolBox td:nth-child(4),
-  .routeTableTotalScrolBox td:nth-child(6),
-  .routeTableTotalScrolBox td:nth-child(8),
-  .routeTableTotalScrolBox td:nth-child(9),
-  .routeTableTotalScrolBox td:nth-child(10),
-  .routeTableTotalScrolBox td:nth-child(11),
-  .routeTableTotalScrolBox td:nth-child(12),
-  .routeTableTotalScrolBox td:nth-child(13),
-  .routeTableTotalScrolBox td:nth-child(14),
-  .routeTableTotalScrolBox td:nth-child(15) {
-    width: calc(100% / 22);
-  }
-  
-  .routeTableTotalScrolBox td:nth-child(5) {
-    width: calc(200% / 22);
-  }
-  
-  .routeTableTotalScrolBox td:nth-child(7) {
-    width: calc(400% / 22);
-  }
-  
-  .routeTableTotalScrolBox td:nth-child(1) {
-    width: calc(300% / 22);
-  }
-  
-  
-  
-  
-  
-  
-  /* 스케줄 */
-  .driverTd {
-    width: calc(100% - 23.184rem);
-  }
+.orderLayout {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  width: 100%;
+  height: 81rem;
+}
+
+
+
+
+
+
+/* 스케줄 */
+.schedule {
+  position: relative;
+  height: 100%;
+}
+
+.scheduleHeaderArea {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  height: 4.2rem;
+  padding: 0 2rem;
+  margin-bottom: 1.6rem;
+  background-color: #444;
+  box-sizing: border-box;
+}
+
+.scheduleHeader {
+  color: white;
+}
+
+.scheduleCloseBtn {
+  position: absolute;
+  right: 1rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 3.6rem;
+  height: 3.6rem;
+  background-color: #444;
+  border-radius: 1.8rem;
+  font-size: 1.4rem;
+  color: white;
+  cursor: pointer;
+}
+
+.scheduleOpenBtn {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  width: 3.6rem;
+  height: 3.6rem;
+  background-color: #444;
+  border-radius: 1.8rem;
+  font-size: 1.4rem;
+  color: white;
+  cursor: pointer;
+}
+
+.scheduleOpenBtnVisible {
+  display: flex;
+}
+
+.driverTd {
+  width: calc(100% - 23.184rem);
+}
+
+
+
+
+
+
+
+
+
+
+.MainLayout {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  width: calc(100% - 38rem);
+  height: 100%;
+}
+
+
+
+
+
+
+/* 검색창 */
+/* 검색창 변경영역 */
+.dateControllBtnBox {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 10rem;
+  margin-left: 1.2rem;
+}
+
+.dateToday {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 4.2rem;
+  height: 2.4rem;
+  background-color: #444;
+  color: white;
+  font-size: 1.4rem;
+  border-radius: 0.3rem;
+  cursor: pointer;
+}
+
+.dateControllBtn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 2.4rem;
+  height: 2.4rem;
+  border-radius: 100%;
+  background-color: #444;
+  font-size: 1.6rem;
+  color: white;
+  cursor: pointer;
+}
+
+.dateControllBtn svg {
+  width: 40%;
+}
+
+.search_inputArea input:nth-child(4) {
+  margin-right: 0.6rem;
+}
+
+.search_inputArea input:nth-child(5) {
+  margin-left: 0.6rem;
+}
+
+
+
+
+
+
+
+/* 입력창 */
+.inputTableBox {
+  position: relative;
+  width: 100%;
+  height: 18.5rem;
+  background-color: white;
+  box-shadow: 0.1rem 0.1rem 0.6rem rgb(0 0 0 / 30%);
+}
+
+.inputTableBtnBox {
+  position: absolute;
+  top: -5.8rem;
+  right: 2rem;
+  display: flex;
+  flex-direction: row-reverse;
+  justify-content: space-between;
+  align-items: center;
+  width: 21.5rem;
+}
+
+.inputSave,
+.newOrder {
+  background-color: #0069D9;
+}
+
+.inputDelete {
+  background-color: #444;
+}
+
+.inputTableBox table {
+  width: 100%;
+  height: 100%;
+  table-layout: fixed;
+}
+
+.inputTableBox tr {
+  width: 100%;
+  height: 3.1rem;
+  box-sizing: border-box;
+}
+
+.inputTableBox tr:nth-last-child(1) {
+  height: 3rem;
+}
+
+.inputTableBox tr:nth-last-child(1) td {
+  border-bottom: none;
+}
+
+.inputTableBox td {
+  padding: 0;
+  font-size: 1.4rem;
+  border-bottom: 0.1rem solid #CDCDCE;
+}
+
+.tdTypeA {
+  text-align: center;
+  background-color: #444;
+  color: white;
+  font-size: 1.4rem;
+  width: 7%;
+}
+
+.tdTypeB {
+  width: 43%;
+  font-size: 1.4rem;
+}
+
+.tdTypeC {
+  width: 18%;
+  font-size: 1.4rem;
+}
+
+.inputTableBox input[type=checkbox] {
+  margin: 0;
+  margin-left: 0.6rem;
+}
+
+.quarterBox {
+  width: 48%;
+  justify-content: space-between;
+}
+
+.inputTextquarter {
+  width: 56%;
+  height: 1.8rem;
+  margin: 0 0.8rem;
+  outline: none;
+}
+
+.deeperBox {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 42%;
+}
+
+
+
+
+
+
+
+
+
+
+/* 배차팝업 */
+.popupContainerDispatch {
+  top: 65%;
+  left: 51%;
+}
+
+.popupSectionDispatch {
+  height: 35rem;
+  overflow-y: scroll;
+}
+
+/* 스크롤바 설정*/
+.popupSectionDispatch::-webkit-scrollbar {
+  width: 1rem;
+}
+
+/* 스크롤바 막대 설정*/
+.popupSectionDispatch::-webkit-scrollbar-thumb {
+  height: 17%;
+  background-color: #444444;
+  border-radius: 1rem;
+}
+
+/* 스크롤바 뒷 배경 설정*/
+.popupSectionDispatch::-webkit-scrollbar-track {
+  background-color: #D2D2D2;
+}
+
+.dispatchBox {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  height: 6rem;
+  margin-top: 2rem;
+}
+
+.dispatchBox:nth-child(1) {
+  margin-top: 0;
+}
+
+.removeBtn {
+  margin-right: 2rem;
+  cursor: pointer;
+}
+
+.dispatcTable {
+  border-top: 0.1rem solid #444;
+  border-bottom: 0.1rem solid #444;
+}
+
+.dispatcTable tr {
+  height: 3rem;
+  border-top: none;
+  border-bottom: none;
+}
+
+.dispatcTable .tdTypeA {
+  width: 12.5%;
+}
+
+.dispatcTable .tdTypeB {
+  width: 25%;
+}
+
+.DriverSelectBox {
+  display: flex;
+}
+
+.dispatcTable .tdTypeC {
+  width: 37.5%;
+}
+
+.dispatcTable td input,
+.dispatcTable td select {
+  border: 0.1rem solid #444;
+  border-radius: 0.2rem;
+  box-sizing: border-box;
+}
+
+.dispatcTable td select {
+  height: 2rem;
+  padding: 0.2rem;
+}
+
+.dispatchTableTitle {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 8rem;
+  height: 100%;
+  font-size: 1.4rem;
+  color: white;
+  background-color: #444;
+}
+
+.popupAreaModulesVisible {
+  display: block;
+}
+
+
+
+
+
+
+
+
+
+/* 노선 리스트 */
+.orderListBox {
+  width: 100%;
+  height: calc(100% - 27.7rem);
+  background-color: white;
+  box-shadow: 0.1rem 0.1rem 0.6rem rgb(0 0 0 / 30%);
+}
+
+.orderListHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  height: 3.6rem;
+  padding: 0 1rem;
+  box-sizing: border-box;
+}
+
+.orderListHeader span {
+  font-size: 1.4rem;
+}
+
+.orderListBtnBox {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 34rem;
+  height: 3.6rem;
+}
+
+.dispatchBtn {
+  background-color: #0069D9;
+}
+
+.printBtn,
+.docmentBtn,
+.ExcelBtn {
+  background-color: #444;
+}
+
+.ExcelBtn {
+  width: 12rem;
+}
+
+.orderListBody {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  width: 100%;
+  height: calc(100% - 3.6rem);
+  padding: 0 1rem 1rem 0;
+  box-sizing: border-box;
+}
+
+.orderListMain {
+  display: flex;
+  flex-direction: column;
+  width: 54rem;
+  height: 100%;
+  border-right: 0.1rem solid #CDCDCE;
+  box-sizing: border-box;
+}
+
+.orderListSub {
+  display: flex;
+  flex-direction: column;
+  width: calc(100% - 54rem);
+  height: calc(100% + 1rem);
+  overflow-x: scroll;
+}
+
+/* 스크롤바 설정*/
+.orderListSub::-webkit-scrollbar {
+  height: 1rem;
+}
+
+/* 스크롤바 막대 설정*/
+.orderListSub::-webkit-scrollbar-thumb {
+  height: 17%;
+  background-color: #444444;
+  border-radius: 1rem;
+}
+
+/* 스크롤바 뒷 배경 설정*/
+.orderListSub::-webkit-scrollbar-track {
+  background-color: #D2D2D2;
+}
+
+.orderListSubScrollX {
+  display: flex;
+  flex-direction: column;
+  width: 290rem;
+  height: 100%;
+}
+
+.orderListSubScroll {
+  width: 100%;
+  height: calc(100% - 7.2rem);
+  overflow-y: scroll;
+}
+
+/* 스크롤바 설정*/
+.orderListSubScroll::-webkit-scrollbar {
+  width: 0rem;
+}
+
+.orderListTableHead {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  height: 3.6rem;
+  background-color: #444;
+}
+
+.orderListScrollBox {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  width: 100%;
+  height: auto;
+}
+
+/* 스크롤바 설정*/
+.orderListSub::-webkit-scrollbar {
+  height: 1rem;
+}
+
+/* 스크롤바 막대 설정*/
+.orderListSub::-webkit-scrollbar-thumb {
+  height: 17%;
+  background-color: #444444;
+  border-radius: 1rem;
+}
+
+/* 스크롤바 뒷 배경 설정*/
+.orderListSub::-webkit-scrollbar-track {
+  background-color: #D2D2D2;
+}
+
+.orderListItem {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  min-height: 5rem;
+  height: auto;
+  border-bottom: 0.1rem solid #CDCDCE;
+}
+
+.orderListTotal {
+  display: flex;
+  width: 100%;
+  height: 3.6rem;
+  background-color: #CDCDCE;
+  border-top: 0.1rem solid #707070;
+  border-bottom: 0.1rem solid #707070;
+  box-sizing: border-box;
+}
+
+.orderListTotal .orderListMainContents,
+.orderListTotal .orderListSubContents {
+  border-right: 0.1rem solid #707070;
+}
+
+.orderListSubContents span {
+  margin: 0.3rem 0;
+}
+
+.orderListScrollYBox {
+  position: absolute;
+  z-index: 0;
+  top: 3.6rem;
+  right: 0;
+  width: 1.01rem;
+  height: calc(100% - 8.2rem);
+  overflow-y: scroll;
+}
+
+.orderListScrollYBox div {
+  height: 50rem;
+}
+
+/* 스크롤바 설정*/
+.orderListScrollYBox::-webkit-scrollbar {
+  width: 1rem;
+}
+
+/* 스크롤바 막대 설정*/
+.orderListScrollYBox::-webkit-scrollbar-thumb {
+  height: 17%;
+  background-color: #444444;
+  border-radius: 1rem;
+}
+
+/* 스크롤바 뒷 배경 설정*/
+.orderListScrollYBox::-webkit-scrollbar-track {
+  background-color: #D2D2D2;
+}
+
+.orderListTableHead .orderListMainContents,
+.orderListTableHead .orderListSubContents {
+  color: white;
+  border-right: none;
+}
+
+.orderListMainContents,
+.orderListSubContents {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  font-size: 1.4rem;
+  border-right: 0.1rem solid #CDCDCE;
+  box-sizing: border-box;
+}
+
+.orderListMain1 {
+  width: 20%;
+}
+
+.orderListMain2 {
+  justify-content: flex-start;
+  width: 80%;
+  padding: 0.6rem 0 0.6rem 1rem;
+  box-sizing: border-box;
+}
+
+.orderListMainTotal {
+  width: 100%;
+}
+
+
+
+.orderListTableHead .orderListMain2 {
+  justify-content: center;
+}
+
+.orderListSubContents:nth-child(1) {
+  width: 38rem;
+}
+
+.orderListItem .orderListSubContents:nth-child(1) {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  padding: 0.6rem 1rem;
+  box-sizing: border-box;
+}
+
+.orderListSubContents:nth-child(3),
+.orderListSubContents:nth-child(5) {
+  width: 8rem;
+}
+
+.orderListSubContents:nth-child(2),
+.orderListSubContents:nth-child(15),
+.orderListSubContents:nth-child(16),
+.orderListSubContents:nth-child(17) {
+  width: 10rem;
+}
+
+.orderListSubContents:nth-child(4) {
+  text-align: center;
+  word-break: keep-all;
+}
+
+.orderListSubContents:nth-child(4),
+.orderListSubContents:nth-child(6),
+.orderListSubContents:nth-child(7),
+.orderListSubContents:nth-child(11),
+.orderListSubContents:nth-child(13),
+.orderListSubContents:nth-child(14) {
+  width: 12rem;
+}
+
+.orderListSubContents:nth-child(8) {
+  width: 22rem;
+}
+
+.orderListSubContents:nth-child(9),
+.orderListSubContents:nth-child(10),
+.orderListSubContents:nth-child(12) {
+  width: 34rem;
+}
+
+
+
+.orderListTableHead .orderListSubContents:nth-child(8),
+.orderListTableHead .orderListSubContents:nth-child(9),
+.orderListTableHead .orderListSubContents:nth-child(11) {
+  justify-content: center;
+}
+
+.orderListSubContents:nth-child(8),
+.orderListSubContents:nth-child(9),
+.orderListSubContents:nth-child(11) {
+  justify-content: flex-start;
+  padding-left: 1rem;
+  box-sizing: border-box;
+}
+
+.thisRoute {
+  background-color: #29b68b;
+}
+
+
+
+
+/* 경유지 */
+.waypointBox {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  padding-right: 0.8rem;
+  box-sizing: border-box;
+}
+
+.inputTextDeparture {
+  width: calc(100% - 10rem);
+}
+
+.waypoinBtn {
+  background-color: #0069D9;
+}
+
+.popupArticleCategori {
+  width: 100%;
+  padding-bottom: 0.4rem;
+  margin-top: 2rem;
+  font-size: 1.4rem;
+  font-weight: bold;
+  border-bottom: 0.1rem solid black;
+}
+
+.popupArticleCategori:nth-child(1) {
+  margin-top: 0;
+}
+
+.popupArticleBoxTable {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: auto;
+  margin-top: 2rem;
+}
+
+.scrolling_table-list_body {
+  height: 14.4rem;
+}
+
+.popupArticleBoxTable td:nth-child(1) {
+  width: 4%;
+}
+
+.popupArticleBoxTable td:nth-child(2) {
+  width: 40%;
+}
+
+.popupArticleBoxTable td:nth-child(3) {
+  width: 16%;
+}
+
+.popupArticleBoxTable td:nth-child(4) {
+  width: 16%;
+}
+
+.popupArticleBoxTable td:nth-child(5) {
+  width: 26%;
+}
+
+.waypointCloseBtn {
+  background-color: #444;
+}
+
+.popupFooter{
+  position: relative;
+}
+
+.waypointDeleteBtn{
+  position: absolute;
+  left: 0;
+  background-color: #444;
+}
