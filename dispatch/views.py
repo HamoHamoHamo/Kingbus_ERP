@@ -252,6 +252,64 @@ class RegularlyDispatchList(generic.ListView):
         if detail_id:
             context['detail'] = get_object_or_404(DispatchRegularly, id=detail_id)
 
+            # 지난 배차내역 불러오기
+            date_type = datetime.strptime(date, FORMAT)
+            start_date = date_type - timedelta(days=int(date_type.weekday()) + 7)
+            str_end_date = datetime.strftime(start_date + timedelta(days=13), FORMAT)
+
+            str_start_date = datetime.strftime(start_date, FORMAT)
+            
+
+            dispatch_history = context['detail'].info_regularly.filter(departure_date__range=(str_start_date, str_end_date))
+
+            history_list = []
+            date_list = []
+            block_list = []
+
+            for i in range(14):
+                if i == 7:
+                    context['history_list1'] = history_list
+                    context['date_list1'] = date_list
+                    context['block_list1'] = block_list
+                    
+                    history_list = []
+                    date_list = []
+                    block_list = []
+
+                list_date = datetime.strftime(start_date + timedelta(days=i), FORMAT)
+                date_list.append(f'{list_date} {WEEK[datetime.strptime(list_date, FORMAT).weekday()]}')
+                
+                try:
+                    connect_history = context['detail'].info_regularly.get(departure_date__startswith=list_date)
+                    history_list.append(connect_history)
+
+                    h_driver = connect_history.driver_id
+                    h_bus = connect_history.bus_id
+
+                    departure_date = f'{date} {context["detail"].departure_time}'
+                    arrival_date = f'{date} {context["detail"].arrival_time}'
+
+
+                    if DispatchRegularlyConnect.objects.filter(driver_id=h_driver).exclude(departure_date__gt=arrival_date).exclude(arrival_date__lt=departure_date).exists():
+                        block_list.append('y')
+                    else:
+                        block_list.append('')
+
+
+
+                except DispatchRegularlyConnect.DoesNotExist:
+                    history_list.append('')
+                    block_list.append('')
+                    continue
+
+            context['history_list2'] = history_list
+            context['date_list2'] = date_list
+            context['block_list2'] = block_list
+
+            # print("list1", context['history_list1'])
+            # print("list2", context['history_list2'])
+            print("block_list1", context['block_list1'])
+            print("block_list2", context['block_list2'])
 
         if selected_group:
             context['group'] = get_object_or_404(RegularlyGroup, id=selected_group)

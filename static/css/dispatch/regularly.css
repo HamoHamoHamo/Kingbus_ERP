@@ -626,7 +626,81 @@
   width: 80rem;
 }
 
-.weekTable {
+.weekHead{
+  display: flex;
+  align-items: center;
+  width: 100%;
+  height: 3.6rem;
+  box-shadow: 0 0 0.4rem rgba(0, 0, 0, 0.3);
+  background-color: white;
+  border-radius: 0.2rem;
+}
+
+.weekHead div{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: calc(100%/7);
+  height: 100%;
+  font-size: 1.4rem;
+}
+
+.historyArticle{
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  margin-top: 2rem;
+  width: 100%;
+  height: 25rem;
+  padding: 0.5rem;
+  box-sizing: border-box;
+  box-shadow: 0 0 0.4rem rgba(0, 0, 0, 0.3);
+  background-color: white;
+  border-radius: 0.2rem;
+}
+
+.historyDateBox{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: calc((100% - 1rem));
+  height: 11rem;
+  margin: 0.5;
+  box-shadow: 0 0 0.4rem rgba(0, 0, 0, 0.3);
+  background-color: white;
+  border-radius: 0.2rem;
+}
+
+.historyDate{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 3.6rem;
+  background-color: #EFEFEF;
+  font-size: 1.4rem;
+}
+
+.historyBus{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 3.6rem;
+  border-top: 0.1rem solid #707070;
+  border-bottom: 0.1rem solid #707070;
+  font-size: 1.4rem;
+}
+
+.historyDriver{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 3.6rem;
+  font-size: 1.4rem;
+}
+
+/* .weekTable {
   display: flex;
   flex-direction: column;
   width: 100%;
@@ -738,3 +812,7 @@
 .popupCloseBtn {
   background-color: #444;
 }
+
+.historyUnable{
+  background-color: #EFEFEF;
+} */

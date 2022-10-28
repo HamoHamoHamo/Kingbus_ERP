@@ -5,11 +5,11 @@ window.onload = function () {
     let parms = new URLSearchParams(location.search)
     inputToDay()
     selectRoute()
-    dispatchAble()
     drawSchdule()
     notPairFilter()
-    if (window.location.search !== "" && parms.has("id")) {
+    if (parms.has("id")) {
         DispatcBusFilterRegularly()
+        afterSelectRoute()
     }
     for (i = 0; i < RouteListHBodyTr.length; i++) {
         if (RouteListHBodyTr[i].classList.contains("selectRoute") && window.location.search.split("height=")[1].split("&")[0] > 10) {

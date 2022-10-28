@@ -1,4 +1,4 @@
-const sideNavControll = document.querySelectorAll(".nav1BoxMenu img:nth-last-child(1)")
+const sideNavControll = document.querySelectorAll(".nav1BoxMenuHaveDepth2 svg")
 const nav1BoxMenuHaveDepth2 = document.querySelectorAll(".nav1BoxMenuHaveDepth2")
 const sideMenuNav2Box = document.querySelectorAll(".sideMenuNav2Box")
 const sideMenuNav2 = document.querySelectorAll(".sideMenuNav2")

@@ -22,18 +22,22 @@ function moveCheck(e) {
 
 function listHeight() {
     for (i = 0; i < mainContents.length; i++) {
-        if (subContents[i].children[0].clientHeight >= 50) {
-            mainContents[i].children[0].style.height = `${(subContents[i].children[0].clientHeight + 4) * 0.1}rem`
-            mainContents[i].children[1].style.height = `${(subContents[i].children[0].clientHeight + 4) * 0.1}rem`
-            for (j = 0; j < subContents[i].children.length; j++) {
-                subContents[i].children[j].style.height = `${(subContents[i].children[0].clientHeight + 2) * 0.1}rem`
-            }
-        } else {
-            mainContents[i].children[0].style.height = "5.2rem"
-            mainContents[i].children[1].style.height = "5.2rem"
-            for (j = 0; j < subContents[i].children.length; j++) {
-                subContents[i].children[j].style.height = "5.2rem"
-            }
-        }
-    }
+        let heightArr = []
+        for (j = 0; j < mainContents[i].children.length; j++) {
+            heightArr.push(mainContents[i].children[j].clientHeight)
+        };
+        for (j = 0; j < subContents[i].children.length; j++) {
+            heightArr.push(subContents[i].children[j].clientHeight)
+        };
+        heightArr.sort(function (a, b) {
+            return b - a;
+        })
+
+        for (j = 0; j < mainContents[i].children.length; j++) {
+            mainContents[i].children[j].style.height = `${heightArr[0] * 0.1}rem`
+        };
+        for (j = 0; j < subContents[i].children.length; j++) {
+            subContents[i].children[j].style.height = `${heightArr[0] * 0.1}rem`
+        };
+    };
 }

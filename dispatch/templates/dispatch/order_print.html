@@ -18,6 +18,7 @@
             <div class="item">계약현황</div>
             <div class="item">상여금</div>
             <div class="item">계약금액</div>
+            <div class="item">유형</div>
             <div class="item">예약정보</div>
             <div class="item">버스옵션</div>
             <div class="item">표찰정보</div>
@@ -36,8 +37,12 @@
                     {{order.arrival_date|slice:'2:'}}
                 </div>
                 <div class="item">
-                    {% if not order.bus_type and not order.operation_type %} {% else %} [{{order.bus_type}} {{order.operation_type}}] {% endif %}{{order.departure}} ▶<br>
-                    {{order.arrival}}
+                    <div>{% if not order.bus_type and not order.operation_type %} {% else %} [{{order.bus_type}} {{order.operation_type}}] {% endif %}</div>
+                    <div>{{order.departure}} ▶</div>
+                    {% for waypoint in order.waypoint.all %}
+                        <div>{{waypoint.waypoint}}({{waypoint.time}}){% if waypoint.delegate or waypoint.delegate_phone %} - {% endif %}{{waypoint.delegate}}{% if waypoint.delegate_phone %}({{waypoint.delegate_phone}}){% endif %}</div>
+                    {% endfor %}
+                    <div>{{order.arrival}}</div>
                 </div>
                 <div class="item">
                     {% for connect in order.info_order.all %}
@@ -56,9 +61,10 @@
                 <div class="item">
                     {{order.price}}
                 </div>
+                <div></div>
                 <div class="item">
-                    {{order.customer}}<br>
-                    {% if order.customer_phone %} {{order.customer_phone}} {% endif %}
+                    <div>{{order.customer}}</div>
+                    <div>{% if order.customer_phone %} {{order.customer_phone}} {% endif %}</div>
                 </div>
                 <div class="item">
                     <span></span>

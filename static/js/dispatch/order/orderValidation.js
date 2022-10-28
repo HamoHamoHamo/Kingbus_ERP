@@ -4,17 +4,22 @@ const inputTextDriverAllowance = document.querySelector(".inputTextDriverAllowan
 const inputTextTwice = document.querySelectorAll(".inputTextTwice")
 const dispatchPrice = document.querySelectorAll(".dispatchPrice")
 const dispatchPaymen = document.querySelectorAll(".dispatchPaymen")
-const needComma1 = document.querySelectorAll(".listTableScroll .scrollListTable td:nth-child(3)")
-const needComma2 = document.querySelectorAll(".listTableScroll .scrollListTable td:nth-child(4)")
-const needComma3 = document.querySelectorAll(".listTableScroll .scrollListTable td:nth-child(8)")
-const needComma4 = document.querySelectorAll(".listTableScroll .scrollListTable td:nth-child(9)")
-const changeToVAT = document.querySelectorAll(".listTableScroll .scrollListTable td:nth-child(12)")
+const needComma1 = document.querySelectorAll(".orderListItem .orderListSubContents:nth-child(6)")
+const needComma2 = document.querySelectorAll(".orderListItem .orderListSubContents:nth-child(7)")
+const needComma3 = document.querySelectorAll(".orderListItem .orderListSubContents:nth-child(14)")
+const needComma4 = document.querySelectorAll(".orderListItem .orderListSubContents:nth-child(15)")
+const needComma5 = document.querySelectorAll(".orderListItem .orderListSubContents:nth-child(10)")
+const changeToVAT = document.querySelectorAll(".orderListItem .orderListSubContents:nth-child(16)")
 const inputSave = document.querySelector(".inputSave")
 const inputDispatchForm = document.querySelector(".inputDispatchForm")
 const ListSub = document.querySelectorAll(".orderListSub .orderListItem")
 const inputHidden = document.querySelector(".inputHidden")
 const searchForm = document.querySelector(".searchForm")
 const searchBtn = document.querySelector(".searchBtn")
+const totalPrice1 = document.querySelector(".orderListTotal .orderListSubContents:nth-child(6)")
+const totalPrice2 = document.querySelector(".orderListTotal .orderListSubContents:nth-child(7)")
+const totalPrice3 = document.querySelector(".orderListTotal .orderListSubContents:nth-child(14)")
+const totalPrice4 = document.querySelector(".orderListTotal .orderListSubContents:nth-child(15)")
 
 
 // 검색 날짜 역전 방지
@@ -24,7 +29,7 @@ function orderPeriod() {
     if (searchDate[0].value.replace(/\-/g, "") > searchDate[1].value.replace(/\-/g, "")) {
         alert("잘못된 범위입니다. 날짜를 다시 확인해 주세요.")
         searchDate[1].value = ""
-    }else{
+    } else {
         searchForm.submit()
     }
 }
@@ -174,7 +179,6 @@ function submitVaildation(e) {
         }
         // inputDispatchForm.submit()
     }
-    console.log('form action', inputDispatchForm.action)
     if (inputDispatchForm.action == 'http://kingbuserp.link/dispatch/order/route/edit') {
         $.ajax({
             url: "/dispatch/order/route/edit/check",
@@ -224,6 +228,9 @@ function addCommaList() {
         if (needComma4[i].innerText !== "" && needComma4[i].innerText > 3) {
             needComma4[i].innerText = needComma4[i].innerText.replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
         }
+        if (needComma5[i].innerText !== "") {
+            needComma5[i].innerText = needComma5[i].innerText.replace(/\ /g, ", ");
+        }
     }
 }
 
@@ -240,20 +247,20 @@ function changeVAT() {
 
 
 
-// 콤마 추가
-function pageLoadAddComma() {
-    inputTextPrice.value = inputTextPrice.value.replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
-    inputTextDriverAllowance.value = inputTextDriverAllowance.value.replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
-    for (i = 0; i < ListSub.length; i++) {
-        ListSub[i].children[5].innerText = ListSub[i].children[5].innerText.replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
-        ListSub[i].children[6].innerText = ListSub[i].children[6].innerText.replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
-        ListSub[i].children[12].innerText = ListSub[i].children[12].innerText.replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
-        ListSub[i].children[13].innerText = `${ListSub[i].children[6].innerText.replace(/\,/g, "") - ListSub[i].children[12].innerText.replace(/\,/g, "")}`
-        ListSub[i].children[13].innerText = ListSub[i].children[13].innerText.replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
-        if (ListSub[i].children[14].innerText == "y") {
-            ListSub[i].children[14].innerText = "VAT 포함"
-        } else {
-            ListSub[i].children[14].innerText = "VAT 미포함"
-        }
+
+// 합계 "," 추가
+function addCommaTotal() {
+    console.log(totalPrice1)
+    if (totalPrice1.innerText !== "" && totalPrice1.innerText > 3) {
+        totalPrice1.innerText = totalPrice1.innerText.replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
+    }
+    if (totalPrice2.innerText !== "" && totalPrice2.innerText > 3) {
+        totalPrice2.innerText = totalPrice2.innerText.replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
+    }
+    if (totalPrice3.innerText !== "" && totalPrice3.innerText > 3) {
+        totalPrice3.innerText = totalPrice3.innerText.replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
+    }
+    if (totalPrice4.innerText !== "" && totalPrice4.innerText > 3) {
+        totalPrice4.innerText = totalPrice4.innerText.replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
     }
 }

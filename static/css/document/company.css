@@ -56,13 +56,13 @@
 .download {
     position: absolute;
     top: -6.5rem;
-    right: 9.5rem;
+    right: 9rem;
     background-color: #0069D9;
 }
 .print {
     position: absolute;
     top: -6.5rem;
-    right: 17rem;
+    right: 17.5rem;
     background-color: #0069D9;
 }
 
@@ -192,6 +192,8 @@
     top: 50%;
     right: 2rem;
     transform: translate(0, -50%);
+    display: flex;
+    align-items: center;
 }
 
 .groupName{
@@ -221,6 +223,8 @@
     top: 50%;
     right: 5rem;
     transform: translate(0, -50%);
+    display: flex;
+    align-items: center;
 }
 
 .groupNameSaveBtn{
