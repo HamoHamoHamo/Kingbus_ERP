@@ -10,10 +10,10 @@ window.onload = function () {
     notPairFilter()
     addCommaList()
     changeVAT()
-    pageLoadAddComma()
     listHeight()
     thisRoute()
     matchDispatch()
+    addCommaTotal()
 
     if(params.has("date1")){
         inputTextquarter[0].value = params.get("date1")

@@ -494,3 +494,64 @@
 <script src="{% static 'js/dispatch/orderValidation.js' %}"></script>
 <script src="{% static 'js/dispatch/loadRouteinput.js' %}"></script>
 {% endblock %}
+
+
+
+
+
+
+
+
+
+<div class="weekTable firstWeek">
+    <div class="weekTableHeader">
+      <div>1주전</div>
+      {% for date in date_list1 %}
+      <div>{{date|slice:'2:'}}</div>
+      {% endfor %}
+    </div>
+    <div class="weekTableBody">
+      <div class="historyItemTitle">
+        <div class="historyBus">차량</div>
+        <div class="historyDriverTItle">기사</div>
+      </div>
+      {% for connect in history_list1 %}
+      <div class="historyItem {% if block_list1|index:forloop.counter0 %}historyUnable{% elif not connect %}historyUnable{% endif %}">
+        <div class="historyBus {{connect.bus_id.id}}">{{connect.bus_id.vehicle_num}}</div><!--차량 아이디-->
+        <div class="historyDriver {{connect.driver_id.id}}"><!--기사 아이디-->
+          {% if connect.outsourcing == 'n' %}<div class="driverType typeRegular">정</div>{% elif connect.outsourcing == 'y' %}<div class="driverType typeOutsourcing">용</div>{% endif %}
+          <span>{{connect.driver_id.name}}</span>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+  <div class="weekTable secondWeek">
+    <div class="weekTableHeader">
+      <div>2주전</div>
+      {% for date in date_list2 %}
+      <div>{{date|slice:'2:'}}</div>
+      {% endfor %}
+    </div>
+    <div class="weekTableBody">
+      <div class="historyItemTitle">
+        <div class="historyBus">차량</div>
+        <div class="historyDriverTItle">기사</div>
+      </div>
+      {% for connect in history_list2 %}
+      <div class="historyItem {% if block_list2|index:forloop.counter0 %}historyUnable{% elif not connect %}historyUnable{% endif %}">
+        <div class="historyBus {{connect.bus_id.id}}">{{connect.bus_id.vehicle_num}}</div>
+        <div class="historyDriver {{connect.driver_id.id}}">
+          {% if connect.outsourcing == 'n' %}<div class="driverType typeRegular">정</div>{% elif connect.outsourcing == 'y' %}<div class="driverType typeOutsourcing">용</div>{% endif %}
+          <span>{{connect.driver_id.name}}</span>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+  <input autocomplete="off" type="hidden" name="id" class="historyHiddenRoute">
+  <input autocomplete="off" type="hidden" name="group" class="historyHiddenGroup">
+  <input autocomplete="off" type="hidden" name="date" class="historyHiddenDate">
+  <input autocomplete="off" type="hidden" name="outsourcing" class="historyHiddenOutsourcing">
+  <input autocomplete="off" type="hidden" name="bus" class="historyHiddenBus">
+  <input autocomplete="off" type="hidden" name="driver" class="historyHiddenDriver">

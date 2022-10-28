@@ -585,7 +585,9 @@
 }
 
 .orderListMain2 {
-  justify-content: flex-start;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
   width: 80%;
   padding: 0.6rem 0 0.6rem 1rem;
   box-sizing: border-box;
@@ -612,15 +614,22 @@
   box-sizing: border-box;
 }
 
+.orderListItem .orderListSubContents:nth-child(8) {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+}
+
 .orderListSubContents:nth-child(3),
 .orderListSubContents:nth-child(5) {
   width: 8rem;
 }
 
 .orderListSubContents:nth-child(2),
-.orderListSubContents:nth-child(15),
 .orderListSubContents:nth-child(16),
-.orderListSubContents:nth-child(17) {
+.orderListSubContents:nth-child(17),
+.orderListSubContents:nth-child(18) {
   width: 10rem;
 }
 
@@ -632,40 +641,48 @@
 .orderListSubContents:nth-child(4),
 .orderListSubContents:nth-child(6),
 .orderListSubContents:nth-child(7),
-.orderListSubContents:nth-child(11),
-.orderListSubContents:nth-child(13),
-.orderListSubContents:nth-child(14) {
+.orderListSubContents:nth-child(12),
+.orderListSubContents:nth-child(14),
+.orderListSubContents:nth-child(15) {
   width: 12rem;
 }
 
 .orderListSubContents:nth-child(8) {
-  width: 22rem;
+  width: 10rem;
+}
+.orderListSubContents:nth-child(9) {
+  width: 16rem;
 }
 
-.orderListSubContents:nth-child(9),
-.orderListSubContents:nth-child(10),
-.orderListSubContents:nth-child(12) {
+.orderListSubContents:nth-child(10){
+  width: 36rem;
+}
+
+.orderListSubContents:nth-child(13) {
   width: 34rem;
 }
-
-
-
-.orderListTableHead .orderListSubContents:nth-child(8),
-.orderListTableHead .orderListSubContents:nth-child(9),
-.orderListTableHead .orderListSubContents:nth-child(11) {
-  justify-content: center;
+.orderListSubContents:nth-child(11){
+  width: 28rem;
 }
 
-.orderListSubContents:nth-child(8),
-.orderListSubContents:nth-child(9),
-.orderListSubContents:nth-child(11) {
+
+.orderListItem .orderListSubContents:nth-child(10),
+.orderListItem .orderListSubContents:nth-child(11),
+.orderListItem .orderListSubContents:nth-child(13){
   justify-content: flex-start;
+  padding-left: 1rem;
+  box-sizing: border-box;
+}
+.orderListItem .orderListSubContents:nth-child(9){
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
   padding-left: 1rem;
   box-sizing: border-box;
 }
 
 .thisRoute {
-  background-color: #29b68b;
+  background-color: rgb(255, 242, 204);
 }
 
 

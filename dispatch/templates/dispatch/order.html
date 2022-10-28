@@ -99,14 +99,18 @@
                     <div class="dateControllBtnBox">
                         <div class="dateToday">오늘</div>
                         <div class="dateControllBtn">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="8" height="13.993" viewBox="0 0 8 13.993">
-                                <path id="Icon_ionic-ios-arrow-back" data-name="Icon ionic-ios-arrow-back" d="M13.662,13.188,18.957,7.9A1,1,0,1,0,17.54,6.486l-6,5.994a1,1,0,0,0-.029,1.379L17.536,19.9a1,1,0,0,0,1.416-1.412Z" transform="translate(-11.25 -6.194)"/>
-                              </svg>                     
+                            <svg id="그룹_1846" data-name="그룹 1846" xmlns="http://www.w3.org/2000/svg" width="10" height="14" viewBox="0 0 10 14">
+                                <rect id="사각형_12020" data-name="사각형 12020" width="10" height="14" transform="translate(0)" fill="none"/>
+                                <path id="Icon_ionic-ios-arrow-back" data-name="Icon ionic-ios-arrow-back" d="M13.665,13.19,18.96,7.9a1,1,0,1,0-1.416-1.412l-6,6a1,1,0,0,0-.029,1.379L17.54,19.9a1,1,0,1,0,1.416-1.412Z" transform="translate(-11.252 -6.192)" fill="#fff"/>
+                              </svg>        
                         </div>
                         <div class="dateControllBtn">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="8" height="13.993" viewBox="0 0 8 13.993">
-                                <path id="Icon_ionic-ios-arrow-back" data-name="Icon ionic-ios-arrow-back" d="M16.839,13.188,11.544,7.9a1,1,0,0,1,1.416-1.412l6,5.994a1,1,0,0,1,.029,1.379L12.965,19.9a1,1,0,0,1-1.416-1.412Z" transform="translate(-11.25 -6.194)"/>
-                              </svg>                        
+                            <svg xmlns="http://www.w3.org/2000/svg" width="10" height="14" viewBox="0 0 10 14">
+                                <g id="그룹_1846" data-name="그룹 1846" transform="translate(-613 -66)">
+                                  <rect id="사각형_12020" data-name="사각형 12020" width="10" height="14" transform="translate(613 66)" fill="none"/>
+                                  <path id="Icon_ionic-ios-arrow-back" data-name="Icon ionic-ios-arrow-back" d="M16.839,13.19,11.544,7.9A1,1,0,1,1,12.96,6.486l6,6a1,1,0,0,1,.029,1.379L12.964,19.9a1,1,0,1,1-1.416-1.412Z" transform="translate(603.748 59.808)" fill="#fff"/>
+                                </g>
+                              </svg>                              
                         </div>
                     </div>
                 </div>
@@ -202,24 +206,6 @@
                             <input autocomplete="off" {% if detail.option and detail.option|in_check:'카드기' %} checked {% endif %} name="option" value="카드기" type="checkbox" id="card">
                             <label for="card">카드기</label>
                         </td>
-                        <!-- <td class="tdTypeA">입금현황</td>
-                        <td class="tdTypeC">
-                            <select name="deposit_status" id="deposit_status" class="inputSelect">
-                                <option value=""></option>
-                                <option {% if detail.deposit_status == '사무실 입금' %} selected {% endif %}
-                                    value="사무실 입금">사무실 입금</option>
-                                <option value="최정이">최정이</option>
-                                <option value="김성태">김성태</option>
-                                <option value="국민">국민</option>
-                                <option value="농협">농협(161157)</option>
-                                <option value="신한">신한</option>
-                                <option value="기업">기업</option>
-                            </select>
-                        </td>
-                        <td class="tdTypeA">계산서 발행일</td>
-                        <td class="tdTypeC">
-                            <input autocomplete="off"value="{{detail.bill_date}}" name="bill_date" type="date" class="inputText">
-                        </td> -->
                     </tr>
                     <tr>
                         <td class="tdTypeA">운행시간</td>
@@ -320,8 +306,21 @@
                         <td class="tdTypeA">전화번호</td>
                         <td class="tdTypeC"><input autocomplete="off" value="{{detail.customer_phone}}" name="customer_phone" type="text" class="inputText inputTextPhoneNum" maxlength="13">
                         </td>
-                        <td class="tdTypeA">참조사항</td>
-                        <td colspan="3" class="tdTypeB"><input autocomplete="off" value="{{detail.references}}" name="references" type="text" class="inputText">
+                        <td class="tdTypeA">표찰정보</td>
+                        <td class="tdTypeC">
+                            <input autocomplete="off" name="ticketing_info" type="text" value="{{detail.ticketing_info}}" class="inputText">
+                        </td>
+                        <td class="tdTypeA">유형</td>
+                        <td class="tdTypeC">
+                            <select name="type" id="type" class="inputSelect">
+                                <option value=""></option>
+                                <option {% if detail.type == '워크샵' %} selected {% endif %} value="워크샵">워크샵</option>
+                                <option {% if detail.type == '학단' %} selected {% endif %} value="학단">학단</option>
+                                <option {% if detail.type == '단체관람' %} selected {% endif %} value="단체관람">단체관람</option>
+                                <option {% if detail.type == '동호회' %} selected {% endif %} value="동호회">동호회</option>
+                                <option {% if detail.type == '결혼식' %} selected {% endif %} value="결혼식">결혼식</option>
+                                <option {% if detail.type == '기타' %} selected {% endif %} value="기타">기타</option>
+                            </select>
                         </td>
                     </tr>
                     <tr>
@@ -348,9 +347,8 @@
                                 <option value="기사동행(전체일정)">기사동행(전체일정)</option>
                             </datalist>
                         </td>
-                        <td class="tdTypeA">표찰정보</td>
-                        <td colspan="3" class="tdTypeB">
-                            <input autocomplete="off" name="ticketing_info" type="text" value="{{detail.ticketing_info}}" class="inputText">
+                        <td class="tdTypeA">참조사항</td>
+                        <td colspan="3" class="tdTypeB"><input autocomplete="off" value="{{detail.references}}" name="references" type="text" class="inputText">
                         </td>
                     </tr>
                 </table>
@@ -414,11 +412,6 @@
                                             <input autocomplete="off" {% if i.payment_method == 'y' %} checked {% endif %} name="payment_method{{forloop.counter0}}" value="y" type="checkbox" class="dispatchPaymentCheckbox">
                                             <label for="">선지급</label>
                                         </td>
-                                        <!-- <td class="tdTypeA">상여금 선지급</td>
-                                        <td class="tdTypeD">
-                                            <input autocomplete="off"{% if detail.payment_method == 'y' %} checked {% endif %} name="payment_method" value="y" type="checkbox" id="input_payment_method">
-                                            <label for="input_payment_method">선지급</label>
-                                        </td> -->
                                     </tr>
                                     <input autocomplete="off" name="bus" value="{{i.bus_id.id}}" type="hidden" class="hiddenBus">
                                     <input autocomplete="off" name="id" value="{{detail.id}}" type="hidden">
@@ -516,12 +509,11 @@
                                     {{order.departure_date|slice:'2:'}}<br>{{order.arrival_date|slice:'2:'}}
                                 </div>
                                 <div class="orderListMainContents orderListMain2">
-                                    {{order.departure}} ▶ <br>
+                                    <div>{{order.departure}} ▶</div>
                                     {% for waypoint in order.waypoint.all %}
-                                        {{waypoint.waypoint}}({{waypoint.time}}){% if waypoint.delegate or waypoint.delegate_phone %} - {% endif %}{{waypoint.delegate}}{% if waypoint.delegate_phone %}({{waypoint.delegate_phone}}){% endif %}
-                                        <br>
+                                        <div>{{waypoint.waypoint}}({{waypoint.time}}){% if waypoint.delegate or waypoint.delegate_phone %} - {% endif %}{{waypoint.delegate}}{% if waypoint.delegate_phone %}({{waypoint.delegate_phone}}){% endif %}</div>
                                     {% endfor %}
-                                    {{order.arrival}}
+                                    <div>{{order.arrival}}</div>
                                 </div>
                             </div>
                             {% endfor %}
@@ -541,6 +533,7 @@
                             <div class="orderListSubContents">운행종류</div>
                             <div class="orderListSubContents">상여금</div>
                             <div class="orderListSubContents">계약금액</div>
+                            <div class="orderListSubContents">유형</div>
                             <div class="orderListSubContents">예약정보</div>
                             <div class="orderListSubContents">버스옵션</div>
                             <div class="orderListSubContents">표찰정보</div>
@@ -567,12 +560,16 @@
                                     <div class="orderListSubContents">{{order.operation_type}}</div>
                                     <div class="orderListSubContents">{{order.driver_allowance}}</div>
                                     <div class="orderListSubContents">{{order.price}}</div>
-                                    <div class="orderListSubContents">{{order.customer}} : {{order.customer_phone}}</div>
+                                    <div class="orderListSubContents"></div>
+                                    <div class="orderListSubContents">
+                                        <div>{{order.customer}}</div>
+                                        <div>{{order.customer_phone}}</div>
+                                    </div>
                                     <div class="orderListSubContents">{{order.option}}</div>
                                     <div class="orderListSubContents">{{order.ticketing_info}}</div>
                                     <div class="orderListSubContents">{{order.cost_type}}</div>
                                     <div class="orderListSubContents">{{order.references}}</div>
-                                    <div class="orderListSubContents">{{order.collection_amount}}</div>
+                                    <div class="orderListSubContents"></div>
                                     <div class="orderListSubContents"></div>
                                     <div class="orderListSubContents">{{order.VAT}}</div>
                                     <div class="orderListSubContents">{{order.bill_place}}</div>
@@ -593,10 +590,10 @@
                             <div class="orderListSubContents"></div>
                             <div class="orderListSubContents"></div>
                             <div class="orderListSubContents"></div>
+                            <div class="orderListSubContents"></div>
+                            <div class="orderListSubContents"></div>
                             <div class="orderListSubContents">{{total.collection_amount}}</div>
                             <div class="orderListSubContents">{{total.outstanding_amount}}</div>
-                            <div class="orderListSubContents"></div>
-                            <div class="orderListSubContents"></div>
                             <div class="orderListSubContents"></div>
                             <div class="orderListSubContents"></div>
                         </div>
@@ -747,4 +744,5 @@
 <script src="{% static 'js/dispatch/order/FullSchedule.js' %}"></script>
 <script src="{% static 'js/dispatch/order/matchDispatch.js' %}"></script>
 <script src="{% static 'js/dispatch/order/waypoint.js' %}"></script>
+<script src="{% static 'js/dispatch/order/edit.js' %}"></script>
 {% endblock %}

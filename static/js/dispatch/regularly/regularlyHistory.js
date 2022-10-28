@@ -6,6 +6,9 @@ const historyItem = document.querySelectorAll(".historyItem")
 const historyHiddenRoute = document.querySelector(".historyHiddenRoute")
 const historyHiddenBus = document.querySelector(".historyHiddenBus")
 const historyHiddenDriver = document.querySelector(".historyHiddenDriver")
+const historyHiddenGroup = document.querySelector(".historyHiddenGroup")
+const historyHiddenDate = document.querySelector(".historyHiddenDate")
+const historyHiddenOutsourcing = document.querySelector(".historyHiddenDriver")
 
 
 
@@ -42,17 +45,29 @@ for (i = 0; i < historyItem.length; i++) {
 }
 
 function HistoryCheck() {
-    if (this.classList.contains("checkHistoryItem")) {
-        for (i = 0; i < historyItem.length; i++) {
-            historyItem[i].classList.remove("checkHistoryItem")
+    if(!this.classList.contains("historyUnable")){
+        let parms = new URLSearchParams(location.search)
+        historyHiddenRoute.value = parms.get("id")
+        historyHiddenGroup.value = parms.get("group")
+        historyHiddenDate.value = parms.get("date")
+        if (this.classList.contains("checkHistoryItem")) {
+            for (i = 0; i < historyItem.length; i++) {
+                historyItem[i].classList.remove("checkHistoryItem")
+            }
+            this.classList.remove("checkHistoryItem")
+            historyHiddenBus.value = ""
+            historyHiddenDriver.value = ""
+            historyHiddenOutsourcing.value = ""
+        } else {
+            for (i = 0; i < historyItem.length; i++) {
+                historyItem[i].classList.remove("checkHistoryItem")
+            }
+            this.classList.add("checkHistoryItem")
+            historyHiddenBus.value = this.children[0].classList[1]
+            historyHiddenDriver.value = this.children[1].classList[1]
+            if (this.children[1].children[0].classList[1] == typeOutsourcing) {
+                historyHiddenOutsourcing.value = "y"
+            }
         }
-        this.classList.remove("checkHistoryItem")
-    } else {
-        for (i = 0; i < historyItem.length; i++) {
-            historyItem[i].classList.remove("checkHistoryItem")
-        }
-        this.classList.add("checkHistoryItem")
     }
-    historyHiddenBus.value = this.children[0].classList[1]
-    historyHiddenDriver.value = this.children[1].classList[1]
 }

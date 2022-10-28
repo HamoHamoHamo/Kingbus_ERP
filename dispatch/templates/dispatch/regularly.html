@@ -385,7 +385,7 @@
               </td>
               <td {% if detail.id != order.id %} onclick="location.href='{% url 'dispatch:regularly' %}?id={{order.id}}&group={{order.group.id}}&height={{forloop.counter}}&date={{date}}'"{% endif %}>
                 {% if detail.id == order.id %} 
-                  <select name="driver">
+                  <select name="driver" class="driverSelect">
                     <option value="{{driver.id}}">{{driver.name}}</option>
                   </select>
                 {% else %}
@@ -394,7 +394,7 @@
               </td>
               <td {% if detail.id != order.id %} onclick="location.href='{% url 'dispatch:regularly' %}?id={{order.id}}&group={{order.group.id}}&height={{forloop.counter}}&date={{date}}'"{% endif %}>
                 {% if detail.id == order.id %}
-                <select name="outsourcing">
+                <select name="outsourcing" class="outsorcingSelect">
                   <option value="{{outsourcing.id}}">{{outsourcing.name}}</option>
                 </select>
                 {% else %}
@@ -416,150 +416,70 @@
 
     <div class="popupAreaModules">
       <div class="popupBgModules"></div>
-      <form method="post" action="" class="popupContainer popupContainerDispatchHistory">
+      <form method="post" action="{% url 'dispatch:regularly_connect_create' %}" class="popupContainer popupContainerDispatchHistory">
         {% csrf_token %}
         <div class="popupHeader">
           <div class="popupTitle">노선명 - 배차내역</div>
         </div>
         <div class="popupBody">
           <div class="popupSection">
-            <div class="weekTable firstWeek">
-              <div class="weekTableHeader">
-                <div>1주전</div>
-                <div>22.09.30 (월)</div>
-                <div>22.09.30 (월)</div>
-                <div>22.09.30 (월)</div>
-                <div>22.09.30 (월)</div>
-                <div>22.09.30 (월)</div>
-                <div>22.09.30 (월)</div>
-                <div>22.09.30 (월)</div>
+
+            <div class="weekHead">
+              <div>일</div>
+              <div>월</div>
+              <div>화</div>
+              <div>수</div>
+              <div>목</div>
+              <div>금</div>
+              <div>토</div>
+            </div>
+
+            <div class="historyArticle">
+              <div class="historyDateBox">
+                <div class="historyDate">2022-10-28</div>
+                <div class="historyBus">1234</div>
+                <div class="historyDriver">이도울(용역)</div>
               </div>
-              <div class="weekTableBody">
-                <div class="historyItemTitle">
-                  <div class="historyBus">차량</div>
-                  <div class="historyDriverTItle">기사</div>
-                </div>
-                <div class="historyItem">
-                  <div class="historyBus">1111</div><!--차량 아이디-->
-                  <div class="historyDriver"><!--기사 아이디-->
-                    <div class="driverType typeRegular">정</div>
-                    <span>이도울</span>
-                  </div>
-                </div>
-                <div class="historyItem">
-                  <div class="historyBus">1111</div>
-                  <div class="historyDriver">
-                    <div class="driverType typeOutsourcing">용</div>
-                    <span>이도울</span>
-                  </div>
-                </div>
-                <div class="historyItem">
-                  <div class="historyBus">1111</div>
-                  <div class="historyDriver">
-                    <div class="driverType typeRegular">정</div>
-                    <span>이도울</span>
-                  </div>
-                </div>
-                <div class="historyItem">
-                  <div class="historyBus">1111</div>
-                  <div class="historyDriver">
-                    <div class="driverType typeRegular">정</div>
-                    <span>이도울</span>
-                  </div>
-                </div>
-                <div class="historyItem">
-                  <div class="historyBus">1111</div>
-                  <div class="historyDriver">
-                    <div class="driverType typeRegular">정</div>
-                    <span>이도울</span>
-                  </div>
-                </div>
-                <div class="historyItem">
-                  <div class="historyBus">1111</div>
-                  <div class="historyDriver">
-                    <div class="driverType typeRegular">정</div>
-                    <span>이도울</span>
-                  </div>
-                </div>
-                <div class="historyItem">
-                  <div class="historyBus">1111</div>
-                  <div class="historyDriver">
-                    <div class="driverType typeRegular">정</div>
-                    <span>이도울</span>
-                  </div>
-                </div>
+              <div class="historyDateBox">
+                <div class="historyDate">2022-10-28</div>
+                <div class="historyBus">1234</div>
+                <div class="historyDriver">이도울(용역)</div>
+              </div>
+              <div class="historyDateBox">
+                <div class="historyDate">2022-10-28</div>
+                <div class="historyBus">1234</div>
+                <div class="historyDriver">이도울(용역)</div>
+              </div>
+              <div class="historyDateBox">
+                <div class="historyDate">2022-10-28</div>
+                <div class="historyBus">1234</div>
+                <div class="historyDriver">이도울(용역)</div>
+              </div>
+              <div class="historyDateBox">
+                <div class="historyDate">2022-10-28</div>
+                <div class="historyBus">1234</div>
+                <div class="historyDriver">이도울(용역)</div>
+              </div>
+              <div class="historyDateBox">
+                <div class="historyDate">2022-10-28</div>
+                <div class="historyBus">1234</div>
+                <div class="historyDriver">이도울(용역)</div>
+              </div>
+              <div class="historyDateBox">
+                <div class="historyDate">2022-10-28</div>
+                <div class="historyBus">1234</div>
+                <div class="historyDriver">이도울(용역)</div>
+              </div>
+              <div class="historyDateBox">
+                <div class="historyDate">2022-10-28</div>
+                <div class="historyBus">1234</div>
+                <div class="historyDriver">이도울(용역)</div>
               </div>
             </div>
-            <div class="weekTable secondWeek">
-              <div class="weekTableHeader">
-                <div>2주전</div>
-                <div>22.09.30 (월)</div>
-                <div>22.09.30 (월)</div>
-                <div>22.09.30 (월)</div>
-                <div>22.09.30 (월)</div>
-                <div>22.09.30 (월)</div>
-                <div>22.09.30 (월)</div>
-                <div>22.09.30 (월)</div>
-              </div>
-              <div class="weekTableBody">
-                <div class="historyItemTitle">
-                  <div class="historyBus">차량</div>
-                  <div class="historyDriverTItle">기사</div>
-                </div>
-                <div class="historyItem">
-                  <div class="historyBus">1111</div>
-                  <div class="historyDriver">
-                    <div class="driverType typeRegular">정</div>
-                    <span>이도울</span>
-                  </div>
-                </div>
-                <div class="historyItem">
-                  <div class="historyBus">1111</div>
-                  <div class="historyDriver">
-                    <div class="driverType typeRegular">정</div>
-                    <span>이도울</span>
-                  </div>
-                </div>
-                <div class="historyItem">
-                  <div class="historyBus">1111</div>
-                  <div class="historyDriver">
-                    <div class="driverType typeRegular">정</div>
-                    <span>이도울</span>
-                  </div>
-                </div>
-                <div class="historyItem">
-                  <div class="historyBus">1111</div>
-                  <div class="historyDriver">
-                    <div class="driverType typeRegular">정</div>
-                    <span>이도울</span>
-                  </div>
-                </div>
-                <div class="historyItem">
-                  <div class="historyBus">1111</div>
-                  <div class="historyDriver">
-                    <div class="driverType typeRegular">정</div>
-                    <span>이도울</span>
-                  </div>
-                </div>
-                <div class="historyItem">
-                  <div class="historyBus">1111</div>
-                  <div class="historyDriver">
-                    <div class="driverType typeRegular">정</div>
-                    <span>이도울</span>
-                  </div>
-                </div>
-                <div class="historyItem">
-                  <div class="historyBus">1111</div>
-                  <div class="historyDriver">
-                    <div class="driverType typeRegular">정</div>
-                    <span>이도울</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <input autocomplete="off" type="hidden" name="id" class="historyHiddenRoute">
-            <input autocomplete="off" type="hidden" name="bus" class="historyHiddenBus">
-            <input autocomplete="off" type="hidden" name="driver" class="historyHiddenDriver">
+
+
+
+            
           </div>
           <div class="popupFooter">
             <input autocomplete="off" type="submit" class="btnModules" value="배차">
@@ -632,4 +552,5 @@
 <script src="{% static 'js/dispatch/regularly/FullSchedule.js' %}"></script>
 <script src="{% static 'js/dispatch/regularly/regularlyDispatch.js' %}"></script>
 <script src="{% static 'js/dispatch/regularly/dispatchDelete.js' %}"></script>
+<script src="{% static 'js/dispatch/regularly/afterSelectRoute.js' %}"></script>
 {% endblock %}
