@@ -55,8 +55,10 @@ function prevMonth(prevDay) {
     };
 }
 
+
 function thisMonth(prevDay, nowDay) {
     let cloneNode = ""
+    let thisDateCounter = 0
     if (41 - (6 - nowDay) >= 38) {
         for (i = prevDay; i < 41 - (6 - nowDay) - 7; i++) {
             calenderDateBox[i + 1].children[0].children[0].innerText = i - (prevDay - 1)
@@ -67,9 +69,12 @@ function thisMonth(prevDay, nowDay) {
                 cloneNode = basicContentesArea.cloneNode(true);
                 calenderDateBox[i + 1].children[0].after(cloneNode)
             }
-            if (i - 4 == thisDate && (parms.get("month") == nowMonth || !parms.has("month"))) {
-                calenderDateBox[i + 1].children[0].children[0].style.backgroundColor = "#0069D9"
-                calenderDateBox[i + 1].children[0].children[0].style.color = "white"
+            if ((parms.get("month") == nowMonth || !parms.has("month"))) {
+                if (!calenderDateBox[i].classList.contains("beforeMonth") && thisDateCounter == thisDate) {
+                    calenderDateBox[i].children[0].children[0].style.backgroundColor = "#0069D9"
+                    calenderDateBox[i].children[0].children[0].style.color = "white"
+                }
+                thisDateCounter = thisDateCounter + 1
             }
         };
     } else {
@@ -82,9 +87,12 @@ function thisMonth(prevDay, nowDay) {
                 cloneNode = basicContentesArea.cloneNode(true);
                 calenderDateBox[i + 1].children[0].after(cloneNode)
             }
-            if (i - 4 == thisDate && (parms.get("month") == nowMonth || !parms.has("month"))) {
-                calenderDateBox[i + 1].children[0].children[0].style.backgroundColor = "#0069D9"
-                calenderDateBox[i + 1].children[0].children[0].style.color = "white"
+            if ((parms.get("month") == nowMonth || !parms.has("month"))) {
+                if (!calenderDateBox[i].classList.contains("beforeMonth") && thisDateCounter == thisDate) {
+                    calenderDateBox[i].children[0].children[0].style.backgroundColor = "#0069D9"
+                    calenderDateBox[i].children[0].children[0].style.color = "white"
+                }
+                thisDateCounter = thisDateCounter + 1
             }
         };
     }
@@ -117,16 +125,16 @@ function checkThisDate() {
             calenderDateBox[i].style.border = "0.2rem solid white"
         };
         this.style.border = "0.2rem solid #0069D9"
-        if(parms.has("year") && parms.has("month")){
-            if(parseInt(this.children[0].children[0].innerText) < 10){
+        if (parms.has("year") && parms.has("month")) {
+            if (parseInt(this.children[0].children[0].innerText) < 10) {
                 thisDateData = `${parms.get("year")}-${parms.get("menth")}-0${this.children[0].children[0].innerText}`
-            }else{
+            } else {
                 thisDateData = `${parms.get("year")}-${parms.get("menth")}-${this.children[0].children[0].innerText}`
             }
-        }else{
-            if(parseInt(this.children[0].children[0].innerText) < 10){
+        } else {
+            if (parseInt(this.children[0].children[0].innerText) < 10) {
                 thisDateData = `${nowYear}-${nowMonth}-0${this.children[0].children[0].innerText}`
-            }else{
+            } else {
                 thisDateData = `${nowYear}-${nowMonth}-${this.children[0].children[0].innerText}`
             }
         }

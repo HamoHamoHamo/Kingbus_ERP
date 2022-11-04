@@ -425,6 +425,14 @@
   background-color: #444;
 }
 
+.popupFooter a{
+  margin-right: auto;
+}
+
+.downloadFormat{
+  background-color: #444;
+}
+
 
 
 
@@ -448,34 +456,47 @@
 }
 
 .RouteList table td:nth-child(1) {
-  width: 3%;
+  width: 2%;
 }
 
-.RouteList table td:nth-child(2),
-.RouteList table td:nth-child(7){
-  width: 9%;
-}
-
-.RouteList table td:nth-child(3),
-.RouteList table td:nth-child(10),
-.RouteList table td:nth-child(11) {
-  width: 17%;
-}
-
-.RouteList table td:nth-child(4){
-  width: 7%;
-}
-.RouteList table td:nth-child(6) {
-  width: 6%;
-}
-
-.RouteList table td:nth-child(5) {
+.RouteList table td:nth-child(2) {
   width: 4%;
 }
 
-.RouteList table td:nth-child(8),
+.RouteList table td:nth-child(3) {
+  width: 8%;
+}
+
+.RouteList table td:nth-child(4) {
+  width: 16%;
+}
+
+.RouteList table td:nth-child(5) {
+  width: 6%;
+}
+
+.RouteList table td:nth-child(6) {
+  width: 4%;
+}
+
+.RouteList table td:nth-child(7) {
+  width: 6%;
+}
+
+.RouteList table td:nth-child(8) {
+  width: 6%;
+}
+
 .RouteList table td:nth-child(9) {
-  width: 5.5%;
+  width: 4%;
+}
+
+.RouteList table td:nth-child(10) {
+  width: 16%;
+}
+
+.RouteList table td:nth-child(11) {
+  width: 16%;
 }
 
 .RouteListHeadScroll{
@@ -488,7 +509,7 @@
 }
 
 .RouteListHeader {
-  width: 160%;
+  width: 170%;
   height: 3.6rem;
 }
 
@@ -521,7 +542,7 @@
 }
 
 .RouteListBody {
-  width: 160%;
+  width: 170%;
   height: 100%;
 }
 

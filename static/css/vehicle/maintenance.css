@@ -79,6 +79,7 @@
 }
 
 .maintenanceCreateBtn{
+    
     background-color: #0069D9;
 }
 
@@ -140,11 +141,29 @@
 
 
 /* maintenanceArticle */
+
+.maintenanceArea{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    height: calc(100% - 17.6rem);
+}
+
+.optionList{
+    display: flex;
+    width: 36rem;
+    height: 100%;
+    background-color: white;
+    border-radius: 0.2rem;
+    box-shadow: 0.1rem 0.1rem 0.6rem rgba(0, 0, 0, 0.3);
+}
+
 .maintenanceArticle {
     display: flex;
     flex-direction: column;
-    width: 100%;
-    height: calc(100% - 17.6rem);
+    width: calc(100% - 38rem);
+    height: 100%;
     box-sizing: border-box;
     background-color: white;
     border-radius: 0.2rem;

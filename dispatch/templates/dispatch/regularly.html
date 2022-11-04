@@ -334,10 +334,10 @@
         <div class="RouteListHeadBtnBox">
           <div class="btnModules dispatchPrintBtn" onclick="opendispatchPrint('/dispatch/print/regularly')">인쇄</div>
           <div class="btnModules dispatchDeletBtn">배차삭제</div>
-          <input autocomplete="off" type="submit" class="btnModules dispatchSaveBtn" value="저장">
+          <input autocomplete="off" type="submit" class="btnModules dispatchSaveBtn" value="저장(F9)">
           <div class="btnModules dispatchHistory">배차내역</div>
-          <div class="btnModules">지난배차(2주전)</div>
-          <div class="btnModules">지난배차(1주전)</div>
+          <div class="btnModules loadConnectBtn2">지난배차(2주전)</div>
+          <div class="btnModules loadConnectBtn1">지난배차(1주전)</div>
         </div>
       </div>
 
@@ -419,7 +419,7 @@
       <form method="post" action="{% url 'dispatch:regularly_connect_create' %}" class="popupContainer popupContainerDispatchHistory">
         {% csrf_token %}
         <div class="popupHeader">
-          <div class="popupTitle">노선명 - 배차내역</div>
+          <div class="popupTitle">배차내역</div>
         </div>
         <div class="popupBody">
           <div class="popupSection">
@@ -433,53 +433,28 @@
               <div>금</div>
               <div>토</div>
             </div>
-
             <div class="historyArticle">
-              <div class="historyDateBox">
-                <div class="historyDate">2022-10-28</div>
-                <div class="historyBus">1234</div>
-                <div class="historyDriver">이도울(용역)</div>
+              {% for connect in history_list %}
+              <div class="historyDateBox {% if block_list|index:forloop.counter0 == 'y' %}historyUnable{% endif %}">
+                <div class="historyDate">{{date_list|index:forloop.counter0|slice:'2:'}}</div>
+                <div class="historyBus {{connect.bus_id.id}}">{{connect.bus_id.vehicle_num}}</div>
+                {% if connect.outsourcing == 'y' %}
+                <div class="historyDriver {{connect.driver_id.id}} typeOutsourcing">{{connect.driver_id.name}}(용역)</div>
+                {% else %}
+                <div class="historyDriver {{connect.driver_id.id}}">{{connect.driver_id.name}}</div>
+                {% endif %}
+                
               </div>
-              <div class="historyDateBox">
-                <div class="historyDate">2022-10-28</div>
-                <div class="historyBus">1234</div>
-                <div class="historyDriver">이도울(용역)</div>
-              </div>
-              <div class="historyDateBox">
-                <div class="historyDate">2022-10-28</div>
-                <div class="historyBus">1234</div>
-                <div class="historyDriver">이도울(용역)</div>
-              </div>
-              <div class="historyDateBox">
-                <div class="historyDate">2022-10-28</div>
-                <div class="historyBus">1234</div>
-                <div class="historyDriver">이도울(용역)</div>
-              </div>
-              <div class="historyDateBox">
-                <div class="historyDate">2022-10-28</div>
-                <div class="historyBus">1234</div>
-                <div class="historyDriver">이도울(용역)</div>
-              </div>
-              <div class="historyDateBox">
-                <div class="historyDate">2022-10-28</div>
-                <div class="historyBus">1234</div>
-                <div class="historyDriver">이도울(용역)</div>
-              </div>
-              <div class="historyDateBox">
-                <div class="historyDate">2022-10-28</div>
-                <div class="historyBus">1234</div>
-                <div class="historyDriver">이도울(용역)</div>
-              </div>
-              <div class="historyDateBox">
-                <div class="historyDate">2022-10-28</div>
-                <div class="historyBus">1234</div>
-                <div class="historyDriver">이도울(용역)</div>
-              </div>
+              {% endfor %}
             </div>
 
+            <input autocomplete="off" type="hidden" name="id" class="historyHiddenRoute">
+            <input autocomplete="off" type="hidden" name="group" class="historyHiddenGroup">
+            <input autocomplete="off" type="hidden" name="date" class="historyHiddenDate">
+            <input autocomplete="off" type="hidden" name="outsourcing" class="historyHiddenOutsourcing">
+            <input autocomplete="off" type="hidden" name="bus" class="historyHiddenBus">
+            <input autocomplete="off" type="hidden" name="driver" class="historyHiddenDriver">
 
-
-            
           </div>
           <div class="popupFooter">
             <input autocomplete="off" type="submit" class="btnModules" value="배차">
@@ -553,4 +528,5 @@
 <script src="{% static 'js/dispatch/regularly/regularlyDispatch.js' %}"></script>
 <script src="{% static 'js/dispatch/regularly/dispatchDelete.js' %}"></script>
 <script src="{% static 'js/dispatch/regularly/afterSelectRoute.js' %}"></script>
+<script src="{% static 'js/dispatch/regularly/saveKeyEvent.js' %}"></script>
 {% endblock %}

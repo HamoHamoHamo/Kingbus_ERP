@@ -1,6 +1,7 @@
 import json
 import pandas as pd
 from django.db.models import Q
+from django.core.exceptions import ObjectDoesNotExist, MultipleObjectsReturned
 from django.http import Http404, JsonResponse, HttpResponse, HttpResponseBadRequest, HttpResponseNotAllowed
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
@@ -267,15 +268,7 @@ class RegularlyDispatchList(generic.ListView):
             block_list = []
 
             for i in range(14):
-                if i == 7:
-                    context['history_list1'] = history_list
-                    context['date_list1'] = date_list
-                    context['block_list1'] = block_list
-                    
-                    history_list = []
-                    date_list = []
-                    block_list = []
-
+                
                 list_date = datetime.strftime(start_date + timedelta(days=i), FORMAT)
                 date_list.append(f'{list_date} {WEEK[datetime.strptime(list_date, FORMAT).weekday()]}')
                 
@@ -292,6 +285,8 @@ class RegularlyDispatchList(generic.ListView):
 
                     if DispatchRegularlyConnect.objects.filter(driver_id=h_driver).exclude(departure_date__gt=arrival_date).exclude(arrival_date__lt=departure_date).exists():
                         block_list.append('y')
+                    elif DispatchRegularlyConnect.objects.filter(bus_id=h_bus).exclude(departure_date__gt=arrival_date).exclude(arrival_date__lt=departure_date).exists():
+                        block_list.append('y')
                     else:
                         block_list.append('')
 
@@ -302,14 +297,10 @@ class RegularlyDispatchList(generic.ListView):
                     block_list.append('')
                     continue
 
-            context['history_list2'] = history_list
-            context['date_list2'] = date_list
-            context['block_list2'] = block_list
-
-            # print("list1", context['history_list1'])
-            # print("list2", context['history_list2'])
-            print("block_list1", context['block_list1'])
-            print("block_list2", context['block_list2'])
+            context['history_list'] = history_list
+            context['date_list'] = date_list
+            context['block_list'] = block_list
+            print('block_listsssssss', context['block_list'])
 
         if selected_group:
             context['group'] = get_object_or_404(RegularlyGroup, id=selected_group)
@@ -434,6 +425,82 @@ def regularly_connect_create(request):
         return redirect(reverse('dispatch:regularly') + f'?group={group}&date={date}')
     else:
         return HttpResponseNotAllowed(['post'])
+
+def regularly_connect_load(request, week):
+    if week != 1 and week != 2:
+        raise Http404
+    creator = get_object_or_404(Member, id=request.session.get('user'))
+    check_list = request.POST.getlist('check', '')
+    if not check_list:
+        return JsonResponse({'status': 'check'})
+    req_date = request.POST.get('date', TODAY)
+
+    minus_week = 7 if week == 1 else 14
+    date = datetime.strftime(datetime.strptime(req_date, FORMAT) - timedelta(days=minus_week), FORMAT)
+
+    bus_list = []
+    driver_list = []
+    outsourcing_list = []
+    regularly_list = []
+    for check in check_list:
+        regularly = DispatchRegularly.objects.get(id=check)
+        cur_connect = DispatchRegularlyConnect.objects.select_related('regularly_id', 'bus_id', 'driver_id').filter(regularly_id=regularly).filter(departure_date__startswith=req_date)
+        if cur_connect.exists():
+            cur_connect_id = cur_connect[0].id
+        else:
+            # 체크된 노선의 선택된 날짜에 배차가 없을 경우
+            cur_connect_id = 0
+        try:
+            connect = DispatchRegularlyConnect.objects.select_related('regularly_id', 'bus_id', 'driver_id').filter(regularly_id=regularly).get(departure_date__startswith=date)
+            bus = connect.bus_id
+            driver = connect.driver_id
+            outsourcing = connect.outsourcing
+            
+            order_arrival_time = f'{req_date} {regularly.arrival_time}'
+            order_departure_time = f'{req_date} {regularly.departure_time}'
+
+            if DispatchRegularlyConnect.objects.exclude(id=cur_connect_id).filter(driver_id=driver).exclude(departure_date__gt=order_arrival_time).exclude(arrival_date__lt=order_departure_time).exists():
+                return JsonResponse({'status': 'overlap', 'route': f'{regularly.number1}-{regularly.number2} {regularly.route}'})
+
+            if DispatchRegularlyConnect.objects.exclude(id=cur_connect_id).filter(bus_id=bus).exclude(departure_date__gt=order_arrival_time).exclude(arrival_date__lt=order_departure_time).exists():
+                return JsonResponse({'status': 'overlap', 'route': f'{regularly.number1}-{regularly.number2} {regularly.route}'})
+            bus_list.append(bus)
+            driver_list.append(driver)
+            outsourcing_list.append(outsourcing)
+            regularly_list.append(regularly)
+
+        except DispatchRegularlyConnect.DoesNotExist:
+            print('does not exists')
+            bus_list.append('')
+            driver_list.append('')
+            regularly_list.append(regularly)
+            continue
+        except MultipleObjectsReturned:
+            raise Http404
+
+    
+    for i in range(len(check_list)):
+        DispatchRegularlyConnect.objects.filter(regularly_id=regularly_list[i]).filter(departure_date__startswith=req_date).delete()
+        print("DF",DispatchRegularlyConnect.objects.filter(regularly_id=regularly_list[i]).filter(departure_date__startswith=req_date))
+        
+        if bus_list[i]:
+            connect = DispatchRegularlyConnect(
+                regularly_id = regularly_list[i],
+                bus_id = bus_list[i],
+                driver_id = driver_list[i],
+                outsourcing = outsourcing_list[i],
+                departure_date = f'{req_date} {regularly_list[i].departure_time}',
+                arrival_date = f'{req_date} {regularly_list[i].arrival_time}',
+                work_type = regularly_list[i].work_type,
+                driver_allowance = regularly_list[i].driver_allowance,
+                creator = creator
+            )
+            connect.save()
+
+
+    return JsonResponse({'status': 'success'})
+
+
 
 def regularly_connect_delete(request):
     if request.method == "POST":

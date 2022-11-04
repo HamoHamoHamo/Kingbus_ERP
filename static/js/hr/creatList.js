@@ -8,12 +8,9 @@ const filterHeaderArrow = document.querySelector(".table-list_head-tr td:nth-chi
 
 let filter = false
 
-window.onload = function () {
-    drawMember()
-}
+drawMember()
 
 function drawMember() {
-
 
     let pageParms = new URLSearchParams(location.search)
 
@@ -44,22 +41,22 @@ function drawMember() {
     let startPoint = ""
 
     if (pageData !== 1) {
-        startPoint = (pageData - 1) * 15
+        startPoint = (pageData - 1) * 10
     } else {
         startPoint = 0
     }
 
     let endPoint = ""
 
-    if (data.length <= 15) {
+    if (data.length <= 10) {
         endPoint = data.length
-    } else if (data.length > 15 && pageParms.get("page") == Math.ceil(data.length / 15)) {
-        endPoint = 15 * (pageParms.get("page") - 1) + (data.length - (15 * (pageParms.get("page") - 1)))
+    } else if (data.length > 10 && pageParms.get("page") == Math.ceil(data.length / 10)) {
+        endPoint = 10 * (pageParms.get("page") - 1) + (data.length - (10 * (pageParms.get("page") - 1)))
     } else {
         if (pageParms.has("page")) {
-            endPoint = 15 * pageParms.get("page")
+            endPoint = 10 * pageParms.get("page")
         } else {
-            endPoint = 15
+            endPoint = 10
         }
     }
 
@@ -161,7 +158,7 @@ function drawMember() {
 function pagenation(data) {
 
     let parms = new URLSearchParams(location.search)
-    let pagenationCount = Math.ceil(data.length / 15)
+    let pagenationCount = Math.ceil(data.length / 10)
 
     for (i = 0; i < pagenationCount; i++) {
         const pageNumber = document.createElement('span');
@@ -169,15 +166,22 @@ function pagenation(data) {
         pagenationBox.appendChild(pageNumber);
     };
 
-    let pageNationStep = Math.ceil(parseInt(parms.get("page")) / 15)
-
     const pagenationNumber = pagenationBox.querySelectorAll("span")
 
-    for (i = 0; i < pagenationNumber.length; i++) {
-        if (pageNationStep * 5 < i + 1 || pageNationStep * 5 - 4 > i + 1) {
+    if (parms.has("page")) {
+
+        let pageNationStep = Math.ceil(parseInt(parms.get("page")) / 5)
+
+        for (i = 0; i < pagenationNumber.length; i++) {
+            if ((pageNationStep - 1) * 5 > i || (pageNationStep * 5) - 1 < i) {
+                pagenationNumber[i].style.display = "none"
+            }
+        };
+    } else {
+        for (i = 5; i < pagenationNumber.length; i++) {
             pagenationNumber[i].style.display = "none"
         }
-    };
+    }
 
 }
 
@@ -272,7 +276,7 @@ function nextPage() {
     let parms = new URLSearchParams(location.search)
     makeAgeData()
     if (parms.has("age")) {
-        if (parms.get("page") < Math.floor(data.length / 15) && parms.has("page")) {
+        if (parms.get("page") < Math.floor(data.length / 10) && parms.has("page")) {
             if (!parms.has("filter")) {
                 location.href = `/HR/member?age=true&page=${parseInt(parms.get("page")) + 1}`
             } else if (parms.get("filter") == "down") {
@@ -290,7 +294,7 @@ function nextPage() {
             }
         }
     } else {
-        if (parms.get("page") < Math.floor(regDatas.length / 15) && parms.has("page")) {
+        if (parms.get("page") < Math.floor(regDatas.length / 10) && parms.has("page")) {
             if (!parms.has("filter")) {
                 location.href = `/HR/member?page=${parseInt(parms.get("page")) + 1}`
             } else if (parms.get("filter") == "down") {
@@ -315,7 +319,7 @@ function nextPage() {
 ageCheckbox.addEventListener("change", ageFilter)
 
 function ageFilter() {
-        let parms = new URLSearchParams(location.search)
+    let parms = new URLSearchParams(location.search)
     if (ageCheckbox.checked) {
         if (!parms.has("filter")) {
             window.location = `/HR/member?age=true`

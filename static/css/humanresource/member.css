@@ -102,8 +102,69 @@
 
 
 
+.search-Container{
+    height: 4.8rem;
+    padding: 0 2rem;
+    box-shadow: 0.1rem 0.1rem 0.1rem rgba(65, 69, 73, 0.3),
+    0.1rem 0.3rem 0.1rem rgba(65, 69, 73, 0.15);
+}
 
+.search-Form_input{
+    width: 26rem;
+    height: 3.2rem;
+    border-radius: 0.5rem;
+    border: none;
+    background-color: #f1f3f4;
+}
 
+.search-Form_search-btn {
+    width: auto;
+    padding: 0.4rem 1.6rem;
+    background-color: white;
+    border-radius: 0.3rem;
+    font-size: 1.4rem;
+    background-color: #0069D9;
+    color: white;
+    cursor: pointer;
+    box-sizing: border-box;
+}
+
+.popup-area-box_btn {
+    width: auto;
+    height: 2.8rem;
+    padding: 0.4rem 1.6rem;
+    background-color: white;
+    border: 0.1rem solid #ABABAB;
+    border-radius: 0.3rem;
+    font-size: 1.4rem;
+    color: black;
+    margin-right: 1.2rem;
+    cursor: pointer;
+    box-sizing: border-box;
+}
+
+/* .popup-area-box_btn:hover{
+    padding: 0.4rem 1.6rem;
+    border: 0.1rem solid black;
+} */
+
+.member-upload{
+    margin-right: 0;
+}
+
+.popup-area-box_btn_create{
+    width: auto;
+    height: 2.8rem;
+    padding: 0.4rem 1.6rem;
+    background-color: white;
+    border: 0.1rem solid #ABABAB;
+    border-radius: 0.3rem;
+    font-size: 1.4rem;
+    color: #0069D9;
+    margin-right: 1.2rem;
+    cursor: pointer;
+    box-sizing: border-box;
+}
 
 
 
@@ -117,26 +178,42 @@
     width: 100%;
     height: 74rem;
     border-radius: 0.2rem;
-    box-shadow: 0rem 0.1rem 0.4rem rgb(0 0 0 / 30%);
+    box-shadow: 0.1rem 0.1rem 0.1rem rgba(65, 69, 73, 0.3),
+    0.1rem 0.3rem 0.1rem rgba(65, 69, 73, 0.15);
     background-color: white;
 }
 
-.filter-area {
+.ListHeaderArea{
     display: flex;
-    justify-content: flex-end;
+    justify-content: space-between;
     align-items: center;
     width: 100%;
-    height: 4rem;
+    height: 5.8rem;
+    box-sizing: border-box;
+    padding: 0 2rem;
+}
+
+.ListHeaderTitle{
+    font-size: 1.6rem;
+    font-weight: 700;
+}
+
+.filter-box {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 17rem;
+    height: 100%;
     padding: 0 1rem;
     box-sizing: border-box;
 }
 
-.filter-area input {
+.filter-box input {
     width: 1.4rem;
     height: 1.4rem;
 }
 
-.filter-area label {
+.filter-box label {
     font-size: 1.4rem;
     margin-left: 1rem;
     cursor: pointer;
@@ -144,27 +221,76 @@
 
 .member-delete {
     position: absolute;
-    top: -5.3rem;
-    right: 19rem;
+    top: -5.8rem;
+    right: 22.2rem;
     margin-right: 1rem;
+    color: #DC1E1E;
 }
 
-.member-create {
-    margin-right: 1rem;
+.member-delete:hover{
+    padding: 0.4rem 1.6rem;
+    border: 0.1rem solid #DC1E1E;
+}
+
+.member-create:hover {
+    padding: 0.3rem 1.5rem;
     background-color: #0069D9;
+    border: 0.1rem solid #0069D9;
+    color: white;
 }
 
 .table-list-area {
     width: 100%;
-    height: 64rem;
+    height: 60.5rem;
+    border-bottom: 0.1rem solid #ABABAB;
 }
 
-.member-height {
-    height: 4rem;
+thead .member-height {
+    height: 4.4rem;
+    background-color: #FBFBFB;
+    color: #484848;
+}
+
+thead .member-height td{
+    border-top: 0.1rem solid #ABABAB;
+    border-bottom: 0.1rem solid #ABABAB;
+}
+
+.member-height td{
+    text-align: left;
+}
+
+.member-height td:nth-child(1),
+.member-height td:nth-child(2),
+.member-height td:nth-last-child(1),
+.member-height td:nth-last-child(2){
+    text-align: center;
 }
 
 .table-list_head-tr_td:nth-child(6){
     cursor: pointer;
+}
+
+.table-list_body-tr{
+    border: none;
+}
+
+.table-list_body-tr td,
+.table-list_body-tr td:nth-child(1),
+.table-list_body-tr td:nth-last-child(1){
+    border: none;
+}
+
+.table-list_body-tr:nth-child(even){
+    background-color: #EFF0F2;
+}
+
+tbody .member-height {
+    height: 5.6rem;
+    background-color: #FBFBFB;
+    color: #484848;
+    border-top: 0.1rem solid #ABABAB;
+    border-bottom: 0.1rem solid #ABABAB;
 }
 
 .member-height td:nth-child(1),
@@ -213,8 +339,8 @@
     justify-content: center;
     align-items: center;
     width: 100%;
-    height: 6rem;
-    padding: 1rem;
+    height: 7.6rem;
+    padding: 2rem;
     box-sizing: border-box;
 }
 
@@ -248,6 +374,7 @@
 
 .thisPage{
     color: #0069D9;
+    font-weight: 700;
 }
 
 .popupArticleUpload{
