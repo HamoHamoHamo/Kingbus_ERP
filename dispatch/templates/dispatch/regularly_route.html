@@ -120,9 +120,7 @@
           </a>
           {% endif %}
           <input autocomplete="off" type="submit" class="btnModules routeInputSave" value="저장">
-          {% if detail %}
           <div class="btnModules routeInputDelete" onclick="routeInputDeleteUrl()">삭제</div>
-          {% endif %}
         </div>
       </div>
 
@@ -256,6 +254,9 @@
         <table class="RouteListHeader">
           <thead>
             <tr>
+              <td>
+                <input type="checkbox">
+              </td>
               <td>순번</td>
               <td>노선명</td>
               <td>출발지 ▶ 도착지</td>
@@ -277,6 +278,9 @@
           <tbody>
             {% for order in order_list %}
             <tr class="RouteListBodyTr {{order.id}} {{order.group.id}} {{forloop.counter}}">
+              <td>
+                <input type="checkbox">
+              </td>
               <td>{{order.number1}}{% if order.number2 %} - {{order.number2}} {% endif %}</td>
               <td>{{order.route}}</td>
               <td>{{order.departure}} ▶ <br> {{order.arrival}}</td>
@@ -331,6 +335,9 @@
               </div>
           </div>
           <div class="popupFooter">
+            <a href="{% static 'form/출,퇴근 노선관리 엑셀 업로드 양식.xlsx' %}" download>
+              <div class="btnModules downloadFormat">양식다운</div>
+            </a>
               <input autocomplete="off"type="submit" class="btnModules uploadCrateBtn" value="등록">
               <div class="btnModules excelPopupCloseBtn">닫기</div>
           </div>

@@ -6,6 +6,7 @@ app_name = 'dispatch'
 urlpatterns = [
     path('regularly', views.RegularlyDispatchList.as_view(), name="regularly"),
     path('regularly/create', views.regularly_connect_create, name="regularly_connect_create"),
+    path('regularly/connect/load/<int:week>', views.regularly_connect_load, name="regularly_connect_load"),
     path('regularly/connect/delete', views.regularly_connect_delete, name="regularly_connect_delete"),
     path('regularly/route', views.RegularlyRouteList.as_view(), name="regularly_route"),
     # path('regularly/fixed/create', views.regularly_fixed_create, name="regularly_fixed_create"),

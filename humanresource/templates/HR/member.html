@@ -22,17 +22,11 @@
 <div class="search-Container">
   <form method="get" action="" class="search-Form">
     <label for="" class="search-Form_label">직원검색</label>
-    <input autocomplete="off" value="{{name}}" name="name" type="text" list="hrFilter" class="search-Form_input"
-      placeholder="직원이름">
-    <datalist id="hrFilter">
-      {% for member in member_all %}
-      <option value="{{member.name}}"></option>
-      {% endfor %}
-    </datalist>
+    <input autocomplete="off" value="{{name}}" name="name" type="text" class="search-Form_input" placeholder="직원이름">
     <input type="submit" class="search-Form_search-btn" value="검색">
   </form>
   <div class="popup-area-box">
-    <div class="popup-area-box_btn member-create">직원등록</div>
+    <div class="popup-area-box_btn_create member-create">직원등록</div>
     <div class="popup-area-box_btn member-upload">엑셀 업로드</div>
   </div>
 </div>
@@ -44,9 +38,15 @@
 
     <input autocomplete="off" type="submit" value="직원삭제" class="popup-area-box_btn member-delete">
 
-    <div class="filter-area">
-      <input type="checkbox" id="ageFilter">
-      <label for="ageFilter">만 65세 이상만 보기</label>
+    <div class="ListHeaderArea">
+
+      <div class="ListHeaderTitle">직원목록</div>
+
+      <div class="filter-box">
+        <input type="checkbox" id="ageFilter">
+        <label for="ageFilter">만 65세 이상만 보기</label>
+      </div>
+
     </div>
 
     <div class="table-list-area">
@@ -61,11 +61,8 @@
             <td class="table-list_head-tr_td">
               담당업무
               <svg xmlns="http://www.w3.org/2000/svg" width="15" height="11.471" viewBox="0 0 15 11.471">
-                <g id="다각형_241" data-name="다각형 241" transform="translate(15 11.471) rotate(180)" fill="#fff">
-                  <path d="M 13.15137100219727 10.9705867767334 L 1.848630905151367 10.9705867767334 C 1.579670906066895 10.9705867767334 1.451480984687805 10.78729629516602 1.408850908279419 10.70848655700684 C 1.366220951080322 10.62967586517334 1.282961010932922 10.42207622528076 1.430150985717773 10.19695663452148 L 7.0815110206604 1.553696393966675 C 7.175580978393555 1.409836292266846 7.328111171722412 1.32732629776001 7.500000953674316 1.32732629776001 C 7.671890735626221 1.32732629776001 7.824420928955078 1.409836292266846 7.918490886688232 1.553706288337708 L 13.56986141204834 10.19695663452148 C 13.717041015625 10.42207622528076 13.63378047943115 10.62967586517334 13.59114074707031 10.70848655700684 C 13.54851055145264 10.78728675842285 13.42032051086426 10.9705867767334 13.15137100219727 10.9705867767334 Z" stroke="none"/>
-                  <path d="M 7.499869823455811 1.827516555786133 L 7.500000476837158 1.827316284179688 L 1.848640441894531 10.47057628631592 C 1.848634719848633 10.47057914733887 1.848644256591797 10.47058296203613 1.848630905151367 10.4705867767334 L 13.15135955810547 10.4705867767334 C 13.15136051177979 10.47058296203613 13.15136241912842 10.47058010101318 13.15137100219727 10.4705867767334 L 7.499869823455811 1.827516555786133 M 7.499996662139893 0.8273210525512695 C 7.81980562210083 0.8273210525512695 8.139616012573242 0.978236198425293 8.336970329284668 1.28006649017334 L 13.98834037780762 9.923336029052734 C 14.42321014404297 10.58844661712646 13.94602012634277 11.4705867767334 13.15137100219727 11.4705867767334 L 1.848630905151367 11.4705867767334 C 1.053980827331543 11.4705867767334 0.5767908096313477 10.58844661712646 1.011660575866699 9.923336029052734 L 6.663030624389648 1.28006649017334 C 6.860380172729492 0.978236198425293 7.180188179016113 0.8273210525512695 7.499996662139893 0.8273210525512695 Z" stroke="none" fill="#fff"/>
-                </g>
-              </svg>              
+                <path id="다각형_242" data-name="다각형 242" d="M6.663,1.28a1,1,0,0,1,1.674,0l5.651,8.643a1,1,0,0,1-.837,1.547H1.849a1,1,0,0,1-.837-1.547Z" transform="translate(15 11.471) rotate(180)"/>
+              </svg>
             </td>
             <td class="table-list_head-tr_td">입사일</td>
             <td class="table-list_head-tr_td">휴대폰 번호</td>
@@ -156,7 +153,8 @@
         <div class="popupArticleBox">
           <div class="popupArticle">
             <label for="" class="popupArticleLabel">비고</label>
-            <input autocomplete="off" name="note" type="text" class="popupArticleinput popupArticleInputDouble PopupDataInputBlack">
+            <input autocomplete="off" name="note" type="text"
+              class="popupArticleinput popupArticleInputDouble PopupDataInputBlack">
           </div>
         </div>
         <div class="popupArticleCategori">운전정보</div>
@@ -366,7 +364,8 @@
             <label for="" class="popupArticleLabel">엑셀</label>
             <div class="popupArticleUpload">
               <label for="uploadFile">파일 선택</label>
-              <input autocomplete="off" name="uploadExcel" type="file" id="uploadFile" class="uploadFile" onchange="readExcel()">
+              <input autocomplete="off" name="uploadExcel" type="file" id="uploadFile" class="uploadFile"
+                onchange="readExcel()">
               <input autocomplete="off" name="uploadExcel" type="text" class="uploadFileText" readonly>
               <svg class="uploadDeleteBtn" xmlns="http://www.w3.org/2000/svg" width="11.314" height="11.314"
                 viewBox="0 0 11.314 11.314">
@@ -384,13 +383,14 @@
           <label for="" class="popupArticleLabel">면허증</label>
           <div class="popupArticleUpload">
             <label for="uploadLicenseFile">파일 선택</label>
-            <input autocomplete="off" name="uploadLicense" type="file" id="uploadLicenseFile" class="uploadLicenseFile" multiple>
+            <input autocomplete="off" name="uploadLicense" type="file" id="uploadLicenseFile" class="uploadLicenseFile"
+              multiple>
             <input autocomplete="off" name="uploadLicense" type="text" class="uploadLicenseFileText" readonly>
             <svg class="uploadDeleteBtn" xmlns="http://www.w3.org/2000/svg" width="11.314" height="11.314"
               viewBox="0 0 11.314 11.314">
               <g id="그룹_1513" data-name="그룹 1513" transform="translate(-442.649 -1001.97) rotate(45)">
-                <line id="선_691" data-name="선 691" y2="12" transform="translate(1029.5 389.5)" fill="none"
-                  stroke="#000" stroke-linecap="round" stroke-width="2" />
+                <line id="선_691" data-name="선 691" y2="12" transform="translate(1029.5 389.5)" fill="none" stroke="#000"
+                  stroke-linecap="round" stroke-width="2" />
                 <line id="선_692" data-name="선 692" y2="12" transform="translate(1035.5 395.5) rotate(90)" fill="none"
                   stroke="#000" stroke-linecap="round" stroke-width="2" />
               </g>
@@ -401,13 +401,15 @@
           <label for="" class="popupArticleLabel">버스운전 자격증</label>
           <div class="popupArticleUpload">
             <label for="uploadDriverLicenseFile">파일 선택</label>
-            <input autocomplete="off" name="uploadDriverLicense" type="file" id="uploadDriverLicenseFile" class="uploadDriverLicenseFile" multiple>
-            <input autocomplete="off" name="uploadDriverLicense" type="text" class="uploadDriverLicenseFileText" readonly>
+            <input autocomplete="off" name="uploadDriverLicense" type="file" id="uploadDriverLicenseFile"
+              class="uploadDriverLicenseFile" multiple>
+            <input autocomplete="off" name="uploadDriverLicense" type="text" class="uploadDriverLicenseFileText"
+              readonly>
             <svg class="uploadDeleteBtn" xmlns="http://www.w3.org/2000/svg" width="11.314" height="11.314"
               viewBox="0 0 11.314 11.314">
               <g id="그룹_1513" data-name="그룹 1513" transform="translate(-442.649 -1001.97) rotate(45)">
-                <line id="선_691" data-name="선 691" y2="12" transform="translate(1029.5 389.5)" fill="none"
-                  stroke="#000" stroke-linecap="round" stroke-width="2" />
+                <line id="선_691" data-name="선 691" y2="12" transform="translate(1029.5 389.5)" fill="none" stroke="#000"
+                  stroke-linecap="round" stroke-width="2" />
                 <line id="선_692" data-name="선 692" y2="12" transform="translate(1035.5 395.5) rotate(90)" fill="none"
                   stroke="#000" stroke-linecap="round" stroke-width="2" />
               </g>

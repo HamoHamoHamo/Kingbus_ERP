@@ -53,7 +53,7 @@ function dateFormat(e){
 
     // 순번
     for (i = 0; i < excelData.length; i++){
-        if(!`${excelData[i].순번}`.includes(',')){
+        if(!`${excelData[i].순번}`.includes(',') ){
             excelUploadFile.value = ""
             excelUploadFileText.value = ""
             return alert(`${i+1}번째 순번에 ' , '를 입력하지 않았습니다.`)
