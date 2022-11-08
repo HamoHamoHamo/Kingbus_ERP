@@ -34,10 +34,18 @@ function addOrderDispatch() {
 
         if (params.get("id") !== null) {
             if (!this.parentNode.classList.contains("haveSchedule")) {
-                busNum = this.innerText.split("(")[0]
+                busNum = this.innerText.substr(0,4)
                 busId = this.classList[1]
-                DriverName = this.innerText.split("(")[1].replace(/\)/g, "")
-                DriverId = this.classList[2].split("d")[1]
+                if(this.innerText.length > 4){
+                    DriverName = this.innerText.split("(")[1].replace(/\)/g, "")
+                }else{
+                    DriverName = ""
+                }
+                if(this.classList[2] === "d"){
+                    DriverId = ""
+                }else{
+                    DriverId = this.classList[2].split("d")[1]
+                }
             }
 
             let beforeArr = []
@@ -162,7 +170,7 @@ function deleteOrderDispatch() {
         }
     }
     for (i = 0; i < scheduleTableTr.length; i++) {
-        if (scheduleTableTr[i].children[7].classList.contains(`${hiddenBus[dispatchCounter].value}`)) {
+        if (scheduleTableTr[i].children[6].classList.contains(`${hiddenBus[dispatchCounter].value}`)) {
             scheduleTableTr[i].classList.remove("haveSchedule")
         }
     }

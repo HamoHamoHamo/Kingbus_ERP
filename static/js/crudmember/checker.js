@@ -18,12 +18,16 @@ window.onload = function () {
         popupAreaModules[0].style.display = "block"
     }
 
-    const scheduleList = document.querySelectorAll(".basicContentesArea div:nth-child(2)")
+    const scheduleList = document.querySelectorAll(".dataCellCalender")
 
 
     for (i = 0; i < scheduleList.length; i++) {
         scheduleList[i].addEventListener("click", openScheduleList)
     };
+
+    
+    const calnderItem = document.querySelectorAll(".calnderItem")
+    sliceLength(calnderItem)
 }
 
 

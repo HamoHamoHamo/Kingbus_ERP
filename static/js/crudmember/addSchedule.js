@@ -12,13 +12,6 @@ function openSchedulePopup(){
     popupAreaModules[1].style.display = "block"
 }
 
-addScheduleBtn.addEventListener("click", createSchedule)
-
-function createSchedule(){
-    scheduleDateData.value = thisDateData
-    scheduleForm.submit()
-}
-
 popupBgModules[1].addEventListener("click", closeAddSchedule)
 SidemenuUseClose.addEventListener("click", closeAddSchedule)
 scheduleCloseBtn.addEventListener("click", closeAddSchedule)

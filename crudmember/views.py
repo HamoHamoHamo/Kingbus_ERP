@@ -6,7 +6,7 @@ from django.http import Http404, JsonResponse
 from humanresource.models import Member
 
 from .models import User, UserFile
-from dispatch.models import DispatchCheck, DispatchOrder, DispatchOrderConnect, DispatchRegularly, DispatchRegularlyConnect
+from dispatch.models import Schedule, DispatchCheck, DispatchOrder, DispatchOrderConnect, DispatchRegularly, DispatchRegularlyConnect
 from vehicle.models import Vehicle
 from dispatch.views import FORMAT, TODAY
 from dateutil.relativedelta import relativedelta
@@ -41,122 +41,136 @@ class Calendar(generic.ListView):
     context_object_name = 'order_list'
     model = DispatchOrderConnect
 
-    # def get_queryset(self):
-    #     return 0
+    def get_queryset(self):
+        return 0
 
-    # def get_context_data(self, **kwargs):
-    #     context = super().get_context_data(**kwargs)
-    #     year = self.request.GET.get('year', TODAY[:4])
-    #     month = self.request.GET.get('month', TODAY[:7])
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        year = self.request.GET.get('year', TODAY[:4])
+        month = self.request.GET.get('month', TODAY[5:7])
 
-    #     weekday_list = [
-    #         datetime.strptime(year + month + "-01", FORMAT),
-    #         datetime.strptime(year + month + "-02", FORMAT),
-    #         datetime.strptime(year + month + "-03", FORMAT),
-    #         datetime.strptime(year + month + "-04", FORMAT),
-    #         datetime.strptime(year + month + "-05", FORMAT),
-    #         datetime.strptime(year + month + "-06", FORMAT),
-    #         datetime.strptime(year + month + "-07", FORMAT),
-    #     ]
-    #     last_day = datetime.strftime(weekday_list[0] + relativedelta(months=1) - timedelta(days=1), FORMAT)[8:]
+        weekday_list = [
+            datetime.strptime(f'{year}-{month}-01', FORMAT),
+            datetime.strptime(f'{year}-{month}-02', FORMAT),
+            datetime.strptime(f'{year}-{month}-03', FORMAT),
+            datetime.strptime(f'{year}-{month}-04', FORMAT),
+            datetime.strptime(f'{year}-{month}-05', FORMAT),
+            datetime.strptime(f'{year}-{month}-06', FORMAT),
+            datetime.strptime(f'{year}-{month}-07', FORMAT),
+        ]
+        last_day = datetime.strftime(weekday_list[0] + relativedelta(months=1) - timedelta(days=1), FORMAT)[8:]
 
-    #     total_bus_cnt = [0] * int(last_day)
-    #     cur_bus_cnt = [0] * int(last_day)
+        total_bus_cnt = [0] * int(last_day)
+        cur_bus_cnt = [0] * int(last_day)
 
-    #     r_total_bus_cnt = [0] * int(last_day)
-    #     r_cur_bus_cnt = [0] * int(last_day)
+        r_total_bus_cnt = [0] * int(last_day)
+        r_cur_bus_cnt = [0] * int(last_day)
 
-    #     check_id1 = [''] * int(last_day)
-    #     check_id2 = [''] * int(last_day)
-    #     check_done = [''] * int(last_day)
+        check_id = [''] * int(last_day)
+        schedule_list = [''] * int(last_day)
 
         
-    #     dispatch_list = DispatchOrder.objects.prefetch_related('info_order').filter(departure_date__startswith=month)
-    #     regularly_list = DispatchRegularlyConnect.objects.filter(departure_date__startswith=month)
+        dispatch_list = DispatchOrder.objects.prefetch_related('info_order').filter(departure_date__startswith=month)
+        regularly_list = DispatchRegularlyConnect.objects.filter(departure_date__startswith=month)
 
-    #     for dispatch in dispatch_list:
-    #         departure_date = datetime.strptime(dispatch.departure_date[:10], FORMAT)
-    #         arrival_date = datetime.strptime(dispatch.arrival_date[:10], FORMAT)
-    #         days = (arrival_date - departure_date).days + 1
+        for dispatch in dispatch_list:
+            departure_date = datetime.strptime(dispatch.departure_date[:10], FORMAT)
+            arrival_date = datetime.strptime(dispatch.arrival_date[:10], FORMAT)
+            days = (arrival_date - departure_date).days + 1
             
             
-    #         for i in range(days):
-    #             print(dispatch.departure_date)
-    #             date = int(datetime.strftime(departure_date, FORMAT)[8:10])
-    #             total_bus_cnt[date-1] += int(dispatch.bus_cnt)
-    #             cur_bus_cnt[date-1] += dispatch.info_order.all().count()
+            for i in range(days):
+                print(dispatch.departure_date)
+                date = int(datetime.strftime(departure_date, FORMAT)[8:10])
+                total_bus_cnt[date-1] += int(dispatch.bus_cnt)
+                cur_bus_cnt[date-1] += dispatch.info_order.all().count()
 
-    #             departure_date += timedelta(days=1)
-
-        
-    #     cnt = 0
-    #     for day in weekday_list:
-    #         cnt += 1
-    #         weekday = WEEK[day.weekday()]
-    #         regularly_cnt = DispatchRegularly.objects.filter(week__contains=weekday).count()
-    #         cnt_day = 0
-    #         while(cnt+cnt_day <= int(last_day)):
-    #             r_total_bus_cnt[cnt+cnt_day-1] += regularly_cnt
-    #             cnt_day += 7
-        
-    #     regularly_list = DispatchRegularlyConnect.objects.filter(departure_date__startswith=month)
-    #     for regularly in regularly_list:
-    #         date = int(regularly.departure_date[8:10])
-    #         r_cur_bus_cnt[date-1] += 1
-
-
-    #     # print("TT", total_bus_cnt)
-    #     # print("CC", cur_bus_cnt)
-    #     # print("RRRRRRRRRT", r_total_bus_cnt)
-    #     # print("RCC", r_cur_bus_cnt)
-    #     context['total_bus_cnt'] = total_bus_cnt
-    #     context['cur_bus_cnt'] = cur_bus_cnt
-    #     context['r_total_bus_cnt'] = r_total_bus_cnt
-    #     context['r_cur_bus_cnt'] = r_cur_bus_cnt
-
-
-    #     vehicle = Vehicle.objects.order_by('-use', '-pk')
-    #     i_next_month = (datetime.strptime(TODAY, FORMAT) + relativedelta(months=1)).strftime(FORMAT)
-    #     # context['insurance_list'] = vehicle.exclude(insurance_expiry_date='').filter(insurance_expiry_date__lte=i_next_month).order_by('insurance_expiry_date')
+                departure_date += timedelta(days=1)
 
         
-    #     #검사유효기간 11달 후부터 보여주기 = today -11달 보다 작을때
-    #     # c_next_month = datetime.strptime(TODAY, FORMAT) - relativedelta(months=11)
-    #     # c_next_month = c_next_month.strftime(FORMAT)
+        cnt = 0
+        for day in weekday_list:
+            cnt += 1
+            weekday = WEEK[day.weekday()]
+            regularly_cnt = DispatchRegularly.objects.filter(week__contains=weekday).count()
+            cnt_day = 0
+            while(cnt+cnt_day <= int(last_day)):
+                #
+                roof_date = cnt + cnt_day
+                if roof_date < 10:
+                    roof_date = f'0{roof_date}'
+                
+                
+                schedules = Schedule.objects.filter(date=f'{year}-{month}-{roof_date}')
+                temp_list = []
+                for sch in schedules:
+                    print('dateee', sch)
+                    temp_list.append({
+                        'content': sch.content,
+                        'date': sch.date,
+                        'id': sch.id,
+                        'creator': sch.creator.name,
+                    })
+                if temp_list:
+                    schedule_list[cnt+cnt_day-1] = temp_list
+
+                r_total_bus_cnt[cnt+cnt_day-1] += regularly_cnt
+
+                cnt_day += 7
         
-    #     # context['check_list'] = vehicle.exclude(check_duration__lte='').filter(check_duration__lte=c_next_month).order_by('check_duration')
+        regularly_list = DispatchRegularlyConnect.objects.filter(departure_date__startswith=month)
+        for regularly in regularly_list:
+            date = int(regularly.departure_date[8:10])
+            r_cur_bus_cnt[date-1] += 1
+
+
+        # print("TT", total_bus_cnt)
+        # print("CC", cur_bus_cnt)
+        # print("RRRRRRRRRT", r_total_bus_cnt)
+        # print("RCC", r_cur_bus_cnt)
+        context['schedule_list'] = schedule_list
+        context['total_bus_cnt'] = total_bus_cnt
+        context['cur_bus_cnt'] = cur_bus_cnt
+        context['r_total_bus_cnt'] = r_total_bus_cnt
+        context['r_cur_bus_cnt'] = r_cur_bus_cnt
+
+
+        vehicle = Vehicle.objects.order_by('-use', '-pk')
+        i_next_month = (datetime.strptime(TODAY, FORMAT) + relativedelta(months=1)).strftime(FORMAT)
+        # context['insurance_list'] = vehicle.exclude(insurance_expiry_date='').filter(insurance_expiry_date__lte=i_next_month).order_by('insurance_expiry_date')
+
         
-    #     # duration = []
-    #     # expire = []
+        #검사유효기간 11달 후부터 보여주기 = today -11달 보다 작을때
+        # c_next_month = datetime.strptime(TODAY, FORMAT) - relativedelta(months=11)
+        # c_next_month = c_next_month.strftime(FORMAT)
+        
+        # context['check_list'] = vehicle.exclude(check_duration__lte='').filter(check_duration__lte=c_next_month).order_by('check_duration')
+        
+        # duration = []
+        # expire = []
 
-    #     # for vehicle in context['check_list']:
-    #     #     v_month = datetime.strptime(vehicle.check_duration, FORMAT) + relativedelta(months=11)
-    #     #     year = v_month + relativedelta(months=2)
-    #     #     v_month = v_month.strftime(FORMAT)
-    #     #     year = year.strftime(FORMAT)
+        # for vehicle in context['check_list']:
+        #     v_month = datetime.strptime(vehicle.check_duration, FORMAT) + relativedelta(months=11)
+        #     year = v_month + relativedelta(months=2)
+        #     v_month = v_month.strftime(FORMAT)
+        #     year = year.strftime(FORMAT)
 
-    #     #     duration.append(month)
-    #     #     expire.append(year)
-    #     # context['duration'] = duration
-    #     # context['expire'] = expire
+        #     duration.append(month)
+        #     expire.append(year)
+        # context['duration'] = duration
+        # context['expire'] = expire
 
-    #     check_list = DispatchCheck.objects.filter(date__startswith=month[:7]).order_by('date')
-    #     for check in check_list:
-    #         try:
-    #             check_id1[int(check.date[8:])-1] = check.member_id1.name
-    #         except:
-    #             check_id1[int(check.date[8:])-1] = ''
-    #         try:
-    #             check_id2[int(check.date[8:])-1] = check.member_id2.name
-    #         except:
-    #             check_id2[int(check.date[8:])-1] = ''
+        check_list = DispatchCheck.objects.filter(date__startswith=month[:7]).order_by('date')
+        for check in check_list:
+            try:
+                check_id[int(check.date[8:])-1] = check.member_id.name
+            except:
+                check_id[int(check.date[8:])-1] = ''
             
-    #     print("check", check_id1)
-    #     print("check", check_id2)
+        print("check", check_id)
 
-    #     context['check_id1'] = check_id1
-    #     context['check_id2'] = check_id2
-    #     return context
+        context['check_id'] = check_id
+        return context
 
 def reset_password(request):
     id = request.GET.get('id')

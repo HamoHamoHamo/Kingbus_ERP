@@ -8,7 +8,7 @@ from django.urls import reverse
 from django.views import generic
 
 from .forms import OrderForm, ConnectForm, RegularlyForm
-from .models import DispatchCheck, DispatchOrderConnect, DispatchOrder, DispatchRegularly, RegularlyGroup, DispatchRegularlyConnect, DispatchOrderWaypoint
+from .models import DispatchCheck, Schedule, DispatchOrderConnect, DispatchOrder, DispatchRegularly, RegularlyGroup, DispatchRegularlyConnect, DispatchOrderWaypoint
 from accounting.models import Salary
 from humanresource.models import Member
 from itertools import chain
@@ -133,10 +133,25 @@ def calendar_delete_1(request):
     else:
         return HttpResponseNotAllowed(['post'])
 
-def calendar_delete_2(request):
+def schedule_create(request):
+    if request.method == "POST":
+        date = request.POST.get('date', None)
+        content = request.POST.get('content', None)
+        creator = get_object_or_404(Member, id=request.session.get('user'))
+        schedule = Schedule(
+            date=date,
+            content=content,
+            creator=creator
+        )
+        schedule.save()
+        return redirect(request.META.get('HTTP_REFERER', 'redirect_if_referer_not_found'))
+    else:
+        return HttpResponseNotAllowed(['post'])
+def schedule_delete(request):
     if request.method == "POST":
         date = request.POST.get('date', None)
         check = get_object_or_404(DispatchCheck, date=date)
+        check.member_id1 = check.member_id2
         check.member_id2 = None
         check.dispatch_check = 'n'
         check.save()
@@ -283,9 +298,9 @@ class RegularlyDispatchList(generic.ListView):
         
         if group_id:
             group = RegularlyGroup.objects.get(id=group_id)
-            dispatch_list = group.regularly_info.filter(week__contains=weekday).order_by('num1', 'num2')
+            dispatch_list = group.regularly_info.filter(week__contains=weekday).order_by('num1', 'num2', 'number1', 'number2')
         else:
-            dispatch_list = DispatchRegularly.objects.filter(week__contains=weekday).order_by('group', 'num1', 'num2')
+            dispatch_list = DispatchRegularly.objects.filter(week__contains=weekday).order_by('group', 'num1', 'num2', 'number1', 'number2')
         return dispatch_list
 
 
@@ -584,14 +599,14 @@ class RegularlyRouteList(generic.ListView):
 
         if not group_id:
             if search:
-                return DispatchRegularly.objects.filter(Q(departure__contains=search) | Q(arrival__contains=search)).order_by('num1', 'num2')
+                return DispatchRegularly.objects.filter(Q(departure__contains=search) | Q(arrival__contains=search)).order_by('num1', 'num2', 'number1', 'number2')
 
-            return DispatchRegularly.objects.all().order_by('num1', 'num2')
+            return DispatchRegularly.objects.all().order_by('num1', 'num2', 'number1', 'number2')
         else:
             group = get_object_or_404(RegularlyGroup, id=group_id)
             if search:
-                return DispatchRegularly.objects.filter(group=group).filter(Q(departure__contains=search) | Q(arrival__contains=search)).order_by('num1', 'num2')
-            return DispatchRegularly.objects.filter(group=group).order_by('num1', 'num2')
+                return DispatchRegularly.objects.filter(group=group).filter(Q(departure__contains=search) | Q(arrival__contains=search)).order_by('num1', 'num2', 'number1', 'number2')
+            return DispatchRegularly.objects.filter(group=group).order_by('num1', 'num2', 'number1', 'number2')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
