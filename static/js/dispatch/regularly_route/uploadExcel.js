@@ -6,7 +6,7 @@ const excelPopupCloseBtn = document.querySelector(".excelPopupCloseBtn")
 const excelUploadFile = document.querySelector(".excelUploadFile")
 const excelUploadFileText = document.querySelector(".excelUploadFileText")
 const uploadCrateBtn = document.querySelector(".uploadCrateBtn")
-const visibleLoadingBox = document.querySelector(".visibleLoadingBox")
+const visibleLoading = document.querySelector(".visibleLoading")
 
 excelUpload.addEventListener("click", openUploadPopup)
 
@@ -96,7 +96,7 @@ function dateFormat(e) {
         };
 
 
-        visibleLoadingBox.style.display = "block"
+        visibleLoading.style.display = "block"
 
         let formatingData = []
         for (i = 0; i < excelData.length; i++) {
@@ -137,7 +137,7 @@ function dateFormat(e) {
             data: JSON.stringify(formatingData),
             datatype: 'json',
             success: function (data) {
-                visibleLoadingBox.style.display = "none"
+                visibleLoading.style.display = "none"
                 uploadState = true
                 console.log("DATASS", data);
                 if (data['group_error']) {

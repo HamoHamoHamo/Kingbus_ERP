@@ -70,7 +70,7 @@ function thisMonth(prevDay, nowDay) {
                 calenderDateBox[i + 1].children[0].after(cloneNode)
             }
             if ((parms.get("month") == nowMonth || !parms.has("month"))) {
-                if (!calenderDateBox[i].classList.contains("beforeMonth") && thisDateCounter == thisDate) {
+                if (!calenderDateBox[i].classList.contains("beforeMonth") && !calenderDateBox[i].classList.contains("afterMonth") && thisDateCounter == thisDate) {
                     calenderDateBox[i].children[0].children[0].style.backgroundColor = "#0069D9"
                     calenderDateBox[i].children[0].children[0].style.color = "white"
                 }
@@ -88,7 +88,7 @@ function thisMonth(prevDay, nowDay) {
                 calenderDateBox[i + 1].children[0].after(cloneNode)
             }
             if ((parms.get("month") == nowMonth || !parms.has("month"))) {
-                if (!calenderDateBox[i].classList.contains("beforeMonth") && thisDateCounter == thisDate) {
+                if (!calenderDateBox[i].classList.contains("beforeMonth") && !calenderDateBox[i].classList.contains("afterMonth") && thisDateCounter == thisDate) {
                     calenderDateBox[i].children[0].children[0].style.backgroundColor = "#0069D9"
                     calenderDateBox[i].children[0].children[0].style.color = "white"
                 }
@@ -101,11 +101,11 @@ function thisMonth(prevDay, nowDay) {
 function nextMonth(nowDay) {
     if (41 - (6 - nowDay) >= 38) {
         for (i = 41; i > 41 - (6 - nowDay) - 7; i--) {
-            calenderDateBox[i].classList.add("beforeMonth")
+            calenderDateBox[i].classList.add("afterMonth")
         };
     } else {
         for (i = 41; i > 41 - (6 - nowDay); i--) {
-            calenderDateBox[i].classList.add("beforeMonth")
+            calenderDateBox[i].classList.add("afterMonth")
         };
     }
 }

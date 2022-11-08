@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import DispatchOrder, DispatchOrderConnect, RegularlyGroup, DispatchRegularly, DispatchRegularlyConnect, DispatchCheck, DispatchOrderWaypoint
+from .models import Schedule, DispatchOrder, DispatchOrderConnect, RegularlyGroup, DispatchRegularly, DispatchRegularlyConnect, DispatchCheck, DispatchOrderWaypoint
 
 # class DispatchInfoInline(admin.TabularInline):
 #     model = DispatchOrderConnect
@@ -21,3 +21,4 @@ admin.site.register(DispatchRegularly)
 admin.site.register(DispatchRegularlyConnect)
 admin.site.register(DispatchCheck)
 admin.site.register(DispatchOrderWaypoint)
+admin.site.register(Schedule)

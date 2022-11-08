@@ -31,7 +31,8 @@ urlpatterns = [
     # 일정
     path('calendar/create', views.calendar_create, name='calendar_create'),
     path('calendar/delete/1', views.calendar_delete_1, name='calendar_delete1'),
-    path('calendar/delete/2', views.calendar_delete_2, name='calendar_delete2'),
+    path('schedule/create', views.schedule_create, name='schedule_create'),
+    path('schedule/delete', views.schedule_delete, name='schedule_delete'),
     # 배차지시서
     path('print/regularly', views.RegularlyPrintList.as_view(), name='regularly_print'),
     path('print/order', views.order_print, name='order_print'),

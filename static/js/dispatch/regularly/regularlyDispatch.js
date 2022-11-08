@@ -69,8 +69,16 @@ function regularlyDispatch() {
 
             busNum = this.innerText.split("(")[0]
             busId = this.classList[1]
-            DriverName = this.innerText.split("(")[1].replace(/\)/g, "")
-            DriverId = this.classList[2].substr(1,)
+            if(this.innerText.length > 4){
+                DriverName = this.innerText.split("(")[1].replace(/\)/g, "")
+            }else{
+                DriverName = ""
+            }
+            if(this.classList[2] === "d"){
+                DriverId = ""
+            }else{
+                DriverId = this.classList[2].split("d")[1]
+            }
 
             businput.value = busNum;
             busIdHidden.value = busId;
