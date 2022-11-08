@@ -33,8 +33,13 @@
             {% for order in order_list %}
             <div class="printTableCell page-break">
                 <div class="item">
+                    {% if order.departure_date|slice:':10' == order.arrival_date|slice:':10' %}
+                    {{order.departure_date|slice:'2:10'}}<br>
+                    {{order.departure_date|slice:'11:'}}~{{order.arrival_date|slice:'11:'}}
+                    {% else %}
                     {{order.departure_date|slice:'2:'}}<br>
                     {{order.arrival_date|slice:'2:'}}
+                    {% endif %}
                 </div>
                 <div class="item">
                     <div>{% if not order.bus_type and not order.operation_type %} {% else %} [{{order.bus_type}} {{order.operation_type}}] {% endif %}</div>
@@ -61,7 +66,7 @@
                 <div class="item">
                     {{order.price}}
                 </div>
-                <div></div>
+                <div class="item"></div>
                 <div class="item">
                     <div>{{order.customer}}</div>
                     <div>{% if order.customer_phone %} {{order.customer_phone}} {% endif %}</div>
@@ -99,5 +104,5 @@
 </div>
 
 {% block script %}
-<script src="{% static 'js/dispatch/orderPopup.js' %}"></script>
+<script src="{% static 'js/dispatch/order/orderPopup.js' %}"></script>
 {% endblock %}

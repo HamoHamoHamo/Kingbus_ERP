@@ -45,13 +45,9 @@ function maxlengthPhone() {
 addWaypointBtn.addEventListener("click", createWaypoint)
 
 function createWaypoint() {
+    console.log(waypointTimeInput.value.length !== 4 && waypointTimeInput.value.length !== 0)
     if (waypointInput.value == "") {
         alert("경유지를 입력해 주세요")
-    } else if (waypointTimeInput.value == "") {
-        alert("시간을 입력해 주세요")
-    } else if (waypointTimeInput.value.substr(0, 2) >= 24 || waypointTimeInput.value.substr(2, 2) >= 60 || waypointTimeInput.value.length !== 4) {
-        alert("정확한 시간을 입력해 주세요.")
-        waypointTimeInput.value = ""
     } else {
         const waypointTr = document.createElement("tr")
         waypointTr.setAttribute("class", "table-list_body-tr")
@@ -74,7 +70,7 @@ function createWaypoint() {
 
         const waypointtd3 = document.createElement("td")
         waypointtd3.setAttribute("class", "table-list_body-tr_td")
-        waypointtd3.innerText = `${waypointTimeInput.value.substr(0, 2)}:${waypointTimeInput.value.substr(2, 2)}`
+        waypointtd3.innerText = `${waypointTimeInput.value = waypointTimeInput.value.replace(/^(\d{2})(\d{2})$/, `$1:$2`)}`
         waypointTr.appendChild(waypointtd3);
 
 
@@ -163,9 +159,9 @@ function additionalWaypoint() {
             const delegateHidden = document.createElement("input")
             delegateHidden.setAttribute("type", "hidden")
             delegateHidden.setAttribute("name", "delegate")
-            if(createTable.children[i].children[3].innerText == ""){
+            if (createTable.children[i].children[3].innerText == "") {
                 delegateHidden.setAttribute("value", " ")
-            }else{
+            } else {
                 delegateHidden.setAttribute("value", createTable.children[i].children[3].innerText)
             }
             inputDispatchForm.appendChild(delegateHidden);
@@ -173,9 +169,9 @@ function additionalWaypoint() {
             const delegatePhoneHidden = document.createElement("input")
             delegatePhoneHidden.setAttribute("type", "hidden")
             delegatePhoneHidden.setAttribute("name", "delegate_phone")
-            if(createTable.children[i].children[4].innerText == ""){
+            if (createTable.children[i].children[4].innerText == "") {
                 delegatePhoneHidden.setAttribute("value", " ")
-            }else{
+            } else {
                 delegatePhoneHidden.setAttribute("value", createTable.children[i].children[4].innerText)
             }
             inputDispatchForm.appendChild(delegatePhoneHidden);

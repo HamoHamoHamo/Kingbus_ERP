@@ -17,63 +17,78 @@ let scheduleBus = []
 
 
 // 스케줄 그리기
-function drawSchdule() {    
+function drawSchdule() {
 
     for (i = 0; i < dataList.length; i++) {
 
-        for (j = 0; j < driverTd.length; j++) {
+        if (dataList[i].work_type === "일반" || dataList[i].departure_date.split(" ")[0] === inputTextquarter[0].value) {
 
-            if (dataList[i].bus_id == driverTd[j].classList[1]) {
+            for (j = 0; j < driverTd.length; j++) {
 
-                const startWork = document.createElement('div');
+                if (dataList[i].bus_id == driverTd[j].classList[1]) {
 
-                // 기사 동일여부
-                if (dataList[i].driver_id !== parseInt(driverTd[j].classList[2].split("d")[1])) {
+                    const startWork = document.createElement('div');
 
-                    // 타입구분
-                    if (dataList[i].work_type == "출근") {
-                        startWork.setAttribute("class", "regularlyLineStart scheduleBar otherDriver");
-                    } else if (dataList[i].work_type == "퇴근") {
-                        startWork.setAttribute("class", "regularlyLineEnd scheduleBar otherDriver");
+                    // 기사 동일여부
+                    if (dataList[i].driver_id !== parseInt(driverTd[j].classList[2].split("d")[1])) {
+
+                        // 타입구분
+                        if (dataList[i].work_type == "출근") {
+                            startWork.setAttribute("class", "regularlyLineStart scheduleBar otherDriver");
+                        } else if (dataList[i].work_type == "퇴근") {
+                            startWork.setAttribute("class", "regularlyLineEnd scheduleBar otherDriver");
+                        } else {
+                            startWork.setAttribute("class", "orderLine scheduleBar otherDriver");
+                        }
+
                     } else {
-                        startWork.setAttribute("class", "orderLine scheduleBar otherDriver");
+
+                        // 타입구분
+                        if (dataList[i].work_type == "출근") {
+                            startWork.setAttribute("class", "regularlyLineStart scheduleBar");
+                        } else if (dataList[i].work_type == "퇴근") {
+                            startWork.setAttribute("class", "regularlyLineEnd scheduleBar");
+                        } else {
+                            startWork.setAttribute("class", "orderLine scheduleBar");
+                        }
+
                     }
 
-                } else {
+                    dataStartDate = dataList[i].departure_date.split(" ")[0]
+                    dataEndDate = dataList[i].arrival_date.split(" ")[0]
 
-                    // 타입구분
-                    if (dataList[i].work_type == "출근") {
-                        startWork.setAttribute("class", "regularlyLineStart scheduleBar");
-                    } else if (dataList[i].work_type == "퇴근") {
-                        startWork.setAttribute("class", "regularlyLineEnd scheduleBar");
-                    } else {
-                        startWork.setAttribute("class", "orderLine scheduleBar");
+                    // 스타일 부여
+                    dataTimeStart = parseInt(dataList[i].departure_date.substr(11, 5).split(":")[0] * 60) + parseInt(dataList[i].departure_date.substr(11, 5).split(":")[1])
+                    dataTimeEnd = parseInt(dataList[i].arrival_date.substr(11, 5).split(":")[0] * 60) + parseInt(dataList[i].arrival_date.substr(11, 5).split(":")[1])
+
+                    // data기간 필터링
+                    if(params.has("id")){
+                        if (dataStartDate == dataEndDate) {
+                            startWork.setAttribute("style", `left: ${dataTimeStart * 0.0161}rem; width: ${(dataTimeEnd - dataTimeStart) * 0.0161}rem;`);
+                        } else {
+                            startWork.setAttribute("style", `left: ${dataTimeStart * 0.0161}rem; width: calc(100%  - (100% - 23.184rem) - ${dataTimeStart * 0.0161}rem);`);
+                        }
+                    }else{
+                        if (dataStartDate == searchDate[0].value && dataEndDate !== searchDate[1].value) {
+                            startWork.setAttribute("style", `left: ${dataTimeStart * 0.0161}rem; width: calc(100%  - (100% - 23.184rem) - ${dataTimeStart * 0.0161}rem);`);
+                        } else if (dataEndDate == searchDate[0].value && dataStartDate !== searchDate[1].value) {
+                            startWork.setAttribute("style", `left: 0rem; width: ${dataTimeEnd * 0.0161}rem;`);
+                        } else if (dataStartDate == dataEndDate) {
+                            startWork.setAttribute("style", `left: ${dataTimeStart * 0.0161}rem; width: ${(dataTimeEnd - dataTimeStart) * 0.0161}rem;`);
+                        } else {
+                            startWork.setAttribute("style", `left: 0rem; width: 23.184rem;`);
+                        }
                     }
 
+                    // title 부여
+                    if(dataStartDate == dataEndDate){
+                        startWork.setAttribute("title", `${dataList[i].driver_name} || ${dataList[i].departure_date.split(" ")[1]}~${dataList[i].arrival_date.split(" ")[1]} || ${dataList[i].departure}▶${dataList[i].arrival}`);   
+                    }else{
+                        startWork.setAttribute("title", `${dataList[i].driver_name} || ${dataList[i].departure_date.split(" ")[0]} [${dataList[i].departure_date.split(" ")[1]}]~${dataList[i].arrival_date.split(" ")[0]} [${dataList[i].arrival_date.split(" ")[1]}] || ${dataList[i].departure}▶${dataList[i].arrival}`);
+                    }
+                    // 스케줄 생성
+                    driverTd[j].parentNode.appendChild(startWork);
                 }
-
-                // 스타일 부여
-                dataTimeStart = parseInt(dataList[i].departure_date.substr(11, 5).split(":")[0] * 60) + parseInt(dataList[i].departure_date.substr(11, 5).split(":")[1])
-                dataTimeEnd = parseInt(dataList[i].arrival_date.substr(11, 5).split(":")[0] * 60) + parseInt(dataList[i].arrival_date.substr(11, 5).split(":")[1])
-
-                // data기간 필터링
-                if (dataStartDate == searchDate.value && dataEndDate !== searchDate.value) {
-                    startWork.setAttribute("style", `left: ${dataTimeStart * 0.0161}rem; width: calc(100% - ${dataTimeStart * 0.0161}rem);`);
-                } else if (dataEndDate == searchDate.value && dataStartDate !== searchDate.value) {
-                    startWork.setAttribute("style", `left: 0rem; width: ${dataTimeEnd * 0.0161}rem;`);
-                } else if (dataStartDate == dataEndDate) {
-                    startWork.setAttribute("style", `left: ${dataTimeStart * 0.0161}rem; width: ${(dataTimeEnd - dataTimeStart) * 0.0161}rem;`);
-                } else {
-                    startWork.setAttribute("style", `left: 0rem; width: 100%;`);
-                }
-
-
-                // title 부여
-
-                startWork.setAttribute("title", `${dataList[i].driver_name} || ${dataList[i].departure_date.split(" ")[1]}~${dataList[i].arrival_date.split(" ")[1]} || ${dataList[i].departure}▶${dataList[i].arrival}`);
-
-                // 스케줄 생성
-                driverTd[j].parentNode.appendChild(startWork);
             }
         }
     }

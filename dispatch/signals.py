@@ -2,9 +2,22 @@ from django.db.models.signals import post_save, post_delete
 from django.dispatch import receiver
 from django.shortcuts import get_object_or_404
 
-from .models import DispatchOrder, DispatchOrderConnect, DispatchRegularlyConnect, DispatchCheck
+from .models import DispatchRegularly, DispatchOrder, DispatchOrderConnect, DispatchRegularlyConnect, DispatchCheck
 from accounting.models import Salary
 from humanresource.models import Member
+
+import re
+
+
+
+@receiver(post_save, sender=DispatchRegularly)
+def save_regularly(sender, instance, created, **kwargs):
+  if created:
+    instance.num1 = re.sub(r'[^0-9]', '', instance.number1)
+    instance.num2 = re.sub(r'[^0-9]', '', instance.number2)
+    if instance.num1 == '': instance.num1 = 0
+    if instance.num2 == '': instance.num2 = 0
+    instance.save()
 
 # @receiver(post_save, sender=DispatchOrder)
 # def save_order(sender, instance, created, **kwargs):
@@ -128,3 +141,4 @@ from humanresource.models import Member
 #         check.member_id1 = None
 #         check.member_id2 = None
 #         check.save()
+

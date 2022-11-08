@@ -8,8 +8,8 @@ function visivleFix() {
         if (groupListItems[i].classList.contains("fixedGroup")) {
             groupListItems[i].children[2].children[0].children[0].style.fill = "#444"
         }
-        if(window.location.search !== ""){
-            if(window.location.search.split("group=")[1].split("&")[0] == groupListItems[i].classList[1]){
+        if (window.location.search !== "") {
+            if (window.location.search.split("group=")[1].split("&")[0] == groupListItems[i].classList[1]) {
                 groupListItems[i].style.backgroundColor = "#CDCDCE"
             }
         }
@@ -24,8 +24,10 @@ let fixeCounter = 0
 
 // 그룹순서변경
 groupListItems.forEach(groupListItem => {
-    groupListItem.addEventListener("dragstart", () => {
-        groupListItem.classList.add("dragging");
+    groupListItem.addEventListener("dragstart", (e) => {
+        if(!e.target.classList.contains("fixedGroup")){
+            groupListItem.classList.add("dragging");
+        }
     });
 
     groupListItem.addEventListener("dragend", () => {
@@ -39,10 +41,12 @@ groupListBodys.addEventListener("dragover", e => {
     e.preventDefault();
     const afterElement = getDragAfterElement(groupListBodys, e.clientY);
     const groupListItem = document.querySelector(".dragging");
-    if (afterElement === undefined) {
-        groupListBodys.appendChild(groupListItem);
-    } else {
-        groupListBodys.insertBefore(groupListItem, afterElement);
+    if(groupListItem !== null){
+        if (afterElement === undefined) {
+            groupListBodys.appendChild(groupListItem);
+        } else {
+            groupListBodys.insertBefore(groupListItem, afterElement);
+        }
     }
 });
 

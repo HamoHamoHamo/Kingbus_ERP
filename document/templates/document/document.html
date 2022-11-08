@@ -73,15 +73,15 @@
     <span class="documentType documentTypeLocation">사이트로 이동 :</span>
     <!-- 전세버스 공제조합 -->
     <a href="https://nmcb.org/cooperative/user/main.do" target="_blank">
-        <span class="btnModules" title="전세버스 공제조합 사이트로 이동">보험가입 증명서</span>
+        <span class="siteBtn" title="전세버스 공제조합 사이트로 이동">보험가입 증명서</span>
     </a>
     <!-- 전세버스 교통안전정보 공시 시스템 -->
     <a href="https://www.kotsa.or.kr/safeinfo/mng/auth/loginCertificate.do" target="_blank">
-        <span class="btnModules" title="전세버스 교통안전정보 공시 시스템 사이트로 이동">교통안전조회 결과 통보서</span>
+        <span class="siteBtn" title="전세버스 교통안전정보 공시 시스템 사이트로 이동">교통안전조회 결과 통보서</span>
     </a>
     <!-- 전세버스 교통안전정보 공시 시스템 -->
     <a href="http://www.ktbus24.com/home/main.do" target="_blank">
-        <span class="btnModules" title="전세버스 운행기록증 발급 시스템 사이트로 이동">운행기록증</span>
+        <span class="siteBtn" title="전세버스 운행기록증 발급 시스템 사이트로 이동">운행기록증</span>
     </a>
 </div>
 
@@ -114,11 +114,19 @@
                             <input autocomplete="off" type="radio" name="route" class="routeRadio {{order.id}}">
                         </td>
                         <td>
-                            {{order.departure_date}}<br>
-                            {{order.arrival_date}}
+                            {% if order.departure_date|slice:':10' == order.arrival_date|slice:':10' %}
+                            {{order.departure_date|slice:'2:10'}}<br>
+                            {{order.departure_date|slice:'11:'}}~{{order.arrival_date|slice:'11:'}}
+                            {% else %}
+                            {{order.departure_date|slice:'2:'}}<br>
+                            {{order.arrival_date|slice:'2:'}}
+                            {% endif %}
                         </td>
                         <td>
                             {{order.departure}}▶<br>
+                            {% for waypoint in order.waypoint.all %}
+                                <div>{{waypoint.waypoint}}({{waypoint.time}}){% if waypoint.delegate or waypoint.delegate_phone %} - {% endif %}{{waypoint.delegate}}{% if waypoint.delegate_phone %}({{waypoint.delegate_phone}}){% endif %}</div>
+                            {% endfor %}
                             {{order.arrival}}
                         </td>
                         <td>

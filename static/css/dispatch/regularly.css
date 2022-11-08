@@ -587,7 +587,7 @@
 }
 
 .RouteList td:nth-child(2) {
-  width: 5%;
+  width: 8%;
 }
 
 .RouteList td:nth-child(3) {
@@ -601,7 +601,7 @@
 .RouteList td:nth-child(5),
 .RouteList td:nth-child(6),
 .RouteList td:nth-child(7) {
-  width: 10%;
+  width: 9%;
 }
 
 .RouteList td:nth-child(8) {

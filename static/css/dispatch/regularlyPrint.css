@@ -29,8 +29,8 @@ td {
     flex-direction: column;
     justify-content: flex-start;
     align-items: center;
-    width: 41.8cm;
-    height: 28.7cm;
+    width: 420mm;
+    height: 297mm;
     margin-left: 0.5cm;
     margin-top: 0.2cm;
     box-sizing: border-box;
@@ -178,4 +178,17 @@ td:nth-child(9) {
     position: absolute;
     bottom: 0;
     font-size: 1.6rem;
+}
+
+
+@media print {
+    @page {
+        width: 420mm;
+        height: 297mm;
+        margin: 0
+    }
+
+    body {
+        margin: 5mm;
+    }
 }

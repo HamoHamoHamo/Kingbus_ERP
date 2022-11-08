@@ -375,7 +375,7 @@
                     </div>
                     <div class="popupArticleDouble">
                         <label for="" class="popupArticleLabel">담당기사</label>
-                        <select name="driver" class="popupArticleinput">
+                        <select name="driver" class="popupArticleinput driver_name">
                             <option></option>
                             {% for driver in driver_list %}
                             <option value="{{driver.id}}">{{driver.name}}</option>
@@ -498,6 +498,7 @@
             model_year: "{{ vehicle.model_year }}",
             release_date: "{{ vehicle.release_date }}",
             driver: "{{ vehicle.driver }}",
+            driver_id: "{{ vehicle.driver.id }}",
             driver_name: "{{ vehicle.driver_name }}",
             use: "{{ vehicle.use }}",
             passenger_num: "{{ vehicle.passenger_num }}",

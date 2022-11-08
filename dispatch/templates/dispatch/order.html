@@ -25,7 +25,7 @@
 
         <!-- 스케줄-헤더 -->
         <div class="scheduleHeaderArea">
-            <div class="scheduleHeader">2022.09.16 ()</div>
+            <div class="scheduleHeader"></div>
             <div class="scheduleCloseBtn">
                 <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 26 26">
                     <g id="그룹_1650" data-name="그룹 1650" transform="translate(-21005 -13821)">
@@ -61,8 +61,7 @@
                         <div class="hourTd"></div>
                         <div class="hourTd"></div>
                         <div class="hourTd"></div>
-                        <div class="hourTd"></div>
-                        <div class="driverTd {{v.id}} d{{v.driver.id}}" title="{{v.vehicle_num0}} {{v.vehicle_num}} ({{v.model_year}})">{{v.vehicle_num}} ({{v.driver_name}})</div>
+                        <div class="driverTd {{v.id}} d{{v.driver.id}}" title="{{v.vehicle_num0}} {{v.vehicle_num}} ({{v.model_year}})">{{v.vehicle_num}} {% if v.driver_name %}({{v.driver_name}}){% endif %}</div>
                         <!-- 기사 없으면 괄호 없애기 -->
                     </div>
                     {% endfor %}
@@ -91,7 +90,10 @@
 
                 <!-- 변경영역 -->
                 <div class="search_inputArea">
-                    <label for="">노선</label>
+                    <select name="" id="">
+                        <option value="">노선</option>
+                        <option value="">예약자</option>
+                    </select>
                     <input autocomplete="off" name="route" type="text">
                     <label for="">날짜</label>
                     <input autocomplete="off" type="date" name="date1" class="searchDate" max="9999-12-31">~
@@ -140,9 +142,11 @@
                 
 
                 <div class="inputTableBtnBox">
-                    <input autocomplete="off" type="submit" value="저장" class="btnModules inputSave">
+                    <div autocomplete="off" class="btnModules inputSave">저장</div>
                     {% if detail %}
                     <div class="btnModules inputDelete" onclick="deleteUrl()">삭제</div>
+                    <input type="hidden" name="date1" value="{{selected_date1}}">
+                    <input type="hidden" name="date2" value="{{selected_date2}}">
                     <a href="{% url 'dispatch:order' %}" class="newOrderLink">
                         <div class="btnModules newOrder">신규</div>
                     </a>
@@ -506,7 +510,14 @@
                             {% for order in order_list %}
                             <div class="orderListItem {{forloop.counter}} {{order.id}}">
                                 <div class="orderListMainContents orderListMain1">
-                                    {{order.departure_date|slice:'2:'}}<br>{{order.arrival_date|slice:'2:'}}
+                                    {% if order.departure_date|slice:':10' == order.arrival_date|slice:':10' %}
+                                    {{order.departure_date|slice:'2:10'}}<br>
+                                    {{order.departure_date|slice:'11:'}}~{{order.arrival_date|slice:'11:'}}
+                                    {% else %}
+                                    {{order.departure_date|slice:'2:'}}<br>
+                                    {{order.arrival_date|slice:'2:'}}
+                                    {% endif %}
+                                    
                                 </div>
                                 <div class="orderListMainContents orderListMain2">
                                     <div>{{order.departure}} ▶</div>
@@ -744,5 +755,5 @@
 <script src="{% static 'js/dispatch/order/FullSchedule.js' %}"></script>
 <script src="{% static 'js/dispatch/order/matchDispatch.js' %}"></script>
 <script src="{% static 'js/dispatch/order/waypoint.js' %}"></script>
-<script src="{% static 'js/dispatch/order/edit.js' %}"></script>
+
 {% endblock %}

@@ -44,24 +44,34 @@
                 </tr>
             </thead>
             <tbody>
+                {% for order in order_list %}
+                {% with bus=group_bus_list|index:forloop.counter0 %}
+                {% with driver=group_driver_list|index:forloop.counter0 %}
+                {% with outsourcing=group_outsourcing_list|index:forloop.counter0 %}
+                {% with departure_time=departure_time_list|index:forloop.counter0 %}
                 <tr>
-                    <td>89</td>
-                    <td>8989</td>
-                    <td>일이삼사</td>
-                    <td>일이삼사</td>
-                    <td>010-8989-8989</td>
-                    <td>06:27</td>
-                    <td>병점 8</td>
-                    <td>곡반정축산물센터</td>
-                    <td>정문</td>
-                    <td>o</td>
+                    <td>{{order.number1}}{% if order.number2 %}-{{order.number2}} {% endif %}</td>
+                    <td>{{bus.vehicle_num}}</td>
+                    <td>{{driver.name}}</td>
+                    <td>{{outsourcing.name}}</td>
+                    <td>{% if not driver %}{{outsourcing.phone_num}}{% else %}{{driver.phone_num}}{% endif %}</td>
+                    <td>{% if departure_time %}{{departure_time}}{% else %}{{order.departure_time}}{% endif %}</td>
+                    <td>{{order.route}}</td>
+                    <td>점호?</td>
+                    <td>{% if order.location == '정문' or order.location == '후문' %}{{order.location}}{% endif %}</td>
+                    <td>{% if order.location == '셔틀' %}O{% else %}X{% endif %}</td>
                     <td></td>
                     <td></td>
                     <td></td>
                     <td></td>
                     <td></td>
-                    <td></td>
+                    <td>{{order.references}}</td>
                 </tr>
+                {% endwith %}
+                {% endwith %}
+                {% endwith %}
+                {% endwith %}
+                {% endfor %}
                 <!-- 1페이지에 30줄 -->
             </tbody>
         </table>

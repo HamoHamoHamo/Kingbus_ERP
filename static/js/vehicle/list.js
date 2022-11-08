@@ -14,7 +14,7 @@ const vehicleListForm = document.querySelector(".vehicleListForm")
 const PopupData = document.querySelectorAll(".PopupData")
 const vehicleNum1 = document.querySelector(".vehicleNum1")
 const vehicleNum2 = document.querySelector(".vehicleNum2")
-const driver_name = document.querySelectorAll(".driver_name option")
+const driver_name = document.querySelector(".driver_name")
 const use = document.querySelectorAll(".use option")
 const maker = document.querySelector(".maker")
 const vehicle_type = document.querySelector(".vehicle_type")
@@ -31,12 +31,12 @@ const check_duration = document.querySelector(".check_duration")
 const sendToHidden = document.querySelector(".sendToHidden")
 const fileDeleteBtn = document.querySelectorAll(".fileDeleteBtn")
 const BusLicenseFileText = document.querySelector(".BusLicenseFileText")
-const BusLicenseFileInput= document.querySelector(".BusLicenseFileInput")
+const BusLicenseFileInput = document.querySelector(".BusLicenseFileInput")
 const BusLicenseFileTextEdit = document.querySelector(".BusLicenseFileTextEdit")
 const BusLicenseFileInputEdit = document.querySelector(".BusLicenseFileInputEdit")
 const addUnit1 = document.querySelectorAll(".tableBody td:nth-child(7)")
 const addUnit2 = document.querySelectorAll(".tableBody td:nth-child(9)")
-const PopupDatainput= document.querySelectorAll(".PopupDataInput")
+const PopupDatainput = document.querySelectorAll(".PopupDataInput")
 const createBtn = document.querySelectorAll(".createBtn")
 const ableBusEdit = document.querySelector("#ableBusEdit")
 const disableBusEdit = document.querySelector("#disableBusEdit")
@@ -87,11 +87,11 @@ function openDetailPopup() {
   PopupData[1].innerText = regDatas[this.className].vehicle_num
   PopupData[2].innerText = regDatas[this.className].driver_name
   PopupData[3].innerText = regDatas[this.className].maker
-  if(regDatas[this.className].use == "y"){
+  if (regDatas[this.className].use == "y") {
     PopupData[4].innerText = "사용"
-  }else if(regDatas[this.className].use == "n"){
+  } else if (regDatas[this.className].use == "n") {
     PopupData[4].innerText = "미사용"
-  }else{
+  } else {
     PopupData[4].innerText = "삭제"
   }
   PopupData[5].innerText = regDatas[this.className].vehicle_type
@@ -108,16 +108,15 @@ function openDetailPopup() {
 
   vehicleNum1.value = regDatas[this.className].vehicle_num0
   vehicleNum2.value = regDatas[this.className].vehicle_num
-  for (i = 0; i < driver_name.length; i++) {
-    if (driver_name[i].innerText == regDatas[this.className].driver_name) {
-      driver_name[i].selected = true;
-    }
+  if (regDatas[this.className].driver_name !== "") {
+    driver_name.children[0].innerText = `${regDatas[this.className].driver_name}`
+    driver_name.children[0].value = regDatas[this.className].driver_id
   }
-  if(regDatas[this.className].use == "y"){
+  if (regDatas[this.className].use == "y") {
     ableBusEdit.checked = true
-  }else if(regDatas[this.className].use == "n"){
+  } else if (regDatas[this.className].use == "n") {
     disableBusEdit.checked = true
-  }else{
+  } else {
     deleteBusEdit.checked = true
   }
   maker.value = regDatas[this.className].maker
@@ -144,7 +143,7 @@ function changeEdit() {
   PopupTitle[1].innerText = "차량수정"
   editBtn.style.display = "none";
   createBtn[1].style.display = "flex";
-  
+
 }
 
 
@@ -214,12 +213,12 @@ function deleteFileLicensEdit() {
 // , 추가, 단위추가
 window.onload = function () {
   for (i = 0; i < addUnit1.length; i++) {
-      if (addUnit1[i].innerText !== "") {
-          addUnit1[i].innerText = `${addUnit1[i].innerText}명`
-      }
-      if (addUnit2[i].innerText !== "") {
-          addUnit2[i].innerText = `${addUnit2[i].innerText}년`
-      }
+    if (addUnit1[i].innerText !== "") {
+      addUnit1[i].innerText = `${addUnit1[i].innerText}명`
+    }
+    if (addUnit2[i].innerText !== "") {
+      addUnit2[i].innerText = `${addUnit2[i].innerText}년`
+    }
   }
 }
 

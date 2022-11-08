@@ -119,8 +119,7 @@
             <div class="btnModules routeInputNew">신규</div>
           </a>
           {% endif %}
-          <input autocomplete="off" type="submit" class="btnModules routeInputSave" value="저장">
-          <div class="btnModules routeInputDelete" onclick="routeInputDeleteUrl()">삭제</div>
+          <div class="btnModules routeInputSave">저장</div>
         </div>
       </div>
 
@@ -139,6 +138,7 @@
           <td class="tdTypeA">그룹</td>
           <td colspan="3" class="tdTypeB">
             <select name="group" class="inputSelect">
+              <option value=""></option>
               {% for g in group_list %}
               <option {% if detail.group.id == g.id %} selected {% endif %} value="{{g.id}}">{{g.name}}</option>
               {% endfor %}
@@ -247,59 +247,64 @@
 
 
 
+<form method="post" action="{% url 'dispatch:regularly_route_delete' %}" class="RouteListForm">
+  {% csrf_token %}
+  <input type="hidden" name="group" value="{{group.id}}">
+  <input type="submit" class="btnModules routeInputDelete" value="삭제">
+  <div class="RouteList">
 
-    <div class="RouteList">
-
-      <div class="RouteListHeadScroll">
-        <table class="RouteListHeader">
-          <thead>
-            <tr>
-              <td>
-                <input type="checkbox">
-              </td>
-              <td>순번</td>
-              <td>노선명</td>
-              <td>출발지 ▶ 도착지</td>
-              <td>요일</td>
-              <td>출/퇴근</td>
-              <td>운행시간</td>
-              <td>위치</td>
-              <td>기사수당</td>
-              <td>금액</td>
-              <td>상세노선</td>
-              <td>참조사항</td>
-            </tr>
-          </thead>
-        </table>
-      </div>
-
-      <div class="RouteListScroll">
-        <table class="RouteListBody">
-          <tbody>
-            {% for order in order_list %}
-            <tr class="RouteListBodyTr {{order.id}} {{order.group.id}} {{forloop.counter}}">
-              <td>
-                <input type="checkbox">
-              </td>
-              <td>{{order.number1}}{% if order.number2 %} - {{order.number2}} {% endif %}</td>
-              <td>{{order.route}}</td>
-              <td>{{order.departure}} ▶ <br> {{order.arrival}}</td>
-              <td>{{order.week}}</td>
-              <td>{{order.work_type}}</td>
-              <td>{{order.departure_time}} ~ {{order.arrival_time}}</td>
-              <td>{{order.location}}</td>
-              <td>{{order.driver_allowance}}</td>
-              <td>{{order.price}}</td>
-              <td>{{order.detailed_route}}</td>
-              <td>{{order.references}}</td>
-            </tr>
-            {% endfor %}
-            <tr class="blanckTr"></tr>
-          </tbody>
-        </table>
-      </div>
-
+    <div class="RouteListHeadScroll">
+      <table class="RouteListHeader">
+        <thead>
+          <tr>
+            <td>
+              <input type="checkbox">
+            </td>
+            <td>순번</td>
+            <td>노선명</td>
+            <td>출발지 ▶ 도착지</td>
+            <td>요일</td>
+            <td>출/퇴근</td>
+            <td>운행시간</td>
+            <td>위치</td>
+            <td>기사수당</td>
+            <td>금액</td>
+            <td>상세노선</td>
+            <td>참조사항</td>
+          </tr>
+        </thead>
+      </table>
     </div>
+
+    <div class="RouteListScroll">
+      <table class="RouteListBody">
+        <tbody>
+          {% for order in order_list %}
+          <tr class="RouteListBodyTr {{order.id}} {{order.group.id}} {{forloop.counter}}">
+            <td>
+              <input value="{{order.id}}" name="check" type="checkbox">
+            </td>
+            <td>{{order.number1}}{% if order.number2 %} - {{order.number2}} {% endif %}</td>
+            <td>{{order.route}}</td>
+            <td>{{order.departure}} ▶ <br> {{order.arrival}}</td>
+            <td>{{order.week}}</td>
+            <td>{{order.work_type}}</td>
+            <td>{{order.departure_time}} ~ {{order.arrival_time}}</td>
+            <td>{{order.location}}</td>
+            <td>{{order.driver_allowance}}</td>
+            <td>{{order.price}}</td>
+            <td>{{order.detailed_route}}</td>
+            <td>{{order.references}}</td>
+          </tr>
+          {% endfor %}
+          <tr class="blanckTr"></tr>
+        </tbody>
+      </table>
+    </div>
+
+  </div>
+
+</form>
 
   </div>
 </div>
@@ -335,9 +340,17 @@
               </div>
           </div>
           <div class="popupFooter">
-            <a href="{% static 'form/출,퇴근 노선관리 엑셀 업로드 양식.xlsx' %}" download>
-              <div class="btnModules downloadFormat">양식다운</div>
-            </a>
+            <div class="popupFooterMinibox">
+              <a href="{% static 'form/출,퇴근 노선관리 엑셀 업로드 양식.xlsx' %}" download>
+                <div class="btnModules downloadFormat">양식다운</div>
+              </a>
+              <div class="visibleLoadingBox">
+                <div class="visibleLoading">
+                  <span>파일이 업로드 중입니다</span>
+                  <iframe src="https://giphy.com/embed/sSgvbe1m3n93G" width="18" height="18" frameBorder="0" class="giphy-embed" allowFullScreen></iframe>
+                </div>
+              </div>
+            </div>
               <input autocomplete="off"type="submit" class="btnModules uploadCrateBtn" value="등록">
               <div class="btnModules excelPopupCloseBtn">닫기</div>
           </div>
@@ -360,19 +373,12 @@
     }
   }
 
-  const routeInputChangeForm = document.querySelector(".routeinput")
+  const routeTr = document.querySelectorAll(".RouteListBodyTr")
 
-  function routeInputDeleteUrl() {
-    if (confirm("선택한 노선을 정말로 삭제하시겠습니까?")){
-      routeInputChangeForm.action ="{% url 'dispatch:regularly_route_delete' %}"
-      routeInputChangeForm.submit()
-    }
-  }
-
-  const routeTd = document.querySelectorAll(".RouteListBodyTr td")
-
-  for (i = 0; i < routeTd.length; i++){
-    routeTd[i].addEventListener("click", loadTargetRoute)
+  for (i = 0; i < routeTr.length; i++){
+    for (j = 1; j < routeTr[i].children.length; j++){
+      routeTr[i].children[j].addEventListener("click", loadTargetRoute)
+    };
   };
 
   function loadTargetRoute(){
@@ -382,11 +388,11 @@
       location.href=`{% url 'dispatch:regularly_route' %}?id=${this.parentNode.classList[1]}&group=${this.parentNode.classList[2]}&height=${this.parentNode.classList[3]}`
     }
   }
-  
 
 </script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.15.5/xlsx.full.min.js"></script>
 <script src="{% static 'js/dispatch/regularly_route/uploadExcel.js' %}"></script>
+<script src="{% static 'js/dispatch/regularly_route/craetRoute.js' %}"></script>
 <script src="{% static 'js/dispatch/regularly_route/targetRoute.js' %}"></script>
 <script src="{% static 'js/dispatch/regularly_route/routeListValidation.js' %}"></script>
 <script src="{% static 'js/dispatch/regularly_route/routeLayoutChanger.js' %}"></script>
@@ -394,4 +400,5 @@
 <script src="{% static 'js/dispatch/regularly_route/groupOrderChange.js' %}"></script>
 <script src="{% static 'js/dispatch/regularly_route/checker.js' %}"></script>
 <script src="{% static 'js/dispatch/regularly_route/edit.js' %}"></script>
+<script src="{% static 'js/dispatch/regularly_route/deleteCheck.js' %}"></script>
 {% endblock %}
