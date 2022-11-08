@@ -1,14 +1,18 @@
 from django.db import models
 from humanresource.models import Member
 from vehicle.models import Vehicle
+import re
 
 class RegularlyGroup(models.Model):
     name = models.CharField(verbose_name='그룹 이름', max_length=30, null=False, unique=True)
-    number = models.CharField(verbose_name='순번', max_length=20, null=False, blank=True)
+    number = models.IntegerField(verbose_name='순번', null=False, default=999 )
     fix = models.CharField(verbose_name='고정', max_length=1, null=False, default='n')
     pub_date = models.DateTimeField(auto_now_add=True, verbose_name='작성시간')
     creator = models.ForeignKey(Member, on_delete=models.SET_NULL, related_name="group_creator", db_column="creator_id", null=True)
     
+    def __str__(self):
+        return self.number + self.name
+
 class DispatchRegularly(models.Model):
     group = models.ForeignKey(RegularlyGroup, verbose_name='그룹', on_delete=models.CASCADE, related_name="regularly_info", null=False)
     references = models.CharField(verbose_name='참조사항', max_length=200, null=False, blank=True)
@@ -22,6 +26,8 @@ class DispatchRegularly(models.Model):
     driver_allowance = models.CharField(verbose_name='기사수당', max_length=40, null=False, default=0)
     number1 = models.CharField(verbose_name='순번1', max_length=20, null=False, blank=True)
     number2 = models.CharField(verbose_name='순번2', max_length=20, null=False, blank=True)
+    num1 = models.IntegerField(verbose_name='순번1숫자만', null=True)
+    num2 = models.IntegerField(verbose_name='순번2숫자만', null=True)
     week = models.CharField(verbose_name='운행요일', max_length=20, null=False)
     # customer = models.CharField(verbose_name='예약자', max_length=20, null=False, blank=True)
     # customer_phone = models.CharField(verbose_name='예약자 전화번호', max_length=20, null=False, blank=True)
@@ -82,7 +88,7 @@ class DispatchOrder(models.Model):
 class DispatchOrderWaypoint(models.Model):
     order_id = models.ForeignKey(DispatchOrder, on_delete=models.CASCADE, related_name="waypoint", db_column="order_id", null=False)
     waypoint = models.CharField(verbose_name='경유지', max_length=100, null=False)
-    time = models.CharField(verbose_name='시간', max_length=5, null=False)
+    time = models.CharField(verbose_name='시간', max_length=5, null=False, blank=True)
     delegate = models.CharField(verbose_name='인솔자', max_length=50, null=False, blank=True)
     delegate_phone = models.CharField(verbose_name='인솔자 전화번호', max_length=50, null=False, blank=True)
     

@@ -50,21 +50,24 @@ function drawSchdule() {
 
                 }
 
+                dataStartDate = data[i].departure_date.split(" ")[0]
+                dataEndDate = data[i].arrival_date.split(" ")[0]
+
+
                 // 스타일 부여
                 dataTimeStart = parseInt(data[i].departure_date.substr(11, 5).split(":")[0] * 60) + parseInt(data[i].departure_date.substr(11, 5).split(":")[1])
                 dataTimeEnd = parseInt(data[i].arrival_date.substr(11, 5).split(":")[0] * 60) + parseInt(data[i].arrival_date.substr(11, 5).split(":")[1])
 
                 // data기간 필터링
                 if (dataStartDate == searchDate.value && dataEndDate !== searchDate.value) {
-                    startWork.setAttribute("style", `left: ${dataTimeStart * 0.0161}rem; width: calc(100% - ${dataTimeStart * 0.0161}rem);`);
+                    startWork.setAttribute("style", `left: ${dataTimeStart * 0.0161}rem; width: calc(100%  - (100% - 23.184rem) - ${dataTimeStart * 0.0161}rem);`);
                 } else if (dataEndDate == searchDate.value && dataStartDate !== searchDate.value) {
                     startWork.setAttribute("style", `left: 0rem; width: ${dataTimeEnd * 0.0161}rem;`);
                 } else if (dataStartDate == dataEndDate) {
                     startWork.setAttribute("style", `left: ${dataTimeStart * 0.0161}rem; width: ${(dataTimeEnd - dataTimeStart) * 0.0161}rem;`);
                 } else {
-                    startWork.setAttribute("style", `left: 0rem; width: 100%;`);
+                    startWork.setAttribute("style", `left: 0rem; width: 23.184rem;`);
                 }
-
 
                 // title 부여
 

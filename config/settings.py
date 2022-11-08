@@ -16,6 +16,15 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = my_settings.SECRET_KEY
 
+# 팝빌 계좌조회
+LinkID = my_settings.LinkID
+SecretKey = my_settings.SecretKey
+IsTest = my_settings.IsTest
+IPRestrictOnOff = my_settings.IPRestrictOnOff
+UseStaticIP = my_settings.UseStaticIP
+UseLocalTimeYN = my_settings.UseLocalTimeYN
+
+
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 

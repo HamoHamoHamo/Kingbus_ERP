@@ -41,7 +41,7 @@ function inputToDay() {
     if(params.get("id") == null){
         scheduleHeader.innerText = `${searchDate[0].value.substr(0, 4)}년 ${searchDate[0].value.substr(5, 2)}월 ${searchDate[0].value.substr(8, 2)}일 (${dayOfWeek})`
     }else{
-        scheduleHeader.innerText = `${inputTextquarter[0].value.substr(0, 4)}년 ${inputTextquarter[0].value.substr(5, 2)}월 ${inputTextquarter[0].value.substr(8, 2)}일`
+        scheduleHeader.innerText = `${inputTextquarter[0].value.substr(0, 4)}년 ${inputTextquarter[0].value.substr(5, 2)}월 ${inputTextquarter[0].value.substr(8, 2)}일 (${dayOfWeek})`
     }
     listHeader.innerText = `${searchDate[0].value.substr(0, 4)}년 ${searchDate[0].value.substr(5, 2)}월 ${searchDate[0].value.substr(8, 2)}일 (${dayOfWeek}) ~ ${searchDate[1].value.substr(0, 4)}년 ${searchDate[1].value.substr(5, 2)}월 ${searchDate[1].value.substr(8, 2)}일 (${dayOfWeek})`
 }
@@ -78,7 +78,11 @@ function dateToBefore() {
     if (!window.location.search) {
         location.href = `${window.location}?date1=${controllDate}&date2=${controllDate}`
     } else {
-        location.href = `${location.href.split("date1=")[0]}date1=${controllDate}&date2=${controllDate}`
+        if(params.has("route")){
+            location.href = `${location.href.split("?")[0]}?route=${params.get("route")}&date1=${controllDate}&date2=${controllDate}`
+        }else{
+            location.href = `${location.href.split("?")[0]}?date1=${controllDate}&date2=${controllDate}`
+        }
     }
 
 }
@@ -117,7 +121,11 @@ function dateTo() {
     if (!window.location.search) {
         location.href = `${window.location}?date1=${controllDate}&date2=${controllDate}`
     } else {
-        location.href = `${location.href.split("date1=")[0]}date1=${controllDate}&date2=${controllDate}`
+        if(params.has("route")){
+            location.href = `${location.href.split("?")[0]}?route=${params.get("route")}&date1=${controllDate}&date2=${controllDate}`
+        }else{
+            location.href = `${location.href.split("?")[0]}?date1=${controllDate}&date2=${controllDate}`
+        }
     }
 
 }

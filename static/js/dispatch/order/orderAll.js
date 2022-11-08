@@ -15,7 +15,7 @@ window.onload = function () {
     matchDispatch()
     addCommaTotal()
 
-    if(params.has("date1")){
+    if(params.has("date1") && !params.has("id")){
         inputTextquarter[0].value = params.get("date1")
         inputTextquarter[1].value = params.get("date1")
     }else if(!window.location.search){

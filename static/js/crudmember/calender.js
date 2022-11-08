@@ -153,7 +153,7 @@ function today() {
     if (parms.has("change")) {
         location.href = `${window.location.href.split("?")[0]}?change=true`
     } else {
-        location.href = `${window.location.href}`
+        location.href = `${window.location.href.split("?")[0]}`
     }
 }
 
@@ -167,12 +167,24 @@ prevBtn.addEventListener("click", prevDay)
 function prevDay() {
     if (parms.has("year") && parms.has("month")) {
         if (parms.get("month") == 1) {
-            location.href = `${window.location.href.split("?")[0]}?year=${parseInt(parms.get("year")) - 1}&month=${12}`
+            if (parms.has("change")) {
+                location.href = `${window.location.href.split("?")[0]}?change=true&year=${parseInt(parms.get("year")) - 1}&month=${12}`
+            } else {
+                location.href = `${window.location.href.split("?")[0]}?year=${parseInt(parms.get("year")) - 1}&month=${12}`
+            }
         } else {
-            location.href = `${window.location.href.split("?")[0]}?year=${parms.get("year")}&month=${parseInt(parms.get("month")) - 1}`
+            if (parms.has("change")) {
+                location.href = `${window.location.href.split("?")[0]}?change=true&year=${parms.get("year")}&month=${parseInt(parms.get("month")) - 1}`
+            } else {
+                location.href = `${window.location.href.split("?")[0]}?year=${parms.get("year")}&month=${parseInt(parms.get("month")) - 1}`
+            }
         }
     } else {
-        location.href = `${window.location.href}?year=${nowYear}&month=${nowMonth - 1}`
+        if (parms.has("change")) {
+            location.href = `${window.location.href}&year=${nowYear}&month=${nowMonth - 1}`
+        }else{
+            location.href = `${window.location.href}?year=${nowYear}&month=${nowMonth - 1}`
+        }
     }
 }
 

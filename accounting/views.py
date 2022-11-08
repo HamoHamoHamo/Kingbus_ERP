@@ -10,11 +10,26 @@ from django.urls import reverse, reverse_lazy
 from django.views import generic
 from .models import Salary, Income, AdditionalSalary
 
+from config import settings
+from popbill import EasyFinBankService, PopbillException, ContactInfo, JoinForm, CorpInfo
 
 TODAY = str(datetime.now())[:10]
 WEEK = ['(월)', '(화)', '(수)', '(목)', '(금)', '(토)', '(일)', ]
 
+# settings.py 작성한 LinkID, SecretKey를 이용해 EasyFinBankService 서비스 객체 생성
+easyFinBankService = EasyFinBankService(settings.LinkID, settings.SecretKey)
 
+# 연동환경 설정값, 개발용(True), 상업용(False)
+easyFinBankService.IsTest = settings.IsTest
+
+# 인증토큰 IP제한기능 사용여부, 권장(True)
+easyFinBankService.IPRestrictOnOff = settings.IPRestrictOnOff
+
+# 팝빌 API 서비스 고정 IP 사용여부, true-사용, false-미사용, 기본값(false)
+easyFinBankService.UseStaticIP = settings.UseStaticIP
+
+#로컬시스템 시간 사용여부, 권장(True)
+easyFinBankService.UseLocalTimeYN = settings.UseLocalTimeYN
 
 
 class SalaryList(generic.ListView):
@@ -391,3 +406,31 @@ class DepositList(generic.ListView):
     template_name = 'accounting/deposit.html'
     context_object_name = 'deposit'
     model = DispatchOrder
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        CorpNum = '2874900474'
+        BankCode = '0003'
+        AccountNumber = '15717723401016'
+        SDate = '20221101'
+        EDate = '20221107'
+        UserID = 'kingbus7111'
+
+        jobID = easyFinBankService.requestJob(CorpNum, BankCode, AccountNumber, SDate, EDate, UserID=None)
+        state = easyFinBankService.getJobState(CorpNum, jobID, UserID=None)
+        print("STATE", state.jobID)
+        if state.jobState == 3:
+            result = easyFinBankService.search(CorpNum, jobID, TradeType='', SearchString='', Page=1, PerPage=100, Order='', UserID=None)
+            print(dir(result.list[0]))
+            for r in result.list:
+                print('accIn', r.accIn)
+                print('accOut', r.accOut)
+                print('accountID', r.accountID)
+                print('balance', r.balance)
+                print('memo', r.memo)
+                print('remark1', r.remark1)
+                print('remark2', r.remark2)
+                print('remark3', r.remark3)
+
+        return context

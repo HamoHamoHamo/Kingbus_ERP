@@ -116,15 +116,23 @@
     border: 0.1rem solid #ABABAB;
     border-radius: 0.3rem;
     font-size: 1.4rem;
-    color: #0069D9;
+    color: black;
     margin-right: 1.2rem;
     cursor: pointer;
     box-sizing: border-box;
 }
 
-.documentArea .printingBtn:hover{
-    padding: 0.3rem 1.5rem;
-    border: 0.2rem solid #0069D9;
+.siteBtn{
+    width: auto;
+    padding: 0.4rem 1.6rem;
+    background-color: white;
+    border: 0.1rem solid #ABABAB;
+    border-radius: 0.3rem;
+    font-size: 1.4rem;
+    color: black;
+    margin-right: 1.2rem;
+    cursor: pointer;
+    box-sizing: border-box;
 }
 
 
