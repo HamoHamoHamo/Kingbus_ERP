@@ -6,7 +6,7 @@ const dateTitle = document.querySelector(".dateTitle")
 const basicContentesArea = document.querySelector(".basicContentesArea")
 const orderContentesArea = document.querySelector(".orderContentesArea")
 const changeFormatBtn = document.querySelector(".changeFormatBtn")
-const search = document.querySelector(".controllArea form")
+const search = document.querySelector(".search-Form")
 
 
 let parms = new URLSearchParams(location.search)
@@ -120,7 +120,7 @@ for (i = 0; i < calenderDateBox.length; i++) {
 
 
 function checkThisDate() {
-    if (!this.classList.contains("beforeMonth")) {
+    if (!this.classList.contains("beforeMonth") && !this.classList.contains("afterMonth")) {
         for (i = 0; i < calenderDateBox.length; i++) {
             calenderDateBox[i].style.border = "0.2rem solid white"
         };

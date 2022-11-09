@@ -1,38 +1,42 @@
 const groupListItems = document.querySelectorAll(".groupListItem")
-const groupFixe = document.querySelectorAll(".groupFixe")
 const groupListBodys = document.querySelector(".groupListBody")
-
-
-function visivleFix() {
-    for (i = 0; i < groupListItems.length; i++) {
-        if (groupListItems[i].classList.contains("fixedGroup")) {
-            groupListItems[i].children[2].children[0].children[0].style.fill = "#444"
-        }
-        if (window.location.search !== "") {
-            if (window.location.search.split("group=")[1].split("&")[0] == groupListItems[i].classList[1]) {
-                groupListItems[i].style.backgroundColor = "#CDCDCE"
-            }
-        }
-    }
-}
+const groupLock = document.querySelector(".groupLock")
+const lockClose = document.querySelector(".lockClose")
+const lockOpen = document.querySelector(".lockOpen")
 
 
 let orderArr = []
 let fixeCounter = 0
+let lockState = false
 
+groupLock.addEventListener("click", lockBtn)
+
+function lockBtn() {
+    if (!lockState && confirm("그룹목록순서를 수정하시겠습니까?")) {
+        lockState = true
+        lockClose.style.display = "none"
+        lockOpen.style.display = "block"
+    } else {
+        lockState = false
+        lockClose.style.display = "block"
+        lockOpen.style.display = "none"
+    }
+}
 
 
 // 그룹순서변경
 groupListItems.forEach(groupListItem => {
     groupListItem.addEventListener("dragstart", (e) => {
-        if(!e.target.classList.contains("fixedGroup")){
+        if (lockState) {
             groupListItem.classList.add("dragging");
         }
     });
 
     groupListItem.addEventListener("dragend", () => {
-        groupListItem.classList.remove("dragging");
-        makeData()
+        if (lockState) {
+            groupListItem.classList.remove("dragging");
+            makeData()
+        }
     });
 });
 
@@ -41,7 +45,7 @@ groupListBodys.addEventListener("dragover", e => {
     e.preventDefault();
     const afterElement = getDragAfterElement(groupListBodys, e.clientY);
     const groupListItem = document.querySelector(".dragging");
-    if(groupListItem !== null){
+    if (groupListItem !== null) {
         if (afterElement === undefined) {
             groupListBodys.appendChild(groupListItem);
         } else {
@@ -68,47 +72,6 @@ function getDragAfterElement(groupListBodys, Y) {
         },
         { offset: Number.NEGATIVE_INFINITY },
     ).element;
-}
-
-
-
-
-
-
-// 그룹고정
-for (i = 0; i < groupFixe.length; i++) {
-    groupFixe[i].addEventListener("click", fixedGroup)
-}
-
-function fixedGroup() {
-
-    if (this.parentNode.classList.contains("fixedGroup")) {
-        let groupListItem = this.parentNode
-        let afterElementAll = this.parentNode.parentNode.querySelectorAll(".groupListItem")
-        let afterElement = ""
-        for (i = 0; i < afterElementAll.length; i++) {
-            console.log(afterElementAll[i])
-            if (!afterElementAll[i].classList.contains("fixedGroup")) {
-                afterElement = afterElementAll[i]
-                break;
-            }
-        }
-
-        groupListBodys.insertBefore(groupListItem, afterElement);
-
-        this.children[0].children[0].style.fill = "#dededf"
-        this.parentNode.classList.remove("fixedGroup")
-    } else {
-        let groupListItem = this.parentNode
-        let afterElementAll = this.parentNode.parentNode.querySelectorAll(".groupListItem")
-        let afterElement = afterElementAll[0]
-
-        groupListBodys.insertBefore(groupListItem, afterElement);
-
-        this.children[0].children[0].style.fill = "#444"
-        this.parentNode.classList.add("fixedGroup")
-    }
-    makeData()
 }
 
 

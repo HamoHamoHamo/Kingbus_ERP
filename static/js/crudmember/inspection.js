@@ -6,7 +6,7 @@ const inspectionCloseBtn = document.querySelector(".inspectionCloseBtn")
 vhicleCheck.addEventListener("click", openInspection)
 
 function openInspection() {
-    if (this.classList.contains("alarmAble")) {
+    if (this.classList.contains("inspectionAlarm")) {
         popupAreaModules[2].style.display = "block"
     }
 }

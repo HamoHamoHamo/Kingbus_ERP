@@ -1,7 +1,8 @@
+from datetime import datetime, timedelta
+from dispatch.views import FORMAT
 from django.db.models.signals import post_save, post_delete
 from django.dispatch import receiver
 from django.shortcuts import get_object_or_404
-
 from .models import DispatchRegularly, DispatchOrder, DispatchOrderConnect, DispatchRegularlyConnect, DispatchCheck
 from accounting.models import Salary
 from humanresource.models import Member
@@ -12,21 +13,53 @@ import re
 
 @receiver(post_save, sender=DispatchRegularly)
 def save_regularly(sender, instance, created, **kwargs):
-  if created:
-    instance.num1 = re.sub(r'[^0-9]', '', instance.number1)
-    instance.num2 = re.sub(r'[^0-9]', '', instance.number2)
-    if instance.num1 == '': instance.num1 = 0
-    if instance.num2 == '': instance.num2 = 0
-    instance.save()
+    if created:
+        instance.num1 = re.sub(r'[^0-9]', '', instance.number1)
+        instance.num2 = re.sub(r'[^0-9]', '', instance.number2)
+        if instance.num1 == '': instance.num1 = 0
+        if instance.num2 == '': instance.num2 = 0
+        instance.save()
+
 
 # @receiver(post_save, sender=DispatchOrder)
 # def save_order(sender, instance, created, **kwargs):
-#     check_list = DispatchCheck.objects.filter(date=instance.departure_date[:10])
-#     for check in check_list:
-#         check.dispatch_check = 'n'
-#         check.member_id1 = None
-#         check.member_id2 = None
-#         check.save()        
+#     # 일반 운행 저장되면 배차확인 삭제
+#     departure_date = datetime.strptime(instance.departure_date[:10], FORMAT)
+#     arrival_date = datetime.strptime(instance.arrival_date[:10], FORMAT)
+#     days = (arrival_date - departure_date).days + 1
+
+#     for i in range(days):
+#         check = DispatchCheck.objects.filter(date=departure_date)
+#         check.delete()
+#         departure_date += timedelta(days=1)
+
+# @receiver(post_save, sender=DispatchOrderConnect)
+# def save_order_connect(sender, instance, created, **kwargs):
+#     # 일반배차 생성되면 배차확인 삭제
+#     if created:
+#         departure_date = datetime.strptime(instance.order_id.departure_date[:10], FORMAT)
+#         arrival_date = datetime.strptime(instance.order_id.arrival_date[:10], FORMAT)
+#         days = (arrival_date - departure_date).days + 1
+
+#         for i in range(days):
+#             check = DispatchCheck.objects.filter(date=departure_date)
+#             check.delete()
+#             departure_date += timedelta(days=1)
+        
+# @receiver(post_save, sender=DispatchRegularlyConnect)
+# def save_regularly_connect(sender, instance, created, **kwargs):
+#     # 출퇴근 배차 생성되면 배차확인 삭제
+#     if created:
+#         check = DispatchCheck.objects.filter(date=instance.departure_date[:10])
+#         check.delete()
+# @receiver(post_save, sender=DispatchRegularlyConnect)
+# def save_regularly_connect(sender, instance, created, **kwargs):
+#     # 출퇴근 배차 생성되면 배차확인 삭제
+#     if created:
+#         check = DispatchCheck.objects.filter(date=instance.departure_date[:10])
+#         check.delete()        
+        
+        
 
 # @receiver(post_save, sender=DispatchRegularlyConnect)
 # def create_regularly_connect(sender, instance, created, **kwargs):

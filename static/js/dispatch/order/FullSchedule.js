@@ -141,7 +141,9 @@ function notPairFilter() {
     for (i = 0; i < otherDriver.length; i++) {
         if (otherDriver[i].parentNode.classList.contains("haveSchedule")) {
             for (j = 0; j < driverTd.length; j++) {
-                if (driverTd[j].innerText.split("(")[1].replace(/\)/g, "") == otherDriver[i].title.split(" ||")[0]) {
+                if(driverTd[j].innerText.substr(4,) == ""){
+                    driverTd[j].parentNode.classList.add("haveSchedule")
+                }else if (driverTd[j].innerText.split("(")[1].replace(/\)/g, "") == otherDriver[i].title.split(" ||")[0]) {
                     driverTd[j].parentNode.classList.add("haveSchedule")
                 }
             }

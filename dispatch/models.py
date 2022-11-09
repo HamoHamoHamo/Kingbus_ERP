@@ -75,9 +75,11 @@ class DispatchOrder(models.Model):
     bill_date = models.CharField(verbose_name='계산서 발행일', max_length=10, null=False, blank=True)
     collection_type = models.CharField(verbose_name='수금구분', max_length=50, null=False, blank=True)
     VAT = models.CharField(verbose_name='VAT포함여부', max_length=1, null=False, default='n')
+    total_price = models.CharField(verbose_name='VAT포함 금액', max_length=30, null=False, blank=True)
     option = models.CharField(verbose_name='버스옵션', max_length=50, null=False, blank=True)
     route = models.CharField(verbose_name='노선이름', max_length=200, null=False)
     ticketing_info = models.CharField(verbose_name='표찰정보', max_length=200, null=False, blank=True)
+    order_type = models.CharField(verbose_name='유형', max_length=50, null=False, blank=True)
     collection_amount = models.CharField(verbose_name='수금금액', max_length=30, null=False, default='0')
     collection_date = models.CharField(verbose_name='수금날짜', max_length=10, null=False, blank=True)
     collection_creator = models.CharField(verbose_name='수금입력자', max_length=50, null=False, blank=True)
@@ -125,10 +127,10 @@ class DispatchRegularlyConnect(models.Model):
         return f'{self.regularly_id.route} / {self.departure_date[2:10]}'
         
 class DispatchCheck(models.Model):
-    member_id = models.ForeignKey(Member, on_delete=models.SET_NULL, related_name="dispatch_check_member", db_column="member_id", null=True)
     date = models.CharField(verbose_name='날짜', max_length=20, null=False)
-    dispatch_check = models.CharField(verbose_name='확인완료', max_length=1, null=False, default='n')
+    # dispatch_check = models.CharField(verbose_name='확인완료', max_length=1, null=False, default='n')
     pub_date = models.DateTimeField(auto_now_add=True, verbose_name='작성시간')
+    updated_at = models.DateTimeField(auto_now=True, verbose_name='수정시간')
     creator = models.ForeignKey(Member, on_delete=models.SET_NULL, related_name="dispatch_check_creator", db_column="creator_id", null=True)
 
     def __str__(self):
@@ -141,4 +143,4 @@ class Schedule(models.Model):
     creator = models.ForeignKey(Member, on_delete=models.SET_NULL, related_name="schedule_creator", db_column="creator_id", null=True)
 
     def __str__(self):
-        return self.date + self.content
+        return self.date + '' + self.content

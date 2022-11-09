@@ -1,4 +1,4 @@
-from crudmember.models import User
+from dispatch.models import DispatchOrder, DispatchRegularly
 from django.db import models
 from humanresource.models import Member
 import datetime
@@ -27,12 +27,23 @@ class AdditionalSalary(models.Model):
     pub_date = models.DateTimeField(verbose_name='작성시간', auto_now_add=True, null=False)
 
 class Income(models.Model):
-    kinds = models.CharField(verbose_name='날짜', max_length=10, null=False)
-    attendance = models.CharField(verbose_name='출근금액', max_length=20, null=False)
-    leave = models.CharField(verbose_name='퇴근금액', max_length=20, null=False)
-    order = models.CharField(verbose_name='일반주문금액', max_length=20, null=False)
-    collect = models.CharField(verbose_name='수금액', max_length=20, null=False)
-    outstanding = models.CharField(verbose_name='미수금액', max_length=20, null=False)
-    total = models.CharField(verbose_name='합계', max_length=30, null=False)
+    serial = models.CharField(verbose_name='전표번호', max_length=50, null=False)
+    date = models.CharField(verbose_name='날짜', max_length=20, null=False)
+    depositor = models.CharField(verbose_name='입금자', max_length=50, null=False)
+    payment_method = models.CharField(verbose_name='지급방식', max_length=10, null=False)
+    bank = models.CharField(verbose_name='은행', max_length=30, null=False)
+    account = models.CharField(verbose_name='계좌명', max_length=50, null=False)
+    commission = models.CharField(verbose_name='가맹점 수수료', max_length=30, null=False)
+    acc_income = models.CharField(verbose_name='입금액', max_length=30, null=False)
+    used_income = models.CharField(verbose_name='처리된 금액', max_length=30, null=False)
+    state = models.CharField(verbose_name='상태', max_length=30, null=False)
     creator = models.ForeignKey(Member, on_delete=models.SET_NULL, related_name="income_user", db_column="user_id", null=True)
+    pub_date = models.DateTimeField(verbose_name='작성시간', auto_now_add=True, null=False)
+
+class Collect(models.Model):
+    order_id = models.ForeignKey(DispatchOrder, on_delete=models.SET_NULL, related_name="order_collect", null=True)
+    regularly_id = models.ForeignKey(DispatchOrder, on_delete=models.SET_NULL, related_name="regularly_collect", null=True)
+    income_id = models.ForeignKey(Income, on_delete=models.SET_NULL, related_name="income_collect", null=True)
+    price = models.CharField(verbose_name='처리된 금액', max_length=20, null=False)
+    creator = models.ForeignKey(Member, on_delete=models.SET_NULL, related_name="user_collect", db_column="user_id", null=True)
     pub_date = models.DateTimeField(verbose_name='작성시간', auto_now_add=True, null=False)
