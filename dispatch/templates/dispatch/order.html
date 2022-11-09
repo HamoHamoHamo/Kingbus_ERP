@@ -316,14 +316,14 @@
                         </td>
                         <td class="tdTypeA">유형</td>
                         <td class="tdTypeC">
-                            <select name="type" id="type" class="inputSelect">
+                            <select name="order_type" id="type" class="inputSelect">
                                 <option value=""></option>
-                                <option {% if detail.type == '워크샵' %} selected {% endif %} value="워크샵">워크샵</option>
-                                <option {% if detail.type == '학단' %} selected {% endif %} value="학단">학단</option>
-                                <option {% if detail.type == '단체관람' %} selected {% endif %} value="단체관람">단체관람</option>
-                                <option {% if detail.type == '동호회' %} selected {% endif %} value="동호회">동호회</option>
-                                <option {% if detail.type == '결혼식' %} selected {% endif %} value="결혼식">결혼식</option>
-                                <option {% if detail.type == '기타' %} selected {% endif %} value="기타">기타</option>
+                                <option {% if detail.order_type == '워크샵' %} selected {% endif %} value="워크샵">워크샵</option>
+                                <option {% if detail.order_type == '학단' %} selected {% endif %} value="학단">학단</option>
+                                <option {% if detail.order_type == '단체관람' %} selected {% endif %} value="단체관람">단체관람</option>
+                                <option {% if detail.order_type == '동호회' %} selected {% endif %} value="동호회">동호회</option>
+                                <option {% if detail.order_type == '결혼식' %} selected {% endif %} value="결혼식">결혼식</option>
+                                <option {% if detail.order_type == '기타' %} selected {% endif %} value="기타">기타</option>
                             </select>
                         </td>
                     </tr>
@@ -571,7 +571,7 @@
                                     <div class="orderListSubContents">{{order.operation_type}}</div>
                                     <div class="orderListSubContents">{{order.driver_allowance}}</div>
                                     <div class="orderListSubContents">{{order.price}}</div>
-                                    <div class="orderListSubContents"></div>
+                                    <div class="orderListSubContents">{{order.order_type}}</div>
                                     <div class="orderListSubContents">
                                         <div>{{order.customer}}</div>
                                         <div>{{order.customer_phone}}</div>

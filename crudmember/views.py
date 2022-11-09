@@ -39,7 +39,7 @@ def home(request):
 class Calendar(generic.ListView):
     template_name = 'crudmember/home.html'
     context_object_name = 'order_list'
-    model = DispatchOrderConnect
+    model = DispatchOrder
 
     def get_queryset(self):
         return 0
@@ -49,6 +49,9 @@ class Calendar(generic.ListView):
         year = self.request.GET.get('year', TODAY[:4])
         month = self.request.GET.get('month', TODAY[5:7])
 
+        if self.request.GET.get('change') == 'true':
+            DispatchOrder.objects.filter(departure_date__startswith=f'{year}-{month}')
+                    
         weekday_list = [
             datetime.strptime(f'{year}-{month}-01', FORMAT),
             datetime.strptime(f'{year}-{month}-02', FORMAT),
@@ -66,25 +69,36 @@ class Calendar(generic.ListView):
         r_total_bus_cnt = [0] * int(last_day)
         r_cur_bus_cnt = [0] * int(last_day)
 
-        check_id = [''] * int(last_day)
+        check_list = [''] * int(last_day)
         schedule_list = [''] * int(last_day)
 
+        change_order_list = [''] * int(last_day)
+
         
-        dispatch_list = DispatchOrder.objects.prefetch_related('info_order').filter(departure_date__startswith=month)
+        dispatch_list = DispatchOrder.objects.prefetch_related('info_order').filter(departure_date__startswith=f'{year}-{month}')
         regularly_list = DispatchRegularlyConnect.objects.filter(departure_date__startswith=month)
 
         for dispatch in dispatch_list:
+            print("DISSSSSSSSS", dispatch)
             departure_date = datetime.strptime(dispatch.departure_date[:10], FORMAT)
             arrival_date = datetime.strptime(dispatch.arrival_date[:10], FORMAT)
             days = (arrival_date - departure_date).days + 1
             
-            
+            temp_list = []
             for i in range(days):
-                print(dispatch.departure_date)
+                print(departure_date)
                 date = int(datetime.strftime(departure_date, FORMAT)[8:10])
                 total_bus_cnt[date-1] += int(dispatch.bus_cnt)
                 cur_bus_cnt[date-1] += dispatch.info_order.all().count()
 
+                # 배차달력 노선별 버스 대수
+                print('test', change_order_list)
+                temp_list.append
+                if not isinstance(change_order_list[date-1], list): change_order_list[date-1] = []
+                change_order_list[date-1].append({
+                    'customer': dispatch.customer,
+                    'cnt': dispatch.bus_cnt
+                })
                 departure_date += timedelta(days=1)
 
         
@@ -104,10 +118,9 @@ class Calendar(generic.ListView):
                 schedules = Schedule.objects.filter(date=f'{year}-{month}-{roof_date}')
                 temp_list = []
                 for sch in schedules:
-                    print('dateee', sch)
                     temp_list.append({
                         'content': sch.content,
-                        'date': sch.date,
+                        'date': datetime.strftime(sch.pub_date, FORMAT),
                         'id': sch.id,
                         'creator': sch.creator.name,
                     })
@@ -118,7 +131,7 @@ class Calendar(generic.ListView):
 
                 cnt_day += 7
         
-        regularly_list = DispatchRegularlyConnect.objects.filter(departure_date__startswith=month)
+        regularly_list = DispatchRegularlyConnect.objects.filter(departure_date__startswith=f'{year}-{month}')
         for regularly in regularly_list:
             date = int(regularly.departure_date[8:10])
             r_cur_bus_cnt[date-1] += 1
@@ -133,43 +146,23 @@ class Calendar(generic.ListView):
         context['cur_bus_cnt'] = cur_bus_cnt
         context['r_total_bus_cnt'] = r_total_bus_cnt
         context['r_cur_bus_cnt'] = r_cur_bus_cnt
+        context['change_order_list'] = change_order_list
 
-
-        vehicle = Vehicle.objects.order_by('-use', '-pk')
-        i_next_month = (datetime.strptime(TODAY, FORMAT) + relativedelta(months=1)).strftime(FORMAT)
-        # context['insurance_list'] = vehicle.exclude(insurance_expiry_date='').filter(insurance_expiry_date__lte=i_next_month).order_by('insurance_expiry_date')
 
         
-        #검사유효기간 11달 후부터 보여주기 = today -11달 보다 작을때
-        # c_next_month = datetime.strptime(TODAY, FORMAT) - relativedelta(months=11)
-        # c_next_month = c_next_month.strftime(FORMAT)
+        next_month = (datetime.strptime(TODAY, FORMAT) + relativedelta(months=1)).strftime(FORMAT)
+        context['vehicle_list'] = Vehicle.objects.filter(check_date__range=(TODAY, next_month))
         
-        # context['check_list'] = vehicle.exclude(check_duration__lte='').filter(check_duration__lte=c_next_month).order_by('check_duration')
-        
-        # duration = []
-        # expire = []
 
-        # for vehicle in context['check_list']:
-        #     v_month = datetime.strptime(vehicle.check_duration, FORMAT) + relativedelta(months=11)
-        #     year = v_month + relativedelta(months=2)
-        #     v_month = v_month.strftime(FORMAT)
-        #     year = year.strftime(FORMAT)
-
-        #     duration.append(month)
-        #     expire.append(year)
-        # context['duration'] = duration
-        # context['expire'] = expire
-
-        check_list = DispatchCheck.objects.filter(date__startswith=month[:7]).order_by('date')
-        for check in check_list:
-            try:
-                check_id[int(check.date[8:])-1] = check.member_id.name
-            except:
-                check_id[int(check.date[8:])-1] = ''
+        checks = DispatchCheck.objects.filter(date__startswith=f'{year}-{month}').order_by('date')
+        for check in checks:
+            creator = check.creator.name if check.creator else ''
+            check_list[int(check.date[8:])-1] = {
+                'creator': creator,
+                'date': datetime.strftime(check.updated_at, f'{FORMAT} %H:%M'),
+            }
             
-        print("check", check_id)
-
-        context['check_id'] = check_id
+        context['check_list'] = check_list
         return context
 
 def reset_password(request):

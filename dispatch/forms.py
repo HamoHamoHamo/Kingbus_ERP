@@ -51,6 +51,7 @@ class OrderForm(forms.ModelForm):
             # 'bill_date',
             'collection_type',
             'ticketing_info',
+            'order_type',
             # 'payment_method',
             # 'VAT',
             # 'collection_amount',

@@ -951,11 +951,6 @@ html::-webkit-scrollbar-track {
   box-sizing: border-box;
 }
 
-.popupFooter input {
-  background-color: #0069D9;
-  margin-right: 1rem;
-}
-
 .popupFooter .closeBtn {
   position: static;
   background-color: #444;

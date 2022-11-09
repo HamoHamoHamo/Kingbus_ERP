@@ -1,7 +1,7 @@
 const groupList = document.querySelector(".groupList")
 const groupCreate = document.querySelector(".groupCreate")
 const foldGroup = document.querySelector(".foldGroup")
-const groupCloseBtn = document.querySelector(".groupListHead svg")
+const groupCloseBtn = document.querySelector(".layoutBtn")
 const groupOpenBtn = document.querySelector(".foldGroup svg")
 const groupLayout = document.querySelector(".groupLayout")
 const mainLayout = document.querySelector(".mainLayout")

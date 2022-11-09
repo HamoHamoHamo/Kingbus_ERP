@@ -100,19 +100,12 @@ def calendar_create(request):
         creator = get_object_or_404(Member, id=request.session.get('user'))
         date = request.POST.get('date', None)
         try:
-            check = get_object_or_404(DispatchCheck, date=date)
-            if check.member_id1:
-                check.member_id2 = creator
-                check.dispatch_check = 'y'
-            else:
-                check.member_id1 = creator
-                check.dispatch_check = 'n'
-                
-        except:
+            check = DispatchCheck.objects.get(date=date)
+            check.creator = creator
+            
+        except DispatchCheck.DoesNotExist:
             check = DispatchCheck(
-                member_id1 = creator,
                 date = date,
-                dispatch_check = 'n',
                 creator = creator,
             )
         check.save()
@@ -120,14 +113,11 @@ def calendar_create(request):
     else:
         return HttpResponseNotAllowed(['post'])
 
-def calendar_delete_1(request):
+def calendar_delete(request):
     if request.method == "POST":
         date = request.POST.get('date', None)
         check = get_object_or_404(DispatchCheck, date=date)
-        check.member_id1 = check.member_id2
-        check.member_id2 = None
-        check.dispatch_check = 'n'
-        check.save()
+        check.delete()
 
         return redirect(request.META.get('HTTP_REFERER', 'redirect_if_referer_not_found'))
     else:
@@ -149,12 +139,11 @@ def schedule_create(request):
         return HttpResponseNotAllowed(['post'])
 def schedule_delete(request):
     if request.method == "POST":
-        date = request.POST.get('date', None)
-        check = get_object_or_404(DispatchCheck, date=date)
-        check.member_id1 = check.member_id2
-        check.member_id2 = None
-        check.dispatch_check = 'n'
-        check.save()
+        check_list = request.POST.getlist('check')
+
+        for check in check_list:
+            schedule = get_object_or_404(Schedule, id=check)
+            schedule.delete()
 
         return redirect(request.META.get('HTTP_REFERER', 'redirect_if_referer_not_found'))
     else:
@@ -236,7 +225,7 @@ class DocumentList(generic.ListView):
 
     def get_queryset(self):
         date = self.request.GET.get('date', TODAY)
-        order_list = DispatchOrder.objects.prefetch_related('info_order').filter(departure_date__lte=f'{date}T24:00').filter(arrival_date__gte=f'{date}T00:00')
+        order_list = DispatchOrder.objects.prefetch_related('info_order').filter(departure_date__lte=f'{date} 24:00').filter(arrival_date__gte=f'{date} 00:00')
         return order_list
 
     def get_context_data(self, **kwargs):
@@ -298,9 +287,9 @@ class RegularlyDispatchList(generic.ListView):
         
         if group_id:
             group = RegularlyGroup.objects.get(id=group_id)
-            dispatch_list = group.regularly_info.filter(week__contains=weekday).order_by('num1', 'num2', 'number1', 'number2')
+            dispatch_list = group.regularly_info.filter(week__contains=weekday).order_by('num1', 'number1', 'num2', 'number2')
         else:
-            dispatch_list = DispatchRegularly.objects.filter(week__contains=weekday).order_by('group', 'num1', 'num2', 'number1', 'number2')
+            dispatch_list = DispatchRegularly.objects.filter(week__contains=weekday).order_by('group', 'num1', 'number1', 'num2', 'number2')
         return dispatch_list
 
 
@@ -599,14 +588,14 @@ class RegularlyRouteList(generic.ListView):
 
         if not group_id:
             if search:
-                return DispatchRegularly.objects.filter(Q(departure__contains=search) | Q(arrival__contains=search)).order_by('num1', 'num2', 'number1', 'number2')
+                return DispatchRegularly.objects.filter(Q(departure__contains=search) | Q(arrival__contains=search)).order_by('num1', 'number1', 'num2', 'number2')
 
-            return DispatchRegularly.objects.all().order_by('num1', 'num2', 'number1', 'number2')
+            return DispatchRegularly.objects.all().order_by('num1', 'number1', 'num2', 'number2')
         else:
             group = get_object_or_404(RegularlyGroup, id=group_id)
             if search:
-                return DispatchRegularly.objects.filter(group=group).filter(Q(departure__contains=search) | Q(arrival__contains=search)).order_by('num1', 'num2', 'number1', 'number2')
-            return DispatchRegularly.objects.filter(group=group).order_by('num1', 'num2', 'number1', 'number2')
+                return DispatchRegularly.objects.filter(group=group).filter(Q(departure__contains=search) | Q(arrival__contains=search)).order_by('num1', 'number1', 'num2', 'number2')
+            return DispatchRegularly.objects.filter(group=group).order_by('num1', 'number1', 'num2', 'number2')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -920,7 +909,7 @@ class OrderList(generic.ListView):
             dispatch_list = []
             if start_date and end_date:
                 dispatch_list = DispatchOrder.objects.prefetch_related('info_order').exclude(arrival_date__lt=f'{start_date} 00:00').exclude(departure_date__gt=f'{end_date} 24:00').order_by('departure_date')
-                # dispatch_list = DispatchOrder.objects.filter(departure_date__range=[start_date + "T00:00", end_date + "T24:00"]).order_by('departure_date')
+                # dispatch_list = DispatchOrder.objects.filter(departure_date__range=[start_date + " 00:00", end_date + " 24:00"]).order_by('departure_date')
             if route:
                 if dispatch_list:
                     dispatch_list = dispatch_list.filter(route__contains=route).order_by('departure_date')
@@ -1275,6 +1264,7 @@ def order_edit(request):
             order.customer_phone = order_form.cleaned_data['customer_phone']
             order.bill_place = order_form.cleaned_data['bill_place']
             order.ticketing_info = order_form.cleaned_data['ticketing_info']
+            order.order_type = order_form.cleaned_data['order_type']
             order.collection_type = order_form.cleaned_data['collection_type']
             
             order.VAT = request.POST.get('VAT', 'n')
@@ -1378,7 +1368,7 @@ def bus_print(request):
         elif connect.work_type == "퇴근":
             c_connect_object[connect.bus_id.id].append(connect)
 
-    connect_list = DispatchOrderConnect.objects.select_related('bus_id', 'order_id').filter(departure_date__lte=f'{date}T24:00').filter(arrival_date__gte=f'{date}T00:00')
+    connect_list = DispatchOrderConnect.objects.select_related('bus_id', 'order_id').filter(departure_date__lte=f'{date} 24:00').filter(arrival_date__gte=f'{date} 00:00')
     print("CONNECTSLIST", connect_list)
     for connect in connect_list:
         connect_object[connect.bus_id.id].append(connect)
@@ -1411,12 +1401,12 @@ def daily_driving_list(request):
         elif connect.work_type == "퇴근":
             c_connect_object[connect.bus_id.id].append(connect)
 
-    connect_list = DispatchOrderConnect.objects.select_related('bus_id', 'order_id').filter(departure_date__lte=f'{date}T24:00').filter(arrival_date__gte=f'{date}T00:00')
+    connect_list = DispatchOrderConnect.objects.select_related('bus_id', 'order_id').filter(departure_date__lte=f'{date} 24:00').filter(arrival_date__gte=f'{date} 00:00')
     print("CONNECTSLIST", connect_list)
     for connect in connect_list:
         connect_object[connect.bus_id.id].append(connect)
 
-
+    print(connect_object)
     context['connect_object'] = connect_object
     context['e_connect_object'] = e_connect_object
     context['c_connect_object'] = c_connect_object
@@ -1437,7 +1427,7 @@ def daily_driving_print(request):
         if id and date:
             vehicle = get_object_or_404(Vehicle, id=id)
             context['vehicle_list'].append(vehicle)
-            context['order_list'].append(DispatchOrderConnect.objects.select_related('order_id').filter(departure_date__lte=f'{date}T24:00').filter(arrival_date__gte=f'{date}T00:00').filter(bus_id=vehicle).order_by('departure_date'))
+            context['order_list'].append(DispatchOrderConnect.objects.select_related('order_id').filter(departure_date__lte=f'{date} 24:00').filter(arrival_date__gte=f'{date} 00:00').filter(bus_id=vehicle).order_by('departure_date'))
             context['e_order_list'].append(DispatchRegularlyConnect.objects.select_related('regularly_id').filter(departure_date__startswith=date).filter(work_type="출근").filter(bus_id=vehicle).order_by('departure_date'))
             context['c_order_list'].append(DispatchRegularlyConnect.objects.select_related('regularly_id').filter(departure_date__startswith=date).filter(work_type="퇴근").filter(bus_id=vehicle).order_by('departure_date'))
             print("ENETET", context['e_order_list'])

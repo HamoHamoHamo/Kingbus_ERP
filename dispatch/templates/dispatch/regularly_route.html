@@ -22,7 +22,33 @@
     <div class="groupList">
       <div class="groupListHead">
         <span class="groupListTitle">그룹목록</span>
-        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 22 22">
+        <div class="groupLock">
+          <svg class="lockClose" xmlns="http://www.w3.org/2000/svg" width="15.75" height="18" viewBox="0 0 15.75 18">
+            <g id="그룹_1866" data-name="그룹 1866" transform="translate(-35 -77)">
+              <g id="그룹_1865" data-name="그룹 1865">
+                <g id="그룹_1861" data-name="그룹 1861">
+                  <path id="Icon_awesome-lock" data-name="Icon awesome-lock" d="M14.063,7.875h-.844V5.344a5.344,5.344,0,0,0-10.687,0V7.875H1.688A1.688,1.688,0,0,0,0,9.563v6.75A1.688,1.688,0,0,0,1.688,18H14.063a1.688,1.688,0,0,0,1.688-1.687V9.563A1.688,1.688,0,0,0,14.063,7.875Zm-3.656,0H5.344V5.344a2.531,2.531,0,0,1,5.063,0Z" transform="translate(35 77)" fill="#444"/>
+                  <g id="그룹_1862" data-name="그룹 1862">
+                    <circle id="타원_113" data-name="타원 113" cx="1.2" cy="1.2" r="1.2" transform="translate(41.771 88.8)" fill="#fff"/>
+                    <rect id="사각형_12069" data-name="사각형 12069" width="1" height="3" rx="0.5" transform="translate(42.471 89.7)" fill="#fff"/>
+                  </g>
+                </g>
+              </g>
+            </g>
+          </svg>
+          <svg class="lockOpen" xmlns="http://www.w3.org/2000/svg" width="15.75" height="18" viewBox="0 0 15.75 18">
+            <g id="그룹_1864" data-name="그룹 1864" transform="translate(-53 -77)">
+              <g id="그룹_1860" data-name="그룹 1860" transform="translate(-17)">
+                <path id="Icon_awesome-unlock" data-name="Icon awesome-unlock" d="M14.062,9H5.344V5.375a2.531,2.531,0,1,1,5.062-.032v.562a.842.842,0,0,0,.844.844h1.125a.842.842,0,0,0,.844-.844V5.344A5.344,5.344,0,1,0,2.531,5.4V9H1.687A1.688,1.688,0,0,0,0,10.687v5.625A1.688,1.688,0,0,0,1.687,18H14.062a1.688,1.688,0,0,0,1.687-1.687V10.687A1.688,1.688,0,0,0,14.062,9Z" transform="translate(70 77)" fill="#444"/>
+              </g>
+              <g id="그룹_1863" data-name="그룹 1863" transform="translate(17.904)">
+                <circle id="타원_113" data-name="타원 113" cx="1.2" cy="1.2" r="1.2" transform="translate(41.771 88.8)" fill="#fff"/>
+                <rect id="사각형_12069" data-name="사각형 12069" width="1" height="3" rx="0.5" transform="translate(42.471 89.7)" fill="#fff"/>
+              </g>
+            </g>
+          </svg>
+        </div>
+        <svg class="layoutBtn" xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 22 22">
           <g id="그룹_1628" data-name="그룹 1628" transform="translate(-542 -76)">
             <rect id="사각형_11725" data-name="사각형 11725" width="22" height="22" rx="11" transform="translate(542 76)"
               fill="#fff" />
@@ -47,13 +73,6 @@
             </svg>
           </div>
           <div class="groupName" onclick="location.href='{% url 'dispatch:regularly_route' %}?group={{group.id}}'">{{group.name}}</div>
-          <div class="groupFixe">
-            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22.035" viewBox="0 0 22 22.035">
-              <path id="Icon_zocial-pinboard" data-name="Icon zocial-pinboard"
-                d="M23.332,7.159c-1.584-1.435-5.671-5.681-7.181-7.34s0,2.795,0,2.795L9.312,8.909s-4.855-1.8-4.249-1.045S9.494,12.59,9.494,12.59s-8.136,8.627-7.834,8.888S10.7,13.636,10.7,13.636,14.46,17.538,14.97,18s-.682-3.84-.682-3.84l5.794-7.181S24.916,8.595,23.332,7.159Z"
-                transform="translate(-1.651 0.55)" fill="#dededf" />
-            </svg>
-          </div>
         </div>
         {% endfor %}
       </div>
@@ -71,6 +90,15 @@
       <div class="groupCreateBody">
         <div class="groupCreateinput">
           <input autocomplete="off" value="{{group.name}}" name="name" type="text" placeholder="그룹이름" class="groupNameCreate">
+        </div>
+        <div class="groupCalculateinput">
+          <span>정산기간 :</span>
+          <span>이번달</span>
+          <input type="text">
+          <span>일</span>
+          <span class="tilde">~</span>
+          <span>이번달</span>
+          <div></div>
         </div>
         <div class="groupCreateBtnBox">
           {% if group %}
@@ -401,4 +429,5 @@
 <script src="{% static 'js/dispatch/regularly_route/checker.js' %}"></script>
 <script src="{% static 'js/dispatch/regularly_route/edit.js' %}"></script>
 <script src="{% static 'js/dispatch/regularly_route/deleteCheck.js' %}"></script>
+<script src="{% static 'js/dispatch/regularly_route/groupCalculating.js' %}"></script>
 {% endblock %}

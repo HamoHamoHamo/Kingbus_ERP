@@ -26,7 +26,7 @@
                 {% if forloop.counter == 1 %} <li class="lineContentsTitle">{{cnt|add:1}}. {{r.group.name}}</li> {% endif %}
                 <li class="lineContentsCell">
                     <span>■</span>
-                    <b class="lineTime">[{{r.departure_time}}]</b>[{{r.number}}] <b>{{r.departure}} ▶ {{r.arrival}}</b> ---
+                    <b class="lineTime">[{{r.departure_time}}]</b>[{{r.number1}}-{{r.number2}}] <b>{{r.departure}} ▶ {{r.arrival}}</b> ---
                     {% with connects=connect_list|index:cnt %}
                     {% with this_connect=connects|index:forloop.counter0 %}
                     ({% for connect in this_connect %}{% if forloop.counter != 1 %}, {% endif %}{{connect.bus_id.vehicle_num}}-{{connect.driver_id.name}}{% endfor %})
@@ -42,7 +42,7 @@
                 <li class="lineContentsTitle">■ 미지정된 출,퇴근</li>
                 {% for r in no_list %}
                 <li class="lineContentsCell">
-                    [{{r.number}}] {{r.departure}} ▶ {{r.arrival}}
+                    [{{r.number1}}-{{r.number2}}] {{r.departure}} ▶ {{r.arrival}}
                 </li>
                 {% endfor %}
             </ul>
