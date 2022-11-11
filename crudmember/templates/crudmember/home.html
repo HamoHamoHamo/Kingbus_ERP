@@ -76,8 +76,6 @@
         </svg>
       </div>
     </div>
-
-    <div class="btnModules addSchedule">일정등록</div>
   </div>
 
 </div>
@@ -396,33 +394,6 @@
 
 <div class="popupAreaModules">
   <div class="popupBgModules"></div>
-  <form method="post" action="{% url 'dispatch:schedule_create' %}" class="popupContainer scheduleForm">
-      {% csrf_token %}
-      <div class="popupHeader">
-          <div class="popupTitle">일정등록</div>
-      </div>
-      <div class="popupBody">
-          <div class="popupSection">
-            <div class="popupArticle">
-                <label for="" class="popupArticleLabel">날짜</label>
-                <input autocomplete="off" name='date' type="date" class="popupArticleinput scheduleDate">
-            </div>
-            <div class="popupArticle">
-                <label for="" class="popupArticleLabel">내용</label>
-                <input autocomplete="off" name="content" type="text" class="popupArticleinput scheduleContents">
-            </div>
-          </div>
-          <div class="popupFooter">
-              <input type="submit" value="등록" class="btnModules addScheduleBtn">
-              <div class="btnModules scheduleCloseBtn">닫기</div>
-          </div>
-      </div>
-  </form>
-</div>
-
-
-<div class="popupAreaModules">
-  <div class="popupBgModules"></div>
   <form method="post" action="" class="popupContainer inspectionForm">
       {% csrf_token %}
       <div class="popupHeader">
@@ -466,13 +437,22 @@
 
 <div class="popupAreaModules">
   <div class="popupBgModules"></div>
-  <form method="post" action="{% url 'dispatch:schedule_delete' %}" class="popupContainer scheduleListForm">
-      {% csrf_token %}
+  <div class="popupContainer scheduleListForm">
       <div class="popupHeader">
           <div class="popupTitle">일정</div>
       </div>
       <div class="popupBody">
-          <div class="popupSection">
+        <form method="post" action="{% url 'dispatch:schedule_create' %}" class="popupSection scheduleCreateForm">
+          {% csrf_token %}
+          <div class="scheduleCreateBox">
+            <label for="scheduleContents">일정등록</label>
+            <input type="text" autocomplete="off" name="content" id="scheduleContents" class="scheduleContents">
+            <input type="submit" class="btnModules scheduleCreateBtn" value="등록">
+            <input type="hidden" name='date'>
+          </div>
+          </form>
+        <form method="post" action="{% url 'dispatch:schedule_delete' %}"  class="popupSection scheduleDeleteForm">
+        {% csrf_token %}
             <div class="scrolling_table-list_header">
               <table class="table-list">
                 <thead>
@@ -494,13 +474,13 @@
                 </tbody>
               </table>
             </div>
-          </div>
           <div class="popupFooter">
             <input type="submit" class="btnModules scheduleListDeleteBtn" value="삭제">
               <div class="btnModules scheduleListCloseBtn">닫기</div>
           </div>
+        </form>
       </div>
-  </form>
+    </div>
 </div>
 
 {% endblock %}
@@ -558,6 +538,7 @@
     }
   }
   function openDrivingListPrint(url) {
+    console.log(thisDateData);
     if(thisDateData !== ""){
     targetLink = `dispatch/print/dailylist?date=${thisDateData}`
     window.open(targetLink, "운행일보A4", "width=1200, height=640")
@@ -574,10 +555,10 @@
 <script src="{% static 'js/crudmember/calender.js' %}"></script>
 <script src="{% static 'js/crudmember/calenderData.js' %}"></script>
 <script src="{% static 'js/crudmember/checker.js' %}"></script>
-<script src="{% static 'js/crudmember/addSchedule.js' %}"></script>
 <script src="{% static 'js/crudmember/inspection.js' %}"></script>
 <script src="{% static 'js/crudmember/scheduleList.js' %}"></script>
 <script src="{% static 'js/crudmember/calnderLength.js' %}"></script>
 <script src="{% static 'js/crudmember/orderList.js' %}"></script>
 <script src="{% static 'js/crudmember/orderListfilter.js' %}"></script>
+<script src="{% static 'js/crudmember/locationOrderItem.js' %}"></script>
 {% endblock %}

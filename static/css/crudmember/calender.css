@@ -289,6 +289,10 @@
     cursor: pointer;
 }
 
+.orderListCell:hover{
+    background-color: #EFEFEF;
+}
+
 .totalBox {
     display: flex;
     justify-content: space-between;
@@ -504,6 +508,41 @@
 .scheduleListForm{
     width: 80rem;
 }
+
+.scheduleCreateForm{
+    padding-bottom: 0;
+    min-height: auto;
+    height: 6rem;
+}
+
+.scheduleCreateBox{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    height: 3rem;
+}
+
+.scheduleCreateBox label{
+    font-size: 1.4rem;
+}
+
+.scheduleCreateBox input:nth-child(2){
+    width: 60rem;
+    height: 2.6rem;
+    padding-left: 1rem;
+    box-sizing: border-box;
+    border: 0.1rem solid #D2D2D2;
+    border-radius: 0.2rem;
+    outline: none;
+    font-family: "Noto Sans CJK KR";
+    font-size: 1.4rem;
+}
+
+.scheduleCreateBtn{
+    background-color: #0069D9;
+}
+
 .scheduleListCloseBtn {
     background-color: #444;
 }
@@ -540,4 +579,8 @@
 .scheduleListForm .scrolling_table-list_body td:nth-child(3){
     text-align: left;
     padding-left: 1rem;
+}
+
+.scheduleDeleteForm{
+    padding-bottom: 0;
 }

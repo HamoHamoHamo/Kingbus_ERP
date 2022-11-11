@@ -1,17 +1,18 @@
-from accounting.forms import AdditionalForm
+from .models import Salary, Income, AdditionalSalary, LastIncome
+from .forms import AdditionalForm, IncomeForm
 from dispatch.views import FORMAT
 from humanresource.models import Member
 from datetime import datetime, timedelta, date
 from dateutil.relativedelta import relativedelta
 from dispatch.models import DispatchOrder, DispatchOrderConnect, DispatchRegularlyConnect
-from django.http import Http404, HttpResponse, HttpResponseNotAllowed, HttpResponseRedirect
+from django.http import JsonResponse, Http404, HttpResponse, HttpResponseNotAllowed, HttpResponseRedirect
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse, reverse_lazy
 from django.views import generic
-from .models import Salary, Income, AdditionalSalary
-
+from django.core.exceptions import BadRequest
 from config import settings
 from popbill import EasyFinBankService, PopbillException, ContactInfo, JoinForm, CorpInfo
+import time
 
 TODAY = str(datetime.now())[:10]
 WEEK = ['(월)', '(화)', '(수)', '(목)', '(금)', '(토)', '(일)', ]
@@ -404,33 +405,187 @@ def collect_create(request):
 
 class DepositList(generic.ListView):
     template_name = 'accounting/deposit.html'
-    context_object_name = 'deposit'
-    model = DispatchOrder
+    context_object_name = 'income_list'
+    model = Income
+
+    def get_queryset(self):
+        self.date1 = self.request.GET.get('date1', TODAY)
+        self.date2 = self.request.GET.get('date2', TODAY)
+        self.select = self.request.GET.get('select')
+        self.search = self.request.GET.get('search', '')
+        self.payment = self.request.GET.get('payment')
+        
+        income_list = Income.objects.filter(date__range=(self.date1, self.date2)).order_by('-date')
+        if self.search:
+            if self.select == 'depositor':
+                income_list = income_list.filter(depositor__contains=self.search)
+            elif self.select == 'bank':
+                income_list = income_list.filter(bank__contains=self.search)
+            elif self.select == 'acc_income':
+                income_list = income_list.filter(acc_income__contains=self.search)
+        if self.payment:
+            income_list = income_list.filter(payment_method=self.payment)
+
+        return income_list
+        
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        context['date1'] = self.date1
+        context['date2'] = self.date2
+        context['select'] = self.select
+        context['search'] = self.search
+        context['payment'] = self.date2
 
+        temp_list = []
+        for income in context['income_list']:
+            temp_list.append({
+                'date': income.date,
+                'payment_method': income.payment_method,
+                'bank': income.bank,
+                'commission': income.commission,
+                'acc_income': income.acc_income,
+                'depositor': income.depositor,
+            })
+        context['data_list'] = temp_list
+        return context
+
+def load_deposit_data(request):
+    if request.method == 'POST':
+        last_income = LastIncome.objects.last()
+        creator = get_object_or_404(Member, pk=request.session.get('user'))
         CorpNum = '2874900474'
         BankCode = '0003'
         AccountNumber = '15717723401016'
-        SDate = '20221101'
-        EDate = '20221107'
-        UserID = 'kingbus7111'
+        if last_income:
+            print('last_incomeeee')
+            SDate = last_income.tr_date[:8]
+            last_save_date = last_income.tr_date
+        else:
+            SDate = datetime.strftime(datetime.strptime(TODAY, FORMAT) - relativedelta(months=1), '%Y%m%d')
+            last_save_date = SDate
+        print("SDATEE", SDate)        
+        EDate = TODAY
 
         jobID = easyFinBankService.requestJob(CorpNum, BankCode, AccountNumber, SDate, EDate, UserID=None)
         state = easyFinBankService.getJobState(CorpNum, jobID, UserID=None)
-        print("STATE", state.jobID)
-        if state.jobState == 3:
-            result = easyFinBankService.search(CorpNum, jobID, TradeType='', SearchString='', Page=1, PerPage=100, Order='', UserID=None)
-            print(dir(result.list[0]))
+        count = 0
+        while state.jobState == 2 and count < 10:
+            time.sleep(2)
+            state = easyFinBankService.getJobState(CorpNum, jobID, UserID=None)
+            print('wait...........')
+            print('errorcode', state.errorCode)
+            print('jobState', state.jobState)
+            
+            count += 1
+        if count > 9:
+            return JsonResponse(
+                {
+                    'status': 'timeout',
+                    'errorReason': state.errorReason,
+                    'jobState': state.jobState,
+                    'errorCode': state.errorCode,
+                }
+            )
+        if state.jobState == 3 and state.errorCode == 1:
+            result = easyFinBankService.search(CorpNum, jobID, TradeType='I', SearchString='', Page=1, PerPage=100, Order='D', UserID=None)
+            count = 0
             for r in result.list:
-                print('accIn', r.accIn)
-                print('accOut', r.accOut)
-                print('accountID', r.accountID)
-                print('balance', r.balance)
-                print('memo', r.memo)
-                print('remark1', r.remark1)
-                print('remark2', r.remark2)
-                print('remark3', r.remark3)
+                if r.trdt > last_save_date:
+                    count += 1
+                    income = Income(
+                        serial=f'{r.trdate}-{r.trserial}',
+                        date=f'{r.trdt[:4]}-{r.trdt[4:6]}-{r.trdt[6:8]} {r.trdt[8:10]}:{r.trdt[10:12]}',
+                        depositor=r.remark1,
+                        bank=r.remark2,
+                        acc_income=r.accIn,
+                        creator=creator,
+                    )
+                    income.save()
+                else:
+                    continue
+                # print('trserial', r.trserial)
+                # print('trdt', r.trdt)
+                # print('accIn', r.accIn)
+                # print('accOut', r.accOut)
+                # print('balance', r.balance)
+                # print('regDT', r.regDT)
+                # print('remark1', r.remark1)
+                # print('remark2', r.remark2)
+                # print('remark3', r.remark3)
+                # print('remark4', r.remark4,'\n')
+            if result.list:
+                last = LastIncome(
+                    tr_date=result.list[0].trdt,
+                    creator=creator 
+                )
+                last.save()
+            return JsonResponse({'status': 'success', 'count': count})
+        else:
+            return JsonResponse(
+                {
+                    'status': state.errorReason,
+                    'errorReason': state.errorReason,
+                    'jobState': state.jobState,
+                    'errorCode': state.errorCode,
+                }
+            )
+    else:
+        return HttpResponseNotAllowed(['post'])
 
-        return context
+def deposit_create(request):
+    if request.method == "POST":
+        income_form = IncomeForm(request.POST)
+        if income_form.is_valid():
+            date = income_form.cleaned_data['date']
+            income_cnt = Income.objects.filter(date__startswith=date).count()
+
+            
+            income = income_form.save(commit=False)
+            income.serial = f'{date[:4]}{date[5:7]}{date[8:10]}-{int(income_cnt)+1}'
+            income.commission = request.POST.get('commission', '0')
+            income.creator = get_object_or_404(Member, pk=request.session.get('user'))
+            income.save()
+        else:
+            raise BadRequest('Invalid request')
+        return redirect(request.META.get('HTTP_REFERER', 'redirect_if_referer_not_found'))
+    else:
+        return HttpResponseNotAllowed(['post'])
+
+def deposit_hide(request):
+    if request.method == "POST":
+        check_list = request.POST.getlist('check')
+
+        for check in check_list:
+            income = get_object_or_404(Income, id=check)
+            income.state='삭제'
+            income.save()
+       
+        return redirect(request.META.get('HTTP_REFERER', 'redirect_if_referer_not_found'))
+    else:
+        return HttpResponseNotAllowed(['post'])
+
+def deposit_edit(request):
+    if request.method == "POST":
+        income = get_object_or_404(Income, id=request.POST.get('id'))
+        income_form = IncomeForm(request.POST)
+        if income_form.is_valid():
+            date = income_form.cleaned_data['data']
+            income_cnt = Income.objects.filter(date__startswith=date).count()
+
+            income.date = income_form.cleaned_data['date']
+            income.depositor = income_form.cleaned_data['depositor']
+            income.payment_method = income_form.cleaned_data['payment_method']
+            income.bank = income_form.cleaned_data['bank']
+            income.acc_income = income_form.cleaned_data['acc_income']
+            income.serial = f'{date[:4]}{date[5:7]}{date[8:10]}-{int(income_cnt)+1}'
+            income.commission = request.POST.get('commission', '0')
+            income.creator = get_object_or_404(Member, pk=request.session.get('user'))
+            income.save()
+
+            return redirect(request.META.get('HTTP_REFERER', 'redirect_if_referer_not_found'))
+        else:
+            raise BadRequest('Invalid request')
+    else:
+        return HttpResponseNotAllowed(['post'])
+        

@@ -314,7 +314,11 @@
             </td>
             <td>{{order.number1}}{% if order.number2 %} - {{order.number2}} {% endif %}</td>
             <td>{{order.route}}</td>
-            <td>{{order.departure}} ▶ <br> {{order.arrival}}</td>
+            <td>
+              <div style="white-space: pre-line;">{{order.departure}} ▶
+                {{order.arrival}}
+              </div>
+            </td>
             <td>{{order.week}}</td>
             <td>{{order.work_type}}</td>
             <td>{{order.departure_time}} ~ {{order.arrival_time}}</td>
@@ -410,10 +414,19 @@
   };
 
   function loadTargetRoute(){
-    if(groupList.style.display == "none"){
-      location.href=`{% url 'dispatch:regularly_route' %}?id=${this.parentNode.classList[1]}&group=${this.parentNode.classList[2]}&height=${this.parentNode.classList[3]}&close=true`
+    let parms = new URLSearchParams(location.search)
+    if(parms.has("search")){
+      if(groupList.style.display == "none"){
+        location.href=`{% url 'dispatch:regularly_route' %}?id=${this.parentNode.classList[1]}&group=${this.parentNode.classList[2]}&search=${parms.get("search")}&height=${this.parentNode.parentNode.parentNode.parentNode.scrollTop}&close=true`
+      }else{
+        location.href=`{% url 'dispatch:regularly_route' %}?id=${this.parentNode.classList[1]}&group=${this.parentNode.classList[2]}&search=${parms.get("search")}&height=${this.parentNode.parentNode.parentNode.parentNode.scrollTop}`
+      }
     }else{
-      location.href=`{% url 'dispatch:regularly_route' %}?id=${this.parentNode.classList[1]}&group=${this.parentNode.classList[2]}&height=${this.parentNode.classList[3]}`
+      if(groupList.style.display == "none"){
+        location.href=`{% url 'dispatch:regularly_route' %}?id=${this.parentNode.classList[1]}&group=${this.parentNode.classList[2]}&height=${this.parentNode.parentNode.parentNode.parentNode.scrollTop}&close=true`
+      }else{
+        location.href=`{% url 'dispatch:regularly_route' %}?id=${this.parentNode.classList[1]}&group=${this.parentNode.classList[2]}&height=${this.parentNode.parentNode.parentNode.parentNode.scrollTop}`
+      }
     }
   }
 

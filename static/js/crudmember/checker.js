@@ -26,7 +26,7 @@ window.onload = function () {
         for (i = 0; i < checkMark.length; i++) {
             checkMark[i].addEventListener("click", openChecker)
         };
-    }else{
+    } else {
         drawOrder()
     }
 
@@ -40,6 +40,12 @@ window.onload = function () {
 
     const calnderItem = document.querySelectorAll(".calnderItem")
     sliceLength(calnderItem)
+
+    const orderListCell = document.querySelectorAll(".orderListCell")
+
+    for (i = 0; i < orderListCell.length; i++) {
+        orderListCell[i].addEventListener("click", locationOrder)
+    };
 }
 
 
@@ -58,11 +64,11 @@ function openChecker() {
     checkerDataBox[0].innerText = checkList[this.parentNode.parentNode.children[0].children[0].innerText - 1].creator
     checkerDataBox[1].innerText = checkList[this.parentNode.parentNode.children[0].children[0].innerText - 1].date
 
-    if(checkerDataBox[0].innerText === "undefined"){
+    if (checkerDataBox[0].innerText === "undefined") {
         checkerDataBox[0].innerText = ""
     }
 
-    if(checkerDataBox[1].innerText === "undefined"){
+    if (checkerDataBox[1].innerText === "undefined") {
         checkerDataBox[1].innerText = ""
     }
 

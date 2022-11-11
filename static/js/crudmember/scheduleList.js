@@ -1,11 +1,20 @@
 const scheduleListCloseBtn = document.querySelector(".scheduleListCloseBtn")
 const scheduleListTable = document.querySelector(".scheduleListForm tbody")
 const checkboxAll = document.querySelector(".scheduleListForm thead input[type=checkbox]")
+const createDate = document.querySelector(".scheduleCreateBox input[type=hidden]")
+const scheduleContents = document.querySelector(".scheduleContents")
 
 
 function openScheduleList() {
-    popupAreaModules[3].style.display = "block"
+    popupAreaModules[2].style.display = "block"
     let targetSchedule = this.parentNode.parentNode.parentNode.children[0].children[0].innerText - 1
+    let scheduleDate = ""
+    if(targetSchedule + 1 < 10){
+        scheduleDate = `${dateTitle.innerText.split("년")[0]}-${dateTitle.innerText.split("년 ")[1].replace(/\월/g, "")}-0${targetSchedule+1}`
+    }else{
+        scheduleDate = `${dateTitle.innerText.split("년")[0]}-${dateTitle.innerText.split("년 ")[1].replace(/\월/g, "")}-${targetSchedule+1}`
+    }
+    createDate.value = scheduleDate
     for (i = 0; i < scheduleList[targetSchedule].length; i++) {
         const schedulTr = document.createElement("tr")
         schedulTr.setAttribute("class", "table-list_body-tr")
@@ -78,12 +87,14 @@ function openScheduleList() {
     }
 }
 
-popupBgModules[3].addEventListener("click", closeScheduleList)
+popupBgModules[2].addEventListener("click", closeScheduleList)
 SidemenuUseClose.addEventListener("click", closeScheduleList)
 scheduleListCloseBtn.addEventListener("click", closeScheduleList)
 
 function closeScheduleList() {
-    popupAreaModules[3].style.display = "none"
+    popupAreaModules[2].style.display = "none"
+    createDate.value = ""
+    scheduleContents.value = ""
 }
 
 function createSchaduleList() {

@@ -624,6 +624,8 @@
   font-size: 1.4rem;
   border-right: 0.1rem solid #CDCDCE;
   border-bottom: 0.1rem solid #CDCDCE;
+  padding: 0.6rem 0;
+  word-break: keep-all;
 }
 
 .RouteListBody td:nth-child(4),

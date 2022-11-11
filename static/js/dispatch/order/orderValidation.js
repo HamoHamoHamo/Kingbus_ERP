@@ -250,7 +250,6 @@ function changeVAT() {
 
 // 합계 "," 추가
 function addCommaTotal() {
-    console.log(totalPrice1)
     if (totalPrice1.innerText !== "" && totalPrice1.innerText > 3) {
         totalPrice1.innerText = totalPrice1.innerText.replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
     }

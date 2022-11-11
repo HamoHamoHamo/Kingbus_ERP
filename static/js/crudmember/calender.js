@@ -127,9 +127,9 @@ function checkThisDate() {
         this.style.border = "0.2rem solid #0069D9"
         if (parms.has("year") && parms.has("month")) {
             if (parseInt(this.children[0].children[0].innerText) < 10) {
-                thisDateData = `${parms.get("year")}-${parms.get("menth")}-0${this.children[0].children[0].innerText}`
+                thisDateData = `${parms.get("year")}-${parms.get("month")}-0${this.children[0].children[0].innerText}`
             } else {
-                thisDateData = `${parms.get("year")}-${parms.get("menth")}-${this.children[0].children[0].innerText}`
+                thisDateData = `${parms.get("year")}-${parms.get("month")}-${this.children[0].children[0].innerText}`
             }
         } else {
             if (parseInt(this.children[0].children[0].innerText) < 10) {

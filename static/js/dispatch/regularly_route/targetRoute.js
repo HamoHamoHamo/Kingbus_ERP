@@ -7,25 +7,32 @@ const routeListsearch = document.querySelector("#routeListsearch")
 window.onload = function () {
     let parms = new URLSearchParams(location.search)
     addComma()
-    for (i = 0; i < route.length; i++) {
-        if (route[i].classList.contains(`${parms.get("height")}`)) {
-            route[i].style.backgroundColor = "#CDCDCE"
-        }
-    };
-    if (parseInt(parms.get("height")) > 10) {
-        RouteListScroll.scrollTop = (parseInt(parms.get("height")) - 9) * 43
+    const RouteListBodyTr = document.querySelectorAll(".RouteListBodyTr")
+    RouteListScroll.scrollTop = parms.get("height")
+    if (parms.has("id")) {
+        for (i = 0; i < RouteListBodyTr.length; i++){
+            if(RouteListBodyTr[i].classList[1] == parms.get("id")){
+                RouteListBodyTr[i].style.backgroundColor = "#CDCDCE"
+            }
+        };
     }
-    if(parseInt(parms.get("close"))){
+    if (parseInt(parms.get("close"))) {
         groupClose()
     }
-    if(parms.has("group")){
-        for (i = 0; i < inputSelect.children.length; i++){
-            if(inputSelect.children[i].value === parms.get("group")){
+    if (parms.has("group")) {
+        const groupListItem = document.querySelectorAll(".groupListItem")
+        for (i = 0; i < groupListItem.length; i++) {
+            if (groupListItem[i].classList[1] == parms.get("group")) {
+                groupListItem[i].style.backgroundColor = "#CDCDCE"
+            }
+        };
+        for (i = 0; i < inputSelect.children.length; i++) {
+            if (inputSelect.children[i].value === parms.get("group")) {
                 return inputSelect.children[i].selected = true
             }
         };
     }
-    if(parms.has("search")){
+    if (parms.has("search")) {
         routeListsearch.value = parms.get("search")
     }
 }

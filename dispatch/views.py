@@ -38,13 +38,17 @@ class RegularlyPrintList(generic.ListView):
         
 
         group = RegularlyGroup.objects.get(id=group_id)
-        dispatch_list = group.regularly_info.filter(week__contains=weekday).order_by('number1', 'number2')
+        dispatch_list = group.regularly_info.filter(week__contains=weekday).order_by('num1', 'number1', 'num2', 'number2')
 
         return dispatch_list
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         date = self.request.GET.get('date', TODAY)
+        context['date'] = date
+        context['weekday'] = WEEK[datetime.strptime(date, FORMAT).weekday()]
+        context['group'] = get_object_or_404(RegularlyGroup, id=self.request.GET.get('group', ''))
+        
         group_bus_list = []
         group_driver_list = []
         group_outsourcing_list = []
@@ -901,20 +905,28 @@ class OrderList(generic.ListView):
     def get_queryset(self):
         start_date = self.request.GET.get('date1')
         end_date = self.request.GET.get('date2')
-        route = self.request.GET.get('route')
+        search = self.request.GET.get('search')
+        search_type = self.request.GET.get('type')
         # customer = self.request.GET.get('customer')
         # self.next_week = (datetime.strptime(TODAY, FORMAT) + timedelta(days=7)).strftime(FORMAT)
 
-        if start_date or end_date or route:
+        if start_date or end_date or search:
             dispatch_list = []
             if start_date and end_date:
                 dispatch_list = DispatchOrder.objects.prefetch_related('info_order').exclude(arrival_date__lt=f'{start_date} 00:00').exclude(departure_date__gt=f'{end_date} 24:00').order_by('departure_date')
                 # dispatch_list = DispatchOrder.objects.filter(departure_date__range=[start_date + " 00:00", end_date + " 24:00"]).order_by('departure_date')
-            if route:
-                if dispatch_list:
-                    dispatch_list = dispatch_list.filter(route__contains=route).order_by('departure_date')
-                else:
-                    dispatch_list = DispatchOrder.objects.prefetch_related('info_order').filter(route__contains=route).order_by('departure_date')
+            if search_type == 'customer':
+                if search:
+                    if dispatch_list:
+                        dispatch_list = dispatch_list.filter(customer__contains=search).order_by('departure_date')
+                    else:
+                        dispatch_list = DispatchOrder.objects.prefetch_related('info_order').filter(customer__contains=search).order_by('departure_date')
+            elif search_type == 'route':
+                if search:
+                    if dispatch_list:
+                        dispatch_list = dispatch_list.filter(route__contains=search).order_by('departure_date')
+                    else:
+                        dispatch_list = DispatchOrder.objects.prefetch_related('info_order').filter(route__contains=search).order_by('departure_date')
         else:
             
             dispatch_list = DispatchOrder.objects.prefetch_related('info_order').exclude(arrival_date__lt=f'{TODAY} 00:00').exclude(departure_date__gt=f'{TODAY} 24:00').order_by('departure_date')
@@ -923,7 +935,8 @@ class OrderList(generic.ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        
+        context['search'] = self.request.GET.get('search', '')
+        context['search_type'] = self.request.GET.get('type', '')
         date = self.request.GET.get('date1', TODAY)
         
         # date2 = self.request.GET.get('date2', TODAY)

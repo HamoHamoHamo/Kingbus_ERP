@@ -462,8 +462,41 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  width: 56rem;
+  width: 100%;
   height: 100%;
+}
+
+.last{
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.last .btnModules{
+  margin-left: 1rem;
+  background-color: #444;
+}
+
+.Tools{
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.Tools .btnModules{
+  margin-right: 1rem;
+}
+
+.Tools .btnModules:nth-last-child(1){
+  margin-right: 0;
+}
+
+.dispatchPrintBtn{
+  background-color: #444;
+}
+
+.last label{
+  font-size: 1.4rem;
 }
 
 .dispatchDeletBtn {
@@ -472,13 +505,6 @@
 
 .dispatchSaveBtn {
   background-color: #0069D9;
-}
-
-.RouteListHeadBtnBox div {
-  width: auto;
-  padding: 0 1rem;
-  background-color: #444;
-  box-sizing: border-box;
 }
 
 .RouteListScrollBody{
@@ -726,4 +752,9 @@
 
 .popupCloseBtn{
   background-color: #444;
+}
+
+.loadHistory{
+  background-color: #0069D9;
+  margin-right: 1rem;
 }

@@ -15,7 +15,7 @@
 
     <div class="dispatchTable">
         <div class="dispatchTableHeader">
-            <div class="tilte"></div>
+            <div class="tilte">{{date|slice:':4'}}년 {{date|slice:'5:7'}}월 {{date|slice:'8:10'}}일 {{weekday}} - {{group.name}}</div>
             <!-- 2022년 10월 18일 (화요일) - 한국 쓰리엠 출근 배차표 -->
             <div class="adminCheck">
                 <div class="checkLable">관리자 확인</div>
@@ -57,9 +57,15 @@
                     <td>{% if not driver %}{{outsourcing.phone_num}}{% else %}{{driver.phone_num}}{% endif %}</td>
                     <td>{% if departure_time %}{{departure_time}}{% else %}{{order.departure_time}}{% endif %}</td>
                     <td>{{order.route}}</td>
-                    <td>점호?</td>
-                    <td>{% if order.location == '정문' or order.location == '후문' %}{{order.location}}{% endif %}</td>
-                    <td>{% if order.location == '셔틀' %}O{% else %}X{% endif %}</td>
+                    <td>{{order.departure}}</td>
+                    <td>
+                        {% if '정문' in order.location %}
+                            정문
+                        {% elif '후문' in order.location %}
+                            후문
+                        {% endif %}
+                    </td>
+                    <td>{% if '셔틀' in order.location %}O{% else %}X{% endif %}</td>
                     <td></td>
                     <td></td>
                     <td></td>

@@ -1,10 +1,15 @@
-const amountProcessed = document.querySelector(".depositDateTable td:nth-child(9)")
+const amountProcessed = document.querySelectorAll(".depositCell td:nth-child(9)")
 const amountProcessedCloseBtn = document.querySelector(".amountProcessedCloseBtn")
+const amountProcessedTitle = document.querySelector(".amountProcessedTitle")
 
-amountProcessed.addEventListener("click", openPopup)
+for (i = 0; i < amountProcessed.length; i++){
+    amountProcessed[i].addEventListener("click", openPopup)
+};
 
-function openPopup(){
+function openPopup(event){
+    event.stopPropagation()
     popupAreaModules[1].style.display = "block"
+    amountProcessedTitle.innerText = `[${this.parentNode.children[1].innerText}] 처리내역`
 }
 
 popupBgModules[1].addEventListener("click", closePopup)
