@@ -8,6 +8,7 @@ function selectRoute() {
         for (i = 0; i < RouteListHBodyTr.length; i++) {
             if (RouteListHBodyTr[i].classList[1] == parms.get("id")) {
                 RouteListHBodyTr[i].classList.add("selectRoute")
+                RouteListHBodyTr[i].children[0].children[0].checked = true
             }
         }
     }

@@ -44,4 +44,10 @@ function drawOrder(filter) {
             }
         };
     }
+    const orderListCell = document.querySelectorAll(".orderListCell span:nth-child(1)")
+    for (i = 0; i < orderListCell.length; i++){
+        if(orderListCell[i].innerText.length > 10){
+            orderListCell[i].innerText = `${orderListCell[i].innerText.substr(0,10)}...`
+        }
+    };
 }

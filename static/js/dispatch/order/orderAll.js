@@ -1,6 +1,7 @@
 let params = new URLSearchParams(document.location.search)
 
 const searchRoute = document.querySelector("input[name=route]")
+const orderSearchSelect = document.querySelector(".orderSearchSelect")
 
 window.onload = function () {
     inputToDay()
@@ -31,6 +32,15 @@ window.onload = function () {
         schedule.style.width = "6rem"
         MainLayout.style.width = "calc(100% - 8rem)"
         scheduleOpenBtn.classList.add("scheduleOpenBtnVisible")
+    }
+    if(params.has("type")){
+        if(params.get("type") === "customer"){
+            for (i = 0; i < orderSearchSelect.children.length; i++){
+                if(orderSearchSelect.children[i].innerText === "예약자"){
+                    orderSearchSelect.children[i].selected = true
+                }
+            };            
+        }
     }
 }
 

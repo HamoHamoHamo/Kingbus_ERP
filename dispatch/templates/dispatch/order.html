@@ -90,11 +90,11 @@
 
                 <!-- 변경영역 -->
                 <div class="search_inputArea">
-                    <select name="" id="">
-                        <option value="">노선</option>
-                        <option value="">예약자</option>
+                    <select name="type" id="" class="orderSearchSelect">
+                        <option {% if search_type == 'route' %} selected {% endif %} value="route">노선</option>
+                        <option {% if search_type == 'customer' %} selected {% endif %} value="customer">예약자</option>
                     </select>
-                    <input autocomplete="off" name="route" type="text">
+                    <input autocomplete="off" name="search" type="text" value="{{search}}">
                     <label for="">날짜</label>
                     <input autocomplete="off" type="date" name="date1" class="searchDate" max="9999-12-31">~
                     <input autocomplete="off" type="date" name="date2" class="searchDate" max="9999-12-31">

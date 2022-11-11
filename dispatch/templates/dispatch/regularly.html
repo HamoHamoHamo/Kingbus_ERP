@@ -329,14 +329,18 @@
       <input autocomplete="off" value="{{detail.id}}" name="id" type="hidden">
       <input autocomplete="off" value="{{date}}" name="date" type="hidden">
       <div class="RouteListHead">
-        <span>{{group.name}}</span>
         <div class="RouteListHeadBtnBox">
-          <div class="btnModules dispatchPrintBtn" onclick="opendispatchPrint('/dispatch/print/regularly')">인쇄</div>
-          <div class="btnModules dispatchDeletBtn">배차삭제</div>
-          <input autocomplete="off" type="submit" class="btnModules dispatchSaveBtn" value="저장(F9)">
-          <div class="btnModules dispatchHistory">배차내역</div>
-          <div class="btnModules loadConnectBtn2">지난배차(2주전)</div>
-          <div class="btnModules loadConnectBtn1">지난배차(1주전)</div>
+          <div class="last">
+            <label for="">지난배차</label>
+            <div class="btnModules loadConnectBtn1">1주전</div>
+            <div class="btnModules loadConnectBtn2">2주전</div>
+            <div class="btnModules dispatchHistory">배차내역</div>
+          </div>
+          <div class="Tools">
+            <div class="btnModules dispatchPrintBtn" onclick="opendispatchPrint('/dispatch/print/regularly')">인쇄</div>
+            <div class="btnModules dispatchDeletBtn">배차삭제</div>
+            <input autocomplete="off" type="submit" class="btnModules dispatchSaveBtn" value="저장(F2)">
+          </div>
         </div>
       </div>
 
@@ -462,7 +466,7 @@
 
           </div>
           <div class="popupFooter">
-            <input autocomplete="off" type="submit" class="btnModules" value="배차">
+            <input autocomplete="off" type="submit" class="btnModules loadHistory" value="배차">
             <div class="btnModules popupCloseBtn">닫기</div>
           </div>
         </div>

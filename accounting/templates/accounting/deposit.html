@@ -16,55 +16,60 @@
 
 {% block content %}
 
-
-
-
 <div class="searchAreaBox">
-    <form action="">
+    <form method="get" action="" class="searchForm">
         <div class="searchTool">
             <label class="searchName">입금일 : </label>
-            <input autocomplete="off" name="" type="date" class="inputModules">~
-            <input autocomplete="off" name="" type="date" class="inputModules">
-            <select class="searchType">
-                <option value="입금자명">입금자명</option>
-                <option value="은행명">은행명</option>
-                <option value="입금액">입금액</option>
+            <input value="{{date1}}" autocomplete="off" name="date1" type="date" class="inputModules">~
+            <input value="{{date2}}" autocomplete="off" name="date2" type="date" class="inputModules">
+            <select name="select" class="searchType">
+                <option {% if select == 'depositor' %} selected {% endif %} value="depositor">입금자명</option>
+                <option {% if select == 'bank' %} selected {% endif %} value="bank">은행명</option>
+                <option {% if select == 'acc_income' %} selected {% endif %} value="acc_income">입금액</option>
             </select>
-            <input autocomplete="off" name="" type="text" class="inputModules">
+            <input autocomplete="off" value="{{search}}" name="search" type="text" class="inputModules">
             <label class="searchName">지급방식 : </label>
-            <select  class="pymentType">
-                <option value="카드">카드</option>
-                <option value="계좌">계좌</option>
-                <option value="현금">현금</option>
+            <select name="payment" class="pymentType">
+                <option value=""></option>
+                <option {% if payment == '카드' %} selected {% endif %} value="카드">카드</option>
+                <option {% if payment == '계좌' %} selected {% endif %} value="계좌">계좌</option>
+                <option {% if payment == '현금' %} selected {% endif %} value="현금">현금</option>
             </select>
             <input autocomplete="off"type="submit" value="검색" class="btnModules dateSearchBtn">
         </div>
     </form>
-    <div class="btnModules depositBtn">입금내역 등록</div>
+    <div class="depositBtnBox">
+        <div class="btnModules depositRegistrationBtn">등록</div>
+        <div class="btnModules depositLoadBtn">불러오기</div>
+    </div>
 </div>
 
 
 
-<form method="post" action="" class="depositForm">
+<form method="post" action="{% url 'accounting:deposit_hide' %}" class="depositForm">
+    {% csrf_token %}
+    <input type="submit" value="삭제" class="btnModules depositDeleteBtn">
     <div class="depositHead">
-        <div class="selectDate">2022년 09월</div>
-        <div class="visibelOption">
-            <input autocomplete="off"type="checkbox" id="unprocessed" checked>
-            <label for="unprocessed">미처리 보기</label>
-            <input autocomplete="off"type="checkbox" id="processed" checked>
-            <label for="processed">완료 보기</label>
-        </div>
+        <span>상태 : </span>
+        <input autocomplete="off"type="checkbox" id="unprocessed" checked>
+        <label for="unprocessed">미처리</label>
+        <input autocomplete="off"type="checkbox" id="processed" checked>
+        <label for="processed">완료</label>
+        <input autocomplete="off"type="checkbox" id="delete">
+        <label for="delete">삭제</label>
     </div>
     <div class="depositBody">
         <table class="depositTableHead">
             <thead>
                 <tr>
+                    <td>
+                        <input type="checkbox" class="allChecker">
+                    </td>
                     <td>전표번호</td>
-                    <td>일자</td>
+                    <td>거래일시</td>
                     <td>입금자명</td>
                     <td>지급방식</td>
                     <td>은행명</td>
-                    <td>계좌명</td>
                     <td>가맹점수수료</td>
                     <td>입금액</td>
                     <td>처리된 금액</td>
@@ -78,51 +83,38 @@
                     <td>
                         <table class="depositDateTable">
                             <colgroup>
+                                <col style="width: 4%">
                                 <col style="width: 10%">
-                                <col style="width: 10%">
+                                <col style="width: 14%">
                                 <col style="width: 16%">
                                 <col style="width: 8%">
-                                <col style="width: 16%">
-                                <col style="width: 8%">
-                                <col style="width: 8%">
-                                <col style="width: 8%">
-                                <col style="width: 8%">
-                                <col style="width: 8%">
+                                <col style="width: 12%">
+                                <col style="width: 9%">
+                                <col style="width: 9%">
+                                <col style="width: 9%">
+                                <col style="width: 9%">
                             </colgroup>
-                            <tr class="depositCell depositProcessedCell">
-                                <td>22/09/12-01</td>
-                                <td>2022.09.12</td>
-                                <td>비씨카드</td>
-                                <td>현금</td>
-                                <td>농협</td>
-                                <td>농협30582</td>
-                                <td>8,520</td>
-                                <td>391,480</td>
-                                <td>391,480</td>
-                                <td>완료</td>
+                            {% for income in income_list %}
+                            <tr class="depositCell depositProcessedCell {% if income.state == '삭제' %}stateDelete{% endif %}">
+                                <td>
+                                    <input type="checkbox" name="check" value="{{income.id}}" class="checker">
+                                </td>
+                                <td>{{income.serial}}</td>
+                                <td>{{income.date}}</td>
+                                <td>{{income.depositor}}</td>
+                                <td>{{income.payment_method}}</td>
+                                <td>{{income.bank}}</td>
+                                <td>{{income.commission}}</td>
+                                <td>{{income.acc_income}}</td>
+                                <td>{{income.used_income}}</td>
+                                <td>{{income.state}}</td>
                             </tr>
-                            <tr class="depositCell depositUnprocessedCell">
-                                <td>22/09/12-01</td>
-                                <td>2022.09.12</td>
-                                <td>비씨카드</td>
-                                <td>현금</td>
-                                <td>농협</td>
-                                <td>농협30582</td>
-                                <td>8,520</td>
-                                <td>391,480</td>
-                                <td>391,480</td>
-                                <td>미처리</td>
-                            </tr>
+                            {% endfor %}
                             <tr class="dayTotal">
-                                <td></td>
-                                <td>2022.09.12</td>
-                                <td></td>
+                                <td colspan="6">2022.09.12</td>
                                 <td></td>
                                 <td></td>
                                 <td></td>
-                                <td>0</td>
-                                <td>0</td>
-                                <td>0</td>
                                 <td></td>
                             </tr>
                         </table>
@@ -131,14 +123,21 @@
             </table>
         </div>
     </div>
-    <div class="selectTotal">
-        <div>선택 입금합계 [가맹점 수수료 + 입금액]</div>
-        <div>
-            <span>합계</span>
-            <span class="selectTotalPrice">0</span>
-        </div>
-    </div>
 </form>
+
+<div class="checkTotalContainer">
+    <table class="checkTotalTable">
+        <tbody>
+            <tr>
+                <td colspan="6">선택합계</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
 
 
 {% endblock %}
@@ -149,7 +148,7 @@
 
 <div class="popupAreaModules">
   <div class="popupBgModules"></div>
-  <form method="post" action="" class="popupContainer popupContainerDouble" enctype="multipart/form-data">
+  <form method="post" action="{% url 'accounting:deposit_create' %}" class="popupContainer popupContainerDouble" enctype="multipart/form-data">
       {% csrf_token %}
       <div class="popupHeader">
           <div class="popupTitle">입금내역 등록</div>
@@ -158,12 +157,12 @@
           <div class="popupSection">
               <div class="popupArticleBox">
                   <div class="popupArticleDouble">
-                      <label for="" class="popupArticleLabel">일자</label>
-                      <input autocomplete="off" name="" type="text" class="popupArticleinput">
+                      <label for="" class="popupArticleLabel">거래일시</label>
+                      <input autocomplete="off" name="date" type="date" class="popupArticleinput">
                   </div>
                   <div class="popupArticleDouble">
                       <label for="" class="popupArticleLabel">지급방식</label>
-                      <select name="" id="" class="popupArticleinput">
+                      <select name="payment_method" id="" class="popupArticleinput">
                         <option value="카드">카드</option>
                         <option value="계좌">계좌</option>
                         <option value="현금">현금</option>
@@ -173,27 +172,21 @@
               <div class="popupArticleBox">
                   <div class="popupArticleDouble">
                       <label for="" class="popupArticleLabel">은행명</label>
-                      <input autocomplete="off" name="" type="text" class="popupArticleinput">
+                      <input autocomplete="off" name="bank" type="text" class="popupArticleinput">
                   </div>
-                  <div class="popupArticleDouble">
-                      <label for="" class="popupArticleLabel">계좌명</label>
-                      <input autocomplete="off" name="" type="text" class="popupArticleinput">
-                  </div>
-              </div>
-              <div class="popupArticleBox">
                   <div class="popupArticleDouble">
                       <label for="" class="popupArticleLabel">가맹점 수수료</label>
-                      <input autocomplete="off" name="" type="text" class="popupArticleinput">
-                  </div>
-                  <div class="popupArticleDouble">
-                      <label for="" class="popupArticleLabel">입금액</label>
-                      <input autocomplete="off" name="" type="text" class="popupArticleinput">
+                      <input autocomplete="off" name="commission" type="text" class="popupArticleinput">
                   </div>
               </div>
               <div class="popupArticleBox">
                   <div class="popupArticleDouble">
+                      <label for="" class="popupArticleLabel">입금액</label>
+                      <input autocomplete="off" name="acc_income" type="text" class="popupArticleinput">
+                  </div>
+                  <div class="popupArticleDouble">
                       <label for="" class="popupArticleLabel">입금자명</label>
-                      <input autocomplete="off" name="" type="text" class="popupArticleinput">
+                      <input autocomplete="off" name="depositor" type="text" class="popupArticleinput">
                   </div>
               </div>
           </div>
@@ -207,10 +200,9 @@
 
 <div class="popupAreaModules">
     <div class="popupBgModules"></div>
-    <form method="post" action="" class="popupContainer popupContainerDouble" enctype="multipart/form-data">
-        {% csrf_token %}
+    <div class="popupContainer popupContainerDouble amountProcessedForm">
         <div class="popupHeader">
-            <div class="popupTitle">[전표번호]처리내역</div>
+            <div class="popupTitle amountProcessedTitle">[전표번호]처리내역</div>
         </div>
         <div class="popupBody">
             <div class="popupSection">
@@ -244,20 +236,91 @@
                 </div>
             </div>
             <div class="popupFooter">
-                <input autocomplete="off"type="submit" class="btnModules btnModulesCreate" value="등록">
-                <div class="btnModules amountProcessedCloseBtn">취소</div>
+                <div class="btnModules amountProcessedCloseBtn">닫기</div>
             </div>
         </div>
+    </div>
+  </div>
+
+  <div class="popupAreaModules">
+    <div class="popupBgModules"></div>
+    <form method="post" action="{% url 'accounting:deposit_create' %}" class="popupContainer popupContainerDouble" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="popupHeader">
+            <div class="popupTitle">입금내역 수정</div>
+        </div>
+        <div class="popupBody">
+            <div class="popupSection">
+                <div class="popupArticleBox">
+                    <div class="popupArticleDouble">
+                        <label for="" class="popupArticleLabel">거래일시</label>
+                        <input autocomplete="off" name="date" type="date" class="popupArticleinput">
+                    </div>
+                    <div class="popupArticleDouble">
+                        <label for="" class="popupArticleLabel">지급방식</label>
+                        <select name="payment_method" id="editPayment_method" class="popupArticleinput">
+                          <option value="카드">카드</option>
+                          <option value="계좌">계좌</option>
+                          <option value="현금">현금</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="popupArticleBox">
+                    <div class="popupArticleDouble">
+                        <label for="" class="popupArticleLabel">은행명</label>
+                        <input autocomplete="off" name="bank" type="text" class="popupArticleinput">
+                    </div>
+                    <div class="popupArticleDouble">
+                        <label for="" class="popupArticleLabel">가맹점 수수료</label>
+                        <input autocomplete="off" name="commission" type="text" class="popupArticleinput">
+                    </div>
+                </div>
+                <div class="popupArticleBox">
+                    <div class="popupArticleDouble">
+                        <label for="" class="popupArticleLabel">입금액</label>
+                        <input autocomplete="off" name="acc_income" type="text" class="popupArticleinput">
+                    </div>
+                    <div class="popupArticleDouble">
+                        <label for="" class="popupArticleLabel">입금자명</label>
+                        <input autocomplete="off" name="depositor" type="text" class="popupArticleinput">
+                    </div>
+                </div>
+            </div>
+            <div class="popupFooter">
+                <input autocomplete="off"type="submit" class="btnModules btnModulesCreate" value="수정">
+                <div class="btnModules popupCloseBtn editPopupCloseBtn">취소</div>
+            </div>
+        </div>
+        <input type="hidden" name="depositEdit">
     </form>
   </div>
 
 {% endblock %}
 
+{% block outSide %}
+    <div class="loadingBg">
+        <div class="loadingBox">
+            <img src="{% static 'images/loading.gif' %}" alt="일정 아이콘">
+            <span>입금내역을 불러오고 있습니다.</span>
+        </div>
+    </div>
+{% endblock %}
+
 
 {% block script %}
-<script src="{% static 'js/accounting/option.js' %}"></script>
-<script src="{% static 'js/accounting/selectTotal.js' %}"></script>
+<script>
+    {% autoescape off %}
+    const dataList = {{data_list}};
+    console.log("dataList", dataList);
+    {% endautoescape %}
+</script>
+<script src="{% static 'js/accounting/dateSeparate.js' %}"></script>
 <script src="{% static 'js/accounting/dateTotal.js' %}"></script>
+<script src="{% static 'js/accounting/option.js' %}"></script>
+<script src="{% static 'js/accounting/checker.js' %}"></script>
+<script src="{% static 'js/accounting/selectTotal.js' %}"></script>
 <script src="{% static 'js/accounting/popup.js' %}"></script>
 <script src="{% static 'js/accounting/amountProcessed.js' %}"></script>
+<script src="{% static 'js/accounting/load.js' %}"></script>
+<script src="{% static 'js/accounting/edit.js' %}"></script>
 {% endblock %}

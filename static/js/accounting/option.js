@@ -1,49 +1,93 @@
+const allChecker = document.querySelector(".allChecker")
+const checker = document.querySelectorAll(".checker")
 const unprocessed = document.querySelector("#unprocessed")
 const processed = document.querySelector("#processed")
-const depositProcessedCell = document.querySelectorAll(".depositProcessedCell")
-const depositUnprocessedCell = document.querySelectorAll(".depositUnprocessedCell")
+const deleteCheck = document.querySelector("#delete")
 
-unprocessed.addEventListener("change", visibleUnprocessed)
-
-function visibleUnprocessed() {
-    for (i = 0; i < depositCell.length; i++) {
-        depositCell[i].classList.remove("selecting")
+function state(){
+    for (i = 0; i < depositCell.length; i++){
+        let targetState = depositCell[i].children[depositCell[i].children.length-1].innerText
+        if(targetState == "미처리"){
+            depositCell[i].children[depositCell[i].children.length-1].classList.add("stateUnprocessed")
+        }else if(targetState == "완료"){
+            depositCell[i].children[depositCell[i].children.length-1].classList.add("stateCompletopn")
+        }
     };
-    selectTotal.innerText = 0
+}
+state()
 
-    if (unprocessed.checked) {
-        for (i = 0; i < depositUnprocessedCell.length; i++) {
-            depositUnprocessedCell[i].classList.remove("tRdisplayNone")
-        };
-    } else {
-        for (i = 0; i < depositUnprocessedCell.length; i++) {
-            depositUnprocessedCell[i].classList.add("tRdisplayNone")
-        };
-        processed.checked = true
-        visibleProcessed()
+unprocessed.addEventListener("change", optionUnprocessed)
+processed.addEventListener("change", optionProcessed)
+deleteCheck.addEventListener("change", optionDelete)
+
+function optionUnprocessed(){
+    if(this.checked){
+        deleteCheck.checked = false
     }
-    calcTotal()
+    stateOPtion()
+    allChecker.checked = false
+    for (i = 0; i < checker.length; i++){
+        checker[i].checked = false
+    };
+    selectArr = []
+    totalSelecting(selectArr)
+}
+
+function optionProcessed(){
+    if(this.checked){
+        deleteCheck.checked = false
+    }
+    stateOPtion()
+    stateOPtion()
+    allChecker.checked = false
+    for (i = 0; i < checker.length; i++){
+        checker[i].checked = false
+    };
+    selectArr = []
+    totalSelecting(selectArr)
+}
+
+function optionDelete(){
+    if(this.checked){
+        unprocessed.checked = false
+        processed.checked = false
+    }
+    stateOPtion()
+    stateOPtion()
+    allChecker.checked = false
+    for (i = 0; i < checker.length; i++){
+        checker[i].checked = false
+    };
+    selectArr = []
+    totalSelecting(selectArr)
 }
 
 
-processed.addEventListener("change", visibleProcessed)
 
-function visibleProcessed() {
-    for (i = 0; i < depositCell.length; i++) {
-        depositCell[i].classList.remove("selecting")
+function stateOPtion(){
+    for (i = 0; i < depositCell.length; i++){
+
+        if(!unprocessed.checked && depositCell[i].children[9].classList.contains("stateUnprocessed")){
+            depositCell[i].style.display = "none"
+        }else if(unprocessed.checked && depositCell[i].children[9].classList.contains("stateUnprocessed")){
+            depositCell[i].style.display = "table-row"
+        }
+
+        if(!processed.checked && depositCell[i].children[9].classList.contains("stateCompletopn")){
+            depositCell[i].style.display = "none"
+        }else if(processed.checked && depositCell[i].children[9].classList.contains("stateCompletopn")){
+            depositCell[i].style.display = "table-row"
+        }
+
+        if(!deleteCheck.checked && !depositCell[i].classList.contains("stateDelete")){
+            depositCell[i].classList.add("stateDelete")
+        }else if(deleteCheck.checked && depositCell[i].classList.contains("stateDelete")){
+            depositCell[i].classList.remove("stateDelete")
+        }
     };
-    selectTotal.innerText = 0
 
-    if (processed.checked) {
-        for (i = 0; i < depositProcessedCell.length; i++) {
-            depositProcessedCell[i].classList.remove("tRdisplayNone")
-        };
-    } else {
-        for (i = 0; i < depositProcessedCell.length; i++) {
-            depositProcessedCell[i].classList.add("tRdisplayNone")
-        };
-        unprocessed.checked = true
-        visibleUnprocessed()
-    }
     calcTotal()
+
 }
+
+stateOPtion()
