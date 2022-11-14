@@ -66,13 +66,18 @@
         <div class="collectScrollBox">
             <table class="collectTable">
                 {% for order in dispatch_list %}
-                <tr class="collectDateBox collectionUnprocessed">
+                <tr class="collectDateBox collectionUnprocessed {{order.id}}">
                     <td>
                         <input autocomplete="off"type="radio" name="loadPrice" class="routeSelect">
                     </td>
                     <td>
-                        <div>{{departure_date|index:forloop.counter0}}</div>
-                        <div>{% if num_days|index:forloop.counter0 %} {{num_days|index:forloop.counter0}}일 {% endif %}{{time|index:forloop.counter0}}</div>
+                        {% if order.departure_date|slice:':10' == order.arrival_date|slice:':10' %}
+                        {{order.departure_date|slice:'2:10'}}<br>
+                        {{order.departure_date|slice:'11:'}}~{{order.arrival_date|slice:'11:'}}
+                        {% else %}
+                        {{order.departure_date|slice:'2:'}}<br>
+                        {{order.arrival_date|slice:'2:'}}
+                        {% endif %}
                     </td>
                     <td>
                         <div>{{order.departure}} ▶ </div>
@@ -82,75 +87,41 @@
                         <div>{{order.customer}}</div>
                         <div class="phoneNum">{{order.customer_phone}}</div>
                     </td>
-                    <td>나라장터</td>
-                    <td>현금</td>
+                    <td>{{order.bill_place}}</td>
+                    <td>{{현금}}</td>
                     <td>{{order.price}}</td>
-                    <td>{% if order.VAT == 'y' %}포함{% endif %}</td>
-                    <td class="SupplyPrice">100,000</td>
-                    <td class="Vat">100,000</td>
-                    <td class="Collect">100,000</td>
+                    <td>{% if order.VAT == 'y' %}포함{% else %}미포함{% endif %}</td>
+                    <td class="SupplyPrice">{{value_list|index:forloop.counter0}}</td>
+                    <td class="Vat">{{VAT_list|index:forloop.counter0}}</td>
+                    <td class="Collect">{{total_list|index:forloop.counter0}}</td>
                     <td>
-                        <span class="chit">[1] 22/09/12-01</span>
+                        <span class="chit">
+                            
+                            {% with income=income_list|index:forloop.counter0 %}
+                            {% for i in income %}
+                            <div>[{{forloop.counter}}] {{i.serial}}</div>
+                            {% endfor %}
+                            {% endwith %}
+                            <!-- [1] 22/09/12-01 -->
+                        </span>
                     </td>
-                    <td>미수금</td>
-                    <td>{{order.price|minus:order.collection_amount}}</td>
-                </tr>
-                <tr class="collectDateBox collectionProcessed">
-                    <td>
-                        <input autocomplete="off" type="radio" name="loadPrice">
-                    </td>
-                    <td>
-                        <div>{{departure_date|index:forloop.counter0}}</div>
-                        <div>{% if num_days|index:forloop.counter0 %} {{num_days|index:forloop.counter0}}일 {% endif %}{{time|index:forloop.counter0}}</div>
-                    </td>
-                    <td>
-                        <div>{{order.departure}} ▶ </div>
-                        <div>{{order.arrival}}</div>
-                    </td>
-                    <td>
-                        <div>{{order.customer}}</div>
-                        <div class="phoneNum">{{order.customer_phone}}</div>
-                    </td>
-                    <td>나라장터</td>
-                    <td>현금</td>
-                    <td>{{order.price}}</td>
-                    <td>{% if order.VAT == 'y' %}포함{% endif %}</td>
-                    <td class="SupplyPrice">100,000</td>
-                    <td class="Vat">100,000</td>
-                    <td class="Collect">100,000</td>
-                    <td>
-                        <span class="chit">[1] 22/09/12-01</span>
-                    </td>
-                    <td>완료</td>
-                    <td>{{order.price|minus:order.collection_amount}}</td>
+                    <td>{{state_list|index:forloop.counter0}}</td>
+                    <td>{{outstanding_list|index:forloop.counter0}}</td>
                 </tr>
                 {% endfor %}
             </table>
         </div>
     </div>
     <table class="selectTotal">
-        <colgroup>
-            <col style="width: 42%;">
-            <col style="width: 6%;">
-            <col style="width: 4%;">
-            <col style="width: 6%;">
-            <col style="width: 4%;">
-            <col style="width: 6%;">
-            <col style="width: 6%;">
-            <col style="width: 6%;">
-            <col style="width: 20%;">
-        </colgroup>
         <tbody>
             <tr>
-                <td>건수</td>
-                <td class="tatalCount">0</td>
-                <td></td>
-                <td class="tatalPrice">0</td>
-                <td></td>
-                <td class="tatalSupplyPrice">0</td>
-                <td class="tatalVat">0</td>
-                <td class="tatalCollect">0</td>
-                <td></td>
+                <td colspan="6" class="tatalCount"></td>
+                <td class="downPayment"></td>
+                <td colspan="2" class="tatalSupplyPrice"></td>
+                <td class="tatalVat"></td>
+                <td class="tatalCollect"></td>
+                <td colspan="2" class="depositState"></td>
+                <td class="uaccountsReceivablen"></td>
             </tr>
         </tbody>
     </table>
@@ -168,7 +139,7 @@
 {% block popup %}
 <div class="popupAreaModules collectingPopupAreaModules">
     <div class="popupBgModules popupBgModulesCollect"></div>
-    <form method="post" action="" class="popupContainer collectingPopupContainer">
+    <form method="post" action="{% url 'accounting:collect_create' %}" class="popupContainer collectingPopupContainer">
         {% csrf_token %}
         <div class="popupHeader">
             <div class="popupTitle">입금내역 불러오기</div>
@@ -183,17 +154,21 @@
                 <div class="popupArticle popupArticleCollectiong">
                     <table class="collectingPopupHeader">
                         <tr>
+                            <td>선택</td>
                             <td>전표번호</td>
-                            <td>일자</td>
-                            <td>결재방법</td>
+                            <td>거래일시</td>
+                            <td>지급방식</td>
                             <td>입금액</td>
                             <td>입금자명</td>
-                            <td>미수금액</td>
+                            <td>잔액</td>
                         </tr>
                     </table>
                     <div class="collectingPopupScrollBox">
                         <table>
                             <tr class="depositItem">
+                                <td>
+                                    <input name="income_id" type="radio">
+                                </td>
                                 <td>22/09/12-01</td>
                                 <td>2022.09.16</td>
                                 <td>현금</td>
@@ -206,9 +181,10 @@
                 </div>
             </div>
             <div class="popupFooter">
-                <input autocomplete="off" type="submit" class="btnModules" value="등록">
+                <input autocomplete="off" type="submit" class="btnModules collectPopupRegistrationBtn" value="등록">
                 <div class="btnModules collectPopupCloseBtn">닫기</div>
             </div>
+            <input autocomplete="off" type="hidden" name="order_id" class="loadDepositHidden" value="">
         </div>
     </form>
   </div>
@@ -216,40 +192,46 @@
   
 <div class="popupAreaModules historyPopupAreaModules">
     <div class="popupBgModules popupBgModulesHistory"></div>
-    <form method="post" action="" class="popupContainer">
+    <form method="post" action="{% url 'accounting:collect_delete' %" class="popupContainer">
         {% csrf_token %}
         <div class="popupHeader">
-            <div class="popupTitle">입금내역 불러오기</div>
+            <div class="popupTitle">전표목록</div>
         </div>
         <div class="popupBody">
             <div class="popupSection">
                 <div class="popupArticle popupArticleHistory">
                     <table class="historyingPopupHeader">
                         <tr>
+                            <td>
+                                <input type="checkbox">
+                            </td>
                             <td>순서</td>
                             <td>전표번호</td>
-                            <td>일자</td>
-                            <td>현금/카드</td>
+                            <td>거래일시</td>
+                            <td>입금자명</td>
+                            <td>지급방식</td>
                             <td>은행명</td>
-                            <td>계좌명</td>
                             <td>가맹점수수료</td>
                             <td>입금액</td>
-                            <td>입금자명</td>
+                            <td>처리된 금액</td>
                             <td>상태</td>
                         </tr>
                     </table>
                     <div class="historyingPopupScrollBox">
                         <table>
                             <tr>
+                                <td>
+                                    <input type="checkbox">
+                                </td>
                                 <td>1</td>
                                 <td>22/09/12-01</td>
                                 <td>2022.09.12</td>
                                 <td>현금</td>
                                 <td>농협</td>
-                                <td>농협30582</td>
                                 <td>8,520</td>
                                 <td>391,480</td>
                                 <td>비씨카드</td>
+                                <td>처리된 금액</td>
                                 <td>미처리</td>
                             </tr>
                         </table>
@@ -257,7 +239,7 @@
                 </div>
             </div>
             <div class="popupFooter">
-                <input autocomplete="off" type="submit" class="btnModules" value="등록">
+                <input autocomplete="off" type="submit" class="btnModules deleteChitBtn" value="삭제">
                 <div class="btnModules historyPopupCloseBtn">닫기</div>
             </div>
         </div>
@@ -269,6 +251,12 @@
 
 
 {% block script %}
+<script>
+    {% autoescape off %}
+    const incomeList = {{income_list}};
+    console.log("incomeList", incomeList);
+    {% endautoescape %}
+</script>
 <script src="{% static 'js/accounting/total.js' %}"></script>
 <script src="{% static 'js/accounting/collecting.js' %}"></script>
 <script src="{% static 'js/accounting/collectOption.js' %}"></script>

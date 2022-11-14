@@ -224,8 +224,10 @@
         <tr>
           <td class="tdTypeA">그룹</td>
           <td colspan="3" class="tdTypeB">
+            
             <select name="group" class="inputSelect">
               {% for g in group_list %}
+              
               <option {% if group.id == g.id %} selected {% endif %} value="{{g.id}}">{{g.name}}</option>
               {% endfor %}
             </select>
@@ -339,7 +341,7 @@
           <div class="Tools">
             <div class="btnModules dispatchPrintBtn" onclick="opendispatchPrint('/dispatch/print/regularly')">인쇄</div>
             <div class="btnModules dispatchDeletBtn">배차삭제</div>
-            <input autocomplete="off" type="submit" class="btnModules dispatchSaveBtn" value="저장(F2)">
+            <div class="btnModules dispatchSaveBtn">저장(F2)</div>
           </div>
         </div>
       </div>

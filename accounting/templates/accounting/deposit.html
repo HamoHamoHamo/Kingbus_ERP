@@ -94,29 +94,24 @@
                                 <col style="width: 9%">
                                 <col style="width: 9%">
                             </colgroup>
-                            {% for income in income_list %}
-                            <tr class="depositCell depositProcessedCell {% if income.state == '삭제' %}stateDelete{% endif %}">
-                                <td>
-                                    <input type="checkbox" name="check" value="{{income.id}}" class="checker">
-                                </td>
-                                <td>{{income.serial}}</td>
-                                <td>{{income.date}}</td>
-                                <td>{{income.depositor}}</td>
-                                <td>{{income.payment_method}}</td>
-                                <td>{{income.bank}}</td>
-                                <td>{{income.commission}}</td>
-                                <td>{{income.acc_income}}</td>
-                                <td>{{income.used_income}}</td>
-                                <td>{{income.state}}</td>
-                            </tr>
-                            {% endfor %}
-                            <tr class="dayTotal">
-                                <td colspan="6">2022.09.12</td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                            </tr>
+                            <tbody class="depositTbody">
+                                {% for income in income_list %}
+                                <tr class="depositCell depositProcessedCell {% if income.state == '삭제' %}stateDelete{% endif %}">
+                                    <td>
+                                        <input type="checkbox" name="check" value="{{income.id}}" class="checker">
+                                    </td>
+                                    <td>{{income.serial}}</td>
+                                    <td>{{income.date}}</td>
+                                    <td>{{income.depositor}}</td>
+                                    <td>{{income.payment_method}}</td>
+                                    <td>{{income.bank}}</td>
+                                    <td>{{income.commission}}</td>
+                                    <td>{{income.acc_income}}</td>
+                                    <td>{{income.used_income}}</td>
+                                    <td>{{income.state}}</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
                         </table>
                     </td>
                 </tr>
@@ -244,7 +239,7 @@
 
   <div class="popupAreaModules">
     <div class="popupBgModules"></div>
-    <form method="post" action="{% url 'accounting:deposit_create' %}" class="popupContainer popupContainerDouble" enctype="multipart/form-data">
+    <form method="post" action="{% url 'accounting:deposit_edit' %}" class="popupContainer popupContainerDouble" enctype="multipart/form-data">
         {% csrf_token %}
         <div class="popupHeader">
             <div class="popupTitle">입금내역 수정</div>
@@ -254,11 +249,11 @@
                 <div class="popupArticleBox">
                     <div class="popupArticleDouble">
                         <label for="" class="popupArticleLabel">거래일시</label>
-                        <input autocomplete="off" name="date" type="date" class="popupArticleinput">
+                        <input autocomplete="off" name="date" type="date" class="popupArticleinput editDate">
                     </div>
                     <div class="popupArticleDouble">
                         <label for="" class="popupArticleLabel">지급방식</label>
-                        <select name="payment_method" id="editPayment_method" class="popupArticleinput">
+                        <select name="payment_method" id="editPayment_method" class="popupArticleinput editDepositType">
                           <option value="카드">카드</option>
                           <option value="계좌">계좌</option>
                           <option value="현금">현금</option>
@@ -268,21 +263,21 @@
                 <div class="popupArticleBox">
                     <div class="popupArticleDouble">
                         <label for="" class="popupArticleLabel">은행명</label>
-                        <input autocomplete="off" name="bank" type="text" class="popupArticleinput">
+                        <input autocomplete="off" name="bank" type="text" class="popupArticleinput editBankName">
                     </div>
                     <div class="popupArticleDouble">
                         <label for="" class="popupArticleLabel">가맹점 수수료</label>
-                        <input autocomplete="off" name="commission" type="text" class="popupArticleinput">
+                        <input autocomplete="off" name="commission" type="text" class="popupArticleinput editVat">
                     </div>
                 </div>
                 <div class="popupArticleBox">
                     <div class="popupArticleDouble">
                         <label for="" class="popupArticleLabel">입금액</label>
-                        <input autocomplete="off" name="acc_income" type="text" class="popupArticleinput">
+                        <input autocomplete="off" name="acc_income" type="text" class="popupArticleinput editDepositPrice">
                     </div>
                     <div class="popupArticleDouble">
                         <label for="" class="popupArticleLabel">입금자명</label>
-                        <input autocomplete="off" name="depositor" type="text" class="popupArticleinput">
+                        <input autocomplete="off" name="depositor" type="text" class="popupArticleinput editDepositorName">
                     </div>
                 </div>
             </div>
@@ -291,7 +286,7 @@
                 <div class="btnModules popupCloseBtn editPopupCloseBtn">취소</div>
             </div>
         </div>
-        <input type="hidden" name="depositEdit">
+        <input type="hidden" name="id" class="editHidden">
     </form>
   </div>
 

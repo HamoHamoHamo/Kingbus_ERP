@@ -1,4 +1,5 @@
-from .models import Salary, Income, AdditionalSalary, LastIncome
+import json
+from .models import Salary, Income, AdditionalSalary, LastIncome, AdditionalCollect, Collect
 from .forms import AdditionalForm, IncomeForm
 from dispatch.views import FORMAT
 from humanresource.models import Member
@@ -346,62 +347,181 @@ class CollectList(generic.ListView):
     def get_queryset(self):
         month = self.request.GET.get('month', TODAY[:7])
 
-        dispatch_list = DispatchOrder.objects.filter(departure_date__startswith=month)
+        dispatch_list = DispatchOrder.objects.prefetch_related('order_collect').filter(departure_date__startswith=month).order_by('departure_date')
 
         return dispatch_list
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 
-        departure_date = []
-        time = []
-        num_days = []
+        # departure_date = []
+        # time = []
+        # num_days = []
 
-        for order in context['dispatch_list']:
-            d_y = order.departure_date[0:4]
-            d_m = order.departure_date[5:7]
-            d_d = order.departure_date[8:10]
-            d_t = order.departure_date[11:16]
-            d_date = date(int(d_y), int(d_m), int(d_d))
-            d_w = WEEK[d_date.weekday()]
-            d_y = d_y[2:4]
+        # for order in context['dispatch_list']:
+        #     d_y = order.departure_date[0:4]
+        #     d_m = order.departure_date[5:7]
+        #     d_d = order.departure_date[8:10]
+        #     d_t = order.departure_date[11:16]
+        #     d_date = date(int(d_y), int(d_m), int(d_d))
+        #     d_w = WEEK[d_date.weekday()]
+        #     d_y = d_y[2:4]
 
-            a_y = order.arrival_date[0:4]
-            a_m = order.arrival_date[5:7]
-            a_d = order.arrival_date[8:10]
-            a_t = order.arrival_date[11:16]
-            a_date = date(int(a_y), int(a_m), int(a_d))
-            a_y = a_y[2:4]
+        #     a_y = order.arrival_date[0:4]
+        #     a_m = order.arrival_date[5:7]
+        #     a_d = order.arrival_date[8:10]
+        #     a_t = order.arrival_date[11:16]
+        #     a_date = date(int(a_y), int(a_m), int(a_d))
+        #     a_y = a_y[2:4]
             
-            date_diff = a_date - d_date
-            if date_diff.days > 1:
-                num_days.append(date_diff.days)
+        #     date_diff = a_date - d_date
+        #     if date_diff.days > 1:
+        #         num_days.append(date_diff.days)
+        #     else:
+        #         num_days.append('')
+
+        #     departure_date.append(f"{d_y}.{d_m}.{d_d} {d_w}")
+        #     time.append(f"{d_t}~{a_t}")
+        #     # arrival_date.append(f"{a_y}.{a_m}.{a_d} {a_w} {a_t}")
+
+        # context['departure_date'] = departure_date
+        # context['num_days'] = num_days
+        # context['time'] = time
+
+        dispatch_count = context['dispatch_list'].count()
+        income_list = [0] * dispatch_count
+        value_list = [0] * dispatch_count
+        VAT_list = [0] * dispatch_count
+        total_list = [0] * dispatch_count
+        state_list = []
+        outstanding_list = []
+        cnt = 0
+        for order in context['dispatch_list']:
+            if order.VAT == 'y':
+                
+                
+                value_list[cnt] = round(int(order.price) / 1.1+10**(-len(str(int(order.price) / 1.1))-1))
+                VAT_list[cnt] = round(value_list[cnt] * 0.1+10**(-len(str(value_list[cnt] * 0.1))-1))
+                total_list[cnt] = value_list[cnt] + VAT_list[cnt]
+                zero = int(order.price) - total_list[cnt]
+                if zero != 0:
+                    VAT_list[cnt] += zero
+                    total_list[cnt] += zero
             else:
-                num_days.append('')
+                value_list[cnt] = int(order.price)
+                VAT_list[cnt] = round(value_list[cnt] * 0.1+10**(-len(str(value_list[cnt] * 0.1))-1))
+                total_list[cnt] = value_list[cnt] + VAT_list[cnt]
+            
+            collect_list = order.order_collect.select_related('income_id').all()
+            temp_list = []
+            price_total = 0
+            for collect in collect_list:
+                temp_list.append({
+                    'serial': collect.income_id.serial,
+                    'date': collect.income_id.date,
+                    'payment_method': collect.income_id.payment_method,
+                    'bank': collect.income_id.bank,
+                    'commission': collect.income_id.commission,
+                    'acc_income': collect.income_id.acc_income,
+                    'depositor': collect.income_id.depositor,
+                    'state': collect.income_id.state,
+                    'price': collect.price,
+                    'id': collect.id,
+                })
+                price_total += int(collect.price)
+            income_list[cnt] = temp_list
+            additional_list = AdditionalCollect.objects.filter(order_id=order)
+            temp_list = []
+            for additional in additional_list:
+                temp_list.append({
+                    'category': additional.category,
+                    'value': additional.value,
+                    'VAT': additional.VAT,
+                    'total_price': additional.total_price,
+                    'note': additional.note
+                })
+            cnt += 1
+            
+            if int(price_total) == int(order.price):
+                state_list.append('완료')
+                outstanding_list.append('0')
+            else:
+                state_list.append('미처리')
+                outstanding_list.append(int(order.price) - int(price_total))
 
-            departure_date.append(f"{d_y}.{d_m}.{d_d} {d_w}")
-            time.append(f"{d_t}~{a_t}")
-            # arrival_date.append(f"{a_y}.{a_m}.{a_d} {a_w} {a_t}")
 
-        context['departure_date'] = departure_date
-        context['num_days'] = num_days
-        context['time'] = time
         context['month'] = self.request.GET.get('month', TODAY[:7])
+        context['income_list'] = income_list
+        context['value_list'] = value_list
+        context['VAT_list'] = VAT_list
+        context['total_list'] = total_list
+        context['state_list'] = state_list
+        context['outstanding_list'] = outstanding_list
 
         return context
 
 def collect_create(request):
     if request.method == "POST":
-        id = request.POST.get('id')
-        collection = get_object_or_404(DispatchOrder, id=id)
-        collection.collection_amount = int(request.POST.get('collection_amount').replace(',',''))
-        collection.collection_date = request.POST.get('collection_date', '')
-        collection.collection_creator = request.POST.get('collection_creator', '')
-        collection.save()
+        creator = get_object_or_404(Member, pk=request.session.get('user'))
+        order_id = request.POST.get('order_id')
+        income_id = request.POST.get('income_id')
+        order = get_object_or_404(DispatchOrder, id=order_id)
+        income = get_object_or_404(Income, id=income_id)
+        collect = Collect(
+            order_id = order,
+            income_id = income,
+            price = order.price if order.price < income.total_income else income.total_income,
+            creator = creator
+        )
+        collect.save()
+        income.used_income = collect.price
+        if income.usded_income == income.total_income:
+            income.state = '완료'
         
-        return redirect('accounting:collect')
+        income.save()
+        
+        
+        return redirect(request.META.get('HTTP_REFERER', 'redirect_if_referer_not_found'))
     else:
         return HttpResponseNotAllowed(['post'])
+
+def collect_load(request):
+    if request.method == "POST":
+        post_data = json.loads(request.body)
+        date1 = post_data['date1']
+        date2 = post_data['date2']
+        income_list = Income.objects.filter(date__range=(date1, date2)).exclude(state='삭제')
+        temp_list = []
+        for income in income_list:
+            temp_list.append({
+                    'serial': income.serial,
+                    'date': income.date,
+                    'payment_method': income.payment_method,
+                    'commission': income.commission,
+                    'total_income': income.total_income,
+                    'used_income': income.used_income,
+                    'depositor': income.depositor,
+                    'state': income.state,
+                })
+
+        return JsonResponse({
+            'deposit': temp_list,
+            'status': 'success',
+            })
+    else:
+        return HttpResponseNotAllowed(['post'])
+
+def collect_delete(request):
+    if request.method == "POST":
+        id_list = request.POST.getlist('id')
+        for id in id_list:
+            collect = get_object_or_404(Collect, id=id)
+            collect.delete()
+        
+        return redirect(request.META.get('HTTP_REFERER', 'redirect_if_referer_not_found'))
+    else:
+        return HttpResponseNotAllowed(['post'])
+
 
 class DepositList(generic.ListView):
     template_name = 'accounting/deposit.html'
@@ -446,6 +566,7 @@ class DepositList(generic.ListView):
                 'commission': income.commission,
                 'acc_income': income.acc_income,
                 'depositor': income.depositor,
+                'state': income.state,
             })
         context['data_list'] = temp_list
         return context
@@ -570,7 +691,7 @@ def deposit_edit(request):
         income = get_object_or_404(Income, id=request.POST.get('id'))
         income_form = IncomeForm(request.POST)
         if income_form.is_valid():
-            date = income_form.cleaned_data['data']
+            date = income_form.cleaned_data['date']
             income_cnt = Income.objects.filter(date__startswith=date).count()
 
             income.date = income_form.cleaned_data['date']
@@ -580,6 +701,7 @@ def deposit_edit(request):
             income.acc_income = income_form.cleaned_data['acc_income']
             income.serial = f'{date[:4]}{date[5:7]}{date[8:10]}-{int(income_cnt)+1}'
             income.commission = request.POST.get('commission', '0')
+            income.total_income = int(income_form.cleaned_data['acc_income']) + int(request.POST.get('commission', '0'))
             income.creator = get_object_or_404(Member, pk=request.session.get('user'))
             income.save()
 

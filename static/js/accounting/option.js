@@ -38,7 +38,6 @@ function optionProcessed(){
         deleteCheck.checked = false
     }
     stateOPtion()
-    stateOPtion()
     allChecker.checked = false
     for (i = 0; i < checker.length; i++){
         checker[i].checked = false
@@ -52,7 +51,6 @@ function optionDelete(){
         unprocessed.checked = false
         processed.checked = false
     }
-    stateOPtion()
     stateOPtion()
     allChecker.checked = false
     for (i = 0; i < checker.length; i++){
@@ -85,6 +83,8 @@ function stateOPtion(){
             depositCell[i].classList.remove("stateDelete")
         }
     };
+
+    separating(unprocessed.checked, processed.checked, deleteCheck.checked)
 
     calcTotal()
 
