@@ -8,7 +8,7 @@ const historyHiddenBus = document.querySelector(".historyHiddenBus")
 const historyHiddenDriver = document.querySelector(".historyHiddenDriver")
 const historyHiddenGroup = document.querySelector(".historyHiddenGroup")
 const historyHiddenDate = document.querySelector(".historyHiddenDate")
-const historyHiddenOutsourcing = document.querySelector(".historyHiddenDriver")
+const historyHiddenOutsourcing = document.querySelector(".historyHiddenOutsourcing")
 
 const loadConnectBtn1 = document.querySelector(".loadConnectBtn1")
 const loadConnectBtn2 = document.querySelector(".loadConnectBtn2")
@@ -95,9 +95,12 @@ function HistoryCheck() {
             }
             this.classList.add("historyDateBoxSelect")
             historyHiddenBus.value = this.children[1].classList[1]
-            historyHiddenDriver.value = this.children[2].classList[1]
-            if (this.children[2].classList[2] !== undefined) {
-                historyHiddenOutsourcing.value = "y"
+            if (this.children[2].classList[2] === "typeOutsourcing") {
+                historyHiddenDriver.value = ""
+                historyHiddenOutsourcing.value = this.children[2].classList[1]
+            }else{
+                historyHiddenDriver.value = this.children[2].classList[1]
+                historyHiddenOutsourcing.value = ""
             }
         }
     }

@@ -93,9 +93,11 @@ function regularlyDispatch() {
             for (i = 0; i < data.length; i++) {
                 departureDate = data[i].departure_date.split(" ")[1].replace(/\:/g, "")
                 arrivalDate = data[i].arrival_date.split(" ")[1].replace(/\:/g, "")
-                if (this.innerText.split("(")[1].replace(/\)/g, "") == data[i].driver_name) {
-                    if (arrivalInput >= departureDate && departureInput <= arrivalDate) {
-                        return makeSelect = false
+                if(this.innerText.length > 4){
+                    if (this.innerText.split("(")[1].replace(/\)/g, "") == data[i].driver_name) {
+                        if (arrivalInput >= departureDate && departureInput <= arrivalDate) {
+                            return makeSelect = false
+                        }
                     }
                 }
             };

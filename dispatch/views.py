@@ -349,7 +349,7 @@ class RegularlyDispatchList(generic.ListView):
 
                 except DispatchRegularlyConnect.DoesNotExist:
                     history_list.append('')
-                    block_list.append('')
+                    block_list.append('y')
                     continue
 
             context['history_list'] = history_list

@@ -18,7 +18,7 @@ function visibleUnprocessed() {
         collectprocessed.checked = true
         visibleProcessed()
     }
-    calcTotal()
+    calcTotal(collectUnprocessed.checked, collectprocessed.checked)
 }
 
 
@@ -36,5 +36,7 @@ function visibleProcessed() {
         collectUnprocessed.checked = true
         visibleUnprocessed()
     }
-    calcTotal()
+    calcTotal(collectUnprocessed.checked, collectprocessed.checked)
 }
+
+calcTotal(collectUnprocessed.checked, collectprocessed.checked)

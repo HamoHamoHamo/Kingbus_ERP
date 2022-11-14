@@ -35,6 +35,7 @@ class Income(models.Model):
     bank = models.CharField(verbose_name='은행', max_length=30, null=False)
     commission = models.CharField(verbose_name='가맹점 수수료', max_length=30, null=False, default='0')
     acc_income = models.CharField(verbose_name='입금액', max_length=30, null=False)
+    total_income = models.CharField(verbose_name='총 금액', max_length=30, null=False, default=acc_income)
     used_income = models.CharField(verbose_name='처리된 금액', max_length=30, null=False, default='0')
     state = models.CharField(verbose_name='상태', max_length=30, null=False, default='미처리')
     creator = models.ForeignKey(Member, on_delete=models.SET_NULL, related_name="income_user", db_column="user_id", null=True)
@@ -45,7 +46,6 @@ class Income(models.Model):
 
 
 class Collect(models.Model):
-    type = models.CharField(verbose_name='출퇴근 or 일반', max_length=1, null=False)
     order_id = models.ForeignKey(DispatchOrder, on_delete=models.SET_NULL, related_name="order_collect", null=True)
     regularly_id = models.ForeignKey(DispatchRegularly, on_delete=models.SET_NULL, related_name="regularly_collect", null=True)
     income_id = models.ForeignKey(Income, on_delete=models.SET_NULL, related_name="income_collect", null=True)
@@ -54,8 +54,25 @@ class Collect(models.Model):
     pub_date = models.DateTimeField(verbose_name='작성시간', auto_now_add=True, null=False)
     
     def __str__(self):
-        return self.income_id + ' ' + self.price 
+        return self.income_id.serial + ' ' + self.price 
 
+class AdditionalCollect(models.Model):
+    type = models.CharField(verbose_name='출퇴근 or 일반', max_length=1, null=False)
+    order_id = models.ForeignKey(DispatchOrder, on_delete=models.SET_NULL, related_name="order_additional_collect", null=True)
+    regularly_id = models.ForeignKey(DispatchRegularly, on_delete=models.SET_NULL, related_name="regularly_additional_collect", null=True)
+    category = models.CharField(verbose_name='항목', max_length=50, null=False)
+    value = models.CharField(verbose_name='공급가액', max_length=20, null=False)
+    VAT = models.CharField(verbose_name='부가세', max_length=20, null=False)
+    total_price = models.CharField(verbose_name='합계', max_length=20, null=False)
+    note = models.CharField(verbose_name='비고', max_length=50, null=False)
+    creator = models.ForeignKey(Member, on_delete=models.SET_NULL, related_name="user_additional_collect", db_column="user_id", null=True)
+    pub_date = models.DateTimeField(verbose_name='작성시간', auto_now_add=True, null=False)
+    
+    def __str__(self):
+        if self.type == '출퇴근':
+            return self.regularly_id
+        elif self.type == '일반':
+            return self.order_id
 
 class LastIncome(models.Model):
     tr_date = models.CharField(verbose_name='거래일시', max_length=20, null=False)
