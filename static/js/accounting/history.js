@@ -1,4 +1,4 @@
-const history = document.querySelectorAll(".collectDateBox td:nth-child(12)")
+const history = document.querySelectorAll(".collectDateBox td:nth-child(13)")
 const historyPopupAreaModules = document.querySelector(".historyPopupAreaModules")
 const popupBgModulesHistory = document.querySelector(".popupBgModulesHistory")
 const historyPopupCloseBtn = document.querySelector(".historyPopupCloseBtn")
@@ -9,7 +9,9 @@ for (i = 0; i < history.length; i++) {
 };
 
 function openHistory() {
-    historyPopupAreaModules.style.display = "block"
+    if(this.innerText !== ""){
+        historyPopupAreaModules.style.display = "block"
+    }
 
     let targetChit = ""
     for (i = 0; i < collectDateBox.length; i++) {
@@ -30,7 +32,6 @@ function openHistory() {
         checkbox.setAttribute("value", `${incomeList[targetChit][i].id}`)
         checkbox.setAttribute("name", "id")
         chitTrtd1.appendChild(checkbox)
-
         const chitTrtd2 = document.createElement("td")
         chitTrtd2.innerText = i + 1
         chitTr.appendChild(chitTrtd2)
@@ -56,15 +57,15 @@ function openHistory() {
         chitTr.appendChild(chitTrtd7)
 
         const chitTrtd8 = document.createElement("td")
-        chitTrtd8.innerText = incomeList[targetChit][i].commission
+        chitTrtd8.innerText = incomeList[targetChit][i].commission.replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
         chitTr.appendChild(chitTrtd8)
 
         const chitTrtd9 = document.createElement("td")
-        chitTrtd9.innerText = incomeList[targetChit][i].acc_income
+        chitTrtd9.innerText = incomeList[targetChit][i].acc_income.replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
         chitTr.appendChild(chitTrtd9)
 
         const chitTrtd10 = document.createElement("td")
-        chitTrtd10.innerText = incomeList[targetChit][i].price
+        chitTrtd10.innerText = incomeList[targetChit][i].price.replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
         chitTr.appendChild(chitTrtd10)
 
         const chitTrtd11 = document.createElement("td")
@@ -73,16 +74,65 @@ function openHistory() {
     };
 
     const chitListItem = document.querySelectorAll(".historyingPopupScrollBox tr")
+    const checkAll = document.querySelector(".historyingPopupHeader input")
+    const checkOne = document.querySelectorAll(".historyingPopupScrollBox input")
 
     for (i = 0; i < chitListItem.length; i++) {
-        chitListItem[i].addEventListener("click", checkingCheckbox)
+        chitListItem[i].addEventListener("click", checking)
     };
 
-    function checkingCheckbox() {
+    function checking() {
+        let checkCount = 0
+
         if(this.children[0].children[0].checked){
             this.children[0].children[0].checked = false
         }else{
             this.children[0].children[0].checked = true
+        }
+
+        for (i = 0; i < checkOne.length; i++){
+            if(checkOne[i].checked){
+                checkCount++
+            }            
+        };
+        if(checkCount === checkOne.length){
+            checkAll.checked = true
+        }else{
+            checkAll.checked = false
+        }
+    }
+    
+    for (i = 0; i < checkOne.length; i++) {
+        checkOne[i].addEventListener("click", checkingCheckbox)
+    };
+
+    function checkingCheckbox(e){
+        e.stopPropagation()
+        let checkCount = 0
+        
+        for (i = 0; i < checkOne.length; i++){
+            if(checkOne[i].checked){
+                checkCount++
+            }            
+        };
+        if(checkCount === checkOne.length){
+            checkAll.checked = true
+        }else{
+            checkAll.checked = false
+        }
+    }
+    
+    checkAll.addEventListener("change", checkingAll)
+
+    function checkingAll(){
+        if(!this.checked){
+            for (i = 0; i < checkOne.length; i++){
+                checkOne[i].checked = false
+            };
+        }else{
+            for (i = 0; i < checkOne.length; i++){
+                checkOne[i].checked = true
+            };
         }
     }
 }

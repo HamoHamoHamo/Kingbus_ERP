@@ -1,18 +1,20 @@
 import json
+import my_settings
 from .models import Salary, Income, AdditionalSalary, LastIncome, AdditionalCollect, Collect
 from .forms import AdditionalForm, IncomeForm
 from dispatch.views import FORMAT
 from humanresource.models import Member
 from datetime import datetime, timedelta, date
 from dateutil.relativedelta import relativedelta
-from dispatch.models import DispatchOrder, DispatchOrderConnect, DispatchRegularlyConnect
+from dispatch.models import DispatchOrder, DispatchOrderConnect, DispatchRegularlyConnect, DispatchRegularly, RegularlyGroup
+from django.db.models import Sum
 from django.http import JsonResponse, Http404, HttpResponse, HttpResponseNotAllowed, HttpResponseRedirect
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse, reverse_lazy
 from django.views import generic
 from django.core.exceptions import BadRequest
 from config import settings
-from popbill import EasyFinBankService, PopbillException, ContactInfo, JoinForm, CorpInfo
+from popbill import EasyFinBankService, PopbillException, ContactInfo, JoinForm, CorpInfo, BankAccountInfo
 import time
 
 TODAY = str(datetime.now())[:10]
@@ -336,8 +338,35 @@ class IncomeList(generic.ListView):
 
 class RegularlyCollectList(generic.ListView):
     template_name = 'accounting/regularly_collect.html'
-    context_object_name = 'dispatch_list'
-    model = DispatchOrder
+    context_object_name = 'group_list'
+    model = RegularlyGroup
+
+    def get_queryset(self):
+        group_list = RegularlyGroup.objects.all().order_by('number', 'name')
+        
+        return group_list
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        #쿼리 줄일 방법 생각
+        date = self.request.GET.get('date', TODAY)
+        month = date[:7]
+
+        regularly_list = DispatchRegularly.objects.prefetch_related('info_regularly').all().order_by('group', 'num1', 'number1', 'num2', 'number2')
+        price_obj = {}
+        for group in context['group_list']:
+            price_obj[group.id] = 0
+
+        for regularly in regularly_list:
+            connects = regularly.info_regularly.filter(departure_date__startswith=month)
+            if connects:
+                price = connects.aggregate(Sum('regularly_id__price'))
+            
+            if price['regularly_id__price__sum']:
+                price_obj[regularly.group.id] += int(price['regularly_id__price__sum'])
+            
+        context['price_obj'] = price_obj
+        return context
 
 class CollectList(generic.ListView):
     template_name = 'accounting/collect.html'
@@ -467,17 +496,23 @@ def collect_create(request):
         income_id = request.POST.get('income_id')
         order = get_object_or_404(DispatchOrder, id=order_id)
         income = get_object_or_404(Income, id=income_id)
+        if int(order.price) < int(income.total_income) - int(income.used_price):
+            price = order.price
+        else:
+            price = int(income.total_income) - int(income.used_price)
         collect = Collect(
             order_id = order,
             income_id = income,
-            price = order.price if order.price < income.total_income else income.total_income,
+            price = price,
             creator = creator
         )
         collect.save()
-        income.used_income = collect.price
-        if income.usded_income == income.total_income:
+        used_price = int(income.used_price) + int(price)
+        income.used_price = used_price
+        print("TEST", used_price)
+        print("total", income.total_income)
+        if int(used_price) == int(income.total_income):
             income.state = '완료'
-        
         income.save()
         
         
@@ -490,7 +525,7 @@ def collect_load(request):
         post_data = json.loads(request.body)
         date1 = post_data['date1']
         date2 = post_data['date2']
-        income_list = Income.objects.filter(date__range=(date1, date2)).exclude(state='삭제')
+        income_list = Income.objects.filter(date__range=(f'{date1} 00:00', f'{date2} 24:00')).exclude(state='삭제')
         temp_list = []
         for income in income_list:
             temp_list.append({
@@ -499,9 +534,10 @@ def collect_load(request):
                     'payment_method': income.payment_method,
                     'commission': income.commission,
                     'total_income': income.total_income,
-                    'used_income': income.used_income,
+                    'used_price': income.used_price,
                     'depositor': income.depositor,
                     'state': income.state,
+                    'id': income.id,
                 })
 
         return JsonResponse({
@@ -516,6 +552,13 @@ def collect_delete(request):
         id_list = request.POST.getlist('id')
         for id in id_list:
             collect = get_object_or_404(Collect, id=id)
+            income = collect.income_id
+            income.used_price = int(income.used_price) - int(collect.price)
+            if income.used_price == income.total_income:
+                income.state = '완료'
+            else:
+                income.state = '미처리'
+            income.save()
             collect.delete()
         
         return redirect(request.META.get('HTTP_REFERER', 'redirect_if_referer_not_found'))
@@ -535,7 +578,7 @@ class DepositList(generic.ListView):
         self.search = self.request.GET.get('search', '')
         self.payment = self.request.GET.get('payment')
         
-        income_list = Income.objects.filter(date__range=(self.date1, self.date2)).order_by('-date')
+        income_list = Income.objects.filter(date__range=(f'{self.date1} 00:00', f'{self.date2} 24:00')).order_by('-date')
         if self.search:
             if self.select == 'depositor':
                 income_list = income_list.filter(depositor__contains=self.search)
@@ -575,9 +618,9 @@ def load_deposit_data(request):
     if request.method == 'POST':
         last_income = LastIncome.objects.last()
         creator = get_object_or_404(Member, pk=request.session.get('user'))
-        CorpNum = '2874900474'
-        BankCode = '0003'
-        AccountNumber = '15717723401016'
+        CorpNum = my_settings.CORPNUM
+        BankCode = my_settings.BANKCODE
+        AccountNumber = my_settings.ACCOUNTNUMBER
         if last_income:
             print('last_incomeeee')
             SDate = last_income.tr_date[:8]
@@ -612,14 +655,21 @@ def load_deposit_data(request):
             result = easyFinBankService.search(CorpNum, jobID, TradeType='I', SearchString='', Page=1, PerPage=100, Order='D', UserID=None)
             count = 0
             for r in result.list:
+                # 은행명 괄호 제거
+                if r.remark2[0] == '(' and r.remark2[-1] == ')':
+                    bank = r.remark2[1:-1]
+                else:
+                    bank = r.remark2
+
                 if r.trdt > last_save_date:
                     count += 1
                     income = Income(
                         serial=f'{r.trdate}-{r.trserial}',
                         date=f'{r.trdt[:4]}-{r.trdt[4:6]}-{r.trdt[6:8]} {r.trdt[8:10]}:{r.trdt[10:12]}',
                         depositor=r.remark1,
-                        bank=r.remark2,
+                        bank=bank,
                         acc_income=r.accIn,
+                        total_income=r.accIn,
                         creator=creator,
                     )
                     income.save()
@@ -665,6 +715,7 @@ def deposit_create(request):
             income = income_form.save(commit=False)
             income.serial = f'{date[:4]}{date[5:7]}{date[8:10]}-{int(income_cnt)+1}'
             income.commission = request.POST.get('commission', '0')
+            income.total_income = int(income.acc_income) + int(income.commission)
             income.creator = get_object_or_404(Member, pk=request.session.get('user'))
             income.save()
         else:

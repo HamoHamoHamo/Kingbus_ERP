@@ -12,7 +12,12 @@ function loadDeposit() {
         success: function (result) {
             if (result) {
                 loadingBg.style.display = "none"
-                alert(`${result.count}개의 입금내역을 불러왔습니다.`)
+                if(result.count === 0){
+                    alert(`${result.count}개의 입금내역을 불러왔습니다.`)
+                }else{
+                    alert(`${result.count}개의 입금내역을 불러왔습니다.`)
+                    window.location.reload()
+                }
             } else { 
                 loadingBg.style.display = "none"
                 alert("입금내역을 불러오지 못했습니다.")

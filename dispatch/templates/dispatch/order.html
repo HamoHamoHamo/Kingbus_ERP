@@ -288,8 +288,11 @@
                         <td class="tdTypeC">
                             <select name="collection_type" id="collection_type" class="inputSelect">
                                 <option value=""></option>
-                                <option {% if detail.collection_type == '현지수금' %} selected {% endif %} value="현지수금">현지수금</option>
-                                <option {% if detail.collection_type == '회사수금' %} selected {% endif %} value="회사수금">회사수금</option>
+                                <option {% if detail.collection_type == '현지수금' %} selected {% endif %} value="현지수금(카드)">현지수금(카드)</option>
+                                <option {% if detail.collection_type == '회사수금' %} selected {% endif %} value="현지수금(계좌)">회지수금(계좌)</option>
+                                <option {% if detail.collection_type == '회사수금' %} selected {% endif %} value="현지수금(현금)">회지수금(현금)</option>
+                                <option {% if detail.collection_type == '회사수금' %} selected {% endif %} value="회사수금(카드)">회사수금(카드)</option>
+                                <option {% if detail.collection_type == '회사수금' %} selected {% endif %} value="회사수금(현금)">회사수금(현금)</option>
                             </select>
                         </td>
                         <td class="tdTypeA">VAT 포함</td>
