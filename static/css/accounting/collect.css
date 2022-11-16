@@ -99,7 +99,7 @@
 }
 
 .collectBody td:nth-child(2) {
-    width: 8%;
+    width: 6%;
 }
 
 .collectBody td:nth-child(3) {
@@ -107,8 +107,8 @@
 }
 
 .collectBody td:nth-child(4),
-.collectBody td:nth-child(12) {
-    width: 10%;
+.collectBody td:nth-child(13) {
+    width: 8%;
 }
 
 .collectBody td:nth-child(5),
@@ -116,26 +116,27 @@
 .collectBody td:nth-child(9),
 .collectBody td:nth-child(10),
 .collectBody td:nth-child(11),
-.collectBody td:nth-child(14) {
+.collectBody td:nth-child(12),
+.collectBody td:nth-child(15) {
     width: 6%;
 }
 
 .collectBody td:nth-child(6),
 .collectBody td:nth-child(8),
-.collectBody td:nth-child(13) {
+.collectBody td:nth-child(14) {
     width: 4%;
 }
 
 .collectBody td:nth-child(1),
-.collectBody td:nth-child(2),
 .collectBody td:nth-child(5),
 .collectBody td:nth-child(6),
 .collectBody td:nth-child(8),
-.collectBody td:nth-child(12),
-.collectBody td:nth-child(13) {
+.collectBody td:nth-child(13),
+.collectBody td:nth-child(14) {
     text-align: center;
 }
 
+.collectDateBox td:nth-child(2),
 .collectDateBox td:nth-child(3),
 .collectDateBox td:nth-child(4) {
     text-align: left;
@@ -147,7 +148,8 @@
 .collectDateBox td:nth-child(9),
 .collectDateBox td:nth-child(10),
 .collectDateBox td:nth-child(11),
-.collectDateBox td:nth-child(14) {
+.collectDateBox td:nth-child(12),
+.collectDateBox td:nth-child(15) {
     text-align: right;
     padding-right: 1rem;
     box-sizing: border-box;
@@ -158,7 +160,7 @@
     border-left: 0.1rem solid black;
 }
 
-.collectDateBox td:nth-child(11) {
+.collectDateBox td:nth-child(12) {
     border-right: 0.1rem solid black;
 }
 
@@ -166,8 +168,12 @@
     background-color: #EFEFEF;
 }
 
-.collectionUnprocessed td:nth-last-child(2) {
+.unprocessed{
     color: red;
+}
+
+.processed{
+    color: black;
 }
 
 
@@ -234,8 +240,12 @@
     box-sizing: border-box;
 }
 
-.collectDateBox td:nth-child(12):hover .chit {
+.chit {
     color: #0069D9;
+}
+
+.add {
+    background-color: rgb(255, 242, 204);
 }
 
 .collectDateRoute {
@@ -265,47 +275,39 @@
     font-size: 1.4rem;
 }
 
-.selectTotal td:nth-child(1){
-    width: 52%;
+.selectTotal td:nth-child(1) {
+    width: 48%;
 }
 
-.selectTotal td:nth-child(2){
+.selectTotal td:nth-child(2),
+.selectTotal td:nth-child(4),
+.selectTotal td:nth-child(5),
+.selectTotal td:nth-child(6),
+.selectTotal td:nth-child(8) {
     width: 6%;
 }
 
-.selectTotal td:nth-child(3){
+.selectTotal td:nth-child(3) {
     width: 10%;
 }
 
-.selectTotal td:nth-child(4){
-    width: 6%;
+.selectTotal td:nth-child(7) {
+    width: 12%;
 }
 
-.selectTotal td:nth-child(5){
-    width: 6%;
-}
-
-.selectTotal td:nth-child(6){
-    width: 14%;
-}
-
-.selectTotal td:nth-child(7){
-    width: 6%;
-}
-
-.selectTotal td{
+.selectTotal td {
     text-align: right;
     padding-right: 1rem;
     box-sizing: border-box;
 }
 
-.selectTotal td:nth-child(1){
+.selectTotal td:nth-child(1) {
     text-align: left;
     padding-left: 1rem;
     box-sizing: border-box;
 }
 
-.selectTotal td:nth-child(6){
+.selectTotal td:nth-child(7) {
     text-align: center;
 }
 
@@ -318,7 +320,7 @@
     position: absolute;
     top: -5.2rem;
     right: 1rem;
-    width: 12rem;
+    width: 13.6rem;
     background-color: #0069D9;
 }
 
@@ -362,7 +364,7 @@
     margin-left: 0;
 }
 
-.popupSearch .btnModules {
+.collectingSearch {
     background-color: #444;
     margin-left: 2rem;
 }
@@ -374,22 +376,29 @@
     height: auto;
 }
 
-.popupArticleCollectiong td:nth-child(1){
+.popupArticleCollectiong td:nth-child(1) {
     width: 6%;
 }
-.popupArticleCollectiong td:nth-child(2),
-.popupArticleCollectiong td:nth-child(3) {
-    width: 18%;
+
+.popupArticleCollectiong td:nth-child(2) {
+    width: 16%;
 }
 
-.popupArticleCollectiong td:nth-child(4){
+.popupArticleCollectiong td:nth-child(3) {
+    width: 20%;
+}
+
+.popupArticleCollectiong td:nth-child(4) {
     width: 10%;
 }
 
 .popupArticleCollectiong td:nth-child(5),
-.popupArticleCollectiong td:nth-child(6),
 .popupArticleCollectiong td:nth-child(7) {
-    width: 16%;
+    width: 14%;
+}
+
+.popupArticleCollectiong td:nth-child(6) {
+    width: 20%
 }
 
 .depositItem td:nth-child(5),
@@ -525,7 +534,7 @@
     cursor: pointer;
 }
 
-.historyingPopupScrollBox tr:hover{
+.historyingPopupScrollBox tr:hover {
     background-color: #CDCDCE;
 }
 
@@ -540,9 +549,10 @@
 }
 
 .popupArticleHistory td:nth-child(1),
-.popupArticleHistory td:nth-child(2){
+.popupArticleHistory td:nth-child(2) {
     width: 4%;
 }
+
 .popupArticleHistory td:nth-child(6) {
     width: 8%;
 }
@@ -557,7 +567,7 @@
 .popupArticleHistory td:nth-child(8),
 .popupArticleHistory td:nth-child(9),
 .popupArticleHistory td:nth-child(10),
-.popupArticleHistory td:nth-child(11){
+.popupArticleHistory td:nth-child(11) {
     width: 9%;
 }
 
@@ -569,7 +579,101 @@
     box-sizing: border-box;
 }
 
-.deleteChitBtn{
+.deleteChitBtn {
     background-color: #444;
     margin-right: 1rem;
+}
+
+
+
+
+
+
+
+.popupArticleCategori {
+    width: 100%;
+    padding-bottom: 0.4rem;
+    font-size: 1.4rem;
+    font-weight: bold;
+    border-bottom: 0.1rem solid black;
+}
+
+.popupArticleBoxTable {
+    margin-top: 2rem;
+}
+
+.addBtn {
+    background-color: #0069D9;
+    margin-left: auto;
+}
+
+.scrolling_table-list_body {
+    height: 10.8rem;
+}
+
+.addTable td:nth-child(1) {
+    width: 4%;
+}
+
+.addTable td:nth-child(2) {
+    width: 6%;
+}
+
+.addTable td:nth-child(3) {
+    width: 18%;
+}
+
+.addTable td:nth-child(4),
+.addTable td:nth-child(5),
+.addTable td:nth-child(6) {
+    width: 16%;
+}
+
+.addTable td:nth-child(7) {
+    width: 24%;
+}
+
+.addTotalTable {
+    width: calc(100% - 0.6rem);
+    height: 3.6rem;
+    background-color: #CDCDCE;
+}
+
+.addTotalTable tr {
+    height: 100%;
+}
+
+.addTotalTable td {
+    padding: 0;
+    font-size: 1.4rem;
+}
+
+.addTotalTable td:nth-child(1) {
+    text-align: right;
+    padding-right: 1rem;
+    width: 28%;
+    border-right: 0.1rem solid white;
+}
+
+.addTotalTable td:nth-child(2),
+.addTotalTable td:nth-child(3),
+.addTotalTable td:nth-child(4) {
+    text-align: right;
+    padding-right: 1rem;
+    width: 16%;
+    border-right: 0.1rem solid white;
+}
+
+.addTotalTable td:nth-child(5) {
+    text-align: left;
+    padding-left: 1rem;
+    width: 24%;
+}
+
+.addDeleteBtn {
+    background-color: #444;
+    margin-right: 1rem;
+}
+.addCloseBtn{
+    background-color: #444;
 }

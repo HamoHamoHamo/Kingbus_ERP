@@ -1,22 +1,31 @@
 const collectUnprocessed = document.querySelector("#collectUnprocessed")
 const collectprocessed = document.querySelector("#collectprocessed")
-const collectionProcessed = document.querySelectorAll(".collectionProcessed")
-const collectionUnprocessed = document.querySelectorAll(".collectionUnprocessed")
 
 
 collectUnprocessed.addEventListener("change", visibleUnprocessed)
 
 function visibleUnprocessed() {
-    if (collectUnprocessed.checked) {
-        for (i = 0; i < collectionUnprocessed.length; i++) {
-            collectionUnprocessed[i].classList.remove("tRdisplayNone")
+    if (collectUnprocessed.checked && collectprocessed.checked) {
+        for (i = 0; i < collectDateBox.length; i++){
+            collectDateBox[i].classList.remove("tRdisplayNone")
+        };
+    } else if (!collectUnprocessed.checked && collectprocessed.checked) {
+        for (i = 0; i < collectDateBox.length; i++){
+            if(collectDateBox[i].children[13].classList.contains("unprocessed")){
+                collectDateBox[i].classList.add("tRdisplayNone")
+            }else{
+                collectDateBox[i].classList.remove("tRdisplayNone")
+            }
         };
     } else {
-        for (i = 0; i < collectionUnprocessed.length; i++) {
-            collectionUnprocessed[i].classList.add("tRdisplayNone")
-        };
         collectprocessed.checked = true
-        visibleProcessed()
+        for (i = 0; i < collectDateBox.length; i++){
+            if(collectDateBox[i].children[13].classList.contains("unprocessed")){
+                collectDateBox[i].classList.remove("tRdisplayNone")
+            }else{
+                collectDateBox[i].classList.add("tRdisplayNone")
+            }
+        };
     }
     calcTotal(collectUnprocessed.checked, collectprocessed.checked)
 }
@@ -25,16 +34,27 @@ function visibleUnprocessed() {
 collectprocessed.addEventListener("change", visibleProcessed)
 
 function visibleProcessed() {
-    if (collectprocessed.checked) {
-        for (i = 0; i < collectionProcessed.length; i++) {
-            collectionProcessed[i].classList.remove("tRdisplayNone")
+    if (collectUnprocessed.checked && collectprocessed.checked) {
+        for (i = 0; i < collectDateBox.length; i++){
+            collectDateBox[i].classList.remove("tRdisplayNone")
+        };
+    } else if (!collectprocessed.checked && collectUnprocessed.checked) {
+        for (i = 0; i < collectDateBox.length; i++){
+            if(collectDateBox[i].children[13].classList.contains("processed")){
+                collectDateBox[i].classList.add("tRdisplayNone")
+            }else{
+                collectDateBox[i].classList.remove("tRdisplayNone")
+            }
         };
     } else {
-        for (i = 0; i < collectionProcessed.length; i++) {
-            collectionProcessed[i].classList.add("tRdisplayNone")
-        };
         collectUnprocessed.checked = true
-        visibleUnprocessed()
+        for (i = 0; i < collectDateBox.length; i++){
+            if(collectDateBox[i].children[13].classList.contains("processed")){
+                collectDateBox[i].classList.remove("tRdisplayNone")
+            }else{
+                collectDateBox[i].classList.add("tRdisplayNone")
+            }
+        };
     }
     calcTotal(collectUnprocessed.checked, collectprocessed.checked)
 }

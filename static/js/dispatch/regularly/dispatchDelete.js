@@ -1,29 +1,31 @@
 const RouteList = document.querySelector(".RouteList")
 const dispatchDeletBtn = document.querySelector(".dispatchDeletBtn")
+const allChecker = document.querySelector(".allChecker")
 
 dispatchDeletBtn.addEventListener("click", deleteDispatch)
 
-function deleteDispatch(){
+function deleteDispatch() {
     RouteList.action = "regularly/connect/delete"
-    let bus = ""
-    let driver = ""
-    for (i = 0; i < RouteListHBodyTr.length; i++){
-        if(RouteListHBodyTr[i].children[0].children[0].checked){
-            bus = RouteListHBodyTr[i].children[4].children[1].value
-            let selecting = RouteListHBodyTr[i].children[5].children[0]
-            let outsorcingSelecting = RouteListHBodyTr[i].children[6].children[0]
-            if(selecting.options[selecting.selectedIndex].value !== "" && outsorcingSelecting.options[outsorcingSelecting.selectedIndex].value === ""){
-                driver = selecting.options[selecting.selectedIndex].value
-            }else if(selecting.options[selecting.selectedIndex].value === "" && outsorcingSelecting.options[outsorcingSelecting.selectedIndex].value !== ""){
-                driver = outsorcingSelecting.options[selecting.selectedIndex].value
-            }else if(selecting.options[selecting.selectedIndex].value === "" && outsorcingSelecting.options[outsorcingSelecting.selectedIndex].value === ""){
-                driver = ""
+    let deleteArr = []
+    let deleteCounter = 0
+    let parms = new URLSearchParams(location.search)
+    for (i = 0; i < RouteListHBodyTr.length; i++) {
+        if (RouteListHBodyTr[i].children[0].children[0].checked) {
+            if (RouteListHBodyTr[i].classList[1] === parms.get("id")) {
+                deleteArr.push(RouteListHBodyTr[i].children[4].children[0].value !== "" ? true : false)
+            } else {
+                deleteArr.push(RouteListHBodyTr[i].children[4].innerText !== "" ? true : false)
             }
         }
     };
-    if(bus === "" && driver === ""){
-        alert("삭제할 배차가 없습니다.")
-    }else{
+    for (i = 0; i < deleteArr.length; i++) {
+        if (!deleteArr[i]) {
+            deleteCounter++
+        }
+    };
+    if (deleteCounter === deleteArr.length) {
+        return alert("삭제할 배차가 없습니다.")
+    } else {
         RouteList.submit();
     }
 }

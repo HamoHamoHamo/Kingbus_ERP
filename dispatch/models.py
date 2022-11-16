@@ -11,7 +11,7 @@ class RegularlyGroup(models.Model):
     creator = models.ForeignKey(Member, on_delete=models.SET_NULL, related_name="group_creator", db_column="creator_id", null=True)
     
     def __str__(self):
-        return self.number + self.name
+        return str(self.number) + self.name
 
 class DispatchRegularly(models.Model):
     group = models.ForeignKey(RegularlyGroup, verbose_name='그룹', on_delete=models.CASCADE, related_name="regularly_info", null=False)

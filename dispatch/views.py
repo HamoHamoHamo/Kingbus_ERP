@@ -570,9 +570,13 @@ def regularly_connect_delete(request):
         date = request.POST.get('date')
 
         for order_id in check_list:
-            order = DispatchRegularly.objects.prefetch_related('info_regularly').get(id=order_id)
-            connect = order.info_regularly.get(departure_date__startswith=date)
-            connect.delete()
+            try:
+                order = DispatchRegularly.objects.prefetch_related('info_regularly').get(id=order_id)
+                connect = order.info_regularly.get(departure_date__startswith=date)
+                connect.delete()
+            
+            except DispatchRegularlyConnect.DoesNotExist:
+                continue
 
         return redirect(request.META.get('HTTP_REFERER', 'redirect_if_referer_not_found'))
     else:
