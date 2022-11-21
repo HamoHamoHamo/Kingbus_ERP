@@ -94,11 +94,11 @@
         <div class="groupCalculateinput">
           <span>정산기간 :</span>
           <span>이번달</span>
-          <input type="text">
+          <input type="text" name="settlement_date" value="{% if group.settlement_date %}{{group.settlement_date}}{% else %}1{% endif %}">
           <span>일</span>
           <span class="tilde">~</span>
           <span>이번달</span>
-          <div></div>
+          <div>말일</div>
         </div>
         <div class="groupCreateBtnBox">
           {% if group %}

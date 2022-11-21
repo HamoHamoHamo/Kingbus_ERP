@@ -414,3 +414,41 @@
 .stateDelete{
     display: none;
 }
+
+
+.amountProcessedForm .scrolling_table-list_body{
+    height: 14.4rem;
+}
+.amountProcessedForm td{
+    padding-top: 0.6rem;
+    padding-bottom: 0.6rem;
+}
+.amountProcessedForm td:nth-child(1){
+    width: 6%;
+}
+.amountProcessedForm td:nth-child(2){
+    width: 8%;
+}
+.amountProcessedForm td:nth-child(3){
+    width: 44%;
+}
+.amountProcessedForm td:nth-child(4){
+    width: 18%;
+}
+.amountProcessedForm td:nth-child(5){
+    width: 12%;
+}
+.amountProcessedForm td:nth-child(6){
+    width: 12%;
+}
+
+.amountProcessedForm .scrolling_table-list_body td:nth-child(3){
+    text-align: left;
+    padding-left: 1rem;
+    padding-right: 1rem;
+}
+
+.amountProcessedForm .scrolling_table-list_body td:nth-child(4){
+    text-align: left;
+    padding-left: 1rem;
+}

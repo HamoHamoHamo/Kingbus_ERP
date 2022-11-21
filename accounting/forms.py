@@ -1,7 +1,7 @@
 from django import forms 
 from django.db import models
 
-from .models import AdditionalSalary, Income
+from .models import AdditionalSalary, Income, AdditionalCollect
 
 class AdditionalForm(forms.ModelForm):
     class Meta:
@@ -10,6 +10,16 @@ class AdditionalForm(forms.ModelForm):
             'date',
             'price',
             'remark',
+        ]
+
+class AdditionalCollectForm(forms.ModelForm):
+    class Meta:
+        model = AdditionalCollect
+        fields = [
+            'category',
+            'value',
+            'VAT',
+            'note',
         ]
 
 class IncomeForm(forms.ModelForm):

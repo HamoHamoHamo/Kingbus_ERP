@@ -1,26 +1,27 @@
-const add = document.querySelectorAll(".add")
 const additionalPopup = document.querySelector(".additionalPopup")
-const addCloseBtn = document.querySelector(".addCloseBtn")
 const popupBgModulesAdd = document.querySelector(".popupBgModulesAdd")
-const addMoreHidden = document.querySelector(".addMoreHidden")
-const deleteAddHidden = document.querySelector(".deleteAddHidden")
+const addCloseBtn = document.querySelector(".addCloseBtn")
+const addMoreIdHidden = document.querySelector(".addMoreIdHidden")
+const addMoreDateHidden = document.querySelector(".addMoreDateHidden")
+const searchDate = document.querySelector(".searchTool input[type=month]")
 const addListTable = document.querySelector(".addTable tbody")
-const addDeleteBtn = document.querySelector(".addDeleteBtn")
-const addListAllCheck = document.querySelector(".addListAllCheck")
-const addDeleteForm = document.querySelector(".addDeleteForm")
 const addTotalPrice = document.querySelector(".addTotalPrice")
 const addTotalVat = document.querySelector(".addTotalVat")
 const addTotalTotal = document.querySelector(".addTotalTotal")
+const addDeleteBtn = document.querySelector(".addDeleteBtn")
+const addListAllCheck = document.querySelector(".addListAllCheck")
+const addDeleteForm = document.querySelector(".addDeleteForm")
 
 
-for (i = 0; i < add.length; i++) {
-    add[i].addEventListener("click", additionPopup)
+for (i = 0; i < collectDateBox.length; i++) {
+    collectDateBox[i].children[6].addEventListener("click", openAddPopup)
 };
 
-function additionPopup() {
+function openAddPopup() {
     additionalPopup.style.display = "block"
-    addMoreHidden.value = this.parentNode.classList[1]
-    deleteAddHidden.value = this.parentNode.classList[1]
+    addMoreIdHidden.value = this.parentNode.children[0].children[0].value
+    addMoreDateHidden.value = searchDate.value
+
 
     let addRoute = 0
     for (i = 0; i < collectDateBox.length; i++) {
@@ -80,7 +81,7 @@ function additionPopup() {
 
     const addListTr = document.querySelectorAll(".scrolling_table-list_body .table-list_body-tr")
 
-    for (i = 0; i < addListTr.length; i++){
+    for (i = 0; i < addListTr.length; i++) {
         addListTr[i].children[3].innerText = addListTr[i].children[3].innerText.replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
         addListTr[i].children[4].innerText = addListTr[i].children[4].innerText.replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
         addListTr[i].children[5].innerText = addListTr[i].children[5].innerText.replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
@@ -89,7 +90,7 @@ function additionPopup() {
     let price = 0
     let vat = 0
 
-    for (i = 0; i < addListTr.length; i++){
+    for (i = 0; i < addListTr.length; i++) {
         price = price + parseInt(addListTr[i].children[3].innerText.replace(/\,/g, ""))
         vat = vat + parseInt(addListTr[i].children[4].innerText.replace(/\,/g, ""))
     };
@@ -103,34 +104,28 @@ function additionPopup() {
     addTotalTotal.innerText = addTotalTotal.innerText.replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
 }
 
+popupBgModulesAdd.addEventListener("click", clodeAddPopup)
+addCloseBtn.addEventListener("click", clodeAddPopup)
+SidemenuUseClose.addEventListener("click", clodeAddPopup)
 
-
-
-//팝업닫기
-popupBgModulesAdd.addEventListener("click", closePopupAdd)
-addCloseBtn.addEventListener("click", closePopupAdd)
-SidemenuUseClose.addEventListener("click", closePopupAdd)
-
-
-function closePopupAdd() {
+function clodeAddPopup() {
     additionalPopup.style.display = "none"
-    addListTable.innerText = ""
 }
 
 
 addDeleteBtn.addEventListener("click", deleteAdd)
 
-function deleteAdd(){
+function deleteAdd() {
     const addListCheckbox = document.querySelectorAll(".addListCheckbox")
     let checkChecker = false
-    for (i = 0; i < addListCheckbox.length; i++){
-        if(addListCheckbox[i].checked){
+    for (i = 0; i < addListCheckbox.length; i++) {
+        if (addListCheckbox[i].checked) {
             checkChecker = true
         }
     };
-    if(checkChecker){
+    if (checkChecker) {
         addDeleteForm.submit();
-    }else{
+    } else {
         alert("삭제할 항목을 선택해 주세요")
     }
 }
@@ -140,12 +135,12 @@ function addListChekingTr(addChecker, event) {
     event.stopPropagation()
     const addListCheckbox = document.querySelectorAll(`.${addChecker.children[0].children[0].classList[0]}`)
 
-    if(addChecker.children[0].children[0].checked){
+    if (addChecker.children[0].children[0].checked) {
         addChecker.children[0].children[0].checked = false
-    }else{
+    } else {
         addChecker.children[0].children[0].checked = true
     }
-    
+
     let addCheckCount = 0
     for (i = 0; i < addListCheckbox.length; i++) {
         if (addListCheckbox[i].checked) {
@@ -177,14 +172,14 @@ function addListCheking(addChecker, event) {
 
 addListAllCheck.addEventListener("change", addListAllChcecker)
 
-function addListAllChcecker(){
+function addListAllChcecker() {
     const addListCheckbox = document.querySelectorAll(".addListCheckbox")
-    if(this.checked){
-        for (i = 0; i < addListCheckbox.length; i++){
+    if (this.checked) {
+        for (i = 0; i < addListCheckbox.length; i++) {
             addListCheckbox[i].checked = true
         };
-    }else{
-        for (i = 0; i < addListCheckbox.length; i++){
+    } else {
+        for (i = 0; i < addListCheckbox.length; i++) {
             addListCheckbox[i].checked = false
         };
     }

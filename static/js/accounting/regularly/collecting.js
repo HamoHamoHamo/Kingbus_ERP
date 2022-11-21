@@ -1,42 +1,45 @@
 const loadDepositBtn = document.querySelector(".loadDepositBtn")
-const routeRadio = document.querySelectorAll(".routeSelect")
-const routeRadioAll = document.querySelector(".routeSelectAll")
 const collectingPopupAreaModules = document.querySelector(".collectingPopupAreaModules")
+const collectPopupCloseBtn = document.querySelector(".collectPopupCloseBtn")
 const popupBgModulesCollect = document.querySelector(".popupBgModulesCollect")
 const SidemenuUseClose = document.querySelector(".Sidemenu")
-const collectPopupCloseBtn = document.querySelector(".collectPopupCloseBtn")
-const targetDeposit = document.querySelectorAll(".collectingPopupScrollBox tr")
 const loadDate = document.querySelectorAll(".collectingPopupContainer .popupSearch input")
-const loadDepositHidden = document.querySelector(".loadDepositHidden")
-const collectingSearch = document.querySelector(".collectingSearch")
-const loadTable = document.querySelector(".collectingPopupScrollBox table")
 const popupBody = document.querySelector(".collectingPopupContainer .popupBody")
+const collectingSearch = document.querySelector(".collectingSearch")
 const depositorInput = document.querySelector(".depositorInput")
+const loadTable = document.querySelector(".collectingPopupScrollBox table")
 const collectPopupRegistrationBtn = document.querySelector(".collectPopupRegistrationBtn")
 const collectingPopupContainer = document.querySelector(".collectingPopupContainer")
+const month = document.querySelector(".searchTool input[type=month]")
+const collectionMonth = document.querySelector(".collectionMonth")
+
 
 let toatalAccountsReceivable = 0
+let selectGroup = false
 let checkCount = 0
 
-loadDepositBtn.addEventListener("click", loadDeposit)
+// 팝업열기
+loadDepositBtn.addEventListener("click", openLoadPopup)
 
-function loadDeposit() {
+function openLoadPopup(){
+    
+    collectionMonth.value = month.value
+    
     toatalAccountsReceivable = 0
-    let selectRoute = false
-    for (i = 0; i < routeRadio.length; i++) {
-        if (routeRadio[i].checked) {
+    for (i = 0; i < routeSelect.length; i++) {
+        if (routeSelect[i].checked) {
             const hiddenId = document.createElement("input")
             hiddenId.setAttribute("type", "hidden")
             hiddenId.setAttribute("class", "loadDepositHidden")
-            hiddenId.setAttribute("name", "order_id")
-            hiddenId.setAttribute("value", `${routeRadio[i].parentNode.parentNode.classList[1]}`)
+            hiddenId.setAttribute("name", "group_id")
+            hiddenId.setAttribute("value", `${routeSelect[i].value}`)
             popupBody.appendChild(hiddenId)
-            selectRoute = true
-            toatalAccountsReceivable = toatalAccountsReceivable + parseInt(routeRadio[i].parentNode.parentNode.children[14].innerText.replace(/\,/g, ""))
+            selectGroup = true
+            toatalAccountsReceivable = toatalAccountsReceivable + parseInt(routeSelect[i].parentNode.parentNode.children[10].innerText.replace(/\,/g, ""))
             checkCount++
         }
     };
-    if (selectRoute) {
+    if(selectGroup){
         collectingPopupAreaModules.style.display = "block"
 
         let today = new Date();
@@ -47,21 +50,17 @@ function loadDeposit() {
 
         loadDate[0].value = `${year}-${month}-${date}`
         loadDate[1].value = `${year}-${month}-${date}`
-
-        searchDeposit()
-
-    } else {
-        alert("노선을 선택해 주세요")
+    }else{
+        alert("그룹을 선택해 주세요")
     }
 }
 
+// 팝업닫기
+collectPopupCloseBtn.addEventListener("click", closeLoadPopup)
+popupBgModulesCollect.addEventListener("click", closeLoadPopup)
+SidemenuUseClose.addEventListener("click", closeLoadPopup)
 
-//팝업닫기
-popupBgModulesCollect.addEventListener("click", closePopup)
-collectPopupCloseBtn.addEventListener("click", closePopup)
-SidemenuUseClose.addEventListener("click", closePopup)
-
-function closePopup() {
+function closeLoadPopup(){
     collectingPopupAreaModules.style.display = "none"
     const hiddenId = document.querySelectorAll(".loadDepositHidden")
     for (i = 0; i < hiddenId.length; i++) {
@@ -69,22 +68,7 @@ function closePopup() {
     };
 }
 
-
-
-// 입금내역 선택
-for (i = 0; i < targetDeposit.length; i++) {
-    targetDeposit[i].addEventListener("click", selectDeposit)
-};
-
-function selectDeposit() {
-    for (i = 0; i < targetDeposit.length; i++) {
-        this.classList.remove("selectDepoditTr")
-    };
-    this.classList.add("selectDepoditTr")
-}
-
-
-
+// 검색
 collectingSearch.addEventListener("click", searchDeposit)
 
 function searchDeposit() {
@@ -93,7 +77,6 @@ function searchDeposit() {
         date1: loadDate[0].value,
         date2: loadDate[1].value,
         depositor: depositorInput.value
-
     }
     $.ajax({
         url: "/accounting/collect/load",
@@ -170,87 +153,6 @@ function clickFunction(loadList) {
 }
 
 
-for (i = 0; i < routeRadio.length; i++) {
-    routeRadio[i].addEventListener("click", checker)
-};
-
-function checker(event) {
-    event.stopPropagation()
-    let checkerCount = 0
-    for (i = 0; i < routeRadio.length; i++) {
-        if (routeRadio[i].checked) {
-            checkerCount++
-        }
-    };
-    if (routeRadio.length === checkerCount) {
-        routeRadioAll.checked = true
-    } else {
-        routeRadioAll.checked = false
-    }
-}
-
-
-routeRadioAll.addEventListener("change", AllChecker)
-
-function AllChecker() {
-    if (routeRadioAll.checked) {
-        for (i = 0; i < routeRadio.length; i++) {
-            routeRadio[i].checked = true
-        };
-    } else {
-        for (i = 0; i < routeRadio.length; i++) {
-            routeRadio[i].checked = false
-        };
-    }
-}
-
-for (i = 0; i < collectDateBox.length; i++) {
-    collectDateBox[i].children[0].addEventListener("click", checkingForTr)
-    collectDateBox[i].children[1].addEventListener("click", checkingForTr)
-    collectDateBox[i].children[2].addEventListener("click", checkingForTr)
-    collectDateBox[i].children[3].addEventListener("click", checkingForTr)
-    collectDateBox[i].children[4].addEventListener("click", checkingForTr)
-    collectDateBox[i].children[5].addEventListener("click", checkingForTr)
-    collectDateBox[i].children[6].addEventListener("click", checkingForTr)
-    collectDateBox[i].children[7].addEventListener("click", checkingForTr)
-    collectDateBox[i].children[8].addEventListener("click", checkingForTr)
-    collectDateBox[i].children[9].addEventListener("click", checkingForTr)
-    collectDateBox[i].children[11].addEventListener("click", checkingForTr)
-    collectDateBox[i].children[12].addEventListener("click", checkingForTrIf)
-    collectDateBox[i].children[13].addEventListener("click", checkingForTr)
-    collectDateBox[i].children[14].addEventListener("click", checkingForTr)
-};
-
-function checkingForTr(event) {
-    event.stopPropagation()
-    if (this.parentNode.children[0].children[0].checked) {
-        this.parentNode.children[0].children[0].checked = false
-    } else {
-        this.parentNode.children[0].children[0].checked = true
-    }
-    checker(event)
-}
-
-function checkingForTrIf(event) {
-    event.stopPropagation()
-    if(this.innerText === ""){
-        if (this.parentNode.children[0].children[0].checked) {
-            this.parentNode.children[0].children[0].checked = false
-        } else {
-            this.parentNode.children[0].children[0].checked = true
-        }
-        checker(event)
-    }
-}
-
-document.addEventListener('keydown', function (event) {
-    if (event.keyCode === 13 && collectingPopupAreaModules.style.display === "block") {
-        event.preventDefault();
-        searchDeposit()
-    };
-}, true);
-
-
 collectPopupRegistrationBtn.addEventListener("click", priceCheck)
 
 function priceCheck() {
@@ -267,3 +169,11 @@ function priceCheck() {
         collectingPopupContainer.submit();
     }
 }
+
+
+document.addEventListener('keydown', function (event) {
+    if (event.keyCode === 13 && collectingPopupAreaModules.style.display === "block") {
+        event.preventDefault();
+        searchDeposit()
+    };
+}, true);

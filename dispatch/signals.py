@@ -1,14 +1,16 @@
 from datetime import datetime, timedelta
+from dateutil.relativedelta import relativedelta
 from dispatch.views import FORMAT
-from django.db.models.signals import post_save, post_delete
+from django.db.models.signals import post_save, post_delete, pre_delete
+from django.db.models import Sum
 from django.dispatch import receiver
 from django.shortcuts import get_object_or_404
 from .models import DispatchRegularly, DispatchOrder, DispatchOrderConnect, DispatchRegularlyConnect, DispatchCheck
-from accounting.models import Salary
-from humanresource.models import Member
+from accounting.models import Salary, TotalPrice, AdditionalCollect
+
 
 import re
-
+import math
 
 
 @receiver(post_save, sender=DispatchRegularly)
@@ -20,6 +22,115 @@ def save_regularly(sender, instance, created, **kwargs):
         if instance.num2 == '': instance.num2 = 0
         instance.save()
 
+##############
+@receiver(post_save, sender=DispatchOrder)
+def save_order(sender, instance, created, **kwargs):
+    if instance.VAT == 'y':
+        total_price = int(instance.price) * int(instance.bus_cnt)
+    else:
+        total_price = int(instance.price) * int(instance.bus_cnt) + math.floor(int(instance.price) * int(instance.bus_cnt) * 0.1 + 0.5)
+    
+    if created:
+        total = TotalPrice(
+            order_id = instance,
+            total_price = total_price,
+            creator = instance.creator
+        )
+        
+    else:
+        total = get_object_or_404(TotalPrice, order_id=instance)
+        total.month = instance.departure_date[:7]
+        total.total_price = total_price
+        total.creator = instance.creator
+
+    total.save()
+    print('signal total price save', total.total_price)
+
+@receiver(pre_delete, sender=DispatchOrder)
+def delete_order(sender, instance, **kwargs):
+    collect_list = instance.order_collect.all()
+    print("TTTTTTTTTTTTTTT", collect_list)
+    for collect in collect_list:
+        income = collect.income_id
+        income.used_price = int(income.used_price) - int(collect.price)
+        if int(income.total_income) == income.used_price:
+            income.state = '완료'
+        else:
+            income.state= '미처리'
+        income.save()
+        collect.delete()
+
+
+##############
+def update_total_price(instance):
+    group = instance.regularly_id.group
+    settlement_date = group.settlement_date
+    print("sETTLEMENT", settlement_date)
+
+    if int(instance.departure_date[8:10]) < int(settlement_date):
+        month = datetime.strftime(datetime.strptime(instance.departure_date[:10], FORMAT) - relativedelta(months=1), FORMAT)[:7]
+    else:
+        month = instance.departure_date[:7]
+
+    last_date = datetime.strftime(datetime.strptime(month+'-01', FORMAT) + relativedelta(months=1) - timedelta(days=1), FORMAT)
+
+    if int(settlement_date) == 1:
+        month2 = month
+        settlement_date2 = last_date
+    else:
+        month2 = datetime.strftime(datetime.strptime(f'{month}-01', FORMAT) + relativedelta(months=1), FORMAT)[:7]
+        if int(settlement_date) > 9:
+            settlement_date2 = int(settlement_date) -1
+        else:
+            settlement_date2 = f'0{int(settlement_date) -1}'
+
+    if int(settlement_date) < 10:
+        settlement_date = f'0{settlement_date}'
+
+
+    regularly_list = group.regularly_info.all()
+    total_price = 0
+    date1 = f'{month}-{settlement_date}'
+    date2 = f'{month2}-{settlement_date2}'
+    for regularly in regularly_list:
+        connects = regularly.info_regularly.filter(departure_date__range=(f'{date1} 00:00', f'{date2} 24:00'))
+        if connects:
+            price = connects.aggregate(Sum('price'))
+            total_price += int(price['price__sum'])
+    ######### ㅇ
+    total_price += math.floor(total_price * 0.1 + 0.5)
+    print("PRICCCCCCCCCCCCCCCC", total_price)
+
+    additional_list = AdditionalCollect.objects.filter(group_id=group).filter(month=month)
+    additional = additional_list.aggregate(Sum('total_price'))
+    if additional['total_price__sum']:
+        total_additional = int(additional['total_price__sum'])
+    else:
+        total_additional = 0
+
+    try:
+        total = TotalPrice.objects.filter(group_id=group).get(month=month)
+        total.total_price = total_price + total_additional
+    except TotalPrice.DoesNotExist:
+        total = TotalPrice(
+            group_id = group,
+            month = month,
+            total_price = total_price + total_additional,
+            creator = instance.creator,
+        )
+    total.save()
+    return total
+
+@receiver(post_save, sender=DispatchRegularlyConnect)
+def save_regularly_connect(sender, instance, created, **kwargs):
+    if created:
+        total = update_total_price(instance)
+        print('signal total', total)
+        
+@receiver(post_delete, sender=DispatchRegularlyConnect)
+def delete_regularly_connect(sender, instance, **kwargs):
+    total = update_total_price(instance)
+    print('signal total', total)
 
 # @receiver(post_save, sender=DispatchOrder)
 # def save_order(sender, instance, created, **kwargs):

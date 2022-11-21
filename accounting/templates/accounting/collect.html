@@ -21,9 +21,13 @@
 <div class="searchAreaBox">
     <form action="">
         <div class="searchTool">
-            <label class="searchName">날짜검색</label>
-            <input autocomplete="off" name="date" type="date" value="" class="inputModules">
-            <input autocomplete="off" type="submit" value="검색" class="btnModules dateSearchBtn">
+            <label class="searchName">입금일 : </label>
+            <input value="{{date1}}" autocomplete="off" name="date1" type="date" class="inputModules">
+            <span>~</span>
+            <input value="{{date2}}" autocomplete="off" name="date2" type="date" class="inputModules">
+            <label class="searchName reservationName">예약자명 : </label>
+            <input autocomplete="off" value="{{search}}" name="search" type="text" class="inputModules">
+            <input autocomplete="off"type="submit" value="검색" class="btnModules dateSearchBtn">
         </div>
     </form>
 </div>
@@ -46,7 +50,9 @@
         <table class="collectTableHead">
             <thead>
                 <tr>
-                    <td>선택</td>
+                    <td>
+                        <input autocomplete="off" type="checkbox" name="loadPrice" class="routeSelectAll">
+                    </td>
                     <td>운행시간</td>
                     <td>노선</td>
                     <td>예약자 정보</td>
@@ -69,7 +75,7 @@
                 {% for order in dispatch_list %}
                 <tr class="collectDateBox {{order.id}}">
                     <td>
-                        <input autocomplete="off"type="radio" name="loadPrice" class="routeSelect">
+                        <input autocomplete="off" type="checkbox" name="loadPrice" class="routeSelect">
                     </td>
                     <td>
                         {% if order.departure_date|slice:':10' == order.arrival_date|slice:':10' %}
@@ -89,12 +95,12 @@
                         <div class="phoneNum">{{order.customer_phone}}</div>
                     </td>
                     <td>{{order.bill_place}}</td>
-                    <td>{{현금}}</td>
-                    <td>{{order.price}}</td>
+                    <td>{{order.payment_method}}</td>
+                    <td>{{order.price|multiple:order.bus_cnt}}</td>
                     <td>{% if order.VAT == 'y' %}포함{% else %}미포함{% endif %}</td>
                     <td class="SupplyPrice">{{value_list|index:forloop.counter0}}</td>
                     <td class="Vat">{{VAT_list|index:forloop.counter0}}</td>
-                    <td class="add"></td>
+                    <td class="add">{{additional_total_list|index:forloop.counter0}}</td>
                     <td class="Collect">{{total_list|index:forloop.counter0}}</td>
                     <td>
                         <span class="chit">
@@ -154,8 +160,11 @@
         <div class="popupBody">
             <div class="popupSection">
                 <div class="popupSearch">
+                    <label for="">입금인 : </label>
                     <input autocomplete="off" type="date" class="inputModules">~
                     <input autocomplete="off" type="date" class="inputModules">
+                    <label for="" class="reservationLabel">입금자명 : </label>
+                    <input autocomplete="off" type="text" class="inputModules depositorInput">
                     <div class="btnModules collectingSearch">검색</div>
                 </div>
                 <div class="popupArticle popupArticleCollectiong">
@@ -177,10 +186,9 @@
                 </div>
             </div>
             <div class="popupFooter">
-                <input autocomplete="off" type="submit" class="btnModules collectPopupRegistrationBtn" value="등록">
+                <div class="btnModules collectPopupRegistrationBtn">등록</div>
                 <div class="btnModules collectPopupCloseBtn">닫기</div>
             </div>
-            <input autocomplete="off" type="hidden" name="order_id" class="loadDepositHidden" value="">
         </div>
     </form>
   </div>
@@ -232,37 +240,40 @@
         <div class="popupBgModules popupBgModulesAdd"></div>
         <div class="popupContainer popupContainerDouble">
             <div class="popupHeader">
-                <div class="popupTitle">경유지 추가</div>
+                <div class="popupTitle">추가 입력사항</div>
             </div>
             <div class="popupBody">
                 <div class="popupSection">
-                    <form action="">
+                    <form method="post" action="{% url 'accounting:additional_collect_create' %}">
+                        {% csrf_token %}
                         <div class="popupArticleCategori">추가입력사항</div> 
                         <div class="popupArticleBox">
                             <div class="popupArticleDouble">
                                 <label for="" class="popupArticleLabel">항목</label>
-                                <input autocomplete="off" type="text" class="popupArticleinput">
+                                <input autocomplete="off" name="category" type="text" class="popupArticleinput">
                             </div>
                             <div class="popupArticleDouble">
                                 <label for="" class="popupArticleLabel">공급가액</label>
-                                <input autocomplete="off" type="text" class="popupArticleinput">
+                                <input autocomplete="off" name="value" type="text" class="popupArticleinput">
                             </div>
                         </div>
                         <div class="popupArticleBox">
                             <div class="popupArticleDouble">
                                 <label for="" class="popupArticleLabel">부가세</label>
-                                <input autocomplete="off" type="text" class="popupArticleinput">
+                                <input autocomplete="off" name="VAT" type="text" class="popupArticleinput">
                             </div>
                             <div class="popupArticleDouble">
                                 <label for="" class="popupArticleLabel">비고</label>
-                                <input autocomplete="off" type="text" class="popupArticleinput">
+                                <input autocomplete="off" name="note" type="text" class="popupArticleinput">
                             </div>
                         </div>
                         <div class="popupArticleBox">
-                            <div class="btnModules addBtn">추가</div>
+                            <input type="submit" class="btnModules addBtn" value="추가">
                         </div>
+                        <input type="hidden" name="id" class="addMoreHidden">
                     </form>
-                    <form action="">
+                    <form method="post" action="{% url 'accounting:additional_collect_delete' %}" class="addDeleteForm">
+                        {% csrf_token %}
                         <div class="popupArticleCategori">추가입력 목록</div>                
                         <div class="popupArticleBoxTable">
                             <div class="scrolling_table-list_header addTable">
@@ -270,7 +281,7 @@
                                 <thead>
                                     <tr class="table-list_head-tr">
                                         <td class="table-list_head-tr_td">
-                                            <input type="checkbox">
+                                            <input type="checkbox" class="addListAllCheck">
                                         </td>
                                         <td class="table-list_head-tr_td">번호</td>
                                         <td class="table-list_head-tr_td">항목</td>
@@ -284,53 +295,21 @@
                             </div>
                             <div class="scrolling_table-list_body addTable">
                                 <table class="table-list">
-                                <tbody>
-                                    <tr class="table-list_body-tr">
-                                        <td class="table-list_body-tr_td">
-                                            <input type="checkbox">
-                                        </td>
-                                        <td class="table-list_body-tr_td"></td>
-                                        <td class="table-list_body-tr_td"></td>
-                                        <td class="table-list_body-tr_td"></td>
-                                        <td class="table-list_body-tr_td"></td>
-                                        <td class="table-list_body-tr_td"></td>
-                                        <td class="table-list_body-tr_td"></td>
-                                    </tr>
-                                    <tr class="table-list_body-tr">
-                                        <td class="table-list_body-tr_td">
-                                            <input type="checkbox">
-                                        </td>
-                                        <td class="table-list_body-tr_td"></td>
-                                        <td class="table-list_body-tr_td"></td>
-                                        <td class="table-list_body-tr_td"></td>
-                                        <td class="table-list_body-tr_td"></td>
-                                        <td class="table-list_body-tr_td"></td>
-                                        <td class="table-list_body-tr_td"></td>
-                                    </tr>
-                                    <tr class="table-list_body-tr">
-                                        <td class="table-list_body-tr_td">
-                                            <input type="checkbox">
-                                        </td>
-                                        <td class="table-list_body-tr_td"></td>
-                                        <td class="table-list_body-tr_td"></td>
-                                        <td class="table-list_body-tr_td"></td>
-                                        <td class="table-list_body-tr_td"></td>
-                                        <td class="table-list_body-tr_td"></td>
-                                        <td class="table-list_body-tr_td"></td>
-                                    </tr>
-                                </tbody>
+                                    <tbody>
+                                    </tbody>
                                 </table>
                             </div>
                             <table class="addTotalTable">
                                 <tr>
                                     <td colspan="3">합계</td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
+                                    <td class="addTotalPrice"></td>
+                                    <td class="addTotalVat"></td>
+                                    <td class="addTotalTotal"></td>
                                     <td></td>
                                 </tr>
                             </table>
                         </div>
+                        <input type="hidden" name="order_id" class="deleteAddHidden">
                     </form>
                 </div>
                 <div class="popupFooter">
@@ -350,6 +329,9 @@
     {% autoescape off %}
     const incomeList = {{income_list}};
     console.log("incomeList", incomeList);
+    const additionalList = {{additional_list}};
+    console.log("additionalList", additionalList);
+    
     {% endautoescape %}
 </script>
 <script src="{% static 'js/accounting/total.js' %}"></script>

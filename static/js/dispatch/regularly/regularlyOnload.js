@@ -6,7 +6,7 @@ window.onload = function () {
     inputToDay()
     selectRoute()
     drawSchdule()
-    notPairFilter()
+    // notPairFilter()
     if (parms.has("id")) {
         DispatcBusFilterRegularly()
         afterSelectRoute()

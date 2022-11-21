@@ -4,7 +4,7 @@ const prevBtn = document.querySelector(".prev_btn")
 const nextBtn = document.querySelector(".next_btn")
 const ageCheckbox = document.querySelector("#ageFilter")
 const filterHeader = document.querySelector(".table-list_head-tr td:nth-child(6)")
-const filterHeaderArrow = document.querySelector(".table-list_head-tr td:nth-child(6) svg")
+const filterHeaderArrow = document.querySelector(".option-order")
 
 let filter = false
 
@@ -421,7 +421,10 @@ function makeSortUpData(targetData) {
         }
     };
 
-    filterHeaderArrow.style.transform = "rotate(0turn)"
+    filterHeaderArrow.style.borderTop = "1rem solid white"
+    filterHeaderArrow.style.borderBottom = "1rem solid transparent"
+    filterHeaderArrow.style.marginTop = "1rem"
+    filterHeaderArrow.style.marginBottom = "0"
     data = resultArry
 }
 
@@ -449,6 +452,9 @@ function makeSortDownData(targetData) {
         }
     };
 
-    filterHeaderArrow.style.transform = "rotate(0.5turn)"
+    filterHeaderArrow.style.borderBottom = "1rem solid white"
+    filterHeaderArrow.style.borderTop = "1rem solid transparent"
+    filterHeaderArrow.style.marginBottom = "1rem"
+    filterHeaderArrow.style.marginTop = "0"
     data = resultArry
 }

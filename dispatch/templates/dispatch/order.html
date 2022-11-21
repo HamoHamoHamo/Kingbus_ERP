@@ -583,8 +583,8 @@
                                     <div class="orderListSubContents">{{order.ticketing_info}}</div>
                                     <div class="orderListSubContents">{{order.cost_type}}</div>
                                     <div class="orderListSubContents">{{order.references}}</div>
-                                    <div class="orderListSubContents"></div>
-                                    <div class="orderListSubContents"></div>
+                                    <div class="orderListSubContents">{{collect_list|index:forloop.counter0}}</div>
+                                    <div class="orderListSubContents">{{outstanding_list|index:forloop.counter0}}</div>
                                     <div class="orderListSubContents">{{order.VAT}}</div>
                                     <div class="orderListSubContents">{{order.bill_place}}</div>
                                     <div class="orderListSubContents">{{order.creator.name}}</div>

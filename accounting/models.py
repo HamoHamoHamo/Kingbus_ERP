@@ -1,4 +1,4 @@
-from dispatch.models import DispatchOrder, DispatchRegularly
+from dispatch.models import DispatchOrder, DispatchRegularly, RegularlyGroup
 from django.db import models
 from humanresource.models import Member
 import datetime
@@ -14,8 +14,6 @@ class Salary(models.Model):
     month = models.CharField(verbose_name='지급월', null=False,max_length=7, default=str(datetime.datetime.now())[:7])
     creator = models.ForeignKey(Member, on_delete=models.SET_NULL, related_name="salary_user", db_column="user_id", null=True)
     pub_date = models.DateTimeField(verbose_name='작성시간', auto_now_add=True, null=False)
-    
-
     
 class AdditionalSalary(models.Model):
     salary_id = models.ForeignKey(Salary, on_delete=models.CASCADE, related_name="additional_salary", null=False)
@@ -46,18 +44,33 @@ class Income(models.Model):
 
 
 class Collect(models.Model):
-    order_id = models.ForeignKey(DispatchOrder, on_delete=models.SET_NULL, related_name="order_collect", null=True)
-    regularly_id = models.ForeignKey(DispatchRegularly, on_delete=models.SET_NULL, related_name="regularly_collect", null=True)
+    order_id = models.ForeignKey(DispatchOrder, on_delete=models.SET_NULL, related_name="order_collect", null=True, blank=True)
+    group_id = models.ForeignKey(RegularlyGroup, on_delete=models.SET_NULL, related_name="group_collect", null=True, blank=True)
+    month = models.CharField(verbose_name='월', max_length=10, null=True)
     income_id = models.ForeignKey(Income, on_delete=models.CASCADE, related_name="income_collect", null=True)
     price = models.CharField(verbose_name='처리된 금액', max_length=20, null=False)
     creator = models.ForeignKey(Member, on_delete=models.SET_NULL, related_name="user_collect", db_column="user_id", null=True)
     pub_date = models.DateTimeField(verbose_name='작성시간', auto_now_add=True, null=False)
     
 
+class TotalPrice(models.Model):
+    group_id = models.ForeignKey(RegularlyGroup, on_delete=models.CASCADE, related_name="total_price_group", null=True, blank=True)
+    order_id = models.ForeignKey(DispatchOrder, on_delete=models.CASCADE, related_name="total_price_order", null=True, blank=True)
+    month = models.CharField(verbose_name='월', max_length=10, null=False)
+    total_price = models.CharField(verbose_name='총 계약금액', max_length=20, null=False)
+    pub_date = models.DateTimeField(auto_now_add=True, verbose_name='작성시간')
+    creator = models.ForeignKey(Member, on_delete=models.SET_NULL, related_name="total_price_creator", db_column="creator_id", null=True)
+    
+    def __str__(self):
+        if self.group_id:
+            return '출퇴근 ' + self.month + ' ' + self.group_id.name
+        elif self.order_id:
+            return self.month + ' ' + self.order_id.route
+    
 class AdditionalCollect(models.Model):
-    type = models.CharField(verbose_name='출퇴근 or 일반', max_length=1, null=False)
-    order_id = models.ForeignKey(DispatchOrder, on_delete=models.SET_NULL, related_name="order_additional_collect", null=True)
-    regularly_id = models.ForeignKey(DispatchRegularly, on_delete=models.SET_NULL, related_name="regularly_additional_collect", null=True)
+    group_id = models.ForeignKey(RegularlyGroup, on_delete=models.SET_NULL, related_name="regularly_additional_collect", null=True, blank=True)
+    order_id = models.ForeignKey(DispatchOrder, on_delete=models.SET_NULL, related_name="order_additional_collect", null=True, blank=True)
+    month = models.CharField(verbose_name='월', max_length=10, null=False)
     category = models.CharField(verbose_name='항목', max_length=50, null=False)
     value = models.CharField(verbose_name='공급가액', max_length=20, null=False)
     VAT = models.CharField(verbose_name='부가세', max_length=20, null=False)
@@ -67,10 +80,10 @@ class AdditionalCollect(models.Model):
     pub_date = models.DateTimeField(verbose_name='작성시간', auto_now_add=True, null=False)
     
     def __str__(self):
-        if self.type == '출퇴근':
-            return self.regularly_id
-        elif self.type == '일반':
-            return self.order_id
+        if self.order_id:
+            return self.order_id.route
+        elif self.group_id:
+            return self.group_id.name
 
 class LastIncome(models.Model):
     tr_date = models.CharField(verbose_name='거래일시', max_length=20, null=False)

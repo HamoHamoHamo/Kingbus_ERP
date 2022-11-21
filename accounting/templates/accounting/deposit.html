@@ -206,12 +206,12 @@
                         <table class="table-list">
                           <thead>
                             <tr class="table-list_head-tr">
-                              <td class="table-list_head-tr_td"></td>
-                              <td class="table-list_head-tr_td"></td>
-                              <td class="table-list_head-tr_td"></td>
-                              <td class="table-list_head-tr_td"></td>
-                              <td class="table-list_head-tr_td"></td>
-                              <td class="table-list_head-tr_td"></td>
+                              <td class="table-list_head-tr_td">순서</td>
+                              <td class="table-list_head-tr_td">구분</td>
+                              <td class="table-list_head-tr_td">이름</td>
+                              <td class="table-list_head-tr_td">운행기간</td>
+                              <td class="table-list_head-tr_td">계약금액</td>
+                              <td class="table-list_head-tr_td">처리된 금액</td>
                             </tr>
                           </thead>
                         </table>
@@ -219,12 +219,6 @@
                       <div class="scrolling_table-list_body">
                         <table class="table-list">
                           <tbody>
-                            <tr class="table-list_body-tr">
-                              <td class="table-list_body-tr_td"></td>
-                            </tr>
-                            <tr class="table-list_body-tr">
-                              <td class="table-list_body-tr_td"></td>
-                            </tr>
                           </tbody>
                         </table>
                       </div>
@@ -307,6 +301,8 @@
     {% autoescape off %}
     const dataList = {{data_list}};
     console.log("dataList", dataList);
+    const collectList = {{collect_list}};
+    console.log("collectList", collectList);
     {% endautoescape %}
 </script>
 <script src="{% static 'js/accounting/dateSeparate.js' %}"></script>
