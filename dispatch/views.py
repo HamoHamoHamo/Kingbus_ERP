@@ -1,6 +1,7 @@
 import json
+import math
 import pandas as pd
-from django.db.models import Q
+from django.db.models import Q, Sum
 from django.core.exceptions import ObjectDoesNotExist, MultipleObjectsReturned
 from django.http import Http404, JsonResponse, HttpResponse, HttpResponseBadRequest, HttpResponseNotAllowed
 from django.shortcuts import render, redirect, get_object_or_404
@@ -9,7 +10,7 @@ from django.views import generic
 
 from .forms import OrderForm, ConnectForm, RegularlyForm
 from .models import DispatchCheck, Schedule, DispatchOrderConnect, DispatchOrder, DispatchRegularly, RegularlyGroup, DispatchRegularlyConnect, DispatchOrderWaypoint
-from accounting.models import Salary
+from accounting.models import Salary, Collect, TotalPrice
 from humanresource.models import Member
 from itertools import chain
 from vehicle.models import Vehicle
@@ -23,6 +24,14 @@ TODAY = str(datetime.now())[:10]
 FORMAT = "%Y-%m-%d"
 WEEK = ['(월)', '(화)', '(수)', '(목)', '(금)', '(토)', '(일)', ]
 WEEK2 = ['월', '화', '수', '목', '금', '토', '일', ]
+
+def test(request):
+    # regularly_list = DispatchRegularlyConnect.objects.all()
+    # for regularly in regularly_list:
+    #     regularly.price = regularly.regularly_id.price
+    #     regularly.save()
+    print('end')
+    return 
 
 class RegularlyPrintList(generic.ListView):
     template_name = 'dispatch/regularly_print.html'
@@ -291,7 +300,7 @@ class RegularlyDispatchList(generic.ListView):
         
         if group_id:
             group = RegularlyGroup.objects.get(id=group_id)
-            dispatch_list = group.regularly_info.filter(week__contains=weekday).order_by('num1', 'number1', 'num2', 'number2')
+            dispatch_list = DispatchRegularly.objects.filter(group=group).filter(week__contains=weekday).order_by('num1', 'number1', 'num2', 'number2')
         else:
             dispatch_list = DispatchRegularly.objects.filter(week__contains=weekday).order_by('group', 'num1', 'number1', 'num2', 'number2')
         return dispatch_list
@@ -313,9 +322,6 @@ class RegularlyDispatchList(generic.ListView):
 
             str_start_date = datetime.strftime(start_date, FORMAT)
             
-
-            dispatch_history = context['detail'].info_regularly.filter(departure_date__range=(str_start_date, str_end_date))
-
             history_list = []
             date_list = []
             block_list = []
@@ -479,6 +485,7 @@ def regularly_connect_create(request):
             arrival_date = f'{date} {order.arrival_time}',
             work_type = order.work_type,
             driver_allowance = order.driver_allowance,
+            price = order.price,
             outsourcing = outsourcing,
             creator = creator
         )
@@ -536,6 +543,7 @@ def regularly_connect_load(request, week):
             print('does not exists')
             bus_list.append('')
             driver_list.append('')
+            outsourcing_list.append('')
             regularly_list.append(regularly)
             continue
         except MultipleObjectsReturned:
@@ -847,6 +855,7 @@ def regularly_group_create(request):
         group = RegularlyGroup(
             name = request.POST.get('name'),
             number = '999',
+            settlement_date = request.POST.get('settlement_date'),
             creator = get_object_or_404(Member, pk=request.session['user'])
         )
         group.save()
@@ -859,8 +868,10 @@ def regularly_group_edit(request):
     if request.method == "POST":
         id = request.POST.get('id', None)
         name = request.POST.get('name', None)
+        settlement_date = request.POST.get('settlement_date')
         group = get_object_or_404(RegularlyGroup, id=id)
         
+        group.settlement_date = settlement_date
         group.name = name
         group.save()
         
@@ -1027,27 +1038,56 @@ class OrderList(generic.ListView):
         context['dispatch_list2'] = dispatch_list2
         context['dispatch_data_list'] = dispatch_data_list
         #
-        
+        collect_list = []
+        outstanding_list = []
+
         total = {}
         total['c_bus_cnt'] = 0
         total['bus_cnt'] = 0
         total['driver_allowance'] = 0
         total['price'] = 0
         total['collection_amount'] = 0
+        total['outstanding_amount'] = 0
         
         for order in context['order_list']:
             total['c_bus_cnt'] += int(order.info_order.count())
             total['bus_cnt'] += int(order.bus_cnt)
-            total['driver_allowance'] += int(order.driver_allowance)
-            total['price'] += int(order.price)
-            total['collection_amount'] += int(order.collection_amount)
+            total['driver_allowance'] += int(order.driver_allowance) * int(order.bus_cnt)
+            try:
+                total_price = int(TotalPrice.objects.get(order_id=order).total_price)
+                total['price'] += total_price
+            # #################### total price 없으면 만들어주기 나중에 주석처리
+            except TotalPrice.DoesNotExist:
+                if order.VAT == 'y':
+                    total_price = int(order.price) * int(order.bus_cnt)
+                else:
+                    total_price = int(order.price) * int(order.bus_cnt) + math.floor(int(order.price) * int(order.bus_cnt) * 0.1 + 0.5)
+                total = TotalPrice(
+                    order_id = order,
+                    total_price = total_price,
+                    creator = order.creator
+                )
+                total.save()
+                total['price'] += total_price
+            ####################################
+            collect_amount = Collect.objects.filter(order_id=order).aggregate(Sum('price'))['price__sum']
+            if collect_amount:
+                total['collection_amount'] += int(collect_amount)
+                total['outstanding_amount'] += total_price - int(collect_amount)
+                collect_list.append(int(collect_amount))
+                outstanding_list.append(total_price - int(collect_amount))
+            else:
+                outstanding_list.append(0)
+                collect_list.append(0)
             
-        total['outstanding_amount'] = total['price'] - total['collection_amount']
+            
         context['total'] = total
         
         context['vehicles'] = Vehicle.objects.filter(use='y').order_by('vehicle_num', 'driver_name')
         context['selected_date1'] = self.request.GET.get('date1')
         context['selected_date2'] = self.request.GET.get('date2')
+        context['collect_list'] = collect_list
+        context['outstanding_list'] = outstanding_list
 
         return context
 
@@ -1148,6 +1188,11 @@ def order_create(request):
             order.driver_allowance = driver_allowance
             order.VAT = request.POST.get('VAT', 'n')
             order.creator = creator
+            order.collection_type = request.POST.get('collection_type').split('(')[0]
+            
+            # 현지수금(카드)
+            order.payment_method = request.POST.get('collection_type').split('(')[1][:-1]
+
             order.cost_type = ' '.join(request.POST.getlist('cost_type'))
             order.option = ' '.join(request.POST.getlist('option'))
             order.departure_date = f"{request.POST.get('departure_date')} {departure_time1}:{departure_time2}"
@@ -1282,7 +1327,9 @@ def order_edit(request):
             order.bill_place = order_form.cleaned_data['bill_place']
             order.ticketing_info = order_form.cleaned_data['ticketing_info']
             order.order_type = order_form.cleaned_data['order_type']
-            order.collection_type = order_form.cleaned_data['collection_type']
+            # 현지수금(카드)
+            order.collection_type = request.POST.get('collection_type').split('(')[0]            
+            order.payment_method = request.POST.get('collection_type').split('(')[1][:-1]
             
             order.VAT = request.POST.get('VAT', 'n')
             order.route = order_form.cleaned_data['departure'] + " ▶ " + order_form.cleaned_data['arrival']

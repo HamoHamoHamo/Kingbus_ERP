@@ -17,11 +17,19 @@
     font-weight: normal;
 }
 
+.reservationName {
+    margin-left: 2rem
+}
+
 .dateSearchBtn {
     margin-left: 1rem;
     background-color: #444;
 }
 
+.searchTool span {
+    font-size: 1.4rem;
+    margin: 0 0.4rem;
+}
 
 
 
@@ -99,11 +107,11 @@
 }
 
 .collectBody td:nth-child(2) {
-    width: 6%;
+    width: 7%;
 }
 
 .collectBody td:nth-child(3) {
-    width: 22%;
+    width: 21%;
 }
 
 .collectBody td:nth-child(4),
@@ -168,11 +176,11 @@
     background-color: #EFEFEF;
 }
 
-.unprocessed{
+.unprocessed {
     color: red;
 }
 
-.processed{
+.processed {
     color: black;
 }
 
@@ -354,6 +362,10 @@
     background-color: white;
     border-radius: 0.2rem;
     font-size: 1.4rem;
+}
+
+.reservationLabel {
+    margin-left: 2rem;
 }
 
 .popupSearch .inputModules {
@@ -611,6 +623,10 @@
     height: 10.8rem;
 }
 
+.addTable tr {
+    cursor: pointer;
+}
+
 .addTable td:nth-child(1) {
     width: 4%;
 }
@@ -631,6 +647,19 @@
 
 .addTable td:nth-child(7) {
     width: 24%;
+}
+
+
+.scrolling_table-list_body td:nth-child(4),
+.scrolling_table-list_body td:nth-child(5),
+.scrolling_table-list_body td:nth-child(6) {
+    text-align: right;
+    padding-right: 1rem;
+}
+
+.scrolling_table-list_body td:nth-child(7) {
+    text-align: left;
+    padding-left: 1rem;
 }
 
 .addTotalTable {
@@ -674,6 +703,7 @@
     background-color: #444;
     margin-right: 1rem;
 }
-.addCloseBtn{
+
+.addCloseBtn {
     background-color: #444;
 }

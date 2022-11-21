@@ -23,3 +23,12 @@ def to_int(to):
 @register.filter
 def minus(val, i):
     return int(val)-int(i)
+
+@register.filter
+def multiple(val, i):
+    return int(val)*int(i)
+
+@register.filter
+def obj(indexable, i):
+    #print("TEMPLATEINDEX", "LIST : ", indexable, "I : ", i)
+    return indexable[i]

@@ -49,7 +49,7 @@ class OrderForm(forms.ModelForm):
             # 'deposit_status',
             'bill_place',
             # 'bill_date',
-            'collection_type',
+            # 'collection_type',
             'ticketing_info',
             'order_type',
             # 'payment_method',

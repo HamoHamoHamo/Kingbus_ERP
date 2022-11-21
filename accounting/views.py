@@ -1,7 +1,7 @@
 import json
 import my_settings
-from .models import Salary, Income, AdditionalSalary, LastIncome, AdditionalCollect, Collect
-from .forms import AdditionalForm, IncomeForm
+from .models import Salary, Income, AdditionalSalary, LastIncome, AdditionalCollect, Collect, TotalPrice
+from .forms import AdditionalForm, IncomeForm, AdditionalCollectForm
 from dispatch.views import FORMAT
 from humanresource.models import Member
 from datetime import datetime, timedelta, date
@@ -10,15 +10,16 @@ from dispatch.models import DispatchOrder, DispatchOrderConnect, DispatchRegular
 from django.db.models import Sum
 from django.http import JsonResponse, Http404, HttpResponse, HttpResponseNotAllowed, HttpResponseRedirect
 from django.shortcuts import render, redirect, get_object_or_404
-from django.urls import reverse, reverse_lazy
 from django.views import generic
 from django.core.exceptions import BadRequest
 from config import settings
-from popbill import EasyFinBankService, PopbillException, ContactInfo, JoinForm, CorpInfo, BankAccountInfo
+from popbill import EasyFinBankService
+import math
 import time
 
 TODAY = str(datetime.now())[:10]
 WEEK = ['(월)', '(화)', '(수)', '(목)', '(금)', '(토)', '(일)', ]
+WEEK2 = ['월', '화', '수', '목', '금', '토', '일', ]
 
 # settings.py 작성한 LinkID, SecretKey를 이용해 EasyFinBankService 서비스 객체 생성
 easyFinBankService = EasyFinBankService(settings.LinkID, settings.SecretKey)
@@ -336,37 +337,310 @@ class IncomeList(generic.ListView):
 
         return context
 
+# def week_count(last_date):
+#     month = last_date[:7]
+#     week_obj = {
+#         '월': 4,
+#         '화': 4,
+#         '수': 4,
+#         '목': 4,
+#         '금': 4,
+#         '토': 4,
+#         '일': 4,
+#     }
+#     date = datetime.strptime(f'{month}-01', FORMAT)
+#     for i in range(int(last_date[8:])-28):
+        
+#         plus = WEEK2[date.weekday()]
+#         week_obj[plus] += 1
+
+#         date += timedelta(days=1)
+
+
+#     return week_obj
+
 class RegularlyCollectList(generic.ListView):
     template_name = 'accounting/regularly_collect.html'
     context_object_name = 'group_list'
     model = RegularlyGroup
 
     def get_queryset(self):
-        group_list = RegularlyGroup.objects.all().order_by('number', 'name')
+        group_list = RegularlyGroup.objects.prefetch_related('regularly_info').all().order_by('number', 'name')
         
         return group_list
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         #쿼리 줄일 방법 생각
-        date = self.request.GET.get('date', TODAY)
-        month = date[:7]
+        month = self.request.GET.get('date', TODAY[:7])
+        context['month'] = month
+        creator = get_object_or_404(Member, pk=self.request.session.get('user'))
 
-        regularly_list = DispatchRegularly.objects.prefetch_related('info_regularly').all().order_by('group', 'num1', 'number1', 'num2', 'number2')
-        price_obj = {}
+        contract_price_list = []
+        settlement_list = []
+        additional_list = []
+
+        value_list = []
+        VAT_list = []
+        additional_price_list = []
+        total_list = []
+        state_list = []
+        outstanding_list = []
+        #
+        income_list = []
+        
+
+        last_date = datetime.strftime(datetime.strptime(month+'-01', FORMAT) + relativedelta(months=1) - timedelta(days=1), FORMAT)
+        
+
         for group in context['group_list']:
-            price_obj[group.id] = 0
+            collect_list = Collect.objects.filter(group_id=group).filter(month=month)
+            temp_list = []
+            price_total = 0
 
-        for regularly in regularly_list:
-            connects = regularly.info_regularly.filter(departure_date__startswith=month)
-            if connects:
-                price = connects.aggregate(Sum('regularly_id__price'))
+            for collect in collect_list:
+                temp_list.append({
+                    'serial': collect.income_id.serial,
+                    'date': collect.income_id.date,
+                    'payment_method': collect.income_id.payment_method,
+                    'bank': collect.income_id.bank,
+                    'commission': collect.income_id.commission,
+                    'acc_income': collect.income_id.acc_income,
+                    'depositor': collect.income_id.depositor,
+                    'state': collect.income_id.state,
+                    'price': collect.price,
+                    'id': collect.id,
+                })
+                price_total += int(collect.price)
+            income_list.append(temp_list)
             
-            if price['regularly_id__price__sum']:
-                price_obj[regularly.group.id] += int(price['regularly_id__price__sum'])
+            # 정산기간
+            settle_date = group.settlement_date
+            if int(settle_date) < 10:
+                settle_date = f'0{settle_date}'
+            settle_month = month[5:7]
+
             
-        context['price_obj'] = price_obj
+            if group.settlement_date == '1':
+                
+                n_settle_date = last_date[8:]
+                n_settle_month = settle_month
+                settlement = f'{month[2:4]}/{settle_month}/{settle_date} ~ {month[2:4]}/{n_settle_month}/{n_settle_date}'
+
+            else:
+                if int(settle_month) > 8:
+                    n_settle_month = int(settle_month) + 1
+                else:
+                    n_settle_month = f'0{int(settle_month) + 1}'
+                
+                if int(settle_date) > 9:
+                    n_settle_date = int(settle_date) - 1
+                else:
+                    n_settle_date = f'0{int(settle_date) - 1}'
+                                        
+                settlement = f'{month[2:4]}/{settle_month}/{settle_date} ~ {month[2:4]}/{n_settle_month}/{n_settle_date}'
+
+            settlement_list.append(settlement)
+            ##
+            ##########RegularlyTotalPrice에서 불러오게 수정
+            # regularly_list = group.regularly_info.all()
+            # temp_t_price = 0
+            
+            # for regularly in regularly_list:
+            #     date1 = f'{month[:4]}-{settle_month}-{settle_date}'
+            #     date2 = f'{month[:4]}-{n_settle_month}-{n_settle_date}'
+            #     connects = regularly.info_regularly.filter(departure_date__range=(date1, date2))
+            #     if connects:
+            #         price = connects.aggregate(Sum('regularly_id__price'))
+            #         temp_t_price += int(price['regularly_id__price__sum'])
+            # ######### ㅇ
+            
+            # contract_price_list.append(temp_t_price)
+            
+            #########################
+            # if temp_t_price != 0:
+            #     total = TotalPrice(
+            #         group_id = group,
+            #         month = month,
+            #         total_price = temp_t_price,
+            #         creator = creator
+            #     )
+            #     total.save()
+            #######################
+            additionals = AdditionalCollect.objects.filter(group_id=group).filter(month=month)
+            
+            temp_value = 0
+            temp_VAT = 0
+            temp_additional = 0
+
+            temp_list = []
+            for additional in additionals:
+                temp_additional += int(additional.total_price)
+                temp_value += int(additional.value)
+                temp_VAT += int(additional.VAT)
+
+                temp_list.append({
+                    'category': additional.category,
+                    'value': additional.value,
+                    'VAT': additional.VAT,
+                    'total_price': additional.total_price,
+                    'note': additional.note,
+                    'id': additional.id
+                })
+                
+            try:
+                total = TotalPrice.objects.filter(group_id=group).get(month=month)
+                total_list.append(int(total.total_price))
+                contract_price_list.append(math.floor((total_list[-1] - temp_additional) / 1.1 + 0.5))
+            except TotalPrice.DoesNotExist:
+                total_list.append(0)
+                contract_price_list.append(0)
+
+            additional_price_list.append(temp_additional)
+            value_list.append(temp_value + contract_price_list[-1])
+            VAT_list.append(temp_VAT + math.floor(contract_price_list[-1] * 0.1 + 0.5))
+            
+
+            additional_list.append(temp_list)
+
+            if price_total == total_list[-1]:
+                state_list.append('완료')
+                outstanding_list.append(0)
+            else:
+                state_list.append('미처리')
+                outstanding_list.append(total_list[-1] - price_total)
+
+        context['additional_price_list'] = additional_price_list
+        context['value_list'] = value_list
+        context['VAT_list'] = VAT_list
+        context['total_list'] = total_list    
+        
+        context['income_list'] = income_list
+        context['contract_price_list'] = contract_price_list
+        context['settlement_list'] = settlement_list
+        context['additional_list'] = additional_list
+        context['state_list'] = state_list
+        context['outstanding_list'] = outstanding_list
+        
         return context
+
+def r_collect_create(request):
+    if request.method == 'POST':
+        creator = get_object_or_404(Member, pk=request.session.get('user'))
+        group_id_list = request.POST.getlist('group_id')
+        income_id = request.POST.get('income_id')
+        income = get_object_or_404(Income, id=income_id)
+        month = request.POST.get('month')
+        for group_id in group_id_list:
+            group = get_object_or_404(RegularlyGroup, id=group_id)
+
+            total = TotalPrice.objects.filter(group_id=group).get(month=month)
+            collect_list = Collect.objects.filter(group_id=group)
+            collect_price = collect_list.aggregate(Sum('price'))['price__sum']
+
+            if collect_price:
+                n_total_price = int(total.total_price) - int(collect_price)
+            else:
+                n_total_price = int(total.total_price)
+
+            if n_total_price < int(income.total_income) - int(income.used_price):
+                price = n_total_price
+            else:
+                price = int(income.total_income) - int(income.used_price)
+
+            collect = Collect(
+                group_id = group,
+                income_id = income,
+                price = price,
+                month = month,
+                creator = creator
+            )
+            collect.save()
+            used_price = int(income.used_price) + int(price)
+            income.used_price = used_price
+            print("TEST", used_price)
+            print("total", income.total_income)
+            if int(used_price) == int(income.total_income):
+                income.state = '완료'
+            income.save()
+
+        return redirect(request.META.get('HTTP_REFERER', 'redirect_if_referer_not_found'))
+    else:
+    
+        return HttpResponseNotAllowed(['post'])
+
+def r_additional_collect_create(request):
+    if request.method == 'POST':
+        r_additional_form = AdditionalCollectForm(request.POST)
+        if r_additional_form.is_valid():
+            id = request.POST.get('id')
+            month = request.POST.get('month')
+            group = get_object_or_404(RegularlyGroup, id=id)
+            creator = get_object_or_404(Member, pk=request.session.get('user'))
+            
+            r_additional = r_additional_form.save(commit=False)
+            r_additional.group_id = group
+            r_additional.total_price = int(r_additional.value) + int(r_additional.VAT)
+            r_additional.month = month
+            r_additional.creator = creator
+            r_additional.save()
+            return redirect(request.META.get('HTTP_REFERER', 'redirect_if_referer_not_found'))
+        else:
+            raise BadRequest
+    else:
+        return HttpResponseNotAllowed(['post'])
+
+
+def r_additional_collect_delete(request):
+    if request.method == 'POST':
+        id_list = request.POST.getlist('id')
+
+        for id in id_list:
+            additional = get_object_or_404(AdditionalCollect, id=id)
+            additional.delete()
+        
+
+        return redirect(request.META.get('HTTP_REFERER', 'redirect_if_referer_not_found'))
+    else:
+        return HttpResponseNotAllowed(['post'])
+
+
+def regularly_load(request):
+    if request.method == 'POST':
+        post_data = json.loads(request.body)
+        group_id = post_data['group_id']
+        date1 = post_data['date1']
+        date2 = post_data['date2']
+
+        group = get_object_or_404(RegularlyGroup, id=group_id)
+        regularly_list = DispatchRegularly.objects.prefetch_related('info_regularly').filter(group=group)
+        
+        temp_list = []
+        try:
+            for regularly in regularly_list:
+                cnt = regularly.info_regularly.filter(departure_date__range=(f'{date1} 00:00', f'{date2} 24:00')).count(),
+                cnt = cnt[0]
+                supply_price = int(regularly.price) * int(cnt)
+                print(supply_price)
+                VAT = math.floor(supply_price * 0.1 + 0.5)
+
+                temp_list.append({
+                    'duration': f'{date1} ~ {date2}',
+                    'week': regularly.week,
+                    'type': regularly.work_type,
+                    'route': regularly.route,
+                    'cnt': cnt,
+                    'contract_price': regularly.price,
+                    'supply_price': int(regularly.price) * int(cnt),
+                    'VAT': VAT,
+                })
+        except Exception as e:
+            return JsonResponse({'status': 'fail', 'error': f'{e}'})
+            
+        return JsonResponse({'status': 'success', 'dataList': temp_list})
+    else:
+        return HttpResponseNotAllowed(['post'])
+
 
 class CollectList(generic.ListView):
     template_name = 'accounting/collect.html'
@@ -374,72 +648,45 @@ class CollectList(generic.ListView):
     model = DispatchOrder
 
     def get_queryset(self):
-        month = self.request.GET.get('month', TODAY[:7])
+        date1 = self.request.GET.get('date1', f'{TODAY[:7]}-01')
+        date2 = self.request.GET.get('date2', TODAY)
+        customer = self.request.GET.get('search', '')
+        print('date1', date1)
+        print('date1', date2)
 
-        dispatch_list = DispatchOrder.objects.prefetch_related('order_collect').filter(departure_date__startswith=month).order_by('departure_date')
-
+        dispatch_list = DispatchOrder.objects.prefetch_related('order_collect').exclude(contract_status='취소').filter(departure_date__lte=f'{date2} 24:00').filter(arrival_date__gte=f'{date1} 00:00').order_by('departure_date')
+        if customer:
+            dispatch_list = dispatch_list.filter(customer__contains=customer)
         return dispatch_list
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-
-        # departure_date = []
-        # time = []
-        # num_days = []
-
-        # for order in context['dispatch_list']:
-        #     d_y = order.departure_date[0:4]
-        #     d_m = order.departure_date[5:7]
-        #     d_d = order.departure_date[8:10]
-        #     d_t = order.departure_date[11:16]
-        #     d_date = date(int(d_y), int(d_m), int(d_d))
-        #     d_w = WEEK[d_date.weekday()]
-        #     d_y = d_y[2:4]
-
-        #     a_y = order.arrival_date[0:4]
-        #     a_m = order.arrival_date[5:7]
-        #     a_d = order.arrival_date[8:10]
-        #     a_t = order.arrival_date[11:16]
-        #     a_date = date(int(a_y), int(a_m), int(a_d))
-        #     a_y = a_y[2:4]
-            
-        #     date_diff = a_date - d_date
-        #     if date_diff.days > 1:
-        #         num_days.append(date_diff.days)
-        #     else:
-        #         num_days.append('')
-
-        #     departure_date.append(f"{d_y}.{d_m}.{d_d} {d_w}")
-        #     time.append(f"{d_t}~{a_t}")
-        #     # arrival_date.append(f"{a_y}.{a_m}.{a_d} {a_w} {a_t}")
-
-        # context['departure_date'] = departure_date
-        # context['num_days'] = num_days
-        # context['time'] = time
+        context['date1'] = self.request.GET.get('date1', f'{TODAY[:7]}-01')
+        context['date2'] = self.request.GET.get('date2', TODAY)
+        context['customer'] = self.request.GET.get('search', '')
 
         dispatch_count = context['dispatch_list'].count()
-        income_list = [0] * dispatch_count
+        income_list = []
         value_list = [0] * dispatch_count
         VAT_list = [0] * dispatch_count
-        total_list = [0] * dispatch_count
+        total_list = []
         state_list = []
         outstanding_list = []
+        additional_list = []
+        additional_total_list = [0] * dispatch_count
         cnt = 0
         for order in context['dispatch_list']:
+            total_list.append(int(get_object_or_404(TotalPrice, order_id=order).total_price))
             if order.VAT == 'y':
-                
-                
-                value_list[cnt] = round(int(order.price) / 1.1+10**(-len(str(int(order.price) / 1.1))-1))
-                VAT_list[cnt] = round(value_list[cnt] * 0.1+10**(-len(str(value_list[cnt] * 0.1))-1))
-                total_list[cnt] = value_list[cnt] + VAT_list[cnt]
-                zero = int(order.price) - total_list[cnt]
+                value_list[cnt] = math.floor(int(order.price) / 1.1 + 0.5)
+                VAT_list[cnt] = math.floor(value_list[cnt] * 0.1 + 0.5)
+                total = value_list[cnt] + VAT_list[cnt]
+                zero = int(order.price) - total
                 if zero != 0:
                     VAT_list[cnt] += zero
-                    total_list[cnt] += zero
             else:
                 value_list[cnt] = int(order.price)
-                VAT_list[cnt] = round(value_list[cnt] * 0.1+10**(-len(str(value_list[cnt] * 0.1))-1))
-                total_list[cnt] = value_list[cnt] + VAT_list[cnt]
+                VAT_list[cnt] = math.floor(value_list[cnt] * 0.1 + 0.5)
             
             collect_list = order.order_collect.select_related('income_id').all()
             temp_list = []
@@ -458,92 +705,96 @@ class CollectList(generic.ListView):
                     'id': collect.id,
                 })
                 price_total += int(collect.price)
-            income_list[cnt] = temp_list
-            additional_list = AdditionalCollect.objects.filter(order_id=order)
+            income_list.append(temp_list)
+            
+            additionals = AdditionalCollect.objects.filter(order_id=order)
+            
             temp_list = []
-            for additional in additional_list:
+            for additional in additionals:
                 temp_list.append({
                     'category': additional.category,
                     'value': additional.value,
                     'VAT': additional.VAT,
                     'total_price': additional.total_price,
-                    'note': additional.note
+                    'note': additional.note,
+                    'id': additional.id
                 })
-            cnt += 1
-            
-            if int(price_total) == int(order.price):
+                value_list[cnt] += int(additional.value)
+                VAT_list[cnt] += int(additional.VAT)
+                additional_total_list[cnt] += int(additional.total_price)
+            additional_list.append(temp_list)
+            # print('aaaaaaaaaaaaaaadditional', additional_list)
+
+            # total price save
+            # total = TotalPrice(
+            #     order_id = order,
+            #     month = order.departure_date[:7],
+            #     total_price = total_list[cnt],
+            #     creator = get_object_or_404(Member, pk=self.request.session.get('user'))
+            # )
+            # total.save()
+            # 
+
+            if int(price_total) == total_list[cnt]:
                 state_list.append('완료')
                 outstanding_list.append('0')
             else:
                 state_list.append('미처리')
-                outstanding_list.append(int(order.price) - int(price_total))
+                outstanding_list.append(total_list[cnt] - int(price_total))
 
+            cnt += 1
 
         context['month'] = self.request.GET.get('month', TODAY[:7])
         context['income_list'] = income_list
         context['value_list'] = value_list
         context['VAT_list'] = VAT_list
         context['total_list'] = total_list
+        context['additional_list'] = additional_list
+        context['additional_total_list'] = additional_total_list
         context['state_list'] = state_list
         context['outstanding_list'] = outstanding_list
 
         return context
 
+
 def collect_create(request):
     if request.method == "POST":
         creator = get_object_or_404(Member, pk=request.session.get('user'))
-        order_id = request.POST.get('order_id')
+        order_id_list = request.POST.getlist('order_id')
         income_id = request.POST.get('income_id')
-        order = get_object_or_404(DispatchOrder, id=order_id)
         income = get_object_or_404(Income, id=income_id)
-        if int(order.price) < int(income.total_income) - int(income.used_price):
-            price = order.price
-        else:
-            price = int(income.total_income) - int(income.used_price)
-        collect = Collect(
-            order_id = order,
-            income_id = income,
-            price = price,
-            creator = creator
-        )
-        collect.save()
-        used_price = int(income.used_price) + int(price)
-        income.used_price = used_price
-        print("TEST", used_price)
-        print("total", income.total_income)
-        if int(used_price) == int(income.total_income):
-            income.state = '완료'
-        income.save()
+        for order_id in order_id_list:
+            order = get_object_or_404(DispatchOrder, id=order_id)
+            total = TotalPrice.objects.get(order_id=order)
+            collect_list = Collect.objects.filter(order_id=order)
+            collect_price = collect_list.aggregate(Sum('price'))['price__sum']
+            
+            if collect_price:
+                n_total_price = int(total.total_price) - int(collect_price)
+            else:
+                n_total_price = int(total.total_price)
+
+            if n_total_price < int(income.total_income) - int(income.used_price):
+                price = n_total_price
+            else:
+                price = int(income.total_income) - int(income.used_price)
+            collect = Collect(
+                order_id = order,
+                income_id = income,
+                price = price,
+                creator = creator
+            )
+            collect.save()
+            used_price = int(income.used_price) + int(price)
+            income.used_price = used_price
+            print("TEST", used_price)
+            print("total", income.total_income)
+            if int(used_price) == int(income.total_income):
+                income.state = '완료'
+            income.save()
         
         
         return redirect(request.META.get('HTTP_REFERER', 'redirect_if_referer_not_found'))
-    else:
-        return HttpResponseNotAllowed(['post'])
-
-def collect_load(request):
-    if request.method == "POST":
-        post_data = json.loads(request.body)
-        date1 = post_data['date1']
-        date2 = post_data['date2']
-        income_list = Income.objects.filter(date__range=(f'{date1} 00:00', f'{date2} 24:00')).exclude(state='삭제')
-        temp_list = []
-        for income in income_list:
-            temp_list.append({
-                    'serial': income.serial,
-                    'date': income.date,
-                    'payment_method': income.payment_method,
-                    'commission': income.commission,
-                    'total_income': income.total_income,
-                    'used_price': income.used_price,
-                    'depositor': income.depositor,
-                    'state': income.state,
-                    'id': income.id,
-                })
-
-        return JsonResponse({
-            'deposit': temp_list,
-            'status': 'success',
-            })
     else:
         return HttpResponseNotAllowed(['post'])
 
@@ -565,6 +816,75 @@ def collect_delete(request):
     else:
         return HttpResponseNotAllowed(['post'])
 
+def collect_load(request):
+    if request.method == "POST":
+        post_data = json.loads(request.body)
+        date1 = post_data['date1']
+        date2 = post_data['date2']
+        depositor = post_data['depositor']
+        income_list = Income.objects.filter(date__range=(f'{date1} 00:00', f'{date2} 24:00')).exclude(state='삭제')
+        if depositor:
+            income_list = income_list.filter(depositor__contains=depositor)
+
+        temp_list = []
+        for income in income_list:
+            temp_list.append({
+                    'serial': income.serial,
+                    'date': income.date,
+                    'payment_method': income.payment_method,
+                    'commission': income.commission,
+                    'total_income': income.total_income,
+                    'used_price': income.used_price,
+                    'depositor': income.depositor,
+                    'state': income.state,
+                    'id': income.id,
+                })
+
+        return JsonResponse({
+            'deposit': temp_list,
+            'status': 'success',
+            })
+    else:
+        return HttpResponseNotAllowed(['post'])
+
+def additional_collect_create(request):
+    if request.method == "POST":
+        additional_form = AdditionalCollectForm(request.POST)
+        if additional_form.is_valid():
+            id = request.POST.get('id')
+            order = get_object_or_404(DispatchOrder, id=id)
+            creator = get_object_or_404(Member, pk=request.session.get('user'))
+            
+            additional = additional_form.save(commit=False)
+            additional.order_id = order
+            additional.total_price = int(additional.value) + int(additional.VAT)
+            additional.creator = creator
+            additional.save()
+            
+            return redirect(request.META.get('HTTP_REFERER', 'redirect_if_referer_not_found'))
+        else:
+            raise BadRequest
+    else:
+        return HttpResponseNotAllowed(['post'])
+
+def additional_collect_delete(request):
+    if request.method == "POST":
+        # order_id = request.POST.get('order_id')
+        id_list = request.POST.getlist('id')
+
+        for id in id_list:
+            additional = get_object_or_404(AdditionalCollect, id=id)
+            order = additional.order_id
+            
+            additional.delete()
+
+        
+
+        return redirect(request.META.get('HTTP_REFERER', 'redirect_if_referer_not_found'))
+    else:
+        return HttpResponseNotAllowed(['post'])
+
+
 
 class DepositList(generic.ListView):
     template_name = 'accounting/deposit.html'
@@ -572,7 +892,7 @@ class DepositList(generic.ListView):
     model = Income
 
     def get_queryset(self):
-        self.date1 = self.request.GET.get('date1', TODAY)
+        self.date1 = self.request.GET.get('date1', f'{TODAY[:7]}-01')
         self.date2 = self.request.GET.get('date2', TODAY)
         self.select = self.request.GET.get('select')
         self.search = self.request.GET.get('search', '')
@@ -598,11 +918,14 @@ class DepositList(generic.ListView):
         context['date2'] = self.date2
         context['select'] = self.select
         context['search'] = self.search
-        context['payment'] = self.date2
+        context['payment'] = self.payment
 
-        temp_list = []
+        data_list = []
+
+        collect_list = []
+
         for income in context['income_list']:
-            temp_list.append({
+            data_list.append({
                 'date': income.date,
                 'payment_method': income.payment_method,
                 'bank': income.bank,
@@ -611,7 +934,65 @@ class DepositList(generic.ListView):
                 'depositor': income.depositor,
                 'state': income.state,
             })
-        context['data_list'] = temp_list
+            collects = Collect.objects.select_related('order_id', 'group_id').filter(income_id=income)
+            temp_collect = []
+            for collect in collects:
+                order = collect.order_id
+                group = collect.group_id
+                if order:
+                    total_price = get_object_or_404(TotalPrice, order_id=order)
+                    temp_collect.append({
+                        'type': '일반',
+                        'name': order.route,
+                        'date1': order.departure_date,
+                        'date2': order.arrival_date,
+                        'price': total_price.total_price,
+                        'used_price': collect.price
+                    })
+                else:
+                    # 정산기간
+                    month = collect.month
+                    last_date = datetime.strftime(datetime.strptime(month+'-01', FORMAT) + relativedelta(months=1) - timedelta(days=1), FORMAT)
+                    settle_date = group.settlement_date
+                    if int(settle_date) < 10:
+                        settle_date = f'0{settle_date}'
+                    settle_month = month[5:7]
+
+                    
+                    if group.settlement_date == '1':
+                        
+                        n_settle_date = last_date[8:]
+                        n_settle_month = settle_month
+                        settlement = f'{month[2:4]}-{settle_month}-{settle_date}'
+                        settlement2 = f'{month[2:4]}-{n_settle_month}-{n_settle_date}'
+
+                    else:
+                        if int(settle_month) > 8:
+                            n_settle_month = int(settle_month) + 1
+                        else:
+                            n_settle_month = f'0{int(settle_month) + 1}'
+                        
+                        if int(settle_date) > 9:
+                            n_settle_date = int(settle_date) - 1
+                        else:
+                            n_settle_date = f'0{int(settle_date) - 1}'
+                                                
+                        settlement = f'{month[2:4]}-{settle_month}-{settle_date}'
+                        settlement2 = f'{month[2:4]}-{n_settle_month}-{n_settle_date}'
+                    #
+                    total_price = TotalPrice.objects.filter(group_id=group).get(month=collect.month).total_price
+                    temp_collect.append({
+                        'type': '출/퇴근',
+                        'name': group.name,
+                        'date1': "20" + settlement,
+                        'date2': "20" + settlement2,
+                        'price': total_price,
+                        'used_price': collect.price,
+                    })
+            collect_list.append(temp_collect)
+
+        context['collect_list'] = collect_list
+        context['data_list'] = data_list
         return context
 
 def load_deposit_data(request):

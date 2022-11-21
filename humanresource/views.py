@@ -355,3 +355,11 @@ def member_delete(request):
 #     else:
 #         raise HttpResponseNotAllowed(['post'])
 #@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+
+class SalaryList(generic.ListView):
+    template_name = 'HR/salary_list.html'
+    context_object_name = 'member_list'
+    model = Member
+
+def salary_detail(request):
+    return render(request, 'HR/salary_detail.html')

@@ -8,7 +8,7 @@ window.onload = function () {
     matchHeight()
     drawSchdule()
     DispatcBusFilter()
-    notPairFilter()
+    // notPairFilter()
     addCommaList()
     changeVAT()
     listHeight()

@@ -119,15 +119,15 @@ function DispatcBusFilterRegularly() {
 
 
 // 기사와 차량이 고정기사와 맞지 않을때
-function notPairFilter() {
-    const otherDriver = document.querySelectorAll(".otherDriver")
-    for (i = 0; i < otherDriver.length; i++) {
-        if (otherDriver[i].parentNode.classList.contains("haveSchedule")) {
-            for (j = 0; j < driverTd.length; j++) {
-                if (driverTd[j].innerText.split("(")[1].replace(/\)/g, "") == otherDriver[i].title.split(" ||")[0]) {
-                    driverTd[j].parentNode.classList.add("haveSchedule")
-                }
-            }
-        }
-    }
-}
+// function notPairFilter() {
+//     const otherDriver = document.querySelectorAll(".otherDriver")
+//     for (i = 0; i < otherDriver.length; i++) {
+//         if (otherDriver[i].parentNode.classList.contains("haveSchedule")) {
+//             for (j = 0; j < driverTd.length; j++) {
+//                 if (driverTd[j].innerText.split("(")[1].replace(/\)/g, "") == otherDriver[i].title.split(" ||")[0]) {
+//                     driverTd[j].parentNode.classList.add("haveSchedule")
+//                 }
+//             }
+//         }
+//     }
+// }

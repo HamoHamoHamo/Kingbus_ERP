@@ -49,7 +49,7 @@
                 {% with driver=group_driver_list|index:forloop.counter0 %}
                 {% with outsourcing=group_outsourcing_list|index:forloop.counter0 %}
                 {% with departure_time=departure_time_list|index:forloop.counter0 %}
-                <tr>
+                <tr class="listItme">
                     <td>{{order.number1}}{% if order.number2 %}-{{order.number2}} {% endif %}</td>
                     <td>{{bus.vehicle_num}}</td>
                     <td>{{driver.name}}</td>
@@ -78,13 +78,16 @@
                 {% endwith %}
                 {% endwith %}
                 {% endfor %}
-                <!-- 1페이지에 30줄 -->
+                <!-- 1페이지에 25줄 -->
             </tbody>
         </table>
         <div class="page">1/2</div>
     </div>
 
+
+<script src="{% static 'js/dispatch/regularlyPrint.js' %}"></script>
 </body>
+
 
 
 </html>

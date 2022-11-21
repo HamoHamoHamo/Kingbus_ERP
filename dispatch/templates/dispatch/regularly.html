@@ -227,7 +227,7 @@
             
             <select name="group" class="inputSelect">
               {% for g in group_list %}
-              
+              <option value=""></option>
               <option {% if group.id == g.id %} selected {% endif %} value="{{g.id}}">{{g.name}}</option>
               {% endfor %}
             </select>

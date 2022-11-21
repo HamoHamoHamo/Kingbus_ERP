@@ -95,73 +95,78 @@
 
 
 .collectBody td:nth-child(1) {
-    width: 2%;
+    width: 3%;
 }
 
 .collectBody td:nth-child(2) {
-    width: 9%;
+    width: 15%;
 }
 
 .collectBody td:nth-child(3) {
-    width: 22%;
+    width: 12%;
 }
 
-.collectBody td:nth-child(4),
+.collectBody td:nth-child(4) {
+    width: 9%;
+}
+
+.collectBody td:nth-child(5) {
+    width: 9%;
+}
+
 .collectBody td:nth-child(6) {
-    width: 7%;
+    width: 9%;
 }
 
-.collectBody td:nth-child(12) {
+.collectBody td:nth-child(7) {
+    width: 9%;
+}
+
+.collectBody td:nth-child(8) {
+    width: 9%;
+}
+
+.collectBody td:nth-child(9) {
     width: 10%;
 }
 
-.collectBody td:nth-child(7),
-.collectBody td:nth-child(9),
-.collectBody td:nth-child(10),
-.collectBody td:nth-child(11),
-.collectBody td:nth-child(14) {
+.collectBody td:nth-child(10) {
     width: 6%;
 }
 
-.collectBody td:nth-child(5),
-.collectBody td:nth-child(8),
-.collectBody td:nth-child(13) {
-    width: 4%;
+.collectBody td:nth-child(11) {
+    width: 9%;
 }
 
 .collectBody td:nth-child(1),
 .collectBody td:nth-child(2),
-.collectBody td:nth-child(5),
-.collectBody td:nth-child(6),
-.collectBody td:nth-child(8),
-.collectBody td:nth-child(12),
-.collectBody td:nth-child(13) {
+.collectBody td:nth-child(3),
+.collectBody td:nth-child(9),
+.collectBody td:nth-child(10) {
     text-align: center;
 }
 
-.collectDateBox td:nth-child(3),
-.collectDateBox td:nth-child(4) {
-    text-align: left;
-    padding-left: 1rem;
-    box-sizing: border-box;
-}
-
+.collectDateBox td:nth-child(4),
+.collectDateBox td:nth-child(5),
+.collectDateBox td:nth-child(6),
 .collectDateBox td:nth-child(7),
-.collectDateBox td:nth-child(9),
-.collectDateBox td:nth-child(10),
-.collectDateBox td:nth-child(11),
-.collectDateBox td:nth-child(14) {
+.collectDateBox td:nth-child(8),
+.collectDateBox td:nth-child(11) {
     text-align: right;
     padding-right: 1rem;
     box-sizing: border-box;
 }
 
 
-.collectDateBox td:nth-child(8) {
+.collectDateBox td:nth-child(5) {
     border-left: 0.1rem solid black;
 }
 
-.collectDateBox td:nth-child(11) {
+.collectDateBox td:nth-child(7) {
+    background-color: rgb(255, 242, 204);
+}
+
+.collectDateBox td:nth-child(8) {
     border-right: 0.1rem solid black;
 }
 
@@ -171,6 +176,11 @@
 
 .collectionUnprocessed td:nth-last-child(2) {
     color: red;
+}
+
+.chit,
+.collectDateBox td:nth-child(4) {
+    color: #0069D9;
 }
 
 
@@ -230,7 +240,7 @@
 }
 
 .collectDateBox td {
-    padding: 0.3rem 0;
+    padding: 1rem 0;
     font-size: 1.4rem;
     border-right: 0.1rem solid #D4D4D4;
     border-bottom: 0.1rem solid #D4D4D4;
@@ -260,6 +270,10 @@
     cursor: pointer;
 }
 
+.selectTotalBox {
+    width: calc(100% - 0.6rem);
+}
+
 .selectTotal {
     width: 100%;
     height: 3.6rem;
@@ -268,17 +282,41 @@
     font-size: 1.4rem;
 }
 
-.selectTotal td:nth-child(1),
+.selectTotal td:nth-child(1) {
+    width: 30%;
+}
+
+.selectTotal td:nth-child(2),
+.selectTotal td:nth-child(3),
 .selectTotal td:nth-child(4),
+.selectTotal td:nth-child(5),
 .selectTotal td:nth-child(6),
-.selectTotal td:nth-child(7),
+.selectTotal td:nth-child(8) {
+    width: 9%;
+}
+
+.selectTotal td:nth-child(7) {
+    width: 16%;
+}
+
+.selectTotal td:nth-child(1) {
+    text-align: left;
+    padding-left: 1rem;
+    box-sizing: border-box;
+}
+
+.selectTotal td:nth-child(2),
+.selectTotal td:nth-child(3),
+.selectTotal td:nth-child(4),
+.selectTotal td:nth-child(5),
+.selectTotal td:nth-child(6),
 .selectTotal td:nth-child(8) {
     text-align: right;
     padding-right: 1rem;
     box-sizing: border-box;
 }
 
-.selectTotal td:nth-child(2) {
+.selectTotal td:nth-child(7) {
     text-align: center;
 }
 
@@ -299,6 +337,11 @@
     cursor: pointer;
 }
 
+.collectPopupRegistrationBtn {
+    background-color: #0069D9;
+    margin-right: 2rem;
+}
+
 .collectPopupCloseBtn {
     background-color: #444;
 }
@@ -307,6 +350,10 @@
 
 
 /* 입금내역 불러오기 팝업 */
+.collectingPopupContainer {
+    width: 86rem;
+}
+
 .popupSearch {
     display: flex;
     align-items: center;
@@ -318,6 +365,10 @@
     font-size: 1.4rem;
 }
 
+.reservationLabel {
+    margin-left: 2rem;
+}
+
 .popupSearch .inputModules {
     margin: 0 0.6rem;
 }
@@ -326,7 +377,7 @@
     margin-left: 0;
 }
 
-.popupSearch .btnModules {
+.collectingSearch {
     background-color: #444;
     margin-left: 2rem;
 }
@@ -338,17 +389,36 @@
     height: auto;
 }
 
-.popupArticleCollectiong td:nth-child(1),
+.popupArticleCollectiong td:nth-child(1) {
+    width: 6%;
+}
+
+.popupArticleCollectiong td:nth-child(2) {
+    width: 16%;
+}
+
 .popupArticleCollectiong td:nth-child(3) {
     width: 20%;
 }
 
-.popupArticleCollectiong td:nth-child(2) {
+.popupArticleCollectiong td:nth-child(4) {
     width: 10%;
 }
 
-.popupArticleCollectiong td:nth-child(4) {
-    width: 50%;
+.popupArticleCollectiong td:nth-child(5),
+.popupArticleCollectiong td:nth-child(7) {
+    width: 14%;
+}
+
+.popupArticleCollectiong td:nth-child(6) {
+    width: 20%
+}
+
+.depositItem td:nth-child(5),
+.depositItem td:nth-child(7) {
+    text-align: right;
+    padding-right: 1rem;
+    box-sizing: border-box;
 }
 
 .collectingPopupHeader {
@@ -474,6 +544,11 @@
     width: 100%;
     height: 3rem;
     font-size: 1.4rem;
+    cursor: pointer;
+}
+
+.historyingPopupScrollBox tr:hover {
+    background-color: #CDCDCE;
 }
 
 .historyingPopupScrollBox td {
@@ -486,31 +561,276 @@
     border-right: 0.1rem solid #D4D4D4;
 }
 
-.popupArticleHistory td:nth-child(1) {
+.popupArticleHistory td:nth-child(1),
+.popupArticleHistory td:nth-child(2) {
     width: 4%;
 }
 
-.popupArticleHistory td:nth-child(2),
-.popupArticleHistory td:nth-child(3) {
-    width: 12%;
-}
-
-.popupArticleHistory td:nth-child(4),
-.popupArticleHistory td:nth-child(5),
-.popupArticleHistory td:nth-child(7),
-.popupArticleHistory td:nth-child(8),
-.popupArticleHistory td:nth-child(10) {
+.popupArticleHistory td:nth-child(6) {
     width: 8%;
 }
 
-.popupArticleHistory td:nth-child(6),
-.popupArticleHistory td:nth-child(9) {
+.popupArticleHistory td:nth-child(3),
+.popupArticleHistory td:nth-child(4),
+.popupArticleHistory td:nth-child(5),
+.popupArticleHistory td:nth-child(7) {
+    width: 12%;
+}
+
+.popupArticleHistory td:nth-child(8),
+.popupArticleHistory td:nth-child(9),
+.popupArticleHistory td:nth-child(10),
+.popupArticleHistory td:nth-child(11) {
+    width: 9%;
+}
+
+.historyingPopupScrollBox td:nth-child(8),
+.historyingPopupScrollBox td:nth-child(9),
+.historyingPopupScrollBox td:nth-child(10) {
+    text-align: right;
+    padding-right: 1rem;
+    box-sizing: border-box;
+}
+
+.deleteChitBtn {
+    background-color: #444;
+    margin-right: 1rem;
+}
+
+
+
+/* 추가입력 */
+
+.popupArticleCategori {
+    width: 100%;
+    padding-bottom: 0.4rem;
+    font-size: 1.4rem;
+    font-weight: bold;
+    border-bottom: 0.1rem solid black;
+}
+
+.popupArticleBoxTable {
+    margin-top: 2rem;
+}
+
+.addBtn {
+    background-color: #0069D9;
+    margin-left: auto;
+}
+
+.scrolling_table-list_body {
+    height: 10.8rem;
+}
+
+.addTable tr {
+    cursor: pointer;
+}
+
+.addTable td:nth-child(1) {
+    width: 4%;
+}
+
+.addTable td:nth-child(2) {
+    width: 6%;
+}
+
+.addTable td:nth-child(3) {
+    width: 18%;
+}
+
+.addTable td:nth-child(4),
+.addTable td:nth-child(5),
+.addTable td:nth-child(6) {
     width: 16%;
 }
 
-.historyingPopupScrollBox td:nth-child(7),
-.historyingPopupScrollBox td:nth-child(8) {
+.addTable td:nth-child(7) {
+    width: 24%;
+}
+
+
+.addTableScroll td:nth-child(4),
+.addTableScroll td:nth-child(5),
+.addTableScroll td:nth-child(6) {
     text-align: right;
     padding-right: 1rem;
+}
+
+.addTableScroll td:nth-child(7) {
+    text-align: left;
+    padding-left: 1rem;
+}
+
+.addTotalTable {
+    width: calc(100% - 0.6rem);
+    height: 3.6rem;
+    background-color: #CDCDCE;
+}
+
+.addTotalTable tr {
+    height: 100%;
+}
+
+.addTotalTable td {
+    padding: 0;
+    font-size: 1.4rem;
+}
+
+.addTotalTable td:nth-child(1) {
+    text-align: right;
+    padding-right: 1rem;
+    width: 28%;
+    border-right: 0.1rem solid white;
+}
+
+.addTotalTable td:nth-child(2),
+.addTotalTable td:nth-child(3),
+.addTotalTable td:nth-child(4) {
+    text-align: right;
+    padding-right: 1rem;
+    width: 16%;
+    border-right: 0.1rem solid white;
+}
+
+.addTotalTable td:nth-child(5) {
+    text-align: left;
+    padding-left: 1rem;
+    width: 24%;
+}
+
+.addDeleteBtn {
+    background-color: #444;
+    margin-right: 1rem;
+}
+
+.addCloseBtn {
+    background-color: #444;
+}
+
+
+
+
+
+
+.popupContainerCompare {
+    width: 100rem;
+}
+
+.compareTableScroll {
+    height: 28.8rem;
+}
+
+.compareTotalTableBox {
+    width: 100%;
+    padding-right: 0.6rem;
+    box-sizing: border-box;
+}
+
+.compareTotalTable {
+    width: 100%;
+    height: 3.6rem;
+    background-color: #CDCDCE;
+}
+
+.compareTable tr{
+    height: 3.6rem;
+    font-size: 1.4rem;
+}
+
+.compareCloseBtn {
+    background-color: #444;
+}
+
+.compareTable td{
+    text-align: center;
+}
+
+.compareTable td:nth-child(1){
+    width: 12%;   
+}
+
+.compareTable td:nth-child(2){
+    width: 16%;   
+}
+
+.compareTable td:nth-child(3){
+    width: 6%;   
+}
+
+.compareTable td:nth-child(4){
+    width: 27%;   
+}
+
+.compareTable td:nth-child(5){
+    width: 6%;   
+}
+
+.compareTable td:nth-child(6),
+.compareTable td:nth-child(7),
+.compareTable td:nth-child(8){
+    width: 11%;   
+}
+
+.compareTableScroll td:nth-child(6),
+.compareTableScroll td:nth-child(7),
+.compareTableScroll td:nth-child(8){
+    text-align: right;
+    padding-right: 1rem;
+}
+
+.compareTotalTable{
+    font-size: 1.4rem;
+}
+
+.compareTotalTable td:nth-child(1){
+    text-align: left;
+    padding-left: 1rem;
+    width: 61%;
+    border-right: 0.1rem solid white;
+}
+
+.compareTotalTable td:nth-child(2){
+    text-align: center;
+    width: 6%;
+    border-right: 0.1rem solid white;
+}
+
+.compareTotalTable td:nth-child(3){
+    text-align: right;
+    padding-right: 1rem;
+    width: 22%;
+    border-right: 0.1rem solid white;
+}
+
+.compareTotalTable td:nth-child(4){
+    text-align: right;
+    padding-right: 1rem;
+    width: 11%;
+    border-right: 0.1rem solid white;
+}
+
+
+.compareTotalTable td:nth-child(5){
+    border-right: none;
+}
+
+.displayDiv{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    width: 100%;
+    height: 100%;
+    padding-left: 1rem;
+    box-sizing: border-box;
+}
+
+.displayDivCenter{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
     box-sizing: border-box;
 }
