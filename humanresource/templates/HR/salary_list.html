@@ -15,11 +15,11 @@
 
 {% block content %}
 <div class="search-Container">
-    <form method="post" action="" class="search-Form">
+    <form method="" action="" class="search-Form">
         <label for="" class="search-Form_label">날짜 : </label>
-        <input autocomplete="off" type="month" class="search-Form_input">
+        <input autocomplete="off" name='month' value="{{month}}" type="month" class="search-Form_input search-Form_input-Month">
         <label for="" class="search-Form_label">이름 : </label>
-        <input autocomplete="off" type="text" class="search-Form_input">
+        <input autocomplete="off" name="name" value="{{name}}" type="text" class="search-Form_input">
         <input type="submit" class="search-Form_search-btn" value="검색">
     </form>
     <div class="popup-area-box">
@@ -29,8 +29,10 @@
 
 
 
-<form method="post" action="" class="salaryContainer">
-    <div class="btnModules salarySaveBtn">저장</div>
+<form method="post" action="{% url 'HR:salary_edit' %}" class="salaryContainer">
+    {% csrf_token %}
+    <input type="hidden" name="month" value="{{month}}">
+    <input class="btnModules salarySaveBtn" type="submit" value="저장">
     <div class="scrolling_table-list_header">
         <table class="table-list">
             <thead>
@@ -56,50 +58,33 @@
     <div class="scrolling_table-list_body">
         <table class="table-list">
             <tbody>
+                {% for member in member_list %}
+                {% with salary=salary_list|index:forloop.counter0 %}
                 <tr class="table-list_body-tr">
                     <td class="table-list_body-tr_td">
-                        <input type="checkbox" class="amountCheck" value="0">
+                        <input type="checkbox" class="amountCheck" name="member_id" value="{{member.id}}">
                     </td>
-                    <td class="table-list_body-tr_td">이도울</td>
-                    <td class="table-list_body-tr_td">2022.11.21</td>
+                    <td class="table-list_body-tr_td">{{member.name}}</td>
+                    <td class="table-list_body-tr_td">{{member.entering_date}}</td>
                     <td class="table-list_body-tr_td">
-                        <input type="text" class="amountInput">
-                    </td>
-                    <td class="table-list_body-tr_td">
-                        <input type="text" class="amountInput">
+                        <input type="text" class="amountInput" value="{{salary.base}}">
                     </td>
                     <td class="table-list_body-tr_td">
-                        <input type="text" class="amountInput">
+                        <input type="text" class="amountInput" value="{{salary.service_allowance}}">
                     </td>
-                    <td class="table-list_body-tr_td">1,000,000</td>
-                    <td class="table-list_body-tr_td">1,000,000</td>
-                    <td class="table-list_body-tr_td">1,000,000</td>
-                    <td class="table-list_body-tr_td">1,000,000</td>
-                    <td class="table-list_body-tr_td">1,000,000</td>
-                    <td class="table-list_body-tr_td">1,000,000</td>
+                    <td class="table-list_body-tr_td">
+                        <input type="text" class="amountInput" value="{{salary.position_allowance}}">
+                    </td>
+                    <td class="table-list_body-tr_td">{{salary.attendance}}</td>
+                    <td class="table-list_body-tr_td">{{salary.order}}</td>
+                    <td class="table-list_body-tr_td">{{salary.leave}}</td>
+                    <td class="table-list_body-tr_td">{{salary.additional}}</td>
+                    <td class="table-list_body-tr_td">{{salary.deduction}}</td>
+                    <td class="table-list_body-tr_td">{{salary.total}}</td>
                 </tr>
-                <tr class="table-list_body-tr">
-                    <td class="table-list_body-tr_td">
-                        <input type="checkbox" class="amountCheck" value="1">
-                    </td>
-                    <td class="table-list_body-tr_td">이도울</td>
-                    <td class="table-list_body-tr_td">2022.11.21</td>
-                    <td class="table-list_body-tr_td">
-                        <input type="text" class="amountInput">
-                    </td>
-                    <td class="table-list_body-tr_td">
-                        <input type="text" class="amountInput">
-                    </td>
-                    <td class="table-list_body-tr_td">
-                        <input type="text" class="amountInput">
-                    </td>
-                    <td class="table-list_body-tr_td">1,000,000</td>
-                    <td class="table-list_body-tr_td">1,000,000</td>
-                    <td class="table-list_body-tr_td">1,000,000</td>
-                    <td class="table-list_body-tr_td">1,000,000</td>
-                    <td class="table-list_body-tr_td">1,000,000</td>
-                    <td class="table-list_body-tr_td">1,000,000</td>
-                </tr>
+                {% endwith %}
+                {% endfor %}
+                
             </tbody>
         </table>
     </div>
@@ -119,18 +104,18 @@
         </div>
         <div class="popupBody">
             <div class="popupSection">
-                <form method="post" action="">
+                <form method="post" action="{% url 'HR:salary_additional_create' %}">
                     {% csrf_token %}
                     <div class="popupArticleCategori">추가수당</div>
                     <div class="popupArticleBox">
                         <div class="popupArticleDouble addSalaryPriceBox">
                             <label for="" class="popupArticleLabel">금액</label>
-                            <input autocomplete="off" name="category" type="text"
+                            <input autocomplete="off" name="price" type="text"
                                 class="popupArticleinput addSalaryPrice">
                         </div>
                         <div class="popupArticleDouble addSalaryReasonBox">
                             <label for="" class="popupArticleLabel">사유</label>
-                            <input autocomplete="off" name="value" type="text"
+                            <input autocomplete="off" name="remark" type="text"
                                 class="popupArticleinput addSalaryReason">
                         </div>
                     </div>
@@ -138,6 +123,7 @@
                         <input type="submit" class="btnModules addSalaryBtn" value="추가">
                     </div>
                     <input type="hidden" name="id" class="addSalaryMoreHidden">
+                    <input type="hidden" name="month" class="addSalaryMoreHiddenMonth">
                 </form>
                 <form method="post" action="" class="addSalaryDeleteForm">
                     {% csrf_token %}
@@ -159,20 +145,13 @@
                         <div class="scrolling_table-list_body addSalaryTable addSalaryTableScroll">
                             <table class="table-list">
                                 <tbody>
-                                    <tr class="table-list_body-tr">
-                                        <td class="table-list_body-tr_td">
-                                            <input type="checkbox" class="addSalaryListAllCheck">
-                                        </td>
-                                        <td class="table-list_body-tr_td">100,000</td>
-                                        <td class="table-list_body-tr_td">사유</td>
-                                    </tr>
                                 </tbody>
                             </table>
                         </div>
                         <table class="addSalaryTotalTable">
                             <tr>
                                 <td>합계</td>
-                                <td class="totalAddSalaryPrice">1,000,000</td>
+                                <td class="totalAddSalaryPrice"></td>
                                 <td></td>
                             </tr>
                         </table>
@@ -197,18 +176,18 @@
         </div>
         <div class="popupBody">
             <div class="popupSection">
-                <form method="post" action="">
+                <form method="post" action="{% url 'HR:salary_deduction_create' %}">
                     {% csrf_token %}
                     <div class="popupArticleCategori">공제</div>
                     <div class="popupArticleBox">
                         <div class="popupArticleDouble deductionPriceBox">
                             <label for="" class="popupArticleLabel">금액</label>
-                            <input autocomplete="off" name="category" type="text"
+                            <input autocomplete="off" name="price" type="text"
                                 class="popupArticleinput deductionPrice">
                         </div>
                         <div class="popupArticleDouble deductionReasonBox">
                             <label for="" class="popupArticleLabel">사유</label>
-                            <input autocomplete="off" name="value" type="text"
+                            <input autocomplete="off" name="remark" type="text"
                                 class="popupArticleinput deductionReason">
                         </div>
                     </div>
@@ -216,8 +195,9 @@
                         <input type="submit" class="btnModules deductionBtn" value="추가">
                     </div>
                     <input type="hidden" name="id" class="deductionMoreHidden">
+                    <input type="hidden" name="month" class="deductionMoreHiddenMonth">
                 </form>
-                <form method="post" action="" class="deductionDeleteForm">
+                <form method="post" action="{% url 'HR:salary_additional_create' %}" class="deductionDeleteForm">
                     {% csrf_token %}
                     <div class="popupArticleCategori">공제목록</div>
                     <div class="popupArticleBoxTable">
@@ -237,20 +217,13 @@
                         <div class="scrolling_table-list_body deductionTable deductionTableScroll">
                             <table class="table-list">
                                 <tbody>
-                                    <tr class="table-list_body-tr">
-                                        <td class="table-list_body-tr_td">
-                                            <input type="checkbox" class="deductionListAllCheck">
-                                        </td>
-                                        <td class="table-list_body-tr_td">100,000</td>
-                                        <td class="table-list_body-tr_td">사유</td>
-                                    </tr>
                                 </tbody>
                             </table>
                         </div>
                         <table class="deductionTotalTable">
                             <tr>
                                 <td>합계</td>
-                                <td class="totalAddSalaryPrice">1,000,000</td>
+                                <td class="totalAddSalaryPrice"></td>
                                 <td></td>
                             </tr>
                         </table>
@@ -287,13 +260,21 @@
         };
         if (checkDriver !== 0) {
             targetLink = `salary/detail?date=${month.value}&driver=${checkerArr}`
-            window.open(targetLink, "노선별A4", "width=800, height=640")
+            window.open(targetLink, "노선별A4", "width=1200, height=800")
         } else {
             alert("기사를 선택해 주세요.")
         }
     }
 </script>
-<script src="{% static 'js/hr/setting.js' %}"></script>
+<script>
+    {% autoescape off %}
+    const deductionList = {{deduction_list}};
+    console.log("deductionList", deductionList);
+    const additionalList = {{additional_list}};
+    console.log("additionalList", additionalList);
+    
+    {% endautoescape %}
+</script>
 <script src="{% static 'js/hr/addSalary.js' %}"></script>
 <script src="{% static 'js/hr/deduction.js' %}"></script>
 <script src="{% static 'js/hr/textValidation.js' %}"></script>

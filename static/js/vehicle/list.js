@@ -143,7 +143,9 @@ function changeEdit() {
   PopupTitle[1].innerText = "차량수정"
   editBtn.style.display = "none";
   createBtn[1].style.display = "flex";
-
+  const blank = document.createElement("option")
+  blank.setAttribute("value", "")
+  driver_name.children[0].after(blank)
 }
 
 

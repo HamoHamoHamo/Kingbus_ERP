@@ -10,7 +10,7 @@ from django.views import generic
 
 from .forms import OrderForm, ConnectForm, RegularlyForm
 from .models import DispatchCheck, Schedule, DispatchOrderConnect, DispatchOrder, DispatchRegularly, RegularlyGroup, DispatchRegularlyConnect, DispatchOrderWaypoint
-from accounting.models import Salary, Collect, TotalPrice
+from accounting.models import Collect, TotalPrice
 from humanresource.models import Member
 from itertools import chain
 from vehicle.models import Vehicle
@@ -1065,6 +1065,7 @@ class OrderList(generic.ListView):
                 total = TotalPrice(
                     order_id = order,
                     total_price = total_price,
+                    month = order.departure_date[:7],
                     creator = order.creator
                 )
                 total.save()

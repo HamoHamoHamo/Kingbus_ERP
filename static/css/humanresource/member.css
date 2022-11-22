@@ -252,6 +252,7 @@ thead .member-height td{
 
 .member-height td{
     text-align: left;
+    padding: 0;
 }
 
 .member-height td:nth-child(1),
@@ -295,25 +296,30 @@ tbody .member-height {
 }
 
 .member-height td:nth-child(5),
-.member-height td:nth-child(7),
-.member-height td:nth-child(8) {
+.member-height td:nth-child(7){
+    width: 6%;
+}
+.member-height td:nth-child(8){
     width: 8%;
+}
+.member-height td:nth-child(9) {
+    width: 10%;
 }
 
 .member-height td:nth-child(6) {
     width: 6%;
 }
 
-.member-height td:nth-child(9) {
+.member-height td:nth-child(10) {
     width: 6%;
 }
 
-.member-height td:nth-child(10) {
-    width: 28%;
+.member-height td:nth-child(11) {
+    width: 22%;
 }
 
-.member-height td:nth-child(11),
-.member-height td:nth-child(12) {
+.member-height td:nth-child(12),
+.member-height td:nth-child(13) {
     width: 10%;
 }
 
@@ -323,8 +329,8 @@ tbody .member-height {
 }
 
 .table-list_body-tr_td:nth-child(3),
-.table-list_body-tr_td:nth-child(11),
-.table-list_body-tr_td:nth-child(12) {
+.table-list_body-tr_td:nth-child(12),
+.table-list_body-tr_td:nth-child(13) {
     cursor: pointer;
 }
 

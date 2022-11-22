@@ -6,7 +6,7 @@ from django.db.models import Sum
 from django.dispatch import receiver
 from django.shortcuts import get_object_or_404
 from .models import DispatchRegularly, DispatchOrder, DispatchOrderConnect, DispatchRegularlyConnect, DispatchCheck
-from accounting.models import Salary, TotalPrice, AdditionalCollect
+from accounting.models import TotalPrice, AdditionalCollect
 
 
 import re
@@ -34,6 +34,7 @@ def save_order(sender, instance, created, **kwargs):
         total = TotalPrice(
             order_id = instance,
             total_price = total_price,
+            month = instance.departure_date[:7],
             creator = instance.creator
         )
         
@@ -49,7 +50,6 @@ def save_order(sender, instance, created, **kwargs):
 @receiver(pre_delete, sender=DispatchOrder)
 def delete_order(sender, instance, **kwargs):
     collect_list = instance.order_collect.all()
-    print("TTTTTTTTTTTTTTT", collect_list)
     for collect in collect_list:
         income = collect.income_id
         income.used_price = int(income.used_price) - int(collect.price)

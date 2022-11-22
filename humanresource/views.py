@@ -1,20 +1,17 @@
-import mimetypes
 import os
-import urllib
-from crudmember.models import User
+from dateutil.relativedelta import relativedelta
+from dispatch.models import DispatchRegularlyConnect, DispatchOrderConnect
 from django.contrib.auth.hashers import make_password, check_password
+from django.db.models import Sum
 from django.http import Http404, HttpResponse, HttpResponseNotAllowed, HttpResponseBadRequest
 from django.shortcuts import render, redirect, get_object_or_404
-from django.urls import reverse, reverse_lazy
 from django.views import generic
-from django.contrib import messages
-from ERP.settings import BASE_DIR
+from dispatch.views import FORMAT
+from datetime import datetime, timedelta
 
-from datetime import datetime
 from vehicle.models import Vehicle
 from .forms import MemberForm
-from .models import Member, MemberFile
-from utill.decorator import option_year_deco
+from .models import Member, MemberFile, Salary, AdditionalSalary, DeductionSalary
 
 TODAY = str(datetime.now())[:10]
 
@@ -361,5 +358,240 @@ class SalaryList(generic.ListView):
     context_object_name = 'member_list'
     model = Member
 
+    def get_queryset(self):
+        month = self.request.GET.get('month', TODAY[:7])
+        name = self.request.GET.get('name', '')
+
+        
+        member_list = Member.objects.filter(entering_date__lt=month+'-32').order_by('name')
+        if name:
+            member_list = member_list.filter(name__contains=name)
+        
+        return member_list
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        month = self.request.GET.get('month', TODAY[:7])
+        name = self.request.GET.get('name', '')
+
+        salary_list = []
+        additional_list = []
+        deduction_list = []
+        for member in context['member_list']:
+            try:
+                salary = Salary.objects.filter(member_id=member).get(month=month)
+            except Salary.DoesNotExist:
+                salary = new_salary(self.request, month, member)
+            
+            salary_list.append(salary)
+
+            ###########
+            temp_add = []        
+            additionals = AdditionalSalary.objects.filter(member_id=member).filter(salary_id=salary)
+            for additional in additionals:
+                temp_add.append({
+                    'price': additional.price,
+                    'remark': additional.remark,
+                    'id': additional.id,
+                })
+            additional_list.append(temp_add)
+
+            temp_ded = []    
+            deductions = DeductionSalary.objects.filter(member_id=member).filter(salary_id=salary)
+            for deduction in deductions:
+                temp_ded.append({
+                    'price': deduction.price,
+                    'remark': deduction.remark,
+                    'id': deduction.id,
+                })
+            deduction_list.append(temp_ded)
+
+        context['additional_list'] = additional_list
+        context['deduction_list'] = deduction_list
+        context['salary_list'] = salary_list
+        
+        context['month'] = month
+        context['name'] = name
+
+        return context
+## 확인 필요
+def new_salary(request, month, member):
+    last_date = datetime.strftime(datetime.strptime(month+'-01', FORMAT) + relativedelta(months=1) - timedelta(days=1), FORMAT)
+    attendance = DispatchRegularlyConnect.objects.filter(work_type='출근').filter(driver_id=member).filter(departure_date__range=(month+'-01 00:00', last_date+' 24:00')).aggregate(Sum('driver_allowance'))
+    leave = DispatchRegularlyConnect.objects.filter(work_type='퇴근').filter(driver_id=member).filter(departure_date__range=(month+'-01 00:00', last_date+' 24:00')).aggregate(Sum('driver_allowance'))
+    order = DispatchOrderConnect.objects.filter(driver_id=member).filter(departure_date__range=(month+'-01 00:00', last_date+' 24:00')).aggregate(Sum('driver_allowance'))
+
+    attendance_price = 0
+    leave_price = 0
+    order_price = 0
+
+    base = 0
+    service_allowance = 0
+    position_allowance = 0
+
+    if TODAY[:7] <= month:
+        base = int(member.base)
+        service_allowance = int(member.service_allowance)
+        position_allowance = int(member.position_allowance)
+
+    # if salary:
+    #     base = salary.base
+    #     service_allowance = salary.service_allowance
+    #     position_allowance = salary.position_allowance
+
+    if attendance['driver_allowance__sum']:
+        attendance_price = int(attendance['driver_allowance__sum'])
+    if leave['driver_allowance__sum']:
+        leave_price = int(leave['driver_allowance__sum'])
+    if order['driver_allowance__sum']:
+        order_price = int(order['driver_allowance__sum'])
+
+    salary = Salary(
+        member_id = member,
+        base = base,
+        service_allowance = service_allowance,
+        position_allowance = position_allowance,
+        attendance = attendance_price,
+        leave = leave_price,
+        order = order_price,
+        total = attendance_price + leave_price + order_price + base + service_allowance + position_allowance,
+        month = month,
+        creator = Member.objects.get(pk=request.session.get('user'))
+    )
+    salary.save()
+    return salary
+
 def salary_detail(request):
     return render(request, 'HR/salary_detail.html')
+
+
+def salary_edit(request):
+    if request.method == 'POST':
+        base_list = request.POST.getlist('base')
+        service_list = request.POST.getlist('service')
+        position_list = request.POST.getlist('position')
+        id_list = request.POST.getlist('id')
+        month = request.POST.get('month')
+
+        for base, service, position, id in zip(base_list, service_list, position_list, id_list):
+            member = get_object_or_404(Member, id=id)
+            base = int(base.replace(',',''))
+            service = int(service.replace(',',''))
+            position = int(position.replace(',',''))
+
+            salary = Salary.objects.filter(member_id=member).get(month=month)
+            salary.base = base
+            salary.service_allowance = service
+            salary.position_allowance = position
+            salary.total = int(salary.attendance) + int(salary.leave) + int(salary.order) + int(salary.base) + int(salary.service_allowance) + int(salary.position_allowance) + int(salary.additional) - int(salary.deduction)
+            salary.save()
+
+            if TODAY[:7] <= month:
+                member.base = base
+                member.service_allowance = service
+                member.position_allowance = position
+                member.save()
+
+                edit_salary_list = Salary.objects.filter(month__gt=month).filter(member_id=member)
+                for e_salary in edit_salary_list:
+                    e_salary.base = base
+                    e_salary.service_allowance = service
+                    e_salary.position_allowance = position
+                    e_salary.total = int(e_salary.attendance) + int(e_salary.leave) + int(e_salary.order) + int(e_salary.base) + int(e_salary.service_allowance) + int(e_salary.position_allowance) + int(e_salary.additional) - int(e_salary.deduction)
+                    e_salary.save()
+
+
+
+        return redirect(request.META.get('HTTP_REFERER', 'redirect_if_referer_not_found'))
+    else:
+        return HttpResponseNotAllowed(['post'])
+
+
+def salary_additional_create(request):
+    if request.method == 'POST':
+        member_id = request.POST.get('id', '')
+        price = request.POST.get('price')
+        remark = request.POST.get('remark')
+        month = request.POST.get('month')
+        creator = Member.objects.get(pk=request.session.get('user'))
+
+        member = get_object_or_404(Member, id=member_id)
+        salary = Salary.objects.filter(member_id=member).get(month=month)
+
+        additional = AdditionalSalary(
+            salary_id = salary,
+            member_id = member,
+            price = price,
+            remark = remark,
+            creator = creator,
+        )
+        additional.save()
+        salary.additional = int(salary.additional) + int(price)
+        salary.total = int(salary.total) + int(price)
+        salary.save()
+
+        return redirect(request.META.get('HTTP_REFERER', 'redirect_if_referer_not_found'))
+    else:
+        return HttpResponseNotAllowed(['post'])
+
+def salary_additional_delete(request):
+    if request.method == 'POST':
+        id_list = request.POST.getlist('id')
+        for id in id_list:
+            additional = get_object_or_404(DeductionSalary, id=id)
+            
+            salary = additional.salary_id
+            salary.additional = int(salary.additional) - int(additional.price)
+            salary.total = int(salary.total) - int(additional.price)
+            salary.save()
+            
+            additional.delete()
+
+        return redirect(request.META.get('HTTP_REFERER', 'redirect_if_referer_not_found'))
+    else:
+        return HttpResponseNotAllowed(['post'])
+
+
+def salary_deduction_create(request):
+    if request.method == 'POST':
+        member_id = request.POST.get('id', '')
+        price = request.POST.get('price')
+        remark = request.POST.get('remark')
+        month = request.POST.get('month')
+        creator = Member.objects.get(pk=request.session.get('user'))
+
+        member = get_object_or_404(Member, id=member_id)
+        salary = Salary.objects.filter(member_id=member).get(month=month)
+
+        deduction = DeductionSalary(
+            salary_id = salary,
+            member_id = member,
+            price = price,
+            remark = remark,
+            creator = creator,
+        )
+        deduction.save()
+        salary.deduction = int(salary.deduction) + int(price)
+        salary.total = int(salary.total) - int(price)
+        salary.save()
+        return redirect(request.META.get('HTTP_REFERER', 'redirect_if_referer_not_found'))
+    else:
+        return HttpResponseNotAllowed(['post'])
+
+def salary_deduction_delete(request):
+    if request.method == 'POST':
+        id_list = request.POST.getlist('id')
+        for id in id_list:
+            deduction = get_object_or_404(DeductionSalary, id=id)
+            
+            salary = deduction.salary_id
+            salary.deduction = int(salary.deduction) - int(deduction.price)
+            salary.total = int(salary.total) + int(deduction.price)
+            salary.save()
+            
+            deduction.delete()
+
+        return redirect(request.META.get('HTTP_REFERER', 'redirect_if_referer_not_found'))
+    else:
+        return HttpResponseNotAllowed(['post'])

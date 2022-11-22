@@ -2,12 +2,54 @@ const deduction = document.querySelectorAll(".scrolling_table-list_body td:nth-c
 const deductionPopup = document.querySelector(".deductionPopup")
 const popupBgModulesDeduction = document.querySelector(".popupBgModulesDeduction")
 const deductionCloseBtn = document.querySelector(".deductionCloseBtn")
-for (i = 0; i < deduction.length; i++){
+const deductionMoreHidden = document.querySelector(".deductionMoreHidden")
+const deductionMoreHiddenMonth = document.querySelector(".deductionMoreHiddenMonth")
+const deductionTableScroll = document.querySelector(".deductionTableScroll tbody")
+
+for (i = 0; i < deduction.length; i++) {
     deduction[i].addEventListener("click", openAddSalaryPopup)
 };
 
-function openAddSalaryPopup(){
+function openAddSalaryPopup() {
     deductionPopup.style.display = "block"
+    deductionMoreHidden.value = this.parentNode.children[0].children[0].value
+    deductionMoreHiddenMonth.value = searchMonth.value
+
+    let targetItem = 0
+    for (i = 0; i < addSalarly.length; i++) {
+        if (addSalarly[i].parentNode === this.parentNode) {
+            targetItem = i
+        }
+    };
+
+    for (i = 0; i < deductionList[targetItem].length; i++) {
+        const addTr = document.createElement("tr")
+        addTr.setAttribute("class", "table-list_body-tr")
+        deductionTableScroll.appendChild(addTr)
+
+        const addTd1 = document.createElement("td")
+        addTd1.setAttribute("class", "table-list_body-tr_td")
+        addTr.appendChild(addTd1)
+
+        const addCheckbox = document.createElement("input")
+        addCheckbox.setAttribute("type", "checkbox")
+        addCheckbox.setAttribute("value", deductionList[targetItem][i].id)
+        addCheckbox.setAttribute("name", "id")
+        addTd1.appendChild(addCheckbox)
+
+        const addTd2 = document.createElement("td")
+        addTd2.setAttribute("class", "table-list_body-tr_td priceTd")
+        addTd2.innerText = deductionList[targetItem][i].price
+        addTr.appendChild(addTd2)
+
+        const addTd3 = document.createElement("td")
+        addTd3.setAttribute("class", "table-list_body-tr_td")
+        addTd3.innerText = deductionList[targetItem][i].remark
+        addTr.appendChild(addTd3)
+    };
+
+    const price = document.querySelectorAll(".priceTd")
+    deductionTotal(price)
 }
 
 
@@ -15,6 +57,18 @@ popupBgModulesDeduction.addEventListener("click", closeAddSalaryPopup)
 deductionCloseBtn.addEventListener("click", closeAddSalaryPopup)
 SidemenuUseClose.addEventListener("click", closeAddSalaryPopup)
 
-function closeAddSalaryPopup(){
+function closeAddSalaryPopup() {
     deductionPopup.style.display = "none"
+    deductionTableScroll.innerText = ""
+}
+
+
+function deductionTotal(price){
+    let TotalAmount = 0
+    for (i = 0; i < price.length; i++){
+        TotalAmount = TotalAmount + parseInt(price[i].innerText)
+        price[i].innerText = price[i].innerText.replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
+    };
+    totalAddSalaryPrice[1].innerText = TotalAmount
+    totalAddSalaryPrice[1].innerText = totalAddSalaryPrice[1].innerText.replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
 }
