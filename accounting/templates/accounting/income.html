@@ -33,30 +33,30 @@
 <div class="dashboardContainer">
     <div class="dashboardBox mainDataArea">
         <div class="dashboardArticle monthData">
-            <div class="dashboardHeader">~월 매출</div>
+            <div class="dashboardHeader">월 매출</div>
             <div class="dashboardBody">
                 <div class="totalSalseBox">
                     <div class="totalSalsTitle">총 매출</div>
-                    <div class="totalSalsValue">23,136,260원</div>
+                    <div class="totalSalsValue"></div>
                 </div>
                 <div class="salseArticle">
                     <div class="orderSalseBox">
                         <div class="SalseTitle">일반 매출</div>
-                        <div class="SalseValue">23,136,260원</div>
+                        <div class="SalseValue"></div>
                     </div>
                     <div class="regularlySalseBox">
                         <div class="SalseTitle">출/퇴근 매출</div>
-                        <div class="SalseValue">23,136,260원</div>
+                        <div class="SalseValue"></div>
                     </div>
                 </div>
                 <div class="accountsReceivableArticle">
                     <div class="orderAccountsReceivableBox">
                         <div class="accountsReceivableTitle">미수금</div>
-                        <div class="accountsReceivableValue">3,136,260원</div>
+                        <div class="accountsReceivableValue"></div>
                     </div>
                     <div class="regularlyAccountsReceivableBox">
                         <div class="accountsReceivableTitle">미수금</div>
-                        <div class="accountsReceivableValue">3,136,260원</div>
+                        <div class="accountsReceivableValue"></div>
                     </div>
                 </div>
             </div>
@@ -78,39 +78,51 @@
                       <tr class="table-list_head-tr">
                         <td class="table-list_head-tr_td">유형</td>
                         <td class="table-list_head-tr_td">건수</td>
+                        <td class="table-list_head-tr_td">차량대수</td>
                         <td class="table-list_head-tr_td">매출</td>
                       </tr>
                     </thead>
                     <tbody>
                       <tr class="table-list_body-tr">
-                        <td class="table-list_body-tr_td">산악회, 동호회 모임</td>
-                        <td class="table-list_body-tr_td">20</td>
-                        <td class="table-list_body-tr_td">8,000,000</td>
+                        <td class="table-list_body-tr_td">워크샵</td>
+                        <td class="table-list_body-tr_td"></td>
+                        <td class="table-list_body-tr_td"></td>
+                        <td class="table-list_body-tr_td"></td>
                       </tr>
+                    </tbody>
+                      <tr class="table-list_body-tr">
+                        <td class="table-list_body-tr_td">콘서트, 단체관람</td>
+                        <td class="table-list_body-tr_td"></td>
+                        <td class="table-list_body-tr_td"></td>
+                        <td class="table-list_body-tr_td"></td>
+                      </tr>
+                    </tbody>
+                      <tr class="table-list_body-tr">
+                        <td class="table-list_body-tr_td">체험학습, 수학여행</td>
+                        <td class="table-list_body-tr_td"></td>
+                        <td class="table-list_body-tr_td"></td>
+                        <td class="table-list_body-tr_td"></td>
+                      </tr>
+                    </tbody>
                       <tr class="table-list_body-tr">
                         <td class="table-list_body-tr_td">산악회, 동호회 모임</td>
-                        <td class="table-list_body-tr_td">20</td>
-                        <td class="table-list_body-tr_td">8,000,000</td>
+                        <td class="table-list_body-tr_td"></td>
+                        <td class="table-list_body-tr_td"></td>
+                        <td class="table-list_body-tr_td"></td>
                       </tr>
+                    </tbody>
                       <tr class="table-list_body-tr">
-                        <td class="table-list_body-tr_td">산악회, 동호회 모임</td>
-                        <td class="table-list_body-tr_td">20</td>
-                        <td class="table-list_body-tr_td">8,000,000</td>
+                        <td class="table-list_body-tr_td">결혼식</td>
+                        <td class="table-list_body-tr_td"></td>
+                        <td class="table-list_body-tr_td"></td>
+                        <td class="table-list_body-tr_td"></td>
                       </tr>
+                    </tbody>
                       <tr class="table-list_body-tr">
-                        <td class="table-list_body-tr_td">산악회, 동호회 모임</td>
-                        <td class="table-list_body-tr_td">20</td>
-                        <td class="table-list_body-tr_td">8,000,000</td>
-                      </tr>
-                      <tr class="table-list_body-tr">
-                        <td class="table-list_body-tr_td">산악회, 동호회 모임</td>
-                        <td class="table-list_body-tr_td">20</td>
-                        <td class="table-list_body-tr_td">8,000,000</td>
-                      </tr>
-                      <tr class="table-list_body-tr">
-                        <td class="table-list_body-tr_td">산악회, 동호회 모임</td>
-                        <td class="table-list_body-tr_td">20</td>
-                        <td class="table-list_body-tr_td">8,000,000</td>
+                        <td class="table-list_body-tr_td">기타</td>
+                        <td class="table-list_body-tr_td"></td>
+                        <td class="table-list_body-tr_td"></td>
+                        <td class="table-list_body-tr_td"></td>
                       </tr>
                     </tbody>
                   </table>
@@ -134,6 +146,22 @@
 
 
 {% block script %}
+<script>
+    {% autoescape off %}
+    const monthlySales = {{monthly_sales}};
+    console.log("monthlySales", monthlySales);
+    const yearlySales = {{yearly_sales}};
+    console.log("yearlySales", yearlySales);
+    
+    const order = {{order_type}};
+    console.log("order", order);
+
+    const workTypeCnt = {{work_type_cnt}};
+    console.log("workTypeCnt", workTypeCnt);
+    const paymentDatas = {{payment}};
+    console.log("paymentDatas", paymentDatas);
+    {% endautoescape %}
+</script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
 <script src="{% static 'js/accounting/chart.js' %}"></script>

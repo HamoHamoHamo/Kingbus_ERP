@@ -1,7 +1,7 @@
 import json
 import my_settings
-from .models import Salary, Income, AdditionalSalary, LastIncome, AdditionalCollect, Collect, TotalPrice
-from .forms import AdditionalForm, IncomeForm, AdditionalCollectForm
+from .models import Income, LastIncome, AdditionalCollect, Collect, TotalPrice
+from .forms import IncomeForm, AdditionalCollectForm
 from dispatch.views import FORMAT
 from humanresource.models import Member
 from datetime import datetime, timedelta, date
@@ -37,327 +37,341 @@ easyFinBankService.UseStaticIP = settings.UseStaticIP
 easyFinBankService.UseLocalTimeYN = settings.UseLocalTimeYN
 
 
-class SalaryList(generic.ListView):
-    template_name = 'accounting/salary.html'
-    context_object_name = 'salary_list'
-    model = Salary
+# class SalaryList(generic.ListView):
+#     template_name = 'accounting/salary.html'
+#     context_object_name = 'salary_list'
+#     model = Salary
 
-    def get_queryset(self):
-        selected_month = self.request.GET.get('month', str(datetime.now())[:7])
-        salary_list = Salary.objects.select_related('member_id').filter(month=selected_month).order_by('member_id__name')
-        return salary_list
+#     def get_queryset(self):
+#         selected_month = self.request.GET.get('month', str(datetime.now())[:7])
+#         salary_list = Salary.objects.select_related('member_id').filter(month=selected_month).order_by('member_id__name')
+#         return salary_list
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['selected_month'] = self.request.GET.get('month', str(datetime.now())[:7])
+#     def get_context_data(self, **kwargs):
+#         context = super().get_context_data(**kwargs)
+#         context['selected_month'] = self.request.GET.get('month', str(datetime.now())[:7])
 
-        context['member_list'] = Member.objects.all().order_by('name')
-        entering_list = []
-        additional_list = []
-        for member in context['member_list']:
-            entering_list.append(member.entering_date)
-            additional_list.append(AdditionalSalary.objects.filter(member_id=member).filter(date__startswith=context['selected_month']))
-        context['entering_list'] = entering_list
-        context['additional_list'] = additional_list
-        return context
+#         context['member_list'] = Member.objects.all().order_by('name')
+#         entering_list = []
+#         additional_list = []
+#         for member in context['member_list']:
+#             entering_list.append(member.entering_date)
+#             additional_list.append(AdditionalSalary.objects.filter(member_id=member).filter(date__startswith=context['selected_month']))
+#         context['entering_list'] = entering_list
+#         context['additional_list'] = additional_list
+#         return context
     
-class SalaryDetail(generic.ListView):
-    template_name = 'accounting/salary_detail.html'
-    context_object_name = 'salary'
-    model = Salary
+# class SalaryDetail(generic.ListView):
+#     template_name = 'accounting/salary_detail.html'
+#     context_object_name = 'salary'
+#     model = Salary
     
-    def get_queryset(self):
-        member = get_object_or_404(Member, id=self.kwargs['pk'])
-        self.month = self.request.GET.get('month', TODAY[:7])
-        creator = get_object_or_404(Member, pk=self.request.session.get('user'))
-        try:
-            salary = Salary.objects.filter(member_id=member).get(month=self.month)
-        except:
-            salary = Salary(
-                member_id = member,
-                attendance=0,
-                leave=0,
-                order=0,
-                additional=0,
-                total=0,
-                remark='',
-                month=self.month,
-                creator=creator,
-            )
-            salary.save()
+#     def get_queryset(self):
+#         member = get_object_or_404(Member, id=self.kwargs['pk'])
+#         self.month = self.request.GET.get('month', TODAY[:7])
+#         creator = get_object_or_404(Member, pk=self.request.session.get('user'))
+#         try:
+#             salary = Salary.objects.filter(member_id=member).get(month=self.month)
+#         except:
+#             salary = Salary(
+#                 member_id = member,
+#                 attendance=0,
+#                 leave=0,
+#                 order=0,
+#                 additional=0,
+#                 total=0,
+#                 remark='',
+#                 month=self.month,
+#                 creator=creator,
+#             )
+#             salary.save()
         
-        return salary
+#         return salary
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['selected_month'] = self.month
-        member = get_object_or_404(Member, id=self.kwargs['pk'])
-        # context['monthly'] = context['member'].salary_monthly.get(month=context['selected_month'])
-        first_day = datetime.strptime(self.month + "-01", FORMAT)
-        last_day = datetime.strftime(first_day + relativedelta(months=1) - timedelta(days=1), FORMAT)[8:]
+#     def get_context_data(self, **kwargs):
+#         context = super().get_context_data(**kwargs)
+#         context['selected_month'] = self.month
+#         member = get_object_or_404(Member, id=self.kwargs['pk'])
+#         # context['monthly'] = context['member'].salary_monthly.get(month=context['selected_month'])
+#         first_day = datetime.strptime(self.month + "-01", FORMAT)
+#         last_day = datetime.strftime(first_day + relativedelta(months=1) - timedelta(days=1), FORMAT)[8:]
 
-        a = []
-        additional_list = []
-        for i in range(int(last_day)):
-            a.append(i+1)
-            additional_list.append('')
+#         a = []
+#         additional_list = []
+#         for i in range(int(last_day)):
+#             a.append(i+1)
+#             additional_list.append('')
 
-        additional = AdditionalSalary.objects.filter(member_id=get_object_or_404(Member, id=self.kwargs['pk'])).filter(date__startswith=self.month)
-        for i in additional:
-            additional_list[int(i.date[8:])-1] = i
+#         additional = AdditionalSalary.objects.filter(member_id=get_object_or_404(Member, id=self.kwargs['pk'])).filter(date__startswith=self.month)
+#         for i in additional:
+#             additional_list[int(i.date[8:])-1] = i
 
-        context['a'] = a
-        context['additional_list'] = additional_list
+#         context['a'] = a
+#         context['additional_list'] = additional_list
 
         
-        order_list = [0] * int(last_day)
-        order_list_d = [''] * int(last_day)
-        order_list_a = [''] * int(last_day)
-        dispatches = DispatchOrderConnect.objects.prefetch_related('order_id').filter(driver_id=member).filter(departure_date__startswith=self.month).order_by('departure_date')
-        for dispatch in dispatches:
-            order_list[int(dispatch.departure_date[8:10])-1] += int(dispatch.driver_allowance)
-            order_list_d[int(dispatch.departure_date[8:10])-1] = dispatch.order_id.departure
-            order_list_a[int(dispatch.departure_date[8:10])-1] = dispatch.order_id.arrival
+#         order_list = [0] * int(last_day)
+#         order_list_d = [''] * int(last_day)
+#         order_list_a = [''] * int(last_day)
+#         dispatches = DispatchOrderConnect.objects.prefetch_related('order_id').filter(driver_id=member).filter(departure_date__startswith=self.month).order_by('departure_date')
+#         for dispatch in dispatches:
+#             order_list[int(dispatch.departure_date[8:10])-1] += int(dispatch.driver_allowance)
+#             order_list_d[int(dispatch.departure_date[8:10])-1] = dispatch.order_id.departure
+#             order_list_a[int(dispatch.departure_date[8:10])-1] = dispatch.order_id.arrival
 
-        e_order_list = [0] * int(last_day)
-        e_order_list_d = [''] * int(last_day)
-        e_order_list_a = [''] * int(last_day)
-        e_dispatches = DispatchRegularlyConnect.objects.prefetch_related('regularly_id').filter(driver_id=member).filter(departure_date__startswith=self.month).filter(work_type="출근").order_by('departure_date')
-        for dispatch in e_dispatches:
-            e_order_list[int(dispatch.departure_date[8:10])-1] += int(dispatch.driver_allowance)
-            e_order_list_d[int(dispatch.departure_date[8:10])-1] = dispatch.regularly_id.departure
-            e_order_list_a[int(dispatch.departure_date[8:10])-1] = dispatch.regularly_id.arrival
+#         e_order_list = [0] * int(last_day)
+#         e_order_list_d = [''] * int(last_day)
+#         e_order_list_a = [''] * int(last_day)
+#         e_dispatches = DispatchRegularlyConnect.objects.prefetch_related('regularly_id').filter(driver_id=member).filter(departure_date__startswith=self.month).filter(work_type="출근").order_by('departure_date')
+#         for dispatch in e_dispatches:
+#             e_order_list[int(dispatch.departure_date[8:10])-1] += int(dispatch.driver_allowance)
+#             e_order_list_d[int(dispatch.departure_date[8:10])-1] = dispatch.regularly_id.departure
+#             e_order_list_a[int(dispatch.departure_date[8:10])-1] = dispatch.regularly_id.arrival
         
-        c_order_list = [0] * int(last_day)
-        c_order_list_d = [''] * int(last_day)
-        c_order_list_a = [''] * int(last_day)
-        c_dispatches = DispatchRegularlyConnect.objects.prefetch_related('regularly_id').filter(driver_id=member).filter(departure_date__startswith=self.month).filter(work_type="퇴근").order_by('departure_date')
-        for dispatch in c_dispatches:
-            c_order_list[int(dispatch.departure_date[8:10])-1] += int(dispatch.driver_allowance)
-            c_order_list_d[int(dispatch.departure_date[8:10])-1] = dispatch.regularly_id.departure
-            c_order_list_a[int(dispatch.departure_date[8:10])-1] = dispatch.regularly_id.arrival
+#         c_order_list = [0] * int(last_day)
+#         c_order_list_d = [''] * int(last_day)
+#         c_order_list_a = [''] * int(last_day)
+#         c_dispatches = DispatchRegularlyConnect.objects.prefetch_related('regularly_id').filter(driver_id=member).filter(departure_date__startswith=self.month).filter(work_type="퇴근").order_by('departure_date')
+#         for dispatch in c_dispatches:
+#             c_order_list[int(dispatch.departure_date[8:10])-1] += int(dispatch.driver_allowance)
+#             c_order_list_d[int(dispatch.departure_date[8:10])-1] = dispatch.regularly_id.departure
+#             c_order_list_a[int(dispatch.departure_date[8:10])-1] = dispatch.regularly_id.arrival
 
-        context['order_list'] = order_list
-        context['c_order_list'] = c_order_list
-        context['e_order_list'] = e_order_list
+#         context['order_list'] = order_list
+#         context['c_order_list'] = c_order_list
+#         context['e_order_list'] = e_order_list
 
-        context['order_list_d'] = order_list_d
-        context['c_order_list_d'] = c_order_list_d
-        context['e_order_list_d'] = e_order_list_d
+#         context['order_list_d'] = order_list_d
+#         context['c_order_list_d'] = c_order_list_d
+#         context['e_order_list_d'] = e_order_list_d
 
-        context['order_list_a'] = order_list_a
-        context['c_order_list_a'] = c_order_list_a
-        context['e_order_list_a'] = e_order_list_a
+#         context['order_list_a'] = order_list_a
+#         context['c_order_list_a'] = c_order_list_a
+#         context['e_order_list_a'] = e_order_list_a
 
-        total_list = [0] * int(last_day)
-        for i in range(int(last_day)):
-            if additional_list[i]:
-                total_list[i] = int(order_list[i]) + int(c_order_list[i]) + int(e_order_list[i]) + int(additional_list[i].price)
-            else:
-                total_list[i] = int(order_list[i]) + int(c_order_list[i]) + int(e_order_list[i])
+#         total_list = [0] * int(last_day)
+#         for i in range(int(last_day)):
+#             if additional_list[i]:
+#                 total_list[i] = int(order_list[i]) + int(c_order_list[i]) + int(e_order_list[i]) + int(additional_list[i].price)
+#             else:
+#                 total_list[i] = int(order_list[i]) + int(c_order_list[i]) + int(e_order_list[i])
 
-        context['total_list'] = total_list
+#         context['total_list'] = total_list
 
-        context['member_list'] = Member.objects.all().order_by('name')
-        entering_list = []
-        m_additional_list = []
-        for member in context['member_list']:
-            entering_list.append(member.entering_date)
-            m_additional_list.append(AdditionalSalary.objects.filter(member_id=member).filter(date__startswith=context['selected_month']))
-        context['entering_list'] = entering_list
-        context['m_additional_list'] = m_additional_list
-        context['member'] = get_object_or_404(Member, id=self.kwargs['pk'])
+#         context['member_list'] = Member.objects.all().order_by('name')
+#         entering_list = []
+#         m_additional_list = []
+#         for member in context['member_list']:
+#             entering_list.append(member.entering_date)
+#             m_additional_list.append(AdditionalSalary.objects.filter(member_id=member).filter(date__startswith=context['selected_month']))
+#         context['entering_list'] = entering_list
+#         context['m_additional_list'] = m_additional_list
+#         context['member'] = get_object_or_404(Member, id=self.kwargs['pk'])
         
-        return context
+#         return context
 
-def salary_create(request):
-    if request.method == "POST":
-        additional_form = AdditionalForm(request.POST)
-        if additional_form.is_valid():
-            creator = get_object_or_404(Member, pk=request.session.get('user'))
-            member = get_object_or_404(Member, pk=request.POST.get('member_id'))
-            month = additional_form.cleaned_data['date'][:7]
-            date = additional_form.cleaned_data['date']
-            price = int(additional_form.cleaned_data['price'].replace(',',''))
-            try:
-                salary = Salary.objects.filter(member_id=member).get(month=month)
+# def salary_create(request):
+#     if request.method == "POST":
+#         additional_form = AdditionalForm(request.POST)
+#         if additional_form.is_valid():
+#             creator = get_object_or_404(Member, pk=request.session.get('user'))
+#             member = get_object_or_404(Member, pk=request.POST.get('member_id'))
+#             month = additional_form.cleaned_data['date'][:7]
+#             date = additional_form.cleaned_data['date']
+#             price = int(additional_form.cleaned_data['price'].replace(',',''))
+#             try:
+#                 salary = Salary.objects.filter(member_id=member).get(month=month)
                 
-                additional = AdditionalSalary.objects.filter(member_id=member).get(date=date)
+#                 additional = AdditionalSalary.objects.filter(member_id=member).get(date=date)
 
-                salary.additional = int(salary.additional) - int(additional.price) + price
-                additional.delete()
-            except AdditionalSalary.DoesNotExist:
-                salary.additional = int(salary.additional) + price
-            except Salary.DoesNotExist:
-                print("Does Not Exist")
-                salary = Salary(
-                    member_id = member,
-                    attendance=0,
-                    leave=0,
-                    order=0,
-                    additional=price,
-                    total=price,
-                    remark='',
-                    month=month,
-                    creator=creator,
-                )
+#                 salary.additional = int(salary.additional) - int(additional.price) + price
+#                 additional.delete()
+#             except AdditionalSalary.DoesNotExist:
+#                 salary.additional = int(salary.additional) + price
+#             except Salary.DoesNotExist:
+#                 print("Does Not Exist")
+#                 salary = Salary(
+#                     member_id = member,
+#                     attendance=0,
+#                     leave=0,
+#                     order=0,
+#                     additional=price,
+#                     total=price,
+#                     remark='',
+#                     month=month,
+#                     creator=creator,
+#                 )
 
-            salary.save()
+#             salary.save()
             
-            additional_salary = additional_form.save(commit=False)
-            additional_salary.price = price
-            additional_salary.salary_id = salary
-            additional_salary.creator = creator
-            additional_salary.member_id = member
-            additional_salary.save()
+#             additional_salary = additional_form.save(commit=False)
+#             additional_salary.price = price
+#             additional_salary.salary_id = salary
+#             additional_salary.creator = creator
+#             additional_salary.member_id = member
+#             additional_salary.save()
 
-            return redirect(request.META.get('HTTP_REFERER', 'redirect_if_referer_not_found'))
-        else:
-            raise Http404
-    else:
-        return HttpResponseNotAllowed(['post'])
+#             return redirect(request.META.get('HTTP_REFERER', 'redirect_if_referer_not_found'))
+#         else:
+#             raise Http404
+#     else:
+#         return HttpResponseNotAllowed(['post'])
 
-def salary_edit(request):
-    if request.method == "POST":
-        additional_form = AdditionalForm(request.POST)
-        if additional_form.is_valid():
-            additional = get_object_or_404(AdditionalSalary, id=request.POST.get('id'))
-            additional.date = additional_form.cleaned_data['date']
-            additional.price = additional_form.cleaned_data['price']
-            additional.remark = additional_form.cleaned_data['remark']
-            additional.save()
-            return redirect('accounting:salary')
-        else:
-            raise Http404
-    else:
-        return HttpResponseNotAllowed(['post'])
+# def salary_edit(request):
+#     if request.method == "POST":
+#         additional_form = AdditionalForm(request.POST)
+#         if additional_form.is_valid():
+#             additional = get_object_or_404(AdditionalSalary, id=request.POST.get('id'))
+#             additional.date = additional_form.cleaned_data['date']
+#             additional.price = additional_form.cleaned_data['price']
+#             additional.remark = additional_form.cleaned_data['remark']
+#             additional.save()
+#             return redirect('accounting:salary')
+#         else:
+#             raise Http404
+#     else:
+#         return HttpResponseNotAllowed(['post'])
 
-def salary_delete(request):
-    if request.method == "POST":
-        id_list = request.POST.getlist('check')
-        salary = ''
-        for id in id_list:
-            additional = get_object_or_404(AdditionalSalary, id=id)
-            if not salary:
-                salary = additional.salary_id
-            additional.delete()
-        additional_list = salary.additional_salary.all()
-        total_additional = 0
-        for a in additional_list:
-            total_additional += int(a.price)
-        salary.additional = total_additional
-        salary.total = int(salary.attendance) + int(salary.leave) + int(salary.order) + int(salary.additional)
-        salary.save()
+# def salary_delete(request):
+#     if request.method == "POST":
+#         id_list = request.POST.getlist('check')
+#         salary = ''
+#         for id in id_list:
+#             additional = get_object_or_404(AdditionalSalary, id=id)
+#             if not salary:
+#                 salary = additional.salary_id
+#             additional.delete()
+#         additional_list = salary.additional_salary.all()
+#         total_additional = 0
+#         for a in additional_list:
+#             total_additional += int(a.price)
+#         salary.additional = total_additional
+#         salary.total = int(salary.attendance) + int(salary.leave) + int(salary.order) + int(salary.additional)
+#         salary.save()
 
-        return redirect(request.META.get('HTTP_REFERER', 'redirect_if_referer_not_found'))
-    else:
-        return HttpResponseNotAllowed(['post'])
+#         return redirect(request.META.get('HTTP_REFERER', 'redirect_if_referer_not_found'))
+#     else:
+#         return HttpResponseNotAllowed(['post'])
 
-def remark_edit(request):
-    if request.method == "POST":
-        id_list = request.POST.getlist('id')
-        remark_list = request.POST.getlist('remark')
+# def remark_edit(request):
+#     if request.method == "POST":
+#         id_list = request.POST.getlist('id')
+#         remark_list = request.POST.getlist('remark')
 
-        for id, remark in zip(id_list, remark_list):
-            salary = Salary.objects.get(id=id)
-            salary.remark = remark
-            salary.save()
+#         for id, remark in zip(id_list, remark_list):
+#             salary = Salary.objects.get(id=id)
+#             salary.remark = remark
+#             salary.save()
         
-        return redirect('accounting:salary')
-    else:
-        return HttpResponseNotAllowed(['post'])
+#         return redirect('accounting:salary')
+#     else:
+#         return HttpResponseNotAllowed(['post'])
 
-class IncomeList(generic.ListView):
+class SalesList(generic.ListView):
     template_name = 'accounting/income.html'
     context_object_name = 'dispatch_list'
     model = DispatchOrder
 
     def get_queryset(self):
-        return
+        month = self.request.GET.get('month', TODAY[:7])
+        dispatch_list = DispatchOrder.objects.filter(departure_date__startswith=month)
+
+        return dispatch_list
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        month = self.request.GET.get('month', TODAY[:7])
-        first_day = datetime.strptime(month + "-01", FORMAT)
-        last_day = datetime.strftime(first_day + relativedelta(months=1) - timedelta(days=1), FORMAT)[8:]
-
-        order_list = [0] * int(last_day)
-        order_list_total = 0
-        collect_list = [0] * int(last_day)
-        dispatches = DispatchOrderConnect.objects.select_related('order_id').filter(departure_date__startswith=month).order_by('departure_date')
-        for dispatch in dispatches:
-            order_list[int(dispatch.departure_date[8:10])-1] += int(dispatch.order_id.price)
-            order_list_total += int(dispatch.order_id.price)
-            collect_list[int(dispatch.departure_date[8:10])-1] = int(dispatch.order_id.collection_amount)
-            
-
-        e_order_list = [0] * int(last_day)
-        e_order_list_total = 0
-        e_dispatches = DispatchRegularlyConnect.objects.select_related('regularly_id').filter(departure_date__startswith=month).filter(work_type="출근").order_by('departure_date')
-        for dispatch in e_dispatches:
-            e_order_list[int(dispatch.departure_date[8:10])-1] += int(dispatch.regularly_id.price)
-            e_order_list_total += int(dispatch.regularly_id.price)
         
-        c_order_list = [0] * int(last_day)
-        c_order_list_total = 0
-        c_dispatches = DispatchRegularlyConnect.objects.select_related('regularly_id').filter(departure_date__startswith=month).filter(work_type="퇴근").order_by('departure_date')
-        for dispatch in c_dispatches:
-            c_order_list[int(dispatch.departure_date[8:10])-1] += int(dispatch.regularly_id.price)
-            c_order_list_total += int(dispatch.regularly_id.price)
+        get_month = self.request.GET.get('month', TODAY[:7])
 
-        n_collect_list = [0] * int(last_day)
-        n_collect_list_total = 0
-        collect_list_total = 0
-        total_list = [0] * int(last_day)
-        for i in range(int(last_day)):
-            collect_list_total += collect_list[i]
-            if order_list[i] and collect_list[i]:
-                n_collect_list[i] = order_list[i] - collect_list[i]
-                n_collect_list_total += n_collect_list[i]
-            if order_list[i] and e_order_list[i] and c_order_list[i]:
-                total_list[i] = order_list[i] + e_order_list[i] + c_order_list[i]
+        yearly_sales = []
+        for i in range(12):
+            if i < 10:
+                month = f'{get_month[:4]}-0{i}'
+            else:
+                month = f'{get_month[:4]}-{i}'
+
+            regularly_sales = TotalPrice.objects.filter(month=month).exclude(group_id=None).aggregate(Sum('total_price'))['total_price__sum']
+            order_sales = TotalPrice.objects.filter(month=month).exclude(order_id=None).aggregate(Sum('total_price'))['total_price__sum']
+            regularly_collect = Collect.objects.filter(month=month).exclude(group_id=None).aggregate(Sum('price'))['price__sum']
+            order_collect = Collect.objects.filter(month=month).exclude(order_id=None).aggregate(Sum('price'))['price__sum']
+
+
+            regularly_sales_price = 0
+            order_sales_price = 0
             
 
-        context['order_list'] = order_list
-        context['c_order_list'] = c_order_list
-        context['e_order_list'] = e_order_list
+            if regularly_sales:
+                regularly_sales_price = int(regularly_sales)
+            if order_sales:
+                order_sales_price = int(order_sales)
 
-        context['order_list_total'] = order_list_total
-        context['c_order_list_total'] = c_order_list_total
-        context['e_order_list_total'] = e_order_list_total
-        context['collect_list_total'] = collect_list_total
-        context['n_collect_list_total'] = n_collect_list_total
+            regularly_outstanding_price = regularly_sales_price
+            order_outstanding_price = order_sales_price
 
-        context['collect_list'] = collect_list
-        context['n_collect_list'] = n_collect_list
-        context['total_list'] = total_list
+            if regularly_collect:
+                regularly_outstanding_price = regularly_sales_price - int(regularly_collect)
+            if order_collect:
+                order_outstanding_price = order_sales_price - int(order_collect)
 
-        context['last_day'] = last_day
+
+            total_sales_price = regularly_sales_price + order_sales_price
+            
+            yearly_sales.append({
+                'total_sales': total_sales_price,
+                'regularly_sales': regularly_sales_price,
+                'order_sales': order_sales_price,
+            })
+            if month == get_month:
+                monthly_sales = {
+                'total_sales': total_sales_price,
+                'regularly_sales': regularly_sales_price,
+                'order_sales': order_sales_price,
+                'regularly_outstanding': regularly_outstanding_price,
+                'order_outstanding': order_outstanding_price,
+                }
+
+        context['monthly_sales'] = monthly_sales
+        context['yearly_sales'] = yearly_sales
+        #########
+        
+        type_cnt = {}
+        bus_cnt = {}
+        sales = {}
+        payment = {}
+
+        for order in context['dispatch_list']:
+            try:
+                type_cnt[order.order_type] += 1
+                bus_cnt[order.order_type] += int(order.bus_cnt)
+                sales[order.order_type] += int(order.bus_cnt) * int(order.price)
+            except KeyError:
+                type_cnt[order.order_type] = 1
+                bus_cnt[order.order_type] = int(order.bus_cnt)
+                sales[order.order_type] = int(order.bus_cnt) * int(order.price)
+
+            try:
+                payment[order.payment_method] += 1
+            except KeyError:
+                payment[order.payment_method] = 1
+
+        context['payment'] = payment
+
+        order_type = {
+            'type_cnt': type_cnt,
+            'bus_cnt': bus_cnt,
+            'sales': sales,
+        }
+        context['order_type'] = order_type
+
+        work_type_cnt = {
+            'attendance': DispatchRegularlyConnect.objects.filter(departure_date__startswith=get_month).filter(work_type='출근').count(),
+            'leave': DispatchRegularlyConnect.objects.filter(departure_date__startswith=get_month).filter(work_type='퇴근').count(),
+            'order': context['dispatch_list'].count(),
+        }
+        context['work_type_cnt'] = work_type_cnt
+
         context['month'] = month
-
         return context
-
-# def week_count(last_date):
-#     month = last_date[:7]
-#     week_obj = {
-#         '월': 4,
-#         '화': 4,
-#         '수': 4,
-#         '목': 4,
-#         '금': 4,
-#         '토': 4,
-#         '일': 4,
-#     }
-#     date = datetime.strptime(f'{month}-01', FORMAT)
-#     for i in range(int(last_date[8:])-28):
-        
-#         plus = WEEK2[date.weekday()]
-#         week_obj[plus] += 1
-
-#         date += timedelta(days=1)
-
-
-#     return week_obj
 
 class RegularlyCollectList(generic.ListView):
     template_name = 'accounting/regularly_collect.html'
@@ -782,6 +796,7 @@ def collect_create(request):
                 order_id = order,
                 income_id = income,
                 price = price,
+                month = order.departure_date[:7],
                 creator = creator
             )
             collect.save()

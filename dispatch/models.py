@@ -80,7 +80,7 @@ class DispatchOrder(models.Model):
     option = models.CharField(verbose_name='버스옵션', max_length=50, null=False, blank=True)
     route = models.CharField(verbose_name='노선이름', max_length=200, null=False)
     ticketing_info = models.CharField(verbose_name='표찰정보', max_length=200, null=False, blank=True)
-    order_type = models.CharField(verbose_name='유형', max_length=50, null=False, blank=True)
+    order_type = models.CharField(verbose_name='유형', max_length=50, null=False, blank=True, default='기타')
     payment_method = models.CharField(verbose_name='결제방법', max_length=50, null=False, blank=True)
     # collection_amount = models.CharField(verbose_name='수금금액', max_length=30, null=False, default='0')
     # collection_date = models.CharField(verbose_name='수금날짜', max_length=10, null=False, blank=True)

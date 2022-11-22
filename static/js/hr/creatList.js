@@ -129,6 +129,11 @@ function drawMember() {
         memberData8.innerText = data[i].phone_num
         memberList.appendChild(memberData8);
 
+        const memberData8Spare = document.createElement('td');
+        memberData8Spare.setAttribute("class", `table-list_body-tr_td`);
+        memberData8Spare.innerText = "010-9430-7578(세글자)"
+        memberList.appendChild(memberData8Spare);
+
         const memberData9 = document.createElement('td');
         memberData9.setAttribute("class", `table-list_body-tr_td`);
         memberData9.innerText = `${data[i].birthdate.substr(0, 4)}-${data[i].birthdate.substr(4, 2)}-${data[i].birthdate.substr(6, 2)}`

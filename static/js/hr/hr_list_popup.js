@@ -11,6 +11,7 @@ const hrEntering = document.querySelector(".hrEntering")
 const hrPhone = document.querySelector(".hrPhone")
 const hrBirth = document.querySelector(".hrBirth")
 const hrAddress = document.querySelector(".hrAddress")
+const hrEmergency = document.querySelector(".hrEmergency")
 const sendToHidden = document.querySelector(".sendToHidden")
 const createName = document.querySelector(".createName")
 const PopupDataInputWork = document.querySelector(".PopupDataInputWork")
@@ -62,6 +63,7 @@ function openDetailPopup(targetId) {
       hrPhone.value = regDatas[i].phone_num;
       hrBirth.value = regDatas[i].birthdate;
       hrAddress.value = regDatas[i].address;
+      // hrEmergency.value = regDatas[i].hrEmergency;
       hrID.value = regDatas[i].id
       LicenseFileTextEdit.value = regDatas[i].license
       DriverLicenseFileTextEdit.value = regDatas[i].bus_license
