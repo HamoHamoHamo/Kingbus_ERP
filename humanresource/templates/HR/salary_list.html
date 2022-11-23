@@ -125,7 +125,7 @@
                     <input type="hidden" name="id" class="addSalaryMoreHidden">
                     <input type="hidden" name="month" class="addSalaryMoreHiddenMonth">
                 </form>
-                <form method="post" action="" class="addSalaryDeleteForm">
+                <form method="post" action="{% url 'HR:salary_additional_delete' %}" class="addSalaryDeleteForm">
                     {% csrf_token %}
                     <div class="popupArticleCategori">추가수당 목록</div>
                     <div class="popupArticleBoxTable">
@@ -197,7 +197,7 @@
                     <input type="hidden" name="id" class="deductionMoreHidden">
                     <input type="hidden" name="month" class="deductionMoreHiddenMonth">
                 </form>
-                <form method="post" action="{% url 'HR:salary_additional_create' %}" class="deductionDeleteForm">
+                <form method="post" action="{% url 'HR:salary_deduction_delete' %}" class="deductionDeleteForm">
                     {% csrf_token %}
                     <div class="popupArticleCategori">공제목록</div>
                     <div class="popupArticleBoxTable">

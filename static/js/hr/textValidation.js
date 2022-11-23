@@ -53,11 +53,13 @@ function makeResult(){
 }
 
 function remove0(result, targetInput){
-    if(result[0] == 0){
-        result = result.substr(1,)
-        remove0(result, targetInput)
-    }else{
-        addComma(result, targetInput)
+    if(result.length > 1){
+        if(result[0] == 0){
+            result = result.substr(1,)
+            remove0(result, targetInput)
+        }else{
+            addComma(result, targetInput)
+        }
     }
 }
 

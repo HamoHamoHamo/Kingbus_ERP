@@ -25,7 +25,6 @@ function openComparePopup() {
         datatype: 'json',
         success: function (result) {
             if (result.status) {
-                console.log(result.dataList);
                 compareTable.innerText = ""
                 for (i = 0; i < result.dataList.length; i++) {
                     const compareTr = document.createElement("tr")
@@ -124,6 +123,7 @@ function closeComparePopup() {
 
 function addComma(compareItem) {
     for (i = 0; i < compareItem.length; i++) {
+        console.log(compareItem);
         compareItem[i].children[4].innerText = compareItem[i].children[4].innerText.replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
         compareItem[i].children[5].innerText = compareItem[i].children[5].innerText.replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
         compareItem[i].children[6].innerText = compareItem[i].children[6].innerText.replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");

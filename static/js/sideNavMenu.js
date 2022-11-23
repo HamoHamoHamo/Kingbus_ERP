@@ -41,17 +41,17 @@ function openSideNav() {
         sideMenuNav2Box[Array.from(nav1BoxMenuHaveDepth2).indexOf(this)].style.height = "20rem";
         sideMenuNav2[Array.from(nav1BoxMenuHaveDepth2).indexOf(this)].style.height = "18rem";
         break;
+      // case 4:
+      //   sideMenuNav2Box[Array.from(nav1BoxMenuHaveDepth2).indexOf(this)].style.height = "15.2rem";
+      //   sideMenuNav2[Array.from(nav1BoxMenuHaveDepth2).indexOf(this)].style.height = "13.2rem";
+      //   break;
       case 4:
-        sideMenuNav2Box[Array.from(nav1BoxMenuHaveDepth2).indexOf(this)].style.height = "15.2rem";
-        sideMenuNav2[Array.from(nav1BoxMenuHaveDepth2).indexOf(this)].style.height = "13.2rem";
-        break;
-      case 5:
         sideMenuNav2Box[Array.from(nav1BoxMenuHaveDepth2).indexOf(this)].style.height = "10.4rem";
         sideMenuNav2[Array.from(nav1BoxMenuHaveDepth2).indexOf(this)].style.height = "8.4rem";
         break;
     }
     sideNavControll[Array.from(nav1BoxMenuHaveDepth2).indexOf(this)].style.transform = "rotate(180deg)"
-    nav1Box[parseInt(`${Array.from(nav1BoxMenuHaveDepth2).indexOf(this)}`) + 1].style.backgroundColor = "#19173B";
+    this.parentNode.style.backgroundColor = "#19173B";
     overlapCount = Array.from(nav1BoxMenuHaveDepth2).indexOf(this);
     navOpenCount = true;
   }

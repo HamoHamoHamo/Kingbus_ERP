@@ -15,7 +15,15 @@ body {
 }
 
 .salaryStatusTitle {
+    text-align: center;
+    width: 56mm;
+    height: 7mm;
     font-size: 20px;
+}
+.salaryStatusTitle::after{
+    content: "";
+    display: block;
+    width: 56mm;
     border-bottom: 0.1rem solid black;
 }
 

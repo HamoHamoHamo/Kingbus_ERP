@@ -14,6 +14,7 @@ from .forms import MemberForm
 from .models import Member, MemberFile, Salary, AdditionalSalary, DeductionSalary
 
 TODAY = str(datetime.now())[:10]
+WEEK = ['(월)', '(화)', '(수)', '(목)', '(금)', '(토)', '(일)', ]
 
 class MemberList(generic.ListView):
     template_name = 'HR/member.html'
@@ -382,12 +383,13 @@ class SalaryList(generic.ListView):
             try:
                 salary = Salary.objects.filter(member_id=member).get(month=month)
             except Salary.DoesNotExist:
-                salary = new_salary(self.request, month, member)
+                creator = Member.objects.get(pk=self.request.session.get('user'))
+                salary = new_salary(creator, month, member)
             
             salary_list.append(salary)
 
             ###########
-            temp_add = []        
+            temp_add = []
             additionals = AdditionalSalary.objects.filter(member_id=member).filter(salary_id=salary)
             for additional in additionals:
                 temp_add.append({
@@ -416,7 +418,8 @@ class SalaryList(generic.ListView):
 
         return context
 ## 확인 필요
-def new_salary(request, month, member):
+# month의 출근 퇴근 일반 요금 계산해서 Salary 생성
+def new_salary(creator, month, member):
     last_date = datetime.strftime(datetime.strptime(month+'-01', FORMAT) + relativedelta(months=1) - timedelta(days=1), FORMAT)
     attendance = DispatchRegularlyConnect.objects.filter(work_type='출근').filter(driver_id=member).filter(departure_date__range=(month+'-01 00:00', last_date+' 24:00')).aggregate(Sum('driver_allowance'))
     leave = DispatchRegularlyConnect.objects.filter(work_type='퇴근').filter(driver_id=member).filter(departure_date__range=(month+'-01 00:00', last_date+' 24:00')).aggregate(Sum('driver_allowance'))
@@ -457,13 +460,138 @@ def new_salary(request, month, member):
         order = order_price,
         total = attendance_price + leave_price + order_price + base + service_allowance + position_allowance,
         month = month,
-        creator = Member.objects.get(pk=request.session.get('user'))
+        creator = creator
     )
     salary.save()
     return salary
 
 def salary_detail(request):
-    return render(request, 'HR/salary_detail.html')
+    member_id_list = request.GET.get('driver').split(',')
+    month = request.GET.get('date')
+    
+    member_list = []
+    for member_id in member_id_list:
+        member = get_object_or_404(Member, id=member_id)
+
+        last_date = datetime.strftime(datetime.strptime(month+'-01', FORMAT) + relativedelta(months=1) - timedelta(days=1), FORMAT)[8:10]
+        
+        attendance_list = [''] * int(last_date)
+        leave_list = [''] * int(last_date)
+        order_list = [''] * int(last_date)
+        order_price_list = [0] * int(last_date)
+        attendance_price_list = [0] * int(last_date)
+        leave_price_list = [0] * int(last_date)
+        week_list = []
+        
+        
+        total_list = [0] * int(last_date)
+        work_cnt = 0
+        
+
+        salary = Salary.objects.filter(member_id=member).get(month=month)
+
+        connects = DispatchOrderConnect.objects.filter(departure_date__range=(f'{month}-01', {month}-{last_date})).filter(driver_id=member)
+        order_price = 0
+        for connect in connects:
+            c_date = int(connect.departure_date[8:10]) - 1
+            if not order_list[c_date]:
+                order_list[c_date] = []
+            order_list[c_date].append([connect.order_id.departure, connect.order_id.arrival])
+            order_price += int(connect.driver_allowance)
+        order_price_list[c_date] = order_price
+
+        attendances = DispatchRegularlyConnect.objects.filter(departure_date__range=(f'{month}-01', {month}-{last_date})).filter(work_type='출근').filter(driver_id=member)
+        attendance_price = 0
+        for attendance in attendances:
+            c_date = int(attendance.departure_date[8:10]) - 1
+            if not attendance_list[c_date]:
+                attendance_list[c_date] = []
+            attendance_list[c_date].append([attendance.regularly_id.departure, attendance.regularly_id.arrival])
+            attendance_price += int(attendance.driver_allowance)
+        attendance_price_list[c_date] = attendance_price
+
+        leaves = DispatchRegularlyConnect.objects.filter(departure_date__range=(f'{month}-01', {month}-{last_date})).filter(work_type='퇴근').filter(driver_id=member)
+        leave_price = 0
+        for leave in leaves:
+            c_date = int(leave.departure_date[8:10]) - 1
+            if not leave_list[c_date]:
+                leave_list[c_date] = []
+            leave_list[c_date].append([leave.regularly_id.departure, leave.regularly_id.arrival])
+            print('temtttt', leave_list)
+            leave_price += int(leave.driver_allowance)
+        leave_price_list[c_date] = leave_price
+
+
+        for i in range(int(last_date)):
+            check = 0
+
+            if i + 1 < 10:
+                date = f'{month}-0{i+1}'
+            else:
+                date = f'{month}-{i+1}'
+                
+            
+            week_list.append(WEEK[datetime.strptime(date, FORMAT).weekday()])
+
+
+            # order = DispatchOrderConnect.objects.filter(departure_date__startswith=date).filter(driver_id=member)
+            # order_value = order.values_list('order_id__departure', 'order_id__arrival')
+            # order_price = order.aggregate(Sum('driver_allowance'))
+            # if not order_price['driver_allowance__sum'] == None:
+            #     check = 1
+            #     order_price_list.append(int(order_price['driver_allowance__sum']))
+            #     total_list[i] += int(order_price['driver_allowance__sum'])
+            # else:
+            #     order_price_list.append('')
+            # order_list.append(order_value)
+
+            
+            # attendance = DispatchRegularlyConnect.objects.filter(departure_date__startswith=date).filter(work_type='출근').filter(driver_id=member)
+            # attendance_value = attendance.values_list('regularly_id__departure', 'regularly_id__arrival')
+            # attendance_price = attendance.aggregate(Sum('driver_allowance'))
+            # if not attendance_price['driver_allowance__sum'] == None:
+            #     check = 1
+            #     attendance_price_list[i] = int(attendance_price['driver_allowance__sum'])
+            #     total_list[i] += int(attendance_price['driver_allowance__sum'])
+            # else:
+            #     attendance_price_list[i] = ''
+            # attendance_list[i] = attendance_value
+
+            
+            # leave = DispatchRegularlyConnect.objects.filter(departure_date__startswith=date).filter(work_type='출근').filter(driver_id=member)
+            # leave_value = leave.values_list('regularly_id__departure', 'regularly_id__arrival')
+            # leave_price = leave.aggregate(Sum('driver_allowance'))
+            # if not leave_price['driver_allowance__sum'] == None:
+            #     check = 1
+            #     leave_price_list[i] = int(leave_price['driver_allowance__sum'])
+            #     total_list[i] += int(leave_price['driver_allowance__sum'])
+            # else:
+            #     leave_price_list[i] = ''
+            # leave_list[i] = leave_value
+
+            if check == 1:
+                work_cnt += 1
+
+        
+        member_list.append({
+            'order_list': order_list,
+            'attendance_list': attendance_list,
+            'leave_list': leave_list,
+            'order_price_list': order_price_list,
+            'attendance_price_list': attendance_price_list,
+            'leave_price_list': leave_price_list,
+            'salary': salary,
+            'member': member,
+            'week_list': week_list,
+            'total_list': total_list,
+            'work_cnt': work_cnt,
+        })
+        
+    context = {
+        'member_list': member_list,
+        'month': month
+    }
+    return render(request, 'HR/salary_detail.html', context)
 
 
 def salary_edit(request):

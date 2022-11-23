@@ -5,6 +5,7 @@ const deductionCloseBtn = document.querySelector(".deductionCloseBtn")
 const deductionMoreHidden = document.querySelector(".deductionMoreHidden")
 const deductionMoreHiddenMonth = document.querySelector(".deductionMoreHiddenMonth")
 const deductionTableScroll = document.querySelector(".deductionTableScroll tbody")
+const deductionListAllCheck = document.querySelector(".deductionListAllCheck")
 
 for (i = 0; i < deduction.length; i++) {
     deduction[i].addEventListener("click", openAddSalaryPopup)
@@ -24,7 +25,7 @@ function openAddSalaryPopup() {
 
     for (i = 0; i < deductionList[targetItem].length; i++) {
         const addTr = document.createElement("tr")
-        addTr.setAttribute("class", "table-list_body-tr")
+        addTr.setAttribute("class", "table-list_body-tr deductionList")
         deductionTableScroll.appendChild(addTr)
 
         const addTd1 = document.createElement("td")
@@ -33,6 +34,7 @@ function openAddSalaryPopup() {
 
         const addCheckbox = document.createElement("input")
         addCheckbox.setAttribute("type", "checkbox")
+        addCheckbox.setAttribute("class", "deductionChecker")
         addCheckbox.setAttribute("value", deductionList[targetItem][i].id)
         addCheckbox.setAttribute("name", "id")
         addTd1.appendChild(addCheckbox)
@@ -49,7 +51,24 @@ function openAddSalaryPopup() {
     };
 
     const price = document.querySelectorAll(".priceTd")
+    const deductionTrList = document.querySelectorAll(".deductionList")
+    const deductionChecker = document.querySelectorAll(".deductionChecker")
     deductionTotal(price)
+    deductionChecking(deductionTrList, deductionChecker)
+
+    deductionListAllCheck.addEventListener("change", checkingAll)
+
+    function checkingAll(){
+        if(this.checked){
+            for (i = 0; i < deductionChecker.length; i++){
+                deductionChecker[i].checked = true
+            };
+        }else{
+            for (i = 0; i < deductionChecker.length; i++){
+                deductionChecker[i].checked = false
+            };
+        }
+    }
 }
 
 
@@ -71,4 +90,56 @@ function deductionTotal(price){
     };
     totalAddSalaryPrice[1].innerText = TotalAmount
     totalAddSalaryPrice[1].innerText = totalAddSalaryPrice[1].innerText.replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
+}
+
+
+
+function deductionChecking(deductionTrList, deductionChecker){
+
+    for (i = 0; i < deductionTrList.length; i++){
+        deductionTrList[i].addEventListener("click", checkingForList)
+    };
+
+    function checkingForList(){
+        if(this.children[0].children[0].checked){
+            this.children[0].children[0].checked = false
+        }else{
+            this.children[0].children[0].checked = true
+        }
+        
+        let checker = 0
+        for (i = 0; i < deductionChecker.length; i++){
+            if(deductionChecker[i].checked){
+                checker++
+            }
+        };
+        if(deductionChecker.length === checker){
+            deductionListAllCheck.checked = true
+        }else{
+            deductionListAllCheck.checked = false
+        }
+    }
+    
+
+
+
+    for (i = 0; i < deductionChecker.length; i++){
+        deductionChecker[i].addEventListener("click", checking)
+    };
+    
+    function checking(e){
+        e.stopPropagation()
+        let checker = 0
+        for (i = 0; i < deductionChecker.length; i++){
+            if(deductionChecker[i].checked){
+                checker++
+            }
+        };
+        if(deductionChecker.length === checker){
+            deductionListAllCheck.checked = true
+        }else{
+            deductionListAllCheck.checked = false
+        }
+    }
+
 }

@@ -8,6 +8,9 @@ const addSalaryMoreHiddenMonth = document.querySelector(".addSalaryMoreHiddenMon
 const searchMonth = document.querySelector(".search-Form_input-Month")
 const addSalaryTable = document.querySelector(".addSalaryTableScroll tbody")
 const totalAddSalaryPrice = document.querySelectorAll(".totalAddSalaryPrice")
+const addSalaryListAllCheck = document.querySelector(".addSalaryListAllCheck")
+const addSalaryDeleteBtn = document.querySelector(".addSalaryDeleteBtn")
+const addSalaryDeleteForm = document.querySelector(".addSalaryDeleteForm")
 
 for (i = 0; i < addSalarly.length; i++){
     addSalarly[i].addEventListener("click", openAddSalaryPopup)
@@ -27,7 +30,7 @@ function openAddSalaryPopup(){
 
     for (i = 0; i < additionalList[targetItem].length; i++){
         const addTr = document.createElement("tr")
-        addTr.setAttribute("class", "table-list_body-tr")
+        addTr.setAttribute("class", "table-list_body-tr addList")
         addSalaryTable.appendChild(addTr)
         
         const addTd1 = document.createElement("td")
@@ -36,6 +39,7 @@ function openAddSalaryPopup(){
         
         const addCheckbox = document.createElement("input")
         addCheckbox.setAttribute("type", "checkbox")
+        addCheckbox.setAttribute("class", "addChecker")
         addCheckbox.setAttribute("value", additionalList[targetItem][i].id)
         addCheckbox.setAttribute("name", "id")
         addTd1.appendChild(addCheckbox)
@@ -52,7 +56,24 @@ function openAddSalaryPopup(){
     };
 
     const price = document.querySelectorAll(".priceTd")
+    const addList = document.querySelectorAll(".addList")
+    const addChecker = document.querySelectorAll(".addChecker")
     addTotal(price)
+    addChecking(addList, addChecker)
+
+    addSalaryListAllCheck.addEventListener("change", checkingAll)
+
+    function checkingAll(){
+        if(this.checked){
+            for (i = 0; i < addChecker.length; i++){
+                addChecker[i].checked = true
+            };
+        }else{
+            for (i = 0; i < addChecker.length; i++){
+                addChecker[i].checked = false
+            };
+        }
+    }
 }
 
 
@@ -74,4 +95,63 @@ function addTotal(price){
     };
     totalAddSalaryPrice[0].innerText = TotalAmount
     totalAddSalaryPrice[0].innerText = totalAddSalaryPrice[0].innerText.replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
+}
+
+
+function addChecking(addList, addChecker){
+
+    for (i = 0; i < addList.length; i++){
+        addList[i].addEventListener("click", checkingForList)
+    };
+
+    function checkingForList(){
+        if(this.children[0].children[0].checked){
+            this.children[0].children[0].checked = false
+        }else{
+            this.children[0].children[0].checked = true
+        }
+        
+        let checker = 0
+        for (i = 0; i < addChecker.length; i++){
+            if(addChecker[i].checked){
+                checker++
+            }
+        };
+        if(addChecker.length === checker){
+            addSalaryListAllCheck.checked = true
+        }else{
+            addSalaryListAllCheck.checked = false
+        }
+    }
+    
+
+
+
+    for (i = 0; i < addChecker.length; i++){
+        addChecker[i].addEventListener("click", checking)
+    };
+    
+    function checking(e){
+        e.stopPropagation()
+        let checker = 0
+        for (i = 0; i < addChecker.length; i++){
+            if(addChecker[i].checked){
+                checker++
+            }
+        };
+        if(addChecker.length === checker){
+            addSalaryListAllCheck.checked = true
+        }else{
+            addSalaryListAllCheck.checked = false
+        }
+    }
+
+}
+
+
+addSalaryDeleteBtn.addEventListener("click", deleteAdd)
+
+function deleteAdd(){
+    for
+    addSalaryDeleteForm.submit()
 }

@@ -11,6 +11,9 @@ const addTotalTotal = document.querySelector(".addTotalTotal")
 const addDeleteBtn = document.querySelector(".addDeleteBtn")
 const addListAllCheck = document.querySelector(".addListAllCheck")
 const addDeleteForm = document.querySelector(".addDeleteForm")
+const amountInput = document.querySelectorAll(".amountInput")
+const addForm = document.querySelector(".addForm")
+const addBtn = document.querySelector(".addBtn")
 
 
 for (i = 0; i < collectDateBox.length; i++) {
@@ -50,7 +53,7 @@ function openAddPopup() {
 
         const addListTd2 = document.createElement("td")
         addListTd2.setAttribute("class", "table-list_body-tr_td")
-        addListTd2.innerText = i
+        addListTd2.innerText = i + 1
         addListTr.appendChild(addListTd2)
 
         const addListTd3 = document.createElement("td")
@@ -110,6 +113,7 @@ SidemenuUseClose.addEventListener("click", clodeAddPopup)
 
 function clodeAddPopup() {
     additionalPopup.style.display = "none"
+    addListTable.innerText = ""
 }
 
 
@@ -183,4 +187,59 @@ function addListAllChcecker() {
             addListCheckbox[i].checked = false
         };
     }
+}
+
+
+
+
+for (i = 0; i < amountInput.length; i++) {
+    amountInput[i].addEventListener("input", onlyNum)
+    amountInput[i].addEventListener("click", removeComma)
+    amountInput[i].addEventListener("focusout", makeResult)
+};
+
+function removeComma() {
+    this.value = this.value.replace(/\,/g, "")
+}
+
+function onlyNum() {
+    let check = /^[0-9]+$/
+    let regex = /[^0-9]/g;
+    if (!check.test(this.value)) {
+        this.value = this.value.replace(regex, "")
+    }
+}
+
+
+function makeResult(){
+    let result = this.value;
+    targetInput = this
+    remove0(result, targetInput)
+}
+
+
+function remove0(result, targetInput){
+    if(result.length > 1){
+        if(result[0] == 0){
+            result = result.substr(1,)
+            remove0(result, targetInput)
+        }else{
+            changeAddComma(result, targetInput)
+        }
+    }
+}
+
+
+function changeAddComma(result, targetInput){
+    targetInput.value = result
+    targetInput.value = targetInput.value.replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
+}
+
+
+addBtn.addEventListener("click", addSubmit)
+
+function addSubmit(){
+    amountInput[0].value = amountInput[0].value.replace(/\,/g, "")
+    amountInput[1].value = amountInput[1].value.replace(/\,/g, "")
+    addForm.submit()
 }
