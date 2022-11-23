@@ -33,7 +33,7 @@ def create_additional_collect(sender, instance, created, **kwargs):
             )
             total.save()
     else:
-        total = get_object_or_404(TotalPrice, order_id=instance.order_id)
+        total = TotalPrice.objects.filter(order_id=instance.order_id).get(month=instance.month)
 
     total.total_price = int(total.total_price) + int(instance.total_price)
     total.save()
@@ -42,9 +42,9 @@ def create_additional_collect(sender, instance, created, **kwargs):
 def delete_additional_collect(sender, instance, **kwargs):
     
     if instance.order_id:
-        total = get_object_or_404(TotalPrice, order_id=instance.order_id)
+        total = TotalPrice.objects.filter(order_id=instance.order_id).get(month=instance.month)
     else:
-        total = get_object_or_404(TotalPrice, group_id=instance.group_id)
+        total = TotalPrice.objects.filter(group_id=instance.group_id).get(month=instance.month)
     total.total_price = int(total.total_price) - int(instance.total_price)
     total.save()
 

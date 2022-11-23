@@ -61,7 +61,7 @@ class MemberFile(models.Model):
 
 
 class Salary(models.Model):
-    member_id = models.ForeignKey(Member, on_delete=models.CASCADE, related_name="salary_monthly", null=False)
+    member_id = models.ForeignKey(Member, on_delete=models.SET_NULL, related_name="salary", null=True)
     base = models.CharField(verbose_name='기본급', max_length=20, null=False, default=0)
     service_allowance = models.CharField(verbose_name='근속수당', max_length=20, null=False, default=0)
     position_allowance = models.CharField(verbose_name='직급수당', max_length=20, null=False, default=0)
@@ -75,6 +75,10 @@ class Salary(models.Model):
     creator = models.ForeignKey(Member, on_delete=models.SET_NULL, related_name="salary_user", db_column="user_id", null=True)
     pub_date = models.DateTimeField(verbose_name='작성시간', auto_now_add=True, null=False)
     
+    def __str__(self):
+        if self.member_id:
+            return self.member_id.name + ' ' + self.month
+
 class AdditionalSalary(models.Model):
     salary_id = models.ForeignKey(Salary, on_delete=models.CASCADE, related_name="additional_salary", null=False)
     member_id = models.ForeignKey(Member, on_delete=models.CASCADE, related_name="additional_member", null=False)
@@ -83,6 +87,10 @@ class AdditionalSalary(models.Model):
     creator = models.ForeignKey(Member, on_delete=models.SET_NULL, related_name="additional_user", db_column="user_id", null=True)
     pub_date = models.DateTimeField(verbose_name='작성시간', auto_now_add=True, null=False)
 
+    def __str__(self):
+        if self.member_id:
+            return self.member_id.name + ' ' + self.salary_id.month
+
 class DeductionSalary(models.Model):
     salary_id = models.ForeignKey(Salary, on_delete=models.CASCADE, related_name="deduction_salary", null=False)
     member_id = models.ForeignKey(Member, on_delete=models.CASCADE, related_name="deduction_member", null=False)
@@ -90,4 +98,7 @@ class DeductionSalary(models.Model):
     remark = models.CharField(verbose_name='비고', null=False, blank=True, max_length=100)
     creator = models.ForeignKey(Member, on_delete=models.SET_NULL, related_name="deduction_user", null=True)
     pub_date = models.DateTimeField(verbose_name='작성시간', auto_now_add=True, null=False)
- 
+     
+    def __str__(self):
+        if self.member_id:
+            return self.member_id.name + ' ' + self.salary_id.month

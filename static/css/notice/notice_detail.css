@@ -111,14 +111,19 @@
 }
 
 .noticeTextarea {
-  height: auto;
-  min-height: 36rem;
+  width: 100%;
+  height: 36rem;
+  overflow-y: scroll;
   padding: 1rem;
   margin: 2rem 0;
   border: 0.1rem solid #D2D2D2;
   border-radius: 0.3rem;
   cursor: default;
   font-size: 1.6rem;
+  box-sizing: border-box;
+  font-family: "Noto Sans CJK KR";
+  outline: none;
+  white-space: pre-wrap;
 }
 
 .createBtnBox {
@@ -267,8 +272,15 @@
 }
 
 .commentContents {
+  min-height: 4.2rem;
+  max-height: 8rem;
+  padding: 1rem;
+  box-sizing: border-box;
+  overflow-y: scroll;
   font-size: 1.5rem;
   color: #191919;
+  font-family: "Noto Sans CJK KR";
+  white-space: pre-wrap;
 }
 
 

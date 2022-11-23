@@ -874,6 +874,7 @@ def additional_collect_create(request):
             additional.order_id = order
             additional.total_price = int(additional.value) + int(additional.VAT)
             additional.creator = creator
+            additional.month = order.departure_date[:7]
             additional.save()
             
             return redirect(request.META.get('HTTP_REFERER', 'redirect_if_referer_not_found'))
@@ -913,7 +914,7 @@ class DepositList(generic.ListView):
         self.search = self.request.GET.get('search', '')
         self.payment = self.request.GET.get('payment')
         
-        income_list = Income.objects.filter(date__range=(f'{self.date1} 00:00', f'{self.date2} 24:00')).order_by('-date')
+        income_list = Income.objects.filter(date__range=(f'{self.date1}', f'{self.date2}')).order_by('-date')
         if self.search:
             if self.select == 'depositor':
                 income_list = income_list.filter(depositor__contains=self.search)
@@ -1106,12 +1107,14 @@ def deposit_create(request):
         if income_form.is_valid():
             date = income_form.cleaned_data['date']
             income_cnt = Income.objects.filter(date__startswith=date).count()
-
+            commission = request.POST.get('commission')
+            if not commission:
+                commission = 0
             
             income = income_form.save(commit=False)
             income.serial = f'{date[:4]}{date[5:7]}{date[8:10]}-{int(income_cnt)+1}'
-            income.commission = request.POST.get('commission', '0')
-            income.total_income = int(income.acc_income) + int(income.commission)
+            income.commission = commission
+            income.total_income = int(income.acc_income) + int(commission)
             income.creator = get_object_or_404(Member, pk=request.session.get('user'))
             income.save()
         else:

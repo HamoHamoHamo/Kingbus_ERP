@@ -273,3 +273,15 @@
 .deductionDeleteBtn{
     margin-right: 1rem;
 }
+
+
+
+
+.addList,
+.addChecker,
+.addSalaryListAllCheck,
+.deductionList,
+.deductionChecker,
+.deductionListAllCheck{
+    cursor: pointer;
+}

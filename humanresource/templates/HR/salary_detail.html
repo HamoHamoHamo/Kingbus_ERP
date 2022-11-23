@@ -12,12 +12,12 @@
 </head>
 
 <body>
+    {% for data in member_list %}
     <div class="salaryStatus">
-
-        <div class="salaryStatusTitle">2022년 11월 급여현황</div>
+        <div class="salaryStatusTitle">{{month|slice:':4'}}년 {{month|slice:'5:7'}}월 급여현황</div>
 
         <div class="signBox">
-            <span>이도울</span>
+            <span>{{data.member.name}}</span>
             <span>(서명)</span>
         </div>
 
@@ -37,17 +37,17 @@
                     사항
                 </td>
                 <td class="titleTd">회사명</td>
-                <td></td>
+                <td>성화투어</td>
                 <td class="titleTd">성명</td>
-                <td></td>
+                <td>{{data.member.name}}</td>
                 <td class="titleTd">생년월일</td>
-                <td></td>
+                <td>{{data.member.birthdate}}</td>
             </tr>
             <tr>
                 <td class="titleTd">직급</td>
-                <td></td>
+                <td>{{data.member.role}}</td>
                 <td class="titleTd">입사일</td>
-                <td></td>
+                <td>{{data.member.entering_date}}</td>
                 <td class="titleTd">지급일</td>
                 <td></td>
             </tr>
@@ -77,409 +77,35 @@
                 </tr>
             </thead>
             <tbody>
+                {% for i in data.order_list %}
                 <tr>
-                    <td>31(월)</td>
-                    <td>정문/2.남양연구/</td>
-                    <td>100,000</td>
-                    <td>기흥기숙.마북동 /</td>
-                    <td>100,000</td>
+                    <td>{{forloop.counter}}{{data.week_list|index:forloop.counter0}}</td>
                     <td>
+                        {% for d in data.attendance_list|index:forloop.counter0 %}
+                            {{d.0|slice:':4'}}. {{d.1|slice:':4'}}/
+                        {% endfor %}
+                    </td>
+                    <td>{{data.attendance_price_list|index:forloop.counter0}}</td>
+                    <!-- <td>기흥기숙.마북동 /</td> -->
+                    <td>
+                        {% for d in data.leave_list|index:forloop.counter0 %}
+                            {{d.0|slice:':4'}}. {{d.1|slice:':4'}}/
+                        {% endfor %}
+                    </td>
+                    <td>{{data.leave_price_list|index:forloop.counter0}}</td>
+                    <!-- <td>
                         화성금곡.국립중앙/     화성금곡.국립중앙/<br>
                         화성금곡.국립중앙/
-                    </td>
-                    <td>100,000</td>
-                    <td>1,000,000</td>
-                </tr>
-                <tr>
-                    <td>31(월)</td>
-                    <td>정문/2.남양연구/</td>
-                    <td>100,000</td>
-                    <td>기흥기숙.마북동 /</td>
-                    <td>100,000</td>
+                    </td> -->
                     <td>
-                        화성금곡.국립중앙/     화성금곡.국립중앙/<br>
-                        화성금곡.국립중앙/
+                        {% for d in data.order_list|index:forloop.counter0 %}
+                            {{d|index:0|slice:':4'}}. {{d|index:1|slice:':4'}} /
+                        {% endfor %}
                     </td>
-                    <td>100,000</td>
-                    <td>1,000,000</td>
+                    <td>{{data.order_price_list|index:forloop.counter0}}</td>
+                    <td>{{data.total_list|index:forloop.counter0}}</td>
                 </tr>
-                <tr>
-                    <td>31(월)</td>
-                    <td>정문/2.남양연구/</td>
-                    <td>100,000</td>
-                    <td>기흥기숙.마북동 /</td>
-                    <td>100,000</td>
-                    <td>
-                        화성금곡.국립중앙/     화성금곡.국립중앙/<br>
-                        화성금곡.국립중앙/
-                    </td>
-                    <td>100,000</td>
-                    <td>1,000,000</td>
-                </tr>
-                <tr>
-                    <td>31(월)</td>
-                    <td>정문/2.남양연구/</td>
-                    <td>100,000</td>
-                    <td>기흥기숙.마북동 /</td>
-                    <td>100,000</td>
-                    <td>
-                        화성금곡.국립중앙/     화성금곡.국립중앙/<br>
-                        화성금곡.국립중앙/
-                    </td>
-                    <td>100,000</td>
-                    <td>1,000,000</td>
-                </tr>
-                <tr>
-                    <td>31(월)</td>
-                    <td>정문/2.남양연구/</td>
-                    <td>100,000</td>
-                    <td>기흥기숙.마북동 /</td>
-                    <td>100,000</td>
-                    <td>
-                        화성금곡.국립중앙/     화성금곡.국립중앙/<br>
-                        화성금곡.국립중앙/
-                    </td>
-                    <td>100,000</td>
-                    <td>1,000,000</td>
-                </tr>
-                <tr>
-                    <td>31(월)</td>
-                    <td>정문/2.남양연구/</td>
-                    <td>100,000</td>
-                    <td>기흥기숙.마북동 /</td>
-                    <td>100,000</td>
-                    <td>
-                        화성금곡.국립중앙/     화성금곡.국립중앙/<br>
-                        화성금곡.국립중앙/
-                    </td>
-                    <td>100,000</td>
-                    <td>1,000,000</td>
-                </tr>
-                <tr>
-                    <td>31(월)</td>
-                    <td>정문/2.남양연구/</td>
-                    <td>100,000</td>
-                    <td>기흥기숙.마북동 /</td>
-                    <td>100,000</td>
-                    <td>
-                        화성금곡.국립중앙/     화성금곡.국립중앙/<br>
-                        화성금곡.국립중앙/
-                    </td>
-                    <td>100,000</td>
-                    <td>1,000,000</td>
-                </tr>
-                <tr>
-                    <td>31(월)</td>
-                    <td>정문/2.남양연구/</td>
-                    <td>100,000</td>
-                    <td>기흥기숙.마북동 /</td>
-                    <td>100,000</td>
-                    <td>
-                        화성금곡.국립중앙/     화성금곡.국립중앙/<br>
-                        화성금곡.국립중앙/
-                    </td>
-                    <td>100,000</td>
-                    <td>1,000,000</td>
-                </tr>
-                <tr>
-                    <td>31(월)</td>
-                    <td>정문/2.남양연구/</td>
-                    <td>100,000</td>
-                    <td>기흥기숙.마북동 /</td>
-                    <td>100,000</td>
-                    <td>
-                        화성금곡.국립중앙/     화성금곡.국립중앙/<br>
-                        화성금곡.국립중앙/
-                    </td>
-                    <td>100,000</td>
-                    <td>1,000,000</td>
-                </tr>
-                <tr>
-                    <td>31(월)</td>
-                    <td>정문/2.남양연구/</td>
-                    <td>100,000</td>
-                    <td>기흥기숙.마북동 /</td>
-                    <td>100,000</td>
-                    <td>
-                        화성금곡.국립중앙/     화성금곡.국립중앙/<br>
-                        화성금곡.국립중앙/
-                    </td>
-                    <td>100,000</td>
-                    <td>1,000,000</td>
-                </tr>
-                <tr>
-                    <td>31(월)</td>
-                    <td>정문/2.남양연구/</td>
-                    <td>100,000</td>
-                    <td>기흥기숙.마북동 /</td>
-                    <td>100,000</td>
-                    <td>
-                        화성금곡.국립중앙/     화성금곡.국립중앙/<br>
-                        화성금곡.국립중앙/
-                    </td>
-                    <td>100,000</td>
-                    <td>1,000,000</td>
-                </tr>
-                <tr>
-                    <td>31(월)</td>
-                    <td>정문/2.남양연구/</td>
-                    <td>100,000</td>
-                    <td>기흥기숙.마북동 /</td>
-                    <td>100,000</td>
-                    <td>
-                        화성금곡.국립중앙/     화성금곡.국립중앙/<br>
-                        화성금곡.국립중앙/
-                    </td>
-                    <td>100,000</td>
-                    <td>1,000,000</td>
-                </tr>
-                <tr>
-                    <td>31(월)</td>
-                    <td>정문/2.남양연구/</td>
-                    <td>100,000</td>
-                    <td>기흥기숙.마북동 /</td>
-                    <td>100,000</td>
-                    <td>
-                        화성금곡.국립중앙/     화성금곡.국립중앙/<br>
-                        화성금곡.국립중앙/
-                    </td>
-                    <td>100,000</td>
-                    <td>1,000,000</td>
-                </tr>
-                <tr>
-                    <td>31(월)</td>
-                    <td>정문/2.남양연구/</td>
-                    <td>100,000</td>
-                    <td>기흥기숙.마북동 /</td>
-                    <td>100,000</td>
-                    <td>
-                        화성금곡.국립중앙/     화성금곡.국립중앙/<br>
-                        화성금곡.국립중앙/
-                    </td>
-                    <td>100,000</td>
-                    <td>1,000,000</td>
-                </tr>
-                <tr>
-                    <td>31(월)</td>
-                    <td>정문/2.남양연구/</td>
-                    <td>100,000</td>
-                    <td>기흥기숙.마북동 /</td>
-                    <td>100,000</td>
-                    <td>
-                        화성금곡.국립중앙/     화성금곡.국립중앙/<br>
-                        화성금곡.국립중앙/
-                    </td>
-                    <td>100,000</td>
-                    <td>1,000,000</td>
-                </tr>
-                <tr>
-                    <td>31(월)</td>
-                    <td>정문/2.남양연구/</td>
-                    <td>100,000</td>
-                    <td>기흥기숙.마북동 /</td>
-                    <td>100,000</td>
-                    <td>
-                        화성금곡.국립중앙/     화성금곡.국립중앙/<br>
-                        화성금곡.국립중앙/
-                    </td>
-                    <td>100,000</td>
-                    <td>1,000,000</td>
-                </tr>
-                <tr>
-                    <td>31(월)</td>
-                    <td>정문/2.남양연구/</td>
-                    <td>100,000</td>
-                    <td>기흥기숙.마북동 /</td>
-                    <td>100,000</td>
-                    <td>
-                        화성금곡.국립중앙/     화성금곡.국립중앙/<br>
-                        화성금곡.국립중앙/
-                    </td>
-                    <td>100,000</td>
-                    <td>1,000,000</td>
-                </tr>
-                <tr>
-                    <td>31(월)</td>
-                    <td>정문/2.남양연구/</td>
-                    <td>100,000</td>
-                    <td>기흥기숙.마북동 /</td>
-                    <td>100,000</td>
-                    <td>
-                        화성금곡.국립중앙/     화성금곡.국립중앙/<br>
-                        화성금곡.국립중앙/
-                    </td>
-                    <td>100,000</td>
-                    <td>1,000,000</td>
-                </tr>
-                <tr>
-                    <td>31(월)</td>
-                    <td>정문/2.남양연구/</td>
-                    <td>100,000</td>
-                    <td>기흥기숙.마북동 /</td>
-                    <td>100,000</td>
-                    <td>
-                        화성금곡.국립중앙/     화성금곡.국립중앙/<br>
-                        화성금곡.국립중앙/
-                    </td>
-                    <td>100,000</td>
-                    <td>1,000,000</td>
-                </tr>
-                <tr>
-                    <td>31(월)</td>
-                    <td>정문/2.남양연구/</td>
-                    <td>100,000</td>
-                    <td>기흥기숙.마북동 /</td>
-                    <td>100,000</td>
-                    <td>
-                        화성금곡.국립중앙/     화성금곡.국립중앙/<br>
-                        화성금곡.국립중앙/
-                    </td>
-                    <td>100,000</td>
-                    <td>1,000,000</td>
-                </tr>
-                <tr>
-                    <td>31(월)</td>
-                    <td>정문/2.남양연구/</td>
-                    <td>100,000</td>
-                    <td>기흥기숙.마북동 /</td>
-                    <td>100,000</td>
-                    <td>
-                        화성금곡.국립중앙/     화성금곡.국립중앙/<br>
-                        화성금곡.국립중앙/
-                    </td>
-                    <td>100,000</td>
-                    <td>1,000,000</td>
-                </tr>
-                <tr>
-                    <td>31(월)</td>
-                    <td>정문/2.남양연구/</td>
-                    <td>100,000</td>
-                    <td>기흥기숙.마북동 /</td>
-                    <td>100,000</td>
-                    <td>
-                        화성금곡.국립중앙/     화성금곡.국립중앙/<br>
-                        화성금곡.국립중앙/
-                    </td>
-                    <td>100,000</td>
-                    <td>1,000,000</td>
-                </tr>
-                <tr>
-                    <td>31(월)</td>
-                    <td>정문/2.남양연구/</td>
-                    <td>100,000</td>
-                    <td>기흥기숙.마북동 /</td>
-                    <td>100,000</td>
-                    <td>
-                        화성금곡.국립중앙/     화성금곡.국립중앙/<br>
-                        화성금곡.국립중앙/
-                    </td>
-                    <td>100,000</td>
-                    <td>1,000,000</td>
-                </tr>
-                <tr>
-                    <td>31(월)</td>
-                    <td>정문/2.남양연구/</td>
-                    <td>100,000</td>
-                    <td>기흥기숙.마북동 /</td>
-                    <td>100,000</td>
-                    <td>
-                        화성금곡.국립중앙/     화성금곡.국립중앙/<br>
-                        화성금곡.국립중앙/
-                    </td>
-                    <td>100,000</td>
-                    <td>1,000,000</td>
-                </tr>
-                <tr>
-                    <td>31(월)</td>
-                    <td>정문/2.남양연구/</td>
-                    <td>100,000</td>
-                    <td>기흥기숙.마북동 /</td>
-                    <td>100,000</td>
-                    <td>
-                        화성금곡.국립중앙/     화성금곡.국립중앙/<br>
-                        화성금곡.국립중앙/
-                    </td>
-                    <td>100,000</td>
-                    <td>1,000,000</td>
-                </tr>
-                <tr>
-                    <td>31(월)</td>
-                    <td>정문/2.남양연구/</td>
-                    <td>100,000</td>
-                    <td>기흥기숙.마북동 /</td>
-                    <td>100,000</td>
-                    <td>
-                        화성금곡.국립중앙/     화성금곡.국립중앙/<br>
-                        화성금곡.국립중앙/
-                    </td>
-                    <td>100,000</td>
-                    <td>1,000,000</td>
-                </tr>
-                <tr>
-                    <td>31(월)</td>
-                    <td>정문/2.남양연구/</td>
-                    <td>100,000</td>
-                    <td>기흥기숙.마북동 /</td>
-                    <td>100,000</td>
-                    <td>
-                        화성금곡.국립중앙/     화성금곡.국립중앙/<br>
-                        화성금곡.국립중앙/
-                    </td>
-                    <td>100,000</td>
-                    <td>1,000,000</td>
-                </tr>
-                <tr>
-                    <td>31(월)</td>
-                    <td>정문/2.남양연구/</td>
-                    <td>100,000</td>
-                    <td>기흥기숙.마북동 /</td>
-                    <td>100,000</td>
-                    <td>
-                        화성금곡.국립중앙/     화성금곡.국립중앙/<br>
-                        화성금곡.국립중앙/
-                    </td>
-                    <td>100,000</td>
-                    <td>1,000,000</td>
-                </tr>
-                <tr>
-                    <td>31(월)</td>
-                    <td>정문/2.남양연구/</td>
-                    <td>100,000</td>
-                    <td>기흥기숙.마북동 /</td>
-                    <td>100,000</td>
-                    <td>
-                        화성금곡.국립중앙/     화성금곡.국립중앙/<br>
-                        화성금곡.국립중앙/
-                    </td>
-                    <td>100,000</td>
-                    <td>1,000,000</td>
-                </tr>
-                <tr>
-                    <td>31(월)</td>
-                    <td>정문/2.남양연구/</td>
-                    <td>100,000</td>
-                    <td>기흥기숙.마북동 /</td>
-                    <td>100,000</td>
-                    <td>
-                        화성금곡.국립중앙/     화성금곡.국립중앙/<br>
-                        화성금곡.국립중앙/
-                    </td>
-                    <td>100,000</td>
-                    <td>1,000,000</td>
-                </tr>
-                <tr>
-                    <td>31(월)</td>
-                    <td>정문/2.남양연구/</td>
-                    <td>100,000</td>
-                    <td>기흥기숙.마북동 /</td>
-                    <td>100,000</td>
-                    <td>
-                        화성금곡.국립중앙/     화성금곡.국립중앙/<br>
-                        화성금곡.국립중앙/
-                    </td>
-                    <td>100,000</td>
-                    <td>1,000,000</td>
-                </tr>
+                {% endfor %}
             </tbody>
         </table>
 
@@ -525,27 +151,27 @@
                     </colgroup>
                     <tr>
                         <td class="titleTd">근로일수</td>
-                        <td></td>
+                        <td>{{data.work_cnt}}</td>
                         <td class="titleTd">기본수당</td>
-                        <td></td>
+                        <td>{{data.salary.base}}</td>
                     </tr>
                     <tr>
                         <td class="titleTd">출근수당</td>
-                        <td></td>
+                        <td>{{data.salary.attendance}}</td>
                         <td class="titleTd">근속수당</td>
-                        <td></td>
+                        <td>{{data.salary.service_allowance}}</td>
                     </tr>
                     <tr>
                         <td class="titleTd">퇴근수당</td>
-                        <td></td>
+                        <td>{{data.salary.leave}}</td>
                         <td class="titleTd">직급수당</td>
-                        <td></td>
+                        <td>{{data.salary.position_allowance}}</td>
                     </tr>
                     <tr>
                         <td class="titleTd">일반수당</td>
-                        <td></td>
+                        <td>{{data.salary.order}}</td>
                         <td class="titleTd">추가수당</td>
-                        <td></td>
+                        <td>{{data.salary.additional}}</td>
                     </tr>
                 </table>
 
@@ -558,9 +184,9 @@
                     </colgroup>
                     <tr>
                         <td class="titleTd">합계</td>
-                        <td></td>
+                        <td>{{data.salary.total|sub:data.salary.deduction}}</td>
                         <td class="titleTd">공제</td>
-                        <td></td>
+                        <td>{{data.salary.deduction}}</td>
                     </tr>
                 </table>
 
@@ -571,14 +197,15 @@
                     </colgroup>
                     <tr>
                         <td class="titleTd">급여</td>
-                        <td></td>
+                        <td>{{data.salary.total}}</td>
                     </tr>
                 </table>
 
             </div>
         </div>
-
+        
     </div>
+    {% endfor %}
 </body>
 
 </html>

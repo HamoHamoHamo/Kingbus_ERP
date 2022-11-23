@@ -242,7 +242,7 @@
             </div>
             <div class="popupBody">
                 <div class="popupSection">
-                    <form method="post" action="{% url 'accounting:additional_collect_create' %}">
+                    <form method="post" action="{% url 'accounting:additional_collect_create' %}" class="addForm">
                         {% csrf_token %}
                         <div class="popupArticleCategori">추가입력사항</div> 
                         <div class="popupArticleBox">
@@ -251,22 +251,22 @@
                                 <input autocomplete="off" name="category" type="text" class="popupArticleinput">
                             </div>
                             <div class="popupArticleDouble">
-                                <label for="" class="popupArticleLabel">공급가액</label>
-                                <input autocomplete="off" name="value" type="text" class="popupArticleinput">
-                            </div>
-                        </div>
-                        <div class="popupArticleBox">
-                            <div class="popupArticleDouble">
-                                <label for="" class="popupArticleLabel">부가세</label>
-                                <input autocomplete="off" name="VAT" type="text" class="popupArticleinput">
-                            </div>
-                            <div class="popupArticleDouble">
                                 <label for="" class="popupArticleLabel">비고</label>
                                 <input autocomplete="off" name="note" type="text" class="popupArticleinput">
                             </div>
                         </div>
                         <div class="popupArticleBox">
-                            <input type="submit" class="btnModules addBtn" value="추가">
+                            <div class="popupArticleDouble">
+                                <label for="" class="popupArticleLabel">공급가액</label>
+                                <input autocomplete="off" name="value" type="text" class="popupArticleinput amountInput">
+                            </div>
+                            <div class="popupArticleDouble">
+                                <label for="" class="popupArticleLabel">부가세</label>
+                                <input autocomplete="off" name="VAT" type="text" class="popupArticleinput amountInput">
+                            </div>
+                        </div>
+                        <div class="popupArticleBox">
+                            <div class="btnModules addBtn">등록</div>
                         </div>
                         <input type="hidden" name="id" class="addMoreHidden">
                     </form>

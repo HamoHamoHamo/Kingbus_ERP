@@ -9,10 +9,10 @@ function openScheduleList() {
     popupAreaModules[2].style.display = "block"
     let targetSchedule = this.parentNode.parentNode.parentNode.children[0].children[0].innerText - 1
     let scheduleDate = ""
-    if(targetSchedule + 1 < 10){
-        scheduleDate = `${dateTitle.innerText.split("년")[0]}-${dateTitle.innerText.split("년 ")[1].replace(/\월/g, "")}-0${targetSchedule+1}`
-    }else{
-        scheduleDate = `${dateTitle.innerText.split("년")[0]}-${dateTitle.innerText.split("년 ")[1].replace(/\월/g, "")}-${targetSchedule+1}`
+    if (targetSchedule + 1 < 10) {
+        scheduleDate = `${dateTitle.innerText.split("년")[0]}-${dateTitle.innerText.split("년 ")[1].replace(/\월/g, "")}-0${targetSchedule + 1}`
+    } else {
+        scheduleDate = `${dateTitle.innerText.split("년")[0]}-${dateTitle.innerText.split("년 ")[1].replace(/\월/g, "")}-${targetSchedule + 1}`
     }
     createDate.value = scheduleDate
     for (i = 0; i < scheduleList[targetSchedule].length; i++) {
@@ -129,3 +129,14 @@ function createSchaduleList() {
 }
 
 createSchaduleList()
+
+
+
+scheduleContents.addEventListener("input", scheduleValidation)
+
+function scheduleValidation() {
+    if (this.value.length > 99) {
+        alert("최대 입력 글자수를 초과하였습니다.(100자)")
+        this.value = this.value.substr(0, 99);
+    }
+}

@@ -53,7 +53,7 @@ class AdditionalCollect(models.Model):
     value = models.CharField(verbose_name='공급가액', max_length=20, null=False)
     VAT = models.CharField(verbose_name='부가세', max_length=20, null=False)
     total_price = models.CharField(verbose_name='합계', max_length=20, null=False)
-    note = models.CharField(verbose_name='비고', max_length=50, null=False)
+    note = models.CharField(verbose_name='비고', max_length=50, null=False, blank=True)
     creator = models.ForeignKey(Member, on_delete=models.SET_NULL, related_name="user_additional_collect", db_column="user_id", null=True)
     pub_date = models.DateTimeField(verbose_name='작성시간', auto_now_add=True, null=False)
     
