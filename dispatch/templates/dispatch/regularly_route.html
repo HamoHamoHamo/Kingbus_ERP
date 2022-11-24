@@ -89,7 +89,7 @@
       <div class="groupCreateHead">{% if group %}그룹수정{% else %}그룹등록{% endif %}</div>
       <div class="groupCreateBody">
         <div class="groupCreateinput">
-          <input autocomplete="off" value="{{group.name}}" name="name" type="text" placeholder="그룹이름" class="groupNameCreate">
+          <input autocomplete="off" value="{{group.name}}" name="name" type="text" placeholder="그룹이름" class="groupNameCreate length50">
         </div>
         <div class="groupCalculateinput">
           <span>정산기간 :</span>
@@ -163,7 +163,7 @@
           <col style="width: 18%;">
         </colgroup>
         <tr>
-          <td class="tdTypeA">그룹</td>
+          <td class="tdTypeA">*그룹</td>
           <td colspan="3" class="tdTypeB">
             <select name="group" class="inputSelect">
               <option value=""></option>
@@ -172,7 +172,7 @@
               {% endfor %}
             </select>
           </td>
-          <td class="tdTypeA">출/퇴근</td>
+          <td class="tdTypeA">*출/퇴근</td>
           <td class="tdTypeC">
             
             <input autocomplete="off" {% if detail.work_type == '출근' %} checked {% endif %} value="출근" name="work_type" id="workStart" type="radio">
@@ -182,15 +182,20 @@
           </td>
           <td class="tdTypeA">위치</td>
           <td class="tdTypeC">
-            <input autocomplete="off" value="{{detail.location}}" name="location" value="" type="text" class="inputText">
+            <select name="location" class="inputSelect">
+              <option value=""></option>
+              <option {% if detail.location == 셔틀 %} selected {% endif %} value="셔틀">셔틀</option>
+              <option {% if detail.location == 정문 %} selected {% endif %} value="정문">정문</option>
+              <option {% if detail.location == 후문 %} selected {% endif %} value="후문">후문</option>
+            </select>
           </td>
         </tr>
         <tr>
-          <td class="tdTypeA">노선명</td>
+          <td class="tdTypeA">*노선명</td>
           <td colspan="3" class="tdTypeB">
-            <input autocomplete="off" value="{{detail.route}}" name="route" type="text" class="inputText">
+            <input autocomplete="off" value="{{detail.route}}" name="route" type="text" class="inputText length15">
           </td>
-          <td class="tdTypeA">운행요일</td>
+          <td class="tdTypeA">*운행요일</td>
           <td colspan="3" class="tdTypeB">
             <div class="routeWeek driveDateBox">
               <input autocomplete="off" id="all" type="checkbox">
@@ -213,38 +218,38 @@
           </td>
         </tr>
         <tr>
-          <td class="tdTypeA">출발지</td>
+          <td class="tdTypeA">*출발지</td>
           <td colspan="3" class="tdTypeB">
-            <input autocomplete="off" value="{{detail.departure}}" name="departure" type="text" class="inputText">
+            <input autocomplete="off" value="{{detail.departure}}" name="departure" type="text" class="inputText length200">
           </td>
           <td class="tdTypeA">상세노선</td>
           <td colspan="3" class="tdTypeB">
-            <input autocomplete="off" value="{{detail.detailed_route}}" name="detailed_route" type="text" class="inputText">
+            <input autocomplete="off" value="{{detail.detailed_route}}" name="detailed_route" type="text" class="inputText length200">
           </td>
         </tr>
         <tr>
-          <td class="tdTypeA">도착지</td>
+          <td class="tdTypeA">*도착지</td>
           <td colspan="3" class="tdTypeB">
-            <input autocomplete="off" value="{{detail.arrival}}" name="arrival" type="text" class="inputText">
+            <input autocomplete="off" value="{{detail.arrival}}" name="arrival" type="text" class="inputText length200">
           </td>
-          <td class="tdTypeA">금액</td>
+          <td class="tdTypeA">*금액</td>
           <td class="tdTypeC">
-            <input autocomplete="off" value="{{detail.price}}" name="price" type="text" class="inputText">
+            <input autocomplete="off" value="{{detail.price}}" name="price" type="text" class="inputText length100">
           </td>
-          <td class="tdTypeA">기사수당</td>
+          <td class="tdTypeA">*기사수당</td>
           <td class="tdTypeC">
-            <input autocomplete="off" value="{{detail.driver_allowance}}" name="driver_allowance" type="text" class="inputText">
+            <input autocomplete="off" value="{{detail.driver_allowance}}" name="driver_allowance" type="text" class="inputText length100">
           </td>
         </tr>
         <tr>
-          <td class="tdTypeA">순번</td>
+          <td class="tdTypeA">*순번</td>
           <td class="tdTypeC">
             <div class="routeNumber">
-              <input autocomplete="off" value="{{detail.number1}}" name="number1" type="text" class="inputText">-
-              <input autocomplete="off" value="{{detail.number2}}" name="number2" type="text" class="inputText">
+              <input autocomplete="off" value="{{detail.number1}}" name="number1" type="text" class="inputText length100">-
+              <input autocomplete="off" value="{{detail.number2}}" name="number2" type="text" class="inputText length100">
             </div>
           </td>
-          <td class="tdTypeA">운행시간</td>
+          <td class="tdTypeA">*운행시간</td>
           <td class="tdTypeC">
             <div class="routeTime">
               <input autocomplete="off" value="{{detail.departure_time|slice:':2'}}" name="departure_time1" type="text" class="inputText" maxlength="2">:
@@ -255,7 +260,7 @@
           </td>
           <td class="tdTypeA">참조사항</td>
           <td colspan="3" class="tdTypeB">
-            <input autocomplete="off" value="{{detail.references}}" name="references" type="text" class="inputText">
+            <input autocomplete="off" value="{{detail.references}}" name="references" type="text" class="inputText length100">
           </td>
         </tr>
       </table>
@@ -443,4 +448,5 @@
 <script src="{% static 'js/dispatch/regularly_route/edit.js' %}"></script>
 <script src="{% static 'js/dispatch/regularly_route/deleteCheck.js' %}"></script>
 <script src="{% static 'js/dispatch/regularly_route/groupCalculating.js' %}"></script>
+<script src="{% static 'js/dispatch/regularly_route/lengthBreak.js' %}"></script>
 {% endblock %}

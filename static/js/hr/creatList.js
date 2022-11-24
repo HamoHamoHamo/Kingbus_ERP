@@ -3,7 +3,7 @@ const pagenationBox = document.querySelector(".pagenation-numbering-box")
 const prevBtn = document.querySelector(".prev_btn")
 const nextBtn = document.querySelector(".next_btn")
 const ageCheckbox = document.querySelector("#ageFilter")
-const filterHeader = document.querySelector(".table-list_head-tr td:nth-child(6)")
+const filterHeader = document.querySelector(".table-list_head-tr td:nth-child(5)")
 const filterHeaderArrow = document.querySelector(".option-order")
 
 let filter = false
@@ -109,11 +109,6 @@ function drawMember() {
         memberData4.innerText = ageResult
         memberList.appendChild(memberData4);
 
-        const memberData5 = document.createElement('td');
-        memberData5.setAttribute("class", `table-list_body-tr_td`);
-        memberData5.innerText = data[i].id
-        memberList.appendChild(memberData5);
-
         const memberData6 = document.createElement('td');
         memberData6.setAttribute("class", `table-list_body-tr_td`);
         memberData6.innerText = data[i].role
@@ -131,12 +126,16 @@ function drawMember() {
 
         const memberData8Spare = document.createElement('td');
         memberData8Spare.setAttribute("class", `table-list_body-tr_td`);
-        memberData8Spare.innerText = "010-9430-7578(세글자)"
+        if(data[i].emergency !== ""){
+            memberData8Spare.innerText = `${data[i].emergency.split(" ")[0]}(${data[i].emergency.split(" ")[1]})`
+        }else{
+            memberData8Spare.innerText = ""
+        }
         memberList.appendChild(memberData8Spare);
 
         const memberData9 = document.createElement('td');
         memberData9.setAttribute("class", `table-list_body-tr_td`);
-        memberData9.innerText = `${data[i].birthdate.substr(0, 4)}-${data[i].birthdate.substr(4, 2)}-${data[i].birthdate.substr(6, 2)}`
+        memberData9.innerText = data[i].birthdate
         memberList.appendChild(memberData9);
 
         const memberData10 = document.createElement('td');
@@ -145,12 +144,19 @@ function drawMember() {
         memberList.appendChild(memberData10);
 
         const memberData11 = document.createElement('td');
-        memberData11.setAttribute("class", `table-list_body-tr_td`);
+        memberData11.setAttribute("class", `table-list_body-tr_td memberOpenPrint`);
+        console.log(data[i].lisence_id);
+        if(data[i].lisence_id !== undefined){
+            memberData11.setAttribute("onclick", `openLisence("/HR/member/image/${data[i].lisence_id}", true)`);
+        }
         memberData11.innerText = data[i].license
         memberList.appendChild(memberData11);
 
         const memberData12 = document.createElement('td');
-        memberData12.setAttribute("class", `table-list_body-tr_td`);
+        memberData12.setAttribute("class", `table-list_body-tr_td memberOpenPrint`);
+        if(data[i].lisence_id !== undefined){
+            memberData12.setAttribute("onclick", `openLisence("/HR/member/image/${data[i].bus_license_id}", false)`);
+        }
         memberData12.innerText = data[i].bus_license
         memberList.appendChild(memberData12);
     };

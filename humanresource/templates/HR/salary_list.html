@@ -67,20 +67,20 @@
                     <td class="table-list_body-tr_td">{{member.name}}</td>
                     <td class="table-list_body-tr_td">{{member.entering_date}}</td>
                     <td class="table-list_body-tr_td">
-                        <input type="text" class="amountInput" value="{{salary.base}}">
+                        <input type="text" class="amountInput length100" value="{{salary.base}}">
                     </td>
                     <td class="table-list_body-tr_td">
-                        <input type="text" class="amountInput" value="{{salary.service_allowance}}">
+                        <input type="text" class="amountInput length100" value="{{salary.service_allowance}}">
                     </td>
                     <td class="table-list_body-tr_td">
-                        <input type="text" class="amountInput" value="{{salary.position_allowance}}">
+                        <input type="text" class="amountInput length100" value="{{salary.position_allowance}}">
                     </td>
-                    <td class="table-list_body-tr_td">{{salary.attendance}}</td>
-                    <td class="table-list_body-tr_td">{{salary.order}}</td>
-                    <td class="table-list_body-tr_td">{{salary.leave}}</td>
-                    <td class="table-list_body-tr_td">{{salary.additional}}</td>
-                    <td class="table-list_body-tr_td">{{salary.deduction}}</td>
-                    <td class="table-list_body-tr_td">{{salary.total}}</td>
+                    <td class="table-list_body-tr_td addComma">{{salary.attendance}}</td>
+                    <td class="table-list_body-tr_td addComma">{{salary.order}}</td>
+                    <td class="table-list_body-tr_td addComma">{{salary.leave}}</td>
+                    <td class="table-list_body-tr_td addComma">{{salary.additional}}</td>
+                    <td class="table-list_body-tr_td addComma">{{salary.deduction}}</td>
+                    <td class="table-list_body-tr_td addComma">{{salary.total}}</td>
                 </tr>
                 {% endwith %}
                 {% endfor %}
@@ -111,12 +111,12 @@
                         <div class="popupArticleDouble addSalaryPriceBox">
                             <label for="" class="popupArticleLabel">금액</label>
                             <input autocomplete="off" name="price" type="text"
-                                class="popupArticleinput addSalaryPrice">
+                                class="popupArticleinput addSalaryPrice length100">
                         </div>
                         <div class="popupArticleDouble addSalaryReasonBox">
                             <label for="" class="popupArticleLabel">사유</label>
                             <input autocomplete="off" name="remark" type="text"
-                                class="popupArticleinput addSalaryReason">
+                                class="popupArticleinput addSalaryReason length100">
                         </div>
                     </div>
                     <div class="popupArticleBox">
@@ -183,12 +183,12 @@
                         <div class="popupArticleDouble deductionPriceBox">
                             <label for="" class="popupArticleLabel">금액</label>
                             <input autocomplete="off" name="price" type="text"
-                                class="popupArticleinput deductionPrice">
+                                class="popupArticleinput deductionPrice length100">
                         </div>
                         <div class="popupArticleDouble deductionReasonBox">
                             <label for="" class="popupArticleLabel">사유</label>
                             <input autocomplete="off" name="remark" type="text"
-                                class="popupArticleinput deductionReason">
+                                class="popupArticleinput deductionReason length100">
                         </div>
                     </div>
                     <div class="popupArticleBox">
@@ -279,4 +279,5 @@
 <script src="{% static 'js/hr/deduction.js' %}"></script>
 <script src="{% static 'js/hr/textValidation.js' %}"></script>
 <script src="{% static 'js/hr/checker.js' %}"></script>
+<script src="{% static 'js/hr/addComma.js' %}"></script>
 {% endblock %}

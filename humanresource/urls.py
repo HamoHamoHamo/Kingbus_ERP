@@ -8,6 +8,8 @@ urlpatterns = [
     path('member/create', views.member_create, name='member_create'),
     path('member/edit', views.member_edit, name='member_edit'),
     path('member/delete', views.member_delete, name='member_delete'),
+    path('member/image/<str:file_id>', views.member_img, name='member_img'),
+
     path('salary', views.SalaryList.as_view(), name='salary'),
     path('salary/edit', views.salary_edit, name='salary_edit'),
     path('salary/detail', views.salary_detail, name='salary_detail'),

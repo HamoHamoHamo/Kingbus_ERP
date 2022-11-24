@@ -1,6 +1,10 @@
 const printTableCell = document.querySelectorAll(".printTableCell")
 const printBox = document.querySelector(".print")
 const printTable = document.querySelector(".printTable")
+const typePrice1 = document.querySelector(".printTableCell .item:nth-child(5)")
+const typePrice2 = document.querySelector(".printTableCell .item:nth-child(6)")
+const typePrice3 = document.querySelector(".printTableCell .item:nth-child(13)")
+const typePrice4 = document.querySelector(".printTableCell .item:nth-child(14)")
 
 function resize() {
     for (i = 0; i < printTableCell.length; i++) {
@@ -78,3 +82,16 @@ function addPageNumber() {
 resize();
 nextPageFirst();
 addPageNumber();
+
+
+
+function printAddComma(){
+    for (i = 0; i < printTableCell.length; i++){
+        printTableCell[i].children[5].innerText = printTableCell[i].children[5].innerText.replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
+        printTableCell[i].children[6].innerText = printTableCell[i].children[6].innerText.replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
+        printTableCell[i].children[13].innerText = printTableCell[i].children[13].innerText.replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
+        printTableCell[i].children[14].innerText = printTableCell[i].children[14].innerText.replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
+    };
+}
+
+printAddComma()

@@ -7,7 +7,7 @@ from humanresource.models import Member
 
 class Notice(models.Model): #장고에서 제공하는 models.Model를 상속받아야한다.
     title = models.CharField(max_length=64, verbose_name='제목', null=False)
-    content = models.TextField(max_length=3000, verbose_name='내용', null=False)
+    content = models.TextField(verbose_name='내용', null=False)
     kinds = models.CharField(max_length=10, verbose_name='종류', null=False)
     view_cnt = models.IntegerField(verbose_name='조회수', null=False, default=0)
     num = models.IntegerField(verbose_name='번호', null=False, default=0)

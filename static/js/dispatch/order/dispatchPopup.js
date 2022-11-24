@@ -2,7 +2,6 @@ const dispatchBtn = document.querySelector(".dispatchBtn")
 const popupAreaModulesDispatch = document.querySelector(".popupAreaModulesDispatch")
 const closeBtn = document.querySelector(".closeBtn")
 const dispatchPopupData = document.querySelectorAll(".dispatcTable input")
-const dispatchPriceBlank = document.querySelectorAll(".dispatchPriceBlank")
 const dispatchPaymenBlank = document.querySelectorAll(".dispatchPaymenBlank")
 const dispatchSave = document.querySelector(".dispatchSave")
 const popupContainerDispatch = document.querySelector(".popupContainerDispatch")
@@ -23,13 +22,12 @@ function openDispatch() {
             MainLayout.style.width = "calc(100% - 38rem)"
             scheduleOpenBtn.classList.remove("scheduleOpenBtnVisible")
         }
-        for (i = 0; i < dispatchPrice.length; i++) {
-            dispatchPrice[i].value = dispatchPrice[i].value.replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
+        for (i = 0; i < dispatchPaymen.length; i++) {
+            dispatchPaymen[i].value = 
             dispatchPaymen[i].value = dispatchPaymen[i].value.replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
         }
         popupAreaModulesDispatch.classList.add("popupAreaModulesVisible")
-        for (i = 0; i < dispatchPriceBlank.length; i++) {
-            dispatchPriceBlank[i].value = inputTextPrice.value
+        for (i = 0; i < dispatchPaymenBlank.length; i++) {
             dispatchPaymenBlank[i].value = inputTextDriverAllowance.value
         }
     }

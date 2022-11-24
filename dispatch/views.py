@@ -101,10 +101,28 @@ def order_print(request):
     date2 = request.GET.get('date2', TODAY)
     order_list = DispatchOrder.objects.prefetch_related('info_order').exclude(arrival_date__lt=f'{date1} 00:00').exclude(departure_date__gt=f'{date2} 24:00').order_by('departure_date').exclude(contract_status='취소')
     
+    collect_list = []
+    outstanding_list = []
+
+    for order in order_list:
+        total_price = int(TotalPrice.objects.get(order_id=order).total_price)
+
+        collect_amount = Collect.objects.filter(order_id=order).aggregate(Sum('price'))['price__sum']
+        if collect_amount:
+            print('collect_amount', collect_amount)
+            collect_list.append(int(collect_amount))
+            outstanding_list.append(total_price - int(collect_amount))
+        else:
+            outstanding_list.append(0)
+            collect_list.append(0)
+    print('collect_list', collect_list)
     context = {
         'date1': date1,
         'date2': date2,
         'order_list': order_list,
+        'collect_list': collect_list,
+        'outstanding_list': outstanding_list,
+        
     }
     return render(request, 'dispatch/order_print.html', context)
 
@@ -950,6 +968,9 @@ class OrderList(generic.ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        context['date1'] = self.request.GET.get('date1')
+        context['date2'] = self.request.GET.get('date2')
+
         context['search'] = self.request.GET.get('search', '')
         context['search_type'] = self.request.GET.get('type', '')
         date = self.request.GET.get('date1', TODAY)
@@ -1055,7 +1076,8 @@ class OrderList(generic.ListView):
             total['driver_allowance'] += int(order.driver_allowance) * int(order.bus_cnt)
             try:
                 total_price = int(TotalPrice.objects.get(order_id=order).total_price)
-                total['price'] += total_price
+                if order.contract_status != '취소':
+                    total['price'] += total_price
             # #################### total price 없으면 만들어주기 나중에 주석처리
             except TotalPrice.DoesNotExist:
                 if order.VAT == 'y':
@@ -1069,7 +1091,8 @@ class OrderList(generic.ListView):
                     creator = order.creator
                 )
                 total.save()
-                total['price'] += total_price
+                if order.contract_status != '취소':
+                    total['price'] += total_price
             ####################################
             collect_amount = Collect.objects.filter(order_id=order).aggregate(Sum('price'))['price__sum']
             if collect_amount:
@@ -1096,6 +1119,7 @@ def order_connect_create(request):
     if request.method == "POST":
         creator = get_object_or_404(Member, id=request.session.get('user'))
         order = get_object_or_404(DispatchOrder, id=request.POST.get('id', None))
+        price = order.price
         outsourcing_list = []
         payment_method_list = []
         for i in range(int(order.bus_cnt)):
@@ -1108,7 +1132,6 @@ def order_connect_create(request):
 
         bus_list = request.POST.getlist('bus')
         driver_list = request.POST.getlist('driver')
-        price_list = request.POST.getlist('price')
         driver_allowance_list = request.POST.getlist('driver_allowance')
 
         connect = order.info_order.all()
@@ -1124,8 +1147,7 @@ def order_connect_create(request):
             else:
                 driver = Member.objects.get(id=driver_id)
                 outsourcing = 'n'
-
-            price = price_list[count].replace(",","")
+            
             allowance = driver_allowance_list[count].replace(",","")
             
             connect = DispatchOrderConnect(
@@ -1194,8 +1216,12 @@ def order_create(request):
             post_collection_type = request.POST.get('collection_type')
             
             if post_collection_type:
-                order.collection_type = post_collection_type.split('(')[0]
-                order.payment_method = post_collection_type.split('(')[1][:-1]
+                if post_collection_type == '계좌이체':
+                    order.collection_type = '계좌이체'
+                    order.payment_method = '계좌이체'
+                else:
+                    order.collection_type = post_collection_type.split('(')[0]
+                    order.payment_method = post_collection_type.split('(')[1][:-1]
             
 
             order.cost_type = ' '.join(request.POST.getlist('cost_type'))
@@ -1333,8 +1359,14 @@ def order_edit(request):
             order.ticketing_info = order_form.cleaned_data['ticketing_info']
             order.order_type = order_form.cleaned_data['order_type']
             # 현지수금(카드)
-            order.collection_type = request.POST.get('collection_type').split('(')[0]            
-            order.payment_method = request.POST.get('collection_type').split('(')[1][:-1]
+            post_collection_type = request.POST.get('collection_type')
+            if post_collection_type:
+                if post_collection_type == '계좌이체':
+                    order.collection_type = post_collection_type
+                    order.payment_method = post_collection_type
+                else:
+                    order.collection_type = post_collection_type.split('(')[0]
+                    order.payment_method = post_collection_type.split('(')[1][:-1]
             
             order.VAT = request.POST.get('VAT', 'n')
             order.route = order_form.cleaned_data['departure'] + " ▶ " + order_form.cleaned_data['arrival']

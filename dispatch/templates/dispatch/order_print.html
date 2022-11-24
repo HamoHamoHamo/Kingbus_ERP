@@ -86,10 +86,10 @@
                     {{order.references}}
                 </div>
                 <div class="item">
-                    {{order.collection_amount}}
+                    {{collect_list|index:forloop.counter0}}
                 </div>
                 <div class="item">
-                    {{order.price|sub:order.collection_amount}}
+                    {{outstanding_list|index:forloop.counter0}}
                 </div>
                 <div class="item">
                     {% if order.VAT == 'y' %} VAT포함 {% endif %}
