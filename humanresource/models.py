@@ -6,20 +6,21 @@ import datetime
 
 class Member(models.Model):
     num = models.IntegerField(verbose_name='번호', null=False, default=1)
-    user_id = models.CharField(max_length=64, verbose_name='사용자id', unique=True, null=False)
-    password = models.CharField(max_length=255, verbose_name='비밀번호')
-    name = models.CharField(verbose_name='이름', max_length=10, null=False)
-    role = models.CharField(verbose_name='업무', max_length=10, null=False)
-    birthdate = models.CharField(verbose_name='생년월일', max_length=10, null=False)
-    phone_num = models.CharField(verbose_name='전화번호', max_length=25, null=False)
-    address = models.CharField(verbose_name='주소', max_length=50, null=False, blank=True)
-    entering_date = models.CharField(verbose_name='입사일', max_length=10, null=False, blank=True)
+    user_id = models.CharField(max_length=100, verbose_name='사용자id', unique=True, null=False)
+    password = models.TextField(verbose_name='비밀번호', null=False)
+    name = models.CharField(verbose_name='이름', max_length=100, null=False)
+    role = models.CharField(verbose_name='업무', max_length=100, null=False)
+    birthdate = models.CharField(verbose_name='생년월일', max_length=100, null=False)
+    phone_num = models.CharField(verbose_name='전화번호', max_length=100, null=False)
+    emergency = models.CharField(verbose_name='비상연락망', max_length=100, null=False, blank=True)
+    address = models.CharField(verbose_name='주소', max_length=100, null=False)
+    entering_date = models.CharField(verbose_name='입사일', max_length=100, null=False)
     note = models.CharField(verbose_name='비고', max_length=100, null=False, blank=True)
     base = models.CharField(verbose_name='기본급', max_length=20, null=False, default=0)
     service_allowance = models.CharField(verbose_name='근속수당', max_length=20, null=False, default=0)
     position_allowance = models.CharField(verbose_name='직급수당', max_length=20, null=False, default=0)
     pub_date = models.DateTimeField(verbose_name="등록날짜", auto_now_add=True, null=False)
-    creator = models.CharField(verbose_name='작성자 이름', max_length=30, null=False, blank=True)
+    creator = models.CharField(verbose_name='작성자 이름', max_length=100, null=False, blank=True)
 
     authority = models.IntegerField(verbose_name='권한', null=False, default=4)
     use = models.CharField(verbose_name='사용여부', max_length=30, null=False, default='사용')
@@ -29,14 +30,14 @@ class Member(models.Model):
 class MemberFile(models.Model):
     def get_file_path(instance, filename):
     
-        ymd_path = datetime.now().strftime('%Y/%m/%d')
+        ymd_path = datetime.datetime.now().strftime('%Y/%m/%d')
         uuid_name = uuid4().hex
         return '/'.join(['humanresource/', ymd_path, uuid_name])
 
     member_id = models.ForeignKey(Member, on_delete=models.CASCADE, related_name="member_file", db_column="member_id", null=False)
     file = models.FileField(upload_to=get_file_path, null=False)
-    filename = models.CharField(max_length=1024, null=True, verbose_name='첨부파일명')
-    type = models.CharField(max_length=30, null=False, verbose_name='면허증, 버스운전자격증')
+    filename = models.TextField(null=True, verbose_name='첨부파일명')
+    type = models.CharField(max_length=100, null=False, verbose_name='면허증, 버스운전자격증')
     creator = models.ForeignKey(Member, on_delete=models.SET_NULL, related_name="member_file_user", db_column="user_id", null=True)
     pub_date = models.DateTimeField(verbose_name='작성시간', auto_now_add=True, null=False)
     def __str__(self):

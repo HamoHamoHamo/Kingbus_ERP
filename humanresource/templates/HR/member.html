@@ -57,7 +57,6 @@
             <td class="table-list_head-tr_td">번호</td>
             <td class="table-list_head-tr_td">이름</td>
             <td class="table-list_head-tr_td">나이(만)</td>
-            <td class="table-list_head-tr_td">아이디</td>
             <td class="table-list_head-tr_td">
               <div class="tdDisplay">
                 <span>담당업무</span>
@@ -101,7 +100,7 @@
 
 <div class="popupAreaModules">
   <div class="popupBgModules"></div>
-  <form method="post" action="{% url 'HR:member_create' %}" class="popupContainer popupContainerDouble"
+  <form method="post" action="{% url 'HR:member_create' %}" class="popupContainer popupContainerDouble memberFormCreate"
     enctype="multipart/form-data">
     {% csrf_token %}
     <div class="popupHeader">
@@ -112,13 +111,13 @@
         <div class="popupArticleCategori">기본정보</div>
         <div class="popupArticleBox">
           <div class="popupArticleDouble">
-            <label for="" class="popupArticleLabel">이름</label>
-            <input autocomplete="off" name="name" type="text" class="popupArticleinput createName">
+            <label for="" class="popupArticleLabel"><span class="importantStar">*</span>이름</label>
+            <input autocomplete="off" name="name" type="text" class="popupArticleinput createName length100 essential">
           </div>
           <div class="popupArticleDouble">
-            <label for="" class="popupArticleLabel">담당업무</label>
+            <label for="" class="popupArticleLabel"><span class="importantStar">*</span>담당업무</label>
             <select name="role" id="role" class="popupArticleinput PopupDataInputWork">
-              <option value="">담당업무 선택</option>
+              <option value=""></option>
               <option value="용역">용역</option>
               <option value="운전원">운전원</option>
               <option value="팀장">팀장</option>
@@ -130,37 +129,38 @@
         </div>
         <div class="popupArticleBox">
           <div class="popupArticleDouble">
-            <label for="" class="popupArticleLabel">입사일</label>
+            <label for="" class="popupArticleLabel"><span class="importantStar">*</span>입사일</label>
             <input autocomplete="off" name="entering_date" type="date" max="9999-12-31"
-              class="popupArticleinput PopupDataInputEntering">
+              class="popupArticleinput PopupDataInputEntering essential">
           </div>
           <div class="popupArticleDouble">
-            <label for="" class="popupArticleLabel">생년월일</label>
-            <input autocomplete="off" name="birthdate" type="text" class="popupArticleinput PopupDataInputBirth"
-              placeholder="ex)19990101">
+            <label for="" class="popupArticleLabel"><span class="importantStar">*</span>생년월일</label>
+            <input autocomplete="off" name="birthdate" type="date" max="9999-12-31"
+              class="popupArticleinput PopupDataInputBirth essential">
           </div>
         </div>
         <div class="popupArticleBox">
           <div class="popupArticleDouble">
-            <label for="" class="popupArticleLabel">휴대폰번호</label>
-            <input autocomplete="off" name="phone_num" type="text" class="popupArticleinput PopupDataInputPhoneNum"
+            <label for="" class="popupArticleLabel"><span class="importantStar">*</span>휴대폰번호</label>
+            <input autocomplete="off" name="phone_num" type="text" class="popupArticleinput PopupDataInputPhoneNum length100 essential"
               placeholder="'-'을 생략하고 입력해 주세요.">
           </div>
           <div class="popupArticleDouble">
             <label for="" class="popupArticleLabel">비상연락망</label>
-            <input autocomplete="off" name="emergency" type="text" class="popupArticleinput PopupDataInputEmergency"
-              placeholder="ex) 010-1234-5678(부)">
+            <input autocomplete="off" name="emergency1" type="text" class="popupArticleinput PopupDataInputEmergency length100 makeHyphen">
+            <label for="" class="popupArticleLabel popupArticleLabelRelation">관계</label>
+            <input autocomplete="off" name="emergency2" type="text" class="popupArticleinput PopupDataInputEmergencyRelation length100">
           </div>
         </div>
         <div class="popupArticleBox">
           <div class="popupArticleDouble">
-            <label for="" class="popupArticleLabel">주소</label>
-            <input autocomplete="off" name="address" type="text" class="popupArticleinput PopupDataInputAddress">
+            <label for="" class="popupArticleLabel"><span class="importantStar">*</span>주소</label>
+            <input autocomplete="off" name="address" type="text" class="popupArticleinput PopupDataInputAddress length100 essential">
           </div>
           <div class="popupArticleDouble">
             <label for="" class="popupArticleLabel">비고</label>
             <input autocomplete="off" name="note" type="text"
-              class="popupArticleinput PopupDataInputBlack">
+              class="popupArticleinput PopupDataInputBlack length100">
           </div>
         </div>
         <div class="popupArticleCategori">운전정보</div>
@@ -204,9 +204,9 @@
         <div class="popupArticleCategori">계정정보</div>
         <div class="popupArticleBox">
           <div class="popupArticleDouble">
-            <label for="" class="popupArticleLabel">아이디</label>
+            <label for="" class="popupArticleLabel"><span class="importantStar">*</span>아이디</label>
             <div class="popupIdBox">
-              <input autocomplete="off" name="user_id" type="text" class="popupArticleinput createID">
+              <input autocomplete="off" name="user_id" type="text" class="popupArticleinput createID length100 essential">
               <div class="idchecker" onClick="id_overlap_check_hr()">중복확인</div>
             </div>
           </div>
@@ -217,7 +217,7 @@
         </div>
       </div>
       <div class="popupFooter">
-        <input autocomplete="off" type="submit" class="btnModules btnModulesCreate" value="등록">
+        <div class="btnModules btnModulesCreate">등록</div>
         <div class="btnModules popupCloseBtn">닫기</div>
       </div>
     </div>
@@ -230,7 +230,7 @@
 
 <div class="popupAreaModules">
   <div class="popupBgModules"></div>
-  <form method="post" action="{% url 'HR:member_edit' %}" class="editPopupContainer popupContainerDouble"
+  <form method="post" action="{% url 'HR:member_edit' %}" class="editPopupContainer popupContainerDouble memberEditForm"
     enctype="multipart/form-data">
     {% csrf_token %}
     <div class="popupHeader">
@@ -241,11 +241,11 @@
         <div class="popupArticleCategori">기본정보</div>
         <div class="popupArticleBox">
           <div class="popupArticleDouble">
-            <label for="" class="popupArticleLabel">이름</label>
-            <input autocomplete="off" name="name" type="text" class="popupArticleinput hrName">
+            <label for="" class="popupArticleLabel"><span class="importantStar">*</span>이름</label>
+            <input autocomplete="off" name="name" type="text" class="popupArticleinput hrName length100 editEssential">
           </div>
           <div class="popupArticleDouble">
-            <label for="" class="popupArticleLabel">담당업무</label>
+            <label for="" class="popupArticleLabel"><span class="importantStar">*</span>담당업무</label>
             <select name="role" id="editRole" class="popupArticleinput hrRole">
               <option value="">담당업무 선택</option>
               <option value="용역">용역</option>
@@ -259,36 +259,37 @@
         </div>
         <div class="popupArticleBox">
           <div class="popupArticleDouble">
-            <label for="" class="popupArticleLabel">입사일</label>
+            <label for="" class="popupArticleLabel"><span class="importantStar">*</span>입사일</label>
             <input autocomplete="off" name="entering_date" type="date" max="9999-12-31"
-              class="popupArticleinput hrEntering">
+              class="popupArticleinput hrEntering length100 editEssential">
           </div>
           <div class="popupArticleDouble">
-            <label for="" class="popupArticleLabel">생년월일</label>
-            <input autocomplete="off" name="birthdate" type="text" class="popupArticleinput hrBirth"
-              placeholder="ex)19990101">
+            <label for="" class="popupArticleLabel"><span class="importantStar">*</span>생년월일</label>
+            <input autocomplete="off" name="birthdate" type="date" max="9999-12-31"
+              class="popupArticleinput hrBirth length100 editEssential">
           </div>
         </div>
         <div class="popupArticleBox">
           <div class="popupArticleDouble">
-            <label for="" class="popupArticleLabel">휴대폰번호</label>
-            <input autocomplete="off" name="phone_num" type="text" class="popupArticleinput hrPhone"
+            <label for="" class="popupArticleLabel"><span class="importantStar">*</span>휴대폰번호</label>
+            <input autocomplete="off" name="phone_num" type="text" class="popupArticleinput hrPhone length100 editEssential"
               placeholder="'-'을 생략하고 입력해 주세요.">
           </div>
           <div class="popupArticleDouble">
             <label for="" class="popupArticleLabel">비상연락망</label>
-            <input autocomplete="off" name="emergency" type="text" class="popupArticleinput hrEmergency"
-              placeholder="ex) 010-1234-5678(부)">
+            <input autocomplete="off" name="emergency1" type="text" class="popupArticleinput hrEmergency length100 makeHyphen">
+            <label for="" class="popupArticleLabel popupArticleLabelRelation">관계</label>
+            <input autocomplete="off" name="emergency2" type="text" class="popupArticleinput hrEmergencyRelation length100">
           </div>
         </div>
         <div class="popupArticleBox">
           <div class="popupArticleDouble">
-            <label for="" class="popupArticleLabel">주소</label>
-            <input autocomplete="off" name="address" type="text" class="popupArticleinput hrAddress">
+            <label for="" class="popupArticleLabel"><span class="importantStar">*</span>주소</label>
+            <input autocomplete="off" name="address" type="text" class="popupArticleinput length100 hrAddress">
           </div>
           <div class="popupArticleDouble">
             <label for="" class="popupArticleLabel">비고</label>
-            <input autocomplete="off" name="note" type="text" class="popupArticleinput hrBlank">
+            <input autocomplete="off" name="note" type="text" class="popupArticleinput length100 hrBlank">
           </div>
         </div>
         <div class="popupArticleCategori">운전정보</div>
@@ -353,7 +354,7 @@
         <input name="id" type="hidden" class="sendToHidden">
       </div>
       <div class="popupFooter">
-        <input autocomplete="off" type="submit" class="btnModules btnModulesCreate" value="등록">
+        <div class="btnModules memberEditSaveBtn">저장</div>
         <div class="btnModules popupCloseBtn">닫기</div>
       </div>
     </div>
@@ -452,9 +453,20 @@
   const regDatas = {{ data_list }};
   console.log("DATA", {{ data_list }});
   {% endautoescape %}
+
+  
+  function openLisence(url, type) {
+    if(type){
+        window.open(url, "면허증", "width=630, height=891")
+    }else{
+        window.open(url, "버스운전 자격증", "width=630, height=891")
+    }
+  }
+  
 </script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.15.5/xlsx.full.min.js"></script>
 <script src="{% static 'js/hr/upload.js' %}"></script>
 <script src="{% static 'js/hr/hr_list_popup.js' %}"></script>
 <script src="{% static 'js/hr/creatList.js' %}"></script>
+<script src="{% static 'js/hr/essential.js' %}"></script>
 {% endblock %}

@@ -85,7 +85,7 @@
                             {{d.0|slice:':4'}}. {{d.1|slice:':4'}}/
                         {% endfor %}
                     </td>
-                    <td>
+                    <td class="printComma">
                         {% if data.attendance_list|index:forloop.counter0 %}
                             {{data.attendance_price_list|index:forloop.counter0}}
                         {% endif %}
@@ -96,7 +96,7 @@
                             {{d.0|slice:':4'}}. {{d.1|slice:':4'}}/
                         {% endfor %}
                     </td>
-                    <td>
+                    <td class="printComma">
                         {% if data.leave_list|index:forloop.counter0 %}
                             {{data.leave_price_list|index:forloop.counter0}}
                         {% endif %}
@@ -110,12 +110,12 @@
                             {{d|index:0|slice:':4'}}. {{d|index:1|slice:':4'}} /
                         {% endfor %}
                     </td>
-                    <td>
+                    <td class="printComma">
                         {% if data.order_list|index:forloop.counter0 %}
                             {{data.order_price_list|index:forloop.counter0}}
                         {% endif %}
                     </td>
-                    <td>
+                    <td class="printComma">
                         {% if data.order_list|index:forloop.counter0 or data.attendance_list|index:forloop.counter0 or data.leave_list|index:forloop.counter0 %}
                             {{data.total_list|index:forloop.counter0}}
                         {% endif %}
@@ -176,27 +176,27 @@
                     </colgroup>
                     <tr>
                         <td class="titleTd">근로일수</td>
-                        <td>{{data.work_cnt}}</td>
+                        <td>{{data.work_cnt}}일</td>
                         <td class="titleTd">기본수당</td>
-                        <td>{{data.salary.base}}</td>
+                        <td class="printComma">{{data.salary.base}}</td>
                     </tr>
                     <tr>
                         <td class="titleTd">출근수당</td>
-                        <td>{{data.salary.attendance}}</td>
+                        <td class="printComma">{{data.salary.attendance}}</td>
                         <td class="titleTd">근속수당</td>
-                        <td>{{data.salary.service_allowance}}</td>
+                        <td class="printComma">{{data.salary.service_allowance}}</td>
                     </tr>
                     <tr>
                         <td class="titleTd">퇴근수당</td>
-                        <td>{{data.salary.leave}}</td>
+                        <td class="printComma">{{data.salary.leave}}</td>
                         <td class="titleTd">직급수당</td>
-                        <td>{{data.salary.position_allowance}}</td>
+                        <td class="printComma">{{data.salary.position_allowance}}</td>
                     </tr>
                     <tr>
                         <td class="titleTd">일반수당</td>
-                        <td>{{data.salary.order}}</td>
+                        <td class="printComma">{{data.salary.order}}</td>
                         <td class="titleTd">추가수당</td>
-                        <td>{{data.salary.additional}}</td>
+                        <td class="printComma">{{data.salary.additional}}</td>
                     </tr>
                 </table>
 
@@ -209,9 +209,9 @@
                     </colgroup>
                     <tr>
                         <td class="titleTd">합계</td>
-                        <td>{{data.salary.total|add:data.salary.deduction}}</td>
+                        <td class="printComma">{{data.salary.total|add:data.salary.deduction}}</td>
                         <td class="titleTd">공제</td>
-                        <td>{{data.salary.deduction}}</td>
+                        <td class="printComma">{{data.salary.deduction}}</td>
                     </tr>
                 </table>
 
@@ -222,7 +222,7 @@
                     </colgroup>
                     <tr>
                         <td class="titleTd">급여</td>
-                        <td>{{data.salary.total}}</td>
+                        <td class="printComma">{{data.salary.total}}</td>
                     </tr>
                 </table>
 
@@ -231,6 +231,12 @@
         
     </div>
     {% endfor %}
+
+
+
+    {% block script %}
+    <script src="{% static 'js/hr/printAddComma.js' %}"></script>
+    {% endblock %}
 </body>
 
 </html>

@@ -1,6 +1,5 @@
 const inputTextPhoneNum = document.querySelector(".inputTextPhoneNum")
 const inputTextTwice = document.querySelectorAll(".inputTextTwice")
-const dispatchPrice = document.querySelectorAll(".dispatchPrice")
 const dispatchPaymen = document.querySelectorAll(".dispatchPaymen")
 const needComma1 = document.querySelectorAll(".orderListItem .orderListSubContents:nth-child(6)")
 const needComma2 = document.querySelectorAll(".orderListItem .orderListSubContents:nth-child(7)")
@@ -18,6 +17,8 @@ const totalPrice1 = document.querySelector(".orderListTotal .orderListSubContent
 const totalPrice2 = document.querySelector(".orderListTotal .orderListSubContents:nth-child(7)")
 const totalPrice3 = document.querySelector(".orderListTotal .orderListSubContents:nth-child(14)")
 const totalPrice4 = document.querySelector(".orderListTotal .orderListSubContents:nth-child(15)")
+const essential = document.querySelectorAll(".essential")
+const essentialSelect = document.querySelectorAll(".essentialSelect")
 
 
 // 검색 날짜 역전 방지
@@ -124,14 +125,6 @@ inputTextPrice.addEventListener("input", onlyNum)
 inputTextDriverAllowance.addEventListener("click", removeComma)
 inputTextDriverAllowance.addEventListener("change", addComma)
 inputTextDriverAllowance.addEventListener("input", onlyNum)
-for (i = 0; i < dispatchPrice.length; i++) {
-    dispatchPrice[i].addEventListener("click", removeComma)
-    dispatchPrice[i].addEventListener("change", addComma)
-    dispatchPrice[i].addEventListener("input", onlyNum)
-    dispatchPaymen[i].addEventListener("click", removeComma)
-    dispatchPaymen[i].addEventListener("change", addComma)
-    dispatchPaymen[i].addEventListener("input", onlyNum)
-}
 
 
 function removeComma() {
@@ -151,6 +144,16 @@ inputSave.addEventListener("click", submitVaildation)
 
 function submitVaildation(e) {
     e.preventDefault()
+    for (i = 0; i < essential.length; i++){
+        if(essential[i].value == ""){
+            return alert("입력하지 않은 필수 입력사항이 있습니다.")
+        }
+    };   
+    for (i = 0; i < essentialSelect.length; i++){
+        if(essentialSelect[i].options[essentialSelect[i].selectedIndex].value == ""){
+            return alert("입력하지 않은 필수 입력사항이 있습니다.")
+        }
+    };
     if (inputTextquarter[0].value.replace(/\-/g, "") > inputTextquarter[1].value.replace(/\-/g, "")) {
         alert("잘못된 범위입니다. 날짜를 다시 확인해 주세요.")
         inputTextquarter[1].value = ""

@@ -37,7 +37,7 @@ class MemberList(generic.ListView):
             authority = 1
 
         if name:
-            member_list = Member.objects.filter(authority__gte=authority).filter(name=name).order_by('name')
+            member_list = Member.objects.filter(authority__gte=authority).filter(name__contains=name).order_by('name')
         else:
             member_list = Member.objects.filter(authority__gte=authority).order_by('name')
         return member_list
@@ -63,11 +63,15 @@ class MemberList(generic.ListView):
         for member in member_list:
             bus_license_name = ''
             license_name = ''
+            license_id = ''
+            bus_license_id = ''
             for file in member.member_file.all():
                 if file.type == '면허증':
                     license_name = file.filename
+                    license_id = file.id
                 elif file.type == '버스운전 자격증':
                     bus_license_name = file.filename
+                    bus_license_id = file.id
                     
             data_list.append({
                 'name': member.name,
@@ -81,6 +85,9 @@ class MemberList(generic.ListView):
                 'bus_license': bus_license_name,
                 'note': member.note,
                 'user_id': member.id,
+                'emergency': member.emergency,
+                'license_id': license_id,
+                'bus_license_id': bus_license_id,
             })
         context['data_list'] = data_list
         context['name'] = self.request.GET.get('name', '')
@@ -126,6 +133,7 @@ def member_create(request):
             
             member.user_id = user_id
             member.password = make_password('0000')
+            member.emergency = request.POST.get('emergency1', '') + ' ' + request.POST.get('emergency2', '')
             member.save()
 
             license = request.FILES.get('license_file', None)
@@ -196,6 +204,7 @@ def member_edit(request):
             member.birthdate = member_form.cleaned_data['birthdate']
             member.address = member_form.cleaned_data['address']
             member.note = member_form.cleaned_data['note']
+            member.emergency = request.POST.get('emergency1', '') + ' ' + request.POST.get('emergency2', '')
             member.authority = req_auth
             
             member.save()
@@ -282,7 +291,15 @@ def member_delete(request):
         return redirect('HR:member')
     else:
         return HttpResponseNotAllowed(['post'])
-    
+
+def member_img(request, file_id):
+    context = {
+        'img': get_object_or_404(MemberFile, id=file_id)
+    }
+    return render(request, 'vehicle/document_img.html', context)
+
+
+
 # class ManagementList(generic.ListView):
 #     template_name = 'HR/mgmt.html'
 #     context_object_name = 'hr_list'

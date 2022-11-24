@@ -163,6 +163,7 @@ for (i = 0; i < removeBtn.length; i++) {
 }
 
 function deleteOrderDispatch() {
+    console.log(hiddenBus);
     let dispatchCounter = ""
     for (i = 0; i < removeBtn.length; i++) {
         if (removeBtn[i] == this) {
@@ -177,7 +178,6 @@ function deleteOrderDispatch() {
     dispatchBus[dispatchCounter].value = ""
     orderDriver[dispatchCounter].innerText = ""
     orderOutSoursing[dispatchCounter].innerText = ""
-    dispatchPrice[dispatchCounter].innerText = `${inputTextPrice.value}원`
     dispatchPaymen[dispatchCounter].innerText = `${inputTextDriverAllowance.value}원`
     dispatchPaymentCheckbox[dispatchCounter].checked = false
     hiddenBus[dispatchCounter].value = ""
