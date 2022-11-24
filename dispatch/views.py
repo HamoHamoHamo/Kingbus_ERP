@@ -99,7 +99,7 @@ def order_print(request):
     
     date1 = request.GET.get('date1', TODAY)
     date2 = request.GET.get('date2', TODAY)
-    order_list = DispatchOrder.objects.prefetch_related('info_order').exclude(arrival_date__lt=f'{date1} 00:00').exclude(departure_date__gt=f'{date2} 24:00').order_by('departure_date')
+    order_list = DispatchOrder.objects.prefetch_related('info_order').exclude(arrival_date__lt=f'{date1} 00:00').exclude(departure_date__gt=f'{date2} 24:00').order_by('departure_date').exclude(contract_status='취소')
     
     context = {
         'date1': date1,
@@ -238,7 +238,7 @@ class DocumentList(generic.ListView):
 
     def get_queryset(self):
         date = self.request.GET.get('date', TODAY)
-        order_list = DispatchOrder.objects.prefetch_related('info_order').filter(departure_date__lte=f'{date} 24:00').filter(arrival_date__gte=f'{date} 00:00')
+        order_list = DispatchOrder.objects.prefetch_related('info_order').filter(departure_date__lte=f'{date} 24:00').filter(arrival_date__gte=f'{date} 00:00').exclude(contract_status='취소')
         return order_list
 
     def get_context_data(self, **kwargs):

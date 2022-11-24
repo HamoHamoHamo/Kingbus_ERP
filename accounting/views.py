@@ -274,7 +274,7 @@ class SalesList(generic.ListView):
 
     def get_queryset(self):
         month = self.request.GET.get('month', TODAY[:7])
-        dispatch_list = DispatchOrder.objects.filter(departure_date__startswith=month)
+        dispatch_list = DispatchOrder.objects.filter(departure_date__startswith=month).exclude(contract_status='취소')
 
         return dispatch_list
 

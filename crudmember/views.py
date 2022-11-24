@@ -49,8 +49,9 @@ class Calendar(generic.ListView):
         year = self.request.GET.get('year', TODAY[:4])
         month = self.request.GET.get('month', TODAY[5:7])
 
-        if self.request.GET.get('change') == 'true':
-            DispatchOrder.objects.filter(departure_date__startswith=f'{year}-{month}')
+        # ?
+        # if self.request.GET.get('change') == 'true':
+        #     DispatchOrder.objects.filter(departure_date__startswith=f'{year}-{month}').exclude(contract_status='취소')
                     
         weekday_list = [
             datetime.strptime(f'{year}-{month}-01', FORMAT),
@@ -75,7 +76,7 @@ class Calendar(generic.ListView):
         change_order_list = [''] * int(last_day)
 
         
-        dispatch_list = DispatchOrder.objects.prefetch_related('info_order').filter(departure_date__startswith=f'{year}-{month}')
+        dispatch_list = DispatchOrder.objects.prefetch_related('info_order').filter(departure_date__startswith=f'{year}-{month}').exclude(contract_status='취소')
         regularly_list = DispatchRegularlyConnect.objects.filter(departure_date__startswith=month)
 
         for dispatch in dispatch_list:

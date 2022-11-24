@@ -2,6 +2,8 @@ let params = new URLSearchParams(document.location.search)
 
 const searchRoute = document.querySelector("input[name=route]")
 const orderSearchSelect = document.querySelector(".orderSearchSelect")
+const inputTextPrice = document.querySelector(".inputTextPrice")
+const inputTextDriverAllowance = document.querySelector(".inputTextDriverAllowance")
 
 window.onload = function () {
     inputToDay()
@@ -41,6 +43,10 @@ window.onload = function () {
                 }
             };            
         }
+    }
+    if(params.has("id")){
+        inputTextPrice.value = inputTextPrice.value.replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
+        inputTextDriverAllowance.value = inputTextDriverAllowance.value.replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
     }
 }
 
