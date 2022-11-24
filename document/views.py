@@ -146,7 +146,7 @@ class DocumentList(generic.ListView):
         date2 = self.request.GET.get('date2', TODAY)
         route = self.request.GET.get('route')
         
-        order_list = DispatchOrder.objects.prefetch_related('info_order').filter(arrival_date__lte=f'{date2} 24:00').filter(departure_date__gte=f'{date1} 00:00').order_by('departure_date')
+        order_list = DispatchOrder.objects.prefetch_related('info_order').filter(arrival_date__lte=f'{date2} 24:00').filter(departure_date__gte=f'{date1} 00:00').order_by('departure_date').exclude(contract_status='취소')
         if route:
             order_list = order_list.filter(route__contains=route).order_by('departure_date')
         return order_list

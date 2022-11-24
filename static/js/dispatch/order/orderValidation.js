@@ -1,6 +1,4 @@
 const inputTextPhoneNum = document.querySelector(".inputTextPhoneNum")
-const inputTextPrice = document.querySelector(".inputTextPrice")
-const inputTextDriverAllowance = document.querySelector(".inputTextDriverAllowance")
 const inputTextTwice = document.querySelectorAll(".inputTextTwice")
 const dispatchPrice = document.querySelectorAll(".dispatchPrice")
 const dispatchPaymen = document.querySelectorAll(".dispatchPaymen")

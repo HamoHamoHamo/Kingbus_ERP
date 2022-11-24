@@ -20,7 +20,7 @@
     <div class="creteHeader">
       <div class="inputCell">
         <span class="inputName">제목</span>
-        <input autocomplete="off" type="text" name="title" required>
+        <input autocomplete="off" type="text" name="title" class="length100" required>
       </div>
       <div class="inputCell">
         <span class="inputName">구분</span>
@@ -36,7 +36,7 @@
         <input autocomplete="off" type="file" name="file" multiple>
       </div>
     </div>
-    <textarea name="content" required class="noticeTextarea"></textarea>
+    <textarea name="content" required class="noticeTextarea length3000"></textarea>
     <div class="createBtnBox">
       <input autocomplete="off" type="submit" value="등록" class="createBtn">
     </div>
@@ -45,5 +45,5 @@
 {% endblock %}
 
 {% block script %}
-<script src="{% static 'js/lengthBreak.js' %}"></script>
+<script src="{% static 'js/lengthBreak3000.js' %}"></script>
 {% endblock %}

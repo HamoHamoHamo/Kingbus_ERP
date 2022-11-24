@@ -171,7 +171,7 @@
                         <td class="tdTypeA">출발지</td>
                         <td colspan="3" class="tdTypeB">
                             <div class="waypointBox">
-                                <input autocomplete="off" value="{{detail.departure}}" name="departure" type="text" class="inputText inputTextDeparture">
+                                <input autocomplete="off" value="{{detail.departure}}" name="departure" type="text" class="inputText inputTextDeparture inputDeparture">
                                 <div class="btnModules waypoinBtn">+경유지</div>
                             </div>
                         </td>
@@ -189,7 +189,7 @@
                     <tr>
                         <td class="tdTypeA">도착지</td>
                         <td colspan="3" class="tdTypeB">
-                            <input autocomplete="off" value="{{detail.arrival}}" name="arrival" type="text" class="inputText">
+                            <input autocomplete="off" value="{{detail.arrival}}" name="arrival" type="text" class="inputText inputArrival">
                         </td>
                         <td class="tdTypeA">버스옵션</td>
                         <td colspan="3" class="tdTypeB">
@@ -758,5 +758,6 @@
 <script src="{% static 'js/dispatch/order/FullSchedule.js' %}"></script>
 <script src="{% static 'js/dispatch/order/matchDispatch.js' %}"></script>
 <script src="{% static 'js/dispatch/order/waypoint.js' %}"></script>
+<script src="{% static 'js/dispatch/order/lengthBreak.js' %}"></script>
 
 {% endblock %}
