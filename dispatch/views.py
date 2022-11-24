@@ -1189,10 +1189,14 @@ def order_create(request):
             order.driver_allowance = driver_allowance
             order.VAT = request.POST.get('VAT', 'n')
             order.creator = creator
-            order.collection_type = request.POST.get('collection_type').split('(')[0]
-            
+
             # 현지수금(카드)
-            order.payment_method = request.POST.get('collection_type').split('(')[1][:-1]
+            post_collection_type = request.POST.get('collection_type')
+            
+            if post_collection_type:
+                order.collection_type = post_collection_type.split('(')[0]
+                order.payment_method = post_collection_type.split('(')[1][:-1]
+            
 
             order.cost_type = ' '.join(request.POST.getlist('cost_type'))
             order.option = ' '.join(request.POST.getlist('option'))

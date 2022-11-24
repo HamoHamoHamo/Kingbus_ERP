@@ -85,14 +85,22 @@
                             {{d.0|slice:':4'}}. {{d.1|slice:':4'}}/
                         {% endfor %}
                     </td>
-                    <td>{{data.attendance_price_list|index:forloop.counter0}}</td>
+                    <td>
+                        {% if data.attendance_list|index:forloop.counter0 %}
+                            {{data.attendance_price_list|index:forloop.counter0}}
+                        {% endif %}
+                    </td>
                     <!-- <td>기흥기숙.마북동 /</td> -->
                     <td>
                         {% for d in data.leave_list|index:forloop.counter0 %}
                             {{d.0|slice:':4'}}. {{d.1|slice:':4'}}/
                         {% endfor %}
                     </td>
-                    <td>{{data.leave_price_list|index:forloop.counter0}}</td>
+                    <td>
+                        {% if data.leave_list|index:forloop.counter0 %}
+                            {{data.leave_price_list|index:forloop.counter0}}
+                        {% endif %}
+                    </td>
                     <!-- <td>
                         화성금곡.국립중앙/     화성금곡.국립중앙/<br>
                         화성금곡.국립중앙/
@@ -102,8 +110,16 @@
                             {{d|index:0|slice:':4'}}. {{d|index:1|slice:':4'}} /
                         {% endfor %}
                     </td>
-                    <td>{{data.order_price_list|index:forloop.counter0}}</td>
-                    <td>{{data.total_list|index:forloop.counter0}}</td>
+                    <td>
+                        {% if data.order_list|index:forloop.counter0 %}
+                            {{data.order_price_list|index:forloop.counter0}}
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if data.order_list|index:forloop.counter0 or data.attendance_list|index:forloop.counter0 or data.leave_list|index:forloop.counter0 %}
+                            {{data.total_list|index:forloop.counter0}}
+                        {% endif %}
+                    </td>
                 </tr>
                 {% endfor %}
             </tbody>
@@ -126,7 +142,12 @@
                     <td class="titleTd">지급사유</td>
                 </tr>
                 <tr>
-                    <td></td>
+                    <td>
+                        
+                        {% for add in data.additional %}
+                            ({{add.price}}){{add.remark}} /
+                        {% endfor %}
+                    </td>
                 </tr>
                 <tr>
                     <td rowspan="2" class="titleTd">
@@ -136,7 +157,11 @@
                     <td class="titleTd">공제사유</td>
                 </tr>
                 <tr>
-                    <td></td>
+                    <td>
+                        {% for ded in data.deduction %}
+                            ({{ded.price}}){{ded.remark}} /
+                        {% endfor %}
+                    </td>
                 </tr>
             </table>
 
@@ -184,7 +209,7 @@
                     </colgroup>
                     <tr>
                         <td class="titleTd">합계</td>
-                        <td>{{data.salary.total|sub:data.salary.deduction}}</td>
+                        <td>{{data.salary.total|add:data.salary.deduction}}</td>
                         <td class="titleTd">공제</td>
                         <td>{{data.salary.deduction}}</td>
                     </tr>

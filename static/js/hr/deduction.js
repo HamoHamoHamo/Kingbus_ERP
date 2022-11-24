@@ -6,6 +6,8 @@ const deductionMoreHidden = document.querySelector(".deductionMoreHidden")
 const deductionMoreHiddenMonth = document.querySelector(".deductionMoreHiddenMonth")
 const deductionTableScroll = document.querySelector(".deductionTableScroll tbody")
 const deductionListAllCheck = document.querySelector(".deductionListAllCheck")
+const deductionDeleteBtn = document.querySelector(".deductionDeleteBtn")
+const deductionDeleteForm = document.querySelector(".deductionDeleteForm")
 
 for (i = 0; i < deduction.length; i++) {
     deduction[i].addEventListener("click", openAddSalaryPopup)
@@ -55,6 +57,17 @@ function openAddSalaryPopup() {
     const deductionChecker = document.querySelectorAll(".deductionChecker")
     deductionTotal(price)
     deductionChecking(deductionTrList, deductionChecker)
+
+    deductionDeleteBtn.addEventListener("click", deductionDeleteAdd)
+
+    function deductionDeleteAdd() {
+        for (i = 0; i < deductionChecker.length; i++) {
+            if (deductionChecker[i].checked) {
+                return deductionDeleteForm.submit()
+            }
+        };
+        alert("삭제할 항목을 선택해 주세요.")
+    }
 
     deductionListAllCheck.addEventListener("change", checkingAll)
 
