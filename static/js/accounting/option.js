@@ -3,6 +3,8 @@ const checker = document.querySelectorAll(".checker")
 const unprocessed = document.querySelector("#unprocessed")
 const processed = document.querySelector("#processed")
 const deleteCheck = document.querySelector("#delete")
+const depositDeleteBtn = document.querySelector(".depositDeleteBtn")
+const depositForm = document.querySelector(".depositForm")
 
 function state() {
     for (i = 0; i < depositCell.length; i++) {
@@ -22,6 +24,7 @@ deleteCheck.addEventListener("change", optionDelete)
 
 function optionUnprocessed() {
     if (this.checked) {
+        depositForm.action = "/accounting/deposit/hide"
         deleteCheck.checked = false
     }
     stateOPtion()
@@ -35,6 +38,7 @@ function optionUnprocessed() {
 
 function optionProcessed() {
     if (this.checked) {
+        depositForm.action = "/accounting/deposit/hide"
         deleteCheck.checked = false
     }
     stateOPtion()
@@ -48,6 +52,7 @@ function optionProcessed() {
 
 function optionDelete() {
     if (this.checked) {
+        depositForm.action = "/accounting/deposit/delete"
         unprocessed.checked = false
         processed.checked = false
     }

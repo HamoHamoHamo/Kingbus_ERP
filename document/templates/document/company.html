@@ -66,7 +66,7 @@
                                     <tr>
                                         <td>
                                             <input autocomplete="off" value="{{group.id}}" name="group_check" type="checkbox"
-                                                class="groupCheck group{{group.id}}"><!-- 장고로 클래스 부여 -->
+                                                class="groupCheck group{{group.id}} length100 essentialEdit"><!-- 장고로 클래스 부여 -->
                                         </td>
                                         <td colspan="2">
                                             <div class="folderBox">
@@ -215,7 +215,7 @@
 <!--  -->
 <div class="popupAreaModules">
     <div class="popupBgModules"></div>
-    <form method="post" action="{% url 'document:company_document_create' %}" class="popupContainer"
+    <form method="post" action="{% url 'document:company_document_create' %}" class="popupContainer uploadFileForm"
         enctype="multipart/form-data">
         {% csrf_token %}
         <div class="popupHeader">
@@ -224,11 +224,11 @@
         <div class="popupBody">
             <div class="popupSection">
                 <div class="popupArticle">
-                    <label for="" class="popupArticleLabel">파일명</label>
-                    <input autocomplete="off" name="filename" type="text" class="popupArticleInput">
+                    <label for="" class="popupArticleLabel"><span class="importantStar">*</span>파일명</label>
+                    <input autocomplete="off" name="filename" type="text" class="popupArticleInput length100 essential">
                 </div>
                 <div class="popupArticle">
-                    <label for="" class="popupArticleLabel">업로드 파일</label>
+                    <label for="" class="popupArticleLabel"><span class="importantStar">*</span>업로드 파일</label>
                     <div class="popupArticleFile">
                         <label for="documentFile">파일 선택</label>
                         <input autocomplete="off" name="file" type="file" id="documentFile" class="documentFileInput">
@@ -248,8 +248,8 @@
                 <input autocomplete="off" name="group_id" type="hidden" class="hiddenGroupIdUpload">
             </div>
             <div class="popupFooter">
-                <input autocomplete="off" type="submit" class="btnModules" value="추가">
-                <div class="btnModules">취소</div>
+                <div class="btnModules uploadFileAdd">추가</div>
+                <div class="btnModules popupCloseBtn">취소</div>
             </div>
         </div>
     </form>
@@ -257,7 +257,7 @@
 
 <div class="popupAreaModules">
     <div class="popupBgModules"></div>
-    <form method="post" action="{% url 'document:company_group_create' %}" class="popupContainer">
+    <form method="post" action="{% url 'document:company_group_create' %}" class="popupContainer groupAddpopupForm">
         {% csrf_token %}
         <div class="popupHeader">
             <div class="popupTitle">그룹추가</div>
@@ -265,13 +265,13 @@
         <div class="popupBody">
             <div class="popupSection">
                 <div class="popupArticle">
-                    <label for="" class="popupArticleLabel">그룹이름</label>
-                    <input autocomplete="off" name="group_name" type="text" class="popupArticleInput">
+                    <label for="" class="popupArticleLabel"><span class="importantStar">*</span>그룹이름</label>
+                    <input autocomplete="off" name="group_name" type="text" class="popupArticleInput length100 groupEssential">
                 </div>
             </div>
             <div class="popupFooter">
-                <input autocomplete="off" type="submit" class="btnModules" value="추가">
-                <div class="btnModules">취소</div>
+                <div class="btnModules groupAddBtn">추가</div>
+                <div class="btnModules popupCloseBtn">취소</div>
             </div>
         </div>
     </form>
@@ -290,4 +290,5 @@
 <script src="{% static 'js/document/gruopChecker.js' %}"></script>
 <script src="{% static 'js/document/openGroup.js' %}"></script>
 <script src="{% static 'js/document/editGroupName.js' %}"></script>
+<script src="{% static 'js/document/essential.js' %}"></script>
 {% endblock %}

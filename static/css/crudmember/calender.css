@@ -293,6 +293,11 @@
     background-color: #EFEFEF;
 }
 
+.filterTarget{
+    font-weight: 700;
+    border: 0.1rem solid black;
+}
+
 .totalBox {
     display: flex;
     justify-content: space-between;

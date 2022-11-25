@@ -145,7 +145,6 @@ function drawMember() {
 
         const memberData11 = document.createElement('td');
         memberData11.setAttribute("class", `table-list_body-tr_td memberOpenPrint`);
-        console.log(data[i].lisence_id);
         if(data[i].lisence_id !== undefined){
             memberData11.setAttribute("onclick", `openLisence("/HR/member/image/${data[i].lisence_id}", true)`);
         }

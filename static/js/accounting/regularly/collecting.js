@@ -48,7 +48,7 @@ function openLoadPopup(){
         let month = today.getMonth() + 1;
         let date = today.getDate();
 
-        loadDate[0].value = `${year}-${month}-${date}`
+        loadDate[0].value = `${year}-${month}-01`
         loadDate[1].value = `${year}-${month}-${date}`
     }else{
         alert("그룹을 선택해 주세요")

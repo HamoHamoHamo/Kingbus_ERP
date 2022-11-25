@@ -247,22 +247,22 @@
                         <div class="popupArticleCategori">추가입력사항</div> 
                         <div class="popupArticleBox">
                             <div class="popupArticleDouble">
-                                <label for="" class="popupArticleLabel">항목</label>
-                                <input autocomplete="off" name="category" type="text" class="popupArticleinput">
+                                <label for="" class="popupArticleLabel"><span class="importantStar">*</span>항목</label>
+                                <input autocomplete="off" name="category" type="text" class="popupArticleinput length100 essential">
                             </div>
                             <div class="popupArticleDouble">
                                 <label for="" class="popupArticleLabel">비고</label>
-                                <input autocomplete="off" name="note" type="text" class="popupArticleinput">
+                                <input autocomplete="off" name="note" type="text" class="popupArticleinput length100 essential">
                             </div>
                         </div>
                         <div class="popupArticleBox">
                             <div class="popupArticleDouble">
-                                <label for="" class="popupArticleLabel">공급가액</label>
-                                <input autocomplete="off" name="value" type="text" class="popupArticleinput amountInput">
+                                <label for="" class="popupArticleLabel"><span class="importantStar">*</span>공급가액</label>
+                                <input autocomplete="off" name="value" type="text" class="popupArticleinput amountInput essential numberOnly length100">
                             </div>
                             <div class="popupArticleDouble">
-                                <label for="" class="popupArticleLabel">부가세</label>
-                                <input autocomplete="off" name="VAT" type="text" class="popupArticleinput amountInput">
+                                <label for="" class="popupArticleLabel"><span class="importantStar">*</span>부가세</label>
+                                <input autocomplete="off" name="VAT" type="text" class="popupArticleinput amountInput essential numberOnly length100">
                             </div>
                         </div>
                         <div class="popupArticleBox">
@@ -337,5 +337,6 @@
 <script src="{% static 'js/accounting/collectOption.js' %}"></script>
 <script src="{% static 'js/accounting/history.js' %}"></script>
 <script src="{% static 'js/accounting/add.js' %}"></script>
+<script src="{% static 'js/accounting/deleteLetter.js' %}"></script>
 <script src="{% static 'js/accounting/deleteLetter.js' %}"></script>
 {% endblock %}

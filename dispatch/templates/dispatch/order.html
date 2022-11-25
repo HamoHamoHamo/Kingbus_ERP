@@ -150,6 +150,7 @@
                     <a href="{% url 'dispatch:order' %}?date1={{date1}}&date2={{date2}}" class="newOrderLink">
                         <div class="btnModules newOrder">신규</div>
                     </a>
+                    <div class="btnModules routeCopyBtn">복사</div>
                     {% endif %}
                 </div>
 
@@ -518,7 +519,9 @@
                                     
                                 </div>
                                 <div class="orderListMainContents orderListMain2">
-                                    <div>{{order.departure}} ▶</div>
+                                    <div>
+                                        {{order.departure}} ▶
+                                    </div>
                                     {% for waypoint in order.waypoint.all %}
                                         <div>{{waypoint.waypoint}}({{waypoint.time}}){% if waypoint.delegate or waypoint.delegate_phone %} - {% endif %}{{waypoint.delegate}}{% if waypoint.delegate_phone %}({{waypoint.delegate_phone}}){% endif %}</div>
                                     {% endfor %}
@@ -754,5 +757,6 @@
 <script src="{% static 'js/dispatch/order/matchDispatch.js' %}"></script>
 <script src="{% static 'js/dispatch/order/waypoint.js' %}"></script>
 <script src="{% static 'js/dispatch/order/dateFollow.js' %}"></script>
+<script src="{% static 'js/dispatch/order/routeCopy.js' %}"></script>
 
 {% endblock %}

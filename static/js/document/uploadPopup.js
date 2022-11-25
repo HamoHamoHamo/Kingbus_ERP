@@ -2,12 +2,12 @@
 const popupAreaModules = document.querySelectorAll('.popupAreaModules');
 const popupBgModules = document.querySelectorAll(".popupBgModules")
 const SidemenuUseClose = document.querySelector(".Sidemenu")
-const closeBtn = document.querySelectorAll(".popupFooter div")
+const closeBtn = document.querySelectorAll(".popupCloseBtn")
 const upload = document.querySelectorAll(".uploadFile")
-const Fileinput= document.querySelector(".documentFileInput")
+const FileInput= document.querySelector(".documentFileInput")
 const FileText = document.querySelector(".documentFileText")
 const fileDeleteBtn = document.querySelector(".fileDeleteBtn")
-const popupArticleinput= document.querySelectorAll(".popupArticleInput")
+const popupArticleInput= document.querySelectorAll(".popupArticleInput")
 const addGroupBox = document.querySelector(".addGroupBox")
 const hiddenGroupId = document.querySelector(".hiddenGroupIdUpload")
 
@@ -42,7 +42,6 @@ function addGroupOpen() {
 //팝업닫기
 for (i = 0; i < popupBgModules.length; i++) {
     popupBgModules[i].addEventListener("click", closePopup)
-    // popupCloseBtn[i].addEventListener("click", closePopup)
 }
 
 SidemenuUseClose.addEventListener("click", closePopup)
