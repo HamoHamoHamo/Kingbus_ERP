@@ -23,7 +23,7 @@ function drawOrder(filter) {
             for (j = 0; j < changeOrderList[i].length; j++) {
                 if(changeOrderList[i][j].customer.includes(filter)){
                     const orderListCell = document.createElement("div")
-                    orderListCell.setAttribute("class", "orderListCell")
+                    orderListCell.setAttribute("class", "orderListCell filterTarget")
                     orderListBox[i].appendChild(orderListCell)
         
                     const orderListCellCustomer = document.createElement("span")

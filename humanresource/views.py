@@ -656,7 +656,7 @@ def salary_additional_delete(request):
     if request.method == 'POST':
         id_list = request.POST.getlist('id')
         for id in id_list:
-            additional = get_object_or_404(DeductionSalary, id=id)
+            additional = get_object_or_404(AdditionalSalary, id=id)
             
             salary = additional.salary_id
             salary.additional = int(salary.additional) - int(additional.price)

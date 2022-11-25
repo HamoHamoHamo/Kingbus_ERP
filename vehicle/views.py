@@ -76,7 +76,7 @@ class VehicleList(generic.ListView):
         context['select'] = self.request.GET.get('select', '')
         context['search'] = self.request.GET.get('search', '')
         # context['driver_list'] = Member.objects.filter(role='운전원')
-        context['driver_list'] = Member.objects.filter(driver=None).filter(role='운전원')
+        context['driver_list'] = Member.objects.filter(driver=None).filter(Q(role='운전원') | Q(role='용역')).order_by('name')
         
         file_list = []
         for vehicle in context['vehicle_list']:
@@ -123,7 +123,7 @@ def vehicle_create(request):
 
             return redirect(request.META.get('HTTP_REFERER', 'redirect_if_referer_not_found'))
         else:
-            return Http404
+            raise Http404
 
     else:
         return HttpResponseNotAllowed(['post'])

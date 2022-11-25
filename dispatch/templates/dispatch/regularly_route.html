@@ -184,9 +184,9 @@
           <td class="tdTypeC">
             <select name="location" class="inputSelect">
               <option value=""></option>
-              <option {% if detail.location == 셔틀 %} selected {% endif %} value="셔틀">셔틀</option>
-              <option {% if detail.location == 정문 %} selected {% endif %} value="정문">정문</option>
-              <option {% if detail.location == 후문 %} selected {% endif %} value="후문">후문</option>
+              <option {% if detail.location == '셔틀' %} selected {% endif %} value="셔틀">셔틀</option>
+              <option {% if detail.location == '정문' %} selected {% endif %} value="정문">정문</option>
+              <option {% if detail.location == '후문' %} selected {% endif %} value="후문">후문</option>
             </select>
           </td>
         </tr>
@@ -224,7 +224,7 @@
           </td>
           <td class="tdTypeA">상세노선</td>
           <td colspan="3" class="tdTypeB">
-            <input autocomplete="off" value="{{detail.detailed_route}}" name="detailed_route" type="text" class="inputText length200">
+            <input autocomplete="off" value="{{detail.detailed_route}}" name="detailed_route" type="text" class="inputText">
           </td>
         </tr>
         <tr>
@@ -234,11 +234,11 @@
           </td>
           <td class="tdTypeA">*금액</td>
           <td class="tdTypeC">
-            <input autocomplete="off" value="{{detail.price}}" name="price" type="text" class="inputText length100">
+            <input autocomplete="off" value="{{detail.price}}" name="price" type="text" class="inputText amountComma length100">
           </td>
           <td class="tdTypeA">*기사수당</td>
           <td class="tdTypeC">
-            <input autocomplete="off" value="{{detail.driver_allowance}}" name="driver_allowance" type="text" class="inputText length100">
+            <input autocomplete="off" value="{{detail.driver_allowance}}" name="driver_allowance" type="text" class="inputText amountComma length100">
           </td>
         </tr>
         <tr>
@@ -449,4 +449,5 @@
 <script src="{% static 'js/dispatch/regularly_route/deleteCheck.js' %}"></script>
 <script src="{% static 'js/dispatch/regularly_route/groupCalculating.js' %}"></script>
 <script src="{% static 'js/dispatch/regularly_route/lengthBreak.js' %}"></script>
+<script src="{% static 'js/dispatch/regularly_route/createAddComma.js' %}"></script>
 {% endblock %}

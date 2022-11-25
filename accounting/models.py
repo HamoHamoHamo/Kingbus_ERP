@@ -46,8 +46,8 @@ class TotalPrice(models.Model):
             return self.month + ' ' + self.order_id.route
     
 class AdditionalCollect(models.Model):
-    group_id = models.ForeignKey(RegularlyGroup, on_delete=models.SET_NULL, related_name="regularly_additional_collect", null=True, blank=True)
-    order_id = models.ForeignKey(DispatchOrder, on_delete=models.SET_NULL, related_name="order_additional_collect", null=True, blank=True)
+    group_id = models.ForeignKey(RegularlyGroup, on_delete=models.CASCADE, related_name="regularly_additional_collect", null=True, blank=True)
+    order_id = models.ForeignKey(DispatchOrder, on_delete=models.CASCADE, related_name="order_additional_collect", null=True, blank=True)
     month = models.CharField(verbose_name='월', max_length=10, null=False)
     category = models.CharField(verbose_name='항목', max_length=50, null=False)
     value = models.CharField(verbose_name='공급가액', max_length=20, null=False)

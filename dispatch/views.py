@@ -1,9 +1,11 @@
 import json
 import math
 import pandas as pd
+import re
+
 from django.db.models import Q, Sum
-from django.core.exceptions import ObjectDoesNotExist, MultipleObjectsReturned
-from django.http import Http404, JsonResponse, HttpResponse, HttpResponseBadRequest, HttpResponseNotAllowed
+from django.core.exceptions import ObjectDoesNotExist, MultipleObjectsReturned, BadRequest
+from django.http import Http404, JsonResponse, HttpResponse, HttpResponseNotAllowed
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
 from django.views import generic
@@ -700,6 +702,8 @@ def regularly_order_create(request):
 
             order = order_form.save(commit=False)
             
+            order.num1 = re.sub(r'[^0-9]', '', order.number1)
+            order.num2 = re.sub(r'[^0-9]', '', order.number2)
             order.price = price
             order.driver_allowance = driver_allowance
             order.departure_time = f'{departure_time1}:{departure_time2}'
@@ -784,6 +788,8 @@ def regularly_order_edit(request):
             order.driver_allowance = driver_allowance
             order.number1 = order_form.cleaned_data['number1']
             order.number2 = order_form.cleaned_data['number2']
+            order.num1 = re.sub(r'[^0-9]', '', order_form.cleaned_data['number1'])
+            order.num2 = re.sub(r'[^0-9]', '', order_form.cleaned_data['number2'])
             # order.customer = order_form.cleaned_data['customer']
             # order.customer_phone = order_form.cleaned_data['customer_phone']
             # order.contract_start_date = order_form.cleaned_data['contract_start_date']
@@ -1075,7 +1081,8 @@ class OrderList(generic.ListView):
             total['bus_cnt'] += int(order.bus_cnt)
             total['driver_allowance'] += int(order.driver_allowance) * int(order.bus_cnt)
             try:
-                total_price = int(TotalPrice.objects.get(order_id=order).total_price)
+                tp = TotalPrice.objects.get(order_id=order)
+                total_price = int(tp.total_price)
                 if order.contract_status != '취소':
                     total['price'] += total_price
             # #################### total price 없으면 만들어주기 나중에 주석처리
@@ -1225,7 +1232,13 @@ def order_create(request):
             
 
             order.cost_type = ' '.join(request.POST.getlist('cost_type'))
-            order.option = ' '.join(request.POST.getlist('option'))
+            option = ' '.join(request.POST.getlist('option'))
+            order.option = option
+            if '카드기' in option and (not '<카드기>' in order.departure):
+                order.departure = '<카드기>' + order.departure
+            if '카시트' in option and (not '<카시트>' in order.departure):
+                order.departure = '<카시트>' + order.departure
+
             order.departure_date = f"{request.POST.get('departure_date')} {departure_time1}:{departure_time2}"
             order.arrival_date = f"{request.POST.get('arrival_date')} {arrival_time1}:{arrival_time2}"
             order.route = request.POST.get('departure') + " ▶ " + request.POST.get('arrival')
@@ -1244,7 +1257,7 @@ def order_create(request):
 
             return redirect(request.META.get('HTTP_REFERER', 'redirect_if_referer_not_found'))
         else:
-            raise Http404
+            raise BadRequest
     else:
         return HttpResponseNotAllowed(['post'])
 
@@ -1352,7 +1365,14 @@ def order_edit(request):
             order.driver_allowance = driver_allowance
             order.contract_status = order_form.cleaned_data['contract_status']
             order.cost_type = ' '.join(request.POST.getlist('cost_type'))
-            order.option = ' '.join(request.POST.getlist('option'))
+            
+            option = ' '.join(request.POST.getlist('option'))
+            order.option = option
+            if '카드기' in option and (not '<카드기>' in order.departure):
+                order.departure = '<카드기>' + order.departure
+            if '카시트' in option and (not '<카시트>' in order.departure):
+                order.departure = '<카시트>' + order.departure
+
             order.customer = order_form.cleaned_data['customer']
             order.customer_phone = order_form.cleaned_data['customer_phone']
             order.bill_place = order_form.cleaned_data['bill_place']

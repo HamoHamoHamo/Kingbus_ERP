@@ -737,17 +737,6 @@ class CollectList(generic.ListView):
                 VAT_list[cnt] += int(additional.VAT)
                 additional_total_list[cnt] += int(additional.total_price)
             additional_list.append(temp_list)
-            # print('aaaaaaaaaaaaaaadditional', additional_list)
-
-            # total price save
-            # total = TotalPrice(
-            #     order_id = order,
-            #     month = order.departure_date[:7],
-            #     total_price = total_list[cnt],
-            #     creator = get_object_or_404(Member, pk=self.request.session.get('user'))
-            # )
-            # total.save()
-            # 
 
             if int(price_total) == total_list[cnt]:
                 state_list.append('완료')
@@ -843,7 +832,8 @@ def collect_load(request):
 
         temp_list = []
         for income in income_list:
-            temp_list.append({
+            if income.used_price != income.total_income:
+                temp_list.append({
                     'serial': income.serial,
                     'date': income.date,
                     'payment_method': income.payment_method,
@@ -854,7 +844,6 @@ def collect_load(request):
                     'state': income.state,
                     'id': income.id,
                 })
-
         return JsonResponse({
             'deposit': temp_list,
             'status': 'success',
@@ -1131,6 +1120,18 @@ def deposit_hide(request):
             income = get_object_or_404(Income, id=check)
             income.state='삭제'
             income.save()
+       
+        return redirect(request.META.get('HTTP_REFERER', 'redirect_if_referer_not_found'))
+    else:
+        return HttpResponseNotAllowed(['post'])
+
+def deposit_delete(request):
+    if request.method == "POST":
+        check_list = request.POST.getlist('check')
+
+        for check in check_list:
+            income = get_object_or_404(Income, id=check)
+            income.delete()
        
         return redirect(request.META.get('HTTP_REFERER', 'redirect_if_referer_not_found'))
     else:

@@ -14,6 +14,7 @@ const addTotalTotal = document.querySelector(".addTotalTotal")
 const amountInput = document.querySelectorAll(".amountInput")
 const addForm = document.querySelector(".addForm")
 const addBtn = document.querySelector(".addBtn")
+const essential = document.querySelectorAll(".essential")
 
 
 for (i = 0; i < add.length; i++) {
@@ -83,7 +84,7 @@ function additionPopup() {
 
     const addListTr = document.querySelectorAll(".scrolling_table-list_body .table-list_body-tr")
 
-    for (i = 0; i < addListTr.length; i++){
+    for (i = 0; i < addListTr.length; i++) {
         addListTr[i].children[3].innerText = addListTr[i].children[3].innerText.replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
         addListTr[i].children[4].innerText = addListTr[i].children[4].innerText.replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
         addListTr[i].children[5].innerText = addListTr[i].children[5].innerText.replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
@@ -92,7 +93,7 @@ function additionPopup() {
     let price = 0
     let vat = 0
 
-    for (i = 0; i < addListTr.length; i++){
+    for (i = 0; i < addListTr.length; i++) {
         price = price + parseInt(addListTr[i].children[3].innerText.replace(/\,/g, ""))
         vat = vat + parseInt(addListTr[i].children[4].innerText.replace(/\,/g, ""))
     };
@@ -123,17 +124,17 @@ function closePopupAdd() {
 
 addDeleteBtn.addEventListener("click", deleteAdd)
 
-function deleteAdd(){
+function deleteAdd() {
     const addListCheckbox = document.querySelectorAll(".addListCheckbox")
     let checkChecker = false
-    for (i = 0; i < addListCheckbox.length; i++){
-        if(addListCheckbox[i].checked){
+    for (i = 0; i < addListCheckbox.length; i++) {
+        if (addListCheckbox[i].checked) {
             checkChecker = true
         }
     };
-    if(checkChecker){
+    if (checkChecker) {
         addDeleteForm.submit();
-    }else{
+    } else {
         alert("삭제할 항목을 선택해 주세요")
     }
 }
@@ -143,12 +144,12 @@ function addListChekingTr(addChecker, event) {
     event.stopPropagation()
     const addListCheckbox = document.querySelectorAll(`.${addChecker.children[0].children[0].classList[0]}`)
 
-    if(addChecker.children[0].children[0].checked){
+    if (addChecker.children[0].children[0].checked) {
         addChecker.children[0].children[0].checked = false
-    }else{
+    } else {
         addChecker.children[0].children[0].checked = true
     }
-    
+
     let addCheckCount = 0
     for (i = 0; i < addListCheckbox.length; i++) {
         if (addListCheckbox[i].checked) {
@@ -180,14 +181,14 @@ function addListCheking(addChecker, event) {
 
 addListAllCheck.addEventListener("change", addListAllChcecker)
 
-function addListAllChcecker(){
+function addListAllChcecker() {
     const addListCheckbox = document.querySelectorAll(".addListCheckbox")
-    if(this.checked){
-        for (i = 0; i < addListCheckbox.length; i++){
+    if (this.checked) {
+        for (i = 0; i < addListCheckbox.length; i++) {
             addListCheckbox[i].checked = true
         };
-    }else{
-        for (i = 0; i < addListCheckbox.length; i++){
+    } else {
+        for (i = 0; i < addListCheckbox.length; i++) {
             addListCheckbox[i].checked = false
         };
     }
@@ -216,26 +217,26 @@ function onlyNum() {
 }
 
 
-function makeResult(){
+function makeResult() {
     let result = this.value;
     targetInput = this
     remove0(result, targetInput)
 }
 
 
-function remove0(result, targetInput){
-    if(result.length > 1){
-        if(result[0] == 0){
+function remove0(result, targetInput) {
+    if (result.length > 1) {
+        if (result[0] == 0) {
             result = result.substr(1,)
             remove0(result, targetInput)
-        }else{
+        } else {
             changeAddComma(result, targetInput)
         }
     }
 }
 
 
-function changeAddComma(result, targetInput){
+function changeAddComma(result, targetInput) {
     targetInput.value = result
     targetInput.value = targetInput.value.replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
 }
@@ -243,7 +244,12 @@ function changeAddComma(result, targetInput){
 
 addBtn.addEventListener("click", addSubmit)
 
-function addSubmit(){
+function addSubmit() {
+    for (i = 0; i < essential.length; i++) {
+        if (essential[i].value == "") {
+            return alert("입력하지 않은 필수 입력사항이 있습니다.")
+        }
+    };
     amountInput[0].value = amountInput[0].value.replace(/\,/g, "")
     amountInput[1].value = amountInput[1].value.replace(/\,/g, "")
     addForm.submit()

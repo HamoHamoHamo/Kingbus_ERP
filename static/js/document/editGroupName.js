@@ -36,6 +36,9 @@ for (i = 0; i < groupNameSaveBtn.length; i++) {
 
 function saveGroupName(e) {
     e.stopPropagation()
+    if(this.parentNode.children[1].children[0].value == ""){
+        return alert("입력하지 않은 필수 입력사항이 있습니다.")
+    }
     GroupIdHidden.value = `${this.parentNode.parentNode.parentNode.children[0].children[0].value}`
     contentsAreaBox.action = "company/group/edit"
     contentsAreaBox.submit()

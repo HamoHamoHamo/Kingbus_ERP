@@ -3,7 +3,7 @@ const orderListMain = document.querySelectorAll(".orderListMain .orderListScroll
 const orderListSub = document.querySelectorAll(".orderListSub .orderListScrollBox .orderListItem")
 
 function thisRoute() {
-    let parms = new URLSearchParams(location.search)    
+    let parms = new URLSearchParams(location.search)
     for (i = 0; i < orderListMain.length; i++) {
         if (orderListMain[i].classList[2] == parms.get("id")) {
             orderListMain[i].classList.add("thisRoute")
@@ -42,9 +42,9 @@ function ListOut() {
 
 function selectList() {
     let parms = new URLSearchParams(location.search)
-    if(parms.has("route")){
-        location.href = `/dispatch/order?route=${parms.get("route")}&id=${this.classList[2]}&date1=${searchDate[0].value}&date2=${searchDate[1].value}`
-    }else{
+    if (parms.has("search")) {
+        location.href = `/dispatch/order?type=${parms.get("type")}&search=${parms.get("search")}&id=${this.classList[2]}&date1=${searchDate[0].value}&date2=${searchDate[1].value}`
+    } else {
         location.href = `/dispatch/order?id=${this.classList[2]}&date1=${searchDate[0].value}&date2=${searchDate[1].value}`
     }
 }

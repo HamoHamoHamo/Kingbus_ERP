@@ -173,10 +173,11 @@
   flex-direction: row-reverse;
   justify-content: space-between;
   align-items: center;
-  width: 21.5rem;
+  width: 28rem;
 }
 
 .inputSave,
+.routeCopyBtn,
 .newOrder {
   background-color: #0069D9;
 }
