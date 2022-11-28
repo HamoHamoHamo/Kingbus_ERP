@@ -61,7 +61,7 @@ class VehicleList(generic.ListView):
         context = super().get_context_data(**kwargs)
         
         paginator = context['paginator']
-        page_numbers_range = 5
+        page_numbers_range = 10
         max_index = len(paginator.page_range)
         page = self.request.GET.get('page')
         current_page = int(page) if page else 1
@@ -72,6 +72,8 @@ class VehicleList(generic.ListView):
             end_index = max_index
         page_range = paginator.page_range[start_index:end_index]
         context['page_range'] = page_range
+
+        context['start_num'] = paginator.count - page_numbers_range * (current_page-1)
 
         context['select'] = self.request.GET.get('select', '')
         context['search'] = self.request.GET.get('search', '')
@@ -102,7 +104,7 @@ class VehicleList(generic.ListView):
 def vehicle_create(request):
     if request.method == 'POST':
         vehicle_form = VehicleForm(request.POST)
-
+        print("TEST")
         if vehicle_form.is_valid():
             creator = get_object_or_404(Member, pk=request.session.get('user'))
             vehicle_registration_file = request.FILES.get('vehicle_registration', None)
@@ -110,6 +112,7 @@ def vehicle_create(request):
             
             vehicle = vehicle_form.save(commit=False)
             if request.POST.get('driver'):
+                print("TEST3")
                 driver = get_object_or_404(Member, pk=request.POST.get('driver'))
                 vehicle.driver = driver
                 vehicle.driver_name = driver.name
@@ -123,6 +126,7 @@ def vehicle_create(request):
 
             return redirect(request.META.get('HTTP_REFERER', 'redirect_if_referer_not_found'))
         else:
+            print(vehicle_form)
             raise Http404
 
     else:

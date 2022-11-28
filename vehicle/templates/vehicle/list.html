@@ -76,7 +76,7 @@
                     <td>
                         <input autocomplete="off" name="check" value="{{vehicle.id}}" type="checkbox">
                     </td>
-                    <td></td>
+                    <td>{{start_num|sub:forloop.counter0}}</td>
                     <td class="{{ forloop.counter0 }}">
                         <div>{{vehicle.vehicle_num0}} {{vehicle.vehicle_num}}</div>
                     </td>
