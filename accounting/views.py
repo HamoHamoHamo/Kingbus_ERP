@@ -37,236 +37,6 @@ easyFinBankService.UseStaticIP = settings.UseStaticIP
 easyFinBankService.UseLocalTimeYN = settings.UseLocalTimeYN
 
 
-# class SalaryList(generic.ListView):
-#     template_name = 'accounting/salary.html'
-#     context_object_name = 'salary_list'
-#     model = Salary
-
-#     def get_queryset(self):
-#         selected_month = self.request.GET.get('month', str(datetime.now())[:7])
-#         salary_list = Salary.objects.select_related('member_id').filter(month=selected_month).order_by('member_id__name')
-#         return salary_list
-
-#     def get_context_data(self, **kwargs):
-#         context = super().get_context_data(**kwargs)
-#         context['selected_month'] = self.request.GET.get('month', str(datetime.now())[:7])
-
-#         context['member_list'] = Member.objects.all().order_by('name')
-#         entering_list = []
-#         additional_list = []
-#         for member in context['member_list']:
-#             entering_list.append(member.entering_date)
-#             additional_list.append(AdditionalSalary.objects.filter(member_id=member).filter(date__startswith=context['selected_month']))
-#         context['entering_list'] = entering_list
-#         context['additional_list'] = additional_list
-#         return context
-    
-# class SalaryDetail(generic.ListView):
-#     template_name = 'accounting/salary_detail.html'
-#     context_object_name = 'salary'
-#     model = Salary
-    
-#     def get_queryset(self):
-#         member = get_object_or_404(Member, id=self.kwargs['pk'])
-#         self.month = self.request.GET.get('month', TODAY[:7])
-#         creator = get_object_or_404(Member, pk=self.request.session.get('user'))
-#         try:
-#             salary = Salary.objects.filter(member_id=member).get(month=self.month)
-#         except:
-#             salary = Salary(
-#                 member_id = member,
-#                 attendance=0,
-#                 leave=0,
-#                 order=0,
-#                 additional=0,
-#                 total=0,
-#                 remark='',
-#                 month=self.month,
-#                 creator=creator,
-#             )
-#             salary.save()
-        
-#         return salary
-
-#     def get_context_data(self, **kwargs):
-#         context = super().get_context_data(**kwargs)
-#         context['selected_month'] = self.month
-#         member = get_object_or_404(Member, id=self.kwargs['pk'])
-#         # context['monthly'] = context['member'].salary_monthly.get(month=context['selected_month'])
-#         first_day = datetime.strptime(self.month + "-01", FORMAT)
-#         last_day = datetime.strftime(first_day + relativedelta(months=1) - timedelta(days=1), FORMAT)[8:]
-
-#         a = []
-#         additional_list = []
-#         for i in range(int(last_day)):
-#             a.append(i+1)
-#             additional_list.append('')
-
-#         additional = AdditionalSalary.objects.filter(member_id=get_object_or_404(Member, id=self.kwargs['pk'])).filter(date__startswith=self.month)
-#         for i in additional:
-#             additional_list[int(i.date[8:])-1] = i
-
-#         context['a'] = a
-#         context['additional_list'] = additional_list
-
-        
-#         order_list = [0] * int(last_day)
-#         order_list_d = [''] * int(last_day)
-#         order_list_a = [''] * int(last_day)
-#         dispatches = DispatchOrderConnect.objects.prefetch_related('order_id').filter(driver_id=member).filter(departure_date__startswith=self.month).order_by('departure_date')
-#         for dispatch in dispatches:
-#             order_list[int(dispatch.departure_date[8:10])-1] += int(dispatch.driver_allowance)
-#             order_list_d[int(dispatch.departure_date[8:10])-1] = dispatch.order_id.departure
-#             order_list_a[int(dispatch.departure_date[8:10])-1] = dispatch.order_id.arrival
-
-#         e_order_list = [0] * int(last_day)
-#         e_order_list_d = [''] * int(last_day)
-#         e_order_list_a = [''] * int(last_day)
-#         e_dispatches = DispatchRegularlyConnect.objects.prefetch_related('regularly_id').filter(driver_id=member).filter(departure_date__startswith=self.month).filter(work_type="출근").order_by('departure_date')
-#         for dispatch in e_dispatches:
-#             e_order_list[int(dispatch.departure_date[8:10])-1] += int(dispatch.driver_allowance)
-#             e_order_list_d[int(dispatch.departure_date[8:10])-1] = dispatch.regularly_id.departure
-#             e_order_list_a[int(dispatch.departure_date[8:10])-1] = dispatch.regularly_id.arrival
-        
-#         c_order_list = [0] * int(last_day)
-#         c_order_list_d = [''] * int(last_day)
-#         c_order_list_a = [''] * int(last_day)
-#         c_dispatches = DispatchRegularlyConnect.objects.prefetch_related('regularly_id').filter(driver_id=member).filter(departure_date__startswith=self.month).filter(work_type="퇴근").order_by('departure_date')
-#         for dispatch in c_dispatches:
-#             c_order_list[int(dispatch.departure_date[8:10])-1] += int(dispatch.driver_allowance)
-#             c_order_list_d[int(dispatch.departure_date[8:10])-1] = dispatch.regularly_id.departure
-#             c_order_list_a[int(dispatch.departure_date[8:10])-1] = dispatch.regularly_id.arrival
-
-#         context['order_list'] = order_list
-#         context['c_order_list'] = c_order_list
-#         context['e_order_list'] = e_order_list
-
-#         context['order_list_d'] = order_list_d
-#         context['c_order_list_d'] = c_order_list_d
-#         context['e_order_list_d'] = e_order_list_d
-
-#         context['order_list_a'] = order_list_a
-#         context['c_order_list_a'] = c_order_list_a
-#         context['e_order_list_a'] = e_order_list_a
-
-#         total_list = [0] * int(last_day)
-#         for i in range(int(last_day)):
-#             if additional_list[i]:
-#                 total_list[i] = int(order_list[i]) + int(c_order_list[i]) + int(e_order_list[i]) + int(additional_list[i].price)
-#             else:
-#                 total_list[i] = int(order_list[i]) + int(c_order_list[i]) + int(e_order_list[i])
-
-#         context['total_list'] = total_list
-
-#         context['member_list'] = Member.objects.all().order_by('name')
-#         entering_list = []
-#         m_additional_list = []
-#         for member in context['member_list']:
-#             entering_list.append(member.entering_date)
-#             m_additional_list.append(AdditionalSalary.objects.filter(member_id=member).filter(date__startswith=context['selected_month']))
-#         context['entering_list'] = entering_list
-#         context['m_additional_list'] = m_additional_list
-#         context['member'] = get_object_or_404(Member, id=self.kwargs['pk'])
-        
-#         return context
-
-# def salary_create(request):
-#     if request.method == "POST":
-#         additional_form = AdditionalForm(request.POST)
-#         if additional_form.is_valid():
-#             creator = get_object_or_404(Member, pk=request.session.get('user'))
-#             member = get_object_or_404(Member, pk=request.POST.get('member_id'))
-#             month = additional_form.cleaned_data['date'][:7]
-#             date = additional_form.cleaned_data['date']
-#             price = int(additional_form.cleaned_data['price'].replace(',',''))
-#             try:
-#                 salary = Salary.objects.filter(member_id=member).get(month=month)
-                
-#                 additional = AdditionalSalary.objects.filter(member_id=member).get(date=date)
-
-#                 salary.additional = int(salary.additional) - int(additional.price) + price
-#                 additional.delete()
-#             except AdditionalSalary.DoesNotExist:
-#                 salary.additional = int(salary.additional) + price
-#             except Salary.DoesNotExist:
-#                 print("Does Not Exist")
-#                 salary = Salary(
-#                     member_id = member,
-#                     attendance=0,
-#                     leave=0,
-#                     order=0,
-#                     additional=price,
-#                     total=price,
-#                     remark='',
-#                     month=month,
-#                     creator=creator,
-#                 )
-
-#             salary.save()
-            
-#             additional_salary = additional_form.save(commit=False)
-#             additional_salary.price = price
-#             additional_salary.salary_id = salary
-#             additional_salary.creator = creator
-#             additional_salary.member_id = member
-#             additional_salary.save()
-
-#             return redirect(request.META.get('HTTP_REFERER', 'redirect_if_referer_not_found'))
-#         else:
-#             raise Http404
-#     else:
-#         return HttpResponseNotAllowed(['post'])
-
-# def salary_edit(request):
-#     if request.method == "POST":
-#         additional_form = AdditionalForm(request.POST)
-#         if additional_form.is_valid():
-#             additional = get_object_or_404(AdditionalSalary, id=request.POST.get('id'))
-#             additional.date = additional_form.cleaned_data['date']
-#             additional.price = additional_form.cleaned_data['price']
-#             additional.remark = additional_form.cleaned_data['remark']
-#             additional.save()
-#             return redirect('accounting:salary')
-#         else:
-#             raise Http404
-#     else:
-#         return HttpResponseNotAllowed(['post'])
-
-# def salary_delete(request):
-#     if request.method == "POST":
-#         id_list = request.POST.getlist('check')
-#         salary = ''
-#         for id in id_list:
-#             additional = get_object_or_404(AdditionalSalary, id=id)
-#             if not salary:
-#                 salary = additional.salary_id
-#             additional.delete()
-#         additional_list = salary.additional_salary.all()
-#         total_additional = 0
-#         for a in additional_list:
-#             total_additional += int(a.price)
-#         salary.additional = total_additional
-#         salary.total = int(salary.attendance) + int(salary.leave) + int(salary.order) + int(salary.additional)
-#         salary.save()
-
-#         return redirect(request.META.get('HTTP_REFERER', 'redirect_if_referer_not_found'))
-#     else:
-#         return HttpResponseNotAllowed(['post'])
-
-# def remark_edit(request):
-#     if request.method == "POST":
-#         id_list = request.POST.getlist('id')
-#         remark_list = request.POST.getlist('remark')
-
-#         for id, remark in zip(id_list, remark_list):
-#             salary = Salary.objects.get(id=id)
-#             salary.remark = remark
-#             salary.save()
-        
-#         return redirect('accounting:salary')
-#     else:
-#         return HttpResponseNotAllowed(['post'])
-
 class SalesList(generic.ListView):
     template_name = 'accounting/income.html'
     context_object_name = 'dispatch_list'
@@ -903,7 +673,7 @@ class DepositList(generic.ListView):
         self.search = self.request.GET.get('search', '')
         self.payment = self.request.GET.get('payment')
         
-        income_list = Income.objects.filter(date__range=(f'{self.date1}', f'{self.date2}')).order_by('-date')
+        income_list = Income.objects.filter(date__range=(f'{self.date1} 00:00', f'{self.date2} 24:00')).order_by('-date')
         if self.search:
             if self.select == 'depositor':
                 income_list = income_list.filter(depositor__contains=self.search)
@@ -1004,89 +774,168 @@ def load_deposit_data(request):
     if request.method == 'POST':
         last_income = LastIncome.objects.last()
         creator = get_object_or_404(Member, pk=request.session.get('user'))
-        CorpNum = my_settings.CORPNUM
-        BankCode = my_settings.BANKCODE
-        AccountNumber = my_settings.ACCOUNTNUMBER
-        if last_income:
-            print('last_incomeeee')
-            SDate = last_income.tr_date[:8]
-            last_save_date = last_income.tr_date
-        else:
-            SDate = datetime.strftime(datetime.strptime(TODAY, FORMAT) - relativedelta(months=1), '%Y%m%d')
-            last_save_date = SDate
-        print("SDATEE", SDate)        
-        EDate = TODAY
 
-        jobID = easyFinBankService.requestJob(CorpNum, BankCode, AccountNumber, SDate, EDate, UserID=None)
-        state = easyFinBankService.getJobState(CorpNum, jobID, UserID=None)
-        count = 0
-        while state.jobState == 2 and count < 10:
-            time.sleep(2)
+        result = []
+        cnt_list = []
+        for i in range(my_settings.ACC_CNT):
+                
+            CorpNum = my_settings.CORPNUM
+            BankCode = my_settings.BANKCODE[i]
+            AccountNumber = my_settings.ACCOUNTNUMBER[i]
+            if last_income:
+                print('last_incomeeee')
+                SDate = last_income.tr_date[:8]
+                last_save_date = last_income.tr_date
+            else:
+                SDate = datetime.strftime(datetime.strptime(TODAY, FORMAT) - relativedelta(months=1), '%Y%m%d')
+                last_save_date = SDate
+            print("SDATEE", SDate)        
+            EDate = TODAY
+
+            jobID = easyFinBankService.requestJob(CorpNum, BankCode, AccountNumber, SDate, EDate, UserID=None)
             state = easyFinBankService.getJobState(CorpNum, jobID, UserID=None)
-            print('wait...........')
-            print('errorcode', state.errorCode)
-            print('jobState', state.jobState)
-            
-            count += 1
-        if count > 9:
-            return JsonResponse(
-                {
-                    'status': 'timeout',
-                    'errorReason': state.errorReason,
-                    'jobState': state.jobState,
-                    'errorCode': state.errorCode,
-                }
-            )
-        if state.jobState == 3 and state.errorCode == 1:
-            result = easyFinBankService.search(CorpNum, jobID, TradeType='I', SearchString='', Page=1, PerPage=100, Order='D', UserID=None)
             count = 0
-            for r in result.list:
-                # 은행명 괄호 제거
-                if r.remark2[0] == '(' and r.remark2[-1] == ')':
-                    bank = r.remark2[1:-1]
-                else:
-                    bank = r.remark2
-
-                if r.trdt > last_save_date:
-                    count += 1
-                    income = Income(
-                        serial=f'{r.trdate}-{r.trserial}',
-                        date=f'{r.trdt[:4]}-{r.trdt[4:6]}-{r.trdt[6:8]} {r.trdt[8:10]}:{r.trdt[10:12]}',
-                        depositor=r.remark1,
-                        bank=bank,
-                        acc_income=r.accIn,
-                        total_income=r.accIn,
-                        creator=creator,
-                    )
-                    income.save()
-                else:
-                    continue
-                # print('trserial', r.trserial)
-                # print('trdt', r.trdt)
-                # print('accIn', r.accIn)
-                # print('accOut', r.accOut)
-                # print('balance', r.balance)
-                # print('regDT', r.regDT)
-                # print('remark1', r.remark1)
-                # print('remark2', r.remark2)
-                # print('remark3', r.remark3)
-                # print('remark4', r.remark4,'\n')
-            if result.list:
-                last = LastIncome(
-                    tr_date=result.list[0].trdt,
-                    creator=creator 
+            while state.jobState == 2 and count < 10:
+                time.sleep(2)
+                state = easyFinBankService.getJobState(CorpNum, jobID, UserID=None)
+                print('wait...........')
+                print('errorcode', state.errorCode)
+                print('jobState', state.jobState)
+                
+                count += 1
+            if count > 9:
+                return JsonResponse(
+                    {
+                        'status': 'timeout',
+                        'errorReason': state.errorReason,
+                        'jobState': state.jobState,
+                        'errorCode': state.errorCode,
+                    }
                 )
-                last.save()
-            return JsonResponse({'status': 'success', 'count': count})
-        else:
-            return JsonResponse(
-                {
-                    'status': state.errorReason,
-                    'errorReason': state.errorReason,
-                    'jobState': state.jobState,
-                    'errorCode': state.errorCode,
-                }
+            if state.jobState == 3 and state.errorCode == 1:
+                temp_result = easyFinBankService.search(CorpNum, jobID, TradeType='I', SearchString='', Page=1, PerPage=100, Order='D', UserID=None)
+                count = 0
+                cnt_list.append(temp_result.total)
+                result += temp_result.list
+
+            else:
+                return JsonResponse(
+                    {
+                        'status': state.errorReason,
+                        'errorReason': state.errorReason,
+                        'jobState': state.jobState,
+                        'errorCode': state.errorCode,
+                    }
+                )
+        ########### 데이터 불러오기 완료
+        data_list = []
+        cnt = 1
+        list_cnt = 0
+        result_cnt = cnt_list[list_cnt]
+        print("CNTLISTTT", cnt_list)
+        for r in result:
+            if cnt > result_cnt:
+                print("LSSSSSS", cnt, result_cnt)
+                list_cnt += 1
+                cnt = 0
+                result_cnt = cnt_list[list_cnt]
+
+            serial=f'{r.trdate}-{r.trserial}'
+            date=f'{r.trdt[:4]}-{r.trdt[4:6]}-{r.trdt[6:8]} {r.trdt[8:10]}:{r.trdt[10:12]}'
+            depositor=r.remark1
+            bank=my_settings.BANK[list_cnt]
+            acc_income=r.accIn
+
+            
+            data_list.append({
+                'serial': serial,
+                'date': date,
+                'depositor': depositor,
+                'bank': bank,
+                'acc_income': acc_income,
+                'total_income': acc_income,
+                'trdt': r.trdt,
+            })
+            cnt += 1
+
+            # print('id', r.tid)
+            # print('serial', serial)
+            # print('date', date)
+            # print('depositor', depositor)
+            # print('bank', bank)
+            # print('acc_income', acc_income, '\n')
+        
+        ######################### data_list lastIncome 확인, data_list로 income 만들기해야됨
+        if data_list:
+            data_list = sorted(data_list, key= lambda x: x['date'])
+            last = LastIncome(
+                tr_date=data_list[-1]['trdt'],
+                creator=creator 
             )
+            last.save()
+            print("LASTT", data_list[0]['trdt'])
+            
+            latest_date = data_list[0]['trdt'][:8]
+            date_cnt = 1 + Income.objects.filter(serial__startswith=latest_date).count()
+        
+            print("TESTTT", date_cnt, latest_date)
+            cnt = 0
+        for data in data_list:
+            if data['trdt'] > last_save_date:
+                cnt += 1
+                if latest_date != data['trdt'][:8]:
+                    latest_date = data['trdt'][:8]
+                    date_cnt = 1 + Income.objects.filter(serial__startswith=latest_date).count()
+                print("AAAA", date_cnt)
+                income = Income(
+                    serial = f'{latest_date}-{date_cnt}',
+                    date = data['date'],
+                    depositor = data['depositor'],
+                    bank = data['bank'],
+                    acc_income = data['acc_income'],
+                    total_income = data['acc_income'],
+                    creator = creator,
+                )
+                income.save()
+                print(income)
+                date_cnt += 1
+
+        return JsonResponse({
+            'count': cnt,
+            'status': 'success',
+        })
+        # for r in result.list:
+        #     if r.trdt > last_save_date:
+        #         count += 1
+        #         income = Income(
+        #             serial=f'{r.trdate}-{r.trserial}',
+        #             date=f'{r.trdt[:4]}-{r.trdt[4:6]}-{r.trdt[6:8]} {r.trdt[8:10]}:{r.trdt[10:12]}',
+        #             depositor=r.remark1,
+        #             bank=my_settings.BANK[i],
+        #             acc_income=r.accIn,
+        #             total_income=r.accIn,
+        #             creator=creator,
+        #         )
+        #         income.save()
+        #     else:
+        #         continue
+        #     # print('trserial', r.trserial)
+        #     # print('trdt', r.trdt)
+        #     # print('accIn', r.accIn)
+        #     # print('accOut', r.accOut)
+        #     # print('balance', r.balance)
+        #     # print('regDT', r.regDT)
+        #     # print('remark1', r.remark1)
+        #     # print('remark2', r.remark2)
+        #     # print('remark3', r.remark3)
+        #     # print('remark4', r.remark4,'\n')
+        # if result.list:
+        #     last = LastIncome(
+        #         tr_date=result.list[0].trdt,
+        #         creator=creator 
+        #     )
+        #     last.save()
+        # return JsonResponse({'status': 'success', 'count': count})
     else:
         return HttpResponseNotAllowed(['post'])
 
@@ -1096,7 +945,7 @@ def deposit_create(request):
         if income_form.is_valid():
             date = income_form.cleaned_data['date']
             income_cnt = Income.objects.filter(date__startswith=date).count()
-            commission = request.POST.get('commission')
+            commission = request.POST.get('commission', 0)
             if not commission:
                 commission = 0
             
