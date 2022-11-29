@@ -3,14 +3,17 @@ const pagenationBox = document.querySelector(".pagenation-numbering-box")
 const prevBtn = document.querySelector(".prev_btn")
 const nextBtn = document.querySelector(".next_btn")
 const ageCheckbox = document.querySelector("#ageFilter")
-const filterHeader = document.querySelector(".table-list_head-tr td:nth-child(5)")
-const filterHeaderArrow = document.querySelector(".option-order")
+const filterHeader = document.querySelector(".table-list_head-tr td:nth-child(6)")
+const filterHeaderArrow = document.querySelector(".table-list_head-tr td:nth-child(6) svg")
 
 let filter = false
 
-drawMember()
+window.onload = function () {
+    drawMember()
+}
 
 function drawMember() {
+
 
     let pageParms = new URLSearchParams(location.search)
 
@@ -41,22 +44,22 @@ function drawMember() {
     let startPoint = ""
 
     if (pageData !== 1) {
-        startPoint = (pageData - 1) * 10
+        startPoint = (pageData - 1) * 15
     } else {
         startPoint = 0
     }
 
     let endPoint = ""
 
-    if (data.length <= 10) {
+    if (data.length <= 15) {
         endPoint = data.length
-    } else if (data.length > 10 && pageParms.get("page") == Math.ceil(data.length / 10)) {
-        endPoint = 10 * (pageParms.get("page") - 1) + (data.length - (10 * (pageParms.get("page") - 1)))
+    } else if (data.length > 15 && pageParms.get("page") == Math.ceil(data.length / 15)) {
+        endPoint = 15 * (pageParms.get("page") - 1) + (data.length - (15 * (pageParms.get("page") - 1)))
     } else {
         if (pageParms.has("page")) {
-            endPoint = 10 * pageParms.get("page")
+            endPoint = 15 * pageParms.get("page")
         } else {
-            endPoint = 10
+            endPoint = 15
         }
     }
 
@@ -109,6 +112,11 @@ function drawMember() {
         memberData4.innerText = ageResult
         memberList.appendChild(memberData4);
 
+        const memberData5 = document.createElement('td');
+        memberData5.setAttribute("class", `table-list_body-tr_td`);
+        memberData5.innerText = data[i].id
+        memberList.appendChild(memberData5);
+
         const memberData6 = document.createElement('td');
         memberData6.setAttribute("class", `table-list_body-tr_td`);
         memberData6.innerText = data[i].role
@@ -124,18 +132,9 @@ function drawMember() {
         memberData8.innerText = data[i].phone_num
         memberList.appendChild(memberData8);
 
-        const memberData8Spare = document.createElement('td');
-        memberData8Spare.setAttribute("class", `table-list_body-tr_td`);
-        if(data[i].emergency !== ""){
-            memberData8Spare.innerText = `${data[i].emergency.split(" ")[0]}(${data[i].emergency.split(" ")[1]})`
-        }else{
-            memberData8Spare.innerText = ""
-        }
-        memberList.appendChild(memberData8Spare);
-
         const memberData9 = document.createElement('td');
         memberData9.setAttribute("class", `table-list_body-tr_td`);
-        memberData9.innerText = data[i].birthdate
+        memberData9.innerText = `${data[i].birthdate.substr(0, 4)}-${data[i].birthdate.substr(4, 2)}-${data[i].birthdate.substr(6, 2)}`
         memberList.appendChild(memberData9);
 
         const memberData10 = document.createElement('td');
@@ -144,18 +143,12 @@ function drawMember() {
         memberList.appendChild(memberData10);
 
         const memberData11 = document.createElement('td');
-        memberData11.setAttribute("class", `table-list_body-tr_td memberOpenPrint`);
-        if(data[i].lisence_id !== undefined){
-            memberData11.setAttribute("onclick", `openLisence("/HR/member/image/${data[i].lisence_id}", true)`);
-        }
+        memberData11.setAttribute("class", `table-list_body-tr_td`);
         memberData11.innerText = data[i].license
         memberList.appendChild(memberData11);
 
         const memberData12 = document.createElement('td');
-        memberData12.setAttribute("class", `table-list_body-tr_td memberOpenPrint`);
-        if(data[i].lisence_id !== undefined){
-            memberData12.setAttribute("onclick", `openLisence("/HR/member/image/${data[i].bus_license_id}", false)`);
-        }
+        memberData12.setAttribute("class", `table-list_body-tr_td`);
         memberData12.innerText = data[i].bus_license
         memberList.appendChild(memberData12);
     };
@@ -168,7 +161,7 @@ function drawMember() {
 function pagenation(data) {
 
     let parms = new URLSearchParams(location.search)
-    let pagenationCount = Math.ceil(data.length / 10)
+    let pagenationCount = Math.ceil(data.length / 15)
 
     for (i = 0; i < pagenationCount; i++) {
         const pageNumber = document.createElement('span');
@@ -176,22 +169,15 @@ function pagenation(data) {
         pagenationBox.appendChild(pageNumber);
     };
 
+    let pageNationStep = Math.ceil(parseInt(parms.get("page")) / 15)
+
     const pagenationNumber = pagenationBox.querySelectorAll("span")
 
-    if (parms.has("page")) {
-
-        let pageNationStep = Math.ceil(parseInt(parms.get("page")) / 5)
-
-        for (i = 0; i < pagenationNumber.length; i++) {
-            if ((pageNationStep - 1) * 5 > i || (pageNationStep * 5) - 1 < i) {
-                pagenationNumber[i].style.display = "none"
-            }
-        };
-    } else {
-        for (i = 5; i < pagenationNumber.length; i++) {
+    for (i = 0; i < pagenationNumber.length; i++) {
+        if (pageNationStep * 5 < i + 1 || pageNationStep * 5 - 4 > i + 1) {
             pagenationNumber[i].style.display = "none"
         }
-    }
+    };
 
 }
 
@@ -286,7 +272,7 @@ function nextPage() {
     let parms = new URLSearchParams(location.search)
     makeAgeData()
     if (parms.has("age")) {
-        if (parms.get("page") < Math.floor(data.length / 10) && parms.has("page")) {
+        if (parms.get("page") < Math.floor(data.length / 15) && parms.has("page")) {
             if (!parms.has("filter")) {
                 location.href = `/HR/member?age=true&page=${parseInt(parms.get("page")) + 1}`
             } else if (parms.get("filter") == "down") {
@@ -304,7 +290,7 @@ function nextPage() {
             }
         }
     } else {
-        if (parms.get("page") < Math.floor(regDatas.length / 10) && parms.has("page")) {
+        if (parms.get("page") < Math.floor(regDatas.length / 15) && parms.has("page")) {
             if (!parms.has("filter")) {
                 location.href = `/HR/member?page=${parseInt(parms.get("page")) + 1}`
             } else if (parms.get("filter") == "down") {
@@ -329,7 +315,7 @@ function nextPage() {
 ageCheckbox.addEventListener("change", ageFilter)
 
 function ageFilter() {
-    let parms = new URLSearchParams(location.search)
+        let parms = new URLSearchParams(location.search)
     if (ageCheckbox.checked) {
         if (!parms.has("filter")) {
             window.location = `/HR/member?age=true`
@@ -431,10 +417,7 @@ function makeSortUpData(targetData) {
         }
     };
 
-    filterHeaderArrow.style.borderTop = "1rem solid white"
-    filterHeaderArrow.style.borderBottom = "1rem solid transparent"
-    filterHeaderArrow.style.marginTop = "1rem"
-    filterHeaderArrow.style.marginBottom = "0"
+    filterHeaderArrow.style.transform = "rotate(0turn)"
     data = resultArry
 }
 
@@ -462,9 +445,6 @@ function makeSortDownData(targetData) {
         }
     };
 
-    filterHeaderArrow.style.borderBottom = "1rem solid white"
-    filterHeaderArrow.style.borderTop = "1rem solid transparent"
-    filterHeaderArrow.style.marginBottom = "1rem"
-    filterHeaderArrow.style.marginTop = "0"
+    filterHeaderArrow.style.transform = "rotate(0.5turn)"
     data = resultArry
 }

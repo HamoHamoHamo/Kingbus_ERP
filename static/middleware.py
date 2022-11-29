@@ -16,6 +16,9 @@ class LoginCheckMiddleware(object):
             "/vehicle",
             "/service",
             "/document",
+            "/member/setting/client",
+            "/member/setting",
+
         ]
         # One-time configuration and initialization.
     def __call__(self, request):

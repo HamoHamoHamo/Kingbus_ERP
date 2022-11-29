@@ -1,10 +1,13 @@
-const openPopup = document.querySelector('.member-create');
+const openPopup = document.querySelector('.addPeople');
 const popupAreaModules = document.querySelectorAll('.popupAreaModules');
 const popupBgModules = document.querySelectorAll(".popupBgModules")
 const SidemenuUseClose = document.querySelector(".Sidemenu")
 const popupCloseBtn = document.querySelectorAll(".popupCloseBtn")
-const deleteForm = document.querySelector(".member-delete-form")
-const editMember = document.querySelectorAll(".table-list_body-tr_td:nth-child(9)")
+const checkBox = document.querySelectorAll(".tableBody td:nth-child(1) input")
+const hrMemberListForm = document.querySelector(".hrMemberListForm")
+const editMember = document.querySelectorAll(".tableBody td:nth-child(3)")
+const phoneNum = document.querySelectorAll(".tableBody td:nth-child(8)")
+const birthday = document.querySelectorAll(".tableBody td:nth-child(9)")
 const hrName = document.querySelector(".hrName")
 const hrRole = document.querySelectorAll(".hrRole option")
 const hrEntering = document.querySelector(".hrEntering")
@@ -12,15 +15,17 @@ const hrPhone = document.querySelector(".hrPhone")
 const hrBirth = document.querySelector(".hrBirth")
 const hrAddress = document.querySelector(".hrAddress")
 const hrEmergency = document.querySelector(".hrEmergency")
-const hrEmergencyRelation = document.querySelector(".hrEmergencyRelation")
+const hrReation = document.querySelector(".hrReation")
+const hrBlanck = document.querySelector(".hrBlanck")
+const hrUse = document.querySelectorAll(".hrUse")
 const sendToHidden = document.querySelector(".sendToHidden")
 const createName = document.querySelector(".createName")
 const PopupDataInputWork = document.querySelector(".PopupDataInputWork")
+const selectOption = document.querySelectorAll(".PopupDataInputWork option")
 const PopupDataInputEntering = document.querySelector(".PopupDataInputEntering")
 const PopupDataInputPhoneNum = document.querySelector(".PopupDataInputPhoneNum")
 const PopupDataInputBirth = document.querySelector(".PopupDataInputBirth")
 const PopupDataInputAddress = document.querySelector(".PopupDataInputAddress")
-const PopupDataInputBlack = document.querySelector(".PopupDataInputBlack")
 const createID = document.querySelector(".createID")
 const hrID = document.querySelector(".hrID")
 const hrPW = document.querySelector(".hrPW")
@@ -31,7 +36,6 @@ const hrRoleSelect = document.querySelector(".hrRole")
 const fileDeleteBtn = document.querySelectorAll(".fileDeleteBtn")
 const FileTextLicense = document.querySelector(".LicenseFileText")
 const FileInputLicense = document.querySelector(".LicenseFileInput")
-const hrBlank = document.querySelector(".hrBlank")
 const FileTextDriverLicense = document.querySelector(".DriverLicenseFileText")
 const FileInputDriverLicense = document.querySelector(".DriverLicenseFileInput")
 
@@ -41,40 +45,36 @@ const LicenseFileInputEdit = document.querySelector(".LicenseFileInputEdit")
 const DriverLicenseFileTextEdit = document.querySelector(".DriverLicenseFileTextEdit")
 const DriverLicenseFileInputEdit = document.querySelector(".DriverLicenseFileInputEdit")
 
-const tableArea = document.querySelector(".table-list-area")
-
-const memberFormCreate = document.querySelector(".memberFormCreate")
-const essential = document.querySelectorAll(".essential")
-
 
 //직원상세
 for (i = 0; i < editMember.length; i++) {
   editMember[i].addEventListener('click', openDetailPopup)
 }
 
-function openDetailPopup(targetId) {
-  for (i = 0; i < regDatas.length; i++) {
-    if (regDatas[i].user_id == targetId) {
-      popupAreaModules[1].style.display = 'block'
-      hrName.value = regDatas[i].name;
-      for (j = 0; j < hrRole.length; j++) {
-        if (hrRole[j].innerText == regDatas[i].role) {
-          hrRole[j].selected = true;
-        }
-      }
-      hrEntering.value = regDatas[i].entering_date;
-      hrPhone.value = regDatas[i].phone_num;
-      hrBirth.value = regDatas[i].birthdate;
-      hrAddress.value = regDatas[i].address;
-      hrEmergency.value = regDatas[i].emergency.split(" ")[0];
-      hrEmergencyRelation.value = regDatas[i].emergency.split(" ")[1];
-      hrID.value = regDatas[i].id
-      LicenseFileTextEdit.value = regDatas[i].license
-      DriverLicenseFileTextEdit.value = regDatas[i].bus_license
-      hrBlank.value = regDatas[i].note
+function openDetailPopup() {
+  popupAreaModules[1].style.display = 'block'
+  hrName.value = regDatas[this.className].name;
+  for (i = 0; i < hrRole.length; i++) {
+    if (hrRole[i].innerText == regDatas[this.className].role) {
+      hrRole[i].selected = true;
     }
-  };
-  sendToHidden.value = targetId;
+  }
+  hrEntering.value = regDatas[this.className].entering_date;
+  hrPhone.value = regDatas[this.className].phone_num;
+  hrBirth.value = regDatas[this.className].birthdate;
+  hrAddress.value = regDatas[this.className].address;
+  if(regDatas[this.className].emergency !== ""){
+    hrEmergency.value = regDatas[this.className].emergency.split(" ")[0];
+    hrReation.value = regDatas[this.className].emergency.split(" ")[1];
+  }else{
+    hrEmergency.value = ""
+    hrReation.value = ""
+  }
+  hrBlanck.value = regDatas[this.className].note;
+  hrID.value = regDatas[this.className].id
+  LicenseFileTextEdit.value = regDatas[this.className].license
+  DriverLicenseFileTextEdit.value = regDatas[this.className].bus_license
+  sendToHidden.value = this.parentNode.className;
 }
 
 
@@ -89,7 +89,7 @@ function hrRegistration() {
 
 //이름 작성
 if (createName.value == createID.value) {
-  createName.addEventListener('input', nameChange)
+  createName.addEventListener('change', nameChange)
 }
 function nameChange() {
   createID.value = createName.value
@@ -108,29 +108,26 @@ let day = ("0" + date.getDate()).slice(-2);
 let onlyNumber = /[^0-9]/g;
 let birthPAttern = /^(19[0-9][0-9]|20\d{2})(0[0-9]|1[0-2])(0[1-9]|[1-2][0-9]|3[0-1])$/
 
-function createChecker() {
-  for (i = 0; i < essential.length; i++) {
-    if (essential[i].value == "") {
-      return alert("입력하지 않은 필수 입력사항이 있습니다.")
+function createChecker(e) {
+  for (i = 0; i < selectOption.length; i++) {
+    if (selectOption[i].selected) {
+      selectedOption = selectOption[i]
     }
-  };
-  if (PopupDataInputWork.options[PopupDataInputWork.selectedIndex].value == "") {
-    return alert("입력하지 않은 필수 입력사항이 있습니다.")
   }
-  if (!idCheckCount) {
+  if (createName.value == "" || selectedOption.value == "" || PopupDataInputEntering.value == "" || PopupDataInputPhoneNum.value == "" || PopupDataInputBirth.value == "" || PopupDataInputAddress.value == "" || createID.value == "") {
+    alert("입력하지 않은 항목이 있습니다.")
+    e.preventDefault()
+  } else if (!idCheckCount) {
     alert("아이디 중복확인을 진행해 주세요.")
     e.preventDefault()
-  }
-  if (createID.attributes.check_result.value == "fail") {
+  } else if (createID.attributes.check_result.value == "fail") {
     alert("이미 사용중인 아이디 입니다.")
     e.preventDefault()
   }
-  memberFormCreate.submit()
 }
 
 //전화번호
 PopupDataInputPhoneNum.addEventListener('change', phoneNumChecker)
-hrPhone.addEventListener('change', phoneNumChecker)
 
 function phoneNumChecker() {
   this.value.replace(onlyNumber, "")
@@ -140,6 +137,16 @@ function phoneNumChecker() {
   }
   this.value = this.value.replace(/\-/g, "")
   this.value = this.value.replace(/^(\d{2,3})(\d{3,4})(\d{4})$/, `$1-$2-$3`)
+}
+
+//생년월일
+PopupDataInputBirth.addEventListener('change', birthChecker)
+
+function birthChecker() {
+  if (!birthPAttern.test(this.value)) {
+    alert("형식에 맞지 않습니다.")
+    this.value = ""
+  }
 }
 
 
@@ -156,66 +163,35 @@ function closePopup() {
   for (i = 0; i < popupAreaModules.length; i++) {
     popupAreaModules[i].style.display = "none"
   }
-  createName.value = ""
-  PopupDataInputWork.children[0].selected = true
-  PopupDataInputEntering.value = ""
-  PopupDataInputPhoneNum.value = ""
-  PopupDataInputBirth.value = ""
-  PopupDataInputAddress.value = ""
-  PopupDataInputBlack.value = ""
-  createID.value = ""
-  FileTextLicense.value = ""
-  if (FileTextLicense.value !== "") {
-    FileInputLicense.files[0].name = ""
-  }
-  FileTextDriverLicense.value = ""
-  if (FileTextDriverLicense.value !== "") {
-    FileInputDriverLicense.files[0].name = ""
-  }
-  uploadFileText.value = ""
-  uploadFile.value = ""
-  uploadLicenseFileText.value = ""
-  uploadLicenseFile.value = ""
-  uploadDriverLicenseFileText.value = ""
-  uploadDriverLicenseFile.value = ""
 }
 
-// checkbox 생성
-tableArea.addEventListener("mouseover", createCheckbox)
 
+//삭제알림
 let checkCounte = false;
 
-function createCheckbox() {
-  const checkBox = document.querySelectorAll(".table-list_body-tr_td:nth-child(1) input")
+for (i = 0; i < checkBox.length; i++) {
+  checkBox[i].addEventListener('change', checking)
+}
 
-  //삭제알림
-
+function checking() {
+  checkCounte = false
   for (i = 0; i < checkBox.length; i++) {
-    checkBox[i].addEventListener('change', checking)
-  }
-
-  function checking() {
-    for (i = 0; i < checkBox.length; i++) {
-      if (checkBox[i].checked) {
-        return checkCounte = true
-      }
+    if (checkBox[i].checked) {
+      checkCounte = true
     }
   }
 }
 
 
-
-
-deleteForm.addEventListener('submit', deleteData)
+hrMemberListForm.addEventListener('submit', deleteData)
 
 function deleteData(e) {
   if (!checkCounte) {
     e.preventDefault()
     alert('삭제할 차량을 선택해 주세요.')
   } else {
-    if (confirm('정말로 삭제하시겠습니까?')) {
+    if (confirm('정말로 삭제하시겠습니까?') == false) {
       e.preventDefault()
-      deleteForm.submit()
     }
   }
 }
@@ -271,6 +247,34 @@ function id_overlap_check_hr() {
 }
 
 
+//원전원 이외에 면허번호 가림
+PopupDataInputWork.addEventListener('change', showLicense)
+hrRoleSelect.addEventListener('change', showLicenseEdit)
+
+function showLicense() {
+  if (PopupDataInputWork.options[PopupDataInputWork.selectedIndex].text == "운전원" || PopupDataInputWork.options[PopupDataInputWork.selectedIndex].text == "팀장") {
+    PopupDataInputLicense.parentNode.style.visibility = "visible"
+  } else {
+    PopupDataInputLicense.parentNode.style.visibility = "hidden"
+  }
+}
+function showLicenseEdit() {
+  if (hrRoleSelect.options[hrRoleSelect.selectedIndex].text == "운전원") {
+    hrLicense.parentNode.style.visibility = "visible"
+  } else {
+    hrLicense.parentNode.style.visibility = "hidden"
+  }
+}
+
+
+window.onload = function () {
+  for (i = 0; i < phoneNum.length; i++) {
+    phoneNum[i].innerText = phoneNum[i].innerText.replace(/^(\d{2,3})(\d{3,4})(\d{4})$/, `$1-$2-$3`)
+    birthday[i].innerText = birthday[i].innerText.replace(/^(\d{4})(\d{2})(\d{2})$/, `$1-$2-$3`)
+  }
+}
+
+
 
 
 
@@ -287,6 +291,8 @@ function changeFileDriverLicense() {
   FileTextDriverLicense.value = FileInputDriverLicense.files[0].name
 }
 function changeFileLicenseEdit() {
+  console.log('a');
+  
   LicenseFileTextEdit.value = LicenseFileInputEdit.files[0].name
 }
 function changeFileDriverLicenseEdit() {

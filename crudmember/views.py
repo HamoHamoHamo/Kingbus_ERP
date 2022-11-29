@@ -1,30 +1,160 @@
-from django.shortcuts import render, redirect, HttpResponse, get_object_or_404
 from django.contrib.auth.hashers import make_password, check_password
 from django.contrib.auth import login
-from django.http import Http404, JsonResponse
+from django.contrib.sites.shortcuts import get_current_site
+from django.core.exceptions import BadRequest
+from django.http import Http404, JsonResponse, HttpResponseNotAllowed
+from django.shortcuts import render, redirect, HttpResponse, get_object_or_404
+from django.template.loader import render_to_string
+from django.utils.http import urlsafe_base64_encode,urlsafe_base64_decode
+from django.views import generic
 
 from humanresource.models import Member
-
-from .models import User, UserFile
+from .models import User, UserFile, Category, Client
 from dispatch.models import Schedule, DispatchCheck, DispatchOrder, DispatchOrderConnect, DispatchRegularly, DispatchRegularlyConnect
 from vehicle.models import Vehicle
 from dispatch.views import FORMAT, TODAY
 from dateutil.relativedelta import relativedelta
-from .forms import UserForm
-from django.views import generic
+from .forms import UserForm, ClientForm
 
 from datetime import datetime, timedelta
 from random import choice
 from string import ascii_lowercase
 
-from django.contrib.sites.shortcuts import get_current_site
-from django.template.loader import render_to_string
-from django.utils.http import urlsafe_base64_encode,urlsafe_base64_decode
+
 # from django.utils.encoding import force_bytes, force_text
 from django.core.mail import EmailMessage
 from .tokens import account_activation_token
 
 WEEK = ['월', '화', '수', '목', '금', '토', '일']
+
+class CategoryList(generic.ListView):
+    template_name = 'crudmember/setting.html'
+    context_object_name = 'category_list'
+    model = Category
+
+    def get_context_data(self, **kwargs):
+        context =  super().get_context_data(**kwargs)
+
+        category_list = context['category_list']
+
+        vehicle_type_list = []
+        operation_type_list = []
+        order_type_list = []
+        bill_place_list = []
+
+        for category in category_list:
+            if category.type == '차량종류':
+                vehicle_type_list.append(category)
+            elif category.type == '운행종류':
+                operation_type_list.append(category)
+            elif category.type == '유형':
+                order_type_list.append(category)
+            elif category.type == '계산서 발행처':
+                bill_place_list.append(category)
+        
+        context['vehicle_type_list'] = vehicle_type_list
+        context['operation_type_list'] = operation_type_list
+        context['order_type_list'] = order_type_list
+        context['bill_place_list'] = bill_place_list
+
+        return context
+
+
+def setting_create(request):
+    if request.method == 'POST':
+        type = request.POST.get('type')
+        category = request.POST.get('category')
+        creator = get_object_or_404(Member, pk=request.session.get('user'))
+
+        category = Category(
+            type = type,
+            category = category,
+            creator = creator
+        )
+        category.save()
+
+        return redirect(request.META.get('HTTP_REFERER', 'redirect_if_referer_not_found'))
+
+    else:
+        return HttpResponseNotAllowed(['post'])
+
+def setting_delete(request):
+    if request.method == 'POST':
+        id_list = request.POST.getlist('check')
+
+        for id in id_list:
+            category = Category.objects.get(id=id)
+            category.delete()
+        
+        return redirect(request.META.get('HTTP_REFERER', 'redirect_if_referer_not_found'))
+
+    else:
+        return HttpResponseNotAllowed(['post'])
+
+
+class ClientList(generic.ListView):
+    template_name = 'crudmember/setting_client.html'
+    context_object_name = 'client_list'
+    model = Client
+
+    def get_queryset(self):
+        select = self.request.GET.get('select', '')
+        search = self.request.GET.get('search', '')
+
+        if select == '거래처명' and search:
+            client_list = Client.objects.filter(name__contains=search)
+        elif select == '대표자명' and search:
+            client_list = Client.objects.filter(representative__contains=search)
+        elif select == '담당자명' and search:
+            client_list = Client.objects.filter(manager__contains=search)
+        else:
+            client_list = Client.objects.all()
+
+        return client_list
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        context['select'] = self.request.GET.get('select', '')
+        context['search'] = self.request.GET.get('search', '')
+
+        print('ccccccc', context['select'])
+        print('ccccccc', context['search'])
+
+        return context
+
+
+def setting_client_create(request):
+    if request.method == 'POST':
+
+        client_form = ClientForm(request.POST)
+        if client_form.is_valid():
+            creator = get_object_or_404(Member, pk=request.session.get('user'))
+
+            client = client_form.save(commit=False)
+            client.creator = creator
+            client.save()
+        
+            return redirect(request.META.get('HTTP_REFERER', 'redirect_if_referer_not_found'))
+        else:
+            raise BadRequest
+
+    else:
+        return HttpResponseNotAllowed(['post'])
+
+def setting_client_delete(request):
+    if request.method == 'POST':
+        id_list = request.POST.getlist('check')
+
+        for id in id_list:
+            client = Client.objects.get(id=id)
+            client.delete()
+
+        return redirect(request.META.get('HTTP_REFERER', 'redirect_if_referer_not_found'))
+
+    else:
+        return HttpResponseNotAllowed(['post'])
+
 
 def home(request):
     id = request.session.get('user')

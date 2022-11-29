@@ -14,4 +14,10 @@ urlpatterns = [
     path('id-check', views.id_overlap_check, name="id_check"),
     path('change/id', views.change_id, name="change_id"),
     path('change/password', views.change_password, name="change_password"),
+    path('setting', views.CategoryList.as_view(), name="setting"),
+    path('setting/create', views.setting_create, name="setting_create"),
+    path('setting/delete', views.setting_delete, name="setting_delete"),
+    path('setting/client', views.ClientList.as_view(), name="setting_client"),
+    path('setting/client/create', views.setting_client_create, name="setting_client_create"),
+    path('setting/client/delete', views.setting_client_delete, name="setting_client_delete"),
 ]

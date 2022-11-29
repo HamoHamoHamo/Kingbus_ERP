@@ -1,0 +1,65 @@
+.main-layout_container {
+    position: relative;
+    display: block;
+    width: 100%;
+    height: 46rem;
+    border-radius: 0.2rem;
+    box-shadow: 0.1rem 0.1rem 0.1rem rgb(65 69 73 / 30%), 0.1rem 0.3rem 0.1rem rgb(65 69 73 / 15%);
+    background-color: white;
+}
+
+.search-Form-Select{
+    width: 12rem;
+    margin-right: 2rem;
+}
+
+.creteItem{
+    background-color: #0069D9;
+    margin-left: 2rem;
+}
+
+.settingContainer{
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+}
+
+.settingBox{
+    width: calc((100% - 10rem)/4);
+    height: calc(100% - 2rem);
+    border-radius: 0.3rem;
+    border: 0.1rem solid #CDCDCE;
+    box-sizing: border-box;
+}
+
+.settinHeader{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    height: 3.6rem;
+    padding: 0 1rem;
+    box-sizing: border-box;
+}
+
+.settinHeader span{
+    font-size: 1.4rem;
+}
+
+.settinHeader input{
+    background-color: #444;
+}
+
+.scrolling_table-list_body{
+    height: 36.6rem;
+}
+
+.settingBox td:nth-child(1){
+    width: 12%;
+}
+
+.settingBox td:nth-child(2){
+    width: 88%;
+}

@@ -19,3 +19,8 @@ def index(indexable, i):
 def to_int(to):
     to = int(to)
     return to
+
+
+@register.filter
+def sub(value, i):
+    return int(value)-int(i)

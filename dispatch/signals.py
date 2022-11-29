@@ -143,7 +143,7 @@ def save_regularly_connect(sender, instance, created, **kwargs):
             print('sssssssssssss', salary.attendance)
             print('sssssssssssss', salary.leave)
             salary.save()
-        except Salary.DoesNotExist():
+        except Salary.DoesNotExist:
             new_salary(creator, month, member)
         
 
@@ -182,7 +182,7 @@ def save_connect(sender, instance, created, **kwargs):
 
             salary.total = int(salary.total) + int(instance.driver_allowance)
             salary.save()
-        except Salary.DoesNotExist():
+        except Salary.DoesNotExist:
             new_salary(creator, month, member)
         
 
@@ -192,11 +192,14 @@ def delete_connect(sender, instance, **kwargs):
     month = instance.departure_date[:7]
     member = instance.driver_id
     
-    salary = Salary.objects.filter(member_id=member).get(month=month)
-    salary.order = int(salary.order) - int(instance.driver_allowance)
-    salary.total = int(salary.total) - int(instance.driver_allowance)
-    salary.save()
-
+    try:
+        salary = Salary.objects.filter(member_id=member).get(month=month)
+        salary.order = int(salary.order) - int(instance.driver_allowance)
+        salary.total = int(salary.total) - int(instance.driver_allowance)
+        salary.save()
+    except Salary.DoesNotExist:
+        return
+        
 # @receiver(post_save, sender=DispatchOrder)
 # def save_order(sender, instance, created, **kwargs):
 #     # 일반 운행 저장되면 배차확인 삭제

@@ -24,7 +24,7 @@
 }
 
 .salaryContainer .scrolling_table-list_body {
-    height: 72rem;
+    height: 66.4rem;
 }
 
 .salaryContainer td {
@@ -34,15 +34,21 @@
 }
 
 .salaryContainer td:nth-child(1) {
-    width: 4%;
+    width: 3%;
 }
 
 .salaryContainer td:nth-child(2) {
-    width: 6%;
+    width: 4%;
 }
 
-.salaryContainer td:nth-child(3),
-.salaryContainer td:nth-child(4),
+.salaryContainer td:nth-child(3) {
+    width: 5%;
+}
+
+.salaryContainer td:nth-child(4){
+    width: 7%;
+}
+
 .salaryContainer td:nth-child(5),
 .salaryContainer td:nth-child(6),
 .salaryContainer td:nth-child(7),
@@ -50,12 +56,13 @@
 .salaryContainer td:nth-child(9),
 .salaryContainer td:nth-child(10),
 .salaryContainer td:nth-child(11),
-.salaryContainer td:nth-child(12) {
+.salaryContainer td:nth-child(12),
+.salaryContainer td:nth-child(13) {
     width: 9%;
 }
 
-.salaryContainer tbody td:nth-child(10),
-.salaryContainer tbody td:nth-child(11) {
+.salaryContainer tbody td:nth-child(12),
+.salaryContainer tbody td:nth-child(13) {
     background-color: rgb(255, 242, 204);
     cursor: pointer;
 }
@@ -68,12 +75,12 @@
     outline: none;
 }
 
-.salaryContainer tbody td:nth-child(7),
 .salaryContainer tbody td:nth-child(8),
 .salaryContainer tbody td:nth-child(9),
 .salaryContainer tbody td:nth-child(10),
 .salaryContainer tbody td:nth-child(11),
-.salaryContainer tbody td:nth-child(12) {
+.salaryContainer tbody td:nth-child(12),
+.salaryContainer tbody td:nth-child(13) {
     text-align: right;
     padding-right: 1rem;
 }
@@ -284,4 +291,25 @@
 .deductionChecker,
 .deductionListAllCheck{
     cursor: pointer;
+}
+
+
+
+.salaryTotalContainer{
+    width: calc(100% - 0.6rem);
+    height: 3.6rem;
+    margin-top: 2rem;
+    background-color: white;
+    border-radius: 0.2rem;
+    box-shadow: 0.1rem 0.1rem 0.6rem rgb(0 0 0 / 30%);
+}
+
+.salaryTotalContainer td{
+    width: 9%;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.salaryTotalContainer td:nth-child(1){
+    width: 19%;
 }

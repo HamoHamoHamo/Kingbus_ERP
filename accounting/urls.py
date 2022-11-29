@@ -4,12 +4,6 @@ from . import views
 app_name = 'accounting'
 
 urlpatterns = [
-    # path('salary', views.SalaryList.as_view(), name='salary'),
-    # path('salary/<int:pk>', views.SalaryDetail.as_view(), name='salary_detail'),
-    # path('salary/create', views.salary_create, name='salary_create'),
-    # path('salary/edit', views.salary_edit, name='salary_edit'),
-    # path('salary/delete', views.salary_delete, name='salary_delete'),
-    # path('salary/remark/edit', views.remark_edit, name='remark_edit'),
     path('sales', views.SalesList.as_view(), name='sales'),
     
     path('collect', views.CollectList.as_view(), name='collect'),

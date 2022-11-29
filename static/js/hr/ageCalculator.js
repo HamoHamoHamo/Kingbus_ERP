@@ -1,6 +1,6 @@
 const age = document.querySelectorAll(".tableBody td:nth-child(4)")
 
-window.onload = function () {
+function ageCalculator() {
     let now = new Date();
     let year = now.getFullYear();
     var month = now.getMonth() + 1;
@@ -19,3 +19,5 @@ window.onload = function () {
         }
     }
 }
+
+ageCalculator()

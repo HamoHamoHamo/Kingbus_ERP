@@ -1,0 +1,181 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load dispatch_custom_tags %}
+
+{% block head %}
+<meta http-equiv="Cache-Control" content="private, no-cache, no-store, max-age=0, must-revalidate">
+<link rel="stylesheet" href="{% static 'css/crudmember/setting.css' %}" type="text/css" />
+{% endblock %}
+
+{% block content-header %}
+<div class="HeaderTitle">
+  항목 관리
+</div>
+{% endblock %}
+
+
+{% block content %}
+<div class="search-Container">
+  <form method="post" action="{% url 'crudmember:setting_create' %}" class="search-Form">
+    {% csrf_token %}
+    <select name="type" class="search-Form_input search-Form-Select">
+      <option value="차량종류">차량종류</option>
+      <option value="운행종류">운행종류</option>
+      <option value="유형">유형</option>
+      <option value="계산서 발행처">계산서 발행처</option>
+    </select>
+    <input name="category" autocomplete="off" type="text" class="search-Form_input">
+    <input type="submit" class="btnModules creteItem" value="등록">
+  </form>
+</div>
+
+<div class="main-layout_container">
+  <div class="settingContainer">
+
+    <form method="post" action="{% url 'crudmember:setting_delete' %}" class="settingBox">
+      {% csrf_token %}
+      <div class="settinHeader">
+        <span>차량종류</span>
+        <input type="submit" class="btnModules" value="삭제">
+      </div>
+      <div class="scrolling_table-list_header">
+        <table class="table-list">
+          <thead>
+            <tr class="table-list_head-tr">
+              <td class="table-list_head-tr_td">
+                <input type="checkbox">
+              </td>
+              <td class="table-list_head-tr_td">항목</td>
+            </tr>
+          </thead>
+        </table>
+      </div>
+      <div class="scrolling_table-list_body">
+        <table class="table-list">
+          <tbody>
+            {% for vehicle_type in vehicle_type_list %}
+            <tr class="table-list_body-tr">
+              <td class="table-list_body-tr_td">
+                <input name="check" value="{{vehicle_type.id}}" type="checkbox">
+              </td>
+              <td class="table-list_body-tr_td">{{vehicle_type.category}}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </form>
+
+    <form method="post" action="{% url 'crudmember:setting_delete' %}" class="settingBox">
+      {% csrf_token %}
+      <div class="settinHeader">
+        <span>운행종류</span>
+        <input type="submit" class="btnModules" value="삭제">
+      </div>
+      <div class="scrolling_table-list_header">
+        <table class="table-list">
+          <thead>
+            <tr class="table-list_head-tr">
+              <td class="table-list_head-tr_td">
+                <input type="checkbox">
+              </td>
+              <td class="table-list_head-tr_td">항목</td>
+            </tr>
+          </thead>
+        </table>
+      </div>
+      <div class="scrolling_table-list_body">
+        <table class="table-list">
+          <tbody>
+            {% for op in operation_type_list %}
+            <tr class="table-list_body-tr">
+              <td class="table-list_body-tr_td">
+                <input type="checkbox" name="check" value="{{op.id}}">
+              </td>
+              <td class="table-list_body-tr_td">{{op.category}}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </form>
+
+    <form method="post" action="{% url 'crudmember:setting_delete' %}" class="settingBox">
+      {% csrf_token %}
+      <div class="settinHeader">
+        <span>유형</span>
+        <input type="submit" class="btnModules" value="삭제">
+      </div>
+      <div class="scrolling_table-list_header">
+        <table class="table-list">
+          <thead>
+            <tr class="table-list_head-tr">
+              <td class="table-list_head-tr_td">
+                <input type="checkbox">
+              </td>
+              <td class="table-list_head-tr_td">항목</td>
+            </tr>
+          </thead>
+        </table>
+      </div>
+      <div class="scrolling_table-list_body">
+        <table class="table-list">
+          <tbody>
+            {% for order in order_type_list %}
+            <tr class="table-list_body-tr">
+              <td class="table-list_body-tr_td">
+                <input type="checkbox" name="check" value="{{order.id}}">
+              </td>
+              <td class="table-list_body-tr_td">{{order.category}}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </form>
+
+    <form method="post" action="{% url 'crudmember:setting_delete' %}" class="settingBox">
+      {% csrf_token %}
+      <div class="settinHeader">
+        <span>계산서 발행처</span>
+        <input type="submit" class="btnModules" value="삭제">
+      </div>
+      <div class="scrolling_table-list_header">
+        <table class="table-list">
+          <thead>
+            <tr class="table-list_head-tr">
+              <td class="table-list_head-tr_td">
+                <input type="checkbox">
+              </td>
+              <td class="table-list_head-tr_td">항목</td>
+            </tr>
+          </thead>
+        </table>
+      </div>
+      <div class="scrolling_table-list_body">
+        <table class="table-list">
+          <tbody>
+            {% for bill in bill_place_list %}
+            <tr class="table-list_body-tr">
+              <td class="table-list_body-tr_td">
+                <input type="checkbox" name="check" value="{{bill.id}}">
+              </td>
+              <td class="table-list_body-tr_td">{{bill.category}}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </form>
+
+  </div>
+</div>
+{% endblock %}
+
+
+
+
+
+{% block script %}
+<script src="{% static 'js/crudmember/settingCreate.js' %}"></script>
+{% endblock %}
