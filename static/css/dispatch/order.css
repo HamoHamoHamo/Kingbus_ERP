@@ -145,7 +145,7 @@
   margin-left: 0.6rem;
 }
 
-.search_inputArea select{
+.search_inputArea select {
   width: 10rem;
   margin: 0 1rem 0 0.4rem;
 }
@@ -230,7 +230,7 @@
   font-size: 1.4rem;
 }
 
-.tdWhiteSpace{
+.tdWhiteSpace {
   background-color: transparent;
   border: none;
 }
@@ -257,6 +257,27 @@
   justify-content: space-between;
   align-items: center;
   width: 42%;
+}
+
+.accountTd {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  padding-right: 0.6rem;
+  box-sizing: border-box;
+}
+
+.searchAccount {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 2.4rem;
+  height: 2.4rem;
+  border-radius: 0.3rem;
+  background-color: #0069D9;
+  cursor: pointer;
 }
 
 
@@ -368,7 +389,7 @@
   display: block;
 }
 
-.dispatchSave{
+.dispatchSave {
   background-color: #0069D9;
   margin-right: 1rem;
 }
@@ -672,18 +693,20 @@
 .orderListSubContents:nth-child(8) {
   width: 10rem;
 }
+
 .orderListSubContents:nth-child(9) {
   width: 16rem;
 }
 
-.orderListSubContents:nth-child(10){
+.orderListSubContents:nth-child(10) {
   width: 36rem;
 }
 
 .orderListSubContents:nth-child(13) {
   width: 34rem;
 }
-.orderListSubContents:nth-child(11){
+
+.orderListSubContents:nth-child(11) {
   width: 28rem;
 }
 
@@ -691,12 +714,13 @@
 .orderListItem .orderListSubContents:nth-child(10),
 .orderListItem .orderListSubContents:nth-child(10),
 .orderListItem .orderListSubContents:nth-child(11),
-.orderListItem .orderListSubContents:nth-child(13){
+.orderListItem .orderListSubContents:nth-child(13) {
   justify-content: flex-start;
   padding-left: 1rem;
   box-sizing: border-box;
 }
-.orderListItem .orderListSubContents:nth-child(9){
+
+.orderListItem .orderListSubContents:nth-child(9) {
   flex-direction: column;
   justify-content: center;
   align-items: flex-start;
@@ -777,22 +801,22 @@
   background-color: #444;
 }
 
-.popupFooter{
+.popupFooter {
   position: relative;
 }
 
-.waypointDeleteBtn{
+.waypointDeleteBtn {
   position: absolute;
   left: 0;
   background-color: #444;
 }
 
-.addWaypointBtn{
+.addWaypointBtn {
   background-color: #0069D9;
   margin-left: auto;
 }
 
-.waypointTable input[type=text]{
+.waypointTable input[type=text] {
   text-align: center;
   width: 100%;
   height: 3.6rem;
@@ -802,12 +826,58 @@
   background-color: transparent;
 }
 
-.waypointTable input[name=waypoint]{
+.waypointTable input[name=waypoint] {
   text-align: left;
   padding-left: 1rem;
 }
 
-.addtionalBtn{
+.addtionalBtn {
   background-color: #0069D9;
   margin-right: 1rem;
+}
+
+
+
+
+
+
+/* 거래처 불러오기 팝업 */
+.accountArticle {
+  justify-content: flex-start;
+  width: 100%;
+}
+
+.popupArticleDouble .accountSelect {
+  width: 10rem;
+  margin-right: 1rem;
+}
+
+.popupArticleDouble .accountInput {
+  width: 28rem;
+  margin-right: 1rem;
+}
+
+.accountSearchBtn{
+  background-color: #444;
+}
+
+.accountPopupArticleBoxTable td:nth-child(1){
+  width: 6%;
+}
+
+.accountPopupArticleBoxTable td:nth-child(2){
+  width: 52%;
+}
+
+.accountPopupArticleBoxTable td:nth-child(3){
+  width: 32%;
+}
+
+.accountDeleteBtn {
+  background-color: #444;
+  margin-right: 1rem;
+}
+
+.accountCloseBtn {
+  background-color: #444;
 }

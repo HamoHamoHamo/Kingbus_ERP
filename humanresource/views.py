@@ -20,7 +20,7 @@ class MemberList(generic.ListView):
     template_name = 'HR/member.html'
     context_object_name = 'member_list'
     model = Member
-    # paginate_by = 10
+    paginate_by = 10
 
     def get(self, request, **kwargs):
         if request.session.get('authority') >= 3:
@@ -44,18 +44,18 @@ class MemberList(generic.ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        # paginator = context['paginator']
-        # page_numbers_range = 5
-        # max_index = len(paginator.page_range)
-        # page = self.request.GET.get('page')
-        # current_page = int(page) if page else 1
+        paginator = context['paginator']
+        page_numbers_range = 5
+        max_index = len(paginator.page_range)
+        page = self.request.GET.get('page')
+        current_page = int(page) if page else 1
 
-        # start_index = int((current_page - 1) / page_numbers_range) * page_numbers_range
-        # end_index = start_index + page_numbers_range
-        # if end_index >= max_index:
-        #     end_index = max_index
-        # page_range = paginator.page_range[start_index:end_index]
-        # context['page_range'] = page_range
+        start_index = int((current_page - 1) / page_numbers_range) * page_numbers_range
+        end_index = start_index + page_numbers_range
+        if end_index >= max_index:
+            end_index = max_index
+        page_range = paginator.page_range[start_index:end_index]
+        context['page_range'] = page_range
         #페이징 끝
 
         member_list = context['member_list']

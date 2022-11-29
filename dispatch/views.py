@@ -13,6 +13,7 @@ from django.views import generic
 from .forms import OrderForm, ConnectForm, RegularlyForm
 from .models import DispatchCheck, Schedule, DispatchOrderConnect, DispatchOrder, DispatchRegularly, RegularlyGroup, DispatchRegularlyConnect, DispatchOrderWaypoint
 from accounting.models import Collect, TotalPrice
+from crudmember.models import Category
 from humanresource.models import Member
 from itertools import chain
 from vehicle.models import Vehicle
@@ -942,30 +943,25 @@ class OrderList(generic.ListView):
     model = DispatchOrder
 
     def get_queryset(self):
-        start_date = self.request.GET.get('date1')
-        end_date = self.request.GET.get('date2')
+        start_date = self.request.GET.get('date1', TODAY)
+        end_date = self.request.GET.get('date2', TODAY)
         search = self.request.GET.get('search')
         search_type = self.request.GET.get('type')
         # customer = self.request.GET.get('customer')
         # self.next_week = (datetime.strptime(TODAY, FORMAT) + timedelta(days=7)).strftime(FORMAT)
 
         if start_date or end_date or search:
-            dispatch_list = []
-            if start_date and end_date:
-                dispatch_list = DispatchOrder.objects.prefetch_related('info_order').exclude(arrival_date__lt=f'{start_date} 00:00').exclude(departure_date__gt=f'{end_date} 24:00').order_by('departure_date')
-                # dispatch_list = DispatchOrder.objects.filter(departure_date__range=[start_date + " 00:00", end_date + " 24:00"]).order_by('departure_date')
-            if search_type == 'customer':
-                if search:
-                    if dispatch_list:
-                        dispatch_list = dispatch_list.filter(customer__contains=search).order_by('departure_date')
-                    else:
-                        dispatch_list = DispatchOrder.objects.prefetch_related('info_order').filter(customer__contains=search).order_by('departure_date')
-            elif search_type == 'route':
-                if search:
-                    if dispatch_list:
-                        dispatch_list = dispatch_list.filter(route__contains=search).order_by('departure_date')
-                    else:
-                        dispatch_list = DispatchOrder.objects.prefetch_related('info_order').filter(route__contains=search).order_by('departure_date')
+            
+            dispatch_list = DispatchOrder.objects.prefetch_related('info_order').exclude(arrival_date__lt=f'{start_date} 00:00').exclude(departure_date__gt=f'{end_date} 24:00').order_by('departure_date')
+            if search_type == 'customer' and search:
+                dispatch_list = dispatch_list.filter(customer__contains=search).order_by('departure_date')
+                    
+            elif search_type == 'route' and search:
+                dispatch_list = dispatch_list.filter(route__contains=search).order_by('departure_date')
+
+            elif search_type == 'vehicle' and search:
+                dispatch_list = dispatch_list.filter(info_order__bus_id__vehicle_num__contains=search).order_by('departure_date')
+
         else:
             
             dispatch_list = DispatchOrder.objects.prefetch_related('info_order').exclude(arrival_date__lt=f'{TODAY} 00:00').exclude(departure_date__gt=f'{TODAY} 24:00').order_by('departure_date')
@@ -1119,6 +1115,11 @@ class OrderList(generic.ListView):
         context['selected_date2'] = self.request.GET.get('date2')
         context['collect_list'] = collect_list
         context['outstanding_list'] = outstanding_list
+
+        context['vehicle_types'] = Category.objects.filter(type='차량종류')
+        context['operation_types'] = Category.objects.filter(type='운행종류')
+        context['order_types'] = Category.objects.filter(type='유형')
+        context['bill_places'] = Category.objects.filter(type='계산서 발행처')
 
         return context
 

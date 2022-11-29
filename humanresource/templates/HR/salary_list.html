@@ -40,6 +40,7 @@
                     <td class="table-list_head-tr_td">
                         <input type="checkbox" class="amountCheckAll">
                     </td>
+                    <td class="table-list_head-tr_td">번호</td>
                     <td class="table-list_head-tr_td">이름</td>
                     <td class="table-list_head-tr_td">입사일자</td>
                     <td class="table-list_head-tr_td">기본급</td>
@@ -64,6 +65,7 @@
                     <td class="table-list_body-tr_td">
                         <input type="checkbox" class="amountCheck" name="member_id" value="{{member.id}}">
                     </td>
+                    <td class="table-list_body-tr_td">{{forloop.counter}}</td>
                     <td class="table-list_body-tr_td">{{member.name}}</td>
                     <td class="table-list_body-tr_td">{{member.entering_date}}</td>
                     <td class="table-list_body-tr_td">
@@ -89,6 +91,23 @@
         </table>
     </div>
 </form>
+
+<div class="salaryTotalContainer">
+    <table class="table-list">
+      <tbody>
+        <tr class="table-list_body-tr">
+          <td class="table-list_body-tr_td"></td>
+          <td class="table-list_body-tr_td"></td>
+          <td class="table-list_body-tr_td"></td>
+          <td class="table-list_body-tr_td"></td>
+          <td class="table-list_body-tr_td"></td>
+          <td class="table-list_body-tr_td"></td>
+          <td class="table-list_body-tr_td"></td>
+          <td class="table-list_body-tr_td"></td>
+        </tr>
+      </tbody>
+    </table>
+</div>
 
 
 {% endblock %}

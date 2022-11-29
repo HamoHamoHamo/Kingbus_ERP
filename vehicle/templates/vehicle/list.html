@@ -35,6 +35,10 @@
                     <option value="{{member.name}}"></option>
                     {% endfor %}
                 </datalist>
+                <select name="use" id="" class="inputModules">
+                    <option {% if select == '사용' %} selected {% endif %} value="사용">사용</option>
+                    <option {% if select == '미사용' %} selected {% endif %} value="미사용">미사용</option>
+                </select>
             </div>
             <input autocomplete="off" type="submit" value="검색" class="btnModules">
         </div>
@@ -64,7 +68,6 @@
                     <td>출고일자</td>
                     <td>정기점검일</td>
                     <td>차량등록증</td>
-                    <td>사용여부</td>
                 </tr>
             </thead>
         </table>
@@ -98,7 +101,6 @@
                         <div onclick="openViweBlankVehilcle('/vehicle/list/image/{{list.0.id}}')">{{list.0.filename}}
                         </div>
                     </td>
-                    <td>{% if vehicle.use == 'y' %}사용{% else %}미사용{% endif %}</td>
                     {% endwith %}
                 </tr>
                 {% endfor %}
@@ -395,8 +397,6 @@
                             <label for="ableBusEdit">사용</label>
                             <input autocomplete="off" type="radio" id="disableBusEdit" name="use" value="n">
                             <label for="disableBusEdit">미사용</label>
-                            <input autocomplete="off" type="radio" id="deleteBusEdit" name="use" value="d">
-                            <label for="deleteBusEdit">삭제</label>
                         </div>
                     </div>
                 </div>

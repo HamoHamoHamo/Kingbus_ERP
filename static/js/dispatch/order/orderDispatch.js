@@ -117,7 +117,6 @@ function addOrderDispatch() {
                 }
             }
 
-
             //알림 출력
             if (beforeArr.length !== 0 || afterArr.length !== 0) {
                 for (i = 0; i < beforeArr.length; i++) {
@@ -128,9 +127,6 @@ function addOrderDispatch() {
                         } else {
                             return
                         }
-                    } else {
-                        addOrderDispatch()
-                        return
                     }
                 }
                 for (i = 0; i < afterArr.length; i++) {
@@ -141,11 +137,10 @@ function addOrderDispatch() {
                         } else {
                             return
                         }
-                    } else {
-                        addOrderDispatch()
-                        return
                     }
                 }
+                addOrderDispatch()
+                return
             } else {
                 addOrderDispatch()
                 return

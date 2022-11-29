@@ -172,6 +172,18 @@
               </ul>
             </div>
           </div>
+          <div class="nav1Box">
+            <li class="nav1BoxMenu">
+              <img src="{% static 'images/calendar.png' %}" alt="일정 아이콘">
+              <a href="{% url 'crudmember:setting_client' %}" class="nonDepth2Menu">거래처 관리</a>
+            </li>
+          </div>
+          <div class="nav1Box">
+            <li class="nav1BoxMenu">
+              <img src="{% static 'images/calendar.png' %}" alt="일정 아이콘">
+              <a href="{% url 'crudmember:setting' %}" class="nonDepth2Menu">항목 관리</a>
+            </li>
+          </div>
         </ul>
       </div>
 
@@ -449,7 +461,6 @@
   <script src="{% static 'js/profile.js' %}"></script>
   <script src="{% static 'js/accountPopup.js' %}"></script>
   <script src="{% static 'js/lengthbreak100.js' %}"></script>
-  <script src="{% static 'js/lengthbreak200.js' %}"></script>
   <script src="{% static 'js/lengthbreak1000.js' %}"></script>
   <script src="{% static 'js/lengthBreak3000.js' %}"></script>
   {% block script %}{% endblock %}

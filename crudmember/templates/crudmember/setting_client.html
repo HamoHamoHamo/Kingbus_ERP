@@ -1,0 +1,161 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load dispatch_custom_tags %}
+
+{% block head %}
+<meta http-equiv="Cache-Control" content="private, no-cache, no-store, max-age=0, must-revalidate">
+<link rel="stylesheet" href="{% static 'css/crudmember/client.css' %}" type="text/css" />
+{% endblock %}
+
+{% block content-header %}
+<div class="HeaderTitle">
+    거래처 관리
+</div>
+{% endblock %}
+
+
+{% block content %}
+<div class="search-Container">
+    <form action="" class="search-Form">
+        <select name="select" class="search-Form_input search-Form-Select">
+            <option {% if select == '거래처명' %} selected {% endif %} value="거래처명">거래처명</option>
+            <option {% if select == '대표자명' %} selected {% endif %} value="대표자명">대표자명</option>
+            <option {% if select == '담당자명' %} selected {% endif %} value="담당자명">담당자명</option>
+        </select>
+        <input name="search" value="{{search}}" autocomplete="off" type="text" class="search-Form_input">
+        <input type="submit" class="search-Form_search-btn" value="검색">
+    </form>
+    <div class="popup-area-box">
+        <div class="popup-area-box_btn">거래처 등록</div>
+    </div>
+</div>
+
+<div class="main-layout_container">
+    <form method="post" action="{% url 'crudmember:setting_client_delete' %}" class="clientTableForm">
+        {% csrf_token %}
+        <input type="submit" class="btnModules clientDeleteBtn" value="삭제">
+
+        <div class="scrolling_table-list_header">
+            <table class="table-list">
+                <thead>
+                    <tr class="table-list_head-tr">
+                        <td class="table-list_head-tr_td">
+                            <input type="checkbox" class="deleteAllChecker">
+                        </td>
+                        <td class="table-list_head-tr_td">사업자번호</td>
+                        <td class="table-list_head-tr_td">거래처명</td>
+                        <td class="table-list_head-tr_td">대표자명</td>
+                        <td class="table-list_head-tr_td">대표자 전화번호</td>
+                        <td class="table-list_head-tr_td">담당자명</td>
+                        <td class="table-list_head-tr_td">담당자 전화번호</td>
+                        <td class="table-list_head-tr_td">이메일</td>
+                        <td class="table-list_head-tr_td">주소</td>
+                        <td class="table-list_head-tr_td">비고</td>
+                    </tr>
+                </thead>
+            </table>
+        </div>
+        <div class="scrolling_table-list_body">
+            <table class="table-list">
+                <tbody>
+                    {% for client in client_list %}
+                    <tr class="table-list_body-tr">
+                        <td class="table-list_body-tr_td">
+                            <input type="checkbox" class="deleteChecker" name="check" value="{{client.id}}">
+                        </td>
+                        <td class="table-list_body-tr_td">{{client.business_num}}</td>
+                        <td class="table-list_body-tr_td">{{client.name}}</td>
+                        <td class="table-list_body-tr_td">{{client.representative}}</td>
+                        <td class="table-list_body-tr_td">{{client.phone}}</td>
+                        <td class="table-list_body-tr_td">{{client.manager}}</td>
+                        <td class="table-list_body-tr_td">{{client.manager_phone}}</td>
+                        <td class="table-list_body-tr_td">{{client.email}}</td>
+                        <td class="table-list_body-tr_td">{{client.address}}</td>
+                        <td class="table-list_body-tr_td">{{client.note}}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </form>
+</div>
+{% endblock %}
+
+
+{% block popup %}
+<div class="popupAreaModules">
+    <div class="popupBgModules"></div>
+    <form method="post" action="{% url 'crudmember:setting_client_create' %}" class="popupContainer popupContainerDouble clientCreteForm">
+        {% csrf_token %}
+        <div class="popupHeader">
+            <div class="popupTitle">거래처 등록</div>
+        </div>
+        <div class="popupBody">
+            <div class="popupSection">
+                <div class="popupArticleCategori">기본정보</div>
+                <div class="popupArticleBox">
+                    <div class="popupArticleDouble">
+                        <label for="" class="popupArticleLabel">사업자번호</label>
+                        <input autocomplete="off" name="business_num" type="text" class="popupArticleinput length100">
+                    </div>
+                    <div class="popupArticleDouble">
+                        <label for="" class="popupArticleLabel"><span class="importantStar">*</span>거래처명</label>
+                        <input autocomplete="off" name="name" type="text" class="popupArticleinput length100 essential">
+                    </div>
+                </div>
+                <div class="popupArticleBox">
+                    <div class="popupArticleDouble">
+                        <label for="" class="popupArticleLabel">대표자명</label>
+                        <input autocomplete="off" name="representative" type="text" class="popupArticleinput length100">
+                    </div>
+                    <div class="popupArticleDouble">
+                        <label for="" class="popupArticleLabel"><span class="importantStar">*</span>대표전화</label>
+                        <input autocomplete="off" name="phone" type="text" class="popupArticleinput length100 essential phoneNumber" maxlength="13">
+                    </div>
+                </div>
+                <div class="popupArticleBox">
+                    <div class="popupArticleDouble">
+                        <label for="" class="popupArticleLabel">담당자명</label>
+                        <input autocomplete="off" name="manager" type="text" class="popupArticleinput length100">
+                    </div>
+                    <div class="popupArticleDouble">
+                        <label for="" class="popupArticleLabel">담당자 전화번호</label>
+                        <input autocomplete="off" name="manager_phone" type="text" class="popupArticleinput length100 phoneNumber" maxlength="13">
+                    </div>
+                </div>
+                <div class="popupArticleBox">
+                    <div class="popupArticleDouble">
+                        <label for="" class="popupArticleLabel">이메일</label>
+                        <input autocomplete="off" name="email" type="text" class="popupArticleinput length100" placeholder="ex) adminEmail@email.com">
+                    </div>
+                    <div class="popupArticleDouble">
+                        <label for="" class="popupArticleLabel">주소</label>
+                        <input autocomplete="off" name="address" type="text" class="popupArticleinput length100">
+                    </div>
+                </div>
+                <div class="popupArticleBox">
+                    <div class="popupArticle">
+                        <label for="" class="popupArticleLabel">비고</label>
+                        <input autocomplete="off" name="note" type="text" class="popupArticleinput length100">
+                    </div>
+                </div>
+            </div>
+            <div class="popupFooter">
+                <div class="btnModules clientCreateBtn">등록</div>
+                <div class="btnModules popupCloseBtn">닫기</div>
+            </div>
+        </div>
+    </form>
+</div>
+{% endblock %}
+
+
+
+
+
+{% block script %}
+<script src="{% static 'js/crudmember/clientCreate.js' %}"></script>
+<script src="{% static 'js/crudmember/deleteChecker.js' %}"></script>
+<script src="{% static 'js/crudmember/createEssential.js' %}"></script>
+<script src="{% static 'js/phoneNumberForm.js' %}"></script>
+{% endblock %}
