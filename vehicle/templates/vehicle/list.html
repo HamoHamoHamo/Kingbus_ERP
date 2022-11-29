@@ -36,8 +36,8 @@
                     {% endfor %}
                 </datalist>
                 <select name="use" id="" class="inputModules">
-                    <option {% if select == '사용' %} selected {% endif %} value="사용">사용</option>
-                    <option {% if select == '미사용' %} selected {% endif %} value="미사용">미사용</option>
+                    <option {% if use == 'y' %} selected {% endif %} value="y">사용</option>
+                    <option {% if use == 'n' %} selected {% endif %} value="n">미사용</option>
                 </select>
             </div>
             <input autocomplete="off" type="submit" value="검색" class="btnModules">
@@ -116,7 +116,7 @@
                     {% if page_obj.has_previous %}
                     <div class="page-item page-pre">
                         <a class="page-link"
-                            href="?top_box_selector={{selector}}&search={{searched}}&page={{ page_obj.previous_page_number }}"
+                            href="?select={{select}}&search={{search}}&page={{ page_obj.previous_page_number }}"
                             tabindex="-1">이전</a>
                     </div>
                     {% else %}
@@ -127,14 +127,14 @@
                     {% for page in page_range %}
                     <div class="page-item {% if page == page_obj.number %} page-activate {% endif %}">
                         <a class="page-link"
-                            href="?top_box_selector={{selector}}&search={{searched}}&page={{ page }}">{{ page }}</a>
+                            href="?select={{select}}&search={{search}}&page={{ page }}">{{ page }}</a>
                     </div>
                     {% endfor %}
 
                     {% if page_obj.has_next %}
                     <div class="page-item">
                         <a class="page-link page-next"
-                            href="?top_box_selector={{selector}}&search={{searched}}&page={{ page_obj.next_page_number }}">다음</a>
+                            href="?select={{select}}&search={{search}}&page={{ page_obj.next_page_number }}">다음</a>
                     </div>
                     {% else %}
                     <div class="page-item page-next disabled">

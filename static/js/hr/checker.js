@@ -11,7 +11,9 @@ for (i = 0; i < salaryItems.length; i++){
     salaryItems[i].children[6].addEventListener("click", checkingChecker)
     salaryItems[i].children[7].addEventListener("click", checkingChecker)
     salaryItems[i].children[8].addEventListener("click", checkingChecker)
-    salaryItems[i].children[11].addEventListener("click", checkingChecker)
+    salaryItems[i].children[9].addEventListener("click", checkingChecker)
+    salaryItems[i].children[10].addEventListener("click", checkingChecker)
+    salaryItems[i].children[13].addEventListener("click", checkingChecker)
 };
 
 function checkingChecker(){

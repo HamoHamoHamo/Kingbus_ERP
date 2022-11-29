@@ -46,6 +46,7 @@
                     <td class="table-list_head-tr_td">기본급</td>
                     <td class="table-list_head-tr_td">근속수당</td>
                     <td class="table-list_head-tr_td">직급수당</td>
+                    <td class="table-list_head-tr_td">식대</td>
                     <td class="table-list_head-tr_td">출근수당</td>
                     <td class="table-list_head-tr_td">퇴근수당</td>
                     <td class="table-list_head-tr_td">일반수당</td>
@@ -61,7 +62,7 @@
             <tbody>
                 {% for member in member_list %}
                 {% with salary=salary_list|index:forloop.counter0 %}
-                <tr class="table-list_body-tr">
+                <tr class="table-list_body-tr salaryList">
                     <td class="table-list_body-tr_td">
                         <input type="checkbox" class="amountCheck" name="member_id" value="{{member.id}}">
                     </td>
@@ -77,6 +78,7 @@
                     <td class="table-list_body-tr_td">
                         <input type="text" class="amountInput length100" value="{{salary.position_allowance}}">
                     </td>
+                    <td class="table-list_body-tr_td addComma"></td>
                     <td class="table-list_body-tr_td addComma">{{salary.attendance}}</td>
                     <td class="table-list_body-tr_td addComma">{{salary.leave}}</td>
                     <td class="table-list_body-tr_td addComma">{{salary.order}}</td>
@@ -95,7 +97,10 @@
 <div class="salaryTotalContainer">
     <table class="table-list">
       <tbody>
-        <tr class="table-list_body-tr">
+        <tr class="table-list_body-tr totalSalaryList">
+          <td class="table-list_body-tr_td" colspan="4">합계</td>
+          <td class="table-list_body-tr_td"></td>
+          <td class="table-list_body-tr_td"></td>
           <td class="table-list_body-tr_td"></td>
           <td class="table-list_body-tr_td"></td>
           <td class="table-list_body-tr_td"></td>
@@ -299,4 +304,5 @@
 <script src="{% static 'js/hr/textValidation.js' %}"></script>
 <script src="{% static 'js/hr/checker.js' %}"></script>
 <script src="{% static 'js/hr/addComma.js' %}"></script>
+<script src="{% static 'js/hr/totalSalary.js' %}"></script>
 {% endblock %}

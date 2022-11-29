@@ -30,7 +30,7 @@ const createID = document.querySelector(".createID")
 const hrID = document.querySelector(".hrID")
 const hrPW = document.querySelector(".hrPW")
 const editPopupContainer = document.querySelector(".editPopupContainer")
-const btnModulesCreate = document.querySelector(".btnModulesCreate")
+const btnModulesCreate = document.querySelectorAll(".btnModulesCreate")
 const PopupDataInputLicense = document.querySelector(".PopupDataInputLicense")
 const hrRoleSelect = document.querySelector(".hrRole")
 const fileDeleteBtn = document.querySelectorAll(".fileDeleteBtn")
@@ -45,6 +45,8 @@ const LicenseFileInputEdit = document.querySelector(".LicenseFileInputEdit")
 const DriverLicenseFileTextEdit = document.querySelector(".DriverLicenseFileTextEdit")
 const DriverLicenseFileInputEdit = document.querySelector(".DriverLicenseFileInputEdit")
 
+const memberFormCreate = document.querySelector(".memberFormCreate")
+const essential = document.querySelectorAll(".essential")
 
 //직원상세
 for (i = 0; i < editMember.length; i++) {
@@ -69,6 +71,11 @@ function openDetailPopup() {
   }else{
     hrEmergency.value = ""
     hrReation.value = ""
+  }
+  if(regDatas[this.className].use === "사용"){
+    hrUse[0].checked = true
+  }else{
+    hrUse[1].checked = true
   }
   hrBlanck.value = regDatas[this.className].note;
   hrID.value = regDatas[this.className].id
@@ -98,7 +105,7 @@ function nameChange() {
 
 
 //직원등록 조건검사
-btnModulesCreate.addEventListener('click', createChecker)
+btnModulesCreate[0].addEventListener('click', createChecker)
 let selectedOption = ""
 let idCheckCount = false
 let date = new Date();
@@ -108,22 +115,24 @@ let day = ("0" + date.getDate()).slice(-2);
 let onlyNumber = /[^0-9]/g;
 let birthPAttern = /^(19[0-9][0-9]|20\d{2})(0[0-9]|1[0-2])(0[1-9]|[1-2][0-9]|3[0-1])$/
 
-function createChecker(e) {
-  for (i = 0; i < selectOption.length; i++) {
-    if (selectOption[i].selected) {
-      selectedOption = selectOption[i]
+function createChecker() {
+  for (i = 0; i < essential.length; i++) {
+    if (essential[i].value == "") {
+      return alert("입력하지 않은 필수 입력사항이 있습니다.")
     }
+  };
+  if (PopupDataInputWork.options[PopupDataInputWork.selectedIndex].value == "") {
+    return alert("입력하지 않은 필수 입력사항이 있습니다.")
   }
-  if (createName.value == "" || selectedOption.value == "" || PopupDataInputEntering.value == "" || PopupDataInputPhoneNum.value == "" || PopupDataInputBirth.value == "" || PopupDataInputAddress.value == "" || createID.value == "") {
-    alert("입력하지 않은 항목이 있습니다.")
-    e.preventDefault()
-  } else if (!idCheckCount) {
+  if (!idCheckCount) {
     alert("아이디 중복확인을 진행해 주세요.")
     e.preventDefault()
-  } else if (createID.attributes.check_result.value == "fail") {
+  }
+  if (createID.attributes.check_result.value == "fail") {
     alert("이미 사용중인 아이디 입니다.")
     e.preventDefault()
   }
+  memberFormCreate.submit()
 }
 
 //전화번호

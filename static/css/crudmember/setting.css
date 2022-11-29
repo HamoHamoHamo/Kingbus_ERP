@@ -8,6 +8,7 @@
     background-color: white;
 }
 
+
 .search-Form-Select{
     width: 12rem;
     margin-right: 2rem;
@@ -62,4 +63,61 @@
 
 .settingBox td:nth-child(2){
     width: 88%;
+}
+
+
+.salarySettingContainer{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: calc((100% - 10rem)/4);
+    height: 18rem;
+    padding: 1rem;
+    margin-top: 2rem;
+    border-radius: 0.2rem;
+    box-shadow: 0.1rem 0.1rem 0.1rem rgb(65 69 73 / 30%), 0.1rem 0.3rem 0.1rem rgb(65 69 73 / 15%);
+    background-color: white;
+    box-sizing: border-box;
+}
+
+.salarySettingForm{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    height: calc((100% - 5rem)/2);
+    padding: 0 1rem;
+    border: 0.1rem solid #CDCDCE;
+    box-sizing: border-box;
+}
+
+.salarySettingForm input[type=text],
+.salarySettingForm input[type=number]{
+    width: 18rem;
+    height: 2.6rem;
+    padding-left: 1rem;
+    box-sizing: border-box;
+    border: 0.1rem solid #D2D2D2;
+    border-radius: 0.2rem;
+    outline: none;
+    font-family: "Noto Sans CJK KR";
+    font-size: 1.4rem;
+}
+
+.salarySettingForm input[type=submit]{
+    background-color: #0069D9;
+}
+
+.salarySettingForm label{
+    text-align: center;
+    width: 7rem;
+    font-size: 1.4rem;
+}
+
+.salarySettingTitle{
+    display: flex;
+    align-items: center;
+    font-size: 1.4rem;
+    font-weight: 700;
+    height: 3rem;
 }

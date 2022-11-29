@@ -29,17 +29,28 @@ class MemberList(generic.ListView):
             return super().get(request, **kwargs)
 
     def get_queryset(self):
-        name = self.request.GET.get('name', None)
+        name = self.request.GET.get('name', '')
+        age = self.request.GET.get('age', '나이 전체')
+        use = self.request.GET.get('use', '사용')
+        up65 = f'{int(TODAY[:4]) - 65}{TODAY[4:10]}'
+
         authority = self.request.session.get('authority')
+
         if authority >= 3:
             return redirect(self.request.META.get('HTTP_REFERER', 'redirect_if_referer_not_found'))
         if authority == 2:
             authority = 1
 
         if name:
-            member_list = Member.objects.filter(authority__gte=authority).filter(name__contains=name).order_by('name')
+            member_list = Member.objects.filter(use=use).filter(authority__gte=authority).filter(name__contains=name).order_by('name')
         else:
-            member_list = Member.objects.filter(authority__gte=authority).order_by('name')
+            member_list = Member.objects.filter(use=use).filter(authority__gte=authority).order_by('name')
+            print('memberrrrrr', member_list, use)
+        if age == '65세 이상':
+            print('testtt')
+            member_list = member_list.filter(birthdate__lte=up65)
+            
+        
         return member_list
 
     def get_context_data(self, **kwargs):
@@ -57,6 +68,7 @@ class MemberList(generic.ListView):
         page_range = paginator.page_range[start_index:end_index]
         context['page_range'] = page_range
         #페이징 끝
+        context['start_num'] = paginator.count - paginator.per_page * (current_page-1)
 
         member_list = context['member_list']
         data_list = []
@@ -88,9 +100,12 @@ class MemberList(generic.ListView):
                 'emergency': member.emergency,
                 'license_id': license_id,
                 'bus_license_id': bus_license_id,
+                'use': member.use
             })
         context['data_list'] = data_list
         context['name'] = self.request.GET.get('name', '')
+        context['use'] = self.request.GET.get('use', '사용')
+        context['age'] = self.request.GET.get('age', '나이 전체')
         context['member_all'] = Member.objects.order_by('name')
         
         return context

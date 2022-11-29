@@ -1,4 +1,4 @@
-const deduction = document.querySelectorAll(".scrolling_table-list_body td:nth-child(11)")
+const deduction = document.querySelectorAll(".scrolling_table-list_body td:nth-child(13)")
 const deductionPopup = document.querySelector(".deductionPopup")
 const popupBgModulesDeduction = document.querySelector(".popupBgModulesDeduction")
 const deductionCloseBtn = document.querySelector(".deductionCloseBtn")
