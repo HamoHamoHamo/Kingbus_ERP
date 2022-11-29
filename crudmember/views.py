@@ -51,11 +51,17 @@ class CategoryList(generic.ListView):
                 order_type_list.append(category)
             elif category.type == '계산서 발행처':
                 bill_place_list.append(category)
+            elif category.type == '식대':
+                context['meal'] = category.category
+            elif category.type == '급여지급일':
+                context['date'] = category.category
         
         context['vehicle_type_list'] = vehicle_type_list
         context['operation_type_list'] = operation_type_list
         context['order_type_list'] = order_type_list
         context['bill_place_list'] = bill_place_list
+
+        
 
         return context
 
@@ -155,6 +161,41 @@ def setting_client_delete(request):
     else:
         return HttpResponseNotAllowed(['post'])
 
+
+def salary_meal(request):
+    if request.method == 'POST':
+        price = request.POST.get('price')
+        try:
+            category = Category.objects.get(type='식대')
+            category.category = price
+        except Category.DoesNotExist:
+            category = Category(
+                type = '식대',
+                category = price,
+            )
+            
+        category.save()
+        return redirect(request.META.get('HTTP_REFERER', 'redirect_if_referer_not_found'))
+
+    else:
+        return HttpResponseNotAllowed(['post'])
+
+
+def salary_date(request):
+    if request.method == 'POST':
+        date = request.POST.get('date')
+        try:
+            category = Category.objects.get(type='급여지급일')
+            category.category = date
+        except Category.DoesNotExist:
+            category = Category(
+                type = '급여지급일',
+                category = date,
+            )
+        category.save()
+        return redirect(request.META.get('HTTP_REFERER', 'redirect_if_referer_not_found'))
+    else:
+        return HttpResponseNotAllowed(['post'])
 
 def home(request):
     id = request.session.get('user')

@@ -41,19 +41,22 @@ class VehicleList(generic.ListView):
     paginate_by = 10
 
     def get_queryset(self):
-        select = self.request.GET.get('select', None)
-        search = self.request.GET.get('search', None)
+        select = self.request.GET.get('select', '')
+        search = self.request.GET.get('search', '')
+        use = self.request.GET.get('use', 'y')
+
+        print("SDSFFD", select, search, use)
         
-        # q = Q()
-        if not search:
-            vehicle = Vehicle.objects.order_by('-use', 'vehicle_num0', 'vehicle_num')
+        
+        if select == 'vehicle' and search:
+            vehicle = Vehicle.objects.filter(use=use).filter(vehicle_num__contains=search).order_by('vehicle_num0', 'vehicle_num')
+        elif select == 'driver' and search:
+            vehicle = Vehicle.objects.filter(use=use).filter(driver_name__contains=search).order_by('vehicle_num0', 'vehicle_num')
+        elif select == 'passenger' and search:
+            vehicle = Vehicle.objects.filter(use=use).filter(passenger_num__contains=search).order_by('vehicle_num0', 'vehicle_num')
         else:
-            if select == 'vehicle':
-                vehicle = Vehicle.objects.filter(vehicle_num=search).order_by('-use', 'vehicle_num0', 'vehicle_num')
-            elif select == 'driver':
-                vehicle = Vehicle.objects.filter(driver_name=search).order_by('-use', 'vehicle_num0', 'vehicle_num')
-            elif select == 'passenger':
-                vehicle = Vehicle.objects.filter(passenger_num=search).order_by('-use', 'vehicle_num0', 'vehicle_num')
+            print("ELSEEE")
+            vehicle = Vehicle.objects.filter(use=use).order_by('vehicle_num0', 'vehicle_num')
         return vehicle
 
 
@@ -61,7 +64,7 @@ class VehicleList(generic.ListView):
         context = super().get_context_data(**kwargs)
         
         paginator = context['paginator']
-        page_numbers_range = 10
+        page_numbers_range = 5
         max_index = len(paginator.page_range)
         page = self.request.GET.get('page')
         current_page = int(page) if page else 1
@@ -77,6 +80,7 @@ class VehicleList(generic.ListView):
 
         context['select'] = self.request.GET.get('select', '')
         context['search'] = self.request.GET.get('search', '')
+        context['use'] = self.request.GET.get('use', '')
         # context['driver_list'] = Member.objects.filter(role='운전원')
         context['driver_list'] = Member.objects.filter(driver=None).filter(Q(role='운전원') | Q(role='용역')).order_by('name')
         

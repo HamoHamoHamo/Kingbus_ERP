@@ -13,7 +13,7 @@ from django.views import generic
 from .forms import OrderForm, ConnectForm, RegularlyForm
 from .models import DispatchCheck, Schedule, DispatchOrderConnect, DispatchOrder, DispatchRegularly, RegularlyGroup, DispatchRegularlyConnect, DispatchOrderWaypoint
 from accounting.models import Collect, TotalPrice
-from crudmember.models import Category
+from crudmember.models import Category, Client
 from humanresource.models import Member
 from itertools import chain
 from vehicle.models import Vehicle
@@ -1116,6 +1116,10 @@ class OrderList(generic.ListView):
         context['collect_list'] = collect_list
         context['outstanding_list'] = outstanding_list
 
+        context['client'] = []
+        for client in Client.objects.all().values('name', 'phone'):
+            context['client'].append(client)
+        
         context['vehicle_types'] = Category.objects.filter(type='차량종류')
         context['operation_types'] = Category.objects.filter(type='운행종류')
         context['order_types'] = Category.objects.filter(type='유형')

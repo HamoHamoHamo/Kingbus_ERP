@@ -36,6 +36,9 @@ class Category(models.Model):
     creator = models.ForeignKey(Member, on_delete=models.SET_NULL, related_name="category_user", null=True)
     pub_date = models.DateTimeField(verbose_name='작성시간', auto_now_add=True, null=False)
 
+    def __str__(self):
+        return self.type + " " + self.category
+
 class Client(models.Model):
     business_num = models.CharField(max_length=100, verbose_name='사업자번호', null=False, blank=True)
     name = models.CharField(max_length=100, verbose_name='거래처이름', null=False)

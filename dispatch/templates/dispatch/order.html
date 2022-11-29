@@ -767,11 +767,13 @@
     const dataList = {% if dispatch_data_list %} {{ dispatch_data_list }} {% else %} '' {% endif %}
     const driverObj = {{ driver_dict }}
     const outsourcingObj = {{ outsourcing_dict }}
+    const client = {{ client }}
     console.log("DATA", data)
     console.log("DATA2", data2)
     console.log("driverObj", driverObj);
     console.log("outsourcingObj", outsourcingObj);
     console.log('dataList', dataList);
+    console.log('client', {{client}})
     {% endautoescape %}
 </script>
 <script>

@@ -2,7 +2,9 @@ const routeCopyBtn = document.querySelector(".routeCopyBtn")
 const inputDelete = document.querySelector(".inputDelete")
 const newOrderLink = document.querySelector(".newOrderLink")
 
-routeCopyBtn.addEventListener("click", copyRoute)
+if(routeCopyBtn !== null){
+    routeCopyBtn.addEventListener("click", copyRoute)
+}
 
 function copyRoute(){
     this.style.display = "none"

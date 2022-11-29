@@ -46,7 +46,7 @@
 }
 
 .salaryContainer td:nth-child(4){
-    width: 7%;
+    width: 8%;
 }
 
 .salaryContainer td:nth-child(5),
@@ -57,8 +57,9 @@
 .salaryContainer td:nth-child(10),
 .salaryContainer td:nth-child(11),
 .salaryContainer td:nth-child(12),
-.salaryContainer td:nth-child(13) {
-    width: 9%;
+.salaryContainer td:nth-child(13),
+.salaryContainer td:nth-child(14) {
+    width: 8%;
 }
 
 .salaryContainer tbody td:nth-child(12),
@@ -75,12 +76,12 @@
     outline: none;
 }
 
-.salaryContainer tbody td:nth-child(8),
 .salaryContainer tbody td:nth-child(9),
 .salaryContainer tbody td:nth-child(10),
 .salaryContainer tbody td:nth-child(11),
 .salaryContainer tbody td:nth-child(12),
-.salaryContainer tbody td:nth-child(13) {
+.salaryContainer tbody td:nth-child(13),
+.salaryContainer tbody td:nth-child(14) {
     text-align: right;
     padding-right: 1rem;
 }
@@ -305,11 +306,14 @@
 }
 
 .salaryTotalContainer td{
-    width: 9%;
-    padding: 0;
+    text-align: right;
+    padding: 0 1rem 0 0;
+    width: 8%;
     box-sizing: border-box;
 }
 
 .salaryTotalContainer td:nth-child(1){
-    width: 19%;
+    width: 20%;
+    padding: 0;
+    text-align: center;
 }
