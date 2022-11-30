@@ -34,6 +34,7 @@ function calcTotal() {
             dayTotal[i].children[1].innerText = dayTotal[i].children[1].innerText.replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
             dayTotal[i].children[2].innerText = dayTotal[i].children[2].innerText.replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
             dayTotal[i].children[3].innerText = dayTotal[i].children[3].innerText.replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
+            dayTotal[i].children[4].innerText = dayTotal[i].children[4].innerText.replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
         };
     }
 

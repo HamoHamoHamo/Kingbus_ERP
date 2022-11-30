@@ -66,6 +66,10 @@
     width: 22%;
 }
 
+.client{
+    color: #0069D9;
+}
+
 
 
 
@@ -105,4 +109,9 @@
 
 .popupCloseBtn {
     background-color: #444;
+}
+
+.clientSaveEditBtn{
+    background-color: #0069D9;
+    margin-right: 1rem;
 }

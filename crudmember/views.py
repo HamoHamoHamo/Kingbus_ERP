@@ -8,13 +8,13 @@ from django.template.loader import render_to_string
 from django.utils.http import urlsafe_base64_encode,urlsafe_base64_decode
 from django.views import generic
 
-from humanresource.models import Member
 from .models import User, UserFile, Category, Client
+from .forms import UserForm, ClientForm
+from humanresource.models import Member, Salary
 from dispatch.models import Schedule, DispatchCheck, DispatchOrder, DispatchOrderConnect, DispatchRegularly, DispatchRegularlyConnect
 from vehicle.models import Vehicle
 from dispatch.views import FORMAT, TODAY
 from dateutil.relativedelta import relativedelta
-from .forms import UserForm, ClientForm
 
 from datetime import datetime, timedelta
 from random import choice
@@ -124,8 +124,21 @@ class ClientList(generic.ListView):
         context['select'] = self.request.GET.get('select', '')
         context['search'] = self.request.GET.get('search', '')
 
-        print('ccccccc', context['select'])
-        print('ccccccc', context['search'])
+
+        context['data_list'] = []
+        for client in context['client_list']:
+            context['data_list'].append({
+                'business_num': client.business_num,
+                'name': client.name,
+                'representative': client.representative,
+                'phone': client.phone,
+                'manager': client.manager,
+                'manager_phone': client.manager_phone,
+                'email': client.email,
+                'address': client.address,
+                'note': client.note,
+                'id': client.id,
+            })
 
         return context
 
@@ -139,6 +152,32 @@ def setting_client_create(request):
 
             client = client_form.save(commit=False)
             client.creator = creator
+            client.save()
+        
+            return redirect(request.META.get('HTTP_REFERER', 'redirect_if_referer_not_found'))
+        else:
+            raise BadRequest
+
+    else:
+        return HttpResponseNotAllowed(['post'])
+
+def setting_client_edit(request):
+    if request.method == 'POST':
+
+        client_id = request.POST.get('id')
+        client = get_object_or_404(Client, id=client_id)
+
+        client_form = ClientForm(request.POST)
+        if client_form.is_valid():
+            client.business_num = client_form.cleaned_data['business_num']
+            client.name = client_form.cleaned_data['name']
+            client.representative = client_form.cleaned_data['representative']
+            client.phone = client_form.cleaned_data['phone']
+            client.manager = client_form.cleaned_data['manager']
+            client.manager_phone = client_form.cleaned_data['manager_phone']
+            client.email = client_form.cleaned_data['email']
+            client.address = client_form.cleaned_data['address']
+            client.note = client_form.cleaned_data['note']
             client.save()
         
             return redirect(request.META.get('HTTP_REFERER', 'redirect_if_referer_not_found'))
@@ -164,7 +203,7 @@ def setting_client_delete(request):
 
 def salary_meal(request):
     if request.method == 'POST':
-        price = request.POST.get('price')
+        price = request.POST.get('price').replace(',','')
         try:
             category = Category.objects.get(type='식대')
             category.category = price
@@ -173,8 +212,16 @@ def salary_meal(request):
                 type = '식대',
                 category = price,
             )
-            
         category.save()
+        
+        # 식대가 수정되면 이번달 포함 다음달부터 있는 salary의 식대 업데이트
+        salary_list = Salary.objects.filter(month__gte=TODAY[:7])
+        for salary in salary_list:
+            salary.total = int(price) + int(salary.attendance) + int(salary.leave) + int(salary.order) + int(salary.base) + int(salary.service_allowance) + int(salary.position_allowance) + int(salary.additional) - int(salary.deduction)            
+            salary.meal = price
+            salary.save()
+
+
         return redirect(request.META.get('HTTP_REFERER', 'redirect_if_referer_not_found'))
 
     else:

@@ -6,10 +6,10 @@ for (i = 0; i < amountInput.length; i++){
 
 function amountValidation(){
     this.value = this.value.replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
-    this.parentNode.parentNode.children[3].children[0].name = "base"
-    this.parentNode.parentNode.children[4].children[0].name = "service"
-    this.parentNode.parentNode.children[5].children[0].name = "position"
-    if(this.parentNode.parentNode.children[12] === undefined){
+    this.parentNode.parentNode.children[4].children[0].name = "base"
+    this.parentNode.parentNode.children[5].children[0].name = "service"
+    this.parentNode.parentNode.children[6].children[0].name = "position"
+    if(this.parentNode.parentNode.children[14] === undefined){
         const hidden = document.createElement("input")
         hidden.setAttribute("type", "hidden")
         hidden.setAttribute("name", "id")

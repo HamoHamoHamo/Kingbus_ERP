@@ -89,8 +89,11 @@
           <td>{{member.emergency}}</td>
           <td>{{member.birthdate}}</td>
           <td>{{member.address}}</td>
-          <td>면허증</td>
-          <td>버스운전 자격증</td>
+          {% with data=data_list|index:forloop.counter0 %}
+          
+          <td {% if data.license_id %}onclick="openLisence('{% url 'HR:member_img' data.license_id %}', true)"{% endif %}>{{data.license}}</td>
+          <td {% if data.bus_license_id %}onclick="openLisence('{% url 'HR:member_img' data.bus_license_id %}', false)"{% endif %}>{{data.bus_license}}</td>
+          {% endwith %}
         </tr>
         {% endfor %}
         <tr class="blanckTr"></tr>
@@ -210,7 +213,7 @@
                   </div>
                   <div class="popupArticleDouble">
                       <label for="" class="popupArticleLabel">관계</label>
-                      <input autocomplete="off"name="emergency2" type="text" class="popupArticleinput PopupDataInputRelation length100" placeholder="비상연락망 전화번호와 관계(부,모,아내 등)">
+                      <input autocomplete="off"name="emergency2" type="text" class="popupArticleinput PopupDataInputRelation length100" placeholder="비상연락망 전화번호와 관계(부,모,배우자 등)">
                   </div>
               </div>
               <div class="popupArticleBox">
@@ -347,7 +350,7 @@
                     </div>
                     <div class="popupArticleDouble">
                         <label for="" class="popupArticleLabel">관계</label>
-                        <input autocomplete="off"name="emergency2" type="text" class="popupArticleinput hrReation length100" placeholder="비상연락망 전화번호와 관계(부,모,아내 등)">
+                        <input autocomplete="off"name="emergency2" type="text" class="popupArticleinput hrReation length100" placeholder="비상연락망 전화번호와 관계(부,모,배우자 등)">
                     </div>
                 </div>
                 <div class="popupArticleBox">
@@ -439,7 +442,16 @@
   const regDatas = {{data_list}};
   console.log("DATA", {{data_list}});
   {% endautoescape %}
-</script>
+  
+    function openLisence(url, type) {
+      if(type){
+          window.open(url, "면허증", "width=630, height=891")
+      }else{
+          window.open(url, "버스운전 자격증", "width=630, height=891")
+      }
+    }
+    
+  </script>
 <script src="{% static 'js/hr/hr_list_popup.js' %}"></script>
 <script src="{% static 'js/hr/ageCalculator.js' %}"></script>
 <script src="{% static 'js/hr/essential.js' %}"></script>
