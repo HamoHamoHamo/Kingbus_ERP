@@ -452,3 +452,8 @@
     text-align: left;
     padding-left: 1rem;
 }
+
+.btnModulesEdit{
+    background-color: #0069D9;
+    margin-right: 1rem;
+}

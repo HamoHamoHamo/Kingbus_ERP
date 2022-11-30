@@ -65,6 +65,7 @@ class Salary(models.Model):
     base = models.CharField(verbose_name='기본급', max_length=20, null=False, default=0)
     service_allowance = models.CharField(verbose_name='근속수당', max_length=20, null=False, default=0)
     position_allowance = models.CharField(verbose_name='직급수당', max_length=20, null=False, default=0)
+    meal = models.CharField(verbose_name='식대', max_length=20, null=False, default=0)
     attendance = models.CharField(verbose_name='출근요금', max_length=20, null=False)
     leave = models.CharField(verbose_name='퇴근요금', max_length=20, null=False)
     order = models.CharField(verbose_name='일반주문요금', max_length=20, null=False)

@@ -49,7 +49,7 @@
                 <td class="titleTd">입사일</td>
                 <td>{{data.member.entering_date}}</td>
                 <td class="titleTd">지급일</td>
-                <td></td>
+                <td>{{data.salary_date}}</td>
             </tr>
         </table>
 
@@ -124,10 +124,10 @@
                 {% endfor %}
                 <tr class="workTotal">
                     <td>소계</td>
-                    <td colspan="2">20</td>
-                    <td colspan="2">20</td>
-                    <td colspan="2">6</td>
-                    <td>26</td>
+                    <td colspan="2">{{data.attendance_cnt}}</td>
+                    <td colspan="2">{{data.leave_cnt}}</td>
+                    <td colspan="2">{{data.order_cnt}}</td>
+                    <td>{{data.total_cnt}}</td>
                 </tr>
             </tbody>
         </table>
@@ -203,7 +203,7 @@
                         <td class="titleTd">추가수당</td>
                         <td class="printComma">{{data.salary.additional}}</td>
                         <td class="titleTd">식대</td>
-                        <td class="printComma"></td>
+                        <td class="printComma">{{data.meal}}</td>
                     </tr>
                 </table>
 

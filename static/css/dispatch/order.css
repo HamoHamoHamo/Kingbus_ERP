@@ -881,3 +881,8 @@
 .accountCloseBtn {
   background-color: #444;
 }
+
+.loadAccountBtn{
+  background-color: #0069D9;
+  margin-right: 1rem;
+}

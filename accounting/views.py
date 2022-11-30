@@ -460,16 +460,17 @@ class CollectList(generic.ListView):
         additional_total_list = [0] * dispatch_count
         cnt = 0
         for order in context['dispatch_list']:
-            total_list.append(int(get_object_or_404(TotalPrice, order_id=order).total_price))
+            total_price = int(get_object_or_404(TotalPrice, order_id=order).total_price)
+            total_list.append(total_price)
             if order.VAT == 'y':
-                value_list[cnt] = math.floor(int(order.price) / 1.1 + 0.5)
+                value_list[cnt] = math.floor(total_price / 1.1 + 0.5)
                 VAT_list[cnt] = math.floor(value_list[cnt] * 0.1 + 0.5)
                 total = value_list[cnt] + VAT_list[cnt]
-                zero = int(order.price) - total
+                zero = total_price - total
                 if zero != 0:
                     VAT_list[cnt] += zero
             else:
-                value_list[cnt] = int(order.price)
+                value_list[cnt] = int(order.price) * int(order.bus_cnt)
                 VAT_list[cnt] = math.floor(value_list[cnt] * 0.1 + 0.5)
             
             collect_list = order.order_collect.select_related('income_id').all()
@@ -673,7 +674,7 @@ class DepositList(generic.ListView):
         self.search = self.request.GET.get('search', '')
         self.payment = self.request.GET.get('payment')
         
-        income_list = Income.objects.filter(date__range=(f'{self.date1} 00:00', f'{self.date2} 24:00')).order_by('-date')
+        income_list = Income.objects.filter(date__range=(f'{self.date1} 00:00', f'{self.date2} 24:00')).order_by('-serial', '-date')
         if self.search:
             if self.select == 'depositor':
                 income_list = income_list.filter(depositor__contains=self.search)
@@ -865,7 +866,6 @@ def load_deposit_data(request):
             # print('bank', bank)
             # print('acc_income', acc_income, '\n')
         
-        ######################### data_list lastIncome 확인, data_list로 income 만들기해야됨
         if data_list:
             data_list = sorted(data_list, key= lambda x: x['date'])
             last = LastIncome(
@@ -873,12 +873,10 @@ def load_deposit_data(request):
                 creator=creator 
             )
             last.save()
-            print("LASTT", data_list[0]['trdt'])
             
             latest_date = data_list[0]['trdt'][:8]
             date_cnt = 1 + Income.objects.filter(serial__startswith=latest_date).count()
         
-            print("TESTTT", date_cnt, latest_date)
             cnt = 0
         for data in data_list:
             if data['trdt'] > last_save_date:
@@ -886,9 +884,9 @@ def load_deposit_data(request):
                 if latest_date != data['trdt'][:8]:
                     latest_date = data['trdt'][:8]
                     date_cnt = 1 + Income.objects.filter(serial__startswith=latest_date).count()
-                print("AAAA", date_cnt)
+                # print("AAAA", date_cnt)
                 income = Income(
-                    serial = f'{latest_date}-{date_cnt}',
+                    serial = f'{latest_date[2:4]}/{latest_date[4:6]}/{latest_date[6:8]}-{date_cnt}',
                     date = data['date'],
                     depositor = data['depositor'],
                     bank = data['bank'],
@@ -897,45 +895,13 @@ def load_deposit_data(request):
                     creator = creator,
                 )
                 income.save()
-                print(income)
+                # print(income)
                 date_cnt += 1
 
         return JsonResponse({
             'count': cnt,
             'status': 'success',
         })
-        # for r in result.list:
-        #     if r.trdt > last_save_date:
-        #         count += 1
-        #         income = Income(
-        #             serial=f'{r.trdate}-{r.trserial}',
-        #             date=f'{r.trdt[:4]}-{r.trdt[4:6]}-{r.trdt[6:8]} {r.trdt[8:10]}:{r.trdt[10:12]}',
-        #             depositor=r.remark1,
-        #             bank=my_settings.BANK[i],
-        #             acc_income=r.accIn,
-        #             total_income=r.accIn,
-        #             creator=creator,
-        #         )
-        #         income.save()
-        #     else:
-        #         continue
-        #     # print('trserial', r.trserial)
-        #     # print('trdt', r.trdt)
-        #     # print('accIn', r.accIn)
-        #     # print('accOut', r.accOut)
-        #     # print('balance', r.balance)
-        #     # print('regDT', r.regDT)
-        #     # print('remark1', r.remark1)
-        #     # print('remark2', r.remark2)
-        #     # print('remark3', r.remark3)
-        #     # print('remark4', r.remark4,'\n')
-        # if result.list:
-        #     last = LastIncome(
-        #         tr_date=result.list[0].trdt,
-        #         creator=creator 
-        #     )
-        #     last.save()
-        # return JsonResponse({'status': 'success', 'count': count})
     else:
         return HttpResponseNotAllowed(['post'])
 

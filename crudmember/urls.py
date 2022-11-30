@@ -19,6 +19,8 @@ urlpatterns = [
     path('setting/delete', views.setting_delete, name="setting_delete"),
     path('setting/client', views.ClientList.as_view(), name="setting_client"),
     path('setting/client/create', views.setting_client_create, name="setting_client_create"),
+    path('setting/client/edit', views.setting_client_edit, name="setting_client_edit"),
+    path('setting/client/delete', views.setting_client_delete, name="setting_client_delete"),
     path('setting/salary/meal', views.salary_meal, name="salary_meal"),
     path('setting/salary/date', views.salary_date, name="salary_date"),
 ]

@@ -17,9 +17,9 @@ function createCheck() {
     uploadFileForm.submit()
 }
 
-groupAddBtn.addEventListener("click", createCheck)
+groupAddBtn.addEventListener("click", createCheckGroup)
 
-function createCheck() {
+function createCheckGroup() {
     if (groupEssential.value == "") {
         return alert("입력하지 않은 필수 입력사항이 있습니다.")
     }

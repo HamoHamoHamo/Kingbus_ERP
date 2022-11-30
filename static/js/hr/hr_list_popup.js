@@ -135,29 +135,6 @@ function createChecker() {
   memberFormCreate.submit()
 }
 
-//전화번호
-PopupDataInputPhoneNum.addEventListener('change', phoneNumChecker)
-
-function phoneNumChecker() {
-  this.value.replace(onlyNumber, "")
-  if (this.value.length <= 8 || this.value.length >= 12) {
-    alert("형식에 맞지않는 전화번호 입니다.")
-    this.value = ""
-  }
-  this.value = this.value.replace(/\-/g, "")
-  this.value = this.value.replace(/^(\d{2,3})(\d{3,4})(\d{4})$/, `$1-$2-$3`)
-}
-
-//생년월일
-PopupDataInputBirth.addEventListener('change', birthChecker)
-
-function birthChecker() {
-  if (!birthPAttern.test(this.value)) {
-    alert("형식에 맞지 않습니다.")
-    this.value = ""
-  }
-}
-
 
 //팝업닫기
 for (i = 0; i < popupBgModules.length; i++) {

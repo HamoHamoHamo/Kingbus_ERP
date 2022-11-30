@@ -101,7 +101,6 @@
     font-size: 1.4rem;
 }
 
-
 .collectBody td:nth-child(1) {
     width: 2%;
 }
@@ -241,7 +240,7 @@
 }
 
 .collectDateBox td {
-    padding: 0.3rem 0;
+    padding: 1rem 0;
     font-size: 1.4rem;
     border-right: 0.1rem solid #D4D4D4;
     border-bottom: 0.1rem solid #D4D4D4;

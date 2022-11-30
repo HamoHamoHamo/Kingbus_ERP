@@ -45,7 +45,7 @@
                         <td class="table-list_head-tr_td">사업자번호</td>
                         <td class="table-list_head-tr_td">거래처명</td>
                         <td class="table-list_head-tr_td">대표자명</td>
-                        <td class="table-list_head-tr_td">대표자 전화번호</td>
+                        <td class="table-list_head-tr_td">대표전화</td>
                         <td class="table-list_head-tr_td">담당자명</td>
                         <td class="table-list_head-tr_td">담당자 전화번호</td>
                         <td class="table-list_head-tr_td">이메일</td>
@@ -59,12 +59,12 @@
             <table class="table-list">
                 <tbody>
                     {% for client in client_list %}
-                    <tr class="table-list_body-tr">
+                    <tr class="table-list_body-tr accountTr">
                         <td class="table-list_body-tr_td">
                             <input type="checkbox" class="deleteChecker" name="check" value="{{client.id}}">
                         </td>
                         <td class="table-list_body-tr_td">{{client.business_num}}</td>
-                        <td class="table-list_body-tr_td">{{client.name}}</td>
+                        <td class="table-list_body-tr_td client">{{client.name}}</td>
                         <td class="table-list_body-tr_td">{{client.representative}}</td>
                         <td class="table-list_body-tr_td">{{client.phone}}</td>
                         <td class="table-list_body-tr_td">{{client.manager}}</td>
@@ -147,6 +147,72 @@
         </div>
     </form>
 </div>
+
+<div class="popupAreaModules">
+    <div class="popupBgModules"></div>
+    <form method="post" action="{% url 'crudmember:setting_client_edit' %}" class="popupContainer popupContainerDouble clientEditForm">
+        {% csrf_token %}
+        <div class="popupHeader">
+            <div class="popupTitle">거래처 정보</div>
+        </div>
+        <div class="popupBody">
+            <div class="popupSection">
+                <div class="popupArticleCategori">기본정보</div>
+                <div class="popupArticleBox">
+                    <div class="popupArticleDouble">
+                        <label for="" class="popupArticleLabel">사업자번호</label>
+                        <input autocomplete="off" name="business_num" type="text" class="popupArticleinput editBusiness length100">
+                    </div>
+                    <div class="popupArticleDouble">
+                        <label for="" class="popupArticleLabel"><span class="importantStar">*</span>거래처명</label>
+                        <input autocomplete="off" name="name" type="text" class="popupArticleinput editAccount length100 editEssential">
+                    </div>
+                </div>
+                <div class="popupArticleBox">
+                    <div class="popupArticleDouble">
+                        <label for="" class="popupArticleLabel">대표자명</label>
+                        <input autocomplete="off" name="representative" type="text" class="popupArticleinput editCeo length100">
+                    </div>
+                    <div class="popupArticleDouble">
+                        <label for="" class="popupArticleLabel"><span class="importantStar">*</span>대표전화</label>
+                        <input autocomplete="off" name="phone" type="text" class="popupArticleinput editCeoPhone length100 editEssential phoneNumber" maxlength="13">
+                    </div>
+                </div>
+                <div class="popupArticleBox">
+                    <div class="popupArticleDouble">
+                        <label for="" class="popupArticleLabel">담당자명</label>
+                        <input autocomplete="off" name="manager" type="text" class="popupArticleinput editWorker length100">
+                    </div>
+                    <div class="popupArticleDouble">
+                        <label for="" class="popupArticleLabel">담당자 전화번호</label>
+                        <input autocomplete="off" name="manager_phone" type="text" class="popupArticleinput editWorkerPhone length100 phoneNumber" maxlength="13">
+                    </div>
+                </div>
+                <div class="popupArticleBox">
+                    <div class="popupArticleDouble">
+                        <label for="" class="popupArticleLabel">이메일</label>
+                        <input autocomplete="off" name="email" type="text" class="popupArticleinput editEmail length100" placeholder="ex) adminEmail@email.com">
+                    </div>
+                    <div class="popupArticleDouble">
+                        <label for="" class="popupArticleLabel">주소</label>
+                        <input autocomplete="off" name="address" type="text" class="popupArticleinput editAddress length100">
+                    </div>
+                </div>
+                <div class="popupArticleBox">
+                    <div class="popupArticle">
+                        <label for="" class="popupArticleLabel">비고</label>
+                        <input autocomplete="off" name="note" type="text" class="popupArticleinput editBlanck length100">
+                    </div>
+                </div>
+            </div>
+            <div class="popupFooter">
+                <div class="btnModules clientSaveEditBtn">등록</div>
+                <div class="btnModules popupCloseBtn">닫기</div>
+            </div>
+        </div>
+        <input type="hidden" name="id" class="editAccountId">
+    </form>
+</div>
 {% endblock %}
 
 
@@ -154,6 +220,13 @@
 
 
 {% block script %}
+<script>
+    {% autoescape off %}
+    const dataList = {{data_list}};
+    console.log("dataList", dataList);
+    
+    {% endautoescape %}
+</script>
 <script src="{% static 'js/crudmember/clientCreate.js' %}"></script>
 <script src="{% static 'js/crudmember/deleteChecker.js' %}"></script>
 <script src="{% static 'js/crudmember/createEssential.js' %}"></script>

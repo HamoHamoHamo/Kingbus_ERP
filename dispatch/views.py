@@ -970,6 +970,9 @@ class OrderList(generic.ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        cancle_list = context['order_list'].filter(contract_status='취소')
+        context['order_list'] = list(context['order_list'].exclude(contract_status='취소')) + list(cancle_list)
+
         context['date1'] = self.request.GET.get('date1')
         context['date2'] = self.request.GET.get('date2')
 
@@ -1119,6 +1122,8 @@ class OrderList(generic.ListView):
         context['client'] = []
         for client in Client.objects.all().values('name', 'phone'):
             context['client'].append(client)
+
+        
         
         context['vehicle_types'] = Category.objects.filter(type='차량종류')
         context['operation_types'] = Category.objects.filter(type='운행종류')
@@ -1260,7 +1265,7 @@ def order_create(request):
                 )
                 waypoint.save()
 
-            return redirect(request.META.get('HTTP_REFERER', 'redirect_if_referer_not_found'))
+            return redirect(reverse('dispatch:order') + f'?date1={request.POST.get("departure_date")}&date2={request.POST.get("arrival_date")}')
         else:
             raise BadRequest
     else:
@@ -1278,8 +1283,6 @@ def order_edit_check(request):
     for connect in connects:
         bus = connect.bus_id
         # r_connects = bus.info_regularly_bus_id.all()
-
-        
 
         format = '%Y-%m-%d %H:%M'
         if datetime.strptime(post_departure_date, format) > datetime.strptime(post_arrival_date, format):

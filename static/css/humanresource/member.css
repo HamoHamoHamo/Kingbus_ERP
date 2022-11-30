@@ -147,6 +147,11 @@ td:nth-child(13) {
     padding-left: 1rem;
 }
 
+.tableBody td:nth-child(12),
+.tableBody td:nth-child(13) {
+    color: #0069D9;
+}
+
 .btnBox div {
     background-color: #444444;
 }

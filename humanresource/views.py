@@ -2,13 +2,14 @@ import os
 from dateutil.relativedelta import relativedelta
 from dispatch.models import DispatchRegularlyConnect, DispatchOrderConnect
 from django.contrib.auth.hashers import make_password, check_password
-from django.db.models import Sum
+from django.db.models import Sum, Q
 from django.http import Http404, HttpResponse, HttpResponseNotAllowed, HttpResponseBadRequest
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views import generic
 from dispatch.views import FORMAT
 from datetime import datetime, timedelta
 
+from crudmember.models import Category
 from vehicle.models import Vehicle
 from .forms import MemberForm
 from .models import Member, MemberFile, Salary, AdditionalSalary, DeductionSalary
@@ -396,7 +397,7 @@ class SalaryList(generic.ListView):
         name = self.request.GET.get('name', '')
 
         
-        member_list = Member.objects.filter(entering_date__lt=month+'-32').order_by('name')
+        member_list = Member.objects.filter(entering_date__lt=month+'-32').filter(Q(role='운전원')|Q(role='용역')).exclude(note='신성화').exclude(note='신성화투어').exclude(note='성화관광').order_by('name')
         if name:
             member_list = member_list.filter(name__contains=name)
         
@@ -444,7 +445,13 @@ class SalaryList(generic.ListView):
         context['additional_list'] = additional_list
         context['deduction_list'] = deduction_list
         context['salary_list'] = salary_list
+
+        try:
+            meal = Category.objects.get(type='식대').category
+        except Category.DoesNotExist:
+            meal = 0
         
+        context['meal'] = meal
         context['month'] = month
         context['name'] = name
 
@@ -464,6 +471,18 @@ def new_salary(creator, month, member):
     base = 0
     service_allowance = 0
     position_allowance = 0
+    
+    try:
+        category = Category.objects.get(type='식대')
+        meal = int(category.category)
+    except Category.DoesNotExist:
+        category = Category(
+            type = '식대',
+            category = 0,
+            creator = creator
+        )
+        category.save()
+        meal = 0
 
     if TODAY[:7] <= month:
         base = int(member.base)
@@ -490,7 +509,7 @@ def new_salary(creator, month, member):
         attendance = attendance_price,
         leave = leave_price,
         order = order_price,
-        total = attendance_price + leave_price + order_price + base + service_allowance + position_allowance,
+        total = attendance_price + leave_price + order_price + base + service_allowance + position_allowance + meal,
         month = month,
         creator = creator
     )
@@ -500,6 +519,17 @@ def new_salary(creator, month, member):
 def salary_detail(request):
     member_id_list = request.GET.get('driver').split(',')
     month = request.GET.get('date')
+
+    
+    
+    try:
+        category_date = Category.objects.get(type='급여지급일').category
+        if category_date == '말일':
+            salary_date = datetime.strftime(datetime.strptime(month+'-01', FORMAT) + relativedelta(months=1) - timedelta(days=1), FORMAT)
+        else:
+            salary_date = f'{month}-{category_date}'
+    except Category.DoesNotExist:
+        salary_date = ''
     
     member_list = []
     for member_id in member_id_list:
@@ -514,17 +544,22 @@ def salary_detail(request):
         attendance_price_list = [0] * int(last_date)
         leave_price_list = [0] * int(last_date)
         week_list = []
-        
+
+        order_cnt = 0
+        attendance_cnt = 0
+        leave_cnt = 0
         
         total_list = [0] * int(last_date)
         work_cnt = 0
         
 
         salary = Salary.objects.filter(member_id=member).get(month=month)
+        meal = salary.meal
         additional = salary.additional_salary.all()
         deduction = salary.deduction_salary.all()
 
         connects = DispatchOrderConnect.objects.filter(departure_date__range=(f'{month}-01', {month}-{last_date})).filter(driver_id=member)
+        order_cnt = connects.count()
         order_price = 0
         for connect in connects:
             c_date = int(connect.departure_date[8:10]) - 1
@@ -537,6 +572,7 @@ def salary_detail(request):
             total_list[c_date] += order_price
 
         attendances = DispatchRegularlyConnect.objects.filter(departure_date__range=(f'{month}-01', {month}-{last_date})).filter(work_type='출근').filter(driver_id=member)
+        attendance_cnt = attendances.count()
         attendance_price = 0
         for attendance in attendances:
             c_date = int(attendance.departure_date[8:10]) - 1
@@ -549,6 +585,7 @@ def salary_detail(request):
             total_list[c_date] += attendance_price
 
         leaves = DispatchRegularlyConnect.objects.filter(departure_date__range=(f'{month}-01', {month}-{last_date})).filter(work_type='퇴근').filter(driver_id=member)
+        leave_cnt = leaves.count()
         leave_price = 0
         for leave in leaves:
             c_date = int(leave.departure_date[8:10]) - 1
@@ -574,11 +611,15 @@ def salary_detail(request):
             if check == 1:
                 work_cnt += 1
 
-        
+        total_cnt = leave_cnt + attendance_cnt + order_cnt
         member_list.append({
             'order_list': order_list,
             'attendance_list': attendance_list,
             'leave_list': leave_list,
+            'order_cnt': order_cnt,
+            'total_cnt': total_cnt,
+            'attendance_cnt': attendance_cnt,
+            'leave_cnt': leave_cnt,
             'order_price_list': order_price_list,
             'attendance_price_list': attendance_price_list,
             'leave_price_list': leave_price_list,
@@ -589,6 +630,8 @@ def salary_detail(request):
             'work_cnt': work_cnt,
             'additional': additional,
             'deduction': deduction,
+            'meal': meal,
+            'salary_date': salary_date,
         })
         
     context = {
@@ -625,12 +668,13 @@ def salary_edit(request):
                 member.position_allowance = position
                 member.save()
 
+                # 선택한 달 이후 급여들 다 업데이트
                 edit_salary_list = Salary.objects.filter(month__gt=month).filter(member_id=member)
                 for e_salary in edit_salary_list:
                     e_salary.base = base
                     e_salary.service_allowance = service
                     e_salary.position_allowance = position
-                    e_salary.total = int(e_salary.attendance) + int(e_salary.leave) + int(e_salary.order) + int(e_salary.base) + int(e_salary.service_allowance) + int(e_salary.position_allowance) + int(e_salary.additional) - int(e_salary.deduction)
+                    e_salary.total = int(e_salary.meal) + int(e_salary.attendance) + int(e_salary.leave) + int(e_salary.order) + int(e_salary.base) + int(e_salary.service_allowance) + int(e_salary.position_allowance) + int(e_salary.additional) - int(e_salary.deduction)
                     e_salary.save()
 
 
