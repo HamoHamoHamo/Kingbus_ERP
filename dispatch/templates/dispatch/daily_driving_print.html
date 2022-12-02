@@ -12,10 +12,11 @@
 
 <body>
     {% for i in "x"|rjust:cnt %}
-    {% with vehicle=vehicle_list|index:forloop.counter0 %}
+    {% with member=member_list|index:forloop.counter0 %}
     {% with order_l=order_list|index:forloop.counter0 %}
     {% with e_order_l=e_order_list|index:forloop.counter0 %}
     {% with c_order_l=c_order_list|index:forloop.counter0 %}
+    {% with accompany=accompany_list|index:forloop.counter0 %}
     <div class="a4ContainerFor"  style='page-break-before:always'>
         <div class="a4Container">
             <div class="drivingPrintHeader">
@@ -23,16 +24,16 @@
                     <div class="dayAndDriverTop">
                         <div class="dataItemCell">
                             <span>차량번호 :</span>
-                            <span>{{vehicle.vehicle_num}}</span>
+                            <span>{{member.driver.vehicle_num}}</span>
                         </div>
                         <div class="dataItemCell">
                             <span>승무원 :</span>
-                            <span>{{vehicle.driver_name}}</span>
+                            <span>{{member.name}}</span>
                         </div>
                     </div>
                     <div class="dayAndDriverBottom">
                         <div class="dataItemCell dataItemCellDate">
-                            <span></span>
+                            <span>{{date|slice:':4'}}년 {{date|slice:'5:7'}}월 {{date|slice:'8:10'}}일</span>
                             <span></span>
                             <span></span>
                             <span></span>
@@ -78,7 +79,7 @@
                     {% if order %}
                     <div class="startCell">
                         <div class="tableFirst">{{order.departure_date|slice:"10:"}}</div>
-                        <div class="tableContents">{{order.regularly_id.departure}}</div>
+                        <div class="tableContents">[{{order.bus_id.vehicle_num}}] {{order.regularly_id.departure}}</div>
                         <div class="tableContents">{{order.regularly_id.arrival}}</div>
                         <div class="tableContents">{{order.regularly_id.references}}</div>
                     </div>
@@ -132,7 +133,7 @@
                     {% if order %}
                     <div class="endCell">
                         <div class="tableFirst">{{order.departure_date|slice:"10:"}}</div>
-                        <div class="tableContents">{{order.regularly_id.departure}}</div>
+                        <div class="tableContents">[{{order.bus_id.vehicle_num}}] {{order.regularly_id.departure}}</div>
                         <div class="tableContents">{{order.regularly_id.arrival}}</div>
                         <div class="tableContents">{{order.regularly_id.references}}</div>
                     </div>
@@ -170,7 +171,7 @@
                     {% with departure_date=order.departure_date|slice:":10" %}
                     <div class="tableFirst">{% if date != departure_date %}연속{% else %}{{order.departure_date|slice:"11:"}}{% endif %}</div>
                     {% endwith %}
-                    <div class="tableContents">{{order.order_id.departure}} ▶ {{order.order_id.arrival}}</div>
+                    <div class="tableContents">[{{order.bus_id.vehicle_num}}] {{order.order_id.departure}} ▶ {{order.order_id.arrival}}</div>
                     <div class="tableContents">{{order.order_id.references}}</div>
                     <div class="tableContents">({{order.order_id.customer}}){{order.order_id.customer_phone}}</div>
                 </div>
@@ -187,7 +188,22 @@
 
                 <div class="orderCell orderCellTotal">
                     <div class="tableFirst tableLast">비고</div>
-                    <div class="tableContents tableTotal"></div>
+                    <div class="tableContents tableTotal">
+                        {% if accompany %}
+                        {% for accom in accompany %}
+                            {% for acc in accom %}
+                            
+                            {% if forloop.counter0 == 0 %}    
+                            [{{acc.departure_date|slice:'11:'}} 출발 동반차량] : 
+                            {% endif %}
+
+                            {% if member.name != acc.driver_id__name %}
+                            {{acc.driver_id__name}}({{acc.bus_id__vehicle_num}})
+                            {% endif %}
+                            {% endfor %}
+                        {% endfor %}
+                        {% endif %}
+                    </div>
                 </div>
             </div>
 
@@ -351,6 +367,7 @@
             </div>
         </div>
     </div>
+    {% endwith %}
     {% endwith %}
     {% endwith %}
     {% endwith %}

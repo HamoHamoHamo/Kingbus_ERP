@@ -253,7 +253,6 @@
     border-radius: 0.2rem;
     font-size: 1.5rem;
     box-sizing: border-box;
-    outline: none;
 }
 
 .search_inputArea select {
@@ -391,7 +390,6 @@
     width: calc(100% - 1.6rem);
     height: 2.2rem;
     margin: 0 0.8rem;
-    outline: none;
     box-sizing: border-box;
 }
 
@@ -403,14 +401,12 @@
     width: calc(100% - 2.4rem);
     height: 1.8rem;
     margin: 0 0.8rem;
-    outline: none;
 }
 
 .inputTextTwice {
     width: calc(50% - 2.4rem);
     height: 1.8rem;
     margin: 0 0.8rem;
-    outline: none;
 }
 
 .inputTextUnit {

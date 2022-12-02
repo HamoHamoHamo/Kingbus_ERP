@@ -165,7 +165,7 @@
         <tr>
           <td class="tdTypeA">*그룹</td>
           <td colspan="3" class="tdTypeB">
-            <select name="group" class="inputSelect">
+            <select name="group" class="inputSelect" tabindex="1">
               <option value=""></option>
               {% for g in group_list %}
               <option {% if detail.group.id == g.id %} selected {% endif %} value="{{g.id}}">{{g.name}}</option>
@@ -175,14 +175,14 @@
           <td class="tdTypeA">*출/퇴근</td>
           <td class="tdTypeC">
             
-            <input autocomplete="off" {% if detail.work_type == '출근' %} checked {% endif %} value="출근" name="work_type" id="workStart" type="radio">
+            <input autocomplete="off" {% if detail.work_type == '출근' %} checked {% endif %} value="출근" name="work_type" id="workStart" type="radio" tabindex="11">
             <label for="workStart">출근</label>
-            <input autocomplete="off" {% if detail.work_type == '퇴근' %} checked {% endif %} value="퇴근" name="work_type" id="workEnd" type="radio">
+            <input autocomplete="off" {% if detail.work_type == '퇴근' %} checked {% endif %} value="퇴근" name="work_type" id="workEnd" type="radio" tabindex="12">
             <label for="workEnd">퇴근</label>
           </td>
           <td class="tdTypeA">위치</td>
           <td class="tdTypeC">
-            <select name="location" class="inputSelect">
+            <select name="location" class="inputSelect" tabindex="13">
               <option value=""></option>
               <option {% if detail.location == '셔틀' %} selected {% endif %} value="셔틀">셔틀</option>
               <option {% if detail.location == '정문' %} selected {% endif %} value="정문">정문</option>
@@ -193,12 +193,12 @@
         <tr>
           <td class="tdTypeA">*노선명</td>
           <td colspan="3" class="tdTypeB">
-            <input autocomplete="off" value="{{detail.route}}" name="route" type="text" class="inputText length15">
+            <input autocomplete="off" value="{{detail.route}}" name="route" type="text" class="inputText length15" tabindex="2">
           </td>
           <td class="tdTypeA">*운행요일</td>
           <td colspan="3" class="tdTypeB">
             <div class="routeWeek driveDateBox">
-              <input autocomplete="off" id="all" type="checkbox">
+              <input autocomplete="off" id="all" type="checkbox" tabindex="14">
               <label for="all">모두</label>
               <input autocomplete="off" {% if detail.week and detail.week|in_check:'월' %} checked {% endif %} name="week" value="월" id="mon" type="checkbox">
               <label for="mon">월</label>
@@ -220,47 +220,46 @@
         <tr>
           <td class="tdTypeA">*출발지</td>
           <td colspan="3" class="tdTypeB">
-            <input autocomplete="off" value="{{detail.departure}}" name="departure" type="text" class="inputText length200">
+            <input autocomplete="off" value="{{detail.departure}}" name="departure" type="text" class="inputText length200" tabindex="3">
           </td>
           <td class="tdTypeA">상세노선</td>
           <td colspan="3" class="tdTypeB">
-            <input autocomplete="off" value="{{detail.detailed_route}}" name="detailed_route" type="text" class="inputText">
+            <input autocomplete="off" value="{{detail.detailed_route}}" name="detailed_route" type="text" class="inputText" tabindex="15">
           </td>
         </tr>
         <tr>
           <td class="tdTypeA">*도착지</td>
           <td colspan="3" class="tdTypeB">
-            <input autocomplete="off" value="{{detail.arrival}}" name="arrival" type="text" class="inputText length200">
+            <input autocomplete="off" value="{{detail.arrival}}" name="arrival" type="text" class="inputText length200" tabindex="4">
           </td>
           <td class="tdTypeA">*금액</td>
           <td class="tdTypeC">
-            <input autocomplete="off" value="{{detail.price}}" name="price" type="text" class="inputText amountComma length100">
+            <input autocomplete="off" value="{{detail.price}}" name="price" type="text" class="inputText amountComma length100" tabindex="16">
           </td>
           <td class="tdTypeA">*기사수당</td>
           <td class="tdTypeC">
-            <input autocomplete="off" value="{{detail.driver_allowance}}" name="driver_allowance" type="text" class="inputText amountComma length100">
+            <input autocomplete="off" value="{{detail.driver_allowance}}" name="driver_allowance" type="text" class="inputText amountComma length100" tabindex="17">
           </td>
         </tr>
         <tr>
           <td class="tdTypeA">*순번</td>
           <td class="tdTypeC">
             <div class="routeNumber">
-              <input autocomplete="off" value="{{detail.number1}}" name="number1" type="text" class="inputText length100">-
-              <input autocomplete="off" value="{{detail.number2}}" name="number2" type="text" class="inputText length100">
+              <input autocomplete="off" value="{{detail.number1}}" name="number1" type="text" class="inputText length100" tabindex="5">-
+              <input autocomplete="off" value="{{detail.number2}}" name="number2" type="text" class="inputText length100" tabindex="6">
             </div>
           </td>
           <td class="tdTypeA">*운행시간</td>
           <td class="tdTypeC">
             <div class="routeTime">
-              <input autocomplete="off" value="{{detail.departure_time|slice:':2'}}" name="departure_time1" type="text" class="inputText" maxlength="2">:
-              <input autocomplete="off" value="{{detail.departure_time|slice:'3:'}}" name="departure_time2" type="text" class="inputText" maxlength="2">~
-              <input autocomplete="off" value="{{detail.arrival_time|slice:':2'}}" name="arrival_time1" type="text" class="inputText" maxlength="2">:
-              <input autocomplete="off" value="{{detail.arrival_time|slice:'3:'}}" name="arrival_time2" type="text" class="inputText" maxlength="2">
+              <input autocomplete="off" value="{{detail.departure_time|slice:':2'}}" name="departure_time1" type="text" class="inputText" maxlength="2" tabindex="7">:
+              <input autocomplete="off" value="{{detail.departure_time|slice:'3:'}}" name="departure_time2" type="text" class="inputText" maxlength="2" tabindex="8">~
+              <input autocomplete="off" value="{{detail.arrival_time|slice:':2'}}" name="arrival_time1" type="text" class="inputText" maxlength="2" tabindex="9">:
+              <input autocomplete="off" value="{{detail.arrival_time|slice:'3:'}}" name="arrival_time2" type="text" class="inputText" maxlength="2" tabindex="10">
             </div>
           </td>
           <td class="tdTypeA">참조사항</td>
           <td colspan="3" class="tdTypeB">
-            <input autocomplete="off" value="{{detail.references}}" name="references" type="text" class="inputText length100">
           </td>
         </tr>
       </table>

@@ -112,9 +112,9 @@ function openDetailPopup() {
     driver_name.children[0].innerText = `${regDatas[this.className].driver_name}`
     driver_name.children[0].value = regDatas[this.className].driver_id
   }
-  if (regDatas[this.className].use == "y") {
+  if (regDatas[this.className].use == "사용") {
     ableBusEdit.checked = true
-  } else if (regDatas[this.className].use == "n") {
+  } else if (regDatas[this.className].use == "미사용") {
     disableBusEdit.checked = true
   } else {
     deleteBusEdit.checked = true

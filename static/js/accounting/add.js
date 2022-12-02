@@ -209,8 +209,8 @@ function removeComma() {
 }
 
 function onlyNum() {
-    let check = /^[0-9]+$/
-    let regex = /[^0-9]/g;
+    let check = /^[-\.0-9]+$/
+    let regex = /[^-\.0-9]/g;
     if (!check.test(this.value)) {
         this.value = this.value.replace(regex, "")
     }
@@ -225,13 +225,20 @@ function makeResult() {
 
 
 function remove0(result, targetInput) {
-    if (result.length > 1) {
-        if (result[0] == 0) {
-            result = result.substr(1,)
+    if(result[0] == "-"){
+        if(result[1] == 0){
+            result = `-${result.replace(/\-/g,"").substr(1,)}`;
             remove0(result, targetInput)
-        } else {
+        }else{
+            result = `-${result.replace(/\-/g,"")}`;
             changeAddComma(result, targetInput)
         }
+    }else if(result[0] == 0){
+        result = result.replace(/\-/g,"");
+        remove0(result, targetInput)
+    }else{
+        result = result.replace(/\-/g,"");
+        changeAddComma(result, targetInput)
     }
 }
 

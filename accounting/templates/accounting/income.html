@@ -73,59 +73,26 @@
             <div class="dashboardHeader">일반매출 이용 유형</div>
             <div class="dashboardBody">
                 <canvas id="kategoriChart" width="500" height="300"></canvas>
-                <table class="table-list">
-                    <thead>
-                      <tr class="table-list_head-tr">
-                        <td class="table-list_head-tr_td">유형</td>
-                        <td class="table-list_head-tr_td">건수</td>
-                        <td class="table-list_head-tr_td">차량대수</td>
-                        <td class="table-list_head-tr_td">매출</td>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr class="table-list_body-tr">
-                        <td class="table-list_body-tr_td">워크샵</td>
-                        <td class="table-list_body-tr_td"></td>
-                        <td class="table-list_body-tr_td"></td>
-                        <td class="table-list_body-tr_td"></td>
-                      </tr>
-                    </tbody>
-                      <tr class="table-list_body-tr">
-                        <td class="table-list_body-tr_td">콘서트, 단체관람</td>
-                        <td class="table-list_body-tr_td"></td>
-                        <td class="table-list_body-tr_td"></td>
-                        <td class="table-list_body-tr_td"></td>
-                      </tr>
-                    </tbody>
-                      <tr class="table-list_body-tr">
-                        <td class="table-list_body-tr_td">체험학습, 수학여행</td>
-                        <td class="table-list_body-tr_td"></td>
-                        <td class="table-list_body-tr_td"></td>
-                        <td class="table-list_body-tr_td"></td>
-                      </tr>
-                    </tbody>
-                      <tr class="table-list_body-tr">
-                        <td class="table-list_body-tr_td">산악회, 동호회 모임</td>
-                        <td class="table-list_body-tr_td"></td>
-                        <td class="table-list_body-tr_td"></td>
-                        <td class="table-list_body-tr_td"></td>
-                      </tr>
-                    </tbody>
-                      <tr class="table-list_body-tr">
-                        <td class="table-list_body-tr_td">결혼식</td>
-                        <td class="table-list_body-tr_td"></td>
-                        <td class="table-list_body-tr_td"></td>
-                        <td class="table-list_body-tr_td"></td>
-                      </tr>
-                    </tbody>
-                      <tr class="table-list_body-tr">
-                        <td class="table-list_body-tr_td">기타</td>
-                        <td class="table-list_body-tr_td"></td>
-                        <td class="table-list_body-tr_td"></td>
-                        <td class="table-list_body-tr_td"></td>
-                      </tr>
-                    </tbody>
-                  </table>
+                <div class="tableBox">
+                  <div class="scrolling_table-list_header">
+                    <table class="table-list">
+                      <thead>
+                        <tr class="table-list_head-tr">
+                          <td class="table-list_head-tr_td">유형</td>
+                          <td class="table-list_head-tr_td">건수</td>
+                          <td class="table-list_head-tr_td">차량대수</td>
+                          <td class="table-list_head-tr_td">매출</td>
+                        </tr>
+                      </thead>
+                    </table>
+                  </div>
+                  <div class="scrolling_table-list_body">
+                    <table class="table-list">
+                      <tbody class="createTable">
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
             </div>
         </div>
         <div class="dashboardArticle otherData">

@@ -139,6 +139,13 @@ function onlyNum() {
     this.value = this.value.replace(/[^0-9]/g, '')
 }
 
+document.addEventListener("keydown", saveKeyPress)
+
+function saveKeyPress(e) {
+    if (e.keyCode === 113) {
+        submitVaildation(e)
+    }
+}
 
 inputSave.addEventListener("click", submitVaildation)
 

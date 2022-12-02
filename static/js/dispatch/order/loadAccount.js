@@ -45,8 +45,8 @@ function openAccounting() {
     loadAccountBtn.addEventListener("click", loadAccount)
 
     function loadAccount() {
-        for (i = 0; i < accountTr.length; i++){
-            if(accountTr[i].children[0].children[0].checked){
+        for (i = 0; i < accountTr.length; i++) {
+            if (accountTr[i].children[0].children[0].checked) {
                 loadClient.value = accountTr[i].children[1].innerText
                 loadPhone.value = accountTr[i].children[2].innerText
                 return closeAccounting()
@@ -55,22 +55,30 @@ function openAccounting() {
         alert("불러올 거래처 정보를 선택해 주세요.")
     }
 
-    for (i = 0; i < accountTr.length; i++){
+    for (i = 0; i < accountTr.length; i++) {
         accountTr[i].addEventListener("click", checkingRadio)
     };
 
-    function checkingRadio(){
+    function checkingRadio() {
         this.children[0].children[0].checked = true
+    }
+
+    document.addEventListener("keydown", saveKeyPress)
+
+    function saveKeyPress(e) {
+        if (e.keyCode === 13) {
+            filterAccount()
+        }
     }
 
     accountSearchBtn.addEventListener("click", filterAccount)
 
-    function filterAccount(){
-        if(accountSelect.options[accountSelect.selectedIndex].value === "거래처명"){
+    function filterAccount() {
+        if (accountSelect.options[accountSelect.selectedIndex].value === "거래처명") {
             accountFilterling(accountTr, accountInput.value)
-        }else{
+        } else {
             phoneNumFilterling(accountTr, accountInput.value)
-        }        
+        }
     }
 }
 
@@ -83,24 +91,24 @@ function closeAccounting() {
     accountTable.innerText = ""
 }
 
-function accountFilterling(accountTr, text){
-    for (i = 0; i < accountTr.length; i++){
+function accountFilterling(accountTr, text) {
+    for (i = 0; i < accountTr.length; i++) {
         accountTr[i].style.display = "table-row"
     };
-    for (i = 0; i < accountTr.length; i++){
-        if(!accountTr[i].children[1].innerText.includes(text)){
+    for (i = 0; i < accountTr.length; i++) {
+        if (!accountTr[i].children[1].innerText.includes(text)) {
             accountTr[i].style.display = "none"
         }
-    };    
+    };
 }
 
-function phoneNumFilterling(accountTr, text){
-    for (i = 0; i < accountTr.length; i++){
+function phoneNumFilterling(accountTr, text) {
+    for (i = 0; i < accountTr.length; i++) {
         accountTr[i].style.display = "table-row"
     };
-    for (i = 0; i < accountTr.length; i++){
-        if(!accountTr[i].children[2].innerText.includes(text)){
+    for (i = 0; i < accountTr.length; i++) {
+        if (!accountTr[i].children[2].innerText.includes(text)) {
             accountTr[i].style.display = "none"
         }
-    };    
+    };
 }

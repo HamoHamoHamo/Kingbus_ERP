@@ -79,7 +79,7 @@
           <td>
             <input autocomplete="off" name="delete_check" value="{{member.id}}" type="checkbox">
           </td>
-          <td>{{start_num|sub:forloop.counter0}}</td>
+          <td>{{start_num|add:forloop.counter0}}</td>
           <td class="{{ forloop.counter0 }}">{{member.name}}</td>
           <td></td>
           <td>{{member.user_id}}</td>

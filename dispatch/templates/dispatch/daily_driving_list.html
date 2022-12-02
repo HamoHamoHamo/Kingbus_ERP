@@ -31,8 +31,8 @@
             <div>
                 <input autocomplete="off" type="checkbox">
             </div>
-            <div>차량번호</div>
             <div>기사명</div>
+            <div>차량번호</div>
             <div>출근</div>
             <div>업무</div>
             <div>퇴근</div>
@@ -40,16 +40,18 @@
         <div class="tableBorder">
             <table class="contentsCell">
                 <tbody>
-                    {% for vehicle in vehicle_list %}
-                    <tr class="{{vehicle.id}}">
+                    {% for member in member_list %}
+                    {% with e_connect=e_connect_object|obj:member.id %}
+                    {% with connect=connect_object|obj:member.id %}
+                    {% with c_connect=c_connect_object|obj:member.id %}
+                    {% if e_connect or connect or c_connect %}
+                    <tr class="{{member.id}}">
                         <td>
                             <input autocomplete="off" type="checkbox">
                         </td>
-                        <td>{{vehicle.vehicle_num}}</td>
-                        <td>{{vehicle.driver_name}}</td>
-                        {% with e_connect=e_connect_object|obj:vehicle.id %}
-                        {% with connect=connect_object|obj:vehicle.id %}
-                        {% with c_connect=c_connect_object|obj:vehicle.id %}
+                        <td>{{member.name}}</td>
+                        <td>{{member.driver.vehicle_num}}</td>
+                        
                         <td>
                             {% for con in e_connect %}
                                 {% if forloop.counter != 1 %},{% endif %}
@@ -74,10 +76,11 @@
                                 {% if con.regularly_id.references %} -- ({{con.regularly_id.references}}) {% endif %}
                             {% endfor %}
                         </td>
-                        {% endwith %}
-                        {% endwith %}
-                        {% endwith %}
                     </tr>
+                    {% endif %}
+                    {% endwith %}
+                    {% endwith %}
+                    {% endwith %}
                     {% endfor %}
                 </tbody>
             </table>
