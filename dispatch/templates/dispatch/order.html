@@ -268,7 +268,7 @@
                         <td class="tdTypeA">차량종류</td>
                         <td class="tdTypeC">
                             
-                            <select id="depList" class="inputSelect" tabindex="10">
+                            <select name="bus_type" id="depList" class="inputSelect" tabindex="10">
                                 <option></option>
                                 {% for vehicle in vehicle_types %}
                                 <option {% if detail.bus_type == vehicle.category %} selected {% endif %} value="{{vehicle.category}}">{{vehicle.category}}</option>
@@ -515,7 +515,7 @@
                                         {{order.departure}} ▶
                                     </div>
                                     {% for waypoint in order.waypoint.all %}
-                                        <div>{{waypoint.waypoint}}({{waypoint.time}}){% if waypoint.delegate or waypoint.delegate_phone %} - {% endif %}{{waypoint.delegate}}{% if waypoint.delegate_phone %}({{waypoint.delegate_phone}}){% endif %}</div>
+                                        <div>{{waypoint.waypoint}}{% if waypoint.time %}({{waypoint.time}}){% endif %}{% if waypoint.delegate or waypoint.delegate_phone %} - {% endif %}{{waypoint.delegate}}{% if waypoint.delegate_phone %}({{waypoint.delegate_phone}}){% endif %}</div>
                                     {% endfor %}
                                     <div>{{order.arrival}}</div>
                                 </div>

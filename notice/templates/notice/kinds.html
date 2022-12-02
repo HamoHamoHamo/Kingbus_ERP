@@ -23,7 +23,7 @@
           <option value="title" {% if selector == 'title' %} selected {% endif %}>제목</option>
           <option value="creator" {% if selector == 'creator' %} selected {% endif %}>작성자</option>
         </select>
-        <input autocomplete="off"type="text" name="search" class="searchToolInput">
+        <input autocomplete="off"type="text" name="search" value="{{search}}" class="searchToolInput">
       </div>
       <input autocomplete="off"type="submit" value="검색" class="searchBtn">
     </div>
@@ -71,7 +71,7 @@
           {% if page_obj.has_previous %}
           <div class="page-item page-pre">
             <a class="page-link"
-              href="?top_box_selector={{selector}}&search={{searched}}&page={{ page_obj.previous_page_number }}"
+              href="?top_box_selector={{selector}}&search={{search}}&page={{ page_obj.previous_page_number }}"
               tabindex="-1">이전</a>
           </div>
           {% else %}
@@ -81,14 +81,14 @@
           {% endif %}
           {% for page in page_range %}
           <div class="page-item {% if page == page_obj.number %} page-activate {% endif %}">
-            <a class="page-link" href="?top_box_selector={{selector}}&search={{searched}}&page={{ page }}">{{ page }}</a>
+            <a class="page-link" href="?top_box_selector={{selector}}&search={{search}}&page={{ page }}">{{ page }}</a>
           </div>
           {% endfor %}
 
           {% if page_obj.has_next %}
           <div class="page-item">
             <a class="page-link page-next"
-              href="?top_box_selector={{selector}}&search={{searched}}&page={{ page_obj.next_page_number }}">다음</a>
+              href="?top_box_selector={{selector}}&search={{search}}&page={{ page_obj.next_page_number }}">다음</a>
           </div>
           {% else %}
           <div class="page-item page-next disabled">

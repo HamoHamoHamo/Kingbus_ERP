@@ -29,16 +29,13 @@ class NoticeKindsView(generic.ListView):
     def search_result(self, request, kinds):
         if request.GET.get('search', None):
             selector = request.GET.get('top_box_selector', None)
-            search = request.GET.get('search', None)
+            search = request.GET.get('search', '')
             if selector == 'title':
                 notices = Notice.objects.filter(title__contains=search).filter(kinds=kinds).order_by('-pub_date')
-            elif selector == "creator":
-                try:
-                    creator = Member.objects.get(name=search)
-                    notices = Notice.objects.filter(creator=creator).filter(kinds=kinds).order_by('-pub_date')
-                except:
-                    creator = None
-                    notices = Notice.objects.filter(creator=creator).filter(kinds=kinds).order_by('-pub_date')
+            elif selector == "creator":                
+                notices = Notice.objects.filter(creator__name__contains=search).filter(kinds=kinds).order_by('-pub_date')
+                
+
             else:
                 raise Http404()
             return notices
@@ -46,7 +43,7 @@ class NoticeKindsView(generic.ListView):
             return None
     
     def get(self, request, **kwargs):
-        if request.session.get('authority') == 4 and self.kwargs['kinds'] == 'office':
+        if request.session.get('authority') >= 4 and self.kwargs['kinds'] == 'office':
             
             return redirect(request.META.get('HTTP_REFERER', 'redirect_if_referer_not_found'))
         else:
@@ -77,7 +74,7 @@ class NoticeKindsView(generic.ListView):
         context['current_page'] = current_page
         context['kinds'] = self.kwargs['kinds']
         
-        context['searched'] = self.request.GET.get('search', '')
+        context['search'] = self.request.GET.get('search', '')
         context['selector'] = self.request.GET.get('top_box_selector', 'title')
         return context
 
@@ -86,7 +83,7 @@ def create(request):
         'name': get_object_or_404(Member, pk=request.session.get('user')).name,
         'kinds': request.GET.get('kinds')
         }
-    if request.session.get('authority') == 4 and request.GET.get('kinds') == 'office':
+    if request.session.get('authority') >= 4 and request.GET.get('kinds') == 'office':
         return redirect(request.META.get('HTTP_REFERER', 'redirect_if_referer_not_found'))
     if request.method == "GET":
         
@@ -118,7 +115,7 @@ def notice_file_save(upload_file, notice):
     return
 
 def edit(request, kinds, notice_id):    
-    if request.session.get('authority') == 4 and Notice.objects.get(id=notice_id).creator.id != request.session.get('user'):
+    if request.session.get('authority') >= 4 and Notice.objects.get(id=notice_id).creator.id != request.session.get('user'):
         return redirect(request.META.get('HTTP_REFERER', 'redirect_if_referer_not_found'))
     notice = get_object_or_404(Notice, pk=notice_id)
 
@@ -178,7 +175,7 @@ class NoticeDetail(generic.DetailView):
         return redirect(reverse('notice:detail', args=(self.kwargs['kinds'], self.notice_id)))
 
     def get(self, request, **kwargs):
-        if request.session.get('authority') == 4 and self.kwargs['kinds'] == 'office':
+        if request.session.get('authority') >= 4 and self.kwargs['kinds'] == 'office':
             
             return redirect(request.META.get('HTTP_REFERER', 'redirect_if_referer_not_found'))
         else:

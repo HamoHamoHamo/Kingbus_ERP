@@ -31,9 +31,9 @@
 </div>
 
 <div class="main-layout_container">
-    <form method="post" action="{% url 'crudmember:setting_client_delete' %}" class="clientTableForm">
+    <form method="post" action="{% url 'crudmember:setting_client_delete' %}" class="clientTableForm clientDeleteForm">
         {% csrf_token %}
-        <input type="submit" class="btnModules clientDeleteBtn" value="삭제">
+        <div class="btnModules clientDeleteBtn">삭제</div>
 
         <div class="scrolling_table-list_header">
             <table class="table-list">
@@ -229,6 +229,7 @@
 </script>
 <script src="{% static 'js/crudmember/clientCreate.js' %}"></script>
 <script src="{% static 'js/crudmember/deleteChecker.js' %}"></script>
+<script src="{% static 'js/crudmember/deleteAlert.js' %}"></script>
 <script src="{% static 'js/crudmember/createEssential.js' %}"></script>
 <script src="{% static 'js/phoneNumberForm.js' %}"></script>
 {% endblock %}

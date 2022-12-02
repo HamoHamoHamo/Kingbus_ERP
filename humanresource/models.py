@@ -4,9 +4,8 @@ from django.db import models
 import datetime
 
 class Member(models.Model):
-    num = models.IntegerField(verbose_name='번호', null=False, default=1)
-    user_id = models.CharField(max_length=100, verbose_name='사용자id', unique=True, null=False)
-    password = models.TextField(verbose_name='비밀번호', null=False)
+    user_id = models.CharField(max_length=100, verbose_name='사용자id', unique=True, null=False, blank=True)
+    password = models.TextField(verbose_name='비밀번호', null=False, blank=True)
     name = models.CharField(verbose_name='이름', max_length=100, null=False)
     role = models.CharField(verbose_name='업무', max_length=100, null=False)
     birthdate = models.CharField(verbose_name='생년월일', max_length=100, null=False)
@@ -61,7 +60,7 @@ class MemberFile(models.Model):
 
 
 class Salary(models.Model):
-    member_id = models.ForeignKey(Member, on_delete=models.SET_NULL, related_name="salary", null=True)
+    member_id = models.ForeignKey(Member, on_delete=models.CASCADE, related_name="salary", null=True)
     base = models.CharField(verbose_name='기본급', max_length=20, null=False, default=0)
     service_allowance = models.CharField(verbose_name='근속수당', max_length=20, null=False, default=0)
     position_allowance = models.CharField(verbose_name='직급수당', max_length=20, null=False, default=0)
