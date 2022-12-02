@@ -117,38 +117,36 @@ def member_create(request):
 
     if request.method == "POST":
         user_auth = request.session.get('authority')
-        if user_auth == 2:
-            user_auth = 1
 
         member_form = MemberForm(request.POST)
         if member_form.is_valid():
             role = request.POST.get('role')
-            if role == '용역':
+            if role == '임시':
                 req_auth = 5
+            elif role == '용역':
+                req_auth = 4
             elif role == '운전원':
                 req_auth = 4
             elif role == '팀장':
                 req_auth = 3
-            elif role == '배차관리자':
+            elif role == '관리자':
                 req_auth = 1
-            elif role == '경리관리자':
-                req_auth = 1
-            elif role == '마스터':
+            elif role == '최고관리자':
                 req_auth = 0
             
             if req_auth <= user_auth and user_auth != 0:
                 return HttpResponseBadRequest()
             creator = Member.objects.get(pk=request.session.get('user'))
             member = member_form.save(commit=False)
-            member.num = Member.objects.count() + 1
             member.creator = creator
             member.authority = req_auth
             user_id = request.POST.get('user_id', None)
             if Member.objects.filter(user_id=user_id).exists(): #아이디 중복체크
                 raise Http404
             
-            member.user_id = user_id
-            member.password = make_password('0000')
+            if role != '임시':
+                member.user_id = user_id
+                member.password = make_password('0000')
             member.emergency = request.POST.get('emergency1', '') + ' ' + request.POST.get('emergency2', '')
             member.save()
 
@@ -182,13 +180,12 @@ def member_edit(request):
     if request.session.get('authority') >= 3:
         return redirect(request.META.get('HTTP_REFERER', 'redirect_if_referer_not_found'))
         
-    pk = request.POST.get('id', None)
-    member = get_object_or_404(Member, pk=pk)
-
     if request.method == "POST":
+        pk = request.POST.get('id', None)
+        member = get_object_or_404(Member, pk=pk)
+
         user_auth = request.session.get('authority')
-        if user_auth == 2:
-            user_auth = 1
+
         member_form = MemberForm(request.POST)
         if member_form.is_valid():
             role = request.POST.get('role')
@@ -198,11 +195,9 @@ def member_edit(request):
                 req_auth = 4
             elif role == '팀장':
                 req_auth = 3
-            elif role == '배차관리자':
-                req_auth = 2
-            elif role == '경리관리자':
+            elif role == '관리자':
                 req_auth = 1
-            elif role == '마스터':
+            elif role == '최고관리자':
                 req_auth = 0
 
             cur_auth = member.authority
@@ -289,8 +284,6 @@ def member_delete(request):
         del_list = request.POST.getlist('delete_check', '')
         ####권한 확인
         
-        if user_auth == 1:
-            user_auth = 2
         for pk in del_list:
             req_auth = get_object_or_404(Member, pk=pk).authority
             if req_auth <= user_auth and user_auth != 0:
@@ -304,7 +297,7 @@ def member_delete(request):
                 vehicle.save()
             member.delete()
 
-        return redirect('HR:member')
+        return redirect(request.META.get('HTTP_REFERER', 'redirect_if_referer_not_found'))
     else:
         return HttpResponseNotAllowed(['post'])
 
@@ -312,80 +305,8 @@ def member_img(request, file_id):
     context = {
         'img': get_object_or_404(MemberFile, id=file_id)
     }
-    return render(request, 'vehicle/document_img.html', context)
+    return render(request, 'HR/member_img.html', context)
 
-
-
-# class ManagementList(generic.ListView):
-#     template_name = 'HR/mgmt.html'
-#     context_object_name = 'hr_list'
-#     model = HR
-#     paginate_by = 10
-
-#     def get_queryset(self):
-#         name = self.request.GET.get('name', None)
-#         hr_list = ''
-#         if name:
-#             member_list = Member.objects.filter(name=name)
-#             for member in member_list:
-#                 hr = HR.objects.filter(member_id=member).order_by('-start_date')
-#                 if hr_list:
-#                     hr_list = hr_list | hr
-#                 else:
-#                     hr_list = hr
-                    
-#         else:
-#             hr_list = HR.objects.order_by('-start_date')
-#         return hr_list
-                
-    
-#     def get_context_data(self, **kwargs):
-#         context = super().get_context_data(**kwargs)
-        
-#         paginator = context['paginator']
-#         page_numbers_range = 5
-#         max_index = len(paginator.page_range)
-#         page = self.request.GET.get('page')
-#         current_page = int(page) if page else 1
-
-#         start_index = int((current_page - 1) / page_numbers_range) * page_numbers_range
-#         end_index = start_index + page_numbers_range
-#         if end_index >= max_index:
-#             end_index = max_index
-#         page_range = paginator.page_range[start_index:end_index]
-#         context['page_range'] = page_range
-
-#         yearly = Yearly.objects.select_related('member_id')
-        
-#         cnt = {}
-#         for y in yearly:
-#             cnt[int(y.member_id.id)] = {y.year: y.cnt}
-
-#         # for hr in context['hr_list']:
-
-#         print("CNTTT", cnt)
-#         context['cnt'] = cnt
-#         context['name'] = self.request.GET.get('name', '')
-#         context['member_list'] = Member.objects.all()
-#         return context
-
-# def mgmt_create(request):
-#     if request.method == "POST":
-#         member_id=request.POST.get('member_id', None)
-#         HR_form = HRForm(request.POST)
-#         if HR_form.is_valid() and member_id:
-#             hr = HR_form.save(commit=False)
-            
-#             hr.member_id = Member.objects.get(pk=member_id)
-#             hr.creator = User.objects.get(pk=request.session.get('user'))
-#             hr.save()
-        
-#             return redirect('HR:mgmt')
-#         else:
-#             raise Http404
-#     else:
-#         raise HttpResponseNotAllowed(['post'])
-#@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 
 class SalaryList(generic.ListView):
     template_name = 'HR/salary_list.html'
@@ -396,10 +317,14 @@ class SalaryList(generic.ListView):
         month = self.request.GET.get('month', TODAY[:7])
         name = self.request.GET.get('name', '')
 
-        
-        member_list = Member.objects.filter(entering_date__lt=month+'-32').filter(Q(role='운전원')|Q(role='용역')).exclude(note='신성화').exclude(note='신성화투어').exclude(note='성화관광').order_by('name')
-        if name:
-            member_list = member_list.filter(name__contains=name)
+        authority = self.request.session.get('authority')
+        if authority >= 3:
+            id = self.request.session.get('user')
+            member_list = Member.objects.filter(entering_date__lt=month+'-32').filter(id=id).filter(Q(role='운전원')|Q(role='용역')).order_by('name')
+        else:
+            member_list = Member.objects.filter(entering_date__lt=month+'-32').filter(Q(role='운전원')|Q(role='용역')).order_by('name')
+            if name:
+                member_list = member_list.filter(name__contains=name)
         
         return member_list
 

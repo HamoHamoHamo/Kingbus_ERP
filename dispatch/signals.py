@@ -7,7 +7,7 @@ from django.dispatch import receiver
 from django.shortcuts import get_object_or_404
 from .models import DispatchRegularly, DispatchOrder, DispatchOrderConnect, DispatchRegularlyConnect, DispatchCheck
 from accounting.models import TotalPrice, AdditionalCollect
-from humanresource.models import Salary
+from humanresource.models import Salary, Member
 from humanresource.views import new_salary
 
 import re
@@ -155,16 +155,19 @@ def delete_regularly_connect(sender, instance, **kwargs):
 
     # Salary 업데이트
     month = instance.departure_date[:7]
-    member = instance.driver_id
-    
-    salary = Salary.objects.filter(member_id=member).get(month=month)
-    print('slaarlary', salary)
-    if instance.work_type == '출근':
-        salary.attendance = int(salary.attendance) - int(instance.driver_allowance)
-    elif instance.work_type == '퇴근':
-        salary.leave = int(salary.leave) - int(instance.driver_allowance)
-    salary.total = int(salary.total) - int(instance.driver_allowance)
-    salary.save()
+    try:
+        member = instance.driver_id
+        salary = Salary.objects.filter(member_id=member).get(month=month)
+        print('slaarlary', salary)
+        if instance.work_type == '출근':
+            salary.attendance = int(salary.attendance) - int(instance.driver_allowance)
+        elif instance.work_type == '퇴근':
+            salary.leave = int(salary.leave) - int(instance.driver_allowance)
+        salary.total = int(salary.total) - int(instance.driver_allowance)
+        salary.save()
+    except Member.DoesNotExist:
+        print("test")
+
 
 
 

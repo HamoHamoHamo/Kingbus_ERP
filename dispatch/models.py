@@ -80,8 +80,8 @@ class DispatchOrderWaypoint(models.Model):
 
 class DispatchOrderConnect(models.Model):
     order_id = models.ForeignKey(DispatchOrder, on_delete=models.CASCADE, related_name="info_order", db_column="order_id", null=False)
-    bus_id = models.ForeignKey(Vehicle, on_delete=models.SET_NULL, related_name="info_bus_id", db_column="bus_id", null=True)
-    driver_id = models.ForeignKey(Member, on_delete=models.SET_NULL, related_name="info_driver_id", db_column="driver_id", null=True)
+    bus_id = models.ForeignKey(Vehicle, on_delete=models.CASCADE, related_name="info_bus_id", db_column="bus_id", null=True)
+    driver_id = models.ForeignKey(Member, on_delete=models.CASCADE, related_name="info_driver_id", db_column="driver_id", null=True)
     outsourcing = models.CharField(verbose_name='용역', max_length=1, null=False, default='n')
     departure_date = models.CharField(verbose_name='출발날짜', max_length=16, null=False)
     arrival_date = models.CharField(verbose_name='도착날짜', max_length=16, null=False)
@@ -95,8 +95,8 @@ class DispatchOrderConnect(models.Model):
 
 class DispatchRegularlyConnect(models.Model):
     regularly_id = models.ForeignKey(DispatchRegularly, on_delete=models.CASCADE, related_name="info_regularly", db_column="order_id", null=False)
-    bus_id = models.ForeignKey(Vehicle, on_delete=models.SET_NULL, related_name="info_regularly_bus_id", db_column="bus_id", null=True)
-    driver_id = models.ForeignKey(Member, on_delete=models.SET_NULL, related_name="info_regularly_driver_id", db_column="driver_id", null=True)
+    bus_id = models.ForeignKey(Vehicle, on_delete=models.CASCADE, related_name="info_regularly_bus_id", db_column="bus_id", null=True)
+    driver_id = models.ForeignKey(Member, on_delete=models.CASCADE, related_name="info_regularly_driver_id", db_column="driver_id", null=True)
     outsourcing = models.CharField(verbose_name='용역', max_length=1, null=False, default='n')
     departure_date = models.CharField(verbose_name='출발날짜', max_length=16, null=False)
     arrival_date = models.CharField(verbose_name='도착날짜', max_length=16, null=False)

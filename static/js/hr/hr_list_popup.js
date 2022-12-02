@@ -47,6 +47,7 @@ const DriverLicenseFileInputEdit = document.querySelector(".DriverLicenseFileInp
 
 const memberFormCreate = document.querySelector(".memberFormCreate")
 const essential = document.querySelectorAll(".essential")
+const authorityDivision = document.querySelectorAll(".authorityDivision")
 
 //직원상세
 for (i = 0; i < editMember.length; i++) {
@@ -55,12 +56,29 @@ for (i = 0; i < editMember.length; i++) {
 
 function openDetailPopup() {
   popupAreaModules[1].style.display = 'block'
-  hrName.value = regDatas[this.className].name;
-  for (i = 0; i < hrRole.length; i++) {
-    if (hrRole[i].innerText == regDatas[this.className].role) {
-      hrRole[i].selected = true;
+
+  for (i = 0; i < hrRole.length; i++){
+    hrRole[i].style.display = "block"
+  };
+
+  if(regDatas[this.className].role !== "임시"){
+    for (i = 0; i < hrRole.length; i++) {
+      if (hrRole[i].innerText == regDatas[this.className].role) {
+        hrRole[i].selected = true;
+      }else if(hrRole[i].innerText === "임시"){
+        hrRole[i].style.display = "none"
+      }
+    }
+  }else{
+    for (i = 0; i < hrRole.length; i++) {
+      if(hrRole[i].innerText !== "임시"){
+        hrRole[i].style.display = "none"
+      }else{
+        hrRole[i].selected = true;
+      }
     }
   }
+  hrName.value = regDatas[this.className].name;
   hrEntering.value = regDatas[this.className].entering_date;
   hrPhone.value = regDatas[this.className].phone_num;
   hrBirth.value = regDatas[this.className].birthdate;
@@ -78,7 +96,14 @@ function openDetailPopup() {
     hrUse[1].checked = true
   }
   hrBlanck.value = regDatas[this.className].note;
-  hrID.value = regDatas[this.className].id
+  if(regDatas[this.className].role !== "임시"){
+    authorityDivision[2].style.display = "block"
+    authorityDivision[3].style.display = "flex"
+    hrID.value = regDatas[this.className].id
+  }else{
+    authorityDivision[2].style.display = "none"
+    authorityDivision[3].style.display = "none"
+  }
   LicenseFileTextEdit.value = regDatas[this.className].license
   DriverLicenseFileTextEdit.value = regDatas[this.className].bus_license
   sendToHidden.value = this.parentNode.className;
@@ -124,13 +149,15 @@ function createChecker() {
   if (PopupDataInputWork.options[PopupDataInputWork.selectedIndex].value == "") {
     return alert("입력하지 않은 필수 입력사항이 있습니다.")
   }
-  if (!idCheckCount) {
-    alert("아이디 중복확인을 진행해 주세요.")
-    e.preventDefault()
-  }
-  if (createID.attributes.check_result.value == "fail") {
-    alert("이미 사용중인 아이디 입니다.")
-    e.preventDefault()
+  if(PopupDataInputWork.options[PopupDataInputWork.selectedIndex].value !== "임시"){
+    if (!idCheckCount) {
+      alert("아이디 중복확인을 진행해 주세요.")
+      e.preventDefault()
+    }
+    if (createID.attributes.check_result.value == "fail") {
+      alert("이미 사용중인 아이디 입니다.")
+      e.preventDefault()
+    }
   }
   memberFormCreate.submit()
 }
@@ -230,26 +257,6 @@ function id_overlap_check_hr() {
       // ajax 처리가 결과가 에러이면 전송 여부는 false // 앞서 초기값을 false로 해 놓았지만 한번 더 선언을 한다.
     }
   });
-}
-
-
-//원전원 이외에 면허번호 가림
-PopupDataInputWork.addEventListener('change', showLicense)
-hrRoleSelect.addEventListener('change', showLicenseEdit)
-
-function showLicense() {
-  if (PopupDataInputWork.options[PopupDataInputWork.selectedIndex].text == "운전원" || PopupDataInputWork.options[PopupDataInputWork.selectedIndex].text == "팀장") {
-    PopupDataInputLicense.parentNode.style.visibility = "visible"
-  } else {
-    PopupDataInputLicense.parentNode.style.visibility = "hidden"
-  }
-}
-function showLicenseEdit() {
-  if (hrRoleSelect.options[hrRoleSelect.selectedIndex].text == "운전원") {
-    hrLicense.parentNode.style.visibility = "visible"
-  } else {
-    hrLicense.parentNode.style.visibility = "hidden"
-  }
 }
 
 
