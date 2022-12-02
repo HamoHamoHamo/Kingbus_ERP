@@ -1,10 +1,16 @@
 function deleteLetter() {
     for (i = 0; i < collectDateBox.length; i++) {
-        if (collectDateBox[i].children[2].children[0].innerText.length > 24) {
-            collectDateBox[i].children[2].children[0].innerText = `${collectDateBox[i].children[2].children[0].innerText.substr(0, 24)} ... ▶`
+        let departure = collectDateBox[i].children[2].children[0].innerText.split("@")[0]
+        let arrival = collectDateBox[i].children[2].children[1].innerText.split("@")[0]
+        if (departure.length > 24) {
+            collectDateBox[i].children[2].children[0].innerText = `${departure.substr(0, 24)} ... ▶`
+        }else{
+            collectDateBox[i].children[2].children[0].innerText = departure
         }
-        if (collectDateBox[i].children[2].children[1].innerText.length > 24) {
-            collectDateBox[i].children[2].children[1].innerText = `${collectDateBox[i].children[2].children[1].innerText.substr(0, 24)} ...`
+        if (arrival.length > 24) {
+            collectDateBox[i].children[2].children[1].innerText = `${arrival.substr(0, 24)} ...`
+        }else{
+            collectDateBox[i].children[2].children[1].innerText = arrival
         }
     }
 }

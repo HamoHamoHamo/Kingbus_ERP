@@ -43,7 +43,7 @@ class VehicleList(generic.ListView):
     def get_queryset(self):
         select = self.request.GET.get('select', '')
         search = self.request.GET.get('search', '')
-        use = self.request.GET.get('use', 'y')
+        use = self.request.GET.get('use', '사용')
 
         print("SDSFFD", select, search, use)
         
@@ -76,7 +76,7 @@ class VehicleList(generic.ListView):
         page_range = paginator.page_range[start_index:end_index]
         context['page_range'] = page_range
 
-        context['start_num'] = paginator.count - page_numbers_range * (current_page-1)
+        context['start_num'] = 1 + paginator.per_page * (current_page-1)
 
         context['select'] = self.request.GET.get('select', '')
         context['search'] = self.request.GET.get('search', '')

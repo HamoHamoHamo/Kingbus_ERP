@@ -195,11 +195,11 @@ class ScheduleList(generic.ListView):
         search_v = self.request.GET.get('search_v', None)
 
         if select == 'driver':
-            vehicle_list = Vehicle.objects.prefetch_related('info_bus_id', 'info_regulary_bus_id').filter(driver_name__contains=search_d).filter(use='y')
+            vehicle_list = Vehicle.objects.prefetch_related('info_bus_id', 'info_regulary_bus_id').filter(driver_name__contains=search_d).filter(use='사용')
         elif select == 'vehicle':
-            vehicle_list = Vehicle.objects.prefetch_related('info_bus_id', 'info_regulary_bus_id').filter(vehicle_num__contains=search_v).filter(use='y')
+            vehicle_list = Vehicle.objects.prefetch_related('info_bus_id', 'info_regulary_bus_id').filter(vehicle_num__contains=search_v).filter(use='사용')
         else:
-            vehicle_list = Vehicle.objects.prefetch_related('info_bus_id', 'info_regulary_bus_id').filter(use='y')
+            vehicle_list = Vehicle.objects.prefetch_related('info_bus_id', 'info_regulary_bus_id').filter(use='사용')
         return vehicle_list
 
     def get_context_data(self, **kwargs):
@@ -242,7 +242,7 @@ class ScheduleList(generic.ListView):
         print(schedule_list)
         context['schedule_list'] = schedule_list
 
-        context['datalist_vehicle'] = Vehicle.objects.filter(use='y')
+        context['datalist_vehicle'] = Vehicle.objects.filter(use='사용')
         context['datalist_driver'] = Member.objects.filter(role='운전원')
         
         context['select'] = self.request.GET.get('select', '')
@@ -436,7 +436,7 @@ class RegularlyDispatchList(generic.ListView):
         context['dispatch_list'] = dispatch_list
         #
 
-        context['vehicles'] = Vehicle.objects.filter(use='y').order_by('vehicle_num', 'driver_name')
+        context['vehicles'] = Vehicle.objects.filter(use='사용').order_by('vehicle_num', 'driver_name')
         context['group_list'] = RegularlyGroup.objects.all().order_by('number')
         
         #
@@ -1113,14 +1113,14 @@ class OrderList(generic.ListView):
             
         context['total'] = total
         
-        context['vehicles'] = Vehicle.objects.filter(use='y').order_by('vehicle_num', 'driver_name')
+        context['vehicles'] = Vehicle.objects.filter(use='사용').order_by('vehicle_num', 'driver_name')
         context['selected_date1'] = self.request.GET.get('date1')
         context['selected_date2'] = self.request.GET.get('date2')
         context['collect_list'] = collect_list
         context['outstanding_list'] = outstanding_list
 
         context['client'] = []
-        for client in Client.objects.all().values('name', 'phone'):
+        for client in Client.objects.all().values('name', 'phone').order_by('name'):
             context['client'].append(client)
 
         
@@ -1378,8 +1378,13 @@ def order_edit(request):
             order.option = option
             if '카드기' in option and (not '<카드기>' in order.departure):
                 order.departure = '<카드기>' + order.departure
+            elif not '카드기' in option and '<카드기>' in order.departure:
+                order.departure = order.departure.replace('<카드기>','')
+
             if '카시트' in option and (not '<카시트>' in order.departure):
                 order.departure = '<카시트>' + order.departure
+            elif not '카시트' in option and '<카시트>' in order.departure:
+                order.departure = order.departure.replace('<카시트>','')
 
             order.customer = order_form.cleaned_data['customer']
             order.customer_phone = order_form.cleaned_data['customer_phone']
@@ -1479,7 +1484,7 @@ def bus_print(request):
     context = {}
     date = request.GET.get('date')
 
-    vehicle_list = Vehicle.objects.filter(use='y').order_by('vehicle_num')
+    vehicle_list = Vehicle.objects.filter(use='사용').order_by('vehicle_num')
     context['vehicle_list'] = vehicle_list
     
     connect_object = {}
@@ -1512,54 +1517,69 @@ def daily_driving_list(request):
     context = {}
     date = request.GET.get('date')
 
-    vehicle_list = Vehicle.objects.filter(use='y').order_by('vehicle_num')
+    vehicle_list = Vehicle.objects.filter(use='사용').order_by('vehicle_num')
+    member_list = Member.objects.filter(use='사용').filter(Q(role='용역')|Q(role='운전원'))
     context['vehicle_list'] = vehicle_list
     
     connect_object = {}
     e_connect_object = {}
     c_connect_object = {}
-    for vehicle in vehicle_list:
-        connect_object[vehicle.id] = []
-        e_connect_object[vehicle.id] = []
-        c_connect_object[vehicle.id] = []
+    for member in member_list:
+        connect_object[member.id] = []
+        e_connect_object[member.id] = []
+        c_connect_object[member.id] = []
 
-    r_connect_list = DispatchRegularlyConnect.objects.select_related('bus_id', 'regularly_id').filter(departure_date__startswith=date).order_by('departure_date')
+    r_connect_list = DispatchRegularlyConnect.objects.select_related('driver_id').filter(departure_date__startswith=date).order_by('departure_date')
     for connect in r_connect_list:
+        
         if connect.work_type == "출근":
-            e_connect_object[connect.bus_id.id].append(connect)
+            e_connect_object[connect.driver_id.id].append(connect)
         elif connect.work_type == "퇴근":
-            c_connect_object[connect.bus_id.id].append(connect)
+            c_connect_object[connect.driver_id.id].append(connect)
 
     connect_list = DispatchOrderConnect.objects.select_related('bus_id', 'order_id').filter(departure_date__lte=f'{date} 24:00').filter(arrival_date__gte=f'{date} 00:00')
-    print("CONNECTSLIST", connect_list)
     for connect in connect_list:
-        connect_object[connect.bus_id.id].append(connect)
+        connect_object[connect.driver_id.id].append(connect)
 
     print(connect_object)
     context['connect_object'] = connect_object
     context['e_connect_object'] = e_connect_object
     context['c_connect_object'] = c_connect_object
+    context['member_list'] = member_list
+    context['date'] = date
     return render(request, 'dispatch/daily_driving_list.html', context)
 
 def daily_driving_print(request):
     id_list = request.GET.get('id').split(',')
     date = request.GET.get('date')
     context = {}
-    context['vehicle_list'] = []
+    context['member_list'] = []
     context['order_list'] = []
     context['e_order_list'] = []
     context['c_order_list'] = []
+    context['accompany_list'] = []
     context['cnt'] = len(id_list)
     context['date'] = date
 
     for id in id_list:
         if id and date:
-            vehicle = get_object_or_404(Vehicle, id=id)
-            context['vehicle_list'].append(vehicle)
-            context['order_list'].append(DispatchOrderConnect.objects.select_related('order_id').filter(departure_date__lte=f'{date} 24:00').filter(arrival_date__gte=f'{date} 00:00').filter(bus_id=vehicle).order_by('departure_date'))
-            context['e_order_list'].append(DispatchRegularlyConnect.objects.select_related('regularly_id').filter(departure_date__startswith=date).filter(work_type="출근").filter(bus_id=vehicle).order_by('departure_date'))
-            context['c_order_list'].append(DispatchRegularlyConnect.objects.select_related('regularly_id').filter(departure_date__startswith=date).filter(work_type="퇴근").filter(bus_id=vehicle).order_by('departure_date'))
-            print("ENETET", context['e_order_list'])
+            member = get_object_or_404(Member, id=id)
+            context['member_list'].append(member)
+            context['e_order_list'].append(DispatchRegularlyConnect.objects.select_related('regularly_id').filter(departure_date__startswith=date).filter(work_type="출근").filter(driver_id=member).order_by('departure_date'))
+            context['c_order_list'].append(DispatchRegularlyConnect.objects.select_related('regularly_id').filter(departure_date__startswith=date).filter(work_type="퇴근").filter(driver_id=member).order_by('departure_date'))
+            order_list = DispatchOrderConnect.objects.select_related('order_id').filter(departure_date__lte=f'{date} 24:00').filter(arrival_date__gte=f'{date} 00:00').filter(driver_id=member).order_by('departure_date')
+            context['order_list'].append(order_list)
+
+            temp = []
+            for order in order_list:
+                connect_list = order.order_id.info_order.all()
+                if connect_list.count() > 1:
+                    temp.append(connect_list.values('departure_date', 'driver_id__name', 'bus_id__vehicle_num'))
+                else:
+                    temp.append('')
+
+            context['accompany_list'].append(temp)
+
 
         else:
             raise Http404

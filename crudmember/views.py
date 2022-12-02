@@ -108,13 +108,13 @@ class ClientList(generic.ListView):
         search = self.request.GET.get('search', '')
 
         if select == '거래처명' and search:
-            client_list = Client.objects.filter(name__contains=search)
+            client_list = Client.objects.filter(name__contains=search).order_by('name')
         elif select == '대표자명' and search:
-            client_list = Client.objects.filter(representative__contains=search)
+            client_list = Client.objects.filter(representative__contains=search).order_by('name')
         elif select == '담당자명' and search:
-            client_list = Client.objects.filter(manager__contains=search)
+            client_list = Client.objects.filter(manager__contains=search).order_by('name')
         else:
-            client_list = Client.objects.all()
+            client_list = Client.objects.all().order_by('name')
 
         return client_list
 

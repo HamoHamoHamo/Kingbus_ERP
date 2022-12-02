@@ -36,8 +36,8 @@
                     {% endfor %}
                 </datalist>
                 <select name="use" id="" class="inputModules">
-                    <option {% if use == 'y' %} selected {% endif %} value="y">사용</option>
-                    <option {% if use == 'n' %} selected {% endif %} value="n">미사용</option>
+                    <option {% if use == '사용' %} selected {% endif %} value="사용">사용</option>
+                    <option {% if use == '미사용' %} selected {% endif %} value="미사용">미사용</option>
                 </select>
             </div>
             <input autocomplete="off" type="submit" value="검색" class="btnModules">
@@ -79,7 +79,7 @@
                     <td>
                         <input autocomplete="off" name="check" value="{{vehicle.id}}" type="checkbox">
                     </td>
-                    <td>{{start_num|sub:forloop.counter0}}</td>
+                    <td>{{start_num|add:forloop.counter0}}</td>
                     <td class="{{ forloop.counter0 }}">
                         <div>{{vehicle.vehicle_num0}} {{vehicle.vehicle_num}}</div>
                     </td>
@@ -199,9 +199,9 @@
                     <div class="popupArticleDouble">
                         <label for="" class="popupArticleLabel">사용여부</label>
                         <div class="albleRadioBox">
-                            <input autocomplete="off" type="radio" value="y" id="ableBus" name="use" checked>
+                            <input autocomplete="off" type="radio" value="사용" id="ableBus" name="use" checked>
                             <label for="ableBus">사용</label>
-                            <input autocomplete="off" type="radio" value="n" id="disableBus" name="use">
+                            <input autocomplete="off" type="radio" value="미사용" id="disableBus" name="use">
                             <label for="disableBus">미사용</label>
                         </div>
                     </div>
@@ -393,9 +393,9 @@
                     <div class="popupArticleDouble">
                         <label for="" class="popupArticleLabel">사용여부</label>
                         <div class="albleRadioBox">
-                            <input autocomplete="off" type="radio" id="ableBusEdit" name="use" value="y">
+                            <input autocomplete="off" type="radio" id="ableBusEdit" name="use" value="사용">
                             <label for="ableBusEdit">사용</label>
-                            <input autocomplete="off" type="radio" id="disableBusEdit" name="use" value="n">
+                            <input autocomplete="off" type="radio" id="disableBusEdit" name="use" value="미사용">
                             <label for="disableBusEdit">미사용</label>
                         </div>
                     </div>

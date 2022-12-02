@@ -2,6 +2,7 @@ import json
 import my_settings
 from .models import Income, LastIncome, AdditionalCollect, Collect, TotalPrice
 from .forms import IncomeForm, AdditionalCollectForm
+from crudmember.models import Category
 from dispatch.views import FORMAT
 from humanresource.models import Member
 from datetime import datetime, timedelta, date
@@ -55,10 +56,10 @@ class SalesList(generic.ListView):
 
         yearly_sales = []
         for i in range(12):
-            if i < 10:
-                month = f'{get_month[:4]}-0{i}'
+            if i+1 < 10:
+                month = f'{get_month[:4]}-0{i+1}'
             else:
-                month = f'{get_month[:4]}-{i}'
+                month = f'{get_month[:4]}-{i+1}'
 
             regularly_sales = TotalPrice.objects.filter(month=month).exclude(group_id=None).aggregate(Sum('total_price'))['total_price__sum']
             order_sales = TotalPrice.objects.filter(month=month).exclude(order_id=None).aggregate(Sum('total_price'))['total_price__sum']
@@ -91,6 +92,7 @@ class SalesList(generic.ListView):
                 'regularly_sales': regularly_sales_price,
                 'order_sales': order_sales_price,
             })
+
             if month == get_month:
                 monthly_sales = {
                 'total_sales': total_sales_price,
@@ -104,21 +106,22 @@ class SalesList(generic.ListView):
         context['yearly_sales'] = yearly_sales
         #########
         
+        category_list = Category.objects.filter(type='유형')
         type_cnt = {}
         bus_cnt = {}
         sales = {}
+        for category in category_list:
+            type_cnt[category.category] = 0
+            bus_cnt[category.category] = 0
+            sales[category.category] = 0
+
         payment = {}
 
         for order in context['dispatch_list']:
-            try:
-                type_cnt[order.order_type] += 1
-                bus_cnt[order.order_type] += int(order.bus_cnt)
-                sales[order.order_type] += int(order.bus_cnt) * int(order.price)
-            except KeyError:
-                type_cnt[order.order_type] = 1
-                bus_cnt[order.order_type] = int(order.bus_cnt)
-                sales[order.order_type] = int(order.bus_cnt) * int(order.price)
-
+            type_cnt[order.order_type] += 1
+            bus_cnt[order.order_type] += int(order.bus_cnt)
+            sales[order.order_type] += int(order.bus_cnt) * int(order.price)
+           
             try:
                 payment[order.payment_method] += 1
             except KeyError:

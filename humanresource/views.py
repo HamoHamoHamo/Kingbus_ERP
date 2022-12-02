@@ -69,7 +69,7 @@ class MemberList(generic.ListView):
         page_range = paginator.page_range[start_index:end_index]
         context['page_range'] = page_range
         #페이징 끝
-        context['start_num'] = paginator.count - paginator.per_page * (current_page-1)
+        context['start_num'] = 1 + paginator.per_page * (current_page-1)
 
         member_list = context['member_list']
         data_list = []

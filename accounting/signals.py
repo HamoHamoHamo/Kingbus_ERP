@@ -1,4 +1,4 @@
-from django.db.models.signals import post_save, post_delete
+from django.db.models.signals import post_save, post_delete, pre_delete
 from django.dispatch import receiver
 from django.shortcuts import get_object_or_404
 
@@ -38,7 +38,7 @@ def create_additional_collect(sender, instance, created, **kwargs):
     total.total_price = int(total.total_price) + int(instance.total_price)
     total.save()
 
-@receiver(post_delete, sender=AdditionalCollect)
+@receiver(pre_delete, sender=AdditionalCollect)
 def delete_additional_collect(sender, instance, **kwargs):
     
     if instance.order_id:

@@ -80,9 +80,9 @@ function drawSchdule() {
 
                 // title 부여
                 if (dataStartDate == dataEndDate) {
-                    startWork.setAttribute("title", `${dataList[i].driver_name} || ${dataList[i].departure_date.split(" ")[1]}~${dataList[i].arrival_date.split(" ")[1]} || ${dataList[i].departure}▶${dataList[i].arrival}`);
+                    startWork.setAttribute("title", `${dataList[i].driver_name} || ${dataList[i].departure_date.split(" ")[1]}~${dataList[i].arrival_date.split(" ")[1]} || ${dataList[i].departure.split("@")[0]}▶${dataList[i].arrival.split("@")[0]}`);
                 } else {
-                    startWork.setAttribute("title", `${dataList[i].driver_name} || ${dataList[i].departure_date.split(" ")[0]} [${dataList[i].departure_date.split(" ")[1]}]~${dataList[i].arrival_date.split(" ")[0]} [${dataList[i].arrival_date.split(" ")[1]}] || ${dataList[i].departure}▶${dataList[i].arrival}`);
+                    startWork.setAttribute("title", `${dataList[i].driver_name} || ${dataList[i].departure_date.split(" ")[0]} [${dataList[i].departure_date.split(" ")[1]}]~${dataList[i].arrival_date.split(" ")[0]} [${dataList[i].arrival_date.split(" ")[1]}] || ${dataList[i].departure.split("@")[0]}▶${dataList[i].arrival.split("@")[0]}`);
                 }
                 // 스케줄 생성
                 driverTd[j].parentNode.appendChild(startWork);

@@ -6,6 +6,7 @@ const regularlyAccountsReceivableValue = document.querySelector(".regularlyAccou
 const count = document.querySelectorAll(".kategoriData tr td:nth-child(2)")
 const busCount = document.querySelectorAll(".kategoriData tr td:nth-child(3)")
 const amount = document.querySelectorAll(".kategoriData tr td:nth-child(4)")
+const createTable = document.querySelector(".createTable")
 
 
 function monthAmount() {
@@ -137,15 +138,20 @@ yearChart()
 
 
 function orderType() {
+    let keyArr = []
+    let valueArr = []
+    for (i = 0; i < Object.keys(order.bus_cnt).length; i++){
+        keyArr.push(Object.keys(order.bus_cnt)[i])
+        valueArr.push(Object.values(order.bus_cnt)[i])
+    };
+    
     const kategoriChart = new Chart(
         document.getElementById('kategoriChart'),
         {
             plugins: [ChartDataLabels], // chartjs-plugin-datalabels 불러오기
             type: 'bar', // 차트 타입 지정
             data: {
-                labels: [
-                    "워크샵", "콘서트, 단체관람", "체험학습, 수학여행", "산악회, 동호회", "결혼식", "기타"
-                ],
+                labels: keyArr,
                 datasets: [{
                     label: "이용 유형(건)",
                     lineTension: 0.1,
@@ -157,7 +163,7 @@ function orderType() {
                     pointHoverBackgroundColor: "rgba(75,192,192,1)",
                     pointHoverBorderColor: "rgba(220,220,220,1)",
                     pointHoverBorderWidth: 2,
-                    data: [order.type_cnt.워크샵, order.type_cnt.단체관람, order.type_cnt.학단, order.type_cnt.동호회, order.type_cnt.결혼식, order.type_cnt.기타]
+                    data: valueArr
                 }]
             },
             options: {
@@ -232,45 +238,44 @@ orderType()
 
 
 function table() {
-    for (i = 1; i < count.length; i++){
-        console.log(i);
-        switch (i) {
-            case 1:
-                count[i].innerText = order.type_cnt.워크샵
-                busCount[i].innerText = order.bus_cnt.워크샵
-                amount[i].innerText = order.sales.워크샵
-                break;
-            case 2:
-                console.log(order.type_cnt.학단);
-                count[i].innerText = order.type_cnt.학단 === undefined ? 0 : order.type_cnt.학단
-                busCount[i].innerText = order.bus_cnt.학단 === undefined ? 0 : order.bus_cnt.학단
-                amount[i].innerText = order.sales.학단 === undefined ? 0 : order.sales.학단
-                break;
-            case 3:
-                count[i].innerText = order.type_cnt.단체관람 === undefined ? 0 : order.type_cnt.단체관람
-                busCount[i].innerText = order.bus_cnt.단체관람 === undefined ? 0 : order.bus_cnt.단체관람
-                amount[i].innerText = order.sales.단체관람 === undefined ? 0 : order.sales.단체관람
-                break;
-            case 4:
-                count[i].innerText = order.type_cnt.동호회 === undefined ? 0 : order.type_cnt.동호회
-                busCount[i].innerText = order.bus_cnt.동호회 === undefined ? 0 : order.bus_cnt.동호회
-                amount[i].innerText = order.sales.동호회 === undefined ? 0 : order.sales.동호회
-                break;
-            case 5:
-                count[i].innerText = order.type_cnt.결혼식 === undefined ? 0 : order.type_cnt.결혼식
-                busCount[i].innerText = order.bus_cnt.결혼식 === undefined ? 0 : order.bus_cnt.결혼식
-                amount[i].innerText = order.sales.결혼식 === undefined ? 0 : order.sales.결혼식
-                break;
-            case 6:
-                count[i].innerText = order.type_cnt.기타 === undefined ? 0 : order.type_cnt.기타
-                busCount[i].innerText = order.bus_cnt.기타 === undefined ? 0 : order.bus_cnt.기타
-                amount[i].innerText = order.sales.기타 === undefined ? 0 : order.sales.기타
-                break;
-        }
+    let nameArr = []
+    let countArr = []
+    let busArr = []
+    let amountArr = []
+    for (i = 0; i < Object.keys(order.bus_cnt).length; i++){
+        nameArr.push(Object.keys(order.bus_cnt)[i])
+        countArr.push(Object.values(order.type_cnt)[i])
+        busArr.push(Object.values(order.bus_cnt)[i])
+        let amount = Object.values(order.sales)[i]
+        amount = amount.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",")
+        amountArr.push(amount)
     };
-    for (i = 0; i < count.length; i++){
-        amount[i].innerText = amount[i].innerText.replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
+    for (i = 0; i < Object.keys(order.bus_cnt).length; i++){
+        const orderTr = document.createElement("tr")
+        orderTr.setAttribute("class", "table-list_body-tr")
+        createTable.appendChild(orderTr)
+
+        const orderTd1 = document.createElement("td")
+        orderTd1.setAttribute("class", "table-list_body-tr_td")
+        orderTd1.innerText = nameArr[i]
+        orderTr.appendChild(orderTd1)
+
+        const orderTd2 = document.createElement("td")
+        orderTd2.setAttribute("class", "table-list_body-tr_td")
+        orderTd2.innerText = countArr[i]
+        orderTr.appendChild(orderTd2)
+
+        const orderTd3 = document.createElement("td")
+        orderTd3.setAttribute("class", "table-list_body-tr_td")
+        orderTd3.innerText = busArr[i]
+        orderTr.appendChild(orderTd3)
+
+        const orderTd4 = document.createElement("td")
+        orderTd4.setAttribute("class", "table-list_body-tr_td")
+        orderTd4.innerText = amountArr[i]
+        orderTr.appendChild(orderTd4)
     };
+    
 }
 table()
 

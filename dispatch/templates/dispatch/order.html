@@ -143,7 +143,7 @@
                 
 
                 <div class="inputTableBtnBox">
-                    <div autocomplete="off" class="btnModules inputSave">저장</div>
+                    <div autocomplete="off" class="btnModules inputSave" tabindex="23">저장(F2)</div>
                     {% if detail %}
                     <div class="btnModules inputDelete" onclick="deleteUrl()">삭제</div>
                     <input type="hidden" name="date1" value="{{selected_date1}}">
@@ -173,25 +173,25 @@
                         <td class="tdTypeA">*출발지</td>
                         <td colspan="3" class="tdTypeB">
                             <div class="waypointBox">
-                                <input autocomplete="off" value="{{detail.departure}}" name="departure" type="text" class="inputText inputTextDeparture length200 essential">
+                                <input autocomplete="off" value="{{detail.departure}}" name="departure" type="text" class="inputText inputTextDeparture length200 essential" tabindex="1">
                                 <div class="btnModules waypoinBtn">+경유지</div>
                             </div>
                         </td>
                         <td class="tdTypeA">*계약금액</td>
                         <td class="tdTypeC">
                             <input autocomplete="off" value="{{detail.price}}" name="price" type="text"
-                                class="inputText inputTextUnit inputTextPrice length100 essential">원
+                                class="inputText inputTextUnit inputTextPrice length100 essential" tabindex="15">원
                         </td>
                         <td class="tdTypeA">상여금</td>
                         <td class="tdTypeC">
                             <input autocomplete="off" value="{{detail.driver_allowance}}" name="driver_allowance" type="text"
-                                class="inputText inputTextUnit inputTextDriverAllowance length100" max="9999-12-31">원
+                                class="inputText inputTextUnit inputTextDriverAllowance length100" max="9999-12-31" tabindex="16">원
                         </td>
                     </tr>
                     <tr>
                         <td class="tdTypeA">*도착지</td>
                         <td colspan="3" class="tdTypeB">
-                            <input autocomplete="off" value="{{detail.arrival}}" name="arrival" type="text" class="inputText inputArrival length200 essential">
+                            <input autocomplete="off" value="{{detail.arrival}}" name="arrival" type="text" class="inputText inputArrival length200 essential" tabindex="2">
                         </td>
                         <td class="tdTypeA">버스옵션</td>
                         <td colspan="3" class="tdTypeB">
@@ -219,25 +219,25 @@
                             <div class="twiceBox">
                                 <div class="quarterBox">
                                     <input autocomplete="off" name="departure_date" type="date" class="inputTextquarter"
-                                        value="{{detail.departure_date|slice:':10'}}" max="9999-12-31">
+                                        value="{{detail.departure_date|slice:':10'}}" max="9999-12-31" tabindex="3">
                                     <div class="deeperBox">
                                         <input autocomplete="off" value="{{detail.departure_date|slice:'11:13'}}"
-                                            name="departure_time1" type="text" class="inputTextTwice essential" maxlength="2">
+                                            name="departure_time1" type="text" class="inputTextTwice essential" maxlength="2" tabindex="4">
                                         :
                                         <input autocomplete="off" value="{{detail.departure_date|slice:'14:'}}" name="departure_time2"
-                                            type="text" class="inputTextTwice essential" maxlength="2">
+                                            type="text" class="inputTextTwice essential" maxlength="2" tabindex="5">
                                     </div>
                                 </div>
                                 ~
                                 <div class="quarterBox">
                                     <input autocomplete="off" value="{{detail.arrival_date|slice:':10'}}" name="arrival_date"
-                                        type="date" class="inputTextquarter" max="9999-12-31">
+                                        type="date" class="inputTextquarter" max="9999-12-31" tabindex="6">
                                     <div class="deeperBox">
                                         <input autocomplete="off" value="{{detail.arrival_date|slice:'11:13'}}" name="arrival_time1"
-                                            type="text" class="inputTextTwice essential" maxlength="2">
+                                            type="text" class="inputTextTwice essential" maxlength="2" tabindex="7">
                                         :
                                         <input autocomplete="off" value="{{detail.arrival_date|slice:'14:'}}" name="arrival_time2"
-                                            type="text" class="inputTextTwice essential" maxlength="2">
+                                            type="text" class="inputTextTwice essential" maxlength="2" tabindex="8">
                                     </div>
                                 </div>
                             </div>
@@ -253,7 +253,7 @@
                         </td>
                         <td class="tdTypeA">계산서 발행처</td>
                         <td class="tdTypeC">
-                            <select id="billList" class='inputSelect'>
+                            <select id="billList" class='inputSelect' tabindex="17">
                                 <option value=""></option>
                                 {% for bill in bill_places %}
                                 <option {% if detail.bill_place == bill.category %} selected {% endif %} value="{{bill.category}}">{{bill.category}}</option>
@@ -263,12 +263,12 @@
                     </tr>
                     <tr>
                         <td class="tdTypeA">*차량대수</td>
-                        <td class="tdTypeC"><input autocomplete="off" value="{{detail.bus_cnt}}" name="bus_cnt" type="number" class="inputText inputTextUnit inputBusCount length1000 essential">대
+                        <td class="tdTypeC"><input autocomplete="off" value="{{detail.bus_cnt}}" name="bus_cnt" type="number" class="inputText inputTextUnit inputBusCount length1000 essential" tabindex="9">대
                         </td>
                         <td class="tdTypeA">차량종류</td>
                         <td class="tdTypeC">
                             
-                            <select id="depList" class="inputSelect">
+                            <select id="depList" class="inputSelect" tabindex="10">
                                 <option></option>
                                 {% for vehicle in vehicle_types %}
                                 <option {% if detail.bus_type == vehicle.category %} selected {% endif %} value="{{vehicle.category}}">{{vehicle.category}}</option>
@@ -278,7 +278,7 @@
                         </td>
                         <td class="tdTypeA">*수금구분</td>
                         <td class="tdTypeC">
-                            <select name="collection_type" id="collection_type" class="inputSelect essentialSelect">
+                            <select name="collection_type" id="collection_type" class="inputSelect essentialSelect"  tabindex="18">
                                 <option value=""></option>
                                 <option {% if detail.collection_type == '현지수금' %} selected {% endif %} value="현지수금(카드)">현지수금(카드)</option>
                                 <option {% if detail.collection_type == '현지수금' %} selected {% endif %} value="현지수금(현금)">현지수금(현금)</option>
@@ -290,9 +290,9 @@
                         <td class="tdTypeA">VAT 포함</td>
                         <td class="tdTypeC">
                             {% if detail %}
-                            <input autocomplete="off" {% if detail.VAT == 'y' %} checked {% endif %} name="VAT" value="y" type="checkbox" id="input_VAT">
+                            <input autocomplete="off" {% if detail.VAT == 'y' %} checked {% endif %} name="VAT" value="y" type="checkbox" id="input_VAT"  tabindex="19">
                             {% else %}
-                            <input autocomplete="off" checked name="VAT" value="y" type="checkbox" id="input_VAT">
+                            <input autocomplete="off" checked name="VAT" value="y" type="checkbox" id="input_VAT" tabindex="19">
                             {% endif %}
                             <label for="input_VAT">포함</label>
                         </td>
@@ -301,7 +301,7 @@
                         <td class="tdTypeA">*예약자</td>
                         <td class="tdTypeC">
                             <div class="accountTd">
-                                <input autocomplete="off" value="{{detail.customer}}" name="customer" type="text" class="loadClient inputText length100 essential">
+                                <input autocomplete="off" value="{{detail.customer}}" name="customer" type="text" class="loadClient inputText length100 essential" tabindex="11">
                                 <div class="searchAccount">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
                                         <path id="Icon_ionic-ios-search" data-name="Icon ionic-ios-search" d="M20.312,19.335l-4.45-4.49a6.342,6.342,0,1,0-.962.975l4.421,4.461a.685.685,0,0,0,.967.025A.689.689,0,0,0,20.312,19.335Zm-9.433-3.462a5.007,5.007,0,1,1,3.542-1.466A4.977,4.977,0,0,1,10.879,15.873Z" transform="translate(-4.5 -4.492)" fill="#fff"/>
@@ -310,15 +310,15 @@
                             </div>
                         </td>
                         <td class="tdTypeA">*전화번호</td>
-                        <td class="tdTypeC"><input autocomplete="off" value="{{detail.customer_phone}}" name="customer_phone" type="text" class="loadPhone inputText inputTextPhoneNum essential" maxlength="13">
+                        <td class="tdTypeC"><input autocomplete="off" value="{{detail.customer_phone}}" name="customer_phone" type="text" class="loadPhone inputText inputTextPhoneNum essential" maxlength="13" tabindex="12">
                         </td>
                         <td class="tdTypeA">표찰정보</td>
                         <td class="tdTypeC">
-                            <input autocomplete="off" name="ticketing_info" type="text" value="{{detail.ticketing_info}}" class="inputText length100">
+                            <input autocomplete="off" name="ticketing_info" type="text" value="{{detail.ticketing_info}}" class="inputText length100" tabindex="20">
                         </td>
                         <td class="tdTypeA">*유형</td>
                         <td class="tdTypeC">
-                            <select name="order_type" id="type" class="inputSelect essentialSelect">
+                            <select name="order_type" id="type" class="inputSelect essentialSelect" tabindex="21">
                                 <option value=""></option>
                                 {% for order in order_types %}
                                 <option {% if detail.order_type == order.category %} selected {% endif %} value="{{order.category}}">{{order.category}}</option>
@@ -329,7 +329,7 @@
                     <tr>
                         <td class="tdTypeA">계약현황</td>
                         <td class="tdTypeC">
-                            <select name="contract_status" id="contract_status" class="inputSelect">
+                            <select name="contract_status" id="contract_status" class="inputSelect" tabindex="13">
                                 <option value=""></option>
                                 <option {% if detail.contract_status == '확정' %} selected {% endif %} value="확정">확정</option>
                                 <option {% if detail.contract_status == '보류' %} selected {% endif %} value="보류">보류</option>
@@ -339,7 +339,7 @@
                         </td>
                         <td class="tdTypeA">*운행종류</td>
                         <td class="tdTypeC">
-                            <select name="operation_type" id="drive_type" class="inputSelect essentialSelect">
+                            <select name="operation_type" id="drive_type" class="inputSelect essentialSelect" tabindex="14">
                                 <option value=""></option>
                                 {% for operation in operation_types %}
                                 <option {% if detail.operation_type == operation.category %} selected {% endif %} value="{{operation.category}}">{{operation.category}}</option>
@@ -347,7 +347,7 @@
                             </select>
                         </td>
                         <td class="tdTypeA">참조사항</td>
-                        <td colspan="3" class="tdTypeB"><input autocomplete="off" value="{{detail.references}}" name="references" type="text" class="inputText length100">
+                        <td colspan="3" class="tdTypeB"><input autocomplete="off" value="{{detail.references}}" name="references" type="text" class="inputText length100" tabindex="22">
                         </td>
                     </tr>
                 </table>
@@ -703,7 +703,7 @@
                 <div class="popupTitle">거래처 불러오기</div>
             </div>
             <div class="popupBody">
-                <form get="post" action="" class="popupSection">
+                <div class="popupSection">
                     <div class="popupArticleCategori">거래처 검색</div> 
                     <div class="popupArticleBox">
                         <div class="popupArticleDouble accountArticle">
@@ -735,7 +735,7 @@
                             </table>
                         </div>
                     </div>
-                </form>
+                </div>
                 <div class="popupFooter">
                     <div class="btnModules loadAccountBtn">불러오기</div>
                     <div class="btnModules accountCloseBtn">닫기</div>

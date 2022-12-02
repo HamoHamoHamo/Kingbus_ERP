@@ -662,7 +662,6 @@ html::-webkit-scrollbar-track {
   box-sizing: border-box;
   font-size: 1.4rem;
   color: #191919;
-  outline: none;
 }
 
 .btnModules {

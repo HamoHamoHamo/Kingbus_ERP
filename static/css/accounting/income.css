@@ -108,6 +108,18 @@
     height: calc(100% - 3.6rem);
 }
 
+.tableBox{
+    display: flex;
+    flex-direction: column;
+    width: calc(100% - 4rem);
+    height: 100%;
+    margin-left: 4rem;
+}
+
+.scrolling_table-list_body{
+    height: 26rem;
+}
+
 .monthData .dashboardBody {
     position: relative;
     flex-direction: column;
@@ -226,10 +238,6 @@
     font-size: 1.6rem;
     font-weight: 700;
     color: black;
-}
-
-.table-list{
-    margin-left: 4rem;
 }
 
 .table-list tr{
