@@ -43,9 +43,8 @@ class NoticeKindsView(generic.ListView):
             return None
     
     def get(self, request, **kwargs):
-        if request.session.get('authority') >= 4 and self.kwargs['kinds'] == 'office':
-            
-            return redirect(request.META.get('HTTP_REFERER', 'redirect_if_referer_not_found'))
+        if request.session.get('authority') >= 3 and self.kwargs['kinds'] == 'office':
+            return render(request, 'authority.html')
         else:
             return super().get(request, **kwargs)
 
@@ -72,6 +71,10 @@ class NoticeKindsView(generic.ListView):
         page_range = paginator.page_range[start_index:end_index]
         context['page_range'] = page_range
         context['current_page'] = current_page
+
+        print("pageinasa", dir(paginator), paginator.count)
+        context['start_num'] = paginator.count - paginator.per_page * (current_page-1)
+        
         context['kinds'] = self.kwargs['kinds']
         
         context['search'] = self.request.GET.get('search', '')
@@ -83,8 +86,8 @@ def create(request):
         'name': get_object_or_404(Member, pk=request.session.get('user')).name,
         'kinds': request.GET.get('kinds')
         }
-    if request.session.get('authority') >= 4 and request.GET.get('kinds') == 'office':
-        return redirect(request.META.get('HTTP_REFERER', 'redirect_if_referer_not_found'))
+    if request.session.get('authority') >= 3:
+        return render(request, 'authority.html')
     if request.method == "GET":
         
         return render(request, 'notice/create.html', context)
@@ -97,7 +100,6 @@ def create(request):
         if notice_form.is_valid():
             notice = notice_form.save(commit=False)
             notice.creator = creator
-            notice.num = Notice.objects.filter(kinds=notice.kinds).count() + 1
             notice.save()
             notice_file_save(files, notice)
         #auth.login(request, user)
@@ -114,9 +116,9 @@ def notice_file_save(upload_file, notice):
         notice_file.save()
     return
 
-def edit(request, kinds, notice_id):    
-    if request.session.get('authority') >= 4 and Notice.objects.get(id=notice_id).creator.id != request.session.get('user'):
-        return redirect(request.META.get('HTTP_REFERER', 'redirect_if_referer_not_found'))
+def edit(request, kinds, notice_id):
+    if Notice.objects.get(id=notice_id).creator.id != request.session.get('user'):
+        return render(request, 'authority.html')
     notice = get_object_or_404(Notice, pk=notice_id)
 
     if request.method == "GET":
@@ -139,21 +141,6 @@ def edit(request, kinds, notice_id):
             raise Http404
     return redirect('/notice/{0}/{1}'.format(kinds, notice_id))
 
-### genericview update 테스트
-'''
-class NoticeEdit(generic.UpdateView):
-    model = Notice
-    context_object_name = 'notice'
-    template_name = 'notice/edit.html' 
-    success_url = '/'
-
-    #get object
-    def get_object(self): 
-        notice = get_object_or_404(Notice, pk=self.kwargs['pk']) 
-
-        return notice
-'''
-####################### 테스트        
 # detail
 class NoticeDetail(generic.DetailView):
     template_name = 'notice/detail.html'
@@ -175,9 +162,8 @@ class NoticeDetail(generic.DetailView):
         return redirect(reverse('notice:detail', args=(self.kwargs['kinds'], self.notice_id)))
 
     def get(self, request, **kwargs):
-        if request.session.get('authority') >= 4 and self.kwargs['kinds'] == 'office':
-            
-            return redirect(request.META.get('HTTP_REFERER', 'redirect_if_referer_not_found'))
+        if request.session.get('authority') >= 3 and self.kwargs['kinds'] == 'office':
+            return render(request, 'authority.html')
         else:
             return super().get(request, **kwargs)
             
@@ -193,8 +179,6 @@ class NoticeDetail(generic.DetailView):
         
         context['view_cnt'] = self.get_view_cnt()
         context['notice'] = self.notice
-        context['next'] = Notice.objects.filter(num=self.notice.num+1)
-        context['pre'] = Notice.objects.filter(num=self.notice.num-1)
         context['notice_files'] = NoticeFile.objects.filter(notice_id=self.notice_id)
         context['notice_comments'] = NoticeComment.objects.filter(notice_id=self.notice_id)
         return context
@@ -226,6 +210,8 @@ class NoticeDetail(generic.DetailView):
 
 def download(request, kinds, notice_id, file_id):
     kinds_check(kinds)
+    if request.session.get('authority') >= 3 and kinds == 'office':
+        return render(request, 'authority.html')
     download_file = get_object_or_404(NoticeFile, pk=file_id)
     if download_file.notice_id == Notice.objects.get(pk=notice_id):
         url = download_file.file.url
@@ -246,22 +232,26 @@ def download(request, kinds, notice_id, file_id):
         raise Http404
 
 def delete(request, kinds, notice_id):
+    if request.session.get('authority') != 0 and Notice.objects.get(id=notice_id).creator.id != request.session.get('user'):
+        return render(request, 'authority.html')
     kinds_check(kinds)
     notice = Notice.objects.get(pk=notice_id)
     notice_file = notice.notice_file.all()
-    if creator_check(request, notice_id, Notice):
-        if notice_file:
-            for file in notice_file:
-                os.remove(file.file.path)
-        notice.delete()
+    
+    if notice_file:
+        for file in notice_file:
+            os.remove(file.file.path)
+    notice.delete()
 
-        edit_num = Notice.objects.filter(id__gt = notice_id)
-        for sort_num in edit_num:
-            sort_num.num = sort_num.num-1
-            sort_num.save()
+    # edit_num = Notice.objects.filter(id__gt = notice_id)
+    # for sort_num in edit_num:
+    #     sort_num.num = sort_num.num-1
+    #     sort_num.save()
     return redirect('/notice/{0}'.format(kinds))
 
 def file_del(request, kinds, notice_id, file_id):
+    if request.session.get('authority') != 0 and Notice.objects.get(id=notice_id).creator.id != request.session.get('user'):
+        return render(request, 'authority.html')
     kinds_check(kinds)
     notice = Notice.objects.get(pk=notice_id)
     notice_file = NoticeFile.objects.get(pk=file_id)
@@ -275,18 +265,16 @@ def file_del(request, kinds, notice_id, file_id):
     return redirect(reverse('notice:edit', args=(kinds, notice_id,)))
 
 def comment_del(request, kinds, notice_id, comment_id):
+    if request.session.get('authority') != 0 and Notice.objects.get(id=notice_id).creator.id != request.session.get('user'):
+        return render(request, 'authority.html')
     if request.method == "POST":
         kinds_check(kinds)
-        if creator_check(request, comment_id, NoticeComment):
-            NoticeComment.objects.filter(id=comment_id).delete()
+        NoticeComment.objects.filter(id=comment_id).delete()
+
         return redirect('/notice/{0}/{1}'.format(kinds, notice_id))
 
     else:
         return HttpResponseNotAllowed(['POST'])
-def creator_check(request, pk, type):
-    if request.session.get('user') != type.objects.get(id=pk).creator.id and request.session.get('authority') != 0:
-        raise Http404
-    return True
 
 def kinds_check(kinds): # driver 나 office인지 체크
     if kinds != "driver" and kinds != "office":

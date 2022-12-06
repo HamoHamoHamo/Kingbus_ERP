@@ -44,7 +44,7 @@
                     {% with e_connect=e_connect_object|obj:member.id %}
                     {% with connect=connect_object|obj:member.id %}
                     {% with c_connect=c_connect_object|obj:member.id %}
-                    {% if e_connect or connect or c_connect %}
+                    {% if e_connect or connect or c_connect or request.session.authority > 3 %}
                     <tr class="{{member.id}}">
                         <td>
                             <input autocomplete="off" type="checkbox">

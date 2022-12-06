@@ -28,18 +28,15 @@ FORMAT = "%Y-%m-%d"
 WEEK = ['(월)', '(화)', '(수)', '(목)', '(금)', '(토)', '(일)', ]
 WEEK2 = ['월', '화', '수', '목', '금', '토', '일', ]
 
-def test(request):
-    # regularly_list = DispatchRegularlyConnect.objects.all()
-    # for regularly in regularly_list:
-    #     regularly.price = regularly.regularly_id.price
-    #     regularly.save()
-    print('end')
-    return 
-
 class RegularlyPrintList(generic.ListView):
     template_name = 'dispatch/regularly_print.html'
     context_object_name = 'order_list'
     model = DispatchRegularly
+
+    def get(self, request, *args, **kwargs):
+        if request.session.get('authority') > 1:
+            return render(request, 'authority.html')
+        return super().get(request, *args, **kwargs)
 
     def get_queryset(self):
         
@@ -99,7 +96,9 @@ class RegularlyPrintList(generic.ListView):
 
 
 def order_print(request):
-    
+    if request.session.get('authority') > 1:
+        return render(request, 'authority.html')
+
     date1 = request.GET.get('date1', TODAY)
     date2 = request.GET.get('date2', TODAY)
     order_list = DispatchOrder.objects.prefetch_related('info_order').exclude(arrival_date__lt=f'{date1} 00:00').exclude(departure_date__gt=f'{date2} 24:00').order_by('departure_date').exclude(contract_status='취소')
@@ -130,6 +129,8 @@ def order_print(request):
     return render(request, 'dispatch/order_print.html', context)
 
 def calendar_create(request):
+    if request.session.get('authority') > 1:
+        return render(request, 'authority.html')
     if request.method == "POST":
         creator = get_object_or_404(Member, id=request.session.get('user'))
         date = request.POST.get('date', None)
@@ -158,6 +159,8 @@ def calendar_delete(request):
         return HttpResponseNotAllowed(['post'])
 
 def schedule_create(request):
+    if request.session.get('authority') > 1:
+        return render(request, 'authority.html')
     if request.method == "POST":
         date = request.POST.get('date', None)
         content = request.POST.get('content', None)
@@ -172,6 +175,8 @@ def schedule_create(request):
     else:
         return HttpResponseNotAllowed(['post'])
 def schedule_delete(request):
+    if request.session.get('authority') > 1:
+        return render(request, 'authority.html')
     if request.method == "POST":
         check_list = request.POST.getlist('check')
 
@@ -202,54 +207,7 @@ class ScheduleList(generic.ListView):
             vehicle_list = Vehicle.objects.prefetch_related('info_bus_id', 'info_regulary_bus_id').filter(use='사용')
         return vehicle_list
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        date = self.request.GET.get('date', TODAY)
-
-        schedule_list = []
-
-        for vehicle in context['vehicle_list']:
-            temp = []
-            order_list = vehicle.info_bus_id.exclude(arrival_date__lte=f'{date} 00:00').exclude(departure_date__gte=f'{date} 24:00')
-            e_regulary_list = vehicle.info_regulary_bus_id.exclude(arrival_date__lte=f'{date} 00:00').exclude(departure_date__gte=f'{date} 24:00').filter(work_type='출근')
-            l_regulary_list = vehicle.info_regulary_bus_id.exclude(arrival_date__lte=f'{date} 00:00').exclude(departure_date__gte=f'{date} 24:00').filter(work_type='퇴근')
-            for o in order_list:
-                temp.append({
-                    'work_type': '일반',
-                    'departure_date': o.departure_date,
-                    'arrival_date': o.arrival_date,
-                    'departure': o.order_id.departure,
-                    'arrival': o.order_id.arrival,
-                })
-            for o in e_regulary_list:
-                temp.append({
-                    'work_type': '출근',
-                    'departure_date': o.departure_date,
-                    'arrival_date': o.arrival_date,
-                    'departure': o.regularly_id.departure,
-                    'arrival': o.regularly_id.arrival,
-                })
-            for o in l_regulary_list:
-                temp.append({
-                    'work_type': '퇴근',
-                    'departure_date': o.departure_date,
-                    'arrival_date': o.arrival_date,
-                    'departure': o.regularly_id.departure,
-                    'arrival': o.regularly_id.arrival,
-                })
-
-            schedule_list.append(temp)
-        print(schedule_list)
-        context['schedule_list'] = schedule_list
-
-        context['datalist_vehicle'] = Vehicle.objects.filter(use='사용')
-        context['datalist_driver'] = Member.objects.filter(role='운전원')
-        
-        context['select'] = self.request.GET.get('select', '')
-        context['search_d'] = self.request.GET.get('search_d', '')
-        context['search_v'] = self.request.GET.get('search_v', '')
-        context['date'] = date
-        return context
+    
 
 
 class DocumentList(generic.ListView):
@@ -311,6 +269,11 @@ class RegularlyDispatchList(generic.ListView):
     template_name = 'dispatch/regularly.html'
     context_object_name = 'order_list'
     model = DispatchRegularly
+
+    def get(self, request, *args, **kwargs):
+        if request.session.get('authority') > 1:
+            return render(request, 'authority.html')
+        return super().get(request, *args, **kwargs)
 
     def get_queryset(self):
         
@@ -388,11 +351,11 @@ class RegularlyDispatchList(generic.ListView):
             context['group'] = get_object_or_404(RegularlyGroup, id=selected_group)
         context['date'] = date
 
-        driver_list = Member.objects.filter(role='운전원').values_list('id', 'name')
+        driver_list = Member.objects.filter(Q(role='운전원')|Q(role='팀장')).values_list('id', 'name')
         context['driver_dict'] = {}
         for driver in driver_list:
             context['driver_dict'][driver[0]] = driver[1]
-        outsourcing_list = Member.objects.filter(role='용역').values_list('id', 'name')
+        outsourcing_list = Member.objects.filter(Q(role='용역')|Q(role='임시')).values_list('id', 'name')
         context['outsourcing_dict'] = {}
         for outsourcing in outsourcing_list:
             context['outsourcing_dict'][outsourcing[0]] = outsourcing[1]
@@ -478,6 +441,8 @@ class RegularlyDispatchList(generic.ListView):
 
 
 def regularly_connect_create(request):
+    if request.session.get('authority') > 1:
+        return render(request, 'authority.html')
     if request.method == "POST":
         creator = get_object_or_404(Member, id=request.session.get('user'))
         order = get_object_or_404(DispatchRegularly, id=request.POST.get('id', None))
@@ -518,6 +483,9 @@ def regularly_connect_create(request):
         return HttpResponseNotAllowed(['post'])
 
 def regularly_connect_load(request, week):
+    if request.session.get('authority') > 1:
+        return render(request, 'authority.html')
+
     if week != 1 and week != 2:
         raise Http404
     creator = get_object_or_404(Member, id=request.session.get('user'))
@@ -594,6 +562,9 @@ def regularly_connect_load(request, week):
 
 
 def regularly_connect_delete(request):
+    if request.session.get('authority') > 1:
+        return render(request, 'authority.html')
+
     if request.method == "POST":
         check_list = request.POST.getlist('check')
         date = request.POST.get('date')
@@ -618,6 +589,11 @@ class RegularlyRouteList(generic.ListView):
     # paginate_by = 10
     model = DispatchRegularly
 
+    def get(self, request, *args, **kwargs):
+        if request.session.get('authority') > 1:
+            return render(request, 'authority.html')
+        return super().get(request, *args, **kwargs)
+        
     def get_queryset(self):
         group_id = self.request.GET.get('group', '')
         search = self.request.GET.get('search', '')
@@ -652,6 +628,8 @@ class RegularlyRouteList(generic.ListView):
         return context
 
 def regularly_order_create(request):
+    if request.session.get('authority') > 1:
+        return render(request, 'authority.html')
     context = {}
     if request.method == "POST":
         creator = get_object_or_404(Member, pk=request.session.get('user'))
@@ -720,6 +698,8 @@ def regularly_order_create(request):
         return HttpResponseNotAllowed(['post'])
 
 def regularly_order_edit(request):
+    if request.session.get('authority') > 1:
+        return render(request, 'authority.html')
     id = request.POST.get('id', None)
     order = get_object_or_404(DispatchRegularly, pk=id)
     
@@ -812,6 +792,8 @@ def regularly_order_edit(request):
         return HttpResponseNotAllowed(['post'])
 
 def regularly_order_upload(request):
+    if request.session.get('authority') > 1:
+        return render(request, 'authority.html')
     # post_data = json.loads(request.body.decode("utf-8"))
     # post_data.get('excel')
     # count = 0
@@ -864,6 +846,8 @@ def regularly_order_upload(request):
         return JsonResponse({'status': 'fail', 'count': count})
 
 def regularly_order_delete(request):
+    if request.session.get('authority') > 1:
+        return render(request, 'authority.html')
     if request.method == "POST":
         id_list = request.POST.getlist("check")
         group = request.POST.get('group', '')
@@ -876,6 +860,9 @@ def regularly_order_delete(request):
         return HttpResponseNotAllowed(['post'])
 
 def regularly_group_create(request):
+    if request.session.get('authority') > 1:
+        return render(request, 'authority.html')
+
     if request.method == "POST":
         group = RegularlyGroup(
             name = request.POST.get('name'),
@@ -889,6 +876,8 @@ def regularly_group_create(request):
         return HttpResponseNotAllowed(['POST'])
 
 def regularly_group_edit(request):
+    if request.session.get('authority') > 1:
+        return render(request, 'authority.html')
 
     if request.method == "POST":
         id = request.POST.get('id', None)
@@ -905,6 +894,9 @@ def regularly_group_edit(request):
         return HttpResponseNotAllowed(['POST'])
 
 def regularly_group_delete(request):
+    if request.session.get('authority') > 1:
+        return render(request, 'authority.html')
+
     if request.method == "POST":
         group = get_object_or_404(RegularlyGroup, id=request.POST.get('id', None))
         group.delete()
@@ -913,6 +905,9 @@ def regularly_group_delete(request):
         return HttpResponseNotAllowed(['POST'])
 
 def regularly_group_fix(request):
+    if request.session.get('authority') > 1:
+        return render(request, 'authority.html')
+
     if request.method == "POST":
         
         post_data = json.loads(request.body.decode("utf-8"))
@@ -942,6 +937,11 @@ class OrderList(generic.ListView):
     context_object_name = 'order_list'
     model = DispatchOrder
 
+    def get(self, request, *args, **kwargs):
+        if request.session.get('authority') > 1:
+            return render(request, 'authority.html')
+        return super().get(request, *args, **kwargs)
+
     def get_queryset(self):
         start_date = self.request.GET.get('date1', TODAY)
         end_date = self.request.GET.get('date2', TODAY)
@@ -962,8 +962,7 @@ class OrderList(generic.ListView):
             elif search_type == 'vehicle' and search:
                 dispatch_list = dispatch_list.filter(info_order__bus_id__vehicle_num__contains=search).order_by('departure_date')
 
-        else:
-            
+        else:            
             dispatch_list = DispatchOrder.objects.prefetch_related('info_order').exclude(arrival_date__lt=f'{TODAY} 00:00').exclude(departure_date__gt=f'{TODAY} 24:00').order_by('departure_date')
         
         return dispatch_list
@@ -990,12 +989,12 @@ class OrderList(generic.ListView):
             context['detail_connect_list'] = context['detail'].info_order.all()
             context['detail_connect_cnt'] = int(context['detail'].bus_cnt) - int(context['detail_connect_list'].count())
 
-        driver_list = Member.objects.filter(role='운전원').values_list('id', 'name')
+        driver_list = Member.objects.filter(Q(role='운전원')|Q(role='팀장')).values_list('id', 'name')
         context['driver_dict'] = {}
         for driver in driver_list:
             context['driver_dict'][driver[0]] = driver[1]
 
-        outsourcing_list = Member.objects.filter(role='용역').values_list('id', 'name')
+        outsourcing_list = Member.objects.filter(Q(role='용역')|Q(role='임시')).values_list('id', 'name')
         context['outsourcing_dict'] = {}
         for outsourcing in outsourcing_list:
             context['outsourcing_dict'][outsourcing[0]] = outsourcing[1]
@@ -1120,7 +1119,7 @@ class OrderList(generic.ListView):
         context['outstanding_list'] = outstanding_list
 
         context['client'] = []
-        for client in Client.objects.all().values('name', 'phone').order_by('name'):
+        for client in Client.objects.all().values('name', 'phone', 'note').order_by('name'):
             context['client'].append(client)
 
         
@@ -1133,6 +1132,8 @@ class OrderList(generic.ListView):
         return context
 
 def order_connect_create(request):
+    if request.session.get('authority') > 1:
+        return render(request, 'authority.html')
     if request.method == "POST":
         creator = get_object_or_404(Member, id=request.session.get('user'))
         order = get_object_or_404(DispatchOrder, id=request.POST.get('id', None))
@@ -1189,6 +1190,9 @@ def order_connect_create(request):
 
 
 def order_create(request):
+    if request.session.get('authority') > 1:
+        return render(request, 'authority.html')
+
     if request.method == "POST":
         creator = get_object_or_404(Member, pk=request.session.get('user'))
         order_form = OrderForm(request.POST)
@@ -1248,6 +1252,8 @@ def order_create(request):
                 order.departure = '<카드기>' + order.departure
             if '카시트' in option and (not '<카시트>' in order.departure):
                 order.departure = '<카시트>' + order.departure
+            if '음향' in option and (not '<음향>' in order.departure):
+                order.departure = '<음향>' + order.departure
 
             order.departure_date = f"{request.POST.get('departure_date')} {departure_time1}:{departure_time2}"
             order.arrival_date = f"{request.POST.get('arrival_date')} {arrival_time1}:{arrival_time2}"
@@ -1272,6 +1278,10 @@ def order_create(request):
         return HttpResponseNotAllowed(['post'])
 
 def order_edit_check(request):
+    if request.session.get('authority') > 1:
+        return render(request, 'authority.html')
+        
+
     pk = request.POST.get('id')
     order = get_object_or_404(DispatchOrder, pk=pk)
     #
@@ -1305,6 +1315,10 @@ def order_edit_check(request):
     return JsonResponse({'status': 'success', 'departure_date': post_departure_date, 'arrival_date': post_arrival_date})
 
 def order_edit(request):
+    if request.session.get('authority') > 1:
+        return render(request, 'authority.html')
+        
+
     pk = request.POST.get('id')
     order = get_object_or_404(DispatchOrder, pk=pk)
     
@@ -1386,6 +1400,11 @@ def order_edit(request):
             elif not '카시트' in option and '<카시트>' in order.departure:
                 order.departure = order.departure.replace('<카시트>','')
 
+            if '음향' in option and (not '<음향>' in order.departure):
+                order.departure = '<음향>' + order.departure
+            elif not '음향' in option and '<음향>' in order.departure:
+                order.departure = order.departure.replace('<음향>','')
+
             order.customer = order_form.cleaned_data['customer']
             order.customer_phone = order_form.cleaned_data['customer_phone']
             order.bill_place = order_form.cleaned_data['bill_place']
@@ -1428,6 +1447,9 @@ def order_edit(request):
         return HttpResponseNotAllowed(['post'])
 
 def order_delete(request):
+    if request.session.get('authority') > 1:
+        return render(request, 'authority.html')
+        
     if request.method == "POST":
         id_list = request.POST.getlist('id', None)
         date1 = request.POST.get('date1')
@@ -1442,6 +1464,8 @@ def order_delete(request):
         return HttpResponseNotAllowed(['post'])
 
 def line_print(request):
+    if request.session.get('authority') > 3:
+        return render(request, 'authority.html')
     context = {}
     date = request.GET.get('date')
     week = WEEK[datetime.strptime(date, FORMAT).weekday()][1]
@@ -1481,6 +1505,9 @@ def line_print(request):
     return render(request, 'dispatch/line_print.html', context)
 
 def bus_print(request):
+    if request.session.get('authority') > 3:
+        return render(request, 'authority.html')
+
     context = {}
     date = request.GET.get('date')
 
@@ -1517,9 +1544,10 @@ def daily_driving_list(request):
     context = {}
     date = request.GET.get('date')
 
-    vehicle_list = Vehicle.objects.filter(use='사용').order_by('vehicle_num')
-    member_list = Member.objects.filter(use='사용').filter(Q(role='용역')|Q(role='운전원'))
-    context['vehicle_list'] = vehicle_list
+    if request.session.get('authority') > 3:
+        member_list = Member.objects.filter(id=request.session.get('user'))
+    else:
+        member_list = Member.objects.filter(use='사용').filter(authority__gte=3)
     
     connect_object = {}
     e_connect_object = {}
@@ -1528,8 +1556,11 @@ def daily_driving_list(request):
         connect_object[member.id] = []
         e_connect_object[member.id] = []
         c_connect_object[member.id] = []
-
-    r_connect_list = DispatchRegularlyConnect.objects.select_related('driver_id').filter(departure_date__startswith=date).order_by('departure_date')
+    
+    if request.session.get('authority') > 3:
+        r_connect_list = DispatchRegularlyConnect.objects.select_related('driver_id').filter(driver_id=member_list[0]).filter(departure_date__startswith=date).order_by('departure_date')
+    else:
+        r_connect_list = DispatchRegularlyConnect.objects.select_related('driver_id').filter(departure_date__startswith=date).order_by('departure_date')
     for connect in r_connect_list:
         
         if connect.work_type == "출근":
@@ -1537,7 +1568,10 @@ def daily_driving_list(request):
         elif connect.work_type == "퇴근":
             c_connect_object[connect.driver_id.id].append(connect)
 
-    connect_list = DispatchOrderConnect.objects.select_related('bus_id', 'order_id').filter(departure_date__lte=f'{date} 24:00').filter(arrival_date__gte=f'{date} 00:00')
+    if request.session.get('authority') > 3:
+        connect_list = DispatchOrderConnect.objects.select_related('bus_id', 'order_id').filter(driver_id=member_list[0]).filter(departure_date__lte=f'{date} 24:00').filter(arrival_date__gte=f'{date} 00:00')
+    else:
+        connect_list = DispatchOrderConnect.objects.select_related('bus_id', 'order_id').filter(departure_date__lte=f'{date} 24:00').filter(arrival_date__gte=f'{date} 00:00')
     for connect in connect_list:
         connect_object[connect.driver_id.id].append(connect)
 
@@ -1550,7 +1584,11 @@ def daily_driving_list(request):
     return render(request, 'dispatch/daily_driving_list.html', context)
 
 def daily_driving_print(request):
-    id_list = request.GET.get('id').split(',')
+    if request.session.get('authority') > 3:
+        id_list = [request.session.get('user')]
+    else:
+        id_list = request.GET.get('id').split(',')
+
     date = request.GET.get('date')
     context = {}
     context['member_list'] = []

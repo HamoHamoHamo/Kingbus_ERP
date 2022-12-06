@@ -1,5 +1,3 @@
-const amountInput = document.querySelectorAll(".amountInput")
-
 for (i = 0; i < amountInput.length; i++){
     amountInput[i].addEventListener("change", amountValidation)
 };

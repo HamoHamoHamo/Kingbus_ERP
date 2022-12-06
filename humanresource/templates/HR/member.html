@@ -82,7 +82,7 @@
           <td>{{start_num|add:forloop.counter0}}</td>
           <td class="{{ forloop.counter0 }}">{{member.name}}</td>
           <td></td>
-          <td>{{member.user_id}}</td>
+          <td>{% if member.user_id %}{{member.user_id}}{% endif %}</td>
           <td>{{member.role}}</td>
           <td>{{member.entering_date}}</td>
           <td>{{member.phone_num}}</td>
@@ -199,7 +199,7 @@
               <div class="popupArticleBox">
                   <div class="popupArticleDouble">
                       <label for="" class="popupArticleLabel"><span class="importantStar">*</span>생년월일</label>
-                      <input autocomplete="off"name="birthdate" type="text" class="popupArticleinput PopupDataInputBirth essential" placeholder="ex)19990101">
+                      <input autocomplete="off"name="birthdate" type="date" class="popupArticleinput PopupDataInputBirth essential" placeholder="ex)19990101">
                   </div>
                   <div class="popupArticleDouble">
                       <label for="" class="popupArticleLabel"><span class="importantStar">*</span>휴대폰번호</label>
@@ -336,7 +336,7 @@
                 <div class="popupArticleBox">
                     <div class="popupArticleDouble">
                         <label for="" class="popupArticleLabel"><span class="importantStar">*</span>생년월일</label>
-                        <input autocomplete="off"name="birthdate" type="text" class="popupArticleinput hrBirth length100 editEssential" placeholder="ex)19990101">
+                        <input autocomplete="off"name="birthdate" type="date" class="popupArticleinput hrBirth length100 editEssential" placeholder="ex)19990101">
                     </div>
                     <div class="popupArticleDouble">
                         <label for="" class="popupArticleLabel"><span class="importantStar">*</span>휴대폰번호</label>

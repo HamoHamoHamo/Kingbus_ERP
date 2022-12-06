@@ -36,14 +36,16 @@
     </div>
   </div>
   <div class="noticeTextarea">{{notice.content}}</div>
-    {% if notice.creator.id == request.session.user %}
+    {% if notice.creator.id == request.session.user or request.session.authority == 0 %}
     <div class="createBtnBox">
       <form action="{% url 'notice:delete' notice.kinds notice.id %}" class="deleteForm" onsubmit="return confirm('정말로 삭제하시겠습니까?');">
         <input autocomplete="off" type="submit" value="삭제" class="deleteBtn">
       </form>
+      {% if notice.creator.id == request.session.user %}
       <form action="{% url 'notice:edit' notice.kinds notice.id %}" class="noticeDetailEdit">
         <input autocomplete="off" type="submit" value="수정" class="editBtn">
       </form>
+      {% endif %}
     </div>
     {% endif %}
 </div>
@@ -57,7 +59,7 @@
     <div class="commentUserDataCell">
       <span class="commentUserTitle">{{comment.creator}}</span>
       <span class="commentCreateDate">{{comment.pub_date | date:'Y.m.d H:i:s'}}</span>
-      {% if request.session.user == comment.creator.id %}
+      {% if request.session.user == comment.creator.id or request.session.authority == 0 %}
       <form method="post" action="{% url 'notice:comment_del' notice.kinds notice.id comment.id %}" onsubmit="return confirm('정말로 삭제하시겠습니까?');">
         {% csrf_token %}
         <input autocomplete="off" type="submit" class="commentDeleteBtn" value="삭제">

@@ -23,7 +23,9 @@ function dataLoad() {
         };
     }
 }
-dataLoad()
+if(AUTHORITY < 3){
+    dataLoad()
+}
 
 function locationDispatch() {
 
