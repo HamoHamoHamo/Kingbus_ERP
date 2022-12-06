@@ -7,7 +7,7 @@ vhicleCheck.addEventListener("click", openInspection)
 
 function openInspection() {
     if (this.classList.contains("inspectionAlarm")) {
-        popupAreaModules[2].style.display = "block"
+        popupAreaModules[1].style.display = "block"
     }
 }
 
@@ -16,5 +16,5 @@ SidemenuUseClose.addEventListener("click", closeInspection)
 inspectionCloseBtn.addEventListener("click", closeInspection)
 
 function closeInspection() {
-    popupAreaModules[2].style.display = "none"
+    popupAreaModules[1].style.display = "none"
 }

@@ -62,12 +62,14 @@ function thisMonth(prevDay, nowDay) {
     if (41 - (6 - nowDay) >= 38) {
         for (i = prevDay; i < 41 - (6 - nowDay) - 7; i++) {
             calenderDateBox[i + 1].children[0].children[0].innerText = i - (prevDay - 1)
-            if (parms.has("change")) {
-                cloneNode = orderContentesArea.cloneNode(true);
-                calenderDateBox[i + 1].children[0].after(cloneNode)
-            } else {
-                cloneNode = basicContentesArea.cloneNode(true);
-                calenderDateBox[i + 1].children[0].after(cloneNode)
+            if (AUTHORITY < 3) {
+                if (parms.has("change")) {
+                    cloneNode = orderContentesArea.cloneNode(true);
+                    calenderDateBox[i + 1].children[0].after(cloneNode)
+                } else {
+                    cloneNode = basicContentesArea.cloneNode(true);
+                    calenderDateBox[i + 1].children[0].after(cloneNode)
+                }
             }
             if ((parms.get("month") == nowMonth || !parms.has("month"))) {
                 if (!calenderDateBox[i].classList.contains("beforeMonth") && !calenderDateBox[i].classList.contains("afterMonth") && thisDateCounter == thisDate) {
@@ -80,12 +82,15 @@ function thisMonth(prevDay, nowDay) {
     } else {
         for (i = prevDay; i < 41 - (6 - nowDay); i++) {
             calenderDateBox[i + 1].children[0].children[0].innerText = i - (prevDay - 1)
-            if (parms.has("change")) {
-                cloneNode = orderContentesArea.cloneNode(true);
-                calenderDateBox[i + 1].children[0].after(cloneNode)
-            } else {
-                cloneNode = basicContentesArea.cloneNode(true);
-                calenderDateBox[i + 1].children[0].after(cloneNode)
+
+            if (AUTHORITY < 3) {
+                if (parms.has("change")) {
+                    cloneNode = orderContentesArea.cloneNode(true);
+                    calenderDateBox[i + 1].children[0].after(cloneNode)
+                } else {
+                    cloneNode = basicContentesArea.cloneNode(true);
+                    calenderDateBox[i + 1].children[0].after(cloneNode)
+                }
             }
             if ((parms.get("month") == nowMonth || !parms.has("month"))) {
                 if (!calenderDateBox[i].classList.contains("beforeMonth") && !calenderDateBox[i].classList.contains("afterMonth") && thisDateCounter == thisDate) {
@@ -182,7 +187,7 @@ function prevDay() {
     } else {
         if (parms.has("change")) {
             location.href = `${window.location.href}&year=${nowYear}&month=${nowMonth - 1}`
-        }else{
+        } else {
             location.href = `${window.location.href}?year=${nowYear}&month=${nowMonth - 1}`
         }
     }
@@ -214,7 +219,11 @@ function nextDay() {
         if (parms.has("change")) {
             location.href = `${window.location.href}?change=true&year=${nowYear}&month=${nowMonth + 1}`
         } else {
-            location.href = `${window.location.href}?year=${nowYear}&month=${nowMonth + 1}`
+            if(nowMonth + 1 === 13){
+                location.href = `${window.location.href}?year=${nowYear + 1}&month=1`
+            }else{
+                location.href = `${window.location.href}?year=${nowYear}&month=${nowMonth + 1}`
+            }
         }
     }
 }

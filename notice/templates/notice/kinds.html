@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load custom_tags %}
 {% load static %}
 {% block head %}
 <meta http-equiv="Cache-Control" content="private, no-cache, no-store, max-age=0, must-revalidate">
@@ -52,7 +53,7 @@
       <tbody>
         {% for notice in notices %}
         <tr>
-          <td>{{notice.num}}</td>
+          <td>{{start_num|sub:forloop.counter0}}</td>
           <td><a href="{% url 'notice:detail' kinds notice.id %}">{{notice.title}}</a></td>
           <td>{{notice.creator.name}}</td>
           <td>{{notice.pub_date | date:'Y.m.d H:i'}}</td>
@@ -115,4 +116,5 @@
 
 {% block script %}
 <script src="{% static 'js/length.js' %}"></script>
+<script src="{% static 'js/authorityNotice.js' %}"></script>
 {% endblock %}

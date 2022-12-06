@@ -25,7 +25,7 @@ class MemberList(generic.ListView):
 
     def get(self, request, **kwargs):
         if request.session.get('authority') >= 3:
-            return redirect(request.META.get('HTTP_REFERER', 'redirect_if_referer_not_found'))
+            return render(request, 'authority.html')
         else:
             return super().get(request, **kwargs)
 
@@ -36,17 +36,11 @@ class MemberList(generic.ListView):
         up65 = f'{int(TODAY[:4]) - 65}{TODAY[4:10]}'
 
         authority = self.request.session.get('authority')
-
-        if authority >= 3:
-            return redirect(self.request.META.get('HTTP_REFERER', 'redirect_if_referer_not_found'))
-        if authority == 2:
-            authority = 1
-
+        
         if name:
             member_list = Member.objects.filter(use=use).filter(authority__gte=authority).filter(name__contains=name).order_by('name')
         else:
             member_list = Member.objects.filter(use=use).filter(authority__gte=authority).order_by('name')
-            print('memberrrrrr', member_list, use)
         if age == '65세 이상':
             print('testtt')
             member_list = member_list.filter(birthdate__lte=up65)
@@ -93,7 +87,7 @@ class MemberList(generic.ListView):
                 'address': member.address,
                 'phone_num': member.phone_num,
                 'entering_date': member.entering_date,
-                'id': member.user_id,
+                'id': member.user_id if member.user_id else '',
                 'license': license_name,
                 'bus_license': bus_license_name,
                 'note': member.note,
@@ -112,11 +106,10 @@ class MemberList(generic.ListView):
         return context
 
 def member_create(request):
-    if request.session.get('authority') >= 3:
-        return redirect(request.META.get('HTTP_REFERER', 'redirect_if_referer_not_found'))
-
     if request.method == "POST":
         user_auth = request.session.get('authority')
+        if user_auth >= 3:
+            return render(request, 'authority.html')
 
         member_form = MemberForm(request.POST)
         if member_form.is_valid():
@@ -141,11 +134,11 @@ def member_create(request):
             member.creator = creator
             member.authority = req_auth
             user_id = request.POST.get('user_id', None)
-            if Member.objects.filter(user_id=user_id).exists(): #아이디 중복체크
+            if req_auth != 5 and Member.objects.filter(user_id=user_id).exists(): #아이디 중복체크
                 raise Http404
             
             if role != '임시':
-                member.user_id = user_id
+                member.user_id = None
                 member.password = make_password('0000')
             member.emergency = request.POST.get('emergency1', '') + ' ' + request.POST.get('emergency2', '')
             member.save()
@@ -177,20 +170,21 @@ def member_file_save(upload_file, member, type, creator):
     return
 
 def member_edit(request):
-    if request.session.get('authority') >= 3:
-        return redirect(request.META.get('HTTP_REFERER', 'redirect_if_referer_not_found'))
-        
     if request.method == "POST":
+        user_auth = request.session.get('authority')
+        if user_auth >= 3:
+            return render(request, 'authority.html')
+
         pk = request.POST.get('id', None)
         member = get_object_or_404(Member, pk=pk)
-
-        user_auth = request.session.get('authority')
 
         member_form = MemberForm(request.POST)
         if member_form.is_valid():
             role = request.POST.get('role')
-            if role == '용역':
+            if role == '임시':
                 req_auth = 5
+            elif role == '용역':
+                req_auth = 4
             elif role == '운전원':
                 req_auth = 4
             elif role == '팀장':
@@ -277,10 +271,11 @@ def member_edit(request):
         return HttpResponseNotAllowed(['post'])
 
 def member_delete(request):
-    user_auth = request.session.get('authority')
-    if user_auth >= 3:
-        return redirect(request.META.get('HTTP_REFERER', 'redirect_if_referer_not_found'))
     if request.method == 'POST':
+        user_auth = request.session.get('authority')
+        if user_auth >= 3:
+            return render(request, 'authority.html')
+
         del_list = request.POST.getlist('delete_check', '')
         ####권한 확인
         
@@ -302,6 +297,10 @@ def member_delete(request):
         return HttpResponseNotAllowed(['post'])
 
 def member_img(request, file_id):
+    user_auth = request.session.get('authority')
+    if user_auth >= 3:
+        return render(request, 'authority.html')
+
     context = {
         'img': get_object_or_404(MemberFile, id=file_id)
     }
@@ -320,7 +319,7 @@ class SalaryList(generic.ListView):
         authority = self.request.session.get('authority')
         if authority >= 3:
             id = self.request.session.get('user')
-            member_list = Member.objects.filter(entering_date__lt=month+'-32').filter(id=id).filter(Q(role='운전원')|Q(role='용역')).order_by('name')
+            member_list = Member.objects.filter(entering_date__lt=month+'-32').filter(id=id)
         else:
             member_list = Member.objects.filter(entering_date__lt=month+'-32').filter(Q(role='운전원')|Q(role='용역')).order_by('name')
             if name:
@@ -442,10 +441,12 @@ def new_salary(creator, month, member):
     return salary
 
 def salary_detail(request):
-    member_id_list = request.GET.get('driver').split(',')
-    month = request.GET.get('date')
-
-    
+    user_auth = request.session.get('authority')
+    if user_auth >= 3:
+        member_id_list = [request.session.get('user')]
+    else:
+        member_id_list = request.GET.get('driver').split(',')
+    month = request.GET.get('date', TODAY[:7])
     
     try:
         category_date = Category.objects.get(type='급여지급일').category
@@ -491,9 +492,10 @@ def salary_detail(request):
             if not order_list[c_date]:
                 order_list[c_date] = []
             order_list[c_date].append([connect.order_id.departure, connect.order_id.arrival])
-            order_price += int(connect.driver_allowance)
-        if connects:
+            # +=에서 =으로 변경 맞나?
+            order_price = int(connect.driver_allowance)
             order_price_list[c_date] = order_price
+        if connects:
             total_list[c_date] += order_price
 
         attendances = DispatchRegularlyConnect.objects.filter(departure_date__range=(f'{month}-01', {month}-{last_date})).filter(work_type='출근').filter(driver_id=member)
@@ -568,6 +570,10 @@ def salary_detail(request):
 
 def salary_edit(request):
     if request.method == 'POST':
+        user_auth = request.session.get('authority')
+        if user_auth >= 3:
+            return render(request, 'authority.html')
+
         base_list = request.POST.getlist('base')
         service_list = request.POST.getlist('service')
         position_list = request.POST.getlist('position')
@@ -611,6 +617,10 @@ def salary_edit(request):
 
 def salary_additional_create(request):
     if request.method == 'POST':
+        user_auth = request.session.get('authority')
+        if user_auth >= 3:
+            return render(request, 'authority.html')
+
         member_id = request.POST.get('id', '')
         price = request.POST.get('price')
         remark = request.POST.get('remark')
@@ -638,6 +648,10 @@ def salary_additional_create(request):
 
 def salary_additional_delete(request):
     if request.method == 'POST':
+        user_auth = request.session.get('authority')
+        if user_auth >= 3:
+            return render(request, 'authority.html')
+
         id_list = request.POST.getlist('id')
         for id in id_list:
             additional = get_object_or_404(AdditionalSalary, id=id)
@@ -656,6 +670,10 @@ def salary_additional_delete(request):
 
 def salary_deduction_create(request):
     if request.method == 'POST':
+        user_auth = request.session.get('authority')
+        if user_auth >= 3:
+            return render(request, 'authority.html')
+
         member_id = request.POST.get('id', '')
         price = request.POST.get('price')
         remark = request.POST.get('remark')
@@ -682,6 +700,10 @@ def salary_deduction_create(request):
 
 def salary_deduction_delete(request):
     if request.method == 'POST':
+        user_auth = request.session.get('authority')
+        if user_auth >= 3:
+            return render(request, 'authority.html')
+
         id_list = request.POST.getlist('id')
         for id in id_list:
             deduction = get_object_or_404(DeductionSalary, id=id)

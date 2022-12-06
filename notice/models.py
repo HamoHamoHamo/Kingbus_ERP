@@ -10,7 +10,6 @@ class Notice(models.Model): #장고에서 제공하는 models.Model를 상속받
     content = models.TextField(verbose_name='내용', null=False)
     kinds = models.CharField(max_length=10, verbose_name='종류', null=False)
     view_cnt = models.IntegerField(verbose_name='조회수', null=False, default=0)
-    num = models.IntegerField(verbose_name='번호', null=False, default=0)
     pub_date = models.DateTimeField(auto_now_add=True,verbose_name='등록시간')
     creator = models.ForeignKey(Member, related_name="notice_user", verbose_name='작성자', db_column="user_id", null=True, on_delete=models.SET_NULL)
     #저장되는 시점의 시간을 자동으로 삽입해준다.

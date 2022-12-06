@@ -82,7 +82,7 @@ class VehicleList(generic.ListView):
         context['search'] = self.request.GET.get('search', '')
         context['use'] = self.request.GET.get('use', '')
         # context['driver_list'] = Member.objects.filter(role='운전원')
-        context['driver_list'] = Member.objects.filter(driver=None).filter(Q(role='운전원') | Q(role='용역')).order_by('name')
+        context['driver_list'] = Member.objects.filter(driver=None).filter(Q(role='팀장') | Q(role='운전원') | Q(role='용역')).order_by('name')
         
         file_list = []
         for vehicle in context['vehicle_list']:

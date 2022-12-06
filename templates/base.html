@@ -33,12 +33,9 @@
         </a>
       </div>
 
-
-
-
-
       <!--sideMenuNav-->
       <div class="sideMenuNav">
+        {% if request.session.authority <= 1 %}
         <ul class="sideMenuNav1">
           <div class="nav1Box">
             <li class="nav1BoxMenu">
@@ -185,6 +182,28 @@
             </li>
           </div>
         </ul>
+        {% else %}
+        <ul class="sideMenuNav1">
+          <div class="nav1Box">
+            <li class="nav1BoxMenu">
+              <img src="{% static 'images/calendar.png' %}" alt="일정 아이콘">
+              <a href="{% url 'home' %}" class="nonDepth2Menu">일정</a>
+            </li>
+          </div>
+          <div class="nav1Box">
+            <li class="nav1BoxMenu">
+              <img src="{% static 'images/notice.png' %}" alt="공지사항 아이콘">
+              <a href="{% url 'notice:kinds' 'driver' %}" class="nonDepth2Menu">공지사항</a>
+            </li>
+          </div>
+          <div class="nav1Box">
+            <li class="nav1BoxMenu">
+              <img src="{% static 'images/HRManagement.png' %}" alt="인사관리 아이콘">
+              <a href="{% url 'HR:salary' %}" class="nonDepth2Menu">급여관리</a>
+            </li>
+          </div>
+        </ul>
+        {% endif %}
       </div>
 
 
@@ -456,6 +475,10 @@
     </div>
 
   </div>
+  <script>
+    const AUTHORITY = {{request.session.authority}}
+    console.log('AUTHORITY', AUTHORITY)
+  </script>
   <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
   <script src="{% static 'js/sideNavMenu.js' %}"></script>
   <script src="{% static 'js/profile.js' %}"></script>
