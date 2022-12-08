@@ -859,11 +859,15 @@
 }
 
 .accountPopupArticleBoxTable td:nth-child(2) {
-  width: 52%;
+  width: 32%;
 }
 
 .accountPopupArticleBoxTable td:nth-child(3) {
-  width: 32%;
+  width: 24%;
+}
+
+.accountPopupArticleBoxTable td:nth-child(4) {
+  width: 28%;
 }
 
 .accountDeleteBtn {

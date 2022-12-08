@@ -331,6 +331,16 @@
   width: 40%;
 }
 
+.toolbar input[type=text]{  
+  width: 16rem;
+  height: 2.4rem;
+  padding-left: 0.3rem;
+  border: 0.1rem solid #B5B5B5;
+  border-radius: 0.2rem;
+  font-size: 1.4rem;
+  box-sizing: border-box;
+}
+
 
 
 

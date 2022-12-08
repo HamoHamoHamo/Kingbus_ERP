@@ -164,7 +164,7 @@
         </colgroup>
         <tr>
           <td class="tdTypeA">*그룹</td>
-          <td colspan="3" class="tdTypeB">
+          <td class="tdTypeC">
             <select name="group" class="inputSelect" tabindex="1">
               <option value=""></option>
               {% for g in group_list %}
@@ -172,10 +172,16 @@
               {% endfor %}
             </select>
           </td>
+          <td class="tdTypeA">*사용/미사용</td>
+          <td class="tdTypeC">
+            <input type="radio" id="useRoute" name="use" checked>
+            <label for="useRoute">사용</label>
+            <input type="radio" id="unuseRoute" name="use">
+            <label for="unuseRoute">미사용</label>
+          </td>
           <td class="tdTypeA">*출/퇴근</td>
           <td class="tdTypeC">
-            
-            <input autocomplete="off" {% if detail.work_type == '출근' %} checked {% endif %} value="출근" name="work_type" id="workStart" type="radio" tabindex="11">
+            <input autocomplete="off" {% if detail.work_type == '출근' %} checked {% endif %} value="출근" name="work_type" id="workStart" type="radio" tabindex="11" checked>
             <label for="workStart">출근</label>
             <input autocomplete="off" {% if detail.work_type == '퇴근' %} checked {% endif %} value="퇴근" name="work_type" id="workEnd" type="radio" tabindex="12">
             <label for="workEnd">퇴근</label>
@@ -193,26 +199,26 @@
         <tr>
           <td class="tdTypeA">*노선명</td>
           <td colspan="3" class="tdTypeB">
-            <input autocomplete="off" value="{{detail.route}}" name="route" type="text" class="inputText length15" tabindex="2">
+            <input autocomplete="off" value="{{detail.route}}" name="route" type="text" class="inputText essential length15" tabindex="2">
           </td>
           <td class="tdTypeA">*운행요일</td>
           <td colspan="3" class="tdTypeB">
             <div class="routeWeek driveDateBox">
               <input autocomplete="off" id="all" type="checkbox" tabindex="14">
               <label for="all">모두</label>
-              <input autocomplete="off" {% if detail.week and detail.week|in_check:'월' %} checked {% endif %} name="week" value="월" id="mon" type="checkbox">
+              <input autocomplete="off" {% if detail.week and detail.week|in_check:'월' %} checked {% endif %} name="week" value="월" id="mon" type="checkbox" class="driveDateCheck">
               <label for="mon">월</label>
-              <input autocomplete="off" {% if detail.week and detail.week|in_check:'화' %} checked {% endif %} name="week" value="화" id="tue" type="checkbox">
+              <input autocomplete="off" {% if detail.week and detail.week|in_check:'화' %} checked {% endif %} name="week" value="화" id="tue" type="checkbox" class="driveDateCheck">
               <label for="tue">화</label>
-              <input autocomplete="off" {% if detail.week and detail.week|in_check:'수' %} checked {% endif %} name="week" value="수" id="wed" type="checkbox">
+              <input autocomplete="off" {% if detail.week and detail.week|in_check:'수' %} checked {% endif %} name="week" value="수" id="wed" type="checkbox" class="driveDateCheck">
               <label for="wed">수</label>
-              <input autocomplete="off" {% if detail.week and detail.week|in_check:'목' %} checked {% endif %} name="week" value="목" id="thu" type="checkbox">
+              <input autocomplete="off" {% if detail.week and detail.week|in_check:'목' %} checked {% endif %} name="week" value="목" id="thu" type="checkbox" class="driveDateCheck">
               <label for="thu">목</label>
-              <input autocomplete="off" {% if detail.week and detail.week|in_check:'금' %} checked {% endif %} name="week" value="금" id="fri" type="checkbox">
+              <input autocomplete="off" {% if detail.week and detail.week|in_check:'금' %} checked {% endif %} name="week" value="금" id="fri" type="checkbox" class="driveDateCheck">
               <label for="fri">금</label>
-              <input autocomplete="off" {% if detail.week and detail.week|in_check:'토' %} checked {% endif %} name="week" value="토" id="sat" type="checkbox">
+              <input autocomplete="off" {% if detail.week and detail.week|in_check:'토' %} checked {% endif %} name="week" value="토" id="sat" type="checkbox" class="driveDateCheck">
               <label for="sat">토</label>
-              <input autocomplete="off" {% if detail.week and detail.week|in_check:'일' %} checked {% endif %} name="week" value="일" id="sun" type="checkbox">
+              <input autocomplete="off" {% if detail.week and detail.week|in_check:'일' %} checked {% endif %} name="week" value="일" id="sun" type="checkbox" class="driveDateCheck">
               <label for="sun">일</label>
             </div>
           </td>
@@ -220,7 +226,7 @@
         <tr>
           <td class="tdTypeA">*출발지</td>
           <td colspan="3" class="tdTypeB">
-            <input autocomplete="off" value="{{detail.departure}}" name="departure" type="text" class="inputText length200" tabindex="3">
+            <input autocomplete="off" value="{{detail.departure}}" name="departure" type="text" class="inputText essential length200" tabindex="3">
           </td>
           <td class="tdTypeA">상세노선</td>
           <td colspan="3" class="tdTypeB">
@@ -230,39 +236,80 @@
         <tr>
           <td class="tdTypeA">*도착지</td>
           <td colspan="3" class="tdTypeB">
-            <input autocomplete="off" value="{{detail.arrival}}" name="arrival" type="text" class="inputText length200" tabindex="4">
+            <input autocomplete="off" value="{{detail.arrival}}" name="arrival" type="text" class="inputText essential length200" tabindex="4">
           </td>
           <td class="tdTypeA">*금액</td>
           <td class="tdTypeC">
-            <input autocomplete="off" value="{{detail.price}}" name="price" type="text" class="inputText amountComma length100" tabindex="16">
+            {% if detail %}
+            <div class="pricePopupArea amountComma">{{detail.price}}</div>
+            {% else %}
+            <input autocomplete="off" name="price" type="text" class="inputText amountComma essential inputPrice length100" tabindex="16">
+            {% endif %}
           </td>
           <td class="tdTypeA">*기사수당</td>
           <td class="tdTypeC">
-            <input autocomplete="off" value="{{detail.driver_allowance}}" name="driver_allowance" type="text" class="inputText amountComma length100" tabindex="17">
+            {% if detail %}
+            <div class="pricePopupArea amountComma">{{detail.driver_allowance}}</div>
+            {% else %}
+            <input autocomplete="off" name="driver_allowance" type="text" class="inputText essential inputDriverAllowance amountComma length100" tabindex="17">
+            {% endif %}
           </td>
         </tr>
         <tr>
           <td class="tdTypeA">*순번</td>
           <td class="tdTypeC">
             <div class="routeNumber">
-              <input autocomplete="off" value="{{detail.number1}}" name="number1" type="text" class="inputText length100" tabindex="5">-
-              <input autocomplete="off" value="{{detail.number2}}" name="number2" type="text" class="inputText length100" tabindex="6">
+              <input autocomplete="off" value="{{detail.number1}}" name="number1" type="text" class="inputText essential length100" tabindex="5">-
+              <input autocomplete="off" value="{{detail.number2}}" name="number2" type="text" class="inputText essential length100" tabindex="6">
             </div>
           </td>
           <td class="tdTypeA">*운행시간</td>
           <td class="tdTypeC">
             <div class="routeTime">
-              <input autocomplete="off" value="{{detail.departure_time|slice:':2'}}" name="departure_time1" type="text" class="inputText" maxlength="2" tabindex="7">:
-              <input autocomplete="off" value="{{detail.departure_time|slice:'3:'}}" name="departure_time2" type="text" class="inputText" maxlength="2" tabindex="8">~
-              <input autocomplete="off" value="{{detail.arrival_time|slice:':2'}}" name="arrival_time1" type="text" class="inputText" maxlength="2" tabindex="9">:
-              <input autocomplete="off" value="{{detail.arrival_time|slice:'3:'}}" name="arrival_time2" type="text" class="inputText" maxlength="2" tabindex="10">
+              <input autocomplete="off" value="{{detail.departure_time|slice:':2'}}" name="departure_time1" type="text" class="inputText essential" maxlength="2" tabindex="7">:
+              <input autocomplete="off" value="{{detail.departure_time|slice:'3:'}}" name="departure_time2" type="text" class="inputText essential" maxlength="2" tabindex="8">~
+              <input autocomplete="off" value="{{detail.arrival_time|slice:':2'}}" name="arrival_time1" type="text" class="inputText essential" maxlength="2" tabindex="9">:
+              <input autocomplete="off" value="{{detail.arrival_time|slice:'3:'}}" name="arrival_time2" type="text" class="inputText essential" maxlength="2" tabindex="10">
             </div>
           </td>
           <td class="tdTypeA">참조사항</td>
           <td colspan="3" class="tdTypeB">
+            <input autocomplete="off" value="{{detail.references}}" name="references" type="text" class="inputText" tabindex="18">
           </td>
         </tr>
       </table>
+
+      {% if detail %}
+      <div class="popupAreaModules">
+        <div class="popupBgModules"></div>
+        <div class="popupContainer referenceeContainer">
+          <div class="popupHeader">
+              <div class="popupTitle">금액/수당 수정</div>
+          </div>
+          <div class="popupBody">
+            <div class="popupSection">
+                <div class="popupArticle">
+                    <label for="" class="popupArticleLabel"><span class="importantStar">*</span>금액</label>
+                    <input autocomplete="off" name="price" type="text" class="inputText amountComma essential inputPrice length100" value="{{detail.price}}">
+                </div>
+                <div class="popupArticle">
+                    <label for="" class="popupArticleLabel"><span class="importantStar">*</span>기사수당</label>
+                    <input autocomplete="off" name="driver_allowance" type="text" class="inputText essential inputDriverAllowance amountComma length100" value="{{detail.driver_allowance}}">
+                </div>
+                <div class="popupArticle">
+                    <label for="" class="popupArticleLabel"><span class="importantStar">*</span>기준일</label>
+                    <input autocomplete="off" name="month" type="month" class="popupArticleinput referenceDateInput">
+                    <div class="fixedDate">{{detail.group.settlement_date}}일</div>
+                </div>
+            </div>
+            <div class="popupFooter">
+                <div class="btnModules referenceEditBtn">확인</div>
+                <div class="btnModules referenceCloseBtn">취소</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      {% endif %}
 
     </form>
 
@@ -270,7 +317,10 @@
 
 
     <form action="{% url 'dispatch:regularly_route' %}" class="routListSearch">
-      <label for="routeListsearch">노선검색</label>
+      <select name="use">
+        <option value="사용">사용</option>
+        <option value="미사용">미사용</option>
+      </select>
       <input autocomplete="off" name="search" value="{{search}}" type="text" id="routeListsearch">
       <input autocomplete="off" type="hidden" value="{{group.id}}" name="group">
       <input autocomplete="off" type="submit" class="btnModules routeListSearchBtn" value="검색">
@@ -437,8 +487,8 @@
 </script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.15.5/xlsx.full.min.js"></script>
 <script src="{% static 'js/dispatch/regularly_route/uploadExcel.js' %}"></script>
-<script src="{% static 'js/dispatch/regularly_route/craetRoute.js' %}"></script>
 <script src="{% static 'js/dispatch/regularly_route/targetRoute.js' %}"></script>
+<script src="{% static 'js/dispatch/regularly_route/craetRoute.js' %}"></script>
 <script src="{% static 'js/dispatch/regularly_route/routeListValidation.js' %}"></script>
 <script src="{% static 'js/dispatch/regularly_route/routeLayoutChanger.js' %}"></script>
 <script src="{% static 'js/dispatch/regularly_route/routeScrollLink.js' %}"></script>
@@ -449,4 +499,5 @@
 <script src="{% static 'js/dispatch/regularly_route/groupCalculating.js' %}"></script>
 <script src="{% static 'js/dispatch/regularly_route/lengthBreak.js' %}"></script>
 <script src="{% static 'js/dispatch/regularly_route/createAddComma.js' %}"></script>
+<script src="{% static 'js/dispatch/regularly_route/ReferenceDate.js' %}"></script>
 {% endblock %}

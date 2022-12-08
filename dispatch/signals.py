@@ -77,7 +77,7 @@ def update_total_price(instance):
 
     if int(settlement_date) == 1:
         month2 = month
-        settlement_date2 = last_date
+        settlement_date2 = last_date[8:10]
     else:
         month2 = datetime.strftime(datetime.strptime(f'{month}-01', FORMAT) + relativedelta(months=1), FORMAT)[:7]
         if int(settlement_date) > 9:
@@ -89,10 +89,11 @@ def update_total_price(instance):
         settlement_date = f'0{settlement_date}'
 
 
-    regularly_list = group.regularly_info.all()
+    regularly_list = group.regularly_monthly.all()
     total_price = 0
     date1 = f'{month}-{settlement_date}'
     date2 = f'{month2}-{settlement_date2}'
+    print("REGULALRY", date1, date2)
     for regularly in regularly_list:
         connects = regularly.info_regularly.filter(departure_date__range=(f'{date1} 00:00', f'{date2} 24:00'))
         if connects:
@@ -140,8 +141,6 @@ def save_regularly_connect(sender, instance, created, **kwargs):
             elif instance.work_type == '퇴근':
                 salary.leave = int(salary.leave) + int(instance.driver_allowance)
             salary.total = int(salary.total) + int(instance.driver_allowance)
-            print('sssssssssssss', salary.attendance)
-            print('sssssssssssss', salary.leave)
             salary.save()
         except Salary.DoesNotExist:
             new_salary(creator, month, member)

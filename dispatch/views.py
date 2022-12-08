@@ -11,10 +11,10 @@ from django.urls import reverse
 from django.views import generic
 
 from .forms import OrderForm, ConnectForm, RegularlyForm
-from .models import DispatchCheck, Schedule, DispatchOrderConnect, DispatchOrder, DispatchRegularly, RegularlyGroup, DispatchRegularlyConnect, DispatchOrderWaypoint
+from .models import DispatchCheck, DispatchRegularlyData, Schedule, DispatchOrderConnect, DispatchOrder, DispatchRegularly, RegularlyGroup, DispatchRegularlyConnect, DispatchOrderWaypoint
 from accounting.models import Collect, TotalPrice
 from crudmember.models import Category, Client
-from humanresource.models import Member
+from humanresource.models import Member, Salary
 from itertools import chain
 from vehicle.models import Vehicle
 
@@ -47,7 +47,7 @@ class RegularlyPrintList(generic.ListView):
         
 
         group = RegularlyGroup.objects.get(id=group_id)
-        dispatch_list = group.regularly_info.filter(week__contains=weekday).order_by('num1', 'number1', 'num2', 'number2')
+        dispatch_list = group.regularly_monthly.filter(week__contains=weekday).order_by('num1', 'number1', 'num2', 'number2')
 
         return dispatch_list
     
@@ -624,6 +624,53 @@ class RegularlyRouteList(generic.ListView):
         group_id = self.request.GET.get('group', '')
         if group_id:
             context['group'] = get_object_or_404(RegularlyGroup, id=group_id)
+
+
+        ### DispatchRegularlyData 생성하고 반영해야됨
+        # dispatch_list = DispatchRegularly.objects.all()
+        # for dispatch in dispatch_list:
+        #     group = dispatch.group
+        #     references = dispatch.references
+        #     departure = dispatch.departure
+        #     arrival = dispatch.arrival
+        #     departure_time = dispatch.departure_time
+        #     arrival_time = dispatch.arrival_time
+        #     price = dispatch.price
+        #     driver_allowance = dispatch.driver_allowance
+        #     number1 = dispatch.number1
+        #     number2 = dispatch.number2
+        #     num1 = dispatch.num1
+        #     num2 = dispatch.num2
+        #     week = dispatch.week
+        #     work_type = dispatch.work_type
+        #     route = dispatch.route
+        #     location = dispatch.location
+        #     detailed_route = dispatch.detailed_route
+        #     use = dispatch.use
+        #     creator = dispatch.creator
+
+        #     dispatch_data = DispatchRegularlyData(
+        #         group = group,
+        #         references = references,
+        #         departure = departure,
+        #         arrival = arrival,
+        #         departure_time = departure_time,
+        #         arrival_time = arrival_time,
+        #         price = price,
+        #         driver_allowance = driver_allowance,
+        #         number1 = number1,
+        #         number2 = number2,
+        #         num1 = num1,
+        #         num2 = num2,
+        #         week = week,
+        #         work_type = work_type,
+        #         route = route,
+        #         location = location,
+        #         detailed_route = detailed_route,
+        #         use = use,
+        #         creator = creator,
+        #     )
+        #     dispatch_data.save()
         
         return context
 
@@ -784,7 +831,38 @@ def regularly_order_edit(request):
             order.group = group
             order.creator = creator
             order.save()
-            
+
+            post_month = request.POST.get('month')
+            if post_month:
+                day = order.group.settlement_date
+                day = day if int(day) > 9 else f'0{day}'
+                connect_list = DispatchRegularlyConnect.objects.filter(regularly_id=order).filter(departure_date__gte=f'{post_month}-{day} 00:00')
+                for connect in connect_list:
+                    month = connect.departure_date[:7]
+                    member = connect.driver_id
+
+                    salary = Salary.objects.filter(member_id=member).get(month=month)
+                    if connect.work_type == '출근':
+                        salary.attendance = int(salary.attendance) + int(driver_allowance) - int(connect.driver_allowance)
+                    elif connect.work_type == '퇴근':
+                        salary.leave = int(salary.leave) + int(driver_allowance) - int(connect.driver_allowance)
+                    salary.total = int(salary.total) + int(driver_allowance) - int(connect.driver_allowance)
+                    salary.save()
+
+                    total = TotalPrice.objects.filter(group_id=group).get(month=month)
+                    total.total_price = int(total.total_price) + price + math.floor(price * 0.1 + 0.5) - (int(connect.price) + math.floor(int(connect.price) * 0.1 + 0.5))
+                    print("total.total_price", total.total_price)
+                    print("price", price)
+                    print("connect.price", connect.price)
+                    total.save()
+
+                    connect.price = price
+                    connect.driver_allowance = driver_allowance
+                    connect.save()
+
+                    
+
+
             return redirect(request.META.get('HTTP_REFERER', 'redirect_if_referer_not_found'))
         else: 
             raise Http404
