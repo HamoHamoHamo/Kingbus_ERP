@@ -14,8 +14,8 @@ class RegularlyGroup(models.Model):
     def __str__(self):
         return str(self.number) + self.name
 
-class DispatchRegularly(models.Model):
-    group = models.ForeignKey(RegularlyGroup, verbose_name='그룹', related_name="regularly_info", on_delete=models.SET_NULL, null=True)
+class DispatchRegularlyData(models.Model):
+    group = models.ForeignKey(RegularlyGroup, verbose_name='그룹', related_name="regularly", on_delete=models.SET_NULL, null=True)
     references = models.CharField(verbose_name='참조사항', max_length=100, null=False, blank=True)
     departure = models.CharField(verbose_name='출발지', max_length=200, null=False)
     arrival = models.CharField(verbose_name='도착지', max_length=200, null=False)
@@ -32,11 +32,39 @@ class DispatchRegularly(models.Model):
     route = models.CharField(verbose_name='노선이름', max_length=15, null=False)
     location = models.CharField(verbose_name='위치', max_length=100, null=False, blank=True)
     detailed_route = models.TextField(verbose_name='상세노선', null=False, blank=True)
+    use = models.CharField(verbose_name='사용여부', max_length=50, null=False, blank=True, default='사용')
     
     pub_date = models.DateTimeField(auto_now_add=True, verbose_name='작성시간')
     creator = models.ForeignKey(Member, on_delete=models.SET_NULL, related_name="regularly_creator", db_column="creator_id", null=True)
     def __str__(self):
         return self.route
+
+class DispatchRegularly(models.Model):
+    regularly_id = models.ForeignKey(DispatchRegularlyData, verbose_name='정기배차 데이터', related_name="monthly", on_delete=models.SET_NULL, null=True)
+    month = models.CharField(verbose_name='월', max_length=50, null=False, blank=True)
+    group = models.ForeignKey(RegularlyGroup, verbose_name='그룹', related_name="regularly_monthly", on_delete=models.SET_NULL, null=True)
+    references = models.CharField(verbose_name='참조사항', max_length=100, null=False, blank=True)
+    departure = models.CharField(verbose_name='출발지', max_length=200, null=False)
+    arrival = models.CharField(verbose_name='도착지', max_length=200, null=False)
+    departure_time = models.CharField(verbose_name='출발시간', max_length=10, null=False)
+    arrival_time = models.CharField(verbose_name='복귀시간', max_length=10, null=False)
+    price = models.CharField(verbose_name='계약금액', max_length=100, null=False, default=0)
+    driver_allowance = models.CharField(verbose_name='기사수당', max_length=100, null=False, default=0)
+    number1 = models.CharField(verbose_name='순번1', max_length=100, null=False, default=0)
+    number2 = models.CharField(verbose_name='순번2', max_length=100, null=False, default=0)
+    num1 = models.IntegerField(verbose_name='순번1숫자만', null=True)
+    num2 = models.IntegerField(verbose_name='순번2숫자만', null=True)
+    week = models.CharField(verbose_name='운행요일', max_length=20, null=False)
+    work_type = models.CharField(verbose_name='출/퇴근', max_length=2, null=False)
+    route = models.CharField(verbose_name='노선이름', max_length=15, null=False)
+    location = models.CharField(verbose_name='위치', max_length=100, null=False, blank=True)
+    detailed_route = models.TextField(verbose_name='상세노선', null=False, blank=True)
+    use = models.CharField(verbose_name='사용여부', max_length=50, null=False, blank=True, default='사용')
+    
+    pub_date = models.DateTimeField(auto_now_add=True, verbose_name='작성시간')
+    creator = models.ForeignKey(Member, on_delete=models.SET_NULL, related_name="regularly_monthly_creator", db_column="creator_id", null=True)
+    def __str__(self):
+        return self.month + ' ' + self.route
 
 class DispatchOrder(models.Model):
     operation_type = models.CharField(verbose_name='왕복,편도,', max_length=100, null=False)

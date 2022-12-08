@@ -4,6 +4,7 @@ const loadAccountBtn = document.querySelector(".loadAccountBtn")
 const accountTable = document.querySelector(".accountTable tbody")
 const loadClient = document.querySelector(".loadClient")
 const loadPhone = document.querySelector(".loadPhone")
+const loadNote = document.querySelector(".loadNote")
 const accountSelect = document.querySelector(".accountSelect")
 const accountInput = document.querySelector(".accountInput")
 const accountSearchBtn = document.querySelector(".accountSearchBtn")
@@ -39,6 +40,11 @@ function openAccounting() {
         accounTd3.setAttribute("class", "table-list_body-tr_td")
         accounTd3.innerText = client[i].phone
         accountTr.appendChild(accounTd3)
+
+        const accounTd4 = document.createElement("td")
+        accounTd4.setAttribute("class", "table-list_body-tr_td")
+        accounTd4.innerText = client[i].note
+        accountTr.appendChild(accounTd4)
     };
 
     const accountTr = document.querySelectorAll(".accountTr");
@@ -49,6 +55,7 @@ function openAccounting() {
             if (accountTr[i].children[0].children[0].checked) {
                 loadClient.value = accountTr[i].children[1].innerText
                 loadPhone.value = accountTr[i].children[2].innerText
+                loadNote.value = accountTr[i].children[3].innerText
                 return closeAccounting()
             }
         };

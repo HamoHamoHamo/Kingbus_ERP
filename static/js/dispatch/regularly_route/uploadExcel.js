@@ -1,6 +1,6 @@
 const excelUpload = document.querySelector(".excelUpload")
-const popupAreaModules = document.querySelector(".popupAreaModules")
-const popupBgModules = document.querySelector(".popupBgModules")
+const popupAreaModules = document.querySelectorAll(".popupAreaModules")
+const popupBgModules = document.querySelectorAll(".popupBgModules")
 const SidemenuUseClose = document.querySelector(".Sidemenu")
 const excelPopupCloseBtn = document.querySelector(".excelPopupCloseBtn")
 const excelUploadFile = document.querySelector(".excelUploadFile")
@@ -8,18 +8,33 @@ const excelUploadFileText = document.querySelector(".excelUploadFileText")
 const uploadCrateBtn = document.querySelector(".uploadCrateBtn")
 const visibleLoading = document.querySelector(".visibleLoading")
 
+let parms = new URLSearchParams(location.search)
+
 excelUpload.addEventListener("click", openUploadPopup)
 
 function openUploadPopup() {
-    popupAreaModules.style.display = "block"
+    if(parms.has("id")){
+        popupAreaModules[1].style.display = "block"
+    }else{
+        popupAreaModules[0].style.display = "block"
+    }
 }
 
-popupBgModules.addEventListener("click", closePopup)
+if(parms.has("id")){
+    popupBgModules[1].addEventListener("click", closePopup)
+}else{
+    popupBgModules[0].addEventListener("click", closePopup)
+}
 SidemenuUseClose.addEventListener("click", closePopup)
 excelPopupCloseBtn.addEventListener("click", closePopup)
 
 function closePopup() {
-    popupAreaModules.style.display = "none"
+    if(parms.has("id")){
+        popupAreaModules[1].style.display = "none"
+    }else{
+        popupAreaModules[0].style.display = "none"
+    }
+    popupAreaModules[1].style.display = "none"
     excelUploadFile.value = ""
     excelUploadFileText.value = ""
 }

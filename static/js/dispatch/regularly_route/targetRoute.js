@@ -3,6 +3,7 @@ const route = document.querySelectorAll(".RouteListBodyTr")
 const inputSelect = document.querySelector(".inputSelect")
 const routeListsearch = document.querySelector("#routeListsearch")
 const amountComma = document.querySelectorAll(".amountComma")
+const pricePopupArea = document.querySelectorAll(".pricePopupArea")
 
 
 window.onload = function () {
@@ -11,16 +12,24 @@ window.onload = function () {
 
     addComma()
     
+    savePrice0 =  pricePopupArea[0].innerText.replace(/\,/g,"")
+    savePrice1 =  pricePopupArea[1].innerText.replace(/\,/g,"")
+
     const RouteListBodyTr = document.querySelectorAll(".RouteListBodyTr")
     RouteListScroll.scrollTop = parms.get("height")
-    
-    
-    amountComma[0].value = amountComma[0].value.replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
-    amountComma[1].value = amountComma[1].value.replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
-    
+
+
+    if (!parms.has("id")) {
+        amountComma[0].value = amountComma[0].value.replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
+        amountComma[1].value = amountComma[1].value.replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
+    }else{
+        amountComma[0].innerText = amountComma[0].innerText.replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
+        amountComma[1].innerText = amountComma[1].innerText.replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
+    }
+
     if (parms.has("id")) {
-        for (i = 0; i < RouteListBodyTr.length; i++){
-            if(RouteListBodyTr[i].classList[1] == parms.get("id")){
+        for (i = 0; i < RouteListBodyTr.length; i++) {
+            if (RouteListBodyTr[i].classList[1] == parms.get("id")) {
                 RouteListBodyTr[i].style.backgroundColor = "#CDCDCE"
             }
         };
