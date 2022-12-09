@@ -10,7 +10,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
 from django.views import generic
 
-from .forms import OrderForm, ConnectForm, RegularlyForm
+from .forms import OrderForm, ConnectForm, RegularlyDataForm
 from .models import DispatchCheck, DispatchRegularlyData, Schedule, DispatchOrderConnect, DispatchOrder, DispatchRegularly, RegularlyGroup, DispatchRegularlyConnect, DispatchOrderWaypoint
 from accounting.models import Collect, TotalPrice
 from crudmember.models import Category, Client
@@ -284,9 +284,20 @@ class RegularlyDispatchList(generic.ListView):
         
         if group_id:
             group = RegularlyGroup.objects.get(id=group_id)
-            dispatch_list = DispatchRegularly.objects.filter(group=group).filter(week__contains=weekday).order_by('num1', 'number1', 'num2', 'number2')
         else:
-            dispatch_list = DispatchRegularly.objects.filter(week__contains=weekday).order_by('group', 'num1', 'number1', 'num2', 'number2')
+            group = RegularlyGroup.objects.order_by('number','name').first()
+
+        regularly_list = DispatchRegularlyData.objects.filter(group=group).filter(week__contains=weekday).order_by('num1', 'number1', 'num2', 'number2')
+        temp = []
+        dispatch_list = []
+        for regularly in regularly_list:
+            # first 확인필요
+            dispatch = regularly.monthly.filter(edit_date__lte=date).order_by('-edit_date').first()
+            if not dispatch:
+                dispatch = regularly.monthly.filter(edit_date__gte=date).order_by('edit_date').first()
+            
+            dispatch_list.append(dispatch)
+
         return dispatch_list
 
 
@@ -349,6 +360,8 @@ class RegularlyDispatchList(generic.ListView):
 
         if selected_group:
             context['group'] = get_object_or_404(RegularlyGroup, id=selected_group)
+        else:
+            context['group'] = RegularlyGroup.objects.order_by('number','name').first()
         context['date'] = date
 
         driver_list = Member.objects.filter(Q(role='운전원')|Q(role='팀장')).values_list('id', 'name')
@@ -587,7 +600,7 @@ class RegularlyRouteList(generic.ListView):
     template_name = 'dispatch/regularly_route.html'
     context_object_name = 'order_list'
     # paginate_by = 10
-    model = DispatchRegularly
+    model = DispatchRegularlyData
 
     def get(self, request, *args, **kwargs):
         if request.session.get('authority') > 1:
@@ -601,14 +614,14 @@ class RegularlyRouteList(generic.ListView):
 
         if not group_id:
             if search:
-                return DispatchRegularly.objects.filter(Q(departure__contains=search) | Q(arrival__contains=search)).order_by('num1', 'number1', 'num2', 'number2')
+                return DispatchRegularlyData.objects.filter(Q(departure__contains=search) | Q(arrival__contains=search)).order_by('num1', 'number1', 'num2', 'number2')
 
-            return DispatchRegularly.objects.all().order_by('num1', 'number1', 'num2', 'number2')
+            return DispatchRegularlyData.objects.all().order_by('num1', 'number1', 'num2', 'number2')
         else:
             group = get_object_or_404(RegularlyGroup, id=group_id)
             if search:
-                return DispatchRegularly.objects.filter(group=group).filter(Q(departure__contains=search) | Q(arrival__contains=search)).order_by('num1', 'number1', 'num2', 'number2')
-            return DispatchRegularly.objects.filter(group=group).order_by('num1', 'number1', 'num2', 'number2')
+                return DispatchRegularlyData.objects.filter(group=group).filter(Q(departure__contains=search) | Q(arrival__contains=search)).order_by('num1', 'number1', 'num2', 'number2')
+            return DispatchRegularlyData.objects.filter(group=group).order_by('num1', 'number1', 'num2', 'number2')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -618,7 +631,7 @@ class RegularlyRouteList(generic.ListView):
 
 
         if id:
-            context['detail'] = get_object_or_404(DispatchRegularly, id=id)
+            context['detail'] = get_object_or_404(DispatchRegularlyData, id=id)
             
         context['group_list'] = RegularlyGroup.objects.all().order_by('number', 'name')
         group_id = self.request.GET.get('group', '')
@@ -626,7 +639,8 @@ class RegularlyRouteList(generic.ListView):
             context['group'] = get_object_or_404(RegularlyGroup, id=group_id)
 
 
-        ### DispatchRegularlyData 생성하고 반영해야됨
+
+        ## DispatchRegularlyData 생성하고 반영해야됨
         # dispatch_list = DispatchRegularly.objects.all()
         # for dispatch in dispatch_list:
         #     group = dispatch.group
@@ -671,6 +685,8 @@ class RegularlyRouteList(generic.ListView):
         #         creator = creator,
         #     )
         #     dispatch_data.save()
+        #     dispatch.regularly_id = dispatch_data
+        #     dispatch.save()
         
         return context
 
@@ -680,7 +696,7 @@ def regularly_order_create(request):
     context = {}
     if request.method == "POST":
         creator = get_object_or_404(Member, pk=request.session.get('user'))
-        order_form = RegularlyForm(request.POST)
+        order_form = RegularlyDataForm(request.POST)
         print("RRRR", request.POST)
 
         if order_form.is_valid():
@@ -738,21 +754,110 @@ def regularly_order_create(request):
             order.creator = creator
             order.group = regularly_group
             order.save()
+            
+            regularly = DispatchRegularly(
+                regularly_id = order,
+                edit_date = TODAY,
+                group = order.group,
+                references = order.references,
+                departure = order.departure,
+                arrival = order.arrival,
+                departure_time = order.departure_time,
+                arrival_time = order.arrival_time,
+                price = order.price,
+                driver_allowance = order.driver_allowance,
+                number1 = order.number1,
+                number2 = order.number2,
+                num1 = order.num1,
+                num2 = order.num2,
+                week = order.week,
+                work_type = order.work_type,
+                route = order.route,
+                location = order.location,
+                detailed_route = order.detailed_route,
+                use = order.use,
+                creator = order.creator
+            )
+            regularly.save()
             return redirect(request.META.get('HTTP_REFERER', 'redirect_if_referer_not_found'))
         else:
             raise Http404
     else:
         return HttpResponseNotAllowed(['post'])
 
+def regularly_order_edit_check(request):
+    if request.session.get('authority') > 1:
+        return render(request, 'authority.html')
+    
+    pk = request.POST.get('id')
+    order = get_object_or_404(DispatchRegularlyData, pk=pk)
+
+    post_departure_date = request.POST.get('departure_date', None)
+    post_arrival_date = request.POST.get('arrival_date', None)
+
+    regularly = order.monthly.order_by('-edit_date').first()
+    print("REEEEEEEEE", regularly)
+    connect_list = regularly.info_regularly.filter(departure_date__gte=TODAY)
+
+    for connect in connect_list:
+        driver = connect.driver_id
+        bus = connect.bus_id
+        date = connect.departure_date[:10]
+        
+        r_connect_bus = DispatchRegularlyConnect.objects.filter(bus_id=bus).exclude(arrival_date__lt=f'{date} {post_departure_date}').exclude(departure_date__gt=f'{date} {post_arrival_date}').exclude(id__in=connect_list)
+        if r_connect_bus:
+            return JsonResponse({
+                "status": "fail",
+                'route': r_connect_bus[0].regularly_id.route,
+                'driver': r_connect_bus[0].driver_id.name,
+                'bus': r_connect_bus[0].bus_id.vehicle_num,
+                'arrival_date': r_connect_bus[0].arrival_date,
+                'departure_date': r_connect_bus[0].departure_date,
+            })
+        r_connect_driver = DispatchRegularlyConnect.objects.filter(driver_id=driver).exclude(arrival_date__lt=f'{date} {post_departure_date}').exclude(departure_date__gt=f'{date} {post_arrival_date}').exclude(id__in=connect_list)
+        if r_connect_driver:
+            return JsonResponse({
+                "status": "fail",
+                'route': r_connect_driver[0].regularly_id.route,
+                'driver': r_connect_driver[0].driver_id.name,
+                'bus': r_connect_driver[0].bus_id.vehicle_num,
+                'arrival_date': r_connect_driver[0].arrival_date,
+                'departure_date': r_connect_driver[0].departure_date,
+            })
+        
+        connect_bus = DispatchOrderConnect.objects.filter(bus_id=bus).exclude(arrival_date__lt=f'{date} {post_departure_date}').exclude(departure_date__gt=f'{date} {post_arrival_date}').exclude(id__in=connect_list)
+        if connect_bus:
+            return JsonResponse({
+                "status": "fail",
+                'route': connect_bus[0].order_id.route,
+                'driver': connect_bus[0].driver_id.name,
+                'bus': connect_bus[0].bus_id.vehicle_num,
+                'arrival_date': connect_bus[0].arrival_date,
+                'departure_date': connect_bus[0].departure_date,
+            })
+        connect_driver = DispatchOrderConnect.objects.filter(driver_id=driver).exclude(arrival_date__lt=f'{date} {post_departure_date}').exclude(departure_date__gt=f'{date} {post_arrival_date}').exclude(id__in=connect_list)
+        if connect_driver:
+            return JsonResponse({
+                "status": "fail",
+                'route': connect_driver[0].order_id.route,
+                'driver': connect_driver[0].driver_id.name,
+                'bus': connect_driver[0].bus_id.vehicle_num,
+                'arrival_date': connect_driver[0].arrival_date,
+                'departure_date': connect_driver[0].departure_date,
+            })
+        
+    
+    return JsonResponse({'status': 'success'})
+
 def regularly_order_edit(request):
     if request.session.get('authority') > 1:
         return render(request, 'authority.html')
     id = request.POST.get('id', None)
-    order = get_object_or_404(DispatchRegularly, pk=id)
+    order = get_object_or_404(DispatchRegularlyData, pk=id)
     
     if request.method == 'POST':
         creator = get_object_or_404(Member, pk=request.session.get('user'))
-        order_form = RegularlyForm(request.POST)
+        order_form = RegularlyDataForm(request.POST)
         if order_form.is_valid():
             # overlap = ''
             # overlap_list = DispatchRegularly.objects.exclude(departure_time__gt=order.arrival_time).exclude(arrival_time__lt=order.departure_time)
@@ -826,12 +931,76 @@ def regularly_order_edit(request):
             order.route = order_form.cleaned_data['route']
             order.location = order_form.cleaned_data['location']
             order.detailed_route = order_form.cleaned_data['detailed_route']
-
+            order.use = order_form.cleaned_data['use']
+            
             order.week = week
             order.group = group
             order.creator = creator
             order.save()
 
+            try:
+                regularly = DispatchRegularly.objects.filter(regularly_id=order).get(edit_date=TODAY)
+
+                regularly.regularly_id = order
+                regularly.edit_date = TODAY
+                regularly.group = order.group
+                regularly.references = order.references
+                regularly.departure = order.departure
+                regularly.arrival = order.arrival
+                regularly.departure_time = order.departure_time
+                regularly.arrival_time = order.arrival_time
+                regularly.price = order.price
+                regularly.driver_allowance = order.driver_allowance
+                regularly.number1 = order.number1
+                regularly.number2 = order.number2
+                regularly.num1 = order.num1
+                regularly.num2 = order.num2
+                regularly.week = order.week
+                regularly.work_type = order.work_type
+                regularly.route = order.route
+                regularly.location = order.location
+                regularly.detailed_route = order.detailed_route
+                regularly.use = order.use
+                regularly.creator = order.creator
+            except DispatchRegularly.DoesNotExist:
+                regularly = DispatchRegularly(
+                    regularly_id = order,
+                    edit_date = TODAY,
+                    group = order.group,
+                    references = order.references,
+                    departure = order.departure,
+                    arrival = order.arrival,
+                    departure_time = order.departure_time,
+                    arrival_time = order.arrival_time,
+                    price = order.price,
+                    driver_allowance = order.driver_allowance,
+                    number1 = order.number1,
+                    number2 = order.number2,
+                    num1 = order.num1,
+                    num2 = order.num2,
+                    week = order.week,
+                    work_type = order.work_type,
+                    route = order.route,
+                    location = order.location,
+                    detailed_route = order.detailed_route,
+                    use = order.use,
+                    creator = order.creator
+                )
+            regularly.save()
+
+            print("rrrrrrrrr", regularly)
+            connects = DispatchRegularlyConnect.objects.filter(regularly_id=regularly).filter(departure_date__gte=f'{TODAY} 00:00')
+            print("CONNNN", connects)
+            for connect in connects:
+                connect.regularly_id = regularly
+                connect.departure_date = f'{connect.departure_date[:10]} {regularly.departure_time}'
+                connect.arrival_date = f'{connect.departure_date[:10]} {regularly.arrival_time}'
+                connect.work_type = regularly.work_type
+                connect.price = regularly.price
+                connect.driver_allowance = regularly.driver_allowance
+                connect.save()
+
+            #### 금액, 기사수당 수정 시 입력한 월 이후 배차들 금액, 기사수당 수정
             post_month = request.POST.get('month')
             if post_month:
                 day = order.group.settlement_date
@@ -1370,6 +1539,7 @@ def order_edit_check(request):
 
     for connect in connects:
         bus = connect.bus_id
+        driver = connect.driver_id
         # r_connects = bus.info_regularly_bus_id.all()
 
         format = '%Y-%m-%d %H:%M'
@@ -1386,9 +1556,36 @@ def order_edit_check(request):
                 'arrival_date': o_connect[0].arrival_date,
                 'departure_date': o_connect[0].departure_date,
             })
+        o_connect_driver = DispatchOrderConnect.objects.filter(driver_id=driver).exclude(arrival_date__lt=post_departure_date).exclude(departure_date__gt=post_arrival_date).exclude(id__in=connects)
+        if o_connect_driver:
+            return JsonResponse({
+                "status": "fail",
+                'route': o_connect_driver[0].order_id.route,
+                'driver': o_connect_driver[0].driver_id.name,
+                'bus': o_connect_driver[0].bus_id.vehicle_num,
+                'arrival_date': o_connect_driver[0].arrival_date,
+                'departure_date': o_connect_driver[0].departure_date,
+            })
         r_connect = bus.info_regularly_bus_id.exclude(arrival_date__lt=post_departure_date).exclude(departure_date__gt=post_arrival_date)
         if r_connect:
-            return JsonResponse({"status": "fail", 'connect': r_connect})
+            return JsonResponse({
+                "status": "fail",
+                'route': r_connect[0].regularly_id.route,
+                'driver': r_connect[0].driver_id.name,
+                'bus': r_connect[0].bus_id.vehicle_num,
+                'arrival_date': r_connect[0].arrival_date,
+                'departure_date': r_connect[0].departure_date,
+                })
+        r_connect_driver = DispatchRegularlyConnect.objects.filter(driver_id=driver).exclude(arrival_date__lt=post_departure_date).exclude(departure_date__gt=post_arrival_date)
+        if r_connect_driver:
+            return JsonResponse({
+                "status": "fail",
+                'route': r_connect_driver[0].regularly_id.route,
+                'driver': r_connect_driver[0].driver_id.name,
+                'bus': r_connect_driver[0].bus_id.vehicle_num,
+                'arrival_date': r_connect_driver[0].arrival_date,
+                'departure_date': r_connect_driver[0].departure_date,
+                })
     
     return JsonResponse({'status': 'success', 'departure_date': post_departure_date, 'arrival_date': post_arrival_date})
 

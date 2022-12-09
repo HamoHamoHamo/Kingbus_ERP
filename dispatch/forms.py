@@ -1,11 +1,11 @@
 from django import forms 
 from django.db import models
 
-from .models import DispatchOrder, DispatchOrderConnect, DispatchRegularly
+from .models import DispatchOrder, DispatchOrderConnect, DispatchRegularlyData
 
-class RegularlyForm(forms.ModelForm):
+class RegularlyDataForm(forms.ModelForm):
     class Meta:
-        model = DispatchRegularly
+        model = DispatchRegularlyData
         fields = [
             'references',
             'departure',
@@ -26,6 +26,7 @@ class RegularlyForm(forms.ModelForm):
             'route',
             'location',
             'detailed_route',
+            'use',
             ]
 
 class OrderForm(forms.ModelForm):

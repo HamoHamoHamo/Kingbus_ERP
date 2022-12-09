@@ -41,7 +41,7 @@ class DispatchRegularlyData(models.Model):
 
 class DispatchRegularly(models.Model):
     regularly_id = models.ForeignKey(DispatchRegularlyData, verbose_name='정기배차 데이터', related_name="monthly", on_delete=models.SET_NULL, null=True)
-    month = models.CharField(verbose_name='월', max_length=50, null=False, blank=True)
+    edit_date = models.CharField(verbose_name='수정기준일', max_length=50, null=False, blank=True)
     group = models.ForeignKey(RegularlyGroup, verbose_name='그룹', related_name="regularly_monthly", on_delete=models.SET_NULL, null=True)
     references = models.CharField(verbose_name='참조사항', max_length=100, null=False, blank=True)
     departure = models.CharField(verbose_name='출발지', max_length=200, null=False)
@@ -64,7 +64,7 @@ class DispatchRegularly(models.Model):
     pub_date = models.DateTimeField(auto_now_add=True, verbose_name='작성시간')
     creator = models.ForeignKey(Member, on_delete=models.SET_NULL, related_name="regularly_monthly_creator", db_column="creator_id", null=True)
     def __str__(self):
-        return self.month + ' ' + self.route
+        return self.edit_date + ' ' + self.route
 
 class DispatchOrder(models.Model):
     operation_type = models.CharField(verbose_name='왕복,편도,', max_length=100, null=False)
@@ -134,7 +134,7 @@ class DispatchRegularlyConnect(models.Model):
     pub_date = models.DateTimeField(auto_now_add=True, verbose_name='작성시간')
     creator = models.ForeignKey(Member, on_delete=models.SET_NULL, related_name="connect_regularly_creator", db_column="creator_id", null=True)
     def __str__(self):
-        return f'{self.regularly_id.route} / {self.departure_date[2:10]}'
+        return f'{self.work_type} {self.regularly_id} / {self.departure_date[2:10]}'
         
 class DispatchCheck(models.Model):
     date = models.CharField(verbose_name='날짜', max_length=20, null=False)

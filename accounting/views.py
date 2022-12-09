@@ -152,7 +152,7 @@ class RegularlyCollectList(generic.ListView):
     model = RegularlyGroup
 
     def get_queryset(self):
-        group_list = RegularlyGroup.objects.prefetch_related('regularly_info').all().order_by('number', 'name')
+        group_list = RegularlyGroup.objects.prefetch_related('regularly_monthly').all().order_by('number', 'name')
         
         return group_list
 
