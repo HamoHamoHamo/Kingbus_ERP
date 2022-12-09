@@ -12,8 +12,6 @@ window.onload = function () {
 
     addComma()
     
-    savePrice0 =  pricePopupArea[0].innerText.replace(/\,/g,"")
-    savePrice1 =  pricePopupArea[1].innerText.replace(/\,/g,"")
 
     const RouteListBodyTr = document.querySelectorAll(".RouteListBodyTr")
     RouteListScroll.scrollTop = parms.get("height")
@@ -25,15 +23,17 @@ window.onload = function () {
     }else{
         amountComma[0].innerText = amountComma[0].innerText.replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
         amountComma[1].innerText = amountComma[1].innerText.replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
-    }
 
-    if (parms.has("id")) {
         for (i = 0; i < RouteListBodyTr.length; i++) {
             if (RouteListBodyTr[i].classList[1] == parms.get("id")) {
                 RouteListBodyTr[i].style.backgroundColor = "#CDCDCE"
             }
         };
+        
+        savePrice0 =  pricePopupArea[0].innerText.replace(/\,/g,"")
+        savePrice1 =  pricePopupArea[1].innerText.replace(/\,/g,"")
     }
+
     if (parseInt(parms.get("close"))) {
         groupClose()
     }

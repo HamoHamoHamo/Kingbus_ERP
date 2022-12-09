@@ -21,6 +21,10 @@
     position: relative;
 }
 
+.scrolling_table-list_body{
+    height: 71.4rem;
+}
+
 .clientDeleteBtn {
     position: absolute;
     top: -5.2rem;

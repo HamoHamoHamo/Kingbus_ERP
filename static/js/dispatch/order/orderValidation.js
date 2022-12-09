@@ -200,7 +200,7 @@ function submitVaildation(e) {
             datatype: 'json',
             success: function (data) {
                 if (data['status'] == "fail") {
-                    alert(`${data.route} ${data.driver} ${data.bus} \n운행시간이 중복됩니다.`);
+                    alert(`[${data.departure_date} ~ ${data.arrival_date}] \n${data.route} / ${data.bus}(${data.driver}) \n운행시간이 중복됩니다.`);
                     return;
                 } else {
                     // alert(`${data.status}ss data${data.departure_date} ${data.arrival_date}`);
