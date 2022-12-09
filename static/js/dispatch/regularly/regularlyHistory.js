@@ -9,6 +9,8 @@ const historyHiddenDriver = document.querySelector(".historyHiddenDriver")
 const historyHiddenGroup = document.querySelector(".historyHiddenGroup")
 const historyHiddenDate = document.querySelector(".historyHiddenDate")
 const historyHiddenOutsourcing = document.querySelector(".historyHiddenOutsourcing")
+const popupContainerDispatchHistory = document.querySelector(".popupContainerDispatchHistory")
+const loadHistory = document.querySelector(".loadHistory")
 
 const loadConnectBtn1 = document.querySelector(".loadConnectBtn1")
 const loadConnectBtn2 = document.querySelector(".loadConnectBtn2")
@@ -103,5 +105,18 @@ function HistoryCheck() {
                 historyHiddenOutsourcing.value = ""
             }
         }
+    }
+}
+
+
+
+
+loadHistory.addEventListener("click", loadHistoryftn)
+
+function loadHistoryftn(){
+    if(historyHiddenBus.value === ""){
+        return alert("선택된 배차내역이 없습니다")
+    }else{
+        popupContainerDispatchHistory.submit()
     }
 }

@@ -138,7 +138,7 @@
     <form action="{% url 'dispatch:regularly_route_create' %}" method="post" class="routeinput">
       {% endif %}
       {% csrf_token %}
-      <input autocomplete="off" type="hidden" name="id" value="{{detail.id}}">
+      <input autocomplete="off" type="hidden" name="id" value="{{detail.id}}" class="inputHidden">
       <div class="routeInputHead">
         <span>노선등록</span>
         <div class="routeInputBtnBox">
@@ -174,9 +174,9 @@
           </td>
           <td class="tdTypeA">*사용/미사용</td>
           <td class="tdTypeC">
-            <input type="radio" id="useRoute" name="use" checked>
+            <input value="사용" type="radio" id="useRoute" name="use" checked>
             <label for="useRoute">사용</label>
-            <input type="radio" id="unuseRoute" name="use">
+            <input value="미사용" type="radio" id="unuseRoute" name="use">
             <label for="unuseRoute">미사용</label>
           </td>
           <td class="tdTypeA">*출/퇴근</td>
@@ -266,10 +266,10 @@
           <td class="tdTypeA">*운행시간</td>
           <td class="tdTypeC">
             <div class="routeTime">
-              <input autocomplete="off" value="{{detail.departure_time|slice:':2'}}" name="departure_time1" type="text" class="inputText essential" maxlength="2" tabindex="7">:
-              <input autocomplete="off" value="{{detail.departure_time|slice:'3:'}}" name="departure_time2" type="text" class="inputText essential" maxlength="2" tabindex="8">~
-              <input autocomplete="off" value="{{detail.arrival_time|slice:':2'}}" name="arrival_time1" type="text" class="inputText essential" maxlength="2" tabindex="9">:
-              <input autocomplete="off" value="{{detail.arrival_time|slice:'3:'}}" name="arrival_time2" type="text" class="inputText essential" maxlength="2" tabindex="10">
+              <input autocomplete="off" value="{{detail.departure_time|slice:':2'}}" name="departure_time1" id="departure_time1" type="text" class="inputText essential" maxlength="2" tabindex="7">:
+              <input autocomplete="off" value="{{detail.departure_time|slice:'3:'}}" name="departure_time2" id="departure_time2" type="text" class="inputText essential" maxlength="2" tabindex="8">~
+              <input autocomplete="off" value="{{detail.arrival_time|slice:':2'}}" name="arrival_time1" id="arrival_time1" type="text" class="inputText essential" maxlength="2" tabindex="9">:
+              <input autocomplete="off" value="{{detail.arrival_time|slice:'3:'}}" name="arrival_time2" id="arrival_time2" type="text" class="inputText essential" maxlength="2" tabindex="10">
             </div>
           </td>
           <td class="tdTypeA">참조사항</td>
