@@ -1,0 +1,15 @@
+.change_id_popup .basic_popup_box {
+    height: 20rem;
+}
+
+.popup_input_article .overlap_checking_input {
+    width: calc(100% - 20.2rem);
+}
+
+.overlap_checking_btn {
+    width: 7.2rem;
+}
+
+.id_change_btn {
+    margin-right: 1rem;
+}

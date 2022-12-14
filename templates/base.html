@@ -2,13 +2,17 @@
 <!DOCTYPE html>
 <html lang="ko">
 
+
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width">
-  <!-- <meta http-equiv="Cache-Control" content="private, no-cache, no-store, max-age=0, must-revalidate"> -->
   <title>TRP</title>
-  <link href="{% static 'css/setting/setting.css' %}" rel="stylesheet" type="text/css" />
-  <link href="{% static 'css/base.css' %}" rel="stylesheet" type="text/css" />
+  <link href="{% static 'css/reset/reset.css' %}" rel="stylesheet" type="text/css" />
+  <link href="{% static 'css/common/base.css' %}" rel="stylesheet" type="text/css" />
+  <link href="{% static 'css/common/module.css' %}" rel="stylesheet" type="text/css" />
+  <link href="{% static 'css/common/sideMenu.css' %}" rel="stylesheet" type="text/css" />
+  <link href="{% static 'css/common/changeIdPopup.css' %}" rel="stylesheet" type="text/css" />
+  <link href="{% static 'css/common/chagePwpopup.css' %}" rel="stylesheet" type="text/css" />
   <link rel="shortcut icon" href="{% static 'images/tilteIcon.png' %}">
   {% block head %}
   {% endblock %}
@@ -16,477 +20,430 @@
 
 <body>
 
-  <div class="trp">
-
   {% block outSide %}
   {% endblock %}
 
-    <!--sidemenu-->
-    <div class="Sidemenu">
+  <!-- 전체영역 -->
+  <div class="cover_container">
 
+    <!-- 사이드메뉴 영역 -->
+    <div class="side_menu">
 
-
-      <!--sidemenuLogo-->
-      <div class="logoBox">
-        <a href="{% url 'home' %}">
-          <img src="{% static 'images/TRPlogo.png' %}" alt="">
-        </a>
+      <div class="side_menu-logo_box">
+        <img src="{% static 'images/sideMenuLogo.png' %}" alt="TRP로고">
       </div>
 
-      <!--sideMenuNav-->
-      <div class="sideMenuNav">
-        {% if request.session.authority <= 1 %}
-        <ul class="sideMenuNav1">
-          <div class="nav1Box">
-            <li class="nav1BoxMenu">
-              <img src="{% static 'images/calendar.png' %}" alt="일정 아이콘">
-              <a href="{% url 'home' %}" class="nonDepth2Menu">일정</a>
-            </li>
-          </div>
-          <div class="nav1Box">
-            <li class="nav1BoxMenu nav1BoxMenuHaveDepth2">
-              <img src="{% static 'images/notice.png' %}" alt="공지사항 아이콘">
-              <div>공지사항</div>
-              <svg xmlns="http://www.w3.org/2000/svg" width="18.228" height="11.84" viewBox="0 0 18.228 11.84">
-                <path id="패스_256" data-name="패스 256" d="M0,0,6.753,8.223,14,0" transform="translate(2.111 2.117)" fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="3"/>
-              </svg>        
-            </li>
-            <div class="sideMenuNav2Box">
-              <ul class="sideMenuNav2">
-                <a href="{% url 'notice:kinds' 'driver' %}" class="sideMenuNav2Link">
-                  <li class="sideMenuNav2Menu">기사님 공지사항</li>
-                </a>
-                <a href="{% url 'notice:kinds' 'office' %}" class="sideMenuNav2Link">
-                  <li class="sideMenuNav2Menu">사무실 공지사항</li>
-                </a>
-              </ul>
+      <div class="menu_scroll_box">
+
+        <div class="menu_box">
+          <div class="menu_box_title">프로필</div>
+          <div class="menu_item">
+            <div class="menu_icon">
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18">
+                <g id="그룹_1492" data-name="그룹 1492" transform="translate(-1955 -2465)">
+                  <path id="Icon_material-assignment-ind" data-name="Icon material-assignment-ind"
+                    d="M12.4,6.3A2.75,2.75,0,1,1,9.65,9.05,2.746,2.746,0,0,1,12.4,6.3Zm5.5,11H6.9V16.017c0-1.833,3.667-2.842,5.5-2.842s5.5,1.008,5.5,2.842Z"
+                    transform="translate(1951.6 2461.9)" fill="#fff" />
+                  <g id="사각형_12220" data-name="사각형 12220" transform="translate(1955 2465)" fill="none" stroke="#fff"
+                    stroke-width="0.6">
+                    <rect width="18" height="18" rx="9" stroke="none" />
+                    <rect x="0.3" y="0.3" width="17.4" height="17.4" rx="8.7" fill="none" />
+                  </g>
+                </g>
+              </svg>
+            </div>
+            <div class="menu_name menu_name_profile">{{ request.session.name }}</div>
+            <div class="menu_open_btn have_menu_list">
+              <svg xmlns="http://www.w3.org/2000/svg" width="9.894" height="6" viewBox="0 0 9.894 6">
+                <path id="Icon_feather-triangle" data-name="Icon feather-triangle"
+                  d="M6.465,10.027,2.455,5.34a.5.5,0,0,1,0-.66,1.066,1.066,0,0,1,.812-.335h8.021a1.066,1.066,0,0,1,.812.335.5.5,0,0,1,0,.66l-4.01,4.687a1.082,1.082,0,0,1-.81.319A1.082,1.082,0,0,1,6.465,10.027Z"
+                  transform="translate(-2.328 -4.346)" fill="rgba(255,255,255,0.5)" />
+              </svg>
             </div>
           </div>
-          <div class="nav1Box">
-            <li class="nav1BoxMenu nav1BoxMenuHaveDepth2">
-              <img src="{% static 'images/dispatchSystem.png' %}" alt="배차시스템 아이콘">
-              <div>배차시스템</div>
-              <svg xmlns="http://www.w3.org/2000/svg" width="18.228" height="11.84" viewBox="0 0 18.228 11.84">
-                <path id="패스_256" data-name="패스 256" d="M0,0,6.753,8.223,14,0" transform="translate(2.111 2.117)" fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="3"/>
-              </svg>            
-            </li>
-            <div class="sideMenuNav2Box">
-              <ul class="sideMenuNav2">
-                <a href="{% url 'dispatch:order' %}" class="sideMenuNav2Link">
-                  <li class="sideMenuNav2Menu">일반배차</li>
-                </a>
-                <a href="{% url 'dispatch:regularly' %}" class="sideMenuNav2Link">
-                  <li class="sideMenuNav2Menu">출/퇴근배차</li>
-                </a>
-                <a href="{% url 'dispatch:regularly_route' %}" class="sideMenuNav2Link">
-                  <li class="sideMenuNav2Menu">출/퇴근 노선관리</li>
-                </a>
-              </ul>
+          <div class="menu_box-depth2">
+            <div href="" class="menu_item-depth2 id_change_menu">
+              <div class="menu_name-depth2">아이디 변경</div>
             </div>
-          </div>
-          <div class="nav1Box">
-            <li class="nav1BoxMenu nav1BoxMenuHaveDepth2">
-              <img src="{% static 'images/HRManagement.png' %}" alt="인사관리 아이콘">
-              <div>인사관리</div>
-              <svg xmlns="http://www.w3.org/2000/svg" width="18.228" height="11.84" viewBox="0 0 18.228 11.84">
-                <path id="패스_256" data-name="패스 256" d="M0,0,6.753,8.223,14,0" transform="translate(2.111 2.117)" fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="3"/>
-              </svg>        
-            </li>
-            <div class="sideMenuNav2Box">
-              <ul class="sideMenuNav2">
-                <a href="{% url 'HR:member' %}" class="sideMenuNav2Link">
-                  <li class="sideMenuNav2Menu">직원관리</li>
-                </a>
-                <a href="{% url 'HR:salary' %}" class="sideMenuNav2Link">
-                  <li class="sideMenuNav2Menu">급여관리</li>
-                </a>
-              </ul>
+            <div href="" class="menu_item-depth2 pw_change_menu">
+              <div class="menu_name-depth2">비밀번호 변경</div>
             </div>
+            <a href="{% url 'crudmember:logout' %}" class="menu_item-depth2">
+              <div class="menu_name-depth2">로그아웃</div>
+            </a>
           </div>
-          <div class="nav1Box">
-            <li class="nav1BoxMenu nav1BoxMenuHaveDepth2">
-              <img src="{% static 'images/accountingSystem.png' %}" alt="경리시스템 아이콘">
-              <div>매출관리</div>
-              <svg xmlns="http://www.w3.org/2000/svg" width="18.228" height="11.84" viewBox="0 0 18.228 11.84">
-                <path id="패스_256" data-name="패스 256" d="M0,0,6.753,8.223,14,0" transform="translate(2.111 2.117)" fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="3"/>
-              </svg>        
-            </li>
-            <div class="sideMenuNav2Box">
-              <ul class="sideMenuNav2">
-                <a href="{% url 'accounting:sales' %}" class="sideMenuNav2Link">
-                  <li class="sideMenuNav2Menu">매출현황</li>
-                </a>
-                <a href="{% url 'accounting:deposit' %}" class="sideMenuNav2Link">
-                  <li class="sideMenuNav2Menu">입금관리</li>
-                </a>
-                <a href="{% url 'accounting:collect' %}" class="sideMenuNav2Link">
-                  <li class="sideMenuNav2Menu">일반 수금관리</li>
-                </a>
-                <a href="{% url 'accounting:regularly_collect' %}" class="sideMenuNav2Link">
-                  <li class="sideMenuNav2Menu">출/퇴근 수금관리</li>
-                </a>
-              </ul>
+          <a href="" class="menu_item">
+            <div class="menu_icon">
+              <svg xmlns="http://www.w3.org/2000/svg" width="19.403" height="16.422" viewBox="0 0 19.403 16.422">
+                <g id="Icon_ionic-ios-log-out" data-name="Icon ionic-ios-log-out" transform="translate(-3.375 -5.625)">
+                  <path id="패스_280" data-name="패스 280"
+                    d="M15.691,19.248a.655.655,0,0,0-.653.653.842.842,0,0,1-.84.84H5.521a.842.842,0,0,1-.84-.84V7.771a.842.842,0,0,1,.84-.84H14.2a.842.842,0,0,1,.84.84.653.653,0,0,0,1.306,0A2.146,2.146,0,0,0,14.2,5.625H5.521A2.146,2.146,0,0,0,3.375,7.771V19.9a2.146,2.146,0,0,0,2.146,2.146H14.2A2.146,2.146,0,0,0,16.344,19.9.655.655,0,0,0,15.691,19.248Z"
+                    fill="rgba(255,255,255,0.5)" />
+                  <path id="패스_281" data-name="패스 281"
+                    d="M20.9,11.019a.649.649,0,0,0-.462-.191.638.638,0,0,0-.462.191.65.65,0,0,0,0,.924l3.042,3H11.059a.653.653,0,1,0,0,1.306H23.03l-2.967,2.99a.659.659,0,0,0,0,.924l0,0a.675.675,0,0,0,.457.182.63.63,0,0,0,.462-.191l3.854-3.844a.917.917,0,0,0,0-1.362Z"
+                    transform="translate(-2.366 -1.751)" fill="rgba(255,255,255,0.5)" />
+                </g>
+              </svg>
             </div>
-          </div>
-          <!-- <div class="nav1Box">
-            <li class="nav1BoxMenu nav1BoxMenuHaveDepth2">
-              <img src="{% static 'images/vehicleManagement.png' %}" alt="차량관리 아이콘">
-              <div>차량관리</div>
-              <svg xmlns="http://www.w3.org/2000/svg" width="18.228" height="11.84" viewBox="0 0 18.228 11.84">
-                <path id="패스_256" data-name="패스 256" d="M0,0,6.753,8.223,14,0" transform="translate(2.111 2.117)" fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="3"/>
-              </svg>        
-            </li>
-            <div class="sideMenuNav2Box">
-              <ul class="sideMenuNav2">
-                <a href="{% url 'vehicle:list' %}" class="sideMenuNav2Link">
-                  <li class="sideMenuNav2Menu">차량목록</li>
-                </a>
-              </ul>
-            </div>
-          </div> -->
-          <div class="nav1Box">
-            <li class="nav1BoxMenu">
-              <img src="{% static 'images/vehicleManagement.png' %}" alt="차량관리 아이콘">
-              <a href="{% url 'vehicle:list' %}" class="nonDepth2Menu">차량목록</a>
-            </li>
-          </div>
-          <div class="nav1Box">
-            <li class="nav1BoxMenu nav1BoxMenuHaveDepth2">
-              <img src="{% static 'images/document.png' %}" alt="공지사항 아이콘">
-              <div>서류관리</div>
-              <svg xmlns="http://www.w3.org/2000/svg" width="18.228" height="11.84" viewBox="0 0 18.228 11.84">
-                <path id="패스_256" data-name="패스 256" d="M0,0,6.753,8.223,14,0" transform="translate(2.111 2.117)" fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="3"/>
-              </svg>        
-            </li>
-            <div class="sideMenuNav2Box">
-              <ul class="sideMenuNav2">
-                <a href="{% url 'document:company' %}" class="sideMenuNav2Link">
-                  <li class="sideMenuNav2Menu">회사서류</li>
-                </a>
-                <a href="{% url 'document:dispatch' %}" class="sideMenuNav2Link">
-                  <li class="sideMenuNav2Menu">운행서류</li>
-                </a>
-              </ul>
-            </div>
-          </div>
-          <div class="nav1Box">
-            <li class="nav1BoxMenu">
-              <img src="{% static 'images/calendar.png' %}" alt="일정 아이콘">
-              <a href="{% url 'crudmember:setting_client' %}" class="nonDepth2Menu">거래처 관리</a>
-            </li>
-          </div>
-          <div class="nav1Box">
-            <li class="nav1BoxMenu">
-              <img src="{% static 'images/calendar.png' %}" alt="일정 아이콘">
-              <a href="{% url 'crudmember:setting' %}" class="nonDepth2Menu">항목 관리</a>
-            </li>
-          </div>
-        </ul>
-        {% else %}
-        <ul class="sideMenuNav1">
-          <div class="nav1Box">
-            <li class="nav1BoxMenu">
-              <img src="{% static 'images/calendar.png' %}" alt="일정 아이콘">
-              <a href="{% url 'home' %}" class="nonDepth2Menu">일정</a>
-            </li>
-          </div>
-          <div class="nav1Box">
-            <li class="nav1BoxMenu">
-              <img src="{% static 'images/notice.png' %}" alt="공지사항 아이콘">
-              <a href="{% url 'notice:kinds' 'driver' %}" class="nonDepth2Menu">공지사항</a>
-            </li>
-          </div>
-          <div class="nav1Box">
-            <li class="nav1BoxMenu">
-              <img src="{% static 'images/HRManagement.png' %}" alt="인사관리 아이콘">
-              <a href="{% url 'HR:salary' %}" class="nonDepth2Menu">급여관리</a>
-            </li>
-          </div>
-        </ul>
-        {% endif %}
-      </div>
-
-
-
-      <!-- Manual -->
-      <div class="manualArea">
-        <a href="../templates/test.pdf" download="trpManual.pdf">
-          <div>메뉴얼</div>
-        </a>
-        <a href="http://kingbuserp.link/">
-        <div>FAQ</div>
-        </a>
-      </div>
-
-    </div>
-
-
-    <!--trp main container-->
-    <div class="MainContainer">
-
-
-      <!--trp header-->
-      <div class="Header">
-
-        <!--trp HeaderTitle-->
-        {% block content-header %}{% endblock %}
-
-        <!--trp HeaderProfile-->
-        <div class="profile">
-          <span class="userName">{{ request.session.name }}</span>
-          <div>
-            <span>님</span>
-            <img src="{% static 'images/profileArrow.png' %}" alt="아래 화살표 아이콘">
-          </div>
+            <div class="menu_name">사이트로 이동</div>
+            <div class="menu_open_btn"></div>
+          </a>
         </div>
-
-        <div class="profileBox">
-          <div class="profileMenuCell">
-            <img src="{% static 'images/createUserIcon.png' %}" alt="설정 아이콘">
-            <span class="profileMenuName">아이디 변경</span>
+        
+        {% if request.session.authority <= 1 %}
+        <div class="menu_box">
+          <div class="menu_box_title">TRP 메뉴</div>
+          <a href="{% url 'home' %}" class="menu_item">
+            <div class="menu_icon">
+              <svg xmlns="http://www.w3.org/2000/svg" width="19.403" height="16.422" viewBox="0 0 19.403 16.422">
+                <g id="Icon_ionic-ios-log-out" data-name="Icon ionic-ios-log-out" transform="translate(-3.375 -5.625)">
+                  <path id="패스_280" data-name="패스 280"
+                    d="M15.691,19.248a.655.655,0,0,0-.653.653.842.842,0,0,1-.84.84H5.521a.842.842,0,0,1-.84-.84V7.771a.842.842,0,0,1,.84-.84H14.2a.842.842,0,0,1,.84.84.653.653,0,0,0,1.306,0A2.146,2.146,0,0,0,14.2,5.625H5.521A2.146,2.146,0,0,0,3.375,7.771V19.9a2.146,2.146,0,0,0,2.146,2.146H14.2A2.146,2.146,0,0,0,16.344,19.9.655.655,0,0,0,15.691,19.248Z"
+                    fill="rgba(255,255,255,0.5)" />
+                  <path id="패스_281" data-name="패스 281"
+                    d="M20.9,11.019a.649.649,0,0,0-.462-.191.638.638,0,0,0-.462.191.65.65,0,0,0,0,.924l3.042,3H11.059a.653.653,0,1,0,0,1.306H23.03l-2.967,2.99a.659.659,0,0,0,0,.924l0,0a.675.675,0,0,0,.457.182.63.63,0,0,0,.462-.191l3.854-3.844a.917.917,0,0,0,0-1.362Z"
+                    transform="translate(-2.366 -1.751)" fill="rgba(255,255,255,0.5)" />
+                </g>
+              </svg>
+            </div>
+            <div class="menu_name">일정</div>
+            <div class="menu_open_btn"></div>
+          </a>
+          <div class="menu_item">
+            <div class="menu_icon">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16.35" height="18.6" viewBox="0 0 16.35 18.6">
+                <path id="Icon_awesome-bell" data-name="Icon awesome-bell"
+                  d="M7.875,18a2.25,2.25,0,0,0,2.249-2.25h-4.5A2.25,2.25,0,0,0,7.875,18Zm7.572-5.263c-.679-.73-1.95-1.828-1.95-5.424A5.552,5.552,0,0,0,9,1.858V1.125a1.124,1.124,0,1,0-2.249,0v.733a5.552,5.552,0,0,0-4.5,5.455c0,3.6-1.271,4.694-1.95,5.424A1.1,1.1,0,0,0,0,13.5a1.126,1.126,0,0,0,1.129,1.125H14.621A1.126,1.126,0,0,0,15.75,13.5a1.1,1.1,0,0,0-.3-.763Z"
+                  transform="translate(0.3 0.3)" fill="none" stroke="rgba(255,255,255,0.5)" stroke-width="0.6" />
+              </svg>
+            </div>
+            <div class="menu_name">공지사항</div>
+            <div class="menu_open_btn have_menu_list">
+              <svg xmlns="http://www.w3.org/2000/svg" width="9.894" height="6" viewBox="0 0 9.894 6">
+                <path id="Icon_feather-triangle" data-name="Icon feather-triangle"
+                  d="M6.465,10.027,2.455,5.34a.5.5,0,0,1,0-.66,1.066,1.066,0,0,1,.812-.335h8.021a1.066,1.066,0,0,1,.812.335.5.5,0,0,1,0,.66l-4.01,4.687a1.082,1.082,0,0,1-.81.319A1.082,1.082,0,0,1,6.465,10.027Z"
+                  transform="translate(-2.328 -4.346)" fill="rgba(255,255,255,0.5)" />
+              </svg>
+            </div>
           </div>
-          <div class="profileMenuCell">
-            <img src="{% static 'images/passwordIcon.png' %}" alt="비밀번호 변경">
-            <span class="profileMenuName">비밀번호 변경</span>
+          <div class="menu_box-depth2">
+            <a href="{% url 'notice:kinds' 'driver' %}" class="menu_item-depth2">
+              <div class="menu_name-depth2">운전원 공지사항</div>
+            </a>
+            <a href="{% url 'notice:kinds' 'office' %}" class="menu_item-depth2">
+              <div class="menu_name-depth2">사무실 공지사항</div>
+            </a>
           </div>
-          <div class="profileMenuCell">
-            <a href="{% url 'crudmember:logout' %}">
-              <img src="{% static 'images/logoutIcon.png' %}" alt="로그아웃">
-              <span class="profileMenuName">로그아웃</span>
+          <div class="menu_item">
+            <div class="menu_icon">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16.352" height="18.602" viewBox="0 0 16.352 18.602">
+                <path id="Icon_awesome-sitemap" data-name="Icon awesome-sitemap"
+                  d="M7.875,12.375H4.5A1.125,1.125,0,0,0,3.375,13.5v3.375A1.125,1.125,0,0,0,4.5,18H7.875A1.125,1.125,0,0,0,9,16.875V13.5A1.125,1.125,0,0,0,7.875,12.375ZM7.031,9.563h8.438V11.25h1.688V9.225a1.352,1.352,0,0,0-1.35-1.35H12.094V5.625H13.5A1.125,1.125,0,0,0,14.625,4.5V1.125A1.125,1.125,0,0,0,13.5,0H9A1.125,1.125,0,0,0,7.875,1.125V4.5A1.125,1.125,0,0,0,9,5.625h1.406v2.25H6.694a1.352,1.352,0,0,0-1.35,1.35V11.25H7.031ZM18,12.375H14.625A1.125,1.125,0,0,0,13.5,13.5v3.375A1.125,1.125,0,0,0,14.625,18H18a1.125,1.125,0,0,0,1.125-1.125V13.5A1.125,1.125,0,0,0,18,12.375Z"
+                  transform="translate(-3.074 0.301)" fill="none" stroke="rgba(255,255,255,0.5)" stroke-width="0.6" />
+              </svg>
+            </div>
+            <div class="menu_name">배차시스템</div>
+            <div class="menu_open_btn have_menu_list">
+              <svg xmlns="http://www.w3.org/2000/svg" width="9.894" height="6" viewBox="0 0 9.894 6">
+                <path id="Icon_feather-triangle" data-name="Icon feather-triangle"
+                  d="M6.465,10.027,2.455,5.34a.5.5,0,0,1,0-.66,1.066,1.066,0,0,1,.812-.335h8.021a1.066,1.066,0,0,1,.812.335.5.5,0,0,1,0,.66l-4.01,4.687a1.082,1.082,0,0,1-.81.319A1.082,1.082,0,0,1,6.465,10.027Z"
+                  transform="translate(-2.328 -4.346)" fill="rgba(255,255,255,0.5)" />
+              </svg>
+            </div>
+          </div>
+          <div class="menu_box-depth2">
+            <a href="{% url 'dispatch:order' %}" class="menu_item-depth2">
+              <div class="menu_name-depth2">일반배차</div>
+            </a>
+            <a href="{% url 'dispatch:regularly' %}" class="menu_item-depth2">
+              <div class="menu_name-depth2">출·퇴근 배차</div>
+            </a>
+            <a href="{% url 'dispatch:regularly_route' %}" class="menu_item-depth2">
+              <div class="menu_name-depth2">출·퇴근 노선관리</div>
+            </a>
+          </div>
+          <div class="menu_item">
+            <div class="menu_icon">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16.8" height="18.6" viewBox="0 0 16.8 18.6">
+                <path id="Icon_material-assignment-ind" data-name="Icon material-assignment-ind"
+                  d="M18.9,3.3H15.138a2.689,2.689,0,0,0-5.076,0H6.3A1.805,1.805,0,0,0,4.5,5.1V17.7a1.805,1.805,0,0,0,1.8,1.8H18.9a1.805,1.805,0,0,0,1.8-1.8V5.1A1.805,1.805,0,0,0,18.9,3.3Zm-6.3,0a.9.9,0,1,1-.9.9A.9.9,0,0,1,12.6,3.3Zm0,3.6A2.7,2.7,0,1,1,9.9,9.6,2.7,2.7,0,0,1,12.6,6.9ZM18,17.7H7.2V16.44c0-1.8,3.6-2.79,5.4-2.79s5.4.99,5.4,2.79Z"
+                  transform="translate(-4.2 -1.2)" fill="none" stroke="rgba(255,255,255,0.5)" stroke-width="0.6" />
+              </svg>
+            </div>
+            <div class="menu_name">인사관리</div>
+            <div class="menu_open_btn have_menu_list">
+              <svg xmlns="http://www.w3.org/2000/svg" width="9.894" height="6" viewBox="0 0 9.894 6">
+                <path id="Icon_feather-triangle" data-name="Icon feather-triangle"
+                  d="M6.465,10.027,2.455,5.34a.5.5,0,0,1,0-.66,1.066,1.066,0,0,1,.812-.335h8.021a1.066,1.066,0,0,1,.812.335.5.5,0,0,1,0,.66l-4.01,4.687a1.082,1.082,0,0,1-.81.319A1.082,1.082,0,0,1,6.465,10.027Z"
+                  transform="translate(-2.328 -4.346)" fill="rgba(255,255,255,0.5)" />
+              </svg>
+            </div>
+          </div>
+          <div class="menu_box-depth2">
+            <a href="{% url 'HR:member' %}" class="menu_item-depth2">
+              <div class="menu_name-depth2">직원관리</div>
+            </a>
+            <a href="{% url 'HR:salary' %}" class="menu_item-depth2">
+              <div class="menu_name-depth2">급여관리</div>
+            </a>
+          </div>
+          <div class="menu_item">
+            <div class="menu_icon">
+              <svg xmlns="http://www.w3.org/2000/svg" width="21.183" height="18.657" viewBox="0 0 21.183 18.657">
+                <path id="Icon_awesome-sort-amount-up" data-name="Icon awesome-sort-amount-up"
+                  d="M12.214,17.679H9.643A.643.643,0,0,0,9,18.321v1.286a.643.643,0,0,0,.643.643h2.571a.643.643,0,0,0,.643-.643V18.321A.643.643,0,0,0,12.214,17.679ZM.643,7.393H2.571V19.607a.643.643,0,0,0,.643.643H4.5a.643.643,0,0,0,.643-.643V7.393H7.071a.643.643,0,0,0,.454-1.1L4.311,2.438a.643.643,0,0,0-.909,0L.188,6.3A.643.643,0,0,0,.643,7.393Zm16.714,0H9.643A.643.643,0,0,0,9,8.036V9.321a.643.643,0,0,0,.643.643h7.714A.643.643,0,0,0,18,9.321V8.036A.643.643,0,0,0,17.357,7.393Zm-2.571,5.143H9.643A.643.643,0,0,0,9,13.179v1.286a.643.643,0,0,0,.643.643h5.143a.643.643,0,0,0,.643-.643V13.179A.643.643,0,0,0,14.786,12.536ZM19.928,2.25H9.643A.643.643,0,0,0,9,2.893V4.179a.643.643,0,0,0,.643.643H19.928a.643.643,0,0,0,.643-.643V2.893A.643.643,0,0,0,19.928,2.25Z"
+                  transform="translate(0.312 -1.893)" fill="none" stroke="rgba(233,233,233,0.5)" stroke-width="0.6" />
+              </svg>
+            </div>
+            <div class="menu_name">매출관리</div>
+            <div class="menu_open_btn have_menu_list">
+              <svg xmlns="http://www.w3.org/2000/svg" width="9.894" height="6" viewBox="0 0 9.894 6">
+                <path id="Icon_feather-triangle" data-name="Icon feather-triangle"
+                  d="M6.465,10.027,2.455,5.34a.5.5,0,0,1,0-.66,1.066,1.066,0,0,1,.812-.335h8.021a1.066,1.066,0,0,1,.812.335.5.5,0,0,1,0,.66l-4.01,4.687a1.082,1.082,0,0,1-.81.319A1.082,1.082,0,0,1,6.465,10.027Z"
+                  transform="translate(-2.328 -4.346)" fill="rgba(255,255,255,0.5)" />
+              </svg>
+            </div>
+          </div>
+          <div class="menu_box-depth2">
+            <a href="{% url 'accounting:sales' %}" class="menu_item-depth2">
+              <div class="menu_name-depth2">매출현황</div>
+            </a>
+            <a href="{% url 'accounting:deposit' %}" class="menu_item-depth2">
+              <div class="menu_name-depth2">입금관리</div>
+            </a>
+            <a href="{% url 'accounting:collect' %}" class="menu_item-depth2">
+              <div class="menu_name-depth2">일반 수금관리</div>
+            </a>
+            <a href="{% url 'accounting:regularly_collect' %}" class="menu_item-depth2">
+              <div class="menu_name-depth2">출·퇴근 수금관리</div>
+            </a>
+          </div>
+          <a href="{% url 'vehicle:list' %}" class="menu_item">
+            <div class="menu_icon">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16.6" height="16.6" viewBox="0 0 16.6 16.6">
+                <path id="Icon_awesome-bus" data-name="Icon awesome-bus"
+                  d="M15.25,4H15V2.5C15,1.1,11.9,0,8,0S1,1.1,1,2.5V4H.75A.75.75,0,0,0,0,4.75v2.5A.75.75,0,0,0,.75,8H1v5a1,1,0,0,0,1,1v1a1,1,0,0,0,1,1H4a1,1,0,0,0,1-1V14h6v1a1,1,0,0,0,1,1h1a1,1,0,0,0,1-1V14h.2a.789.789,0,0,0,.8-.8V8h.25A.75.75,0,0,0,16,7.25V4.75A.75.75,0,0,0,15.25,4ZM3.5,12.5a1,1,0,1,1,1-1A1,1,0,0,1,3.5,12.5ZM4,9A1,1,0,0,1,3,8V4A1,1,0,0,1,4,3h8a1,1,0,0,1,1,1V8a1,1,0,0,1-1,1Zm8.5,3.5a1,1,0,1,1,1-1A1,1,0,0,1,12.5,12.5Z"
+                  transform="translate(0.3 0.3)" fill="none" stroke="rgba(255,255,255,0.5)" stroke-width="0.6" />
+              </svg>
+            </div>
+            <div class="menu_name">차량목록</div>
+            <div class="menu_open_btn"></div>
+          </a>
+          <div class="menu_item">
+            <div class="menu_icon">
+              <svg xmlns="http://www.w3.org/2000/svg" width="12.908" height="16.6" viewBox="0 0 12.908 16.6">
+                <path id="Icon_ionic-md-document" data-name="Icon ionic-md-document"
+                  d="M14.135,3.375H8.288A1.538,1.538,0,0,0,6.75,4.913V17.837a1.538,1.538,0,0,0,1.538,1.538h9.231a1.538,1.538,0,0,0,1.538-1.538V8.3Zm-.615,5.538V4.606l4.308,4.308Z"
+                  transform="translate(-6.45 -3.075)" fill="none" stroke="rgba(255,255,255,0.5)" stroke-width="0.6" />
+              </svg>
+            </div>
+            <div class="menu_name">서류관리</div>
+            <div class="menu_open_btn have_menu_list">
+              <svg xmlns="http://www.w3.org/2000/svg" width="9.894" height="6" viewBox="0 0 9.894 6">
+                <path id="Icon_feather-triangle" data-name="Icon feather-triangle"
+                  d="M6.465,10.027,2.455,5.34a.5.5,0,0,1,0-.66,1.066,1.066,0,0,1,.812-.335h8.021a1.066,1.066,0,0,1,.812.335.5.5,0,0,1,0,.66l-4.01,4.687a1.082,1.082,0,0,1-.81.319A1.082,1.082,0,0,1,6.465,10.027Z"
+                  transform="translate(-2.328 -4.346)" fill="rgba(255,255,255,0.5)" />
+              </svg>
+            </div>
+          </div>
+          <div class="menu_box-depth2">
+            <a href="{% url 'document:company' %}" class="menu_item-depth2">
+              <div class="menu_name-depth2">회사서류</div>
+            </a>
+            <a href="{% url 'document:dispatch' %}" class="menu_item-depth2">
+              <div class="menu_name-depth2">운행서류</div>
             </a>
           </div>
         </div>
 
+        <div class="menu_box">
+          <div class="menu_box_title">고객센터</div>
+          <a href="../templates/test.pdf" download="trpManual.pdf" class="menu_item">
+            <div class="menu_icon">
+              <svg xmlns="http://www.w3.org/2000/svg" width="13.864" height="18.6" viewBox="0 0 13.864 18.6">
+                <path id="Icon_material-perm-device-information" data-name="Icon material-perm-device-information"
+                  d="M15.006,6.332H13.369V7.968h1.636Zm0,3.273H13.369v4.909h1.636Zm4.121-8.1L9.136,1.5A1.641,1.641,0,0,0,7.5,3.136V17.864A1.641,1.641,0,0,0,9.136,19.5h9.991a1.641,1.641,0,0,0,1.636-1.636V3.136A1.634,1.634,0,0,0,19.127,1.508Zm0,16.355H9.136V3.136h9.991Z"
+                  transform="translate(-7.2 -1.2)" fill="none" stroke="rgba(255,255,255,0.5)" stroke-width="0.6" />
+              </svg>
+            </div>
+            <div class="menu_name">메뉴얼</div>
+            <div class="menu_open_btn"></div>
+          </a>
+          <a href="http://kingbuserp.link/" class="menu_item">
+            <div class="menu_icon">
+              <svg xmlns="http://www.w3.org/2000/svg" width="13.029" height="18.6" viewBox="0 0 13.029 18.6">
+                <path id="Icon_awesome-question" data-name="Icon awesome-question"
+                  d="M8,0A6.812,6.812,0,0,0,1.952,3.2a.845.845,0,0,0,.182,1.156L3.65,5.506A.844.844,0,0,0,4.819,5.36c.881-1.1,1.534-1.738,2.909-1.738,1.082,0,2.419.7,2.419,1.745,0,.793-.655,1.2-1.722,1.8-1.245.7-2.893,1.567-2.893,3.741v.344a.844.844,0,0,0,.844.844H8.924a.844.844,0,0,0,.844-.844v-.2c0-1.507,4.4-1.57,4.4-5.647C14.172,2.329,10.986,0,8,0ZM7.65,13.129a2.435,2.435,0,1,0,2.435,2.435A2.438,2.438,0,0,0,7.65,13.129Z"
+                  transform="translate(-1.443 0.3)" fill="none" stroke="rgba(255,255,255,0.5)" stroke-width="0.6" />
+              </svg>
+            </div>
+            <div class="menu_name">문의하기</div>
+            <div class="menu_open_btn"></div>
+          </a>
+        </div>
 
-
+        <div class="menu_box">
+          <div class="menu_box_title">관리자 설정</div>
+          <a href="{% url 'crudmember:setting_client' %}" class="menu_item">
+            <div class="menu_icon">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20.665" height="16.726" viewBox="0 0 20.665 16.726">
+                <path id="Icon_awesome-hands-helping" data-name="Icon awesome-hands-helping"
+                  d="M15.249,6H10.5v1.75a2.25,2.25,0,0,1-4.5,0v-3.8L3.971,5.17A2,2,0,0,0,3,6.882V8.36L.5,9.8A1,1,0,0,0,.133,11.17l2.5,4.331A1,1,0,0,0,4,15.866L7.23,14H11.5a2,2,0,0,0,2-2H14a1,1,0,0,0,1-1V9h.25a.748.748,0,0,0,.75-.75v-1.5A.748.748,0,0,0,15.249,6Zm4.616-1.169L17.365.5A1,1,0,0,0,16,.135L12.768,2H9.574a2.015,2.015,0,0,0-1.059.3l-1.047.653A.993.993,0,0,0,7,3.8V7.751a1.25,1.25,0,1,0,2.5,0V5h5.75A1.751,1.751,0,0,1,17,6.751v.891L19.5,6.2a1,1,0,0,0,.366-1.366Z"
+                  transform="translate(0.305 0.362)" fill="none" stroke="rgba(255,255,255,0.5)" stroke-width="0.6" />
+              </svg>
+            </div>
+            <div class="menu_name">거래처 관리</div>
+            <div class="menu_open_btn"></div>
+          </a>
+          <a href="{% static 'images/calendar.png' %}" class="menu_item">
+            <div class="menu_icon">
+              <svg xmlns="http://www.w3.org/2000/svg" width="19.674" height="20.011" viewBox="0 0 19.674 20.011">
+                <g id="그룹_1505" data-name="그룹 1505" transform="translate(-19.577 -754.883)">
+                  <path id="Icon_ionic-md-settings" data-name="Icon ionic-md-settings"
+                    d="M9.533,7.225a2.189,2.189,0,0,0,.018-.35c0-.123-.018-.227-.018-.35l.752-.577a.161.161,0,0,0,.036-.227L9.6,4.513a.174.174,0,0,0-.215-.07l-.895.35a2.605,2.605,0,0,0-.608-.35l-.125-.927a.192.192,0,0,0-.179-.14H6.15a.192.192,0,0,0-.179.14l-.143.927a3.031,3.031,0,0,0-.609.35l-.895-.35a.168.168,0,0,0-.215.07L3.393,5.72a.211.211,0,0,0,.036.227l.77.577c0,.123-.018.227-.018.35s.018.227.018.35L3.447,7.8a.161.161,0,0,0-.036.227l.716,1.208a.174.174,0,0,0,.215.07l.895-.35a2.6,2.6,0,0,0,.608.35l.143.927a.173.173,0,0,0,.179.14H7.6a.192.192,0,0,0,.179-.14l.143-.927a3.029,3.029,0,0,0,.608-.35l.895.35a.168.168,0,0,0,.215-.07l.716-1.208A.211.211,0,0,0,10.32,7.8ZM6.866,8.1A1.225,1.225,0,1,1,8.119,6.875,1.231,1.231,0,0,1,6.866,8.1Z"
+                    transform="translate(19.272 751.808)" fill="none" stroke="rgba(255,255,255,0.5)"
+                    stroke-width="0.6" />
+                  <path id="Icon_ionic-md-settings-2" data-name="Icon ionic-md-settings"
+                    d="M7.038,4.4a2.5,2.5,0,0,0,.02-.4c0-.14-.02-.26-.02-.4L7.9,2.94a.184.184,0,0,0,.041-.26L7.119,1.3a.2.2,0,0,0-.246-.08l-1.023.4a2.977,2.977,0,0,0-.7-.4L5.013.16a.219.219,0,0,0-.2-.16H3.172a.219.219,0,0,0-.2.16L2.8,1.22a3.464,3.464,0,0,0-.7.4l-1.023-.4a.192.192,0,0,0-.246.08L.021,2.68a.242.242,0,0,0,.041.26l.88.66c0,.14-.02.26-.02.4s.02.26.02.4l-.859.66a.184.184,0,0,0-.041.26L.86,6.7a.2.2,0,0,0,.246.08l1.023-.4a2.977,2.977,0,0,0,.7.4l.164,1.06a.2.2,0,0,0,.2.16H4.828a.219.219,0,0,0,.2-.16L5.2,6.78a3.462,3.462,0,0,0,.7-.4l1.023.4A.192.192,0,0,0,7.16,6.7l.818-1.38a.241.241,0,0,0-.041-.26ZM3.99,5.4a1.4,1.4,0,1,1,0-2.8,1.4,1.4,0,1,1,0,2.8Z"
+                    transform="matrix(0.899, -0.438, 0.438, 0.899, 28.14, 761.139)" fill="none"
+                    stroke="rgba(255,255,255,0.5)" stroke-width="0.6" />
+                  <path id="Icon_ionic-md-settings-3" data-name="Icon ionic-md-settings"
+                    d="M7.917,4.95A2.814,2.814,0,0,0,7.94,4.5c0-.158-.023-.292-.023-.45l.966-.742a.207.207,0,0,0,.046-.292L8.009,1.462a.224.224,0,0,0-.276-.09l-1.151.45a3.349,3.349,0,0,0-.782-.45L5.639.18A.247.247,0,0,0,5.409,0H3.568a.247.247,0,0,0-.23.18L3.154,1.372a3.9,3.9,0,0,0-.783.45l-1.151-.45a.216.216,0,0,0-.276.09L.024,3.015a.272.272,0,0,0,.046.292l.99.742c0,.158-.023.292-.023.45s.023.292.023.45l-.966.742a.207.207,0,0,0-.046.292L.968,7.537a.224.224,0,0,0,.276.09l1.151-.45a3.349,3.349,0,0,0,.782.45L3.361,8.82a.223.223,0,0,0,.23.18H5.432a.247.247,0,0,0,.23-.18l.184-1.192a3.9,3.9,0,0,0,.782-.45l1.151.45a.216.216,0,0,0,.276-.09l.921-1.553a.271.271,0,0,0-.046-.292ZM4.488,6.075a1.575,1.575,0,1,1,0-3.15,1.575,1.575,0,1,1,0,3.15Z"
+                    transform="translate(24.5 762.182) rotate(30)" fill="none" stroke="rgba(255,255,255,0.5)"
+                    stroke-width="0.6" />
+                </g>
+              </svg>
+            </div>
+            <div class="menu_name">항목관리</div>
+            <div class="menu_open_btn"></div>
+          </a>
+        </div>
+        {% else %}
+        <a href="{% url 'home' %}" class="menu_item">
+          <div class="menu_icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="19.403" height="16.422" viewBox="0 0 19.403 16.422">
+              <g id="Icon_ionic-ios-log-out" data-name="Icon ionic-ios-log-out" transform="translate(-3.375 -5.625)">
+                <path id="패스_280" data-name="패스 280"
+                  d="M15.691,19.248a.655.655,0,0,0-.653.653.842.842,0,0,1-.84.84H5.521a.842.842,0,0,1-.84-.84V7.771a.842.842,0,0,1,.84-.84H14.2a.842.842,0,0,1,.84.84.653.653,0,0,0,1.306,0A2.146,2.146,0,0,0,14.2,5.625H5.521A2.146,2.146,0,0,0,3.375,7.771V19.9a2.146,2.146,0,0,0,2.146,2.146H14.2A2.146,2.146,0,0,0,16.344,19.9.655.655,0,0,0,15.691,19.248Z"
+                  fill="rgba(255,255,255,0.5)" />
+                <path id="패스_281" data-name="패스 281"
+                  d="M20.9,11.019a.649.649,0,0,0-.462-.191.638.638,0,0,0-.462.191.65.65,0,0,0,0,.924l3.042,3H11.059a.653.653,0,1,0,0,1.306H23.03l-2.967,2.99a.659.659,0,0,0,0,.924l0,0a.675.675,0,0,0,.457.182.63.63,0,0,0,.462-.191l3.854-3.844a.917.917,0,0,0,0-1.362Z"
+                  transform="translate(-2.366 -1.751)" fill="rgba(255,255,255,0.5)" />
+              </g>
+            </svg>
+          </div>
+          <div class="menu_name">일정</div>
+          <div class="menu_open_btn"></div>
+        </a>
+        <a href="{% url 'notice:kinds' 'driver' %}" class="menu_item">
+          <div class="menu_icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16.35" height="18.6" viewBox="0 0 16.35 18.6">
+              <path id="Icon_awesome-bell" data-name="Icon awesome-bell"
+                d="M7.875,18a2.25,2.25,0,0,0,2.249-2.25h-4.5A2.25,2.25,0,0,0,7.875,18Zm7.572-5.263c-.679-.73-1.95-1.828-1.95-5.424A5.552,5.552,0,0,0,9,1.858V1.125a1.124,1.124,0,1,0-2.249,0v.733a5.552,5.552,0,0,0-4.5,5.455c0,3.6-1.271,4.694-1.95,5.424A1.1,1.1,0,0,0,0,13.5a1.126,1.126,0,0,0,1.129,1.125H14.621A1.126,1.126,0,0,0,15.75,13.5a1.1,1.1,0,0,0-.3-.763Z"
+                transform="translate(0.3 0.3)" fill="none" stroke="rgba(255,255,255,0.5)" stroke-width="0.6" />
+            </svg>
+          </div>
+          <div class="menu_name">공지사항</div>
+          <div class="menu_open_btn"></div>
+        </a>
+        <a href="{% url 'HR:salary' %}" class="menu_item">
+          <div class="menu_icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16.8" height="18.6" viewBox="0 0 16.8 18.6">
+              <path id="Icon_material-assignment-ind" data-name="Icon material-assignment-ind"
+                d="M18.9,3.3H15.138a2.689,2.689,0,0,0-5.076,0H6.3A1.805,1.805,0,0,0,4.5,5.1V17.7a1.805,1.805,0,0,0,1.8,1.8H18.9a1.805,1.805,0,0,0,1.8-1.8V5.1A1.805,1.805,0,0,0,18.9,3.3Zm-6.3,0a.9.9,0,1,1-.9.9A.9.9,0,0,1,12.6,3.3Zm0,3.6A2.7,2.7,0,1,1,9.9,9.6,2.7,2.7,0,0,1,12.6,6.9ZM18,17.7H7.2V16.44c0-1.8,3.6-2.79,5.4-2.79s5.4.99,5.4,2.79Z"
+                transform="translate(-4.2 -1.2)" fill="none" stroke="rgba(255,255,255,0.5)" stroke-width="0.6" />
+            </svg>
+          </div>
+          <div class="menu_name">급여관리</div>
+          <div class="menu_open_btn"></div>
+        </a>
+        {% endif %}
 
       </div>
 
+    </div>
 
-      <!--trp contents container-->
-      <div class="mainContentsCentainer">
+    <!-- 메인 영역 -->
+    <div class="main_Area">
+      <div class="header">일정</div>
+      <div class="main_container">
         {% block content %}
         {% endblock %}
       </div>
-
       {% block popup %}
       {% endblock %}
 
-      <div class="HomePopupAreaModules">
-        <div class="HomePopupBgModules"></div>
-          <div class="popupContainer HomePopupContainer">
-            {% csrf_token %}
-            <div class="popupHeader">
-                <div class="popupTitle">아이디 변경</div>
+      <!-- 아이디 변경 팝업 -->
+      <div class="basic_popup change_id_popup">
+        <div class="basic_popup_bg"></div>
+        <div class="basic_popup_box">
+          {% csrf_token %}
+          <div class="basic_popup_main_header">아이디 변경</div>
+          <div class="basic_popup_body">
+            <div class="popup_input_article">
+              <label for=""><span class="essential_impact">*</span>비 밀 번 호</label>
+              <input type="password" check_result="fail" name="password" class="basic_input id_change_pw id_essential">
             </div>
-            <div class="popupBody">
-                <div class="popupSection">
-                    <div class="popupArticle">
-                        <label for="" class="popupArticleLabel">비밀번호</label>
-                        <input autocomplete="off" name="password" type="password" class="popupArticleinput PopupDataInputPwCheckerId">
-                    </div>
-                    <div class="popupArticle">
-                        <label for="" class="popupArticleLabel">새 아이디</label>
-                        <div class="idBox">
-                          <input autocomplete="off" type="text" check_result="fail" name="user_id" id="id" class="popupArticleinput username_input" placeholder="새 아이디를 입력해 주세요.">
-                          <div class="idchecker" onClick="id_overlap_check()">중복확인</div>
-                        </div>
-                    </div>
-                </div>
-                <div class="popupFooter">
-                    <input autocomplete="off" type="submit" class="btnModules HomeEditBtn" value="저장">
-                    <div class="btnModules HomeCloseBtn">닫기</div>
-                </div>
-              </div>
+            <div class="popup_input_article">
+              <label for=""><span class="essential_impact">*</span>새 아 이 디</label>
+              <input type="text" check_result="fail" name="user_id" class="basic_input overlap_checking_input id_essential" placeholder="새 아이디를 입력해 주세요.">
+              <div class="basic_btn overlap_checking_btn">중복확인</div>
             </div>
           </div>
-      </div>
-
-
-
-      <div class="HomePopupAreaModules">
-        <div class="HomePopupBgModules"></div>
-        <div class="HomePopupContainer HomePopupContainerPw">
-            {% csrf_token %}
-            <div class="popupHeader">
-                <div class="popupTitle">비밀번호 변경</div>
-            </div>
-            <div class="popupBody">
-                <div class="popupSection">
-                    <div class="popupArticle">
-                        <label for="" class="popupArticleLabel">비밀번호</label>
-                        <input autocomplete="off"name="cur_password" type="password" class="popupArticleinput PopupDataInputPwCheckerPw">
-                    </div>
-                    <div class="popupArticle">
-                        <label for="" class="popupArticleLabel">새 비밀번호</label>
-                        <input autocomplete="off"name="password1" type="password" class="popupArticleinput PopupDataInputNewPw">
-                    </div>
-                    <div class="popupArticle">
-                        <label for="" class="popupArticleLabel">비밀번호 확인</label>
-                        <input autocomplete="off"name="password2" type="password" class="popupArticleinput PopupDataInputOverlap">
-                    </div>
-                </div>
-                <div class="popupFooter">
-                    <input autocomplete="off"type="submit" class="btnModules HomeEditBtn" value="저장">
-                    <div class="btnModules HomeCloseBtn">닫기</div>
-                </div>
-            </div>
+          <div class="basic_popup_footer">
+            <div class="create_btn id_change_btn">저장</div>
+            <div class="basic_btn popup_btn-close">닫기</div>
+          </div>
         </div>
       </div>
 
-      <!-- 검색모듈 -->
-      <!-- 
-        <div class="search-Container">
-          <form method="post" action="" class="search-Form">
-            <label for="" class="search-Form_label">검색라벨</label>
-            <input autocomplete="off" type="text" class="search-Form_input">
-            <input type="submit" class="search-Form_search-btn" value="검색">
-          </form>
-          <div class="popup-area-box">
-            <div class="popup-area-box_btn">팝업이름</div>
+      <!-- 비밀번호 변경 팝업 -->
+      <div class="basic_popup change_pw_popup">
+        <div class="basic_popup_bg"></div>
+        <div class="basic_popup_box">
+          {% csrf_token %}
+          <div class="basic_popup_main_header">비밀번호 변경</div>
+          <div class="basic_popup_body">
+            <div class="popup_input_article">
+              <label for=""><span class="essential_impact">*</span>비 밀 번 호</label>
+              <input type="password" name="cur_password" class="basic_input pw_essential pw_change_pw">
+            </div>
+            <div class="popup_input_article">
+              <label for=""><span class="essential_impact">*</span>새 비 밀 번 호</label>
+              <input type="password" name="password1" class="basic_input pw_essential pw_change_new">
+            </div>
+            <div class="popup_input_article">
+              <label for=""><span class="essential_impact">*</span>비밀번호 확 인</label>
+              <input type="password" name="password2" class="basic_input pw_essential pw_change_check">
+            </div>
+          </div>
+          <div class="basic_popup_footer">
+            <div class="create_btn pw_change_btn">저장</div>
+            <div class="basic_btn popup_btn-close">닫기</div>
           </div>
         </div>
-       -->
-
-
-
-      <!-- 일반 테이블리스트 -->
-      <!-- 
-        <table class="table-list">
-          <thead>
-            <tr class="table-list_head-tr">
-              <td class="table-list_head-tr_td"></td>
-            </tr>
-          </thead>
-          <tbody>
-            <tr class="table-list_body-tr">
-              <td class="table-list_body-tr_td"></td>
-            </tr>
-            <tr class="table-list_body-tr">
-              <td class="table-list_body-tr_td"></td>
-            </tr>
-            <tr class="table-list_body-tr">
-              <td class="table-list_body-tr_td"></td>
-            </tr>
-            <tr class="table-list_body-tr">
-              <td class="table-list_body-tr_td"></td>
-            </tr>
-          </tbody>
-        </table>
-       -->
-
-       
-
-
-      <!-- 스크롤 테이블리스트 -->
-      <!-- 
-        <div class="scrolling_table-list_header">
-          <table class="table-list">
-            <thead>
-              <tr class="table-list_head-tr">
-                <td class="table-list_head-tr_td"></td>
-              </tr>
-            </thead>
-          </table>
-        </div>
-        <div class="scrolling_table-list_body">
-          <table class="table-list">
-            <tbody>
-              <tr class="table-list_body-tr">
-                <td class="table-list_body-tr_td"></td>
-              </tr>
-              <tr class="table-list_body-tr">
-                <td class="table-list_body-tr_td"></td>
-              </tr>
-              <tr class="table-list_body-tr">
-                <td class="table-list_body-tr_td"></td>
-              </tr>
-              <tr class="table-list_body-tr">
-                <td class="table-list_body-tr_td"></td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-       -->
-
-       
-
-
-      <!-- 버튼 모듈 -->
-      <!-- 
-        <div class="btnModules"></div>
-       -->
-      
-
-      
-<!--  -->
-<!-- <div class="popupAreaModules">
-  <div class="popupBgModules"></div>
-  <form method="post" action="" class="popupContainer popupContainerDouble">
-      {% csrf_token %}
-      <div class="popupHeader">
-          <div class="popupTitle">팝업이름</div>
       </div>
-      <div class="popupBody">
-          <div class="popupSection">
-              <div class="popupArticleBox">
-                  <div class="popupArticleDouble">
-                      <label for="" class="popupArticleLabel">항목이름</label>
-                      <input autocomplete="off"type="text" class="popupArticleinput">
-                  </div>
-                  <div class="popupArticleDouble">
-                      <label for="" class="popupArticleLabel">항목이름</label>
-                      <input autocomplete="off"type="text" class="popupArticleinput">
-                  </div>
-              </div>
-          </div>
-          <div class="popupFooter">
-              <input autocomplete="off"type="submit" class="btnModules" value="등록">
-              <div class="btnModules">닫기</div>
-          </div>
-      </div>
-  </form>
-</div>
-
-<div class="popupAreaModules">
-  <div class="popupBgModules"></div>
-  <form method="post" action="" class="popupContainer">
-      {% csrf_token %}
-      <div class="popupHeader">
-          <div class="popupTitle">팝업이름</div>
-      </div>
-      <div class="popupBody">
-          <div class="popupSection">
-              <div class="popupArticle">
-                  <label for="" class="popupArticleLabel">항목이름</label>
-                  <input autocomplete="off"type="text" class="popupArticleinput">
-              </div>
-          </div>
-          <div class="popupFooter">
-              <input autocomplete="off"type="submit" class="btnModules" value="등록">
-              <div class="btnModules">닫기</div>
-          </div>
-      </div>
-  </form>
-</div> -->
-
-<!--  -->
 
     </div>
 
   </div>
+
+
+
+
+
   <script>
     const AUTHORITY = {{request.session.authority}}
     console.log('AUTHORITY', AUTHORITY)
   </script>
   <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-  <script src="{% static 'js/sideNavMenu.js' %}"></script>
-  <script src="{% static 'js/profile.js' %}"></script>
-  <script src="{% static 'js/accountPopup.js' %}"></script>
-  <script src="{% static 'js/lengthbreak100.js' %}"></script>
-  <script src="{% static 'js/lengthbreak1000.js' %}"></script>
-  <script src="{% static 'js/lengthBreak3000.js' %}"></script>
+  <script src="{% static 'js/common/csrfToken.js' %}"></script>
+  <script src="{% static 'js/common/sideMenu.js' %}"></script>
+  <script src="{% static 'js/common/closePopup.js' %}"></script>
+  <script src="{% static 'js/common/changeID.js' %}"></script>
+  <script src="{% static 'js/common/changePW.js' %}"></script>
   {% block script %}{% endblock %}
+
 </body>
 
 </html>

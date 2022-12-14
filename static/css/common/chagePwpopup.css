@@ -1,0 +1,15 @@
+.change_pw_popup .basic_popup_box{
+    height: 24.4rem;
+}
+
+.change_pw_popup .popup_input_article label {
+    width: 9.4rem;
+}
+
+.change_pw_popup .popup_input_article input {
+    width: calc(100% - 11.4rem);
+}
+
+.pw_change_btn{
+    margin-right: 1rem;
+}

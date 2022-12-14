@@ -1,0 +1,391 @@
+{% extends 'base.html' %}
+{% load custom_tags %}
+{% load static %}
+
+{% block head %}
+<link href="{% static 'css/crudmember/calender.css' %}" rel="stylesheet" type="text/css" />
+{% endblock %}
+
+{% block content-header %}
+<div class="HeaderTitle">
+  <!-- 페이지별 Title 변경 -->
+  HOME
+</div>
+{% endblock %}
+
+{% block content %}
+
+<div class="basic_container schdule_search">
+  <div class="dispatch_print_form">
+    <div class="basic_btn print_route">
+      노선별
+      <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 14 14">
+        <path id="Icon_awesome-print" data-name="Icon awesome-print"
+          d="M12.25,5.25V2.112a.876.876,0,0,0-.256-.619L10.756.256A.875.875,0,0,0,10.137,0H2.625A.875.875,0,0,0,1.75.875V5.25A1.75,1.75,0,0,0,0,7v3.063a.437.437,0,0,0,.438.438H1.75v2.625A.875.875,0,0,0,2.625,14h8.75a.875.875,0,0,0,.875-.875V10.5h1.313A.437.437,0,0,0,14,10.063V7A1.75,1.75,0,0,0,12.25,5.25Zm-1.75,7h-7V9.625h7Zm0-6.125h-7V1.75H8.75V3.063a.437.437,0,0,0,.438.438H10.5Zm1.313,1.969a.656.656,0,1,1,.656-.656A.656.656,0,0,1,11.813,8.094Z"
+          fill="#fff" />
+      </svg>
+    </div>
+    <div class="basic_btn print_bus">
+      호수별
+      <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 14 14">
+        <path id="Icon_awesome-print" data-name="Icon awesome-print"
+          d="M12.25,5.25V2.112a.876.876,0,0,0-.256-.619L10.756.256A.875.875,0,0,0,10.137,0H2.625A.875.875,0,0,0,1.75.875V5.25A1.75,1.75,0,0,0,0,7v3.063a.437.437,0,0,0,.438.438H1.75v2.625A.875.875,0,0,0,2.625,14h8.75a.875.875,0,0,0,.875-.875V10.5h1.313A.437.437,0,0,0,14,10.063V7A1.75,1.75,0,0,0,12.25,5.25Zm-1.75,7h-7V9.625h7Zm0-6.125h-7V1.75H8.75V3.063a.437.437,0,0,0,.438.438H10.5Zm1.313,1.969a.656.656,0,1,1,.656-.656A.656.656,0,0,1,11.813,8.094Z"
+          fill="#fff" />
+      </svg>
+    </div>
+    <div class="basic_btn bus_inspection">정기 점걸일</div>
+  </div>
+  <div class="dispatch_search_form">
+    <label for="schedule_dispatch_search">일반배차 노선명</label>
+    <input type="text" class="basic_input search_input" id="schedule_dispatch_search">
+    <div class="basic_btn">검색</div>
+  </div>
+</div>
+
+<div class="basic_container schdule_main">
+
+  <div class="calender_btn_box">
+    <div class="calender_btn_box_date">
+      <div class="date_controll_Btn prev_btn">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="18.469" viewBox="0 0 16 18.469">
+          <path id="Icon_feather-triangle" data-name="Icon feather-triangle"
+            d="M10.051,5.2l-7.486,12.5a1.768,1.768,0,0,0,1.511,2.652H19.049a1.768,1.768,0,0,0,1.511-2.652L13.074,5.2a1.768,1.768,0,0,0-3.023,0Z"
+            transform="translate(-4.346 20.797) rotate(-90)" fill="#fff" />
+        </svg>
+      </div>
+      <span class="calender_date"></span>
+      <div class="date_controll_Btn next_btn">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="18.469" viewBox="0 0 16 18.469">
+          <path id="Icon_feather-triangle" data-name="Icon feather-triangle"
+            d="M10.051,5.2l-7.486,12.5a1.768,1.768,0,0,0,1.511,2.652H19.049a1.768,1.768,0,0,0,1.511-2.652L13.074,5.2a1.768,1.768,0,0,0-3.023,0Z"
+            transform="translate(20.346 -2.328) rotate(90)" fill="#fff" />
+        </svg>
+      </div>
+    </div>
+    <div class="basic_btn calendar_switch_btn">
+      <svg xmlns="http://www.w3.org/2000/svg" width="13.045" height="13.5" viewBox="0 0 13.045 13.5">
+        <g id="Icon_ionic-md-switch" data-name="Icon ionic-md-switch" transform="translate(-5.875 -5.625)">
+          <path id="패스_284" data-name="패스 284"
+            d="M8.12,10.841h5.542a3.068,3.068,0,1,0,0-4.3H8.12a2.148,2.148,0,1,0,0,4.3Zm-.648-2.8a.912.912,0,0,1,.648-.272h4.806a3.056,3.056,0,0,0,0,1.841H8.12a.917.917,0,0,1-.648-1.569Z"
+            transform="translate(0)" fill="#fff" />
+          <path id="패스_285" data-name="패스 285"
+            d="M18.671,20.045H13.133a3.068,3.068,0,1,0,0,4.3h5.538a2.148,2.148,0,1,0,0-4.3Zm.648,2.8a.912.912,0,0,1-.648.272h-4.8a3.056,3.056,0,0,0,0-1.841h4.8a.917.917,0,0,1,.648,1.569Z"
+            transform="translate(-2 -6.136)" fill="#fff" />
+        </g>
+      </svg>
+      <span></span>
+    </div>
+  </div>
+
+  <div class="calender_header">
+    <div class="weekBox weekBox_sunday">일</div>
+    <div class="weekBox">월</div>
+    <div class="weekBox">화</div>
+    <div class="weekBox">수</div>
+    <div class="weekBox">목</div>
+    <div class="weekBox">금</div>
+    <div class="weekBox weekBox_satday">토</div>
+  </div>
+
+  <div class="calender_body">
+    <div class="calender_date_box">
+      <div class="calender_date_cell">
+        <span></span>
+      </div>
+    </div>
+    <div class="calender_date_box">
+      <div class="calender_date_cell">
+        <span></span>
+      </div>
+    </div>
+    <div class="calender_date_box">
+      <div class="calender_date_cell">
+        <span></span>
+      </div>
+    </div>
+    <div class="calender_date_box">
+      <div class="calender_date_cell">
+        <span></span>
+      </div>
+    </div>
+    <div class="calender_date_box">
+      <div class="calender_date_cell">
+        <span></span>
+      </div>
+    </div>
+    <div class="calender_date_box">
+      <div class="calender_date_cell">
+        <span></span>
+      </div>
+    </div>
+    <div class="calender_date_box">
+      <div class="calender_date_cell">
+        <span></span>
+      </div>
+    </div>
+    <div class="calender_date_box">
+      <div class="calender_date_cell">
+        <span></span>
+      </div>
+    </div>
+    <div class="calender_date_box">
+      <div class="calender_date_cell">
+        <span></span>
+      </div>
+    </div>
+    <div class="calender_date_box">
+      <div class="calender_date_cell">
+        <span></span>
+      </div>
+    </div>
+    <div class="calender_date_box">
+      <div class="calender_date_cell">
+        <span></span>
+      </div>
+    </div>
+    <div class="calender_date_box">
+      <div class="calender_date_cell">
+        <span></span>
+      </div>
+    </div>
+    <div class="calender_date_box">
+      <div class="calender_date_cell">
+        <span></span>
+      </div>
+    </div>
+    <div class="calender_date_box">
+      <div class="calender_date_cell">
+        <span></span>
+      </div>
+    </div>
+    <div class="calender_date_box">
+      <div class="calender_date_cell">
+        <span></span>
+      </div>
+    </div>
+    <div class="calender_date_box">
+      <div class="calender_date_cell">
+        <span></span>
+      </div>
+    </div>
+    <div class="calender_date_box">
+      <div class="calender_date_cell">
+        <span></span>
+      </div>
+    </div>
+    <div class="calender_date_box">
+      <div class="calender_date_cell">
+        <span></span>
+      </div>
+    </div>
+    <div class="calender_date_box">
+      <div class="calender_date_cell">
+        <span></span>
+      </div>
+    </div>
+    <div class="calender_date_box">
+      <div class="calender_date_cell">
+        <span></span>
+      </div>
+    </div>
+    <div class="calender_date_box">
+      <div class="calender_date_cell">
+        <span></span>
+      </div>
+    </div>
+    <div class="calender_date_box">
+      <div class="calender_date_cell">
+        <span></span>
+      </div>
+    </div>
+    <div class="calender_date_box">
+      <div class="calender_date_cell">
+        <span></span>
+      </div>
+    </div>
+    <div class="calender_date_box">
+      <div class="calender_date_cell">
+        <span></span>
+      </div>
+    </div>
+    <div class="calender_date_box">
+      <div class="calender_date_cell">
+        <span></span>
+      </div>
+    </div>
+    <div class="calender_date_box">
+      <div class="calender_date_cell">
+        <span></span>
+      </div>
+    </div>
+    <div class="calender_date_box">
+      <div class="calender_date_cell">
+        <span></span>
+      </div>
+    </div>
+    <div class="calender_date_box">
+      <div class="calender_date_cell">
+        <span></span>
+      </div>
+    </div>
+    <div class="calender_date_box">
+      <div class="calender_date_cell">
+        <span></span>
+      </div>
+    </div>
+    <div class="calender_date_box">
+      <div class="calender_date_cell">
+        <span></span>
+      </div>
+    </div>
+    <div class="calender_date_box">
+      <div class="calender_date_cell">
+        <span></span>
+      </div>
+    </div>
+    <div class="calender_date_box">
+      <div class="calender_date_cell">
+        <span></span>
+      </div>
+    </div>
+    <div class="calender_date_box">
+      <div class="calender_date_cell">
+        <span></span>
+      </div>
+    </div>
+    <div class="calender_date_box">
+      <div class="calender_date_cell">
+        <span></span>
+      </div>
+    </div>
+    <div class="calender_date_box">
+      <div class="calender_date_cell">
+        <span></span>
+      </div>
+    </div>
+    <div class="calender_date_box">
+      <div class="calender_date_cell">
+        <span></span>
+      </div>
+    </div>
+    <div class="calender_date_box">
+      <div class="calender_date_cell">
+        <span></span>
+      </div>
+    </div>
+    <div class="calender_date_box">
+      <div class="calender_date_cell">
+        <span></span>
+      </div>
+    </div>
+    <div class="calender_date_box">
+      <div class="calender_date_cell">
+        <span></span>
+      </div>
+    </div>
+    <div class="calender_date_box">
+      <div class="calender_date_cell">
+        <span></span>
+      </div>
+    </div>
+    <div class="calender_date_box">
+      <div class="calender_date_cell">
+        <span></span>
+      </div>
+    </div>
+    <div class="calender_date_box">
+      <div class="calender_date_cell">
+        <span></span>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+
+<div class="cloneBox">
+
+  <div class="calender_contants_box">
+    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" class="dispatch_check">
+      <g id="그룹_1855" data-name="그룹 1855" transform="translate(23530 14678)">
+        <rect id="사각형_12248" data-name="사각형 12248" width="16" height="16" rx="8" transform="translate(-23530 -14678)"
+          fill="#cdcdce" />
+        <path id="Icon_awesome-check" data-name="Icon awesome-check"
+          d="M4.076,13.35l-3.9-3.9a.6.6,0,0,1,0-.849l.849-.849a.6.6,0,0,1,.849,0L4.5,10.38l5.627-5.627a.6.6,0,0,1,.849,0l.849.849a.6.6,0,0,1,0,.849l-6.9,6.9A.6.6,0,0,1,4.076,13.35Z"
+          transform="translate(-23528 -14678.577)" fill="#fff" />
+      </g>
+    </svg>
+    <div class="dispatch_cnt_box">
+      <div class="regularly_cnt_cell">
+        <span>출·퇴근</span>
+        <span></span>
+      </div>
+      <div class="order_cnt_cell">
+        <span>일반</span>
+        <span></span>
+      </div>
+    </div>
+    <div class="calender_schedule_Cell"></div>
+  </div>
+
+  <div class="calender_order_box">
+    <div class="calender_order_sell"></div>
+    <div class="calender_order_total">
+      <span>총 건수</span>
+      <span></span>
+    </div>
+  </div>
+
+</div>
+
+{% endblock %}
+
+
+
+{% block popup %}
+<div class="basic_popup schedule_popup">
+  <div class="basic_popup_bg"></div>
+  <div class="basic_popup_box">
+    <div class="basic_popup_main_header">일정</div>
+    <div class="basic_popup_header">일정등록</div>
+      <form method="post" action="{% url 'dispatch:schedule_create' %}" class="basic_popup_body">
+      <div class="popup_input_article">
+        <input type="text" name="content" class="basic_input">
+        <input type="submit" class="create_btn" value="등록">
+      </div>
+    </form>
+    <div class="basic_popup_header">일정목록</div>
+    <form class="basic_popup_body">
+    </form>
+    <div class="basic_popup_footer">
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+
+{% block script %}
+<script>
+  const totalBusCnt = {{ total_bus_cnt }}
+  const curBusCnt = {{ cur_bus_cnt }}
+  const r_totalBusCnt = {{ r_total_bus_cnt }}
+  const r_curBusCnt = {{ r_cur_bus_cnt }}
+
+  console.log("일반배차 총 :", totalBusCnt)
+  console.log("일반배차 :", curBusCnt)
+  console.log("정기배차 총 :", r_totalBusCnt)
+  console.log("정기배차 :", r_curBusCnt)
+
+  {% autoescape off %}
+  const scheduleList = {{ schedule_list }}
+  {% endautoescape %}
+
+  console.log("scheduleList", scheduleList)
+
+</script>
+<script src="{% static 'js/crudmember/calender/calenderDate.js' %}"></script>
+<script src="{% static 'js/crudmember/calender/calenderSwitch.js' %}"></script>
+<script src="{% static 'js/crudmember/calender/calenderCreate.js' %}"></script>
+<script src="{% static 'js/crudmember/calender/calenderFillData.js' %}"></script>
+<script src="{% static 'js/crudmember/calender/schedulePopup.js' %}"></script>
+{% endblock %}

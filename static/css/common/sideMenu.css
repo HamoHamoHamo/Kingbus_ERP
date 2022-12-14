@@ -1,0 +1,184 @@
+/* 사이드 메뉴 */
+.side_menu {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 20rem;
+    height: 100%;
+    background-color: #48586F;
+}
+
+.side_menu-logo_box {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 4.8rem;
+    border-bottom: 0.1rem solid white;
+}
+
+.menu_scroll_box {
+    width: 100%;
+    height: calc(100% - 4.9rem);
+    overflow-y: scroll;
+}
+
+.menu_scroll_box::-webkit-scrollbar {
+    width: 0;
+}
+
+.menu_box {
+    width: 100%;
+    height: auto;
+    padding: 0.6rem 0;
+    border-bottom: 0.1rem solid white;
+    box-sizing: border-box;
+}
+
+.menu_box_title {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    width: calc(100% - 2rem);
+    height: 3rem;
+    margin-left: 2rem;
+    color: rgba(255, 255, 255, 0.5);
+}
+
+.menu_item {
+    display: flex;
+    width: 100%;
+    height: 4rem;
+    padding: 0 2rem;
+    box-sizing: border-box;
+    cursor: pointer;
+}
+
+.menu_item-open {
+    background-color: #61B4E5;
+}
+
+.open_white {
+    fill: white;
+}
+
+.menu_item:hover {
+    background-color: #61B4E5;
+}
+
+.menu_item:hover .menu_icon path {
+    fill: white;
+}
+
+.menu_item:hover .have_menu_list path {
+    fill: white;
+}
+
+.menu_icon {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    width: 3rem;
+    height: 100%;
+}
+
+.menu_name {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    width: calc(100% - 4rem);
+    height: 100%;
+    color: white;
+}
+
+.menu_name_profile {
+    color: white;
+}
+
+.menu_open_btn {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    width: 1rem;
+    height: 100%;
+}
+
+.menu_open_btn-open{
+    transform: rotate(180deg);
+}
+
+.menu_box-depth2 {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: auto;
+    max-height: 0;
+    overflow: hidden;
+    transition: all 0.3s;
+}
+
+.menu_item-depth2 {
+    width: 100%;
+    height: 4rem;
+    cursor: pointer;
+}
+
+.menu_item-depth2:hover {
+    background-color: #61B4E5;
+}
+
+.menu_name-depth2 {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    width: 100%;
+    height: 4rem;
+    padding-left: 5rem;
+    box-sizing: border-box;
+    color: white;
+}
+
+
+
+
+
+
+/* 반응형 */
+@media screen and (min-width: 1921px) {
+    .side_menu {
+        width: 22rem;
+        font-size: 1.5rem;
+    }
+
+    .menu_item,
+    .menu_item-depth2,
+    .menu_name-depth2 {
+        height: 4.4rem;
+    }
+}
+
+@media screen and (min-width: 1281px) and (max-width: 1680px) {
+    .side_menu {
+        width: 18rem;
+        font-size: 1.3rem;
+    }
+
+    .menu_item,
+    .menu_item-depth2,
+    .menu_name-depth2 {
+        height: 3.6rem;
+    }
+}
+
+@media screen and (max-width: 1280px) {
+    .side_menu {
+        width: 16rem;
+        font-size: 1.1rem;
+    }
+
+    .menu_item,
+    .menu_item-depth2,
+    .menu_name-depth2 {
+        height: 3.2rem;
+    }
+}
