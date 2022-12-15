@@ -78,7 +78,7 @@
     box-sizing: border-box;
 }
 
-.search_input{
+.search_input {
     background-color: #F1F3F4;
     border: 0.1rem solid #CDCDCE;
 }
@@ -116,7 +116,7 @@ label[for=basic_file] {
     display: none;
 }
 
-.basic_file_text{
+.basic_file_text {
     position: absolute;
     top: -0.1rem;
     left: 7.1rem;
@@ -130,7 +130,7 @@ label[for=basic_file] {
     outline: none;
 }
 
-.basic_file_delete_btn{
+.basic_file_delete_btn {
     position: absolute;
     top: 50%;
     right: 0.4rem;
@@ -141,7 +141,7 @@ label[for=basic_file] {
 
 
 /* 컨테이너 */
-.basic_container{
+.basic_container {
     width: 100%;
     height: 4.2rem;
     background-color: white;
@@ -157,7 +157,7 @@ label[for=basic_file] {
 
 
 /* 팝업 */
-.basic_popup{
+.basic_popup {
     position: fixed;
     top: 0;
     right: 0;
@@ -167,13 +167,13 @@ label[for=basic_file] {
     height: 100vh;
 }
 
-.basic_popup_bg{
+.basic_popup_bg {
     width: 100%;
     height: 100%;
     background-color: rgba(0, 0, 0, 0.3);
 }
 
-.basic_popup_box{
+.basic_popup_box {
     position: absolute;
     top: 50%;
     left: 50%;
@@ -186,7 +186,7 @@ label[for=basic_file] {
     box-sizing: border-box;
 }
 
-.basic_popup_main_header{
+.basic_popup_main_header {
     display: flex;
     justify-content: flex-start;
     align-items: center;
@@ -198,7 +198,7 @@ label[for=basic_file] {
     border-bottom: 0.1rem solid black;
 }
 
-.basic_popup_header{
+.basic_popup_header {
     display: flex;
     justify-content: flex-start;
     align-items: center;
@@ -210,7 +210,7 @@ label[for=basic_file] {
     border-bottom: 0.1rem solid black;
 }
 
-.basic_popup_body{
+.basic_popup_body {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -220,7 +220,7 @@ label[for=basic_file] {
     padding: 2rem 0;
 }
 
-.popup_input_article{
+.popup_input_article {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -228,32 +228,105 @@ label[for=basic_file] {
     height: 2.6rem;
 }
 
-.popup_input_article label{
+.popup_input_article label {
     text-align: justify;
     font-size: 1.4rem;
     width: 9rem;
     line-height: 0;
 }
+
 .popup_input_article label::before,
-.popup_input_article label::after{
+.popup_input_article label::after {
     content: "";
     display: inline-block;
     width: 100%;
 }
 
-.essential_impact{
+.essential_impact {
     color: red;
 }
 
-.popup_input_article input{
+.popup_input_article .basic_input {
     width: calc(100% - 11rem);
 }
 
-.basic_popup_footer{
+.basic_popup_footer {
     display: flex;
     justify-content: flex-end;
     align-items: center;
     width: 100%;
     height: 4.6rem;
     border-top: 0.1rem solid #CDCDCE;
+}
+
+
+
+/* 스크롤 테이블 */
+.basic_table_header_box{
+    width: 100%;
+    background-color: #4E5869;
+}
+
+.basic_table_head {
+    width: calc(100% - 0.6rem);
+    padding-right: 0.6rem;
+    box-sizing: border-box;
+}
+
+.basic_table_head_tr {
+    width: 100%;
+    height: 4.2rem;
+}
+
+.basic_table_head_tr_td {
+    text-align: left;
+    padding-left: 1rem;
+    box-sizing: border-box;
+    height: 100%;
+    color: white;
+}
+
+.basic_table_scroll_box {
+    width: 100%;
+    min-height: 9.6rem;
+    overflow-y: scroll;
+}
+
+.basic_table_scroll_box::-webkit-scrollbar {
+    width: 0.6rem;
+}
+
+.basic_table_scroll_box::-webkit-scrollbar-thumb {
+    height: 17%;
+    background-color: #4E5869;
+    border-radius: 1rem;
+}
+
+.basic_table_scroll_box::-webkit-scrollbar-track {
+    background-color: #F1F3F4;
+}
+
+.basic_scroll_table {
+    width: 100%;
+}
+
+.basic_table_scroll_box td {
+    text-align: left;
+    padding-left: 1rem;
+    box-sizing: border-box;
+    height: 4.8rem;
+}
+
+.basic_table_scroll_box tr:nth-child(odd) {
+    background-color: white;
+}
+
+.basic_table_scroll_box tr:nth-child(even) {
+    background-color: #EFF0F2;
+}
+
+.basic_table_header_box input[type=checkbox],
+.basic_table_scroll_box input[type=checkbox]{
+    zoom: 1.2;
+    cursor: pointer;
 }

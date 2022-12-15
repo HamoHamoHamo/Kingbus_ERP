@@ -1,4 +1,5 @@
 const calenderSwitchBtn = document.querySelector(".calendar_switch_btn")
+const dispatchOrderSearch = document.querySelector(".dispatch_search_form")
 
 calenderSwitchBtn.addEventListener("click", calenderSwitch)
 
@@ -23,8 +24,10 @@ function switchBtnName(){
     
     if(parms.has("change")){
         calenderSwitchBtn.children[1].innerText = "기본달력"
+        dispatchOrderSearch.style.display = "flex"
     }else{
         calenderSwitchBtn.children[1].innerText = "배차달력"
+        dispatchOrderSearch.style.display = "none"
     }
 }
 

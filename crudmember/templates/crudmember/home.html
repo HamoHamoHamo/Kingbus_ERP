@@ -37,8 +37,8 @@
   </div>
   <div class="dispatch_search_form">
     <label for="schedule_dispatch_search">일반배차 노선명</label>
-    <input type="text" class="basic_input search_input" id="schedule_dispatch_search">
-    <div class="basic_btn">검색</div>
+    <input type="text" class="basic_input search_input ordre_calender_search" id="schedule_dispatch_search">
+    <div class="basic_btn ordre_calender_search_btn">검색</div>
   </div>
 </div>
 
@@ -306,9 +306,9 @@
 <div class="cloneBox">
 
   <div class="calender_contants_box">
-    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" class="dispatch_check">
-      <g id="그룹_1855" data-name="그룹 1855" transform="translate(23530 14678)">
-        <rect id="사각형_12248" data-name="사각형 12248" width="16" height="16" rx="8" transform="translate(-23530 -14678)"
+    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" class="dispatch_check">
+      <g id="그룹_1857" data-name="그룹 1857" transform="translate(23532 14680)">
+        <rect id="사각형_12248" data-name="사각형 12248" width="20" height="20" rx="10" transform="translate(-23532 -14680)"
           fill="#cdcdce" />
         <path id="Icon_awesome-check" data-name="Icon awesome-check"
           d="M4.076,13.35l-3.9-3.9a.6.6,0,0,1,0-.849l.849-.849a.6.6,0,0,1,.849,0L4.5,10.38l5.627-5.627a.6.6,0,0,1,.849,0l.849.849a.6.6,0,0,1,0,.849l-6.9,6.9A.6.6,0,0,1,4.076,13.35Z"
@@ -329,10 +329,10 @@
   </div>
 
   <div class="calender_order_box">
-    <div class="calender_order_sell"></div>
+    <div class="calender_order_cell"></div>
     <div class="calender_order_total">
       <span>총 건수</span>
-      <span></span>
+      <span class="calender_order_total_cnt"></span>
     </div>
   </div>
 
@@ -348,16 +348,117 @@
   <div class="basic_popup_box">
     <div class="basic_popup_main_header">일정</div>
     <div class="basic_popup_header">일정등록</div>
-      <form method="post" action="{% url 'dispatch:schedule_create' %}" class="basic_popup_body">
+    <form method="post" action="{% url 'dispatch:schedule_create' %}" class="basic_popup_body schedule_create_form">
+      {% csrf_token %}
       <div class="popup_input_article">
-        <input type="text" name="content" class="basic_input">
-        <input type="submit" class="create_btn" value="등록">
+        <input type="text" name="content" class="basic_input" placeholder="등록할 일정을 입력해 주세요">
+        <div class="create_btn">등록</div>
+        <input type="hidden" name="date" class="schedule_create_hidden">
       </div>
     </form>
     <div class="basic_popup_header">일정목록</div>
-    <form class="basic_popup_body">
+    <form method="post" action="{% url 'dispatch:schedule_delete' %}" class="basic_popup_body schedule_list_form">
+      {% csrf_token %}
+      <div class="basic_table_header_box">
+        <table class="basic_table_head schedule_list_table">
+          <thead>
+            <tr class="basic_table_head_tr">
+              <td class="basic_table_head_tr_td">
+                <input type="checkbox" class="schedule_checkbox_all">
+              </td>
+              <td class="basic_table_head_tr_td">순번</td>
+              <td class="basic_table_head_tr_td">내용</td>
+              <td class="basic_table_head_tr_td">작성자</td>
+              <td class="basic_table_head_tr_td">작성일</td>
+            </tr>
+          </thead>
+        </table>
+      </div>
+      <div class="basic_table_scroll_box schedule_list_table_scroll_box">
+        <table class="basic_scroll_table">
+          <tbody>
+          </tbody>
+        </table>
+      </div>
     </form>
     <div class="basic_popup_footer">
+      <div class="delete_btn schedule_list_delete_btn">삭제</div>
+      <div class="basic_btn popup_btn-close">닫기</div>
+    </div>
+  </div>
+</div>
+
+
+<div class="basic_popup dispatch_check_popup">
+  <div class="basic_popup_bg"></div>
+  <div class="basic_popup_box">
+    <div class="basic_popup_main_header">배차확인</div>
+    <form method="post" action="{% url 'dispatch:calendar_create' %}" class="basic_popup_body dispatch_check_form">
+      {% csrf_token %}
+      <div class="popup_input_article">
+        <div class="dispat_check_cell">
+          <label>담 당 자</label>
+          <div class="dispat_check_showbox"></div>
+        </div>
+        <div class="dispat_check_cell">
+          <label>확 인 시 간</label>
+          <div class="dispat_check_showbox"></div>
+        </div>
+      </div>
+      <input type="hidden" name="date" class="dispatch_check_hidden">
+    </form>
+    <div class="basic_popup_footer">
+      <div class="create_btn dispatch_check_registration">등록</div>
+      <div class="basic_btn popup_btn-close">닫기</div>
+    </div>
+  </div>
+</div>
+
+
+<div class="basic_popup inspection_popup">
+  <div class="basic_popup_bg"></div>
+  <div class="basic_popup_box">
+    <div class="basic_popup_main_header">차량 정기점검일</div>
+    <div class="basic_popup_body">
+      <div class="basic_table_header_box">
+        <table class="basic_table_head">
+          <thead>
+            <tr class="basic_table_head_tr">
+              <td class="basic_table_head_tr_td">순번</td>
+              <td class="basic_table_head_tr_td">차량번호</td>
+              <td class="basic_table_head_tr_td">출고일자</td>
+              <td class="basic_table_head_tr_td">정기점검일</td>
+            </tr>
+          </thead>
+        </table>
+      </div>
+      <div class="basic_table_scroll_box inspection_scroll_table">
+        <table class="basic_scroll_table">
+          <tbody>
+            {% for vehicle in vehicle_list %}
+            <tr onclick="locationVehicle(this)">
+              <td>{{forloop.counter}}</td>
+              <td>
+                <div class="table_click_box">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" class="table_click_icon">
+                    <g id="그룹_1858" data-name="그룹 1858" transform="translate(-1820 -80)">
+                      <rect id="사각형_12180" data-name="사각형 12180" width="20" height="20" rx="3" transform="translate(1820 80)" fill="#61b4e5"/>
+                      <path id="Icon_payment-clickandbuy" data-name="Icon payment-clickandbuy" d="M24.272,19.9a1.393,1.393,0,0,1,0,1.964L21.129,25a1.389,1.389,0,1,1-1.964-1.964l.764-.764H17a1.394,1.394,0,0,1-.989-2.382A1.529,1.529,0,0,1,17,19.482h2.932l-.764-.761a1.388,1.388,0,0,1,0-1.964,1.388,1.388,0,0,1,1.964,0l3.143,3.14ZM12.96,18.943A1.854,1.854,0,0,0,11.106,20.8,1.854,1.854,0,0,0,12.96,22.65,1.854,1.854,0,0,0,14.813,20.8a1.854,1.854,0,0,0-1.854-1.854Z" transform="translate(1811.895 69.121)" fill="#fff"/>
+                    </g>
+                  </svg>
+                  <div class="table_click_contents">{{vehicle.vehicle_num0}} {{vehicle.vehicle_num}}</div>
+                </div>
+              </td>
+              <td>{{vehicle.release_date}}</td>
+              <td>{{vehicle.check_date}}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="basic_popup_footer">
+      <div class="basic_btn popup_btn-close">닫기</div>
     </div>
   </div>
 </div>
@@ -371,21 +472,20 @@
   const r_totalBusCnt = {{ r_total_bus_cnt }}
   const r_curBusCnt = {{ r_cur_bus_cnt }}
 
-  console.log("일반배차 총 :", totalBusCnt)
-  console.log("일반배차 :", curBusCnt)
-  console.log("정기배차 총 :", r_totalBusCnt)
-  console.log("정기배차 :", r_curBusCnt)
-
   {% autoescape off %}
   const scheduleList = {{ schedule_list }}
+  const checkList = {{ check_list }}
+  const changeOrderList = {{ change_order_list }}
   {% endautoescape %}
-
-  console.log("scheduleList", scheduleList)
-
 </script>
 <script src="{% static 'js/crudmember/calender/calenderDate.js' %}"></script>
 <script src="{% static 'js/crudmember/calender/calenderSwitch.js' %}"></script>
 <script src="{% static 'js/crudmember/calender/calenderCreate.js' %}"></script>
 <script src="{% static 'js/crudmember/calender/calenderFillData.js' %}"></script>
+<script src="{% static 'js/crudmember/calender/calenderSelect.js' %}"></script>
 <script src="{% static 'js/crudmember/calender/schedulePopup.js' %}"></script>
+<script src="{% static 'js/crudmember/calender/locationDispatch.js' %}"></script>
+<script src="{% static 'js/crudmember/calender/dispatchCheckPopup.js' %}"></script>
+<script src="{% static 'js/crudmember/calender/dispatchCalenderFilter.js' %}"></script>
+<script src="{% static 'js/crudmember/calender/inspectionPopup.js' %}"></script>
 {% endblock %}

@@ -151,6 +151,11 @@
     background-color: white;
     box-shadow: 0 0.2rem 0.4rem rgba(0, 0, 0, 0.16);
     border-radius: 0.3rem;
+    cursor: pointer;
+}
+
+.selecting {
+    border: 0.2rem solid #61B4E5;
 }
 
 .not_this_month {
@@ -201,7 +206,7 @@
 
 .dispatch_check {
     position: absolute;
-    top: -2.95rem;
+    top: -3.35rem;
     right: 0;
     cursor: pointer;
 }
@@ -216,29 +221,27 @@
     height: calc((100% - 1rem)/2);
     border: 0.1rem solid #CDCDCE;
     border-radius: 0.3rem;
+    background-color: white;
+}
+
+.regularly_cnt_cell:hover,
+.order_cnt_cell:hover {
+    background-color: #EFEFEF;
 }
 
 .calender_schedule_Cell {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
     width: calc((100% - 1rem)/10*7);
     height: 100%;
-    overflow-y: scroll;
+    padding: 0.5rem;
+    box-sizing: border-box;
     border: 0.1rem solid #CDCDCE;
     border-radius: 0.3rem;
     cursor: pointer;
-}
-
-.calender_schedule_Cell::-webkit-scrollbar {
-    width: 0.6rem;
-}
-
-.calender_schedule_Cell::-webkit-scrollbar-thumb {
-    height: 17%;
-    background-color: #4E5869;
-    border-radius: 1rem;
-}
-
-.calender_schedule_Cell::-webkit-scrollbar-track {
-    background-color: #F1F3F4;
+    background-color: white;
 }
 
 .calender_schedule_Cell:hover {
@@ -254,6 +257,29 @@
     color: #CDCDCE;
 }
 
+.schedule_cell_Item {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    width: 100%;
+    height: calc((100% - 1.5rem)/4 + 0.2rem);
+    padding-left: 1rem;
+    margin-bottom: 0.5rem;
+    box-sizing: border-box;
+    border-radius: 0.3rem;
+    border-bottom: 0.1rem solid #CDCDCE;
+    background-color: #F1F3F4;
+}
+
+.schedule_cell_cnt_box {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: calc((100% - 1.5rem)/4 - 0.6rem);
+}
+
+
 /* 배차달력 */
 .calender_order_box {
     display: flex;
@@ -264,26 +290,61 @@
     height: calc(100% - 4.1rem);
 }
 
-.calender_order_sell {
+.calender_order_cell {
     width: 100%;
     height: calc(100% - 3.8rem);
     border-radius: 0.3rem;
+    padding: 0.5rem;
+    box-sizing: border-box;
     border: 0.1rem solid #CDCDCE;
     overflow-y: scroll;
 }
 
-.calender_order_sell::-webkit-scrollbar {
+.calender_order_cell::-webkit-scrollbar {
     width: 0.6rem;
 }
 
-.calender_order_sell::-webkit-scrollbar-thumb {
+.calender_order_cell::-webkit-scrollbar-thumb {
     height: 17%;
     background-color: #4E5869;
     border-radius: 1rem;
 }
 
-.calender_order_sell::-webkit-scrollbar-track {
+.calender_order_cell::-webkit-scrollbar-track {
     background-color: #F1F3F4;
+}
+
+.calender_order_item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    height: 2.6rem;
+    padding: 0 1rem;
+    box-sizing: border-box;
+    margin-bottom: 0.5rem;
+    background-color: #F1F3F4;
+    border-bottom: 0.1rem solid #CDCDCE;
+}
+
+.calender_order_contets {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    /* width: calc(100% - 1.6rem); */
+    width: 16rem;
+    height: 100%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.calender_order_cnt {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    width: 1.6rem;
+    height: 100%;
 }
 
 .calender_order_total {
@@ -300,3 +361,120 @@
 
 
 /* 일정팝업 */
+.schedule_popup .popup_input_article input[type=text] {
+    width: calc(100% - 8rem);
+}
+
+.schedule_list_table_scroll_box {
+    height: 19.2rem;
+}
+
+.schedule_popup td:nth-child(1) {
+    text-align: center;
+    padding: 0;
+    width: 6%;
+}
+
+.schedule_popup td:nth-child(2) {
+    padding: 0;
+    text-align: center;
+    width: 10%;
+}
+
+.schedule_popup td:nth-child(3) {
+    width: 50%;
+}
+
+.schedule_popup td:nth-child(4) {
+    width: 14%;
+}
+
+.schedule_popup td:nth-child(5) {
+    width: 20%;
+}
+
+.schedule_list_delete_btn {
+    margin-right: 1rem;
+}
+
+
+/* 배차확인 팝업 */
+.dispat_check_cell {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: calc(50% - 1rem);
+}
+
+.dispat_check_cell label {
+    width: 7rem;
+}
+
+.dispat_check_showbox {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    width: calc(100% - 10rem);
+    height: 2.6rem;
+    padding-left: 1rem;
+    box-sizing: border-box;
+    border-bottom: 0.1rem solid #CDCDCE;
+}
+
+.dispatch_check_registration {
+    margin-right: 1rem;
+}
+
+
+
+/* 정기점검일 팝업 */
+.inspection_scroll_table {
+    height: 19.2rem
+}
+
+.inspection_popup td:nth-child(1) {
+    padding: 0;
+    text-align: center;
+    width: 10%;
+}
+
+.inspection_popup td:nth-child(2) {
+    width: 34%;
+}
+
+.inspection_popup td:nth-child(3) {
+    width: 28%;
+}
+
+.inspection_popup td:nth-child(4) {
+    width: 28%;
+}
+
+.table_click_box{
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    color: #61B4E5;
+    cursor: pointer;
+}
+
+.table_click_icon{
+    margin-right: 0.6rem;
+}
+
+.table_click_contents::after{
+    display: none;
+    content: "";
+    transform: translate(0, 0.3rem);
+    border-bottom: 0.1rem solid #61B4E5;
+}
+
+.table_click_box:hover .table_click_contents::after{
+    display: block;
+}
+
+.table_click_box:hover .table_click_contents{
+    transform: translate(0, 0.1rem);
+}

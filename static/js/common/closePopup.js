@@ -19,9 +19,6 @@ function closePopup(when, open) {
     if (!when) {
         for (i = 0; i < popup.length; i++) {
             popup[i].style.display = "none"
-            if (!popup[i].classList.contains(".dont_remove")) {
-                const popupInpup = popup[i].querySelectorAll("input")
-            }
         };
     } else {
         if (open === "id") {
