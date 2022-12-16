@@ -34,8 +34,8 @@ function sceduleFill(filter) {
                     if (j < 3) {
                         const sceduleItem = document.createElement("div")
                         sceduleItem.setAttribute("class", "schedule_cell_Item")
-                        if (Object.values(scheduleList[i][j])[0].length > 9) {
-                            sceduleItem.innerText = `${Object.values(scheduleList[i][j])[0].substr(0, 8)} ...`
+                        if (Object.values(scheduleList[i][j])[0].length > 7) {
+                            sceduleItem.innerText = `${Object.values(scheduleList[i][j])[0].substr(0, 6)}...`
                         } else {
                             sceduleItem.innerText = Object.values(scheduleList[i][j])[0]
                         }
@@ -63,8 +63,8 @@ function sceduleFill(filter) {
     
                         const orderCellContents = document.createElement("div")
                         orderCellContents.setAttribute("class", "calender_order_contets")
-                        if (Object.values(changeOrderList[i][j])[0].length > 12) {
-                            orderCellContents.innerText = `${Object.values(changeOrderList[i][j])[0].substr(0, 11)} ...`
+                        if (Object.values(changeOrderList[i][j])[0].length > 9) {
+                            orderCellContents.innerText = `${Object.values(changeOrderList[i][j])[0].substr(0, 8)}...`
                         } else {
                             orderCellContents.innerText = Object.values(changeOrderList[i][j])[0]
                         }
