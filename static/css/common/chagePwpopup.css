@@ -13,3 +13,51 @@
 .pw_change_btn{
     margin-right: 1rem;
 }
+
+
+
+
+
+
+/* 반응형 */
+@media screen and (min-width: 1921px) {
+    .change_pw_popup .basic_popup_box{
+        height: 29.4rem;
+    }
+    
+    .change_pw_popup .popup_input_article label {
+        width: 11.4rem;
+    }
+    
+    .change_pw_popup .popup_input_article input {
+        width: calc(100% - 14.4rem);
+    }
+}
+
+@media screen and (min-width: 1367px) and (max-width: 1536px) {
+    .change_pw_popup .basic_popup_box{
+        height: 21.4rem;
+    }
+    
+    .change_pw_popup .popup_input_article label {
+        width: 8.4rem;
+    }
+    
+    .change_pw_popup .popup_input_article input {
+        width: calc(100% - 9.9rem);
+    }
+}
+
+@media screen and (max-width: 1366px) {
+    .change_pw_popup .basic_popup_box{
+        height: 18.4rem;
+    }
+    
+    .change_pw_popup .popup_input_article label {
+        width: 7.4rem;
+    }
+    
+    .change_pw_popup .popup_input_article input {
+        width: calc(100% - 8.4rem);
+    }
+}

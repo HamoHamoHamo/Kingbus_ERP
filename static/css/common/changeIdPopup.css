@@ -13,3 +13,56 @@
 .id_change_btn {
     margin-right: 1rem;
 }
+
+
+
+
+
+
+/* 반응형 */
+@media screen and (min-width: 1921px) {
+    .change_id_popup .basic_popup_box {
+        height: 25rem;
+    }
+
+    .popup_input_article .overlap_checking_input {
+        width: calc(100% - 20.2rem);
+    }
+
+    .overlap_checking_btn {
+        width: 7.2rem;
+    }
+
+    .id_change_btn {
+        margin-right: 1rem;
+    }
+
+}
+
+@media screen and (min-width: 1367px) and (max-width: 1536px) {
+    .change_id_popup .basic_popup_box {
+        height: 18rem;
+    }
+
+    .popup_input_article .overlap_checking_input {
+        width: calc(100% - 17.2rem);
+    }
+
+    .overlap_checking_btn {
+        width: 6.2rem;
+    }
+}
+
+@media screen and (max-width: 1366px) {
+    .change_id_popup .basic_popup_box {
+        height: 15rem;
+    }
+
+    .popup_input_article .overlap_checking_input {
+        width: calc(100% - 13.2rem);
+    }
+
+    .overlap_checking_btn {
+        width: 5.2rem;
+    }
+}

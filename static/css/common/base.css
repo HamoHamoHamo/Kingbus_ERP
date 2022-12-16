@@ -57,3 +57,60 @@ html {
   padding: 6.8rem 2rem 2rem 2rem;
   box-sizing: border-box;
 }
+
+
+
+
+
+
+/* 반응형 */
+@media screen and (min-width: 1921px) {
+  .cover_container {
+    padding-left: 22rem;
+    font-size: 1.6rem;
+  }
+
+  .header {
+    height: 5.6rem;
+    padding-left: 3rem;
+    font-size: 2.4rem;
+  }
+
+  .main_container {
+    padding: 8.6rem 3rem 3rem 3rem;
+  }
+}
+
+@media screen and (min-width: 1367px) and (max-width: 1536px) {
+  .cover_container {
+    padding-left: 18rem;
+    font-size: 1.2rem;
+  }
+
+  .header {
+    height: 4.2rem;
+    padding-left: 1.5rem;
+    font-size: 1.6rem;
+  }
+
+  .main_container {
+    padding: 5.7rem 1.5rem 1.5rem 1.5rem;
+  }
+}
+
+@media screen and (max-width: 1366px) {
+  .cover_container {
+    padding-left: 16rem;
+    font-size: 1rem;
+  }
+
+  .header {
+    height: 3.6rem;
+    padding-left: 1rem;
+    font-size: 1.4rem;
+  }
+
+  .main_container {
+    padding: 4.6rem 1rem 1rem 1rem;
+  }
+}

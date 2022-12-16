@@ -147,7 +147,15 @@
 @media screen and (min-width: 1921px) {
     .side_menu {
         width: 22rem;
-        font-size: 1.5rem;
+        font-size: 1.6rem;
+    }
+
+    .side_menu-logo_box {
+        height: 5.6rem;
+    }
+
+    .side_menu-logo_box img{
+        width: 9rem;
     }
 
     .menu_item,
@@ -157,10 +165,18 @@
     }
 }
 
-@media screen and (min-width: 1281px) and (max-width: 1680px) {
+@media screen and (min-width: 1367px) and (max-width: 1536px) {
     .side_menu {
         width: 18rem;
         font-size: 1.3rem;
+    }
+
+    .side_menu-logo_box {
+        height: 4.2rem;
+    }
+
+    .side_menu-logo_box img{
+        width: 7.8rem;
     }
 
     .menu_item,
@@ -170,10 +186,18 @@
     }
 }
 
-@media screen and (max-width: 1280px) {
+@media screen and (max-width: 1366px) {
     .side_menu {
         width: 16rem;
         font-size: 1.1rem;
+    }
+
+    .side_menu-logo_box {
+        height: 3.6rem;
+    }
+
+    .side_menu-logo_box img{
+        width: 6.2rem;
     }
 
     .menu_item,
