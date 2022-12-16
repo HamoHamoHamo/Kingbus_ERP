@@ -622,6 +622,20 @@
         height: 3rem;
         padding: 0 0.6rem;
     }
+
+    .dispat_check_cell {
+        width: calc(50% - 1rem);
+    }
+    
+    .dispat_check_cell label {
+        width: 7rem;
+    }
+    
+    .dispat_check_showbox {
+        width: calc(100% - 10rem);
+        height: 2.6rem;
+        padding-left: 1rem;
+    }
     
     .table_click_icon {
         margin-right: 0.8rem;
@@ -773,6 +787,15 @@
         padding: 0 0.4rem;
     }
     
+    .dispat_check_cell label {
+        width: 6rem;
+    }
+    
+    .dispat_check_showbox {
+        width: calc(100% - 7rem);
+        padding-left: 0.8rem;
+    }
+    
     .table_click_icon {
         margin-right: 0.5rem;
         width: 1.8rem;
@@ -921,6 +944,15 @@
     .calender_order_total {
         height: 2.2rem;
         padding: 0 0.3rem;
+    }
+    
+    .dispat_check_cell label {
+        width: 5rem;
+    }
+    
+    .dispat_check_showbox {
+        width: calc(100% - 6rem);
+        padding-left: 0.6rem;
     }
     
     .table_click_icon {
