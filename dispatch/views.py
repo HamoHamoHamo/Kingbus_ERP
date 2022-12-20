@@ -295,9 +295,11 @@ class RegularlyDispatchList(generic.ListView):
             dispatch = regularly.monthly.filter(edit_date__lte=date).order_by('-edit_date').first()
             if not dispatch:
                 dispatch = regularly.monthly.filter(edit_date__gte=date).order_by('edit_date').first()
-            
-            dispatch_list.append(dispatch)
+                
 
+            if dispatch.use == '사용':
+                dispatch_list.append(dispatch)
+        print("ssssssssss", dispatch_list)
         return dispatch_list
 
 
@@ -308,18 +310,23 @@ class RegularlyDispatchList(generic.ListView):
         selected_group = self.request.GET.get('group', '')
         detail_id = self.request.GET.get('id')
         if detail_id:
-            context['detail'] = get_object_or_404(DispatchRegularly, id=detail_id)
+            regularly_data = get_object_or_404(DispatchRegularlyData, id=detail_id)
+            context['detail'] = regularly_data.monthly.filter(edit_date__lte=date).order_by('-edit_date').first()
+            if not context['detail']:
+                context['detail'] = regularly_data.monthly.filter(edit_date__gte=date).order_by('edit_date').first()
 
             # 지난 배차내역 불러오기
             date_type = datetime.strptime(date, FORMAT)
-            start_date = date_type - timedelta(days=int(date_type.weekday()) + 7)
+            int_start_date = date_type - timedelta(days=int(date_type.weekday()) + 8)
+            int_start_date = int(date_type.weekday()) + 8
+            start_date = date_type - timedelta(days=7) if int_start_date == 14 else date_type - timedelta(days=int_start_date)
             str_end_date = datetime.strftime(start_date + timedelta(days=13), FORMAT)
 
             str_start_date = datetime.strftime(start_date, FORMAT)
             
-            history_list = []
+            history_list = [''] * 14
             date_list = []
-            block_list = []
+            block_list = ['y'] * 14
 
             departure_date = f'{date} {context["detail"].departure_time}'
             arrival_date = f'{date} {context["detail"].arrival_time}'
@@ -328,35 +335,53 @@ class RegularlyDispatchList(generic.ListView):
                 
                 list_date = datetime.strftime(start_date + timedelta(days=i), FORMAT)
                 date_list.append(f'{list_date} {WEEK[datetime.strptime(list_date, FORMAT).weekday()]}')
-                
-                try:
-                    connect_history = context['detail'].info_regularly.get(departure_date__startswith=list_date)
-                    history_list.append(connect_history)
+            ##
+
+            regularly_history_list = DispatchRegularlyData.objects.get(monthly=context['detail']).monthly.all()
+            for reg in regularly_history_list:
+                connect_history_list = reg.info_regularly.filter(departure_date__gte=str_start_date).filter(arrival_date__lte=str_end_date).order_by('departure_date')
+                for connect_history in connect_history_list:
+                    date_calculation = (datetime.strptime(connect_history.departure_date[:10], FORMAT) - start_date).days
+                    history_list[date_calculation] = connect_history
+                    # block_list[date_calculation] = ''
 
                     h_driver = connect_history.driver_id
                     h_bus = connect_history.bus_id
 
-                    
-
-
                     if DispatchRegularlyConnect.objects.filter(driver_id=h_driver).exclude(departure_date__gt=arrival_date).exclude(arrival_date__lt=departure_date).exists():
-                        block_list.append('y')
+                        block_list[date_calculation] = 'y'
                     elif DispatchRegularlyConnect.objects.filter(bus_id=h_bus).exclude(departure_date__gt=arrival_date).exclude(arrival_date__lt=departure_date).exists():
-                        block_list.append('y')
+                        block_list[date_calculation] = 'y'
                     else:
-                        block_list.append('')
+                        block_list[date_calculation] = ''
+
+            
+            #
+            # connect_history = context['detail'].info_regularly.get(departure_date__startswith=list_date)
+            # history_list.append(connect_history)
+            
+            # h_driver = connect_history.driver_id
+            # h_bus = connect_history.bus_id
+
+            
 
 
+            # if DispatchRegularlyConnect.objects.filter(driver_id=h_driver).exclude(departure_date__gt=arrival_date).exclude(arrival_date__lt=departure_date).exists():
+            #     block_list.append('y')
+            # elif DispatchRegularlyConnect.objects.filter(bus_id=h_bus).exclude(departure_date__gt=arrival_date).exclude(arrival_date__lt=departure_date).exists():
+            #     block_list.append('y')
+            # else:
+            #     block_list.append('')
 
-                except DispatchRegularlyConnect.DoesNotExist:
-                    history_list.append('')
-                    block_list.append('y')
-                    continue
+
+                # history_list.append('')
+                # block_list.append('y')
+                # continue
 
             context['history_list'] = history_list
             context['date_list'] = date_list
             context['block_list'] = block_list
-            print('block_listsssssss', context['block_list'])
+            # print('block_listsssssss', context['block_list'])
 
         if selected_group:
             context['group'] = get_object_or_404(RegularlyGroup, id=selected_group)
@@ -423,6 +448,8 @@ class RegularlyDispatchList(generic.ListView):
         arrival_time_list = []
         for order in context['order_list']:
             connect = order.info_regularly.filter(departure_date__contains=date)
+            print('orderrr', order, )
+            print('connectrr', connect)
             if connect:
                 connect = connect[0]
                 c_bus = connect.bus_id
@@ -458,7 +485,8 @@ def regularly_connect_create(request):
         return render(request, 'authority.html')
     if request.method == "POST":
         creator = get_object_or_404(Member, id=request.session.get('user'))
-        order = get_object_or_404(DispatchRegularly, id=request.POST.get('id', None))
+        pk = request.POST.get('id', None)
+        order = get_object_or_404(DispatchRegularly, id=pk)
         bus = request.POST.get('bus')
         outsourcing_id = request.POST.get('outsourcing')
         driver_id = request.POST.get('driver')
@@ -491,7 +519,7 @@ def regularly_connect_create(request):
         r_connect.save()
         group = request.POST.get('group')
         date = request.POST.get('date')
-        return redirect(reverse('dispatch:regularly') + f'?group={group}&date={date}')
+        return redirect(reverse('dispatch:regularly') + f'?id={order.regularly_id.id}&group={group}&date={date}')
     else:
         return HttpResponseNotAllowed(['post'])
 
@@ -613,15 +641,15 @@ class RegularlyRouteList(generic.ListView):
 
 
         if not group_id:
-            if search:
-                return DispatchRegularlyData.objects.filter(Q(departure__contains=search) | Q(arrival__contains=search)).order_by('num1', 'number1', 'num2', 'number2')
-
-            return DispatchRegularlyData.objects.all().order_by('num1', 'number1', 'num2', 'number2')
+            # if search:
+            #     return DispatchRegularlyData.objects.filter(Q(departure__contains=search) | Q(arrival__contains=search)).order_by('num1', 'number1', 'num2', 'number2')
+            group = RegularlyGroup.objects.order_by('number').first()
+            return DispatchRegularlyData.objects.exclude(use='삭제').filter(group=group).order_by('num1', 'number1', 'num2', 'number2')
         else:
             group = get_object_or_404(RegularlyGroup, id=group_id)
             if search:
-                return DispatchRegularlyData.objects.filter(group=group).filter(Q(departure__contains=search) | Q(arrival__contains=search)).order_by('num1', 'number1', 'num2', 'number2')
-            return DispatchRegularlyData.objects.filter(group=group).order_by('num1', 'number1', 'num2', 'number2')
+                return DispatchRegularlyData.objects.exclude(use='삭제').filter(group=group).filter(Q(departure__contains=search) | Q(arrival__contains=search)).order_by('num1', 'number1', 'num2', 'number2')
+            return DispatchRegularlyData.objects.exclude(use='삭제').filter(group=group).order_by('num1', 'number1', 'num2', 'number2')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -637,7 +665,8 @@ class RegularlyRouteList(generic.ListView):
         group_id = self.request.GET.get('group', '')
         if group_id:
             context['group'] = get_object_or_404(RegularlyGroup, id=group_id)
-
+        else:
+            context['group'] = RegularlyGroup.objects.order_by('number').first()
 
 
         ## DispatchRegularlyData 생성하고 반영해야됨
@@ -988,9 +1017,9 @@ def regularly_order_edit(request):
                 )
             regularly.save()
 
-            print("rrrrrrrrr", regularly)
-            connects = DispatchRegularlyConnect.objects.filter(regularly_id=regularly).filter(departure_date__gte=f'{TODAY} 00:00')
-            print("CONNNN", connects)
+            # print("rrrrrrrrr", regularly)
+            connects = DispatchRegularlyConnect.objects.filter(regularly_id__regularly_id=order).filter(departure_date__gte=f'{TODAY} 00:00')
+            # print("CONNNN", connects)
             for connect in connects:
                 connect.regularly_id = regularly
                 connect.departure_date = f'{connect.departure_date[:10]} {regularly.departure_time}'
@@ -1005,7 +1034,7 @@ def regularly_order_edit(request):
             if post_month:
                 day = order.group.settlement_date
                 day = day if int(day) > 9 else f'0{day}'
-                connect_list = DispatchRegularlyConnect.objects.filter(regularly_id=order).filter(departure_date__gte=f'{post_month}-{day} 00:00')
+                connect_list = DispatchRegularlyConnect.objects.filter(regularly_id__regularly_id=order).filter(departure_date__gte=f'{post_month}-{day} 00:00')
                 for connect in connect_list:
                     month = connect.departure_date[:7]
                     member = connect.driver_id
@@ -1019,10 +1048,11 @@ def regularly_order_edit(request):
                     salary.save()
 
                     total = TotalPrice.objects.filter(group_id=group).get(month=month)
-                    total.total_price = int(total.total_price) + price + math.floor(price * 0.1 + 0.5) - (int(connect.price) + math.floor(int(connect.price) * 0.1 + 0.5))
                     print("total.total_price", total.total_price)
                     print("price", price)
+                    print("connnect'", connect)
                     print("connect.price", connect.price)
+                    total.total_price = int(total.total_price) + price + math.floor(price * 0.1 + 0.5) - (int(connect.price) + math.floor(int(connect.price) * 0.1 + 0.5))
                     total.save()
 
                     connect.price = price
@@ -1100,8 +1130,67 @@ def regularly_order_delete(request):
         group = request.POST.get('group', '')
         
         for pk in id_list:
-            order = get_object_or_404(DispatchRegularly, pk=pk)
-            order.delete()
+            order = get_object_or_404(DispatchRegularlyData, pk=pk)
+            order.use = '삭제'
+            order.save()
+
+
+            try:
+                regularly = DispatchRegularly.objects.filter(regularly_id=order).get(edit_date=TODAY)
+
+                regularly.regularly_id = order
+                regularly.edit_date = TODAY
+                regularly.group = order.group
+                regularly.references = order.references
+                regularly.departure = order.departure
+                regularly.arrival = order.arrival
+                regularly.departure_time = order.departure_time
+                regularly.arrival_time = order.arrival_time
+                regularly.price = order.price
+                regularly.driver_allowance = order.driver_allowance
+                regularly.number1 = order.number1
+                regularly.number2 = order.number2
+                regularly.num1 = order.num1
+                regularly.num2 = order.num2
+                regularly.week = order.week
+                regularly.work_type = order.work_type
+                regularly.route = order.route
+                regularly.location = order.location
+                regularly.detailed_route = order.detailed_route
+                regularly.use = order.use
+                regularly.creator = order.creator
+            except DispatchRegularly.DoesNotExist:
+                regularly = DispatchRegularly(
+                    regularly_id = order,
+                    edit_date = TODAY,
+                    group = order.group,
+                    references = order.references,
+                    departure = order.departure,
+                    arrival = order.arrival,
+                    departure_time = order.departure_time,
+                    arrival_time = order.arrival_time,
+                    price = order.price,
+                    driver_allowance = order.driver_allowance,
+                    number1 = order.number1,
+                    number2 = order.number2,
+                    num1 = order.num1,
+                    num2 = order.num2,
+                    week = order.week,
+                    work_type = order.work_type,
+                    route = order.route,
+                    location = order.location,
+                    detailed_route = order.detailed_route,
+                    use = order.use,
+                    creator = order.creator
+                )
+            regularly.save()
+
+            # 오늘부터 미래의 배차 전부 삭제
+            connects = DispatchRegularlyConnect.objects.filter(regularly_id=regularly).filter(departure_date__gte=f'{TODAY} 00:00')
+            # print("CONNNN", connects)
+            for connect in connects:
+                connect.delete()
+
         return redirect(reverse('dispatch:regularly_route') + f'?group={group}')
     else:
         return HttpResponseNotAllowed(['post'])

@@ -174,9 +174,9 @@
           </td>
           <td class="tdTypeA">*사용/미사용</td>
           <td class="tdTypeC">
-            <input value="사용" type="radio" id="useRoute" name="use" checked>
+            <input {% if detail.use == '사용' %} checked {% endif %} value="사용" type="radio" id="useRoute" name="use">
             <label for="useRoute">사용</label>
-            <input value="미사용" type="radio" id="unuseRoute" name="use">
+            <input {% if detail.use == '미사용' %} checked {% endif %} value="미사용" type="radio" id="unuseRoute" name="use">
             <label for="unuseRoute">미사용</label>
           </td>
           <td class="tdTypeA">*출/퇴근</td>

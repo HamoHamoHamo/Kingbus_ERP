@@ -263,8 +263,7 @@ class RegularlyCollectList(generic.ListView):
             temp_list = []
             for additional in additionals:
                 temp_additional += int(additional.total_price)
-                temp_value += int(additional.value)
-                temp_VAT += int(additional.VAT)
+                
 
                 temp_list.append({
                     'category': additional.category,
@@ -465,11 +464,12 @@ class CollectList(generic.ListView):
         for order in context['dispatch_list']:
             total_price = int(get_object_or_404(TotalPrice, order_id=order).total_price)
             total_list.append(total_price)
+            order_total = int(order.price) * int(order.bus_cnt)
             if order.VAT == 'y':
-                value_list[cnt] = math.floor(total_price / 1.1 + 0.5)
+                value_list[cnt] = math.floor(order_total / 1.1 + 0.5)
                 VAT_list[cnt] = math.floor(value_list[cnt] * 0.1 + 0.5)
                 total = value_list[cnt] + VAT_list[cnt]
-                zero = total_price - total
+                zero = order_total - total
                 if zero != 0:
                     VAT_list[cnt] += zero
             else:
@@ -507,8 +507,7 @@ class CollectList(generic.ListView):
                     'note': additional.note,
                     'id': additional.id
                 })
-                value_list[cnt] += int(additional.value)
-                VAT_list[cnt] += int(additional.VAT)
+                
                 additional_total_list[cnt] += int(additional.total_price)
             additional_list.append(temp_list)
 
