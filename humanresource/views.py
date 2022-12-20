@@ -486,43 +486,39 @@ def salary_detail(request):
 
         connects = DispatchOrderConnect.objects.filter(departure_date__range=(f'{month}-01', {month}-{last_date})).filter(driver_id=member)
         order_cnt = connects.count()
-        order_price = 0
         for connect in connects:
             c_date = int(connect.departure_date[8:10]) - 1
             if not order_list[c_date]:
                 order_list[c_date] = []
             order_list[c_date].append([connect.order_id.departure, connect.order_id.arrival])
-            # +=에서 =으로 변경 맞나?
-            order_price = int(connect.driver_allowance)
-            order_price_list[c_date] = order_price
-        if connects:
-            total_list[c_date] += order_price
+
+            order_price_list[c_date] += int(connect.driver_allowance)
+        # if connects:
+            total_list[c_date] += int(connect.driver_allowance)
 
         attendances = DispatchRegularlyConnect.objects.filter(departure_date__range=(f'{month}-01', {month}-{last_date})).filter(work_type='출근').filter(driver_id=member)
         attendance_cnt = attendances.count()
-        attendance_price = 0
-        for attendance in attendances:
+        for attendance in attendances:            
             c_date = int(attendance.departure_date[8:10]) - 1
             if not attendance_list[c_date]:
                 attendance_list[c_date] = []
             attendance_list[c_date].append([attendance.regularly_id.departure, attendance.regularly_id.arrival])
-            attendance_price += int(attendance.driver_allowance)
-        if attendances:
-            attendance_price_list[c_date] = attendance_price
-            total_list[c_date] += attendance_price
+
+            attendance_price_list[c_date] += int(attendance.driver_allowance)
+        # if attendances:
+            total_list[c_date] += int(attendance.driver_allowance)
 
         leaves = DispatchRegularlyConnect.objects.filter(departure_date__range=(f'{month}-01', {month}-{last_date})).filter(work_type='퇴근').filter(driver_id=member)
         leave_cnt = leaves.count()
-        leave_price = 0
         for leave in leaves:
             c_date = int(leave.departure_date[8:10]) - 1
             if not leave_list[c_date]:
                 leave_list[c_date] = []
             leave_list[c_date].append([leave.regularly_id.departure, leave.regularly_id.arrival])
-            leave_price += int(leave.driver_allowance)
-        if leaves:
-            leave_price_list[c_date] = leave_price
-            total_list[c_date] += leave_price
+        
+            leave_price_list[c_date] += int(leave.driver_allowance)
+        # if leaves:
+            total_list[c_date] += int(leave.driver_allowance)
 
 
         for i in range(int(last_date)):

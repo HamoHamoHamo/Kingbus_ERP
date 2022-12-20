@@ -42,6 +42,7 @@
                     </td>
                     <td class="table-list_head-tr_td">번호</td>
                     <td class="table-list_head-tr_td">이름</td>
+                    <td class="table-list_head-tr_td">구분</td>
                     <td class="table-list_head-tr_td">입사일자</td>
                     <td class="table-list_head-tr_td">기본급</td>
                     <td class="table-list_head-tr_td">근속수당</td>
@@ -62,12 +63,13 @@
             <tbody>
                 {% for member in member_list %}
                 {% with salary=salary_list|index:forloop.counter0 %}
-                <tr class="table-list_body-tr salaryList">
+                <tr class="table-list_body-tr salaryList cursor">
                     <td class="table-list_body-tr_td">
                         <input type="checkbox" class="amountCheck" name="member_id" value="{{member.id}}">
                     </td>
                     <td class="table-list_body-tr_td">{{forloop.counter}}</td>
                     <td class="table-list_body-tr_td">{{member.name}}</td>
+                    <td class="table-list_body-tr_td">{{member.role}}</td>
                     <td class="table-list_body-tr_td">{{member.entering_date}}</td>
                     <td class="table-list_body-tr_td">
                         <input type="text" class="amountInput length100" value="{{salary.base}}">

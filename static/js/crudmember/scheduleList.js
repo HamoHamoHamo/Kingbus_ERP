@@ -15,6 +15,8 @@ function openScheduleList() {
         scheduleDate = `${dateTitle.innerText.split("년")[0]}-${dateTitle.innerText.split("년 ")[1].replace(/\월/g, "")}-${targetSchedule + 1}`
     }
     createDate.value = scheduleDate
+    
+    
     for (i = 0; i < scheduleList[targetSchedule].length; i++) {
         const schedulTr = document.createElement("tr")
         schedulTr.setAttribute("class", "table-list_body-tr")

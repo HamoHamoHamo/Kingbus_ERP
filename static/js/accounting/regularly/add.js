@@ -14,7 +14,7 @@ const addDeleteForm = document.querySelector(".addDeleteForm")
 const amountInput = document.querySelectorAll(".amountInput")
 const addForm = document.querySelector(".addForm")
 const addBtn = document.querySelector(".addBtn")
-
+const essential = document.querySelectorAll(".essential")
 
 for (i = 0; i < collectDateBox.length; i++) {
     collectDateBox[i].children[6].addEventListener("click", openAddPopup)
@@ -203,8 +203,8 @@ function removeComma() {
 }
 
 function onlyNum() {
-    let check = /^[0-9]+$/
-    let regex = /[^0-9]/g;
+    let check = /^[-\.0-9]+$/
+    let regex = /[^-\.0-9]/g;
     if (!check.test(this.value)) {
         this.value = this.value.replace(regex, "")
     }
@@ -218,14 +218,21 @@ function makeResult(){
 }
 
 
-function remove0(result, targetInput){
-    if(result.length > 1){
-        if(result[0] == 0){
-            result = result.substr(1,)
+function remove0(result, targetInput) {
+    if(result[0] == "-"){
+        if(result[1] == 0){
+            result = `-${result.replace(/\-/g,"").substr(1,)}`;
             remove0(result, targetInput)
         }else{
+            result = `-${result.replace(/\-/g,"")}`;
             changeAddComma(result, targetInput)
         }
+    }else if(result[0] == 0){
+        result = result.replace(/\-/g,"");
+        remove0(result, targetInput)
+    }else{
+        result = result.replace(/\-/g,"");
+        changeAddComma(result, targetInput)
     }
 }
 
@@ -238,7 +245,13 @@ function changeAddComma(result, targetInput){
 
 addBtn.addEventListener("click", addSubmit)
 
-function addSubmit(){
+
+function addSubmit() {
+    for (i = 0; i < essential.length; i++) {
+        if (essential[i].value == "") {
+            return alert("입력하지 않은 필수 입력사항이 있습니다.")
+        }
+    };
     amountInput[0].value = amountInput[0].value.replace(/\,/g, "")
     amountInput[1].value = amountInput[1].value.replace(/\,/g, "")
     addForm.submit()

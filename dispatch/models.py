@@ -9,6 +9,7 @@ class RegularlyGroup(models.Model):
     fix = models.CharField(verbose_name='고정', max_length=1, null=False, default='n')
     settlement_date = models.CharField(verbose_name='정산일', max_length=5, null=False, default='1')
     pub_date = models.DateTimeField(auto_now_add=True, verbose_name='작성시간')
+    updated_at = models.DateTimeField(auto_now=True, verbose_name='수정시간')
     creator = models.ForeignKey(Member, on_delete=models.SET_NULL, related_name="group_creator", db_column="creator_id", null=True)
     
     def __str__(self):
@@ -35,6 +36,7 @@ class DispatchRegularlyData(models.Model):
     use = models.CharField(verbose_name='사용여부', max_length=50, null=False, blank=True, default='사용')
     
     pub_date = models.DateTimeField(auto_now_add=True, verbose_name='작성시간')
+    updated_at = models.DateTimeField(auto_now=True, verbose_name='수정시간')
     creator = models.ForeignKey(Member, on_delete=models.SET_NULL, related_name="regularly_creator", db_column="creator_id", null=True)
     def __str__(self):
         return self.route
@@ -62,6 +64,7 @@ class DispatchRegularly(models.Model):
     use = models.CharField(verbose_name='사용여부', max_length=50, null=False, blank=True, default='사용')
     
     pub_date = models.DateTimeField(auto_now_add=True, verbose_name='작성시간')
+    updated_at = models.DateTimeField(auto_now=True, verbose_name='수정시간')
     creator = models.ForeignKey(Member, on_delete=models.SET_NULL, related_name="regularly_monthly_creator", db_column="creator_id", null=True)
     def __str__(self):
         return self.edit_date + ' ' + self.route
@@ -92,6 +95,7 @@ class DispatchOrder(models.Model):
     order_type = models.CharField(verbose_name='유형', max_length=100, null=False)
     
     pub_date = models.DateTimeField(auto_now_add=True, verbose_name='작성시간')
+    updated_at = models.DateTimeField(auto_now=True, verbose_name='수정시간')
     creator = models.ForeignKey(Member, on_delete=models.SET_NULL, related_name="dispatch_creator", db_column="creator_id", null=True)
     def __str__(self):
         return self.route
@@ -104,6 +108,7 @@ class DispatchOrderWaypoint(models.Model):
     delegate_phone = models.CharField(verbose_name='인솔자 전화번호', max_length=100, null=False, blank=True)
     
     pub_date = models.DateTimeField(auto_now_add=True, verbose_name='작성시간')
+    updated_at = models.DateTimeField(auto_now=True, verbose_name='수정시간')
     creator = models.ForeignKey(Member, on_delete=models.SET_NULL, related_name="waypoint_creator", db_column="creator_id", null=True)
 
 class DispatchOrderConnect(models.Model):
@@ -117,6 +122,7 @@ class DispatchOrderConnect(models.Model):
     driver_allowance = models.CharField(verbose_name='기사수당', max_length=40, null=False)
     payment_method = models.CharField(verbose_name='상여금 선지급', max_length=1, null=False, default="n")
     pub_date = models.DateTimeField(auto_now_add=True, verbose_name='작성시간')
+    updated_at = models.DateTimeField(auto_now=True, verbose_name='수정시간')
     creator = models.ForeignKey(Member, on_delete=models.SET_NULL, related_name="connect_creator", db_column="creator_id", null=True)
     def __str__(self):
         return f'{self.order_id.route} / {self.departure_date[2:10]}'
@@ -132,6 +138,7 @@ class DispatchRegularlyConnect(models.Model):
     price = models.CharField(verbose_name='계약금액', max_length=10, null=False)
     driver_allowance = models.CharField(verbose_name='기사수당', max_length=10, null=False)
     pub_date = models.DateTimeField(auto_now_add=True, verbose_name='작성시간')
+    updated_at = models.DateTimeField(auto_now=True, verbose_name='수정시간')
     creator = models.ForeignKey(Member, on_delete=models.SET_NULL, related_name="connect_regularly_creator", db_column="creator_id", null=True)
     def __str__(self):
         return f'{self.work_type} {self.regularly_id} / {self.departure_date[2:10]}'
@@ -150,6 +157,7 @@ class Schedule(models.Model):
     date = models.CharField(verbose_name='날짜', max_length=10, null=False)
     content = models.CharField(verbose_name='내용', max_length=250, null=False)
     pub_date = models.DateTimeField(auto_now_add=True, verbose_name='작성시간')
+    updated_at = models.DateTimeField(auto_now=True, verbose_name='수정시간')
     creator = models.ForeignKey(Member, on_delete=models.SET_NULL, related_name="schedule_creator", db_column="creator_id", null=True)
 
     def __str__(self):

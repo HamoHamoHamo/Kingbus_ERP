@@ -30,26 +30,25 @@
 .salaryContainer td {
     padding: 0;
     box-sizing: border-box;
-    cursor: pointer;
 }
 
-.salaryContainer td:nth-child(1) {
+.salaryContainer td:nth-child(1),
+.salaryContainer td:nth-child(2) {
     width: 3%;
 }
 
-.salaryContainer td:nth-child(2) {
-    width: 4%;
-}
-
 .salaryContainer td:nth-child(3) {
-    width: 5%;
-}
-
-.salaryContainer td:nth-child(4){
     width: 8%;
 }
 
-.salaryContainer td:nth-child(5),
+.salaryContainer td:nth-child(4){
+    width: 5%;
+}
+
+.salaryContainer td:nth-child(5){
+    width: 7%;
+}
+
 .salaryContainer td:nth-child(6),
 .salaryContainer td:nth-child(7),
 .salaryContainer td:nth-child(8),
@@ -58,12 +57,13 @@
 .salaryContainer td:nth-child(11),
 .salaryContainer td:nth-child(12),
 .salaryContainer td:nth-child(13),
-.salaryContainer td:nth-child(14) {
-    width: 8%;
+.salaryContainer td:nth-child(14),
+.salaryContainer td:nth-child(15) {
+    width: 7%;
 }
 
-.salaryContainer tbody td:nth-child(12),
-.salaryContainer tbody td:nth-child(13) {
+.salaryContainer tbody td:nth-child(13),
+.salaryContainer tbody td:nth-child(14) {
     background-color: rgb(255, 242, 204);
     cursor: pointer;
 }
@@ -76,6 +76,11 @@
     outline: none;
     font-family: "Noto Sans CJK KR";
     color: black;
+}
+
+.cursor .table-list_body-tr_td {
+
+    cursor: pointer;
 }
 
 .salaryContainer tbody td:nth-child(9),
@@ -309,13 +314,12 @@
 
 .salaryTotalContainer td{
     text-align: right;
-    padding: 0 1rem 0 0;
-    width: 8%;
+    width: 7%;
     box-sizing: border-box;
 }
 
 .salaryTotalContainer td:nth-child(1){
-    width: 20%;
+    width: 26%;
     padding: 0;
     text-align: center;
 }
