@@ -28,7 +28,7 @@
 }
 
 .settingBox{
-    width: calc((100% - 10rem)/4);
+    width: calc((100% - 15rem)/3);
     height: calc(100% - 2rem);
     border-radius: 0.3rem;
     border: 0.1rem solid #CDCDCE;
