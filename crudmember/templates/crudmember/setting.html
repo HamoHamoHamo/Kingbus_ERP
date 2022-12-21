@@ -23,6 +23,8 @@
       <option value="운행종류">운행종류</option>
       <option value="유형">유형</option>
       <option value="계산서 발행처">계산서 발행처</option>
+      <option value="예약회사">예약회사</option>
+      <option value="운행회사">운행회사</option>
     </select>
     <input name="category" autocomplete="off" type="text" class="search-Form_input">
     <input type="submit" class="btnModules creteItem" value="등록">
@@ -133,6 +135,10 @@
         </table>
       </div>
     </form>
+  </div>
+</div>
+<div class="main-layout_container">
+  <div class="settingContainer">
 
     <form method="post" action="{% url 'crudmember:setting_delete' %}" class="settingBox">
       {% csrf_token %}
@@ -168,24 +174,92 @@
       </div>
     </form>
 
-  </div>
+    <form method="post" action="{% url 'crudmember:setting_delete' %}" class="settingBox">
+      {% csrf_token %}
+      <div class="settinHeader">
+        <span>예약회사</span>
+        <input type="submit" class="btnModules" value="삭제">
+      </div>
+      <div class="scrolling_table-list_header">
+        <table class="table-list">
+          <thead>
+            <tr class="table-list_head-tr">
+              <td class="table-list_head-tr_td">
+                <input type="checkbox">
+              </td>
+              <td class="table-list_head-tr_td">항목</td>
+            </tr>
+          </thead>
+        </table>
+      </div>
+      <div class="scrolling_table-list_body">
+        <table class="table-list">
+          <tbody>
+            {% for op in reservation_list %}
+            <tr class="table-list_body-tr">
+              <td class="table-list_body-tr_td">
+                <input type="checkbox" name="check" value="{{op.id}}">
+              </td>
+              <td class="table-list_body-tr_td">{{op.category}}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </form>
 
-  <div class="salarySettingContainer">
-    <div class="salarySettingTitle">급여관리 항목</div>
-    <form method="post" action="{% url 'crudmember:salary_meal' %}" class="salarySettingForm">
+    <form method="post" action="{% url 'crudmember:setting_delete' %}" class="settingBox">
       {% csrf_token %}
-      <label for="">식대</label>
-      <input name="price" value="{{meal}}" type="text" class="numberOnly">
-      <input type="submit" class="btnModules" value="저장">
+      <div class="settinHeader">
+        <span>운행회사</span>
+        <input type="submit" class="btnModules" value="삭제">
+      </div>
+      <div class="scrolling_table-list_header">
+        <table class="table-list">
+          <thead>
+            <tr class="table-list_head-tr">
+              <td class="table-list_head-tr_td">
+                <input type="checkbox">
+              </td>
+              <td class="table-list_head-tr_td">항목</td>
+            </tr>
+          </thead>
+        </table>
+      </div>
+      <div class="scrolling_table-list_body">
+        <table class="table-list">
+          <tbody>
+            {% for order in operating_list %}
+            <tr class="table-list_body-tr">
+              <td class="table-list_body-tr_td">
+                <input type="checkbox" name="check" value="{{order.id}}">
+              </td>
+              <td class="table-list_body-tr_td">{{order.category}}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
     </form>
-    <form method="post" action="{% url 'crudmember:salary_date' %}" class="salarySettingForm">
-      {% csrf_token %}
-      <label for="">급여 지급일</label>
-      <input name="date" value="{{date}}" type="text" class="dayValidation">
-      <input type="submit" class="btnModules" value="저장">
-    </form>
+
   </div>
 </div>
+<div class="salarySettingContainer">
+  <div class="salarySettingTitle">급여관리 항목</div>
+  <form method="post" action="{% url 'crudmember:salary_meal' %}" class="salarySettingForm">
+    {% csrf_token %}
+    <label for="">식대</label>
+    <input name="price" value="{{meal}}" type="text" class="numberOnly">
+    <input type="submit" class="btnModules" value="저장">
+  </form>
+  <form method="post" action="{% url 'crudmember:salary_date' %}" class="salarySettingForm">
+    {% csrf_token %}
+    <label for="">급여 지급일</label>
+    <input name="date" value="{{date}}" type="text" class="dayValidation">
+    <input type="submit" class="btnModules" value="저장">
+  </form>
+</div>
+<div style="height: 5rem;"></div>
 {% endblock %}
 
 

@@ -1464,6 +1464,8 @@ class OrderList(generic.ListView):
         context['operation_types'] = Category.objects.filter(type='운행종류')
         context['order_types'] = Category.objects.filter(type='유형')
         context['bill_places'] = Category.objects.filter(type='계산서 발행처')
+        context['reservations'] = Category.objects.filter(type='예약회사')
+        context['operatings'] = Category.objects.filter(type='운행회사')
 
         return context
 
@@ -1774,6 +1776,11 @@ def order_edit(request):
             order.bill_place = order_form.cleaned_data['bill_place']
             order.ticketing_info = order_form.cleaned_data['ticketing_info']
             order.order_type = order_form.cleaned_data['order_type']
+            order.operating_company = order_form.cleaned_data['operating_company']
+            order.reservation_company = order_form.cleaned_data['reservation_company']
+            order.driver_lease = order_form.cleaned_data['driver_lease']
+            order.vehicle_lease = order_form.cleaned_data['vehicle_lease']
+
             # 현지수금(카드)
             post_collection_type = request.POST.get('collection_type')
             if post_collection_type:

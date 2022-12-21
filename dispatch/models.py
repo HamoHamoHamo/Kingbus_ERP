@@ -93,6 +93,10 @@ class DispatchOrder(models.Model):
     route = models.CharField(verbose_name='노선이름', max_length=500, null=False)
     ticketing_info = models.CharField(verbose_name='표찰정보', max_length=100, null=False, blank=True)
     order_type = models.CharField(verbose_name='유형', max_length=100, null=False)
+    reservation_company = models.CharField(verbose_name='예약회사', max_length=100, null=False, blank=True)
+    operating_company = models.CharField(verbose_name='운행회사', max_length=100, null=False, blank=True)
+    driver_lease = models.CharField(verbose_name='인력임대차', max_length=100, null=False, blank=True)
+    vehicle_lease = models.CharField(verbose_name='차량임대차', max_length=100, null=False, blank=True)
     
     pub_date = models.DateTimeField(auto_now_add=True, verbose_name='작성시간')
     updated_at = models.DateTimeField(auto_now=True, verbose_name='수정시간')

@@ -350,6 +350,42 @@
                         <td colspan="3" class="tdTypeB"><input autocomplete="off" value="{{detail.references}}" name="references" type="text" class="inputText length100 loadNote" tabindex="22">
                         </td>
                     </tr>
+                    <tr>
+                        <td class="tdTypeA">예약회사</td>
+                        <td class="tdTypeC">
+                            <select name="reservation_company" class="inputSelect" tabindex="14">
+                                <option value=""></option>
+                                {% for reservation in reservations %}
+                                <option {% if detail.reservation_company == reservation.category %} selected {% endif %} value="{{reservation.category}}">{{reservation.category}}</option>
+                                {% endfor %}
+                            </select>
+                        </td>
+                        <td class="tdTypeA">운행회사</td>
+                        <td class="tdTypeC">
+                            <select name="operating_company" class="inputSelect" tabindex="14">
+                                <option value=""></option>
+                                {% for operating in operatings %}
+                                <option {% if detail.operating_company == operating.category %} selected {% endif %} value="{{operating.category}}">{{operating.category}}</option>
+                                {% endfor %}
+                            </select>
+                        </td>
+                        <td class="tdTypeA">임대임차</td>
+                        <td class="tdTypeC" colspan="3">
+                            <div style="display: flex">
+                                <select name="driver_lease" class="inputSelect" tabindex="22">
+                                    <option value=""></option>
+                                    <option {% if detail.driver_lease == '인력임대' %} selected {% endif %} value="인력임대">인력임대</option>
+                                    <option {% if detail.driver_lease == '인력임차' %} selected {% endif %} value="인력임차">인력임차</option>
+                                </select>
+                                <select name="vehicle_lease" class="inputSelect" tabindex="22">
+                                    <option value=""></option>
+                                    <option {% if detail.vehicle_lease == '차량임대' %} selected {% endif %} value="차량임대">차량임대</option>
+                                    <option {% if detail.vehicle_lease == '차량임차' %} selected {% endif %} value="차량임차">차량임차</option>
+                                </select>
+                            </div>
+                        </td>
+                        
+                    </tr>
                 </table>
 
             </form>
