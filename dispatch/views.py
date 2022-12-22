@@ -543,18 +543,26 @@ def regularly_connect_load(request, week):
     outsourcing_list = []
     regularly_list = []
     for check in check_list:
-        regularly = DispatchRegularly.objects.get(id=check)
-        cur_connect = DispatchRegularlyConnect.objects.select_related('regularly_id', 'bus_id', 'driver_id').filter(regularly_id=regularly).filter(departure_date__startswith=req_date)
+        regularly_data = DispatchRegularly.objects.get(id=check).regularly_id
+
+        regularly = regularly_data.monthly.filter(edit_date__lte=date).order_by('-edit_date').first()
+        if not regularly:
+            regularly = regularly_data.monthly.filter(edit_date__gte=date).order_by('edit_date').first()
+                
+
+        cur_connect = DispatchRegularlyConnect.objects.select_related('regularly_id', 'bus_id', 'driver_id').filter(regularly_id__regularly_id=regularly_data).filter(departure_date__startswith=req_date)
         if cur_connect.exists():
             cur_connect_id = cur_connect[0].id
         else:
             # 체크된 노선의 선택된 날짜에 배차가 없을 경우
             cur_connect_id = 0
         try:
-            connect = DispatchRegularlyConnect.objects.select_related('regularly_id', 'bus_id', 'driver_id').filter(regularly_id=regularly).get(departure_date__startswith=date)
+            print("CCCCCCCCCCCCCCCCCC", cur_connect_id)
+            connect = DispatchRegularlyConnect.objects.select_related('regularly_id', 'bus_id', 'driver_id').filter(regularly_id__regularly_id=regularly_data).get(departure_date__startswith=date)
             bus = connect.bus_id
             driver = connect.driver_id
             outsourcing = connect.outsourcing
+            print("conneecttt", connect)
             
             order_arrival_time = f'{req_date} {regularly.arrival_time}'
             order_departure_time = f'{req_date} {regularly.departure_time}'
@@ -567,25 +575,25 @@ def regularly_connect_load(request, week):
             bus_list.append(bus)
             driver_list.append(driver)
             outsourcing_list.append(outsourcing)
-            regularly_list.append(regularly)
+            regularly_list.append(regularly_data)
 
         except DispatchRegularlyConnect.DoesNotExist:
             print('does not exists')
             bus_list.append('')
             driver_list.append('')
             outsourcing_list.append('')
-            regularly_list.append(regularly)
+            regularly_list.append(regularly_data)
             continue
         except MultipleObjectsReturned:
             raise Http404
 
     
     for i in range(len(check_list)):
-        DispatchRegularlyConnect.objects.filter(regularly_id=regularly_list[i]).filter(departure_date__startswith=req_date).delete()
-
+        DispatchRegularlyConnect.objects.filter(regularly_id__regularly_id=regularly_list[i]).filter(departure_date__startswith=req_date).delete()
+        regularly_id = DispatchRegularly.objects.get(id=check_list[i])
         if bus_list[i]:
             connect = DispatchRegularlyConnect(
-                regularly_id = regularly_list[i],
+                regularly_id = regularly_id,
                 bus_id = bus_list[i],
                 driver_id = driver_list[i],
                 outsourcing = outsourcing_list[i],
@@ -613,8 +621,11 @@ def regularly_connect_delete(request):
         for order_id in check_list:
             try:
                 order = DispatchRegularly.objects.prefetch_related('info_regularly').get(id=order_id)
-                connect = order.info_regularly.get(departure_date__startswith=date)
-                connect.delete()
+
+                regularly_data = order.regularly_id
+                connects = DispatchRegularlyConnect.objects.filter(regularly_id__regularly_id=regularly_data).filter(departure_date__startswith=date)
+                print('conncec', connects)
+                connects.delete()
             
             except DispatchRegularlyConnect.DoesNotExist:
                 continue

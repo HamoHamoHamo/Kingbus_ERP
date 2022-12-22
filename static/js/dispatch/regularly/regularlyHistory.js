@@ -80,7 +80,7 @@ for (i = 0; i < historyDateBox.length; i++) {
 function HistoryCheck() {
     if(!this.classList.contains("historyUnable")){
         let parms = new URLSearchParams(location.search)
-        historyHiddenRoute.value = parms.get("id")
+        // historyHiddenRoute.value = parms.get("id")
         historyHiddenGroup.value = parms.get("group")
         historyHiddenDate.value = parms.get("date")
         if (this.classList.contains("historyDateBoxSelect")) {
