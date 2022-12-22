@@ -138,7 +138,7 @@ def member_create(request):
                 raise Http404
             
             if role != '임시':
-                member.user_id = None
+                member.user_id = user_id
                 member.password = make_password('0000')
             member.emergency = request.POST.get('emergency1', '') + ' ' + request.POST.get('emergency2', '')
             member.save()
@@ -586,7 +586,7 @@ def salary_edit(request):
             salary.base = base
             salary.service_allowance = service
             salary.position_allowance = position
-            salary.total = int(salary.attendance) + int(salary.leave) + int(salary.order) + int(salary.base) + int(salary.service_allowance) + int(salary.position_allowance) + int(salary.additional) - int(salary.deduction)
+            salary.total = int(salary.meal) + int(salary.attendance) + int(salary.leave) + int(salary.order) + int(salary.base) + int(salary.service_allowance) + int(salary.position_allowance) + int(salary.additional) - int(salary.deduction)
             salary.save()
 
             if TODAY[:7] <= month:
