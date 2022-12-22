@@ -60,7 +60,7 @@ class CategoryList(generic.ListView):
             elif category.type == '식대':
                 context['meal'] = category.category
             elif category.type == '급여지급일':
-                context['date'] = category.category
+                context['payment_date'] = category.category
         
         context['vehicle_type_list'] = vehicle_type_list
         context['operation_type_list'] = operation_type_list
@@ -212,6 +212,7 @@ def setting_client_delete(request):
 def salary_meal(request):
     if request.method == 'POST':
         price = request.POST.get('price').replace(',','')
+        date = request.POST.get('date')
         try:
             category = Category.objects.get(type='식대')
             category.category = price
@@ -222,11 +223,11 @@ def salary_meal(request):
             )
         category.save()
         
-        # 식대가 수정되면 이번달 포함 다음달부터 있는 salary의 식대 업데이트
-        salary_list = Salary.objects.filter(month__gte=TODAY[:7])
+        # 식대가 수정되면 date 이후 salary들 수정
+        salary_list = Salary.objects.filter(month__gte=date)
         for salary in salary_list:
-            salary.total = int(price) + int(salary.attendance) + int(salary.leave) + int(salary.order) + int(salary.base) + int(salary.service_allowance) + int(salary.position_allowance) + int(salary.additional) - int(salary.deduction)            
             salary.meal = price
+            salary.total = int(salary.meal) + int(salary.attendance) + int(salary.leave) + int(salary.order) + int(salary.base) + int(salary.service_allowance) + int(salary.position_allowance) + int(salary.additional) - int(salary.deduction)
             salary.save()
 
 
@@ -238,16 +239,23 @@ def salary_meal(request):
 
 def salary_date(request):
     if request.method == 'POST':
+        payment_date = request.POST.get('payment_date')
         date = request.POST.get('date')
         try:
             category = Category.objects.get(type='급여지급일')
-            category.category = date
+            category.category = payment_date
         except Category.DoesNotExist:
             category = Category(
                 type = '급여지급일',
-                category = date,
+                category = payment_date,
             )
         category.save()
+
+        salary_list = Salary.objects.filter(month__gte=date)
+        for salary in salary_list:
+            salary.payment_date = payment_date
+            salary.save()
+
         return redirect(request.META.get('HTTP_REFERER', 'redirect_if_referer_not_found'))
     else:
         return HttpResponseNotAllowed(['post'])

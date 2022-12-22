@@ -76,6 +76,7 @@ class Salary(models.Model):
     deduction = models.CharField(verbose_name='공제', max_length=20, null=False, default=0)
     total = models.CharField(verbose_name='총금액', max_length=20, null=False)
     month = models.CharField(verbose_name='지급월', null=False,max_length=7, default=str(datetime.datetime.now())[:7])
+    payment_date = models.CharField(verbose_name='급여지급일', null=False, max_length=10, blank=True)
     creator = models.ForeignKey(Member, on_delete=models.SET_NULL, related_name="salary_user", db_column="user_id", null=True)
     pub_date = models.DateTimeField(verbose_name='작성시간', auto_now_add=True, null=False)
     

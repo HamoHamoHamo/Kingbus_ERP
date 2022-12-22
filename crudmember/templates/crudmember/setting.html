@@ -250,12 +250,16 @@
     {% csrf_token %}
     <label for="">식대</label>
     <input name="price" value="{{meal}}" type="text" class="numberOnly">
+    <label for="">기준월</label>
+    <input name="date" type="month" class="">
     <input type="submit" class="btnModules" value="저장">
   </form>
   <form method="post" action="{% url 'crudmember:salary_date' %}" class="salarySettingForm">
     {% csrf_token %}
     <label for="">급여 지급일</label>
-    <input name="date" value="{{date}}" type="text" class="dayValidation">
+    <input name="payment_date" value="{{payment_date}}" type="text" class="dayValidation">
+    <label for="">기준월</label>
+    <input name="date" type="month" class="">
     <input type="submit" class="btnModules" value="저장">
   </form>
 </div>
