@@ -899,31 +899,10 @@ def regularly_order_edit(request):
         creator = get_object_or_404(Member, pk=request.session.get('user'))
         order_form = RegularlyDataForm(request.POST)
         if order_form.is_valid():
-            # overlap = ''
-            # overlap_list = DispatchRegularly.objects.exclude(departure_time__gt=order.arrival_time).exclude(arrival_time__lt=order.departure_time)
-            # for dispatch in overlap_list:
-            #     for i in order.week.split(" "):
-            #         try:
-            #             temp = dispatch.info_regularly_fixed.get(week=i)
-            #             bus = temp.bus_id
-            #             driver = temp.driver_id
-            #             cur = order.info_regularly_fixed.get(week=i)
-            #         except DispatchRegularlyFixed.DoesNotExist:
-            #             continue
-
-                    
-            #         if bus == cur.bus_id or driver == cur.driver_id:
-            #             overlap = dispatch
-            # print("OVERLAP", overlap)
 
             group = get_object_or_404(RegularlyGroup, pk=request.POST.get('group'))
             week = ' '.join(request.POST.getlist('week', None))
-        
-            # if datetime.strptime(request.POST.get('contract_start_date'), FORMAT) > datetime.strptime(request.POST.get('contract_end_date'), FORMAT):
-            #     #raise BadRequest('출발일이 도착일보다 늦습니다.')
-            #     raise Http404
             
-            # route_name = order_form.cleaned_data['departure'] + " ▶ " + order_form.cleaned_data['arrival']
             departure_time1 = request.POST.get('departure_time1')
             departure_time2 = request.POST.get('departure_time2')
             arrival_time1 = request.POST.get('arrival_time1')
@@ -955,18 +934,17 @@ def regularly_order_edit(request):
             order.arrival = order_form.cleaned_data['arrival']
             order.departure_time = f'{departure_time1}:{departure_time2}'
             order.arrival_time = f'{arrival_time1}:{arrival_time2}'
-            # order.bus_type = order_form.cleaned_data['bus_type']
-            # order.bus_cnt = order_form.cleaned_data['bus_cnt']
+            if order.arrival_time < order.departure_time:
+                #raise BadRequest('출발일이 도착일보다 늦습니다.')
+                raise Http404
+
             order.price = price
             order.driver_allowance = driver_allowance
             order.number1 = order_form.cleaned_data['number1']
             order.number2 = order_form.cleaned_data['number2']
             order.num1 = re.sub(r'[^0-9]', '', order_form.cleaned_data['number1'])
             order.num2 = re.sub(r'[^0-9]', '', order_form.cleaned_data['number2'])
-            # order.customer = order_form.cleaned_data['customer']
-            # order.customer_phone = order_form.cleaned_data['customer_phone']
-            # order.contract_start_date = order_form.cleaned_data['contract_start_date']
-            # order.contract_end_date = order_form.cleaned_data['contract_end_date']
+            
             order.work_type = order_form.cleaned_data['work_type']
             order.route = order_form.cleaned_data['route']
             order.location = order_form.cleaned_data['location']
@@ -1045,7 +1023,8 @@ def regularly_order_edit(request):
             if post_month:
                 day = order.group.settlement_date
                 day = day if int(day) > 9 else f'0{day}'
-                connect_list = DispatchRegularlyConnect.objects.filter(regularly_id__regularly_id=order).filter(departure_date__gte=f'{post_month}-{day} 00:00')
+                connect_list = DispatchRegularlyConnect.objects.filter(regularly_id__regularly_id=order).filter(departure_date__gte=f'{post_month}-{day} 00:00').order_by('departure_date')
+                c_regularly = ''
                 for connect in connect_list:
                     month = connect.departure_date[:7]
                     member = connect.driver_id
@@ -1070,6 +1049,12 @@ def regularly_order_edit(request):
                     connect.driver_allowance = driver_allowance
                     connect.save()
 
+                    if c_regularly != connect.regularly_id:
+                        connect.regularly_id.price = price
+                        connect.regularly_id.driver_allowance = driver_allowance
+                        connect.regularly_id.save()
+                        c_regularly = connect.regularly_id
+                    
                     
 
 

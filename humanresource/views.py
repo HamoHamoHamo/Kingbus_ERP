@@ -424,17 +424,29 @@ def new_salary(creator, month, member):
         leave_price = int(leave['driver_allowance__sum'])
     if order['driver_allowance__sum']:
         order_price = int(order['driver_allowance__sum'])
+    
+    try:
+        meal = Category.objects.get(type='식대').category
+    except:
+        meal = 0
+    try:
+        payment_date = Category.objects.get(type='급여지급일').category
+    except:
+        payment_date = 1
+
 
     salary = Salary(
         member_id = member,
         base = base,
         service_allowance = service_allowance,
         position_allowance = position_allowance,
+        meal = meal,
         attendance = attendance_price,
         leave = leave_price,
         order = order_price,
         total = attendance_price + leave_price + order_price + base + service_allowance + position_allowance + meal,
         month = month,
+        payment_date = payment_date,
         creator = creator
     )
     salary.save()
@@ -448,14 +460,14 @@ def salary_detail(request):
         member_id_list = request.GET.get('driver').split(',')
     month = request.GET.get('date', TODAY[:7])
     
-    try:
-        category_date = Category.objects.get(type='급여지급일').category
-        if category_date == '말일':
-            salary_date = datetime.strftime(datetime.strptime(month+'-01', FORMAT) + relativedelta(months=1) - timedelta(days=1), FORMAT)
-        else:
-            salary_date = f'{month}-{category_date}'
-    except Category.DoesNotExist:
-        salary_date = ''
+    # try:
+    #     category_date = Category.objects.get(type='급여지급일').category
+    #     if category_date == '말일':
+    #         salary_date = datetime.strftime(datetime.strptime(month+'-01', FORMAT) + relativedelta(months=1) - timedelta(days=1), FORMAT)
+    #     else:
+    #         salary_date = f'{month}-{category_date}'
+    # except Category.DoesNotExist:
+    #     salary_date = ''
     
     member_list = []
     for member_id in member_id_list:
@@ -481,6 +493,12 @@ def salary_detail(request):
 
         salary = Salary.objects.filter(member_id=member).get(month=month)
         meal = salary.meal
+        payment_date = salary.payment_date
+        if payment_date == '말일':
+            salary_date = datetime.strftime(datetime.strptime(month+'-01', FORMAT) + relativedelta(months=1) - timedelta(days=1), FORMAT)
+        else:
+            salary_date = f'{month}-{payment_date}'
+
         additional = salary.additional_salary.all()
         deduction = salary.deduction_salary.all()
 

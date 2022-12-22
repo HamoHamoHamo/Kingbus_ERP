@@ -69,7 +69,7 @@
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    width: calc((100% - 10rem)/4);
+    width: calc((100% - 10rem)/2);
     height: 18rem;
     padding: 1rem;
     margin-top: 2rem;

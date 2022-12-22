@@ -9,7 +9,8 @@ body {
     justify-content: flex-start;
     width: 297mm;
     height: 420mm;
-    padding: 4mm 5mm;
+    padding: 0 5mm;
+    margin-bottom: 4mm;
     box-sizing: border-box;
     font-size: 12px;
 }
