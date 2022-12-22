@@ -23,9 +23,10 @@ function deleteDispatch() {
             deleteCounter++
         }
     };
-    if (deleteCounter === deleteArr.length) {
-        return alert("삭제할 배차가 없습니다.")
-    } else {
-        RouteList.submit();
-    }
+    // if (deleteCounter === deleteArr.length) {
+    //     return alert("삭제할 배차가 없습니다.")
+    // } else {
+    //     RouteList.submit();
+    // }
+    RouteList.submit();
 }
