@@ -311,7 +311,7 @@ label[for=basic_file] {
     text-align: left;
     padding-left: 1rem;
     box-sizing: border-box;
-    height: 4.8rem;
+    height: 4.2rem;
 }
 
 .basic_table_scroll_box tr:nth-child(odd) {
@@ -329,6 +329,103 @@ label[for=basic_file] {
 }
 
 
+/* 고정 테이블 */
+.basic_fixed_table {
+    width: 100%;
+}
+
+.basic_fixed_table_head {
+    background-color: #4E5869;
+    color: white;
+    height: 4.2rem;
+}
+
+.basic_fixed_table_head {
+    background-color: #4E5869;
+    color: white;
+    height: 4.2rem;
+}
+
+.basic_fixed_table_head td{
+    text-align: left;
+    padding-left: 1rem;
+    box-sizing: border-box;
+}
+
+.basic_fixed_table_body {
+    height: 4.2rem;
+}
+
+.basic_fixed_table_body td{
+    text-align: left;
+    padding-left: 1rem;
+    box-sizing: border-box;
+}
+
+.basic_fixed_table_body:nth-child(odd){
+    background-color: white;
+}
+
+.basic_fixed_table_body:nth-child(even){
+    background-color: #EFF0F2;
+}
+
+
+
+
+/* 페이지네이션 */
+.pagenation_box {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 4.2rem;
+    border-top: 0.1rem solid #CDCDCD;
+  }
+  
+  .pagination{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-width: 10rem;
+    width: auto;
+    height: 100%;
+  }
+  
+  .pagenation_number_box{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .page-item{
+    margin: 0 0.6rem;
+  }
+  
+  .page-item a{
+    color: black;
+  }
+  
+  .page-activate a{
+    font-weight: 700;
+    color: #61B4E5;
+  }
+  
+  .page-pre,
+  .page-pre a,
+  .page-next,
+  .page-next a{
+    color: black;
+    font-weight: 700;
+  }
+
+  .page-pre{
+    margin-right: 1.2rem;
+  }
+
+  .page-next{
+    margin-left: 1.2rem;
+  }
 
 
 
@@ -350,7 +447,7 @@ label[for=basic_file] {
         height: 4rem;
         font-size: 1.8rem;
     }
-    
+
     .basic_popup_header {
         padding-top: 0.5rem;
         height: 4rem;
@@ -361,7 +458,7 @@ label[for=basic_file] {
         padding: 3rem 0;
         height: calc(100% - 16.5rem);
     }
-    
+
     .popup_input_article {
         height: 2.8rem;
     }
@@ -370,11 +467,11 @@ label[for=basic_file] {
         font-size: 1.6rem;
         width: 11rem;
     }
-    
+
     .popup_input_article .basic_input {
         width: calc(100% - 14rem);
     }
-    
+
     .basic_popup_footer {
         height: 6rem;
     }
@@ -425,21 +522,22 @@ label[for=basic_file] {
         width: 100%;
         height: 4.6rem;
     }
-    
+
     .basic_table_head_tr_td {
         padding-left: 1.4rem;
     }
-    
+
     .basic_table_scroll_box {
         min-height: 10.2rem;
     }
-    
+
     .basic_table_scroll_box::-webkit-scrollbar {
         width: 0.8rem;
     }
+
     .basic_table_scroll_box td {
         padding-left: 1.4rem;
-        height: 5.2rem;
+        height: 4.6rem;
     }
 }
 
@@ -459,7 +557,7 @@ label[for=basic_file] {
         height: 3.6rem;
         font-size: 1.4rem;
     }
-    
+
     .basic_popup_header {
         padding-top: 0.3rem;
         height: 3.6rem;
@@ -470,7 +568,7 @@ label[for=basic_file] {
         padding: 1.5rem 0;
         height: calc(100% - 11.5rem);
     }
-    
+
     .popup_input_article {
         height: 2.4rem;
     }
@@ -479,11 +577,11 @@ label[for=basic_file] {
         font-size: 1.2rem;
         width: 8rem;
     }
-    
+
     .popup_input_article .basic_input {
         width: calc(100% - 9.5rem);
     }
-    
+
     .basic_popup_footer {
         height: 4.2rem;
     }
@@ -534,21 +632,22 @@ label[for=basic_file] {
         width: 100%;
         height: 3.8rem;
     }
-    
+
     .basic_table_head_tr_td {
         padding-left: 0.8rem;
     }
-    
+
     .basic_table_scroll_box {
         min-height: 8.4rem;
     }
-    
+
     .basic_table_scroll_box::-webkit-scrollbar {
         width: 0.5rem;
     }
+
     .basic_table_scroll_box td {
         padding-left: 0.8rem;
-        height: 4.4rem;
+        height: 3.8rem;
     }
 
 }
@@ -569,7 +668,7 @@ label[for=basic_file] {
         height: 3.4rem;
         font-size: 1.2rem;
     }
-    
+
     .basic_popup_header {
         padding-top: 0.2rem;
         height: 3.4rem;
@@ -580,7 +679,7 @@ label[for=basic_file] {
         padding: 1rem 0;
         height: calc(100% - 9.5rem);
     }
-    
+
     .popup_input_article {
         height: 2.2rem;
     }
@@ -589,11 +688,11 @@ label[for=basic_file] {
         font-size: 1rem;
         width: 6rem;
     }
-    
+
     .popup_input_article .basic_input {
         width: calc(100% - 7rem);
     }
-    
+
     .basic_popup_footer {
         height: 3.8rem;
     }
@@ -644,20 +743,21 @@ label[for=basic_file] {
         width: 100%;
         height: 3.4rem;
     }
-    
+
     .basic_table_head_tr_td {
         padding-left: 0.6rem;
     }
-    
+
     .basic_table_scroll_box {
         min-height: 7.6rem;
     }
-    
+
     .basic_table_scroll_box::-webkit-scrollbar {
         width: 0.4rem;
     }
+
     .basic_table_scroll_box td {
         padding-left: 0.6rem;
-        height: 4rem;
+        height: 3.4rem;
     }
 }

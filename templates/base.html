@@ -128,7 +128,7 @@
           </div>
           <div class="menu_box-depth2">
             <a href="{% url 'notice:kinds' 'driver' %}" class="menu_item-depth2">
-              <div class="menu_name-depth2">운전원 공지사항</div>
+              <div class="menu_name-depth2">기사님 공지사항</div>
             </a>
             <a href="{% url 'notice:kinds' 'office' %}" class="menu_item-depth2">
               <div class="menu_name-depth2">사무실 공지사항</div>
@@ -365,7 +365,7 @@
 
     <!-- 메인 영역 -->
     <div class="main_Area">
-      <div class="header">일정</div>
+      <div class="header">{% block content-header %}{% endblock %}</div>
       <div class="main_container">
         {% block content %}
         {% endblock %}

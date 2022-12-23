@@ -15,102 +15,94 @@
 {% endblock %}
 
 {% block content %}
-<div class="searchAreaBox">
-  <form action="" id="top_box-form">
-    <div class="searchTool">
-      <div class="searchToolCell">
-        <span class="searchName">검색종류</span>
-        <select form=top_box-form name="top_box_selector" id="noticeKindsSearchToolSelect" class="searchToolInput searchToolSelect">
-          <option value="title" {% if selector == 'title' %} selected {% endif %}>제목</option>
-          <option value="creator" {% if selector == 'creator' %} selected {% endif %}>작성자</option>
-        </select>
-        <input autocomplete="off"type="text" name="search" value="{{search}}" class="searchToolInput">
-      </div>
-      <input autocomplete="off"type="submit" value="검색" class="searchBtn">
-    </div>
+
+<div class="basic_container notice_search">
+  <form class="notice_search_box">
+    <select name="top_box_selector" class="basic_select notice_search_select">
+      <option value="title">제목</option>
+      <option value="creator">작성자</option>
+    </select>
+    <input type="text" class="basic_input search_input notice_search_input" name="search" value="{{search}}">
+    <div class="basic_btn">검색</div>
   </form>
+  {% if kinds == "office" %}
+  <a href="{% url 'notice:create' %}?kinds=office">
+    {% else %}
+    <a href="{% url 'notice:create' %}?kinds=driver">
+      {% endif %}
+      <div class="create_btn">등록</div>
+    </a>
 </div>
 
-<div class="contentsAreaBox">
+<div class="basic_container notice_list">
 
+  <table class="basic_fixed_table notice_fixed_table">
+    <thead>
+      <tr class="basic_fixed_table_head">
+        <td>번호</td>
+        <td>제목</td>
+        <td>작성자</td>
+        <td>등록일</td>
+        <td>조회수</td>
+      </tr>
+    </thead>
+    <tbody>
+      {% for notice in notices %}
+      <tr class="basic_fixed_table_body">
+        <td>{{start_num|sub:forloop.counter0}}</td>
+        <td>
+          <a href="{% url 'notice:detail' kinds notice.id %}">
+            <span class="notice_title_link">{{notice.title}}</span>
+          </a>
+        </td>
+        <td>{{notice.creator.name}}</td>
+        <td>{{notice.pub_date | date:'Y.m.d H:i'}}</td>
+        <td>{{notice.view_cnt}}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
 
-  <form action="" class="tableForm">
-    
-
-    <table class="tableHead">
-      <thead>
-        <tr class="headerLine">
-          <td>번호</td>
-          <td>제목</td>
-          <td>작성자</td>
-          <td>등록일</td>
-          <td>조회수</td>
-        </tr>
-      </thead>
-    </table>
-
-    <table class="tableBody">
-      <tbody>
-        {% for notice in notices %}
-        <tr>
-          <td>{{start_num|sub:forloop.counter0}}</td>
-          <td><a href="{% url 'notice:detail' kinds notice.id %}">{{notice.title}}</a></td>
-          <td>{{notice.creator.name}}</td>
-          <td>{{notice.pub_date | date:'Y.m.d H:i'}}</td>
-          <td>{{notice.view_cnt}}</td>
-        </tr>
-        {% endfor %}
-        <tr class="blankTR"></tr>
-      </tbody>
-    </table>
-
-    <div class="btnAreaBox">
+  <div class="pagenation_box">
+    <div class="pagination">
+      <!-- 페이징 처리 -->
+      {% if is_paginated %}
       <div class="pagination">
-        <!-- 페이징 처리 -->
-        {% if is_paginated %}
-        <div class="pagination">
-          {% if page_obj.has_previous %}
-          <div class="page-item page-pre">
-            <a class="page-link"
-              href="?top_box_selector={{selector}}&search={{search}}&page={{ page_obj.previous_page_number }}"
-              tabindex="-1">이전</a>
-          </div>
-          {% else %}
-          <div class="page-item page-pre disabled">
-            <a class="page-link" href="#" tabindex="-1">이전</a>
-          </div>
-          {% endif %}
+        {% if page_obj.has_previous %}
+        <div class="page-item page-pre">
+          <a class="page-link"
+            href="?top_box_selector={{selector}}&search={{search}}&page={{ page_obj.previous_page_number }}"
+            tabindex="-1">이전</a>
+        </div>
+        {% else %}
+        <div class="page-item page-pre disabled">
+          <a class="page-link" href="#" tabindex="-1">이전</a>
+        </div>
+        {% endif %}
+        <div class="pagenation_number_box">
           {% for page in page_range %}
           <div class="page-item {% if page == page_obj.number %} page-activate {% endif %}">
             <a class="page-link" href="?top_box_selector={{selector}}&search={{search}}&page={{ page }}">{{ page }}</a>
           </div>
           {% endfor %}
-
-          {% if page_obj.has_next %}
-          <div class="page-item">
-            <a class="page-link page-next"
-              href="?top_box_selector={{selector}}&search={{search}}&page={{ page_obj.next_page_number }}">다음</a>
-          </div>
-          {% else %}
-          <div class="page-item page-next disabled">
-            <a class="page-link" href="#">다음</a>
-          </div>
-          {% endif %}
+        </div>  
+        {% if page_obj.has_next %}
+        <div class="page-item">
+          <a class="page-link page-next"
+            href="?top_box_selector={{selector}}&search={{search}}&page={{ page_obj.next_page_number }}">다음</a>
+        </div>
+        {% else %}
+        <div class="page-item page-next disabled">
+          <a class="page-link" href="#">다음</a>
         </div>
         {% endif %}
       </div>
-      <div class="btnBox">
-        {% if kinds == "office" %}<a href="{% url 'notice:create' %}?kinds=office">
-        {% else %} <a href="{% url 'notice:create' %}?kinds=driver"> {% endif %}
-          <div class="createBtn">등록</div>
-        </a>
-      </div>
-
+      {% endif %}
     </div>
-  </form>
-
+  </div>
 
 </div>
+
 {% endblock %}
 
 

@@ -1,353 +1,274 @@
-.creteHeader {
+.notice_container {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  width: 100%;
-  height: auto;
-}
-
-.inputCell {
-  display: flex;
-  justify-content: space-between;
   align-items: center;
-  width: 100%;
-  height: 2.5rem;
-  margin-bottom: 2rem;
-}
-
-.inputCellFile {
-  align-items: flex-start;
-  height: 8rem;
-  margin-bottom: 0;
-}
-
-.inputName {
-  width: 7rem;
-  padding-left: 1rem;
-  font-size: 1.6rem;
-  font-weight: 500;
-  color: #191919;
-}
-
-.noticeTitle {
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-  width: calc(100% - 13rem);
-  height: 2.3rem;
-  font-size: 1.6rem;
-  color: #191919;
-  cursor: default;
-}
-
-.noticeFile {
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-  width: calc(100% - 13rem);
-  height: 4.3rem;
-  padding: 1rem;
-}
-
-.fileBox {
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  align-items: flex-start;
-  width: calc(100% - 13rem);
-  height: 8rem;
-  padding: 0.4rem 1rem;
-  border: 0.1rem solid #D2D2D2;
-  border-radius: 0.2rem;
+  padding: 2rem;
+  height: 66.4rem;
   box-sizing: border-box;
-  overflow-y: scroll;
 }
 
-/* 스크롤바 설정*/
-.fileBox::-webkit-scrollbar {
-  position: absolute;
-  width: 1rem;
-}
-
-/* 스크롤바 막대 설정*/
-.fileBox::-webkit-scrollbar-thumb {
-  height: 17%;
-  background-color: #828282;
-  /* 스크롤바 둥글게 설정    */
-  border-radius: 10px;
-}
-
-/* 스크롤바 뒷 배경 설정*/
-.fileBox::-webkit-scrollbar-track {
-  background-color: #F5F5F5;
-}
-
-.fileLink {
-  font-size: 1.6rem;
-  color: #191919;
-  text-decoration: underline;
-  margin-right: 1rem;
-}
-
-.radiobox {
-  display: flex;
-  align-items: center;
-  width: calc(100% - 13rem);
-}
-
-.radiobox input{
-  width: 1.6rem;
-  height: 1.6rem;
-  margin: 0.3rem 1rem 0 0;
-  border: 0.1rem solid #D2D2D2;
-  cursor: pointer;
-}
-
-.radiobox label {
-  font-size: 1.6rem;
-  color: #191919;
+.notice_title_label {
+  text-align: justify;
+  width: 6.6rem;
+  line-height: 0;
   margin-right: 2rem;
-  cursor: pointer;
 }
 
-.noticeTextarea {
+.notice_title_box_kinds{
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  width: 20rem;
+}
+
+.notice_input_Kinds {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0;
+  width: 8rem;
+}
+
+.notice_input_title {
+  width: calc(100% - 8.6rem);
+}
+
+.notice_title_label::before,
+.notice_title_label::after {
+  content: "";
+  display: inline-block;
   width: 100%;
-  height: 36rem;
-  overflow-y: scroll;
-  padding: 1rem;
-  margin: 2rem 0;
-  border: 0.1rem solid #D2D2D2;
-  border-radius: 0.3rem;
-  cursor: default;
-  font-size: 1.6rem;
-  box-sizing: border-box;
-  font-family: "Noto Sans CJK KR";
-  outline: none;
-  white-space: pre-wrap;
 }
 
-.createBtnBox {
+.notice_title_label_file {
+  align-items: flex-start;
+  height: 100%;
+}
+
+.notice_file_input {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  width: calc(100% - 8.6rem);
+  height: 100%;
+  padding: 1rem;
+  border: 0.1rem solid #ABABAB;
+  border-radius: 0.3rem;
+  box-sizing: border-box;
+  overflow-y: scroll;
+}
+
+.notice_file_input::-webkit-scrollbar {
+    width: 0.6rem;
+}
+
+.notice_file_input::-webkit-scrollbar-thumb {
+    height: 17%;
+    background-color: #4E5869;
+    border-radius: 1rem;
+}
+
+.notice_file_input::-webkit-scrollbar-track {
+    background-color: #F1F3F4;
+}
+
+.notice_file_input a{
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  margin-bottom: 1rem;
+  color: black;
+  border-bottom: 0.1rem solid black;
+}
+
+.notice_title_box {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  width: 100%;
+  height: 2.6rem;
+}
+
+.notice_file_box {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  width: 100%;
+  height: 7rem;
+}
+
+.notice_contents_box {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  width: 100%;
+  height: 44.2rem;
+}
+
+.notice_contents_box_title {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  width: 100%;
+  height: 4.2rem;
+  padding-left: 2rem;
+  box-sizing: border-box;
+  background-color: #4E5869;
+  color: white;
+}
+
+.notice_contents_area {
+  resize: none;
+  width: 100%;
+  height: 40rem;
+  padding: 1rem;
+  border: 0.1rem solid #CDCDCD;
+  border-radius: 0 0 0.3rem 0.3rem;
+  box-sizing: border-box;
+  outline: none;
+}
+
+.notice_detail_btn_box{
   display: flex;
   justify-content: flex-end;
-  width: 100%;
-  height: 2.5rem;
-  margin-bottom: 2rem;
+  align-items: center;
+  width: 13rem;
+  height: 100%;
+  margin-left: auto;
 }
 
-.createBtnBox form {
-  width: 6.5rem;
+.notice_detail_btn_box .basic_btn{
   margin-left: 1rem;
 }
 
-.deleteBtn {
+
+
+
+
+/* 댓글달기 */
+.add_comment_container{
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  justify-content: flex-start;
   align-items: center;
-  width: 6.5rem;
-  height: 2.5rem;
-  padding: 0;
-  margin: 0;
-  border: none;
-  border-radius: 0.3rem;
-  background-color: #444444;
-  font-size: 1.4rem;
-  color: white;
-  cursor: pointer;
-}
-
-.editBtn {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 6.5rem;
-  height: 2.5rem;
-  padding: 0;
-  margin: 0;
-  border: none;
-  border-radius: 0.3rem;
-  background-color: #0069D9;
-  font-size: 1.4rem;
-  color: white;
-  cursor: pointer;
-}
-
-
-
-
-
-/*commentArea*/
-.commentArea,
-.commentCreateArea {
   width: 100%;
-  height: auto;
+  height: 12rem;
   margin-top: 2rem;
-  background-color: white;
-  border: 0.1rem solid #CDCDCE;
-  border-radius: 0.3rem;
-  box-shadow: 0 0.2rem 0.4rem rgba(0, 0, 0, 0.16);
 }
 
-.commentArea form {
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  height: auto;
-}
-
-.commentTitle {
+.notice_add_comment_title{
   display: flex;
   justify-content: flex-start;
   align-items: center;
   width: 100%;
-  height: 3rem;
-  padding-left: 1rem;
-  padding-bottom: 0.4rem;
-  font-size: 1.6rem;
+  height: 4.2rem;
+  padding-left: 2rem;
+  box-sizing: border-box;
+  background-color: #4E5869;
   color: white;
-  border-bottom: 0.1rem solid #CDCDCE;
-  background-color: #444444;
-  box-sizing: border-box;
 }
 
-.commentTitle span {
-  margin-left: 0.6rem;
-}
-
-.commentBox {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-around;
-  width: 100%;
-  height: auto;
-  min-height: 6rem;
-  padding: 0.4rem 1rem 1rem 1rem;
-  border-bottom: 0.1rem solid #CDCDCE;
-  box-sizing: border-box;
-}
-
-.commentArea form div:nth-last-child(1) {
-  border: none;
-}
-
-.commentUserDataCell {
-  display: flex;
-  justify-content: flex-start;
-  align-items: flex-end;
-  width: 100%;
-  height: 2rem;
-}
-
-.commentUserTitle {
-  font-size: 1.4rem;
-  font-weight: 500;
-  color: #191919;
-  margin-right: 0.6rem;
-}
-
-.commentCreateDate {
-  font-size: 1.2rem;
-  color: #444444;
-  margin-right: 0.6rem;
-}
-
-
-.commentUserDataCell form{
-  width: 4rem;
-}
-
-.commentDeleteBtn {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 4rem;
-  height: 1.6rem;
-  border: 0.1rem solid #CDCDCE;
-  border-radius: 0.2rem;
-  box-sizing: border-box;
-  background-color: white;
-  font-size: 1.1rem;
-  line-height: 1.5rem;
-  color: red;
-  cursor: pointer;
-}
-
-.commentContents {
-  min-height: 4.2rem;
-  max-height: 8rem;
-  padding: 1rem;
-  box-sizing: border-box;
-  overflow-y: scroll;
-  font-size: 1.5rem;
-  color: #191919;
-  font-family: "Noto Sans CJK KR";
-  white-space: pre-wrap;
-}
-
-
-
-
-
-
-/*commentCreateArea*/
-.commentCreateArea {
-  height: 18rem;
-}
-
-.commentCreateArea form {
-  width: 100%;
-  height: 100%;
-}
-
-.commentCreateTitle {
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-  width: 100%;
-  height: 3rem;
-  padding-left: 1rem;
-  padding-bottom: 0.4rem;
-  font-size: 1.6rem;
-  color: white;
-  box-sizing: border-box;
-  background-color: #444444;
-}
-
-.commentCreateBox {
+.add_comment_form{
   display: flex;
   justify-content: space-between;
-  height: 10rem;
-  margin: 1rem 0;
-  padding: 0 1rem;
-  box-sizing: border-box;
-}
-
-.commentCreateGuide {
-  display: flex;
-  justify-content: center;
   align-items: center;
-  width: 10rem;
-  height: 10rem;
-  border: 0.1rem solid #CDCDCE;
-  border-radius: 0.2rem;
+  width: 100%;
+  height: 100%;
+  padding: 1rem 2rem;
   box-sizing: border-box;
-  font-size: 1.6rem;
-  color: #191919;
-  background-color: #EFEFEF;
 }
 
-.commentCreateBox textarea {
-  width: calc(100% - 12rem);
+.add_comment_textarea{
+  width: calc(100% - 9rem);
   height: 100%;
-  padding: 1rem;
-  border: 0.1rem solid #CDCDCE;
-  border-radius: 0.2rem;
+  padding: 0.6rem;
+  border: 0.1rem solid #ABABAB;
+  border-radius: 0.3rem;
   box-sizing: border-box;
-  outline: none;
   resize: none;
 }
 
-.commentCreateBtnCell {
+.add_comment_btn{
+  width: 7rem;
+  height: 100%;
+  cursor: pointer;
+}
+
+
+
+
+
+/* 댓글목록 */
+.comment_list_container{
   display: flex;
-  justify-content: flex-end;
-  padding: 0 1rem;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  width: 100%;
+  min-height: 12rem;
+  height: auto;
+  margin-top: 2rem;
+}
+
+.notice_comment_list_title{
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  width: 100%;
+  height: 4.2rem;
+  padding-left: 2rem;
+  box-sizing: border-box;
+  background-color: #4E5869;
+  color: white;
+}
+
+.notice_comment_list_Box{
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  width: 100%;
+  min-height: calc(100% - 4.2rem);
+  height: auto;
+  padding: 1rem 2rem;
+  box-sizing: border-box;
+}
+
+.comment_box{
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  width: 100%;
+  min-height: 5.2rem;
+  height: auto;
+  border-bottom: 0.1rem solid black;
+}
+
+.comment_creator_box{
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  width: 100%;
+  height: 2.6rem;
+}
+
+.comment_creator{
+  margin-right: 1.6rem;
+}
+
+.comment_delete_btn{
+  width: 4rem;
+  height: 2rem;
+  font-size: 1.3rem;
+}
+
+.comment_contents_box{
+  width: 100%;
+  min-height: 2.6rem;
+  height: auto;
+  outline: none;
 }
