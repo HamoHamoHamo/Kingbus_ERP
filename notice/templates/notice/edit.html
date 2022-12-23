@@ -1,57 +1,62 @@
 {% extends 'base.html' %}
 {% load static %}
-
 {% block head %}
-<link rel="stylesheet" href="{% static 'css/notice/notice_edit.css' %}" type="text/css" />
+<link rel="stylesheet" href="{% static 'css/notice/notice_detail.css' %}" type="text/css" />
+<link rel="stylesheet" href="{% static 'css/notice/notice_create.css' %}" type="text/css" />
 {% endblock %}
 
 {% block content-header %}
+<!--trp HeaderTitle-->
 <div class="HeaderTitle">
   {% if notice.kinds == 'driver' %}기사님 공지사항 {% else %} 사무실 공지사항 {% endif %}
 </div>
 {% endblock %}
+
 {% block content %}
 
-<div class="contentsAreaBox">
-  <form action="" method="post" enctype="multipart/form-data">
-    {% csrf_token %}
-    <div class="creteHeader">
-      <div class="inputCell">
-        <span class="inputName">제목</span>
-        <input autocomplete="off" type="text" name="title" class="editTitle length100" value="{{ notice.title }}" required>
+<form action="" method="post" enctype="multipart/form-data" class="basic_container notice_container">
+  {% csrf_token %}
+  <div class="notice_title_box">
+    <div class="notice_title_box_kinds">
+      <div class="notice_title_label">구 분</div>
+      <select class="basic_select kinds_select" name="kinds">
+        <option value="driver" id="driver" {% if notice.kinds == 'driver' %} selected {% endif %}>기사님</option>
+        <option value="office" id="office" {% if notice.kinds == 'office' %} selected {% endif %}>사무실</option>
+      </select>
+    </div>
+    <input type="submit" class="create_btn notice_create_btn" value="저장">
+  </div>
+  <div class="notice_title_box">
+    <div class="notice_title_label">제 목</div>
+    <input type="text" class="basic_input notice_input_title" name="title" value="{{ notice.title }}" required>
+  </div>
+  <div class="notice_file_box">
+    <div class="notice_title_label notice_title_label_file">첨 부 파 일</div>
+    <div class="notice_create_file_box">
+      <div class="basic_file_box notice_create_file_input">
+        <label for="notice_create_file">파일선택</label>
+        <input name="file" type="file" class="basic_file-list" id="notice_create_file" multiple>
       </div>
-      <div class="inputCell">
-        <span class="inputName">구분</span>
-        <div class="radiobox">
-          <input autocomplete="off" type="radio" id="driver" value="driver" name="kinds" {% if notice.kinds == 'driver' %} checked {% endif %}>
-          <label for="driver">기사님</label>
-          <input autocomplete="off" type="radio" id="office" value="office" name="kinds" {% if notice.kinds == 'office' %} checked {% endif %}>
-          <label for="office">사무실</label>
+      <div class="notice_create_file_list">
+        {% if notice_files %}
+        {% for file in notice_files %}
+        <div class="notice_file_cell">
+          <div class="notice_delete_file_Btn">ⅹ</div>
+          <span>{{file.filename}}</span>
         </div>
-      </div>
-      <div class="inputCell inputCellFile">
-        <span class="inputName">첨부파일</span>
-        <div class="fileEditer">
-          <input autocomplete="off" type="file" name="file" multiple>
-          {% if notice_files %}
-            <div class="createdFileBox">
-              {% for file in notice_files %}
-              <div class="createdFileCell">
-                <span>{{file.filename}}</span>
-                {% if request.session.user == notice.creator.id %}
-                <a href="{% url 'notice:file_del' notice.kinds notice.id file.id %}">삭제</a>
-                {% endif %}
-              </div>
-              {% endfor %}
-            </div>
-          {% endif %}
-        </div>
+        {% endfor %}
+        {% endif %}
       </div>
     </div>
-    <textarea class="editTextArea length3000" name="content" required>{{notice.content}}</textarea>
-    <div class="createBtnBox">
-      <input autocomplete="off" type="submit" value="저장" class="createBtn">
-    </div>
-  </form>
-</div>
+  </div>
+  <div class="notice_contents_box">
+    <div class="notice_contents_box_title">내용</div>
+    <textarea name="content" class="notice_contents_area" required>{{notice.content}}</textarea>
+  </div>
+</form>
+
+{% endblock %}
+
+{% block script %}
+<script src="{% static 'js/notice/editFile.js' %}"></script>
 {% endblock %}

@@ -69,13 +69,13 @@
       <div class="comment_creator_box">
         <div class="comment_creator">[{{comment.creator}}] {{comment.pub_date | date:'Y.m.d H:i:s'}}</div>
         {% if request.session.user == comment.creator.id or request.session.authority == 0 %}
-        <form method="post" action="{% url 'notice:comment_del' notice.kinds notice.id comment.id %}">
+        <form method="post" action="{% url 'notice:comment_del' notice.kinds notice.id comment.id %}" onsubmit="return confirm('정말로 삭제하시겠습니까?')">
           {% csrf_token %}
           <input type="submit" class="delete_btn comment_delete_btn" value="삭제">
         </form>
         {% endif %}
       </div>
-      <div class="comment_contents_box"></div>
+      <div class="comment_contents_box">{{comment.content}}</div>
     </div>
     {% endfor %}
   </div>

@@ -93,7 +93,7 @@
     box-sizing: border-box;
 }
 
-label[for=basic_file] {
+.basic_file_box label {
     position: absolute;
     top: -0.1rem;
     left: -0.1rem;
@@ -109,7 +109,7 @@ label[for=basic_file] {
     cursor: pointer;
 }
 
-#basic_file {
+.basic_file {
     display: none;
 }
 
