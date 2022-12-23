@@ -31,7 +31,7 @@ WEEK2 = ['월', '화', '수', '목', '금', '토', '일', ]
 class RegularlyPrintList(generic.ListView):
     template_name = 'dispatch/regularly_print.html'
     context_object_name = 'order_list'
-    model = DispatchRegularly
+    model = DispatchRegularlyData
 
     def get(self, request, *args, **kwargs):
         if request.session.get('authority') > 1:
@@ -45,10 +45,24 @@ class RegularlyPrintList(generic.ListView):
 
         weekday = WEEK2[datetime.strptime(date, FORMAT).weekday()]
         
+        if group_id:
+            group = RegularlyGroup.objects.get(id=group_id)
+        else:
+            group = RegularlyGroup.objects.order_by('number','name').first()
 
-        group = RegularlyGroup.objects.get(id=group_id)
-        dispatch_list = group.regularly_monthly.filter(week__contains=weekday).order_by('num1', 'number1', 'num2', 'number2')
+        regularly_list = DispatchRegularlyData.objects.filter(group=group).filter(week__contains=weekday).order_by('num1', 'number1', 'num2', 'number2')
+        temp = []
+        dispatch_list = []
+        for regularly in regularly_list:
+            # first 확인필요
+            dispatch = regularly.monthly.filter(edit_date__lte=date).order_by('-edit_date').first()
+            if not dispatch:
+                dispatch = regularly.monthly.filter(edit_date__gte=date).order_by('edit_date').first()
+                
 
+            if dispatch.use == '사용':
+                dispatch_list.append(dispatch)
+        print("ssssssssss", dispatch_list)
         return dispatch_list
     
     def get_context_data(self, **kwargs):
