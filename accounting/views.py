@@ -7,7 +7,7 @@ from dispatch.views import FORMAT
 from humanresource.models import Member
 from datetime import datetime, timedelta, date
 from dateutil.relativedelta import relativedelta
-from dispatch.models import DispatchOrder, DispatchOrderConnect, DispatchRegularlyConnect, DispatchRegularly, RegularlyGroup
+from dispatch.models import DispatchOrder, DispatchOrderConnect, DispatchRegularlyConnect, DispatchRegularly, RegularlyGroup, DispatchRegularlyData
 from django.db.models import Sum
 from django.http import JsonResponse, Http404, HttpResponse, HttpResponseNotAllowed, HttpResponseRedirect
 from django.shortcuts import render, redirect, get_object_or_404
@@ -399,13 +399,23 @@ def regularly_load(request):
         date2 = post_data['date2']
 
         group = get_object_or_404(RegularlyGroup, id=group_id)
-        regularly_list = DispatchRegularly.objects.prefetch_related('info_regularly').filter(group=group)
+
+        regularly_list = DispatchRegularlyData.objects.filter(group=group)
+
+        # regularly_list = DispatchRegularly.objects.prefetch_related('info_regularly').filter(group=group)
         
         temp_list = []
         try:
-            for regularly in regularly_list:
-                cnt = regularly.info_regularly.filter(departure_date__range=(f'{date1} 00:00', f'{date2} 24:00')).count(),
-                cnt = cnt[0]
+            for regularly_data in regularly_list:
+                regularly = regularly_data.monthly.filter(edit_date__lte=date2).order_by('-edit_date').first()
+                if not regularly:
+                    regularly = regularly_data.monthly.filter(edit_date__gte=date2).order_by('edit_date').first()
+                
+                cnt = DispatchRegularlyConnect.objects.filter(regularly_id__regularly_id=regularly_data).filter(departure_date__range=(f'{date1} 00:00', f'{date2} 24:00')).count()
+                print('cnttt', cnt)
+                print('regularlarra', regularly_data)
+                # cnt = regularly.info_regularly.filter(departure_date__range=(f'{date1} 00:00', f'{date2} 24:00')).count(),
+                # cnt = cnt[0]
                 supply_price = int(regularly.price) * int(cnt)
                 print(supply_price)
                 VAT = math.floor(supply_price * 0.1 + 0.5)
@@ -420,6 +430,25 @@ def regularly_load(request):
                     'supply_price': int(regularly.price) * int(cnt),
                     'VAT': VAT,
                 })
+            
+
+            # for regularly in regularly_list:
+            #     cnt = regularly.info_regularly.filter(departure_date__range=(f'{date1} 00:00', f'{date2} 24:00')).count(),
+            #     cnt = cnt[0]
+            #     supply_price = int(regularly.price) * int(cnt)
+            #     print(supply_price)
+            #     VAT = math.floor(supply_price * 0.1 + 0.5)
+
+            #     temp_list.append({
+            #         'duration': f'{date1} ~ {date2}',
+            #         'week': regularly.week,
+            #         'type': regularly.work_type,
+            #         'route': regularly.route,
+            #         'cnt': cnt,
+            #         'contract_price': regularly.price,
+            #         'supply_price': int(regularly.price) * int(cnt),
+            #         'VAT': VAT,
+            #     })
         except Exception as e:
             return JsonResponse({'status': 'fail', 'error': f'{e}'})
             

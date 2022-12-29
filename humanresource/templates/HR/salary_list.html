@@ -70,7 +70,9 @@
                     <td class="table-list_body-tr_td">{{forloop.counter}}</td>
                     <td class="table-list_body-tr_td">{{member.name}}</td>
                     <td class="table-list_body-tr_td">{{member.role}}</td>
-                    <td class="table-list_body-tr_td">{{member.entering_date}}</td>
+                    <td class="table-list_body-tr_td">
+                        {{member.entering_date}} {% if year_list|index:forloop.counter0|slice:':1' != '0' %}({{year_list|index:forloop.counter0}}년){% else %}({{year_list|index:forloop.counter0|slice:'1:'}}개월){% endif %}
+                    </td>
                     <td class="table-list_body-tr_td">
                         <input type="text" class="amountInput length100" value="{{salary.base}}">
                     </td>

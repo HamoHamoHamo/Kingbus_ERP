@@ -1020,17 +1020,7 @@ def regularly_order_edit(request):
                 )
             regularly.save()
 
-            # print("rrrrrrrrr", regularly)
-            connects = DispatchRegularlyConnect.objects.filter(regularly_id__regularly_id=order).filter(departure_date__gte=f'{TODAY} 00:00')
-            # print("CONNNN", connects)
-            for connect in connects:
-                connect.regularly_id = regularly
-                connect.departure_date = f'{connect.departure_date[:10]} {regularly.departure_time}'
-                connect.arrival_date = f'{connect.departure_date[:10]} {regularly.arrival_time}'
-                connect.work_type = regularly.work_type
-                connect.price = regularly.price
-                connect.driver_allowance = regularly.driver_allowance
-                connect.save()
+            
 
             #### 금액, 기사수당 수정 시 입력한 월 이후 배차들 금액, 기사수당 수정
             post_month = request.POST.get('month')
@@ -1052,11 +1042,13 @@ def regularly_order_edit(request):
                     salary.save()
 
                     total = TotalPrice.objects.filter(group_id=group).get(month=month)
-                    print("total.total_price", total.total_price)
                     print("price", price)
                     print("connnect'", connect)
                     print("connect.price", connect.price)
+                    print("total.total_price", total.total_price)
                     total.total_price = int(total.total_price) + price + math.floor(price * 0.1 + 0.5) - (int(connect.price) + math.floor(int(connect.price) * 0.1 + 0.5))
+                    print("total.total_price222", total.total_price)
+
                     total.save()
 
                     connect.price = price
@@ -1070,7 +1062,17 @@ def regularly_order_edit(request):
                         c_regularly = connect.regularly_id
                     
                     
-
+            # print("rrrrrrrrr", regularly)
+            connects = DispatchRegularlyConnect.objects.filter(regularly_id__regularly_id=order).filter(departure_date__gte=f'{TODAY} 00:00')
+            # print("CONNNN", connects)
+            for connect in connects:
+                connect.regularly_id = regularly
+                connect.departure_date = f'{connect.departure_date[:10]} {regularly.departure_time}'
+                connect.arrival_date = f'{connect.departure_date[:10]} {regularly.arrival_time}'
+                connect.work_type = regularly.work_type
+                connect.price = regularly.price
+                connect.driver_allowance = regularly.driver_allowance
+                connect.save()
 
             return redirect(request.META.get('HTTP_REFERER', 'redirect_if_referer_not_found'))
         else: 
@@ -1928,7 +1930,8 @@ def daily_driving_list(request):
     if request.session.get('authority') > 3:
         member_list = Member.objects.filter(id=request.session.get('user'))
     else:
-        member_list = Member.objects.filter(use='사용').filter(authority__gte=3)
+        # member_list = Member.objects.filter(use='사용').filter(authority__gte=3)
+        member_list = Member.objects.filter(authority__gte=3)
     
     connect_object = {}
     e_connect_object = {}
@@ -1943,7 +1946,6 @@ def daily_driving_list(request):
     else:
         r_connect_list = DispatchRegularlyConnect.objects.select_related('driver_id').filter(departure_date__startswith=date).order_by('departure_date')
     for connect in r_connect_list:
-        
         if connect.work_type == "출근":
             e_connect_object[connect.driver_id.id].append(connect)
         elif connect.work_type == "퇴근":
