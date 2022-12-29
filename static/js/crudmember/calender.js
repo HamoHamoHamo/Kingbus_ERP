@@ -162,7 +162,9 @@ function today() {
     }
 }
 
-
+// 현재 년, 월
+let nowY = parseInt(parms.get("year")) ? parseInt(parms.get("year")) : nowYear;
+let nowM = parseInt(parms.get("month")) ? parseInt(parms.get("month")) : nowMonth;
 
 
 
@@ -170,27 +172,18 @@ function today() {
 prevBtn.addEventListener("click", prevDay)
 
 function prevDay() {
-    if (parms.has("year") && parms.has("month")) {
-        if (parms.get("month") == 1) {
-            if (parms.has("change")) {
-                location.href = `${window.location.href.split("?")[0]}?change=true&year=${parseInt(parms.get("year")) - 1}&month=${12}`
-            } else {
-                location.href = `${window.location.href.split("?")[0]}?year=${parseInt(parms.get("year")) - 1}&month=${12}`
-            }
-        } else {
-            if (parms.has("change")) {
-                location.href = `${window.location.href.split("?")[0]}?change=true&year=${parms.get("year")}&month=${parseInt(parms.get("month")) - 1}`
-            } else {
-                location.href = `${window.location.href.split("?")[0]}?year=${parms.get("year")}&month=${parseInt(parms.get("month")) - 1}`
-            }
-        }
-    } else {
-        if (parms.has("change")) {
-            location.href = `${window.location.href}&year=${nowYear}&month=${nowMonth - 1}`
-        } else {
-            location.href = `${window.location.href}?year=${nowYear}&month=${nowMonth - 1}`
-        }
+    let prevM = nowM < 11 ? `0${nowM-1}` : nowM - 1;
+    let prevY = nowM == 1 ? nowY - 1 : nowY;
+    if (prevM === '00') {
+        prevM = 12
     }
+
+    if (parms.has("change")) {
+        location.href = `${window.location.href.split("?")[0]}?change=true&year=${prevY}&month=${prevM}`
+    } else {
+        location.href = `${window.location.href.split("?")[0]}?year=${prevY}&month=${prevM}`
+    }
+    
 }
 
 
@@ -201,30 +194,16 @@ function prevDay() {
 nextBtn.addEventListener("click", nextDay)
 
 function nextDay() {
-    if (parms.has("year") && parms.has("month")) {
-        if (parms.get("month") == 12) {
-            if (parms.has("change")) {
-                location.href = `${window.location.href.split("?")[0]}?change=true&year=${parseInt(parms.get("year")) + 1}&month=${1}`
-            } else {
-                location.href = `${window.location.href.split("?")[0]}?year=${parseInt(parms.get("year")) + 1}&month=${1}`
-            }
-        } else {
-            if (parms.has("change")) {
-                location.href = `${window.location.href.split("?")[0]}?change=true&year=${parms.get("year")}&month=${parseInt(parms.get("month")) + 1}`
-            } else {
-                location.href = `${window.location.href.split("?")[0]}?year=${parms.get("year")}&month=${parseInt(parms.get("month")) + 1}`
-            }
-        }
+    let nextM = nowM < 9 ? `0${nowM+1}` : nowM + 1;
+    let nextY = nowM === 12 ? nowY + 1 : nowY;
+    if (nextM === 13) {
+        nextM = '01'
+    }
+
+    if (parms.has("change")) {
+        location.href = `${window.location.href.split("?")[0]}?change=true&year=${nextY}&month=${nextM}`
     } else {
-        if (parms.has("change")) {
-            location.href = `${window.location.href}?change=true&year=${nowYear}&month=${nowMonth + 1}`
-        } else {
-            if(nowMonth + 1 === 13){
-                location.href = `${window.location.href}?year=${nowYear + 1}&month=1`
-            }else{
-                location.href = `${window.location.href}?year=${nowYear}&month=${nowMonth + 1}`
-            }
-        }
+        location.href = `${window.location.href.split("?")[0]}?year=${nextY}&month=${nextM}`
     }
 }
 
