@@ -13,6 +13,7 @@ from crudmember.models import Category
 from vehicle.models import Vehicle
 from .forms import MemberForm
 from .models import Member, MemberFile, Salary, AdditionalSalary, DeductionSalary
+import math
 
 TODAY = str(datetime.now())[:10]
 WEEK = ['(월)', '(화)', '(수)', '(목)', '(금)', '(토)', '(일)', ]
@@ -38,9 +39,15 @@ class MemberList(generic.ListView):
         authority = self.request.session.get('authority')
         
         if name:
-            member_list = Member.objects.filter(use=use).filter(authority__gte=authority).filter(name__contains=name).order_by('name')
+            if use == '임시':
+                member_list = Member.objects.filter(role='임시').filter(authority__gte=authority).filter(name__contains=name).order_by('name')
+            else:
+                member_list = Member.objects.exclude(role='임시').filter(use=use).filter(authority__gte=authority).filter(name__contains=name).order_by('name')
         else:
-            member_list = Member.objects.filter(use=use).filter(authority__gte=authority).order_by('name')
+            if use == '임시':
+                member_list = Member.objects.filter(role='임시').filter(authority__gte=authority).order_by('name')
+            else:
+                member_list = Member.objects.exclude(role='임시').filter(use=use).filter(authority__gte=authority).order_by('name')
         if age == '65세 이상':
             print('testtt')
             member_list = member_list.filter(birthdate__lte=up65)
@@ -141,6 +148,7 @@ def member_create(request):
                 member.user_id = user_id
                 member.password = make_password('0000')
             member.emergency = request.POST.get('emergency1', '') + ' ' + request.POST.get('emergency2', '')
+            member.use = request.POST.get('use')
             member.save()
 
             license = request.FILES.get('license_file', None)
@@ -210,6 +218,7 @@ def member_edit(request):
             member.address = member_form.cleaned_data['address']
             member.note = member_form.cleaned_data['note']
             member.emergency = request.POST.get('emergency1', '') + ' ' + request.POST.get('emergency2', '')
+            member.use = request.POST.get('use')
             member.authority = req_auth
             
             member.save()
@@ -321,7 +330,7 @@ class SalaryList(generic.ListView):
             id = self.request.session.get('user')
             member_list = Member.objects.filter(entering_date__lt=month+'-32').filter(id=id)
         else:
-            member_list = Member.objects.filter(entering_date__lt=month+'-32').filter(Q(role='운전원')|Q(role='용역')).order_by('name')
+            member_list = Member.objects.filter(entering_date__lt=month+'-32').filter(Q(role='운전원')|Q(role='용역')).filter(use='사용').order_by('-role', 'name')
             if name:
                 member_list = member_list.filter(name__contains=name)
         
@@ -336,7 +345,13 @@ class SalaryList(generic.ListView):
         salary_list = []
         additional_list = []
         deduction_list = []
+        year_list = []
         for member in context['member_list']:
+            year = math.floor((datetime.strptime(TODAY[:10], FORMAT) - datetime.strptime(member.entering_date, FORMAT)).days/365)
+            if year == 0:
+                year = f'0{math.floor(((datetime.strptime(TODAY[:10], FORMAT) - datetime.strptime(member.entering_date, FORMAT)).days/30+0.5))}'
+            year_list.append(year)
+
             try:
                 salary = Salary.objects.filter(member_id=member).get(month=month)
             except Salary.DoesNotExist:
@@ -369,6 +384,7 @@ class SalaryList(generic.ListView):
         context['additional_list'] = additional_list
         context['deduction_list'] = deduction_list
         context['salary_list'] = salary_list
+        context['year_list'] = year_list
 
         try:
             meal = Category.objects.get(type='식대').category
@@ -444,7 +460,7 @@ def new_salary(creator, month, member):
         attendance = attendance_price,
         leave = leave_price,
         order = order_price,
-        total = attendance_price + leave_price + order_price + base + service_allowance + position_allowance + meal,
+        total = attendance_price + leave_price + order_price + base + service_allowance + position_allowance + int(meal),
         month = month,
         payment_date = payment_date,
         creator = creator
@@ -502,8 +518,9 @@ def salary_detail(request):
         additional = salary.additional_salary.all()
         deduction = salary.deduction_salary.all()
 
-        connects = DispatchOrderConnect.objects.filter(departure_date__range=(f'{month}-01', {month}-{last_date})).filter(driver_id=member)
+        connects = DispatchOrderConnect.objects.filter(departure_date__range=(f'{month}-01', f'{month}-{last_date}')).filter(driver_id=member)
         order_cnt = connects.count()
+        print('conccccc', connects, last_date)
         for connect in connects:
             c_date = int(connect.departure_date[8:10]) - 1
             if not order_list[c_date]:
@@ -514,7 +531,7 @@ def salary_detail(request):
         # if connects:
             total_list[c_date] += int(connect.driver_allowance)
 
-        attendances = DispatchRegularlyConnect.objects.filter(departure_date__range=(f'{month}-01', {month}-{last_date})).filter(work_type='출근').filter(driver_id=member)
+        attendances = DispatchRegularlyConnect.objects.filter(departure_date__range=(f'{month}-01', f'{month}-{last_date}')).filter(work_type='출근').filter(driver_id=member)
         attendance_cnt = attendances.count()
         for attendance in attendances:            
             c_date = int(attendance.departure_date[8:10]) - 1
@@ -526,7 +543,7 @@ def salary_detail(request):
         # if attendances:
             total_list[c_date] += int(attendance.driver_allowance)
 
-        leaves = DispatchRegularlyConnect.objects.filter(departure_date__range=(f'{month}-01', {month}-{last_date})).filter(work_type='퇴근').filter(driver_id=member)
+        leaves = DispatchRegularlyConnect.objects.filter(departure_date__range=(f'{month}-01', f'{month}-{last_date}')).filter(work_type='퇴근').filter(driver_id=member)
         leave_cnt = leaves.count()
         for leave in leaves:
             c_date = int(leave.departure_date[8:10]) - 1

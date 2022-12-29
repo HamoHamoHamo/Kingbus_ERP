@@ -38,15 +38,15 @@
 }
 
 .salaryContainer td:nth-child(3) {
-    width: 8%;
+    width: 7%;
 }
 
 .salaryContainer td:nth-child(4){
-    width: 5%;
+    width: 4%;
 }
 
 .salaryContainer td:nth-child(5){
-    width: 7%;
+    width: 9%;
 }
 
 .salaryContainer td:nth-child(6),

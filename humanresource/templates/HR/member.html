@@ -34,6 +34,7 @@
         <select name="use" id="filterUse" class="inputModules">
             <option {% if use == '사용' %} selected {% endif %} value="사용">사용</option>
             <option {% if use == '미사용' %} selected {% endif %} value="미사용">미사용</option>
+            <option {% if use == '임시' %} selected {% endif %} value="임시">임시</option>
         </select>
         <select name="age" id="filterAge" class="inputModules">
             <option {% if age == '나이 전체' %} selected {% endif %} value="나이 전체">나이 전체</option>
@@ -327,9 +328,9 @@
                     </div>
                     <div class="popupArticleDouble popupArticleUseEdit">
                         <label for="" class="popupArticleLabel"><span class="importantStar">*</span>사용여부</label>
-                        <input name="use" type="radio" class="hrUse" id="hrUse">
+                        <input name="use" value="사용" type="radio" class="hrUse" id="hrUse">
                         <label for="hrUse">사용</label>
-                        <input name="use" type="radio" class="hrUse" id="hrUnuse">
+                        <input name="use" value="미사용" type="radio" class="hrUse" id="hrUnuse">
                         <label for="hrUnuse">미사용</label>
                     </div>
                 </div>
