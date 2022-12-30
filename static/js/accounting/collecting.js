@@ -176,10 +176,12 @@ for (i = 0; i < routeRadio.length; i++) {
 
 function checker(event) {
     event.stopPropagation()
+    selectArr = []
     let checkerCount = 0
     for (i = 0; i < routeRadio.length; i++) {
         if (routeRadio[i].checked) {
             checkerCount++
+            selectArr.push(routeRadio[i].parentNode.parentNode)
         }
     };
     if (routeRadio.length === checkerCount) {
@@ -187,21 +189,25 @@ function checker(event) {
     } else {
         routeRadioAll.checked = false
     }
+    calcTotal(collectUnprocessed.checked, collectprocessed.checked, selectArr)
 }
 
 
 routeRadioAll.addEventListener("change", AllChecker)
 
 function AllChecker() {
+    selectArr = []
     if (routeRadioAll.checked) {
         for (i = 0; i < routeRadio.length; i++) {
             routeRadio[i].checked = true
+            selectArr.push(routeRadio[i].parentNode.parentNode)
         };
     } else {
         for (i = 0; i < routeRadio.length; i++) {
             routeRadio[i].checked = false
         };
     }
+    calcTotal(collectUnprocessed.checked, collectprocessed.checked, selectArr)
 }
 
 for (i = 0; i < collectDateBox.length; i++) {

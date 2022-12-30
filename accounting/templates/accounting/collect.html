@@ -25,7 +25,10 @@
             <input value="{{date1}}" autocomplete="off" name="date1" type="date" class="inputModules">
             <span>~</span>
             <input value="{{date2}}" autocomplete="off" name="date2" type="date" class="inputModules">
-            <label class="searchName reservationName">예약자명 : </label>
+            <select name="select" class="searchType">
+                <option {% if select == '예약자' %} selected {% endif %} value="예약자">예약자</option>
+                <option {% if select == '노선' %} selected {% endif %} value="노선">노선</option>
+            </select>
             <input autocomplete="off" value="{{search}}" name="search" type="text" class="inputModules">
             <input autocomplete="off"type="submit" value="검색" class="btnModules dateSearchBtn">
         </div>
