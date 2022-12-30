@@ -21,7 +21,8 @@
 }
 
 .inputModules[name=use],
-.inputModules[name=age] {
+.inputModules[name=age],
+.inputModules[name=role] {
     margin-left: 2rem;
 }
 
