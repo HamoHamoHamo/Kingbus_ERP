@@ -465,20 +465,22 @@ class CollectList(generic.ListView):
     def get_queryset(self):
         date1 = self.request.GET.get('date1', f'{TODAY[:7]}-01')
         date2 = self.request.GET.get('date2', TODAY)
-        customer = self.request.GET.get('search', '')
-        print('date1', date1)
-        print('date1', date2)
+        select = self.request.GET.get('select', '')
+        search = self.request.GET.get('search', '')
 
         dispatch_list = DispatchOrder.objects.prefetch_related('order_collect').exclude(contract_status='취소').filter(departure_date__lte=f'{date2} 24:00').filter(arrival_date__gte=f'{date1} 00:00').order_by('departure_date')
-        if customer:
-            dispatch_list = dispatch_list.filter(customer__contains=customer)
+        if search and select == '예약자':
+            dispatch_list = dispatch_list.filter(customer__contains=search)
+        elif search and select == '노선':
+            dispatch_list = dispatch_list.filter(route__contains=search)
         return dispatch_list
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['date1'] = self.request.GET.get('date1', f'{TODAY[:7]}-01')
         context['date2'] = self.request.GET.get('date2', TODAY)
-        context['customer'] = self.request.GET.get('search', '')
+        context['search'] = self.request.GET.get('search', '')
+        context['select'] = self.request.GET.get('select', '')
 
         dispatch_count = context['dispatch_list'].count()
         income_list = []

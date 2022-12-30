@@ -518,7 +518,7 @@ def salary_detail(request):
         additional = salary.additional_salary.all()
         deduction = salary.deduction_salary.all()
 
-        connects = DispatchOrderConnect.objects.filter(departure_date__range=(f'{month}-01', f'{month}-{last_date}')).filter(driver_id=member)
+        connects = DispatchOrderConnect.objects.filter(departure_date__range=(f'{month}-01 00:00', f'{month}-{last_date} 24:00')).filter(driver_id=member)
         order_cnt = connects.count()
         print('conccccc', connects, last_date)
         for connect in connects:
@@ -531,7 +531,7 @@ def salary_detail(request):
         # if connects:
             total_list[c_date] += int(connect.driver_allowance)
 
-        attendances = DispatchRegularlyConnect.objects.filter(departure_date__range=(f'{month}-01', f'{month}-{last_date}')).filter(work_type='출근').filter(driver_id=member)
+        attendances = DispatchRegularlyConnect.objects.filter(departure_date__range=(f'{month}-01 00:00', f'{month}-{last_date} 24:00')).filter(work_type='출근').filter(driver_id=member)
         attendance_cnt = attendances.count()
         for attendance in attendances:            
             c_date = int(attendance.departure_date[8:10]) - 1
@@ -543,7 +543,7 @@ def salary_detail(request):
         # if attendances:
             total_list[c_date] += int(attendance.driver_allowance)
 
-        leaves = DispatchRegularlyConnect.objects.filter(departure_date__range=(f'{month}-01', f'{month}-{last_date}')).filter(work_type='퇴근').filter(driver_id=member)
+        leaves = DispatchRegularlyConnect.objects.filter(departure_date__range=(f'{month}-01 00:00', f'{month}-{last_date} 24:00')).filter(work_type='퇴근').filter(driver_id=member)
         leave_cnt = leaves.count()
         for leave in leaves:
             c_date = int(leave.departure_date[8:10]) - 1

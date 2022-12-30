@@ -706,3 +706,17 @@
 .addCloseBtn {
     background-color: #444;
 }
+
+.searchType{
+    width: 10rem;
+    height: 2.5rem;
+    padding-left: 1rem;
+    background-color: white;
+    border: 0.1rem solid #D2D2D2;
+    border-radius: 0.2rem;
+    box-sizing: border-box;
+    font-size: 1.4rem;
+    color: #191919;
+    outline: none;
+    margin: 0 1rem;
+}
