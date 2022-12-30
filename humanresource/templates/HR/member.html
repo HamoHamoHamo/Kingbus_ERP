@@ -31,13 +31,20 @@
           <option value="{{member.name}}"></option>
           {% endfor %}
         </datalist>
+        <select name="role" class="inputModules">
+            <option {% if role == '담당업무' %} selected {% endif %} value="담당업무">담당업무</option>
+            <option {% if role == '관리자' %} selected {% endif %} value="관리자">관리자</option>
+            <option {% if role == '팀장' %} selected {% endif %} value="팀장">팀장</option>
+            <option {% if role == '운전원' %} selected {% endif %} value="운전원">운전원</option>
+            <option {% if role == '용역' %} selected {% endif %} value="용역">용역</option>
+            <option {% if role == '임시' %} selected {% endif %} value="임시">임시</option>
+        </select>
         <select name="use" id="filterUse" class="inputModules">
             <option {% if use == '사용' %} selected {% endif %} value="사용">사용</option>
             <option {% if use == '미사용' %} selected {% endif %} value="미사용">미사용</option>
-            <option {% if use == '임시' %} selected {% endif %} value="임시">임시</option>
         </select>
         <select name="age" id="filterAge" class="inputModules">
-            <option {% if age == '나이 전체' %} selected {% endif %} value="나이 전체">나이 전체</option>
+            <option {% if age == '나이' %} selected {% endif %} value="나이">나이</option>
             <option {% if age == '65세 이상' %} selected {% endif %} value="65세 이상">65세 이상</option>
         </select>
       </div>

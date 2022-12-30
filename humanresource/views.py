@@ -32,25 +32,21 @@ class MemberList(generic.ListView):
 
     def get_queryset(self):
         name = self.request.GET.get('name', '')
-        age = self.request.GET.get('age', '나이 전체')
+        age = self.request.GET.get('age', '나이')
         use = self.request.GET.get('use', '사용')
+        role = self.request.GET.get('role', '담당업무')
         up65 = f'{int(TODAY[:4]) - 65}{TODAY[4:10]}'
 
         authority = self.request.session.get('authority')
         
         if name:
-            if use == '임시':
-                member_list = Member.objects.filter(role='임시').filter(authority__gte=authority).filter(name__contains=name).order_by('name')
-            else:
-                member_list = Member.objects.exclude(role='임시').filter(use=use).filter(authority__gte=authority).filter(name__contains=name).order_by('name')
+            member_list = Member.objects.filter(use=use).filter(authority__gte=authority).filter(name__contains=name).order_by('name')
         else:
-            if use == '임시':
-                member_list = Member.objects.filter(role='임시').filter(authority__gte=authority).order_by('name')
-            else:
-                member_list = Member.objects.exclude(role='임시').filter(use=use).filter(authority__gte=authority).order_by('name')
+            member_list = Member.objects.filter(use=use).filter(authority__gte=authority).order_by('name')
         if age == '65세 이상':
-            print('testtt')
             member_list = member_list.filter(birthdate__lte=up65)
+        if role != '담당업무':
+            member_list = member_list.filter(role=role)
             
         
         return member_list
@@ -106,8 +102,9 @@ class MemberList(generic.ListView):
             })
         context['data_list'] = data_list
         context['name'] = self.request.GET.get('name', '')
+        context['role'] = self.request.GET.get('role', '담당업무')
         context['use'] = self.request.GET.get('use', '사용')
-        context['age'] = self.request.GET.get('age', '나이 전체')
+        context['age'] = self.request.GET.get('age', '나이')
         context['member_all'] = Member.objects.order_by('name')
         
         return context
