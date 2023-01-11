@@ -14,7 +14,10 @@ let parms = new URLSearchParams(location.search)
 const date = new Date()
 
 const nowYear = new Date(date).getFullYear();
-const nowMonth = new Date(date).getMonth() + 1;
+let nowMonth = new Date(date).getMonth() + 1;
+if (nowMonth < 10) {
+    nowMonth = '0'+nowMonth
+}
 
 let thisDate = date.getDate();
 
@@ -194,7 +197,7 @@ function prevDay() {
 nextBtn.addEventListener("click", nextDay)
 
 function nextDay() {
-    let nextM = nowM < 9 ? `0${nowM+1}` : nowM + 1;
+    let nextM = parseInt(nowM) < 9 ? `0${parseInt(nowM)+1}` : parseInt(nowM) + 1;
     let nextY = nowM === 12 ? nowY + 1 : nowY;
     if (nextM === 13) {
         nextM = '01'
