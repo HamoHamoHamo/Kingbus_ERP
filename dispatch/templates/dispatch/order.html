@@ -276,9 +276,9 @@
                                 
                             </select>
                         </td>
-                        <td class="tdTypeA">*수금구분</td>
+                        <td class="tdTypeA">수금구분</td>
                         <td class="tdTypeC">
-                            <select name="collection_type" id="collection_type" class="inputSelect essentialSelect"  tabindex="18">
+                            <select name="collection_type" id="collection_type" class="inputSelect"  tabindex="18">
                                 <option value=""></option>
                                 <option {% if detail.collection_type == '현지수금' %} selected {% endif %} value="현지수금(카드)">현지수금(카드)</option>
                                 <option {% if detail.collection_type == '현지수금' %} selected {% endif %} value="현지수금(현금)">현지수금(현금)</option>
@@ -316,9 +316,9 @@
                         <td class="tdTypeC">
                             <input autocomplete="off" name="ticketing_info" type="text" value="{{detail.ticketing_info}}" class="inputText length100" tabindex="20">
                         </td>
-                        <td class="tdTypeA">*유형</td>
+                        <td class="tdTypeA">유형</td>
                         <td class="tdTypeC">
-                            <select name="order_type" id="type" class="inputSelect essentialSelect" tabindex="21">
+                            <select name="order_type" id="type" class="inputSelect" tabindex="21">
                                 <option value=""></option>
                                 {% for order in order_types %}
                                 <option {% if detail.order_type == order.category %} selected {% endif %} value="{{order.category}}">{{order.category}}</option>
