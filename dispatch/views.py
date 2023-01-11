@@ -690,7 +690,7 @@ class RegularlyRouteList(generic.ListView):
         group_id = self.request.GET.get('group', '')
         if group_id:
             context['group'] = get_object_or_404(RegularlyGroup, id=group_id)
-        else:
+        elif not self.request.GET.get('new'):
             context['group'] = RegularlyGroup.objects.order_by('number').first()
 
 
