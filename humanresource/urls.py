@@ -17,7 +17,7 @@ urlpatterns = [
     path('salary/additional/delete', views.salary_additional_delete, name='salary_additional_delete'),
     path('salary/deduction/create', views.salary_deduction_create, name='salary_deduction_create'),
     path('salary/deduction/delete', views.salary_deduction_delete, name='salary_deduction_delete'),
-    
+    path('salary/load', views.salary_load, name='salary_load'),
     # path('mgmt', views.ManagementList.as_view(), name='mgmt'),
     # path('mgmt/create', views.mgmt_create, name='mgmt_create'),
 

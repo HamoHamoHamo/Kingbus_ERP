@@ -1,9 +1,15 @@
 .salarySaveBtn {
     position: absolute;
     top: -5.2rem;
-    right: 10rem;
+    right: 19.5rem;
     background-color: #0069D9;
 }
+
+.salarySaveBtn2 {
+    right: 10rem;
+    background-color: #444444;
+}
+
 .search-Form input[type=month]{
     width: 12rem;
     margin-right: 2rem;
@@ -322,4 +328,8 @@
     width: 26%;
     padding: 0;
     text-align: center;
+}
+
+.popup-area-box_btn {
+    margin-left: 1rem;
 }

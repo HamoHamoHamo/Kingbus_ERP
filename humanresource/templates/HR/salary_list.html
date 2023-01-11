@@ -15,7 +15,7 @@
 
 {% block content %}
 <div class="search-Container">
-    <form method="" action="" class="search-Form">
+    <form class="search-Form">
         <label for="" class="search-Form_label">날짜 : </label>
         <input autocomplete="off" name='month' value="{{month}}" type="month" class="search-Form_input search-Form_input-Month">
         <label for="" class="search-Form_label">이름 : </label>
@@ -28,11 +28,11 @@
 </div>
 
 
-
 <form method="post" action="{% url 'HR:salary_edit' %}" class="salaryContainer">
     {% csrf_token %}
     <input type="hidden" name="month" value="{{month}}">
     <input class="btnModules salarySaveBtn" type="submit" value="저장">
+    <div class="btnModules salarySaveBtn salarySaveBtn2" onclick="loadPrevMonthlyBase()">불러오기</div>
     <div class="scrolling_table-list_header">
         <table class="table-list">
             <thead>
@@ -295,6 +295,8 @@
     }
 </script>
 <script>
+    const loadForm = document.querySelector('.salaryContainer');
+
     {% autoescape off %}
     const deductionList = {{deduction_list}};
     console.log("deductionList", deductionList);
@@ -302,6 +304,15 @@
     console.log("additionalList", additionalList);
     
     {% endautoescape %}
+
+
+    function loadPrevMonthlyBase() {
+        if (confirm('저번달 기본급, 근속수당, 직급수당을 불러오시겠습니까?')) {
+            loadForm.action = "{% url 'HR:salary_load' %}"
+            loadForm.submit()
+        }
+    }
+    
 </script>
 <script src="{% static 'js/hr/authority.js' %}"></script>
 <script src="{% static 'js/hr/addSalary.js' %}"></script>
