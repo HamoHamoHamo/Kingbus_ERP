@@ -746,3 +746,34 @@ def salary_deduction_delete(request):
         return redirect(request.META.get('HTTP_REFERER', 'redirect_if_referer_not_found'))
     else:
         return HttpResponseNotAllowed(['post'])
+
+
+def salary_load(request):
+    if request.method == 'POST':
+        user_auth = request.session.get('authority')
+        if user_auth >= 3:
+            return render(request, 'authority.html')
+
+        id_list = request.POST.getlist('member_id')
+        month = request.POST.get('month')
+        prev_month = datetime.strftime(datetime.strptime(f'{month}-01', FORMAT) - relativedelta(months=1), FORMAT)[:7]
+        print("PREV MONTH", prev_month)
+
+        for id in id_list:
+            member = get_object_or_404(Member, id=id)
+            prev_salary = Salary.objects.filter(month=prev_month).get(member_id=member)
+            base = prev_salary.base
+            service_allowance = prev_salary.service_allowance
+            position_allowance = prev_salary.position_allowance
+
+            salary = Salary.objects.filter(month=month).get(member_id=member)
+            salary.base = base
+            salary.service_allowance = service_allowance
+            salary.position_allowance = position_allowance
+            salary.save()
+            
+
+        
+        return redirect(request.META.get('HTTP_REFERER', 'redirect_if_referer_not_found'))
+    else:
+        return HttpResponseNotAllowed(['post'])
