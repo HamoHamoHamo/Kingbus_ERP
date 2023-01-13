@@ -628,13 +628,13 @@ def salary_edit(request):
                 member.save()
 
                 # 선택한 달 이후 급여들 다 업데이트
-                edit_salary_list = Salary.objects.filter(month__gt=month).filter(member_id=member)
-                for e_salary in edit_salary_list:
-                    e_salary.base = base
-                    e_salary.service_allowance = service
-                    e_salary.position_allowance = position
-                    e_salary.total = int(e_salary.meal) + int(e_salary.attendance) + int(e_salary.leave) + int(e_salary.order) + int(e_salary.base) + int(e_salary.service_allowance) + int(e_salary.position_allowance) + int(e_salary.additional) - int(e_salary.deduction)
-                    e_salary.save()
+                # edit_salary_list = Salary.objects.filter(month__gt=month).filter(member_id=member)
+                # for e_salary in edit_salary_list:
+                #     e_salary.base = base
+                #     e_salary.service_allowance = service
+                #     e_salary.position_allowance = position
+                #     e_salary.total = int(e_salary.meal) + int(e_salary.attendance) + int(e_salary.leave) + int(e_salary.order) + int(e_salary.base) + int(e_salary.service_allowance) + int(e_salary.position_allowance) + int(e_salary.additional) - int(e_salary.deduction)
+                #     e_salary.save()
 
 
 

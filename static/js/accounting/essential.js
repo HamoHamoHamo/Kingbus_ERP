@@ -1,10 +1,47 @@
 const btnModulesCreate = document.querySelector(".btnModulesCreate")
 const creteForm = document.querySelector(".creteForm")
-const essential = document.querySelectorAll(".essential")
+let essential = document.querySelectorAll(".essential")
 const btnModulesEdit = document.querySelector(".btnModulesEdit")
 const editForm = document.querySelector(".editForm")
-const essentialEdit = document.querySelectorAll(".essentialEdit")
+let essentialEdit = document.querySelectorAll(".essentialEdit")
 const removeComma = document.querySelectorAll(".numberOnly")
+
+const paymentSelect = document.querySelector("#paymentSelect")
+const editPaymentSelect = document.querySelector("#editPaymentSelect")
+
+const bankName = document.querySelector('#bankName')
+const bankNameStar = document.querySelector('#bankNameStar')
+const eBankName = document.querySelector('#editBankName')
+const editBankNameStar = document.querySelector('#editBankNameStar')
+
+
+paymentSelect.addEventListener('change', changePayment)
+
+function changePayment(e) {
+    if (e.target.value == '현금') {
+        bankName.classList.remove('essential');
+        bankNameStar.innerText = '';
+        essential = document.querySelectorAll(".essential")
+    } else {
+        bankName.className = 'popupArticleinput length100 essential';
+        bankNameStar.innerText = '*';
+        essential = document.querySelectorAll(".essential")
+    }
+}
+
+editPaymentSelect.addEventListener('change', editChangePayment)
+
+function editChangePayment(e) {
+    if (e.target.value == '현금') {
+        eBankName.classList.remove('essentialEdit');
+        editBankNameStar.innerText = '';
+        essentialEdit = document.querySelectorAll(".essentialEdit")
+    } else {
+        eBankName.className = 'popupArticleinput length100 essentialEdit';
+        editBankNameStar.innerText = '*';
+        essentialEdit = document.querySelectorAll(".essentialEdit")
+    }
+}
 
 btnModulesCreate.addEventListener("click", createCheck)
 

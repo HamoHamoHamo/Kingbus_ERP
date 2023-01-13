@@ -115,13 +115,24 @@ class SalesList(generic.ListView):
             bus_cnt[category.category] = 0
             sales[category.category] = 0
 
+        # 운행 유형 선택 안된 
+        type_cnt['x'] = 0
+        bus_cnt['x'] = 0
+        sales['x'] = 0
+
         payment = {}
 
+        print("order", context['dispatch_list'])
         for order in context['dispatch_list']:
-            type_cnt[order.order_type] += 1
-            bus_cnt[order.order_type] += int(order.bus_cnt)
-            sales[order.order_type] += int(order.bus_cnt) * int(order.price)
-           
+            print("order", order)
+            if order.order_type :
+                type_cnt[order.order_type] += 1
+                bus_cnt[order.order_type] += int(order.bus_cnt)
+                sales[order.order_type] += int(order.bus_cnt) * int(order.price)
+            else:
+                type_cnt['x'] += 1
+                bus_cnt['x'] += int(order.bus_cnt)
+                sales['x'] += int(order.bus_cnt) * int(order.price)
             try:
                 payment[order.payment_method] += 1
             except KeyError:
@@ -143,7 +154,7 @@ class SalesList(generic.ListView):
         }
         context['work_type_cnt'] = work_type_cnt
 
-        context['month'] = month
+        context['month'] = get_month
         return context
 
 class RegularlyCollectList(generic.ListView):
