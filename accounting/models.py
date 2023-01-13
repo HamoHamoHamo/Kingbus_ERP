@@ -8,7 +8,7 @@ class Income(models.Model):
     date = models.CharField(verbose_name='날짜', max_length=20, null=False)
     depositor = models.CharField(verbose_name='입금자', max_length=100, null=False)
     payment_method = models.CharField(verbose_name='지급방식', max_length=100, null=False, default='계좌')
-    bank = models.CharField(verbose_name='은행', max_length=100, null=False)
+    bank = models.CharField(verbose_name='은행', max_length=100, null=False, blank=True)
     commission = models.CharField(verbose_name='가맹점 수수료', max_length=30, null=False, default='0')
     acc_income = models.CharField(verbose_name='입금액', max_length=30, null=False)
     total_income = models.CharField(verbose_name='총 금액', max_length=30, null=False, default='0')

@@ -30,6 +30,12 @@ function editPopup() {
     editDepositPrice.value = dataList[editTarget].acc_income
     editDepositorName.value = dataList[editTarget].depositor
     editHidden.value = this.children[0].children[0].value
+
+    if (dataList[editTarget].payment_method === '현금') {
+        eBankName.classList.remove('essentialEdit');
+        editBankNameStar.innerText = '';
+        essentialEdit = document.querySelectorAll(".essentialEdit")
+    }
 }
 
 popupBgModules[2].addEventListener("click", closePopupEdit)

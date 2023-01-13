@@ -157,7 +157,7 @@
                   </div>
                   <div class="popupArticleDouble">
                       <label for="" class="popupArticleLabel"><span class="importantStar">*</span>지급방식</label>
-                      <select name="payment_method" id="" class="popupArticleinput">
+                      <select name="payment_method" id="paymentSelect" class="popupArticleinput">
                         <option value="카드">카드</option>
                         <option value="계좌">계좌</option>
                         <option value="현금">현금</option>
@@ -166,8 +166,8 @@
               </div>
               <div class="popupArticleBox">
                   <div class="popupArticleDouble">
-                      <label for="" class="popupArticleLabel"><span class="importantStar">*</span>은행명</label>
-                      <input autocomplete="off" name="bank" type="text" class="popupArticleinput length100 essential">
+                      <label for="" class="popupArticleLabel"><span id="bankNameStar" class="importantStar">*</span>은행명</label>
+                      <input autocomplete="off" name="bank" type="text" id="bankName" class="popupArticleinput length100 essential">
                   </div>
                   <div class="popupArticleDouble">
                       <label for="" class="popupArticleLabel"><span class="importantStar">*</span>가맹점 수수료</label>
@@ -247,7 +247,7 @@
                     </div>
                     <div class="popupArticleDouble">
                         <label for="" class="popupArticleLabel"><span class="importantStar">*</span>지급방식</label>
-                        <select name="payment_method" id="editPayment_method" class="popupArticleinput editDepositType">
+                        <select name="payment_method" id="editPaymentSelect" class="popupArticleinput editDepositType">
                           <option value="카드">카드</option>
                           <option value="계좌">계좌</option>
                           <option value="현금">현금</option>
@@ -256,8 +256,8 @@
                 </div>
                 <div class="popupArticleBox">
                     <div class="popupArticleDouble">
-                        <label for="" class="popupArticleLabel"><span class="importantStar">*</span>은행명</label>
-                        <input autocomplete="off" name="bank" type="text" class="popupArticleinput essentialEdit length100 editBankName">
+                        <label for="" class="popupArticleLabel"><span id="editBankNameStar" class="importantStar">*</span>은행명</label>
+                        <input id="editBankName" autocomplete="off" name="bank" type="text" class="popupArticleinput essentialEdit length100 editBankName">
                     </div>
                     <div class="popupArticleDouble">
                         <label for="" class="popupArticleLabel"><span class="importantStar">*</span>가맹점 수수료</label>
