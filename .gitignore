@@ -8,3 +8,5 @@ my_settings.py
 .venv/
 .vscode/
 /dispatch/static
+/trp_drf
+/config/settings.py_old
