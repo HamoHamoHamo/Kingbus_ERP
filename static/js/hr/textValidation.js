@@ -7,6 +7,7 @@ function amountValidation(){
     this.parentNode.parentNode.children[5].children[0].name = "base"
     this.parentNode.parentNode.children[6].children[0].name = "service"
     this.parentNode.parentNode.children[7].children[0].name = "position"
+    this.parentNode.parentNode.children[8].children[0].name = "meal"
     if(this.parentNode.parentNode.children[15] === undefined){
         const hidden = document.createElement("input")
         hidden.setAttribute("type", "hidden")

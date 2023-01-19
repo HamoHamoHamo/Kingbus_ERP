@@ -16,7 +16,7 @@ function totalSalary(){
         price1 = price1 + parseInt(salaryItem[i].children[5].children[0].value.replace(/\,/g,""))
         price2 = price2 + parseInt(salaryItem[i].children[6].children[0].value.replace(/\,/g,""))
         price3 = price3 + parseInt(salaryItem[i].children[7].children[0].value.replace(/\,/g,""))
-        price4 = price4 + parseInt(salaryItem[i].children[8].innerText.replace(/\,/g,""))
+        price4 = price4 + parseInt(salaryItem[i].children[8].children[0].value.replace(/\,/g,""))
         price5 = price5 + parseInt(salaryItem[i].children[9].innerText.replace(/\,/g,""))
         price6 = price6 + parseInt(salaryItem[i].children[10].innerText.replace(/\,/g,""))
         price7 = price7 + parseInt(salaryItem[i].children[11].innerText.replace(/\,/g,""))

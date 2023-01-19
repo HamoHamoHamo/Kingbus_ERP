@@ -11,7 +11,7 @@ from django.views import generic
 from .models import User, UserFile, Category, Client
 from .forms import UserForm, ClientForm
 from humanresource.models import Member, Salary
-from dispatch.models import Schedule, DispatchCheck, DispatchOrder, DispatchOrderConnect, DispatchRegularly, DispatchRegularlyConnect
+from dispatch.models import Schedule, DispatchCheck, DispatchOrder, DispatchOrderConnect, DispatchRegularly, DispatchRegularlyData, DispatchRegularlyConnect
 from vehicle.models import Vehicle
 from dispatch.views import FORMAT, TODAY
 from dateutil.relativedelta import relativedelta
@@ -209,33 +209,6 @@ def setting_client_delete(request):
         return HttpResponseNotAllowed(['post'])
 
 
-def salary_meal(request):
-    if request.method == 'POST':
-        price = request.POST.get('price').replace(',','')
-        date = request.POST.get('date')
-        try:
-            category = Category.objects.get(type='식대')
-            category.category = price
-        except Category.DoesNotExist:
-            category = Category(
-                type = '식대',
-                category = price,
-            )
-        category.save()
-        
-        # 식대가 수정되면 date 이후 salary들 수정
-        salary_list = Salary.objects.filter(month__gte=date)
-        for salary in salary_list:
-            salary.meal = price
-            salary.total = int(salary.meal) + int(salary.attendance) + int(salary.leave) + int(salary.order) + int(salary.base) + int(salary.service_allowance) + int(salary.position_allowance) + int(salary.additional) - int(salary.deduction)
-            salary.save()
-
-
-        return redirect(request.META.get('HTTP_REFERER', 'redirect_if_referer_not_found'))
-
-    else:
-        return HttpResponseNotAllowed(['post'])
-
 
 def salary_date(request):
     if request.method == 'POST':
@@ -341,7 +314,7 @@ class Calendar(generic.ListView):
         for day in weekday_list:
             cnt += 1
             weekday = WEEK[day.weekday()]
-            regularly_cnt = DispatchRegularly.objects.filter(week__contains=weekday).count()
+            regularly_cnt = DispatchRegularlyData.objects.filter(use='사용').filter(week__contains=weekday).count()
             cnt_day = 0
             while(cnt+cnt_day <= int(last_day)):
                 #

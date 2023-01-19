@@ -33,19 +33,26 @@ function saveCheck(){
     let parms = new URLSearchParams(location.search)
     if(parms.has("id")){
         if(groupSelect.options[groupSelect.selectedIndex].value == ""){
-            alert("그룹을 선택해 주세요")
+            return alert("그룹을 선택해 주세요")
+            
         }else if(!driveDateCheck){
-            alert("운행요일을 선택해 주세요")
-        }else if(savePrice0 !== inputPrice.value.replace(/\,/g,"") || savePrice1 !== inputDriverAllowance.value.replace(/\,/g,"") && referenceDateInput.value == ""){
-            alert("금액/수당 수정 기준일을 선택해 주세요")
+            return alert("운행요일을 선택해 주세요")
+            
+        }else if((savePrice0 !== inputPrice.value.replace(/\,/g,"") || savePrice1 !== inputDriverAllowance.value.replace(/\,/g,"")) && referenceDateInput.value == ""){
+            console.log("1", savePrice0, inputPrice.value.replace(/\,/g,""))
+            console.log("2", savePrice1, inputDriverAllowance.value.replace(/\,/g,""))
+            console.log("3", referenceDateInput.value)
+
+            
+            return alert("금액/수당 수정 기준일을 선택해 주세요")
         }else{
             // crateRouteForm.submit()
         }
     }else{
         if(groupSelect.options[groupSelect.selectedIndex].value == ""){
-            alert("그룹을 선택해 주세요")
+            return alert("그룹을 선택해 주세요")
         }else if(!driveDateCheck){
-            alert("운행요일을 선택해 주세요")
+            return alert("운행요일을 선택해 주세요")
         }else{
             // crateRouteForm.submit()
         }

@@ -21,6 +21,7 @@ class Member(models.Model):
     base = models.CharField(verbose_name='기본급', max_length=20, null=False, default=0)
     service_allowance = models.CharField(verbose_name='근속수당', max_length=20, null=False, default=0)
     position_allowance = models.CharField(verbose_name='직급수당', max_length=20, null=False, default=0)
+    meal = models.CharField(verbose_name='식대', max_length=20, null=False, default=0)
     pub_date = models.DateTimeField(verbose_name="등록날짜", auto_now_add=True, null=False)
     creator = models.CharField(verbose_name='작성자 이름', max_length=100, null=False, blank=True)
 

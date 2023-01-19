@@ -453,10 +453,17 @@
   const groupCreateChangeForm = document.querySelector(".groupCreate")
 
   function groupCreateDeleteUrl() {
+    {% autoescape off %}
     if (confirm("선택한 그룹을 정말로 삭제하시겠습니까?")){
-      groupCreateChangeForm.action = "{% url 'dispatch:regularly_group_delete' %}"
-      groupCreateChangeForm.submit()
+      if ('{{order_list.exists}}' == 'False') {
+        groupCreateChangeForm.action = "{% url 'dispatch:regularly_group_delete' %}"
+        groupCreateChangeForm.submit()
+      }
+      else {
+        window.alert('그룹의 노선을 비워주세요')
+      }
     }
+    {% endautoescape %}
   }
 
   const routeTr = document.querySelectorAll(".RouteListBodyTr")

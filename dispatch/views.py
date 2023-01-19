@@ -1247,7 +1247,17 @@ def regularly_group_delete(request):
 
     if request.method == "POST":
         group = get_object_or_404(RegularlyGroup, id=request.POST.get('id', None))
-        group.delete()
+        # for r_data in group.regularly.all():
+        #     r_data.use = '삭제'
+        #     r_data.save()
+        
+        # for regulalry in group.regularly_monthly.all():
+        #     regulalry.use = '삭제'
+        #     regulalry.save()
+
+        if not group.regularly.exists():
+            group.delete()
+            
         return redirect('dispatch:regularly_route')
     else:
         return HttpResponseNotAllowed(['POST'])
@@ -1854,15 +1864,40 @@ def line_print(request):
     week = WEEK[datetime.strptime(date, FORMAT).weekday()][1]
     
     
-    regularly_list = DispatchRegularly.objects.prefetch_related('info_regularly').exclude(info_regularly=None).filter(week__contains=week).order_by('group', 'number1', 'number2', 'departure_time')
+    
+    
+
+    regularly_list = DispatchRegularly.objects.prefetch_related('info_regularly').exclude(info_regularly=None).filter(use='사용').filter(week__contains=week).order_by('group', 'num1', 'number1', 'num2', 'number2')
+    
+    # regularly_data_list를 regularly_list 대신에 쓸 수 있게 수정해야됨
+    # info_regularly = none인것들 빼야됨
+    regulalry_data_list = DispatchRegularlyData.objects.filter(use='사용').filter(week__contains=week).order_by('group','num1', 'number1', 'num2', 'number2')
+    
+    regularly_list = []
+    no_list = []
+    for regularly in regulalry_data_list:
+        print('regggg', regularly)
+        # first 확인필요
+        dispatch = regularly.monthly.prefetch_related('info_regularly').filter(edit_date__lte=date).order_by('-edit_date').first()
+        if not dispatch:
+            dispatch = regularly.monthly.prefetch_related('info_regularly').filter(edit_date__gte=date).order_by('edit_date').first()
+            
+        dispatch_connect = dispatch.info_regularly.filter(departure_date__startswith=date).exists()
+        if dispatch.use == '사용' and dispatch_connect:
+            regularly_list.append(dispatch)
+
+        # 미지정된 노선 목록
+        if not dispatch_connect:
+            no_list.append(dispatch)
+    
     print(regularly_list)
     temp = []
     temp2 = []
+    
     group = ''
     context['regularly_list'] = []
     context['connect_list'] = []
     for r in regularly_list:
-        print("GROUP", r.group.name)
         if r.group.name != group:
             group = r.group.name
             if r != regularly_list[0]:
@@ -1870,8 +1905,13 @@ def line_print(request):
                 context['connect_list'].append(temp2)
                 temp = []
                 temp2 = []
+        
         temp.append(r)
-        temp2.append(r.info_regularly.filter(departure_date__startswith=date))
+        regularly_connect = r.info_regularly.filter(departure_date__startswith=date)
+        temp2.append(regularly_connect)
+        print('regularly_Concnnnenct', regularly_connect)
+
+
 
     if r == regularly_list[len(regularly_list)-1]:
         context['regularly_list'].append(temp)
@@ -1879,10 +1919,11 @@ def line_print(request):
 
         
         
-    no_list = DispatchRegularly.objects.filter(info_regularly=None).order_by('group', 'number1', 'number2', 'departure_time')
+    
     
     print('REGULSRY', context['regularly_list'])
     print('connect_list', context['connect_list'])
+    print('no_list', no_list)
     context['no_list'] = no_list
 
     return render(request, 'dispatch/line_print.html', context)
