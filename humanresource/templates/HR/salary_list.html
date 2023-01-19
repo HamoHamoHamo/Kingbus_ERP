@@ -65,7 +65,7 @@
                 {% with salary=salary_list|index:forloop.counter0 %}
                 <tr class="table-list_body-tr salaryList cursor">
                     <td class="table-list_body-tr_td">
-                        <input type="checkbox" class="amountCheck" name="member_id" value="{{member.id}}">
+                        <input tabindex="100" type="checkbox" class="amountCheck" name="member_id" value="{{member.id}}">
                     </td>
                     <td class="table-list_body-tr_td">{{forloop.counter}}</td>
                     <td class="table-list_body-tr_td">{{member.name}}</td>
@@ -82,7 +82,9 @@
                     <td class="table-list_body-tr_td">
                         <input type="text" class="amountInput length100" value="{{salary.position_allowance}}">
                     </td>
-                    <td class="table-list_body-tr_td addComma">{{meal}}</td>
+                    <td class="table-list_body-tr_td">
+                        <input type="text" class="amountInput length100" value="{{salary.meal}}">
+                    </td>
                     <td class="table-list_body-tr_td addComma">{{salary.attendance}}</td>
                     <td class="table-list_body-tr_td addComma">{{salary.leave}}</td>
                     <td class="table-list_body-tr_td addComma">{{salary.order}}</td>

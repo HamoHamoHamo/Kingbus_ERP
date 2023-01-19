@@ -28,25 +28,27 @@ if(AUTHORITY < 3){
 }
 
 function locationDispatch() {
-
     const date = new Date()
     let parms = new URLSearchParams(location.search)
     let dispatch = ""
     let dateUrl = ""
+    let dispatchDate = this.parentNode.parentNode.parentNode.parentNode.children[0].children[0].innerText
 
     if (parms.has("year")) {
-        if (this.parentNode.parentNode.parentNode.parentNode.children[0].children[0].innerText < 10) {
-            dateUrl = `${parms.get("year")}-${parms.get("month")}-0${this.parentNode.parentNode.parentNode.parentNode.children[0].children[0].innerText}`
+        if (dispatchDate < 10) {
+            dateUrl = `${parms.get("year")}-${parms.get("month")}-0${dispatchDate}`
         } else {
-            dateUrl = `${parms.get("year")}-${parms.get("month")}-${this.parentNode.parentNode.parentNode.parentNode.children[0].children[0].innerText}`
+            dateUrl = `${parms.get("year")}-${parms.get("month")}-${dispatchDate}`
         }
     } else {
-        if (this.parentNode.parentNode.parentNode.parentNode.children[0].children[0].innerText < 10) {
-            dateUrl = `${new Date(date).getFullYear()}-${new Date(date).getMonth() + 1}-0${this.parentNode.parentNode.parentNode.parentNode.children[0].children[0].innerText}`
+        if (dispatchDate < 10) {
+            dateUrl = `${nowYear}-${nowMonth}-0${dispatchDate}`
         } else {
-            dateUrl = `${new Date(date).getFullYear()}-${new Date(date).getMonth() + 1}-${this.parentNode.parentNode.parentNode.parentNode.children[0].children[0].innerText}`
+            dateUrl = `${nowYear}-${nowMonth}-${dispatchDate}`
+            console.log('testttt', dateUrl)
         }
     }
+    console.log(dateUrl)
 
     if (this.children[1].classList.contains("regularlyData")) {
         dispatch = "regularly"

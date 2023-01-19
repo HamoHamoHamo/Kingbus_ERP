@@ -383,12 +383,6 @@ class SalaryList(generic.ListView):
         context['salary_list'] = salary_list
         context['year_list'] = year_list
 
-        try:
-            meal = Category.objects.get(type='식대').category
-        except Category.DoesNotExist:
-            meal = 0
-        
-        context['meal'] = meal
         context['month'] = month
         context['name'] = name
 
@@ -409,22 +403,12 @@ def new_salary(creator, month, member):
     service_allowance = 0
     position_allowance = 0
     
-    try:
-        category = Category.objects.get(type='식대')
-        meal = int(category.category)
-    except Category.DoesNotExist:
-        category = Category(
-            type = '식대',
-            category = 0,
-            creator = creator
-        )
-        category.save()
-        meal = 0
 
     if TODAY[:7] <= month:
         base = int(member.base)
         service_allowance = int(member.service_allowance)
         position_allowance = int(member.position_allowance)
+        meal = int(member.meal)
 
     # if salary:
     #     base = salary.base
@@ -438,10 +422,6 @@ def new_salary(creator, month, member):
     if order['driver_allowance__sum']:
         order_price = int(order['driver_allowance__sum'])
     
-    try:
-        meal = Category.objects.get(type='식대').category
-    except:
-        meal = 0
     try:
         payment_date = Category.objects.get(type='급여지급일').category
     except:
@@ -605,19 +585,22 @@ def salary_edit(request):
         base_list = request.POST.getlist('base')
         service_list = request.POST.getlist('service')
         position_list = request.POST.getlist('position')
+        meal_list = request.POST.getlist('meal')
         id_list = request.POST.getlist('id')
         month = request.POST.get('month')
 
-        for base, service, position, id in zip(base_list, service_list, position_list, id_list):
+        for base, service, position, meal, id in zip(base_list, service_list, position_list, meal_list, id_list):
             member = get_object_or_404(Member, id=id)
             base = int(base.replace(',',''))
             service = int(service.replace(',',''))
             position = int(position.replace(',',''))
+            meal = int(meal.replace(',',''))
 
             salary = Salary.objects.filter(member_id=member).get(month=month)
             salary.base = base
             salary.service_allowance = service
             salary.position_allowance = position
+            salary.meal = meal
             salary.total = int(salary.meal) + int(salary.attendance) + int(salary.leave) + int(salary.order) + int(salary.base) + int(salary.service_allowance) + int(salary.position_allowance) + int(salary.additional) - int(salary.deduction)
             salary.save()
 
@@ -765,11 +748,14 @@ def salary_load(request):
             base = prev_salary.base
             service_allowance = prev_salary.service_allowance
             position_allowance = prev_salary.position_allowance
+            meal = prev_salary.meal
 
             salary = Salary.objects.filter(month=month).get(member_id=member)
             salary.base = base
             salary.service_allowance = service_allowance
             salary.position_allowance = position_allowance
+            salary.meal = meal
+            salary.total = int(salary.meal) + int(salary.attendance) + int(salary.leave) + int(salary.order) + int(salary.base) + int(salary.service_allowance) + int(salary.position_allowance) + int(salary.additional) - int(salary.deduction)
             salary.save()
             
 

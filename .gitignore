@@ -9,4 +9,5 @@ my_settings.py
 .vscode/
 /dispatch/static
 /trp_drf
-/config/settings.py_old
+config/settings.py_old
+data_backup
