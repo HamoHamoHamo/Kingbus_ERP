@@ -663,6 +663,7 @@ class RegularlyRouteList(generic.ListView):
     def get_queryset(self):
         group_id = self.request.GET.get('group', '')
         search = self.request.GET.get('search', '')
+        search_use = self.request.GET.get('use', '')
 
 
         if not group_id:
@@ -672,15 +673,17 @@ class RegularlyRouteList(generic.ListView):
             return DispatchRegularlyData.objects.exclude(use='삭제').filter(group=group).order_by('num1', 'number1', 'num2', 'number2')
         else:
             group = get_object_or_404(RegularlyGroup, id=group_id)
-            if search:
-                return DispatchRegularlyData.objects.exclude(use='삭제').filter(group=group).filter(Q(departure__contains=search) | Q(arrival__contains=search)).order_by('num1', 'number1', 'num2', 'number2')
-            return DispatchRegularlyData.objects.exclude(use='삭제').filter(group=group).order_by('num1', 'number1', 'num2', 'number2')
+            if search_use:
+                return DispatchRegularlyData.objects.exclude(use='삭제').filter(use=search_use).filter(group=group).filter(Q(route__contains=search) | Q(departure__contains=search) | Q(arrival__contains=search)).order_by('num1', 'number1', 'num2', 'number2')
+            else:
+                return DispatchRegularlyData.objects.exclude(use='삭제').filter(group=group).filter(Q(route__contains=search) | Q(departure__contains=search) | Q(arrival__contains=search)).order_by('num1', 'number1', 'num2', 'number2')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         
         id = self.request.GET.get('id')
         context['search'] = self.request.GET.get('search', '')
+        context['search_use'] = self.request.GET.get('use', '')
 
 
         if id:

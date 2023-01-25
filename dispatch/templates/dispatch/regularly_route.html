@@ -318,8 +318,9 @@
 
     <form action="{% url 'dispatch:regularly_route' %}" class="routListSearch">
       <select name="use">
-        <option value="사용">사용</option>
-        <option value="미사용">미사용</option>
+        <option></option>
+        <option {% if search_use == '사용' %} selected {% endif %} value="사용">사용</option>
+        <option {% if search_use == '미사용' %} selected {% endif %} value="미사용">미사용</option>
       </select>
       <input autocomplete="off" name="search" value="{{search}}" type="text" id="routeListsearch">
       <input autocomplete="off" type="hidden" value="{{group.id}}" name="group">
@@ -478,15 +479,15 @@
     let parms = new URLSearchParams(location.search)
     if(parms.has("search")){
       if(groupList.style.display == "none"){
-        location.href=`{% url 'dispatch:regularly_route' %}?id=${this.parentNode.classList[1]}&group=${this.parentNode.classList[2]}&search=${parms.get("search")}&height=${this.parentNode.parentNode.parentNode.parentNode.scrollTop}&close=true`
+        location.href=`{% url 'dispatch:regularly_route' %}?id=${this.parentNode.classList[1]}&group=${this.parentNode.classList[2]}&use={{search_use}}&search=${parms.get("search")}&height=${this.parentNode.parentNode.parentNode.parentNode.scrollTop}&close=true`
       }else{
-        location.href=`{% url 'dispatch:regularly_route' %}?id=${this.parentNode.classList[1]}&group=${this.parentNode.classList[2]}&search=${parms.get("search")}&height=${this.parentNode.parentNode.parentNode.parentNode.scrollTop}`
+        location.href=`{% url 'dispatch:regularly_route' %}?id=${this.parentNode.classList[1]}&group=${this.parentNode.classList[2]}&use={{search_use}}&search=${parms.get("search")}&height=${this.parentNode.parentNode.parentNode.parentNode.scrollTop}`
       }
     }else{
       if(groupList.style.display == "none"){
-        location.href=`{% url 'dispatch:regularly_route' %}?id=${this.parentNode.classList[1]}&group=${this.parentNode.classList[2]}&height=${this.parentNode.parentNode.parentNode.parentNode.scrollTop}&close=true`
+        location.href=`{% url 'dispatch:regularly_route' %}?id=${this.parentNode.classList[1]}&group=${this.parentNode.classList[2]}&use={{search_use}}&height=${this.parentNode.parentNode.parentNode.parentNode.scrollTop}&close=true`
       }else{
-        location.href=`{% url 'dispatch:regularly_route' %}?id=${this.parentNode.classList[1]}&group=${this.parentNode.classList[2]}&height=${this.parentNode.parentNode.parentNode.parentNode.scrollTop}`
+        location.href=`{% url 'dispatch:regularly_route' %}?id=${this.parentNode.classList[1]}&group=${this.parentNode.classList[2]}&use={{search_use}}&height=${this.parentNode.parentNode.parentNode.parentNode.scrollTop}`
       }
     }
   }
