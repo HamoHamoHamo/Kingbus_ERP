@@ -116,7 +116,7 @@
           {% if page_obj.has_previous %}
           <div class="page-item page-pre">
             <a class="page-link"
-              href="?&name={{name}}&use={{use}}&age={{age}}&page={{ page_obj.previous_page_number }}"
+              href="?&name={{name}}&role={{role}}&use={{use}}&age={{age}}&page={{ page_obj.previous_page_number }}"
               tabindex="-1">이전</a>
           </div>
           {% else %}
@@ -126,14 +126,14 @@
           {% endif %}
           {% for page in page_range %}
           <div class="page-item {% if page == page_obj.number %} page-activate {% endif %}">
-            <a class="page-link" href="?&name={{name}}&use={{use}}&age={{age}}&page={{ page }}">{{ page }}</a>
+            <a class="page-link" href="?&name={{name}}&role={{role}}&use={{use}}&age={{age}}&page={{ page }}">{{ page }}</a>
           </div>
           {% endfor %}
 
           {% if page_obj.has_next %}
           <div class="page-item">
             <a class="page-link page-next"
-              href="?&name={{name}}&use={{use}}&age={{age}}&page={{ page_obj.next_page_number }}">다음</a>
+              href="?&name={{name}}&role={{role}}&use={{use}}&age={{age}}&page={{ page_obj.next_page_number }}">다음</a>
           </div>
           {% else %}
           <div class="page-item page-next disabled">
@@ -463,5 +463,4 @@
 <script src="{% static 'js/hr/hr_list_popup.js' %}"></script>
 <script src="{% static 'js/hr/ageCalculator.js' %}"></script>
 <script src="{% static 'js/hr/essential.js' %}"></script>
-<script src="{% static 'js/hr/temporary.js' %}"></script>
 {% endblock %}

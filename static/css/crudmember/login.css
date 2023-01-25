@@ -186,10 +186,15 @@ body {
 
 .saveDataCheckBox {
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between;
   align-items: center;
   width: 100%;
   margin-top: 1rem;
+}
+
+.autoLoginBox {
+  display: flex;
+  align-items: center;
 }
 
 .saveDataCheckBox input{
@@ -200,7 +205,7 @@ body {
   border-radius: 0.3rem;
 }
 
-.saveDataCheckBox label {
+.saveDataCheckBox label, .saveDataCheckError {
   font-size: 1.6rem;
   color: #606060;
 }

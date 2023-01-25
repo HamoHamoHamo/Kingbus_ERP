@@ -61,23 +61,13 @@ function openDetailPopup() {
     hrRole[i].style.display = "block"
   };
 
-  if(regDatas[this.className].role !== "임시"){
-    for (i = 0; i < hrRole.length; i++) {
-      if (hrRole[i].innerText == regDatas[this.className].role) {
-        hrRole[i].selected = true;
-      }else if(hrRole[i].innerText === "임시"){
-        hrRole[i].style.display = "none"
-      }
-    }
-  }else{
-    for (i = 0; i < hrRole.length; i++) {
-      if(hrRole[i].innerText !== "임시"){
-        hrRole[i].style.display = "none"
-      }else{
-        hrRole[i].selected = true;
-      }
+  
+  for (i = 0; i < hrRole.length; i++) {
+    if (hrRole[i].innerText == regDatas[this.className].role) {
+      hrRole[i].selected = true;
     }
   }
+  
   hrName.value = regDatas[this.className].name;
   hrEntering.value = regDatas[this.className].entering_date;
   hrPhone.value = regDatas[this.className].phone_num;
@@ -96,14 +86,11 @@ function openDetailPopup() {
     hrUse[1].checked = true
   }
   hrBlanck.value = regDatas[this.className].note;
-  if(regDatas[this.className].role !== "임시"){
-    authorityDivision[2].style.display = "block"
-    authorityDivision[3].style.display = "flex"
-    hrID.value = regDatas[this.className].id
-  }else{
-    authorityDivision[2].style.display = "none"
-    authorityDivision[3].style.display = "none"
-  }
+  
+  authorityDivision[2].style.display = "block"
+  authorityDivision[3].style.display = "flex"
+  hrID.value = regDatas[this.className].id
+  
   LicenseFileTextEdit.value = regDatas[this.className].license
   DriverLicenseFileTextEdit.value = regDatas[this.className].bus_license
   sendToHidden.value = this.parentNode.className;
@@ -214,9 +201,11 @@ function deleteData(e) {
 hrPW.addEventListener('click', resetPW)
 
 async function resetPW() {
-  await fetch(url = `/member/reset/password?id=${sendToHidden.value}`, {
-  });
-  return alert("비밀번호가 초기화 되었습니다.")
+  if (confirm('비밀번호를 0000으로 초기화 하시겠습니까?')){
+    await fetch(url = `/member/reset/password?id=${sendToHidden.value}`, {
+    });
+    return alert("비밀번호가 초기화 되었습니다.")
+  }
 }
 
 
