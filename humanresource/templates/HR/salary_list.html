@@ -141,7 +141,7 @@
                         <div class="popupArticleDouble addSalaryPriceBox">
                             <label for="" class="popupArticleLabel">금액</label>
                             <input autocomplete="off" name="price" type="text"
-                                class="popupArticleinput addSalaryPrice length100">
+                                class="popupArticleinput addSalaryPrice length100 numberOnly">
                         </div>
                         <div class="popupArticleDouble addSalaryReasonBox">
                             <label for="" class="popupArticleLabel">사유</label>
@@ -213,7 +213,7 @@
                         <div class="popupArticleDouble deductionPriceBox">
                             <label for="" class="popupArticleLabel">금액</label>
                             <input autocomplete="off" name="price" type="text"
-                                class="popupArticleinput deductionPrice length100">
+                                class="popupArticleinput deductionPrice length100 numberOnly">
                         </div>
                         <div class="popupArticleDouble deductionReasonBox">
                             <label for="" class="popupArticleLabel">사유</label>
@@ -323,4 +323,5 @@
 <script src="{% static 'js/hr/checker.js' %}"></script>
 <script src="{% static 'js/hr/addComma.js' %}"></script>
 <script src="{% static 'js/hr/totalSalary.js' %}"></script>
+<script src="{% static 'js/onlyNumber.js' %}"></script>
 {% endblock %}
