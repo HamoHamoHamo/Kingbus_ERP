@@ -48,8 +48,12 @@
           <label class="loginInputLabel">비밀번호</label>
           <input autocomplete="off" type="password" name=password placeholder="비밀번호를 입력해 주세요.">
           <div class="saveDataCheckBox">
-            <input autocomplete="off" type="checkbox" id="saveAccount">
-            <label for="saveAccount">계정 저장하기</label>
+            <div class="saveDataCheckError">{{error}}</div>
+            <div class="autoLoginBox">
+              <input name="auto_login" autocomplete="off" type="checkbox" id="saveAccount">
+              <label for="saveAccount">계정 저장하기</label>
+
+            </div>
           </div>
         </div>
         <input autocomplete="off" type="submit" value="로그인" class="loginBtn">

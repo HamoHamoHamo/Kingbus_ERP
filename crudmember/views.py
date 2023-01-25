@@ -500,9 +500,12 @@ def login(request):
             user = Member.objects.get(user_id=login_username)
         except Exception as e:
             print("error", e)
-            res_data['error'] = "아이디/비밀번호가 다릅니다."
+            res_data['error'] = "아이디/비밀번호가 다릅니다"
             return render(request, 'crudmember/login.html', res_data)
-            
+        
+        if user.role == '임시':
+            res_data['error'] = "접근 권한이 없습니다"
+            return render(request, 'crudmember/login.html', res_data)
         if check_password(login_password, user.password):
             request.session['user'] = user.id
             request.session['name'] = user.name
@@ -510,7 +513,10 @@ def login(request):
             # request.session['login_time'] = str(datetime.now())[:16]
             # request.session['today'] = str(datetime.now())[:10]
             #세션 만료시간 설정 0을 넣으면 브라우져 닫을시 세션 쿠키 삭제 + DB만료기간 14일
-            request.session.set_expiry(0)
+            if request.POST.get('auto_login'):
+                request.session.set_expiry(30)
+            else:
+                request.session.set_expiry(0)
             
 
                 #세션도 딕셔너리 변수 사용과 똑같이 사용하면 된다.
