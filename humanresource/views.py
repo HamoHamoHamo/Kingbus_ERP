@@ -35,19 +35,25 @@ class MemberList(generic.ListView):
         age = self.request.GET.get('age', '나이')
         use = self.request.GET.get('use', '사용')
         role = self.request.GET.get('role', '담당업무')
+        req_order_by = self.request.GET.get('order_by', 'name')
+        
         up65 = f'{int(TODAY[:4]) - 65}{TODAY[4:10]}'
 
         authority = self.request.session.get('authority')
         
         if name:
-            member_list = Member.objects.filter(use=use).filter(authority__gte=authority).filter(name__contains=name).order_by('name')
+            member_list = Member.objects.filter(use=use).filter(authority__gte=authority).filter(name__contains=name).order_by(req_order_by)
         else:
-            member_list = Member.objects.filter(use=use).filter(authority__gte=authority).order_by('name')
+            member_list = Member.objects.filter(use=use).filter(authority__gte=authority).order_by(req_order_by)
         if age == '65세 이상':
             member_list = member_list.filter(birthdate__lte=up65)
         if role != '담당업무':
             member_list = member_list.filter(role=role)
-            
+        
+        # if req_order_by == 'entering_date':
+        #     print(member_list)
+        #     member_list.order_by('entering_date')
+        #     print(member_list)
         
         return member_list
 
@@ -105,6 +111,7 @@ class MemberList(generic.ListView):
         context['role'] = self.request.GET.get('role', '담당업무')
         context['use'] = self.request.GET.get('use', '사용')
         context['age'] = self.request.GET.get('age', '나이')
+        context['req_order_by'] = self.request.GET.get('order_by', 'name')
         context['member_all'] = Member.objects.order_by('name')
         
         return context
@@ -327,7 +334,7 @@ class SalaryList(generic.ListView):
             id = self.request.session.get('user')
             member_list = Member.objects.filter(entering_date__lt=month+'-32').filter(id=id)
         else:
-            member_list = Member.objects.filter(entering_date__lt=month+'-32').filter(Q(role='운전원')|Q(role='용역')).filter(use='사용').order_by('-role', 'name')
+            member_list = Member.objects.filter(entering_date__lt=month+'-32').filter(Q(role='팀장')|Q(role='운전원')|Q(role='용역')).filter(use='사용').order_by('-role', 'name')
             if name:
                 member_list = member_list.filter(name__contains=name)
         

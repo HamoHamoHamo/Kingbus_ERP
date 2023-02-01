@@ -90,6 +90,11 @@ table tbody tr:nth-child(even) {
     cursor: pointer;
 }
 
+.headerOrderBy {
+    cursor: pointer;
+    font-weight: bold;
+}
+
 
 td:nth-child(1),
 td:nth-child(2) {

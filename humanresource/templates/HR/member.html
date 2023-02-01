@@ -69,7 +69,10 @@
           <td>나이(만)</td>
           <td>아이디</td>
           <td>담당업무</td>
-          <td>입사일</td>
+          <td class="headerOrderBy" {% if req_order_by != "entering_date" %}onclick="location.href='{% url 'HR:member' %}?&name={{name}}&order_by=entering_date&role={{role}}&use={{use}}&age={{age}}'"
+          {% else %}onclick="location.href='{% url 'HR:member' %}?&name={{name}}&role={{role}}&use={{use}}&age={{age}}'"{% endif %}>
+            입사일{% if req_order_by == 'entering_date' %}↓{% endif %}
+          </td>
           <td>휴대폰 번호</td>
           <td>비상연락망(관계)</td>
           <td>생년월일</td>
@@ -116,7 +119,7 @@
           {% if page_obj.has_previous %}
           <div class="page-item page-pre">
             <a class="page-link"
-              href="?&name={{name}}&role={{role}}&use={{use}}&age={{age}}&page={{ page_obj.previous_page_number }}"
+              href="?&name={{name}}&order_by={{req_order_by}}&role={{role}}&use={{use}}&age={{age}}&page={{ page_obj.previous_page_number }}"
               tabindex="-1">이전</a>
           </div>
           {% else %}
@@ -126,14 +129,14 @@
           {% endif %}
           {% for page in page_range %}
           <div class="page-item {% if page == page_obj.number %} page-activate {% endif %}">
-            <a class="page-link" href="?&name={{name}}&role={{role}}&use={{use}}&age={{age}}&page={{ page }}">{{ page }}</a>
+            <a class="page-link" href="?&name={{name}}&order_by={{req_order_by}}&role={{role}}&use={{use}}&age={{age}}&page={{ page }}">{{ page }}</a>
           </div>
           {% endfor %}
 
           {% if page_obj.has_next %}
           <div class="page-item">
             <a class="page-link page-next"
-              href="?&name={{name}}&role={{role}}&use={{use}}&age={{age}}&page={{ page_obj.next_page_number }}">다음</a>
+              href="?&name={{name}}&order_by={{req_order_by}}&role={{role}}&use={{use}}&age={{age}}&page={{ page_obj.next_page_number }}">다음</a>
           </div>
           {% else %}
           <div class="page-item page-next disabled">
