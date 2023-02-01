@@ -331,7 +331,16 @@ def r_collect_create(request):
         for group_id in group_id_list:
             group = get_object_or_404(RegularlyGroup, id=group_id)
 
-            total = TotalPrice.objects.filter(group_id=group).get(month=month)
+            try:
+                total = TotalPrice.objects.filter(group_id=group).get(month=month)
+            except TotalPrice.DoesNotExist:
+                total = TotalPrice(
+                    group_id = group,
+                    month = month,
+                    total_price = 0,
+                    creator = creator
+                )
+                total.save()
             collect_list = Collect.objects.filter(group_id=group)
             collect_price = collect_list.aggregate(Sum('price'))['price__sum']
 
