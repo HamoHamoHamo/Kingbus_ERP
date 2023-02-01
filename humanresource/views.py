@@ -402,6 +402,7 @@ def new_salary(creator, month, member):
     base = 0
     service_allowance = 0
     position_allowance = 0
+    meal = 0
     
 
     if TODAY[:7] <= month:
