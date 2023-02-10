@@ -80,7 +80,7 @@
                 {% for i in data.order_list %}
                 <tr>
                     <td>{{forloop.counter}}{{data.week_list|index:forloop.counter0}}</td>
-                    <td>
+                    <td title="{{data.attendance_list|index:forloop.counter0}}">
                         {% for d in data.attendance_list|index:forloop.counter0 %}
                             {{d.0|slice:':4'}}. {{d.1|slice:':4'}}/
                         {% endfor %}
@@ -91,7 +91,7 @@
                         {% endif %}
                     </td>
                     <!-- <td>기흥기숙.마북동 /</td> -->
-                    <td>
+                    <td title="{{data.leave_list|index:forloop.counter0}}">
                         {% for d in data.leave_list|index:forloop.counter0 %}
                             {{d.0|slice:':4'}}. {{d.1|slice:':4'}}/
                         {% endfor %}
@@ -105,7 +105,7 @@
                         화성금곡.국립중앙/     화성금곡.국립중앙/<br>
                         화성금곡.국립중앙/
                     </td> -->
-                    <td>
+                    <td title="{{data.order_list|index:forloop.counter0}}">
                         {% for d in data.order_list|index:forloop.counter0 %}
                             {{d|index:0|slice:':4'}}. {{d|index:1|slice:':4'}} /
                         {% endfor %}

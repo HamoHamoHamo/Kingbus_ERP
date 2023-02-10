@@ -1048,6 +1048,9 @@ def regularly_order_edit(request):
                     print("price", price)
                     print("connnect'", connect)
                     print("connect.price", connect.price)
+                    # connect.price = '' 이면 0으로 넣어주기
+                    if not connect.price:
+                        connect.price = 0
                     print("total.total_price", total.total_price)
                     total.total_price = int(total.total_price) + price + math.floor(price * 0.1 + 0.5) - (int(connect.price) + math.floor(int(connect.price) * 0.1 + 0.5))
                     print("total.total_price222", total.total_price)
