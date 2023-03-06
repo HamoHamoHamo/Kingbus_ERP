@@ -12,17 +12,19 @@ function totalSalary(){
     let price8 = 0
     let price9 = 0
     let price10 = 0
+    let price11 = 0
     for (i = 0; i < salaryItem.length; i++){
         price1 = price1 + parseInt(salaryItem[i].children[5].children[0].value.replace(/\,/g,""))
         price2 = price2 + parseInt(salaryItem[i].children[6].children[0].value.replace(/\,/g,""))
         price3 = price3 + parseInt(salaryItem[i].children[7].children[0].value.replace(/\,/g,""))
         price4 = price4 + parseInt(salaryItem[i].children[8].children[0].value.replace(/\,/g,""))
-        price5 = price5 + parseInt(salaryItem[i].children[9].innerText.replace(/\,/g,""))
+        price5 = price5 + parseInt(salaryItem[i].children[9].children[0].value.replace(/\,/g,""))
         price6 = price6 + parseInt(salaryItem[i].children[10].innerText.replace(/\,/g,""))
         price7 = price7 + parseInt(salaryItem[i].children[11].innerText.replace(/\,/g,""))
         price8 = price8 + parseInt(salaryItem[i].children[12].innerText.replace(/\,/g,""))
         price9 = price9 + parseInt(salaryItem[i].children[13].innerText.replace(/\,/g,""))
         price10 = price10 + parseInt(salaryItem[i].children[14].innerText.replace(/\,/g,""))
+        price11 = price11 + parseInt(salaryItem[i].children[15].innerText.replace(/\,/g,""))
     };
     totalSalaryList.children[1].innerText = price1.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
     totalSalaryList.children[2].innerText = price2.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
@@ -34,6 +36,7 @@ function totalSalary(){
     totalSalaryList.children[8].innerText = price8.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
     totalSalaryList.children[9].innerText = price9.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
     totalSalaryList.children[10].innerText = price10.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
+    totalSalaryList.children[11].innerText = price11.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
 }
 
 totalSalary()

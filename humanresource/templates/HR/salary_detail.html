@@ -205,9 +205,15 @@
                         <td class="titleTd">식대</td>
                         <td class="printComma">{{data.meal}}</td>
                     </tr>
+                    <tr>
+                        <td class="titleTd">연차수당</td>
+                        <td class="printComma">{{data.salary.annual_allowance}}</td>
+                        <td class="titleTd">공제</td>
+                        <td class="printComma">{{data.salary.deduction}}</td>
+                    </tr>
                 </table>
 
-                <table class="totalAmountTable">
+                <!-- <table class="totalAmountTable">
                     <colgroup>
                         <col style="width: 20%">
                         <col style="width: 30%">
@@ -220,7 +226,7 @@
                         <td class="titleTd">공제</td>
                         <td class="printComma">{{data.salary.deduction}}</td>
                     </tr>
-                </table>
+                </table> -->
 
                 <table class="salaryTable">
                     <colgroup>
