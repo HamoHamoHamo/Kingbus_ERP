@@ -328,11 +328,20 @@ class SalaryList(generic.ListView):
     def get_queryset(self):
         month = self.request.GET.get('month', TODAY[:7])
         name = self.request.GET.get('name', '')
+        search_type = self.request.GET.get('type')
 
         authority = self.request.session.get('authority')
         if authority >= 3:
             id = self.request.session.get('user')
             member_list = Member.objects.filter(entering_date__lt=month+'-32').filter(id=id)
+        elif search_type == '일반':
+            member_list = Member.objects.filter(entering_date__lt=month+'-32').filter(Q(role='팀장')|Q(role='운전원')).filter(use='사용').order_by('-role', 'name')
+            if name:
+                member_list = member_list.filter(name__contains=name)
+        elif search_type == '용역':
+            member_list = Member.objects.filter(entering_date__lt=month+'-32').filter(role='용역').filter(use='사용').order_by('-role', 'name')
+            if name:
+                member_list = member_list.filter(name__contains=name)
         else:
             member_list = Member.objects.filter(entering_date__lt=month+'-32').filter(Q(role='팀장')|Q(role='운전원')|Q(role='용역')).filter(use='사용').order_by('-role', 'name')
             if name:
@@ -392,7 +401,7 @@ class SalaryList(generic.ListView):
 
         context['month'] = month
         context['name'] = name
-
+        context['search_type'] = self.request.GET.get('type')
         return context
 ## 확인 필요
 # month의 출근 퇴근 일반 요금 계산해서 Salary 생성
@@ -409,6 +418,7 @@ def new_salary(creator, month, member):
     base = 0
     service_allowance = 0
     position_allowance = 0
+    annual_allowance = 0
     meal = 0
     
 
@@ -416,6 +426,7 @@ def new_salary(creator, month, member):
         base = int(member.base)
         service_allowance = int(member.service_allowance)
         position_allowance = int(member.position_allowance)
+        annual_allowance = int(member.annual_allowance)
         meal = int(member.meal)
 
     # if salary:
@@ -441,11 +452,12 @@ def new_salary(creator, month, member):
         base = base,
         service_allowance = service_allowance,
         position_allowance = position_allowance,
+        annual_allowance = annual_allowance,
         meal = meal,
         attendance = attendance_price,
         leave = leave_price,
         order = order_price,
-        total = attendance_price + leave_price + order_price + base + service_allowance + position_allowance + int(meal),
+        total = attendance_price + leave_price + order_price + base + service_allowance + position_allowance + annual_allowance + int(meal),
         month = month,
         payment_date = payment_date,
         creator = creator
@@ -593,29 +605,33 @@ def salary_edit(request):
         base_list = request.POST.getlist('base')
         service_list = request.POST.getlist('service')
         position_list = request.POST.getlist('position')
+        annual_list = request.POST.getlist('annual')
         meal_list = request.POST.getlist('meal')
         id_list = request.POST.getlist('id')
         month = request.POST.get('month')
 
-        for base, service, position, meal, id in zip(base_list, service_list, position_list, meal_list, id_list):
+        for base, service, position, annual, meal, id in zip(base_list, service_list, position_list, annual_list, meal_list, id_list):
             member = get_object_or_404(Member, id=id)
             base = int(base.replace(',',''))
             service = int(service.replace(',',''))
             position = int(position.replace(',',''))
-            meal = int(meal.replace(',',''))
+            annual = int(annual.replace(',',''))
+            meal = int(str(meal).replace(',',''))
 
             salary = Salary.objects.filter(member_id=member).get(month=month)
             salary.base = base
             salary.service_allowance = service
             salary.position_allowance = position
+            salary.annual_allowance = annual
             salary.meal = meal
-            salary.total = int(salary.meal) + int(salary.attendance) + int(salary.leave) + int(salary.order) + int(salary.base) + int(salary.service_allowance) + int(salary.position_allowance) + int(salary.additional) - int(salary.deduction)
+            salary.total = int(salary.meal) + int(salary.attendance) + int(salary.leave) + int(salary.order) + int(salary.base) + int(salary.service_allowance) + int(salary.position_allowance) + int(salary.annual_allowance) + int(salary.additional) - int(salary.deduction)
             salary.save()
 
             if TODAY[:7] <= month:
                 member.base = base
                 member.service_allowance = service
                 member.position_allowance = position
+                member.annual_allowance = annual
                 member.save()
 
                 # 선택한 달 이후 급여들 다 업데이트
@@ -756,14 +772,16 @@ def salary_load(request):
             base = prev_salary.base
             service_allowance = prev_salary.service_allowance
             position_allowance = prev_salary.position_allowance
+            annual_allowance = prev_salary.annual_allowance
             meal = prev_salary.meal
 
             salary = Salary.objects.filter(month=month).get(member_id=member)
             salary.base = base
             salary.service_allowance = service_allowance
             salary.position_allowance = position_allowance
+            salary.annual_allowance = annual_allowance
             salary.meal = meal
-            salary.total = int(salary.meal) + int(salary.attendance) + int(salary.leave) + int(salary.order) + int(salary.base) + int(salary.service_allowance) + int(salary.position_allowance) + int(salary.additional) - int(salary.deduction)
+            salary.total = int(salary.meal) + int(salary.attendance) + int(salary.leave) + int(salary.order) + int(salary.base) + int(salary.service_allowance) + int(salary.position_allowance) + int(salary.annual_allowance) + int(salary.additional) - int(salary.deduction)
             salary.save()
             
 

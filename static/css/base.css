@@ -655,7 +655,8 @@ html::-webkit-scrollbar-track {
 
 .inputModules {
   height: 2.5rem;
-  padding-left: 1rem;
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
   background-color: white;
   border: 0.1rem solid #D2D2D2;
   border-radius: 0.2rem;
@@ -1073,6 +1074,9 @@ html::-webkit-scrollbar-track {
 }
 /* <span class="importantStar">*</span> */
 
+.marginLeft2{
+  margin-left: 2rem;
+}
 
 
 
