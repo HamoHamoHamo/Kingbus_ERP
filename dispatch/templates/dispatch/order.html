@@ -280,10 +280,10 @@
                         <td class="tdTypeC">
                             <select name="collection_type" id="collection_type" class="inputSelect"  tabindex="18">
                                 <option value=""></option>
-                                <option {% if detail.collection_type == '현지수금' %} selected {% endif %} value="현지수금(카드)">현지수금(카드)</option>
-                                <option {% if detail.collection_type == '현지수금' %} selected {% endif %} value="현지수금(현금)">현지수금(현금)</option>
-                                <option {% if detail.collection_type == '회사수금' %} selected {% endif %} value="회사수금(카드)">회사수금(카드)</option>
-                                <option {% if detail.collection_type == '회사수금' %} selected {% endif %} value="회사수금(현금)">회사수금(현금)</option>
+                                <option {% if detail.collection_type == '현지수금' and detail.payment_method == '카드' %} selected {% endif %} value="현지수금(카드)">현지수금(카드)</option>
+                                <option {% if detail.collection_type == '현지수금' and detail.payment_method == '현금' %} selected {% endif %} value="현지수금(현금)">현지수금(현금)</option>
+                                <option {% if detail.collection_type == '회사수금' and detail.payment_method == '카드' %} selected {% endif %} value="회사수금(카드)">회사수금(카드)</option>
+                                <option {% if detail.collection_type == '회사수금' and detail.payment_method == '현금' %} selected {% endif %} value="회사수금(현금)">회사수금(현금)</option>
                                 <option {% if detail.collection_type == '계좌이체' %} selected {% endif %} value="계좌이체">계좌이체</option>
                             </select>
                         </td>
@@ -441,7 +441,7 @@
                                         <td class="tdTypeA">상여지급</td>
                                         <td class="tdTypeB">
                                             <input autocomplete="off" {% if i.payment_method == 'y' %} checked {% endif %} name="payment_method{{forloop.counter0}}" value="y" type="checkbox" class="dispatchPaymentCheckbox">
-                                            <label for="">선지급</label>
+                                            <label for="">선지급(현금)</label>
                                         </td>
                                         <td class="tdTypeA tdWhiteSpace"></td>
                                         <td class="tdTypeB tdWhiteSpace"></td>
@@ -491,7 +491,7 @@
                                         <td class="tdTypeA">상여지급</td>
                                         <td class="tdTypeB">
                                             <input autocomplete="off" {% if i.payment_method == 'y' %} checked {% endif %} name="payment_method{{forloop.counter0|add:detail_connect_list.count}}" value='y' type="checkbox" class="dispatchPaymentCheckbox">
-                                            <label for="">선지급</label>
+                                            <label for="">선지급(현금)</label>
                                         </td>
                                         <td class="tdTypeA tdWhiteSpace"></td>
                                         <td class="tdTypeB tdWhiteSpace"></td>

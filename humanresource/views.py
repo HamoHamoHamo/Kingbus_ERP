@@ -768,7 +768,10 @@ def salary_load(request):
 
         for id in id_list:
             member = get_object_or_404(Member, id=id)
-            prev_salary = Salary.objects.filter(month=prev_month).get(member_id=member)
+            try:
+                prev_salary = Salary.objects.filter(month=prev_month).get(member_id=member)
+            except Salary.DoesNotExist:
+                continue
             base = prev_salary.base
             service_allowance = prev_salary.service_allowance
             position_allowance = prev_salary.position_allowance
