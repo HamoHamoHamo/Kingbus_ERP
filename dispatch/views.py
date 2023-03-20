@@ -1534,11 +1534,15 @@ def order_connect_create(request):
             
             allowance = driver_allowance_list[count].replace(",","")
             
+            payment_method = payment_method_list[count]
+            if not payment_method:
+                payment_method = 'n'
+            
             connect = DispatchOrderConnect(
                 order_id = order,
                 bus_id = vehicle,
                 driver_id = driver,
-                payment_method = payment_method_list[count],
+                payment_method = payment_method,
                 outsourcing = outsourcing,
                 departure_date = order.departure_date,
                 arrival_date = order.arrival_date,

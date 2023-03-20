@@ -184,21 +184,19 @@ def delete_regularly_connect(sender, instance, **kwargs):
 
 @receiver(post_save, sender=DispatchOrderConnect)
 def save_connect(sender, instance, created, **kwargs):
-    if created:
+    # Salary 업데이트
+    month = instance.departure_date[:7]
+    creator = instance.creator
+    member = instance.driver_id
+    try:
+        salary = Salary.objects.filter(member_id=member).get(month=month)
+        order = DispatchOrderConnect.objects.filter(driver_id=member).filter(departure_date__startswith=month).filter(payment_method='n').aggregate(Sum('driver_allowance'))
+        salary.order = int(order['driver_allowance__sum']) if order['driver_allowance__sum'] else 0
 
-        # Salary 업데이트
-        month = instance.departure_date[:7]
-        creator = instance.creator
-        member = instance.driver_id
-        try:
-            salary = Salary.objects.filter(member_id=member).get(month=month)
-            order = DispatchOrderConnect.objects.filter(driver_id=member).filter(departure_date__startswith=month).aggregate(Sum('driver_allowance'))
-            salary.order = int(order['driver_allowance__sum']) if order['driver_allowance__sum'] else 0
-
-            salary.total = int(salary.base) + int(salary.service_allowance) + int(salary.position_allowance) + int(salary.annual_allowance) + int(salary.meal) + int(salary.attendance) + int(salary.leave) + int(salary.order) + int(salary.additional) - int(salary.deduction)
-            salary.save()
-        except Salary.DoesNotExist:
-            new_salary(creator, month, member)
+        salary.total = int(salary.base) + int(salary.service_allowance) + int(salary.position_allowance) + int(salary.annual_allowance) + int(salary.meal) + int(salary.attendance) + int(salary.leave) + int(salary.order) + int(salary.additional) - int(salary.deduction)
+        salary.save()
+    except Salary.DoesNotExist:
+        new_salary(creator, month, member)
         
 
 @receiver(post_delete, sender=DispatchOrderConnect)
