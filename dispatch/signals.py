@@ -47,11 +47,12 @@ def save_order(sender, instance, created, **kwargs):
 
     total.save()
 
-    connects = instance.info_order.all()
-    for connect in connects:
-        connect.price = instance.price
-        connect.driver_allowance = instance.driver_allowance
-        connect.save()
+    # connects는 view에서 처리
+    #connects = instance.info_order.all()
+    #for connect in connects:
+    #    connect.price = instance.price
+    #    connect.driver_allowance = instance.driver_allowance
+    #    connect.save()
 
     print('signal total price save', total.total_price)
 

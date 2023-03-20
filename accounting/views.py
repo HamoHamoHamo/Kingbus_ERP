@@ -62,7 +62,7 @@ class SalesList(generic.ListView):
                 month = f'{get_month[:4]}-{i+1}'
 
             regularly_sales = TotalPrice.objects.filter(month=month).exclude(group_id=None).aggregate(Sum('total_price'))['total_price__sum']
-            order_sales = TotalPrice.objects.filter(month=month).exclude(order_id=None).aggregate(Sum('total_price'))['total_price__sum']
+            order_sales = TotalPrice.objects.filter(month=month).exclude(order_id__contract_status='취소').exclude(order_id=None).aggregate(Sum('total_price'))['total_price__sum']
             regularly_collect = Collect.objects.filter(month=month).exclude(group_id=None).aggregate(Sum('price'))['price__sum']
             order_collect = Collect.objects.filter(month=month).exclude(order_id=None).aggregate(Sum('price'))['price__sum']
 
