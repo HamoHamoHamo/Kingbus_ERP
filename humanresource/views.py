@@ -523,10 +523,11 @@ def salary_detail(request):
             if not order_list[c_date]:
                 order_list[c_date] = []
             order_list[c_date].append([connect.order_id.departure, connect.order_id.arrival])
-
-            order_price_list[c_date] += int(connect.driver_allowance)
+            
         # if connects:
-            total_list[c_date] += int(connect.driver_allowance)
+            if connect.payment_method == 'n':
+                order_price_list[c_date] += int(connect.driver_allowance)
+                total_list[c_date] += int(connect.driver_allowance)
 
         attendances = DispatchRegularlyConnect.objects.filter(departure_date__range=(f'{month}-01 00:00', f'{month}-{last_date} 24:00')).filter(work_type='출근').filter(driver_id=member)
         attendance_cnt = attendances.count()
