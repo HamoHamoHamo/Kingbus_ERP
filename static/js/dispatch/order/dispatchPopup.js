@@ -50,7 +50,9 @@ dispatchSave.addEventListener("click", dispatchSaveCheck)
 function dispatchSaveCheck(e) {
 
     e.preventDefault()
-
+    if (contractStatus == '취소') {
+        return alert("계약현황을 수정해 주세요.")
+    }
     let selectDriver = []
     let selectOutSoursing = []
 

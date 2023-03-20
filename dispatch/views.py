@@ -1439,9 +1439,10 @@ class OrderList(generic.ListView):
         total['outstanding_amount'] = 0
         
         for order in context['order_list']:
-            total['c_bus_cnt'] += int(order.info_order.count())
-            total['bus_cnt'] += int(order.bus_cnt)
-            total['driver_allowance'] += int(order.driver_allowance) * int(order.bus_cnt)
+            if order.contract_status != '취소':
+                total['driver_allowance'] += int(order.driver_allowance) * int(order.bus_cnt)
+                total['c_bus_cnt'] += int(order.info_order.count())
+                total['bus_cnt'] += int(order.bus_cnt)
             try:
                 tp = TotalPrice.objects.get(order_id=order)
                 total_price = int(tp.total_price)
@@ -1494,7 +1495,7 @@ class OrderList(generic.ListView):
         context['bill_places'] = Category.objects.filter(type='계산서 발행처')
         context['reservations'] = Category.objects.filter(type='예약회사')
         context['operatings'] = Category.objects.filter(type='운행회사')
-
+        
         return context
 
 def order_connect_create(request):
@@ -1503,6 +1504,8 @@ def order_connect_create(request):
     if request.method == "POST":
         creator = get_object_or_404(Member, id=request.session.get('user'))
         order = get_object_or_404(DispatchOrder, id=request.POST.get('id', None))
+        if order.contract_status == '취소':
+            raise Http404
         price = order.price
         outsourcing_list = []
         payment_method_list = []
@@ -1755,15 +1758,6 @@ def order_edit(request):
                 print("term begin > term end")
                 raise Http404
 
-            #
-            connects = order.info_order.all()
-            
-            for connect in connects:
-                connect.departure_date = departure_date
-                connect.arrival_date = arrival_date
-                connect.save()
-            
-
             if request.POST.get('price'):
                 price = int(request.POST.get('price').replace(',',''))
             else:
@@ -1786,6 +1780,17 @@ def order_edit(request):
             order.contract_status = order_form.cleaned_data['contract_status']
             order.cost_type = ' '.join(request.POST.getlist('cost_type'))
             
+            connects = order.info_order.all()
+            if order.contract_status == '취소':
+                connects.delete()
+            else:
+                for connect in connects:
+                    connect.departure_date = departure_date
+                    connect.arrival_date = arrival_date
+                    connect.price = order.price
+                    connect.driver_allowance = order.driver_allowance
+                    connect.save()
+
             option = ' '.join(request.POST.getlist('option'))
             order.option = option
             if '카드기' in option and (not '<카드기>' in order.departure):

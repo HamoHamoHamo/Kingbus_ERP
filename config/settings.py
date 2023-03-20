@@ -4,7 +4,7 @@ import my_settings
 from pathlib import Path
 from os.path import join
 
-VERSION = "0.3"
+VERSION = "0.2"
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
