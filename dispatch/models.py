@@ -166,3 +166,13 @@ class Schedule(models.Model):
 
     def __str__(self):
         return self.date + '' + self.content
+
+class DriverCheck(models.Model):
+    regularly_id = models.ForeignKey(DispatchRegularlyConnect, on_delete=models.CASCADE, related_name="check_regularly_connect", null=True)
+    order_id = models.ForeignKey(DispatchOrderConnect, on_delete=models.CASCADE, related_name="check_order_connect", null=True)
+    wake_time = models.CharField(verbose_name='기상확인시간', max_length=16, null=False, blank=True)
+    drive_time = models.CharField(verbose_name='운행시작시간', max_length=16, null=False, blank=True)
+    departure_time = models.CharField(verbose_name='출발지도착시간', max_length=16, null=False, blank=True)
+    pub_date = models.DateTimeField(auto_now_add=True, verbose_name='작성시간')
+    updated_at = models.DateTimeField(auto_now=True, verbose_name='수정시간')
+    creator = models.ForeignKey(Member, on_delete=models.SET_NULL, related_name="driver_check_creator", db_column="creator_id", null=True)

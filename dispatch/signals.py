@@ -5,7 +5,7 @@ from django.db.models.signals import post_save, post_delete, pre_delete
 from django.db.models import Sum
 from django.dispatch import receiver
 from django.shortcuts import get_object_or_404
-from .models import DispatchRegularly, DispatchRegularlyData, DispatchOrder, DispatchOrderConnect, DispatchRegularlyConnect, DispatchCheck
+from .models import DriverCheck, DispatchRegularlyData, DispatchOrder, DispatchOrderConnect, DispatchRegularlyConnect, DispatchCheck
 from accounting.models import TotalPrice, AdditionalCollect
 from humanresource.models import Salary, Member
 from humanresource.views import new_salary
@@ -142,6 +142,11 @@ def save_regularly_connect(sender, instance, created, **kwargs):
         creator = instance.creator
         member = instance.driver_id
         
+        # DriverCheck 생성
+        DriverCheck.objects.create(
+            regularly_id = instance,
+            creator = creator
+        )
         try:
             salary = Salary.objects.filter(member_id=member).get(month=month)
             print('salary', salary)
@@ -198,7 +203,13 @@ def save_connect(sender, instance, created, **kwargs):
         salary.save()
     except Salary.DoesNotExist:
         new_salary(creator, month, member)
-        
+    
+    # DriverCheck 생성
+    if created:
+        DriverCheck.objects.create(
+            order_id = instance,
+            creator = creator
+        )
 
 @receiver(post_delete, sender=DispatchOrderConnect)
 def delete_connect(sender, instance, **kwargs):
