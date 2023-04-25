@@ -66,7 +66,7 @@
         <div class="scheduleTableCell">
             <div class="table">
                 <div class="tbody">
-                    {% for vehicle in vehicle_list %}
+                    {% for driver in driver_list %}
                     <div class="tr">
                         <div class="td"></div>
                         <div class="td"></div>
@@ -93,8 +93,8 @@
                         <div class="td"></div>
                         <div class="td"></div>
                         <div class="tdDriver">
-                            <span class="{{forloop.counter0}}">{{vehicle.vehicle_num}}</span>
-                            <span>({{vehicle.driver_name}})</span>
+                            <span class="{{forloop.counter0}}">{{driver.name}}</span>
+                            
                         </div>
                     </div>
                     {% endfor %}
@@ -125,15 +125,15 @@
             <div class="PopupDataBox">
                 <div class="PopupDataCell">
                     <span class="PopupDataTitle">이름</span>
-                    <div class="deiverName">이도울</div>
+                    <div class="deiverName"></div>
                 </div>
                 <div class="PopupDataCell">
                     <span class="PopupDataTitle">차량번호</span>
-                    <div class="vehicleNum">1111</div>
+                    <div class="vehicleNum"></div>
                 </div>
                 <div class="PopupDataCell">
                     <span class="PopupDataTitle">날짜</span>
-                    <div class="dispatchDate">2022.01.01</div>
+                    <div class="dispatchDate"></div>
                 </div>
             </div>
             <div class="shcedulePopupTableBox">
@@ -179,5 +179,5 @@
     console.log("DATA", data)
     {% endautoescape %}
 </script>
-<script src="{% static 'js/dispatch/before/schedulePopup.js' %}"></script>
+<script src="{% static 'js/dispatch/schedulePopup.js' %}"></script>
 {% endblock %}

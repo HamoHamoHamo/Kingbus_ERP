@@ -14,7 +14,7 @@ class Vehicle(models.Model):
     maker = models.CharField(verbose_name='제조사', max_length=50, null=False, blank=True)
     model_year = models.CharField(verbose_name='연식', max_length=15, null=False, blank=True)
     release_date = models.CharField(verbose_name='출고일자', max_length=15, null=False, blank=True)
-    driver = models.OneToOneField(Member, verbose_name='기사', on_delete=models.SET_NULL, null=True, related_name="driver", db_column="driver")
+    driver = models.OneToOneField(Member, verbose_name='기사', on_delete=models.SET_NULL, null=True, related_name="vehicle", db_column="vehicle")
     driver_name = models.CharField(verbose_name='기사이름', max_length=20, null=False, blank=True)
     use = models.CharField(verbose_name='사용여부', max_length=10, null=False, default='사용', blank=True)
     passenger_num = models.CharField(verbose_name='승차인원', max_length=100, null=False, blank=True)

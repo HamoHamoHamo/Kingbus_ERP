@@ -79,20 +79,24 @@ window.onload = function () {
         for (j = 0; j < data[i].length; j++) {
             curData = data[i][j];
             order = document.createElement('div');
+            startH = curData.departure_date.substr(11,).replace(/:/g, "").substr(0, 2);
+            startM = curData.departure_date.substr(11,).replace(/:/g, "").substr(2,);
+            endH = curData.arrival_date.substr(11,).replace(/:/g, "").substr(0, 2);
+            endM = curData.arrival_date.substr(11,).replace(/:/g, "").substr(2,);
+            intStartH = parseInt(startH);
+            intStartM = parseInt(startM);
+            intEndH = parseInt(endH);
+            intEndM = parseInt(endM);
             order.setAttribute("class", "orderLine");
-            order.setAttribute("title", `[${curData.work_type}] - ${curData.departure}▶${curData.arrival}`);
-            startH = parseInt(curData.departure_date.substr(11,).replace(/:/g, "").substr(0, 2));
-            startM = parseInt(curData.departure_date.substr(11,).replace(/:/g, "").substr(2,));
-            endH = parseInt(curData.arrival_date.substr(11,).replace(/:/g, "").substr(0, 2));
-            endM = parseInt(curData.arrival_date.substr(11,).replace(/:/g, "").substr(2,));
+            order.setAttribute("title", `[${curData.bus} || ${startH}:${startM} ~ ${endH}:${endM} || ${curData.departure}▶${curData.arrival}`);
 
             if (curData.work_type == "일반") {
                 if (curData.departure_date.substr(0, 10) == curData.arrival_date.substr(0, 10)) {
-                    order.setAttribute("style", `left: ${((startH * 60 + startM) * 0.058)}%; width: ${(((endH * 60 + endM) - (startH * 60 + startM)) * 0.058)}%;`);
+                    order.setAttribute("style", `left: ${((intStartH * 60 + intStartM) * 0.058)}%; width: ${(((intEndH * 60 + intEndM) - (intStartH * 60 + intStartM)) * 0.058)}%;`);
                 } else if (curData.departure_date.substr(0, 10) == dispatchDateFilter.value) {
-                    order.setAttribute("style", `left: ${(((startH * 60 + startM) * 0.058)) - 0.1}%; width: ${100 - (((startH * 60 + startM) * 0.058)) - 16.38}%;`);
+                    order.setAttribute("style", `left: ${(((intStartH * 60 + intStartM) * 0.058)) - 0.1}%; width: ${100 - (((intStartH * 60 + intStartM) * 0.058)) - 16.38}%;`);
                 } else if (curData.arrival_date.substr(0, 10) == dispatchDateFilter.value) {
-                    order.setAttribute("style", `left: 0%; width: ${(((endH * 60 + endM) * 0.058)) - 0.1}%;`);
+                    order.setAttribute("style", `left: 0%; width: ${(((intEndH * 60 + intEndM) * 0.058)) - 0.1}%;`);
                 } else {
                     order.setAttribute("style", `left: 0%; width: 83.52%;`);
                 }
@@ -105,8 +109,8 @@ window.onload = function () {
                 } else {
                     regularly.setAttribute("class", "regularlyLineEnd");
                 }
-                regularly.setAttribute("title", `[${curData.work_type}] - ${curData.departure}▶${curData.arrival}`);
-                regularly.setAttribute("style", `left: ${((startH * 60 + startM) * 0.058)}%; width: ${(((endH * 60 + endM) - (startH * 60 + startM)) * 0.058)}%;`);
+                regularly.setAttribute("title", `[${curData.bus} || ${startH}:${startM} ~ ${endH}:${endM} || ${curData.departure}▶${curData.arrival}`);
+                regularly.setAttribute("style", `left: ${((intStartH * 60 + intStartM) * 0.058)}%; width: ${(((intEndH * 60 + intEndM) - (intStartH * 60 + intStartM)) * 0.058)}%;`);
                 tr[i].appendChild(regularly);
             }
         }

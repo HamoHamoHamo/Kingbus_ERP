@@ -205,20 +205,20 @@ def schedule_delete(request):
 
 class ScheduleList(generic.ListView):
     template_name = 'dispatch/schedule.html'
-    context_object_name = 'vehicle_list'
-    model = Vehicle
+    context_object_name = 'driver_list'
+    model = Member
 
     def get_queryset(self):
         select = self.request.GET.get('select', None)
         search = self.request.GET.get('search', None)
 
         if select == 'driver' and search:
-            vehicle_list = Vehicle.objects.prefetch_related('info_bus_id', 'info_regularly_bus_id').filter(driver_name__contains=search).filter(use='사용').order_by('vehicle_num', 'driver_name')
+            driver_list = Member.objects.prefetch_related('info_driver_id', 'info_regularly_driver_id').filter(Q(role='팀장')|Q(role='운전원')|Q(role='용역')|Q(role='임시')).filter(name__contains=search).filter(use='사용').order_by('name')
         elif select == 'vehicle' and search:
-            vehicle_list = Vehicle.objects.prefetch_related('info_bus_id', 'info_regularly_bus_id').filter(vehicle_num__contains=search).filter(use='사용').order_by('vehicle_num', 'driver_name')
+            driver_list = Member.objects.prefetch_related('info_driver_id', 'info_regularly_driver_id').filter(Q(role='팀장')|Q(role='운전원')|Q(role='용역')|Q(role='임시')).filter(vehicle__vehicle_num__contains=search).filter(vehicle__use='사용').order_by('name')
         else:
-            vehicle_list = Vehicle.objects.prefetch_related('info_bus_id', 'info_regularly_bus_id').filter(use='사용').order_by('vehicle_num', 'driver_name')
-        return vehicle_list
+            driver_list = Member.objects.prefetch_related('info_driver_id', 'info_regularly_driver_id').filter(Q(role='팀장')|Q(role='운전원')|Q(role='용역')|Q(role='임시')).filter(use='사용').order_by('name')
+        return driver_list
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -226,42 +226,33 @@ class ScheduleList(generic.ListView):
 
         schedule_list = []
 
-        for vehicle in context['vehicle_list']:
+        for driver in context['driver_list']:
             temp = []
-            order_list = vehicle.info_bus_id.exclude(arrival_date__lte=f'{date} 00:00').exclude(departure_date__gte=f'{date} 24:00')
-            e_regulary_list = vehicle.info_regularly_bus_id.exclude(arrival_date__lte=f'{date} 00:00').exclude(departure_date__gte=f'{date} 24:00').filter(work_type='출근')
-            l_regulary_list = vehicle.info_regularly_bus_id.exclude(arrival_date__lte=f'{date} 00:00').exclude(departure_date__gte=f'{date} 24:00').filter(work_type='퇴근')
+            order_list = driver.info_driver_id.exclude(arrival_date__lte=f'{date} 00:00').exclude(departure_date__gte=f'{date} 24:00')
+            regulary_list = driver.info_regularly_driver_id.exclude(arrival_date__lte=f'{date} 00:00').exclude(departure_date__gte=f'{date} 24:00')
+            
             for o in order_list:
                 temp.append({
                     'work_type': '일반',
+                    'bus': o.bus_id.vehicle_num,
                     'departure_date': o.departure_date,
                     'arrival_date': o.arrival_date,
                     'departure': o.order_id.departure,
                     'arrival': o.order_id.arrival,
                 })
-            for o in e_regulary_list:
-                temp.append({
-                    'work_type': '출근',
-                    'departure_date': o.departure_date,
-                    'arrival_date': o.arrival_date,
-                    'departure': o.regularly_id.departure,
-                    'arrival': o.regularly_id.arrival,
-                })
-            for o in l_regulary_list:
-                temp.append({
-                    'work_type': '퇴근',
-                    'departure_date': o.departure_date,
-                    'arrival_date': o.arrival_date,
-                    'departure': o.regularly_id.departure,
-                    'arrival': o.regularly_id.arrival,
-                })
+            for regularly in regulary_list:
+                temp_dict = {
+                    'departure_date': regularly.departure_date,
+                    'bus': o.bus_id.vehicle_num,
+                    'arrival_date': regularly.arrival_date,
+                    'departure': regularly.regularly_id.departure,
+                    'arrival': regularly.regularly_id.arrival,
+                }
+                temp_dict['work_type'] = regularly.work_type
+                temp.append(temp_dict)
 
             schedule_list.append(temp)
-        print(schedule_list)
         context['schedule_list'] = schedule_list
-
-        context['datalist_vehicle'] = Vehicle.objects.filter(use='사용')
-        context['datalist_driver'] = Member.objects.filter(role='운전원')
         
         context['select'] = self.request.GET.get('select', '')
         context['search'] = self.request.GET.get('search', '')
