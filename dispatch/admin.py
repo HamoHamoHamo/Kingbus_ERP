@@ -15,7 +15,10 @@ from .models import Schedule, DispatchOrder, DispatchOrderConnect, RegularlyGrou
 #     list_display = ('pk','departure_date','arrival_date')
 #     list_per_page = 10
 
-
+@admin.register(DriverCheck)
+class DriverCheckAdmin(admin.ModelAdmin):
+    list_display = ['regularly_id', 'order_id', 'wake_time','drive_time','departure_time', 'updated_at']
+    
 admin.site.register(DispatchOrder)
 admin.site.register(DispatchOrderConnect)
 admin.site.register(RegularlyGroup)
@@ -25,4 +28,4 @@ admin.site.register(DispatchRegularlyConnect)
 admin.site.register(DispatchCheck)
 admin.site.register(DispatchOrderWaypoint)
 admin.site.register(Schedule)
-admin.site.register(DriverCheck)
+

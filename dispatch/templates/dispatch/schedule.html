@@ -8,7 +8,7 @@
 
 {% block content-header %}
 <div class="HeaderTitle">
-    배차일정
+    운행확인
 </div>
 {% endblock %}
 
@@ -23,21 +23,11 @@
             <span class="searchName">검색종류</span>
             <div class="routeFilterBox">
                 <select name="select" id="" class="inputModules">
+                    <option></option>
                     <option {% if select == "driver" %} selected {% endif %} value="driver">기사이름</option>
                     <option {% if select == "vehicle" %} selected {% endif %} value="vehicle">차량번호</option>
                 </select>
-                <input autocomplete="off"value="{{search_d}}" name="search_d" type="text" class="inputModules" list="diverFilter" autocomplete="off">
-                <datalist id="diverFilter">
-                    {% for driver in datalist_driver %}
-                    <option value="{{driver.name}}"></option>
-                    {% endfor %}
-                </datalist>
-                <input autocomplete="off"value="{{search_v}}" name="search_v" type="text" class="inputModules" list="busFilter" autocomplete="off">
-                <datalist id="busFilter">
-                    {% for vehicle in datalist_vehicle %}
-                    <option value="{{vehicle.vehicle_num}}"></option>
-                    {% endfor %}
-                </datalist>
+                <input autocomplete="off"value="{{search}}" name="search" type="text" class="inputModules">
             </div>
             <div class="dateFilterBox">
                 <span>날짜</span>
@@ -76,7 +66,7 @@
         <div class="scheduleTableCell">
             <div class="table">
                 <div class="tbody">
-                    
+                    {% for vehicle in vehicle_list %}
                     <div class="tr">
                         <div class="td"></div>
                         <div class="td"></div>
@@ -103,11 +93,11 @@
                         <div class="td"></div>
                         <div class="td"></div>
                         <div class="tdDriver">
-                            <!-- <span class="{{forloop.counter0}}">{{vehicle.vehicle_num}}</span>
-                            <span>({{vehicle.driver_name}})</span> -->
+                            <span class="{{forloop.counter0}}">{{vehicle.vehicle_num}}</span>
+                            <span>({{vehicle.driver_name}})</span>
                         </div>
                     </div>
-                    
+                    {% endfor %}
                 </div>
         </div>
     </div>
@@ -189,5 +179,5 @@
     console.log("DATA", data)
     {% endautoescape %}
 </script>
-<script src="{% static 'js/dispatch/schedulePopup.js' %}"></script>
+<script src="{% static 'js/dispatch/before/schedulePopup.js' %}"></script>
 {% endblock %}

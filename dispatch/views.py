@@ -210,17 +210,63 @@ class ScheduleList(generic.ListView):
 
     def get_queryset(self):
         select = self.request.GET.get('select', None)
-        search_d = self.request.GET.get('search_d', None)
-        search_v = self.request.GET.get('search_v', None)
+        search = self.request.GET.get('search', None)
 
-        if select == 'driver':
-            vehicle_list = Vehicle.objects.prefetch_related('info_bus_id', 'info_regulary_bus_id').filter(driver_name__contains=search_d).filter(use='사용')
-        elif select == 'vehicle':
-            vehicle_list = Vehicle.objects.prefetch_related('info_bus_id', 'info_regulary_bus_id').filter(vehicle_num__contains=search_v).filter(use='사용')
+        if select == 'driver' and search:
+            vehicle_list = Vehicle.objects.prefetch_related('info_bus_id', 'info_regularly_bus_id').filter(driver_name__contains=search).filter(use='사용').order_by('vehicle_num', 'driver_name')
+        elif select == 'vehicle' and search:
+            vehicle_list = Vehicle.objects.prefetch_related('info_bus_id', 'info_regularly_bus_id').filter(vehicle_num__contains=search).filter(use='사용').order_by('vehicle_num', 'driver_name')
         else:
-            vehicle_list = Vehicle.objects.prefetch_related('info_bus_id', 'info_regulary_bus_id').filter(use='사용')
+            vehicle_list = Vehicle.objects.prefetch_related('info_bus_id', 'info_regularly_bus_id').filter(use='사용').order_by('vehicle_num', 'driver_name')
         return vehicle_list
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        date = self.request.GET.get('date', TODAY)
+
+        schedule_list = []
+
+        for vehicle in context['vehicle_list']:
+            temp = []
+            order_list = vehicle.info_bus_id.exclude(arrival_date__lte=f'{date} 00:00').exclude(departure_date__gte=f'{date} 24:00')
+            e_regulary_list = vehicle.info_regularly_bus_id.exclude(arrival_date__lte=f'{date} 00:00').exclude(departure_date__gte=f'{date} 24:00').filter(work_type='출근')
+            l_regulary_list = vehicle.info_regularly_bus_id.exclude(arrival_date__lte=f'{date} 00:00').exclude(departure_date__gte=f'{date} 24:00').filter(work_type='퇴근')
+            for o in order_list:
+                temp.append({
+                    'work_type': '일반',
+                    'departure_date': o.departure_date,
+                    'arrival_date': o.arrival_date,
+                    'departure': o.order_id.departure,
+                    'arrival': o.order_id.arrival,
+                })
+            for o in e_regulary_list:
+                temp.append({
+                    'work_type': '출근',
+                    'departure_date': o.departure_date,
+                    'arrival_date': o.arrival_date,
+                    'departure': o.regularly_id.departure,
+                    'arrival': o.regularly_id.arrival,
+                })
+            for o in l_regulary_list:
+                temp.append({
+                    'work_type': '퇴근',
+                    'departure_date': o.departure_date,
+                    'arrival_date': o.arrival_date,
+                    'departure': o.regularly_id.departure,
+                    'arrival': o.regularly_id.arrival,
+                })
+
+            schedule_list.append(temp)
+        print(schedule_list)
+        context['schedule_list'] = schedule_list
+
+        context['datalist_vehicle'] = Vehicle.objects.filter(use='사용')
+        context['datalist_driver'] = Member.objects.filter(role='운전원')
+        
+        context['select'] = self.request.GET.get('select', '')
+        context['search'] = self.request.GET.get('search', '')
+        context['date'] = date
+        return context
     
 
 
@@ -916,7 +962,6 @@ def regularly_order_edit(request):
         creator = get_object_or_404(Member, pk=request.session.get('user'))
         order_form = RegularlyDataForm(request.POST)
         if order_form.is_valid():
-
             group = get_object_or_404(RegularlyGroup, pk=request.POST.get('group'))
             week = ' '.join(request.POST.getlist('week', None))
             
