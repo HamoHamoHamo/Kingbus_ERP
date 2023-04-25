@@ -72,57 +72,41 @@ let startH = ""
 let startM = ""
 let endH = ""
 let endM = ""
-
+let curData = ""
+let order = ""
 window.onload = function () {
     for (i = 0; i < data.length; i++) {
         for (j = 0; j < data[i].length; j++) {
-            if (data[i][j].work_type == "일반") {
-                if (data[i][j].departure_date.substr(0, 10) == data[i][j].arrival_date.substr(0, 10)) {
-                    startH = data[i][j].departure_date.substr(11,).replace(/:/g, "").substr(0, 2)
-                    startM = data[i][j].departure_date.substr(11,).replace(/:/g, "").substr(2,)
-                    endH = data[i][j].arrival_date.substr(11,).replace(/:/g, "").substr(0, 2)
-                    endM = data[i][j].arrival_date.substr(11,).replace(/:/g, "").substr(2,)
-                    const order = document.createElement('div');
-                    order.setAttribute("class", "orderLine");
-                    order.setAttribute("title", `[${data[i][j].work_type}] - ${data[i][j].departure}▶${data[i][j].arrival}`);
-                    order.setAttribute("style", `left: ${((startH * 60 + startM) * 0.058) / 100}%; width: ${(((endH * 60 + endM) - (startH * 60 + startM)) * 0.058) / 100}%;`);
-                    tr[i].appendChild(order);
-                } else if (data[i][j].departure_date.substr(0, 10) == dispatchDateFilter.value) {
-                    startH = data[i][j].departure_date.substr(11,).replace(/:/g, "").substr(0, 2)
-                    startM = data[i][j].departure_date.substr(11,).replace(/:/g, "").substr(2,)
-                    const order = document.createElement('div');
-                    order.setAttribute("class", "orderLine");
-                    order.setAttribute("title", `[${data[i][j].work_type}] - ${data[i][j].departure}▶${data[i][j].arrival}`);
-                    order.setAttribute("style", `left: ${(((startH * 60 + startM) * 0.058) / 100) - 0.1}%; width: ${100 - (((startH * 60 + startM) * 0.058) / 100) - 16.38}%;`);
-                    tr[i].appendChild(order);
-                } else if (data[i][j].arrival_date.substr(0, 10) == dispatchDateFilter.value) {
-                    endH = data[i][j].arrival_date.substr(11,).replace(/:/g, "").substr(0, 2)
-                    endM = data[i][j].arrival_date.substr(11,).replace(/:/g, "").substr(2,)
-                    const order = document.createElement('div');
-                    order.setAttribute("class", "orderLine");
-                    order.setAttribute("title", `[${data[i][j].work_type}] - ${data[i][j].departure}▶${data[i][j].arrival}`);
-                    order.setAttribute("style", `left: 0%; width: ${(((endH * 60 + endM) * 0.058) / 100) - 0.1}%;`);
-                    tr[i].appendChild(order);
+            curData = data[i][j];
+            order = document.createElement('div');
+            order.setAttribute("class", "orderLine");
+            order.setAttribute("title", `[${curData.work_type}] - ${curData.departure}▶${curData.arrival}`);
+            startH = parseInt(curData.departure_date.substr(11,).replace(/:/g, "").substr(0, 2));
+            startM = parseInt(curData.departure_date.substr(11,).replace(/:/g, "").substr(2,));
+            endH = parseInt(curData.arrival_date.substr(11,).replace(/:/g, "").substr(0, 2));
+            endM = parseInt(curData.arrival_date.substr(11,).replace(/:/g, "").substr(2,));
+
+            if (curData.work_type == "일반") {
+                if (curData.departure_date.substr(0, 10) == curData.arrival_date.substr(0, 10)) {
+                    order.setAttribute("style", `left: ${((startH * 60 + startM) * 0.058)}%; width: ${(((endH * 60 + endM) - (startH * 60 + startM)) * 0.058)}%;`);
+                } else if (curData.departure_date.substr(0, 10) == dispatchDateFilter.value) {
+                    order.setAttribute("style", `left: ${(((startH * 60 + startM) * 0.058)) - 0.1}%; width: ${100 - (((startH * 60 + startM) * 0.058)) - 16.38}%;`);
+                } else if (curData.arrival_date.substr(0, 10) == dispatchDateFilter.value) {
+                    order.setAttribute("style", `left: 0%; width: ${(((endH * 60 + endM) * 0.058)) - 0.1}%;`);
                 } else {
-                    const order = document.createElement('div');
-                    order.setAttribute("class", "orderLine");
-                    order.setAttribute("title", `[${data[i][j].work_type}] - ${data[i][j].departure}▶${data[i][j].arrival}`);
                     order.setAttribute("style", `left: 0%; width: 83.52%;`);
-                    tr[i].appendChild(order);
                 }
+                tr[i].appendChild(order);
             } else {
-                startH = data[i][j].departure_date.substr(11,).replace(/:/g, "").substr(0, 2)
-                startM = data[i][j].departure_date.substr(11,).replace(/:/g, "").substr(2,)
-                endH = data[i][j].arrival_date.substr(11,).replace(/:/g, "").substr(0, 2)
-                endM = data[i][j].arrival_date.substr(11,).replace(/:/g, "").substr(2,)
+                
                 const regularly = document.createElement('div');
-                if (data[i][j].work_type == "출근") {
+                if (curData.work_type == "출근") {
                     regularly.setAttribute("class", "regularlyLineStart");
                 } else {
                     regularly.setAttribute("class", "regularlyLineEnd");
                 }
-                regularly.setAttribute("title", `[${data[i][j].work_type}] - ${data[i][j].departure}▶${data[i][j].arrival}`);
-                regularly.setAttribute("style", `left: ${((startH * 60 + startM) * 0.058) / 100}%; width: ${(((endH * 60 + endM) - (startH * 60 + startM)) * 0.058) / 100}%;`);
+                regularly.setAttribute("title", `[${curData.work_type}] - ${curData.departure}▶${curData.arrival}`);
+                regularly.setAttribute("style", `left: ${((startH * 60 + startM) * 0.058)}%; width: ${(((endH * 60 + endM) - (startH * 60 + startM)) * 0.058)}%;`);
                 tr[i].appendChild(regularly);
             }
         }

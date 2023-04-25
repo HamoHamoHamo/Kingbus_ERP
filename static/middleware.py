@@ -28,23 +28,20 @@ class LoginCheckMiddleware(object):
         
         
         # ip 확인
-        ip = get_client_ip(request)
-        ip=ip[0]
-        if ip:
-            if ip != "59.29.60.206" and ip != '115.40.25.236':
-                print(ip)
+        # ip = get_client_ip(request)
+        # ip=ip[0]
+        # if ip:
+        #     if ip != "59.29.60.206" and ip != '115.40.25.236':
+        #         print(ip)
 
-            try:
-                UserIP.objects.get(ip=ip)
-            except Exception as error:
-                print("\nip저장", error)
-                userip=UserIP(ip=ip)
-                userip.save()
-            
-            
-
-        else:
-            print ("못찾았다")
+        #     try:
+        #         UserIP.objects.get(ip=ip)
+        #     except Exception as error:
+        #         print("\nip저장", error)
+        #         userip=UserIP(ip=ip)
+        #         userip.save()
+        # else:
+        #     print ("못찾았다")
 
             
         
