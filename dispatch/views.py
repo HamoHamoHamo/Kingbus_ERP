@@ -232,6 +232,7 @@ class ScheduleList(generic.ListView):
             regulary_list = driver.info_regularly_driver_id.exclude(arrival_date__lte=f'{date} 00:00').exclude(departure_date__gte=f'{date} 24:00')
             
             for o in order_list:
+                driver_check = o.check_order_connect
                 temp.append({
                     'work_type': '일반',
                     'bus': o.bus_id.vehicle_num,
@@ -239,18 +240,25 @@ class ScheduleList(generic.ListView):
                     'arrival_date': o.arrival_date,
                     'departure': o.order_id.departure,
                     'arrival': o.order_id.arrival,
+                    'wake_t': driver_check.wake_time,
+                    'drive_t': driver_check.drive_time,
+                    'departure_t': driver_check.departure_time,
                 })
             for regularly in regulary_list:
+                driver_check = regularly.check_regularly_connect
                 temp_dict = {
                     'departure_date': regularly.departure_date,
-                    'bus': o.bus_id.vehicle_num,
+                    'bus': regularly.bus_id.vehicle_num,
                     'arrival_date': regularly.arrival_date,
                     'departure': regularly.regularly_id.departure,
                     'arrival': regularly.regularly_id.arrival,
+                    'wake_t': driver_check.wake_time,
+                    'drive_t': driver_check.drive_time,
+                    'departure_t': driver_check.departure_time,
                 }
                 temp_dict['work_type'] = regularly.work_type
                 temp.append(temp_dict)
-
+            temp.sort(key = lambda x:x['departure_date']) # departure_date를 기준으로 정렬
             schedule_list.append(temp)
         context['schedule_list'] = schedule_list
         

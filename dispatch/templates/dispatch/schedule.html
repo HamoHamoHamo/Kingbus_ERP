@@ -94,7 +94,8 @@
                         <div class="td"></div>
                         <div class="tdDriver">
                             <span class="{{forloop.counter0}}">{{driver.name}}</span>
-                            
+                            <span style="display:none">{{driver.vehicle.vehicle_num}}</span>
+                            <span style="display:none">{{driver.phone_num}}</span>
                         </div>
                     </div>
                     {% endfor %}
@@ -119,37 +120,41 @@
     <div class="popupBgModules"></div>
     <form class="popupContainer">
 
-        <div class="PopupTitle">배차일정</div>
+        <div class="popupHeader">
+            <div class="popupTitle">배차일정</div>
+        </div>
 
         <div class="PopupDataArea">
             <div class="PopupDataBox">
                 <div class="PopupDataCell">
                     <span class="PopupDataTitle">이름</span>
-                    <div class="deiverName"></div>
+                    <div class="driverName"></div>
                 </div>
                 <div class="PopupDataCell">
                     <span class="PopupDataTitle">차량번호</span>
                     <div class="vehicleNum"></div>
                 </div>
                 <div class="PopupDataCell">
-                    <span class="PopupDataTitle">날짜</span>
-                    <div class="dispatchDate"></div>
+                    <span class="PopupDataTitle">연락처</span>
+                    <div class="driverPhone"></div>
                 </div>
             </div>
             <div class="shcedulePopupTableBox">
-                <table class="shcedulePopupTableHeader">
+                <table class="shcedulePopupTableHeader popupTable">
                     <thead>
-                        <thead>
-                            <tr>
-                                <td>구분</td>
-                                <td>운행시간</td>
-                                <td>노선</td>
-                            </tr>
-                        </thead>
+                        <tr>
+                            <td>구분</td>
+                            <td>운행차량</td>
+                            <td>운행시간</td>
+                            <td>노선</td>
+                            <td>기상확인</td>
+                            <td>운행시작</td>
+                            <td>출발지도착</td>
+                        </tr>
                     </thead>
                 </table>
                 <div class="shcedulePopupTableBodyBox">
-                    <table class="shcedulePopupTableBody">
+                    <table class="shcedulePopupTableBody popupTable">
                         <tbody>
                         </tbody>
                     </table>
