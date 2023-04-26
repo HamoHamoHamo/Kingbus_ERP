@@ -165,20 +165,12 @@
     box-sizing: border-box;
 }
 
-.regularlyLineStart {
+.regularlyLine {
     position: absolute;
     top: 50%;
     left: 10rem;
     height: 2.6rem;
-    background-color: #514EA1;
-    transform: translate(0, -50%);
-}
-.regularlyLineEnd {
-    position: absolute;
-    top: 50%;
-    left: 10rem;
-    height: 2.6rem;
-    background-color: #0A39A5;
+    background-color: #399DDF;
     transform: translate(0, -50%);
 }
 
@@ -186,7 +178,7 @@
     position: absolute;
     top: 50%;
     height: 2.6rem;
-    background-color: #1C1A4E;
+    background-color: #FEBE01;
     transform: translate(0, -50%);
 }
 
@@ -198,18 +190,8 @@
 
 
 .popupContainer {
-    position: fixed;
-    top: 50%;
-    left: calc(50% + 11rem);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 80rem;
+    width: 100rem;
     height: 62rem;
-    background-color: white;
-    border-radius: 0.3rem;
-    box-shadow: 0 0.2rem 0.4rem rgba(0, 0, 0, 0.16);
-    transform: translate(-50%, -50%);
 }
 
 .PopupTitle {
@@ -277,20 +259,6 @@
     border-spacing: 0;
 }
 
-.shcedulePopupTableHeader td:nth-child(1) {
-    width: 10%;
-    padding-left: 1rem;
-    box-sizing: border-box;
-}
-
-.shcedulePopupTableHeader td:nth-child(2) {
-    width: 20%;
-}
-
-.shcedulePopupTableHeader td:nth-child(3) {
-    width: 70%;
-}
-
 .shcedulePopupTableBodyBox {
     width: 100%;
     height: calc(100% - 3.6rem);
@@ -337,18 +305,39 @@
     border-bottom: 0.1rem solid #CDCDCE;
 }
 
-.shcedulePopupTableBody td:nth-child(1) {
-    width: 10%;
+.popupTable td:nth-child(1),
+.popupTable td:nth-child(2),
+.popupTable td:nth-child(5),
+.popupTable td:nth-child(6),
+.popupTable td:nth-child(7) {
+    text-align: center;
+}
+
+.popupTable td:nth-child(1) {
+    width: 5%;
     padding-left: 1rem;
     box-sizing: border-box;
 }
 
-.shcedulePopupTableBody td:nth-child(2) {
-    width: 20%;
+.popupTable td:nth-child(2) {
+    width: 10%;
 }
 
-.shcedulePopupTableBody td:nth-child(3) {
-    width: 70%;
+.popupTable td:nth-child(3) {
+    width: 15%;
+}
+.popupTable td:nth-child(4) {
+    width: 40%;
+}
+
+.popupTable td:nth-child(5) {
+    width: 10%;
+}
+.popupTable td:nth-child(6) {
+    width: 10%;
+}
+.popupTable td:nth-child(7) {
+    width: 10%;
 }
 
 .PopupBtnBox {

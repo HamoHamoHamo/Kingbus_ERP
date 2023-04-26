@@ -3,9 +3,9 @@ const popupAreaModules = document.querySelector('.popupAreaModules')
 const popupBgModules = document.querySelector(".popupBgModules")
 const SidemenuUseClose = document.querySelector(".Sidemenu")
 const popupCloseBtn = document.querySelector(".PopupBtnBox div")
-const deiverName = document.querySelector(".deiverName")
+const driverName = document.querySelector(".driverName")
 const vehicleNum = document.querySelector(".vehicleNum")
-const dispatchDate = document.querySelector(".dispatchDate")
+const driverPhone = document.querySelector(".driverPhone")
 const dispatchDateFilter = document.querySelector(".dateFilterBox input")
 const popupListBox = document.querySelector(".shcedulePopupTableBody tbody")
 const tr = document.querySelectorAll(".tr")
@@ -19,24 +19,35 @@ for (i = 0; i < scheduleDriver.length; i++) {
 const removeSpecial = /\(([^)]+)\)/;
 function openScheduleDetail() {
     popupAreaModules.style.display = 'block'
-    deiverName.innerText = removeSpecial.exec(this.childNodes[3].innerText)[1]
-    vehicleNum.innerText = this.childNodes[1].innerText
-    dispatchDate.innerText = dispatchDateFilter.value;
-
+    driverName.innerText = this.children[0].innerText
+    vehicleNum.innerText = this.children[1].innerText
+    driverPhone.innerText = this.children[2].innerText
+    
     for (i = 0; i < data[this.childNodes[1].className].length; i++) {
+        let curData = data[this.childNodes[1].className][i];
         const newTr = document.createElement('tr');
         const newTdType = document.createElement('td');
+        const newTdBus = document.createElement('td');
         const newTdTime = document.createElement('td');
         const newTdRout = document.createElement('td');
-        const newTextType = document.createTextNode(`${data[this.childNodes[1].className][i].work_type}`);
-        const newTextTimeDepartureAll = document.createTextNode(`${data[this.childNodes[1].className][i].departure_date.replace(/T/g, " ")}~`);
-        const newTextTimeArrivalAll = document.createTextNode(`${data[this.childNodes[1].className][i].arrival_date.replace(/T/g, " ")}`);
-        const newTextTimeDeparture = document.createTextNode(`${data[this.childNodes[1].className][i].departure_date.substr(11,)}~`);
-        const newTextTimeArrival = document.createTextNode(`${data[this.childNodes[1].className][i].arrival_date.substr(11,)}`);
-        const newTextRoutDeparture = document.createTextNode(`${data[this.childNodes[1].className][i].departure}▶`);
-        const newTextRoutArrival = document.createTextNode(`${data[this.childNodes[1].className][i].arrival}`);
+        const newTdCheck1 = document.createElement('td');
+        const newTdCheck2 = document.createElement('td');
+        const newTdCheck3 = document.createElement('td');
+        
+        const newTextType = document.createTextNode(`${curData.work_type}`);
+        const newTextTimeDepartureAll = document.createTextNode(`${curData.departure_date}~`);
+        const newTextTimeArrivalAll = document.createTextNode(`${curData.arrival_date}`);
+        const newTextTimeDeparture = document.createTextNode(`${curData.departure_date.substr(11,)}~`);
+        const newTextTimeArrival = document.createTextNode(`${curData.arrival_date.substr(11,)}`);
+        const newTextRoutDeparture = document.createTextNode(`${curData.departure}▶`);
+        const newTextRoutArrival = document.createTextNode(`${curData.arrival}`);
+        const newTextBus = document.createTextNode(curData.bus);
+        const newTextWakeT = document.createTextNode(curData.wake_t);
+        const newTextDriveT = document.createTextNode(curData.drive_t);
+        const newTextDepartureT = document.createTextNode(curData.departure_t);
+
         newTdType.appendChild(newTextType);
-        if (data[this.childNodes[1].className][i].work_type == "일반") {
+        if (curData.work_type == "일반") {
             newTdTime.appendChild(newTextTimeDepartureAll);
             newTdTime.appendChild(document.createElement('br'));
             newTdTime.appendChild(newTextTimeArrivalAll);
@@ -47,9 +58,18 @@ function openScheduleDetail() {
         newTdRout.appendChild(newTextRoutDeparture);
         newTdRout.appendChild(document.createElement('br'));
         newTdRout.appendChild(newTextRoutArrival);
+        newTdBus.appendChild(newTextBus);
+        newTdCheck1.appendChild(newTextWakeT);
+        newTdCheck2.appendChild(newTextDriveT);
+        newTdCheck3.appendChild(newTextDepartureT);
+
         newTr.appendChild(newTdType);
+        newTr.appendChild(newTdBus);
         newTr.appendChild(newTdTime);
         newTr.appendChild(newTdRout);
+        newTr.appendChild(newTdCheck1);
+        newTr.appendChild(newTdCheck2);
+        newTr.appendChild(newTdCheck3);
         popupListBox.appendChild(newTr);
     }
 }
@@ -104,11 +124,7 @@ window.onload = function () {
             } else {
                 
                 const regularly = document.createElement('div');
-                if (curData.work_type == "출근") {
-                    regularly.setAttribute("class", "regularlyLineStart");
-                } else {
-                    regularly.setAttribute("class", "regularlyLineEnd");
-                }
+                regularly.setAttribute("class", "regularlyLine");
                 regularly.setAttribute("title", `[${curData.bus} || ${startH}:${startM} ~ ${endH}:${endM} || ${curData.departure}▶${curData.arrival}`);
                 regularly.setAttribute("style", `left: ${((intStartH * 60 + intStartM) * 0.058)}%; width: ${(((intEndH * 60 + intEndM) - (intStartH * 60 + intStartM)) * 0.058)}%;`);
                 tr[i].appendChild(regularly);
