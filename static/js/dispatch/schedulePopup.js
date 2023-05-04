@@ -120,13 +120,18 @@ window.onload = function () {
                 } else {
                     order.setAttribute("style", `left: 0%; width: 83.52%;`);
                 }
+                if (curData.check == 'x') {
+                    order.style.backgroundColor = 'red';
+                }
                 tr[i].appendChild(order);
             } else {
-                
                 const regularly = document.createElement('div');
                 regularly.setAttribute("class", "regularlyLine");
                 regularly.setAttribute("title", `[${curData.bus} || ${startH}:${startM} ~ ${endH}:${endM} || ${curData.departure}▶${curData.arrival}`);
                 regularly.setAttribute("style", `left: ${((intStartH * 60 + intStartM) * 0.058)}%; width: ${(((intEndH * 60 + intEndM) - (intStartH * 60 + intStartM)) * 0.058)}%;`);
+                if (curData.check == 'x') {
+                    regularly.style.backgroundColor = 'red';
+                }
                 tr[i].appendChild(regularly);
             }
         }
