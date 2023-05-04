@@ -43,6 +43,7 @@
 
 <div class="contentsAreaBox">
     <div class="scheduleTableBox">
+        <div style="left: {{timeline}}%;" class="timeline"></div>
         <table class="scheduleTableHeader">
             <thead>
                 <tr>
@@ -59,6 +60,7 @@
                     <td>20</td>
                     <td>22</td>
                     <td>24</td>
+                    <td>상태</td>
                     <td>기사님</td>
                 </tr>
             </thead>
@@ -92,6 +94,7 @@
                         <div class="td"></div>
                         <div class="td"></div>
                         <div class="td"></div>
+                        <div class="tdStatus"></div>
                         <div class="tdDriver">
                             <span class="{{forloop.counter0}}">{{driver.name}}</span>
                             <span style="display:none">{{driver.vehicle.vehicle_num}}</span>
@@ -176,13 +179,12 @@
 
 
 
-
 {% block script %}
 <script>
     {% autoescape off %}
     const data = {{schedule_list}}
-    console.log("DATA", data)
     {% endautoescape %}
+    console.log("DATA", data)
 </script>
 <script src="{% static 'js/dispatch/schedulePopup.js' %}"></script>
 {% endblock %}

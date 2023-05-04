@@ -223,6 +223,8 @@ class ScheduleList(generic.ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         date = self.request.GET.get('date', TODAY)
+        timeline = datetime.strftime(datetime.now(), "%H:%M")
+        context['timeline'] = (int(timeline[:2]) * 60 + int(timeline[3:])) * 0.058
 
         schedule_list = []
 
@@ -233,7 +235,8 @@ class ScheduleList(generic.ListView):
             
             for o in order_list:
                 driver_check = o.check_order_connect
-                temp.append({
+                
+                temp_dict = {
                     'work_type': '일반',
                     'bus': o.bus_id.vehicle_num,
                     'departure_date': o.departure_date,
@@ -243,7 +246,22 @@ class ScheduleList(generic.ListView):
                     'wake_t': driver_check.wake_time,
                     'drive_t': driver_check.drive_time,
                     'departure_t': driver_check.departure_time,
-                })
+                    'check': '',
+                }
+                departure_time = datetime.strptime(o.departure_date, "%Y-%m-%d %H:%M")
+                check_time1 = datetime.strftime(departure_time - timedelta(hours=1.5), "%H:%M")
+                check_time2 = datetime.strftime(departure_time - timedelta(hours=1), "%H:%M")
+                check_time3 = datetime.strftime(departure_time - timedelta(minutes=20), "%H:%M")
+
+                if timeline > check_time1:
+                    if not driver_check.wake_time or driver_check.wake_time > check_time1:
+                        temp_dict['check'] = 'x'
+                    elif not driver_check.drive_time or driver_check.drive_time > check_time2:
+                        temp_dict['check'] = 'x'
+                    elif not driver_check.departure_time or driver_check.departure_time > check_time3:
+                        temp_dict['check'] = 'x'
+                temp.append(temp_dict)
+                
             for regularly in regulary_list:
                 driver_check = regularly.check_regularly_connect
                 temp_dict = {
@@ -255,13 +273,28 @@ class ScheduleList(generic.ListView):
                     'wake_t': driver_check.wake_time,
                     'drive_t': driver_check.drive_time,
                     'departure_t': driver_check.departure_time,
+                    'check': '',
                 }
                 temp_dict['work_type'] = regularly.work_type
+
+                departure_time = datetime.strptime(regularly.departure_date, "%Y-%m-%d %H:%M")
+                check_time1 = datetime.strftime(departure_time - timedelta(hours=1.5), "%H:%M")
+                check_time2 = datetime.strftime(departure_time - timedelta(hours=1), "%H:%M")
+                check_time3 = datetime.strftime(departure_time - timedelta(minutes=20), "%H:%M")
+
+                if timeline > check_time1:
+                    if not driver_check.wake_time or driver_check.wake_time > check_time1:
+                        temp_dict['check'] = 'x'
+                    elif not driver_check.drive_time or driver_check.drive_time > check_time2:
+                        temp_dict['check'] = 'x'
+                    elif not driver_check.departure_time or driver_check.departure_time > check_time3:
+                        temp_dict['check'] = 'x'
+                else:
+                    temp_dict['check'] = ''
                 temp.append(temp_dict)
             temp.sort(key = lambda x:x['departure_date']) # departure_date를 기준으로 정렬
             schedule_list.append(temp)
         context['schedule_list'] = schedule_list
-        
         context['select'] = self.request.GET.get('select', '')
         context['search'] = self.request.GET.get('search', '')
         context['date'] = date
