@@ -514,7 +514,8 @@ def login(request):
             # request.session['today'] = str(datetime.now())[:10]
             #세션 만료시간 설정 0을 넣으면 브라우져 닫을시 세션 쿠키 삭제 + DB만료기간 14일
             if request.POST.get('auto_login'):
-                request.session.set_expiry(30)
+                request.session.set_expiry(2592000)
+                # 30일 초로 변환
             else:
                 request.session.set_expiry(0)
             
