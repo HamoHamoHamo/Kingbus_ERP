@@ -224,8 +224,9 @@ class ScheduleList(generic.ListView):
         context = super().get_context_data(**kwargs)
         date = self.request.GET.get('date', TODAY)
         timeline = datetime.strftime(datetime.now(), "%H:%M")
-        context['timeline'] = (int(timeline[:2]) * 60 + int(timeline[3:])) * 0.058
-
+        if date == TODAY:
+            context['timeline'] = (int(timeline[:2]) * 60 + int(timeline[3:])) * 0.058
+        data_list = []
         schedule_list = []
 
         for driver in context['driver_list']:
@@ -234,8 +235,18 @@ class ScheduleList(generic.ListView):
             regulary_list = driver.info_regularly_driver_id.exclude(arrival_date__lte=f'{date} 00:00').exclude(departure_date__gte=f'{date} 24:00')
             
             for o in order_list:
+                if False not in (o.driver_id.name not in iter(data.values()) for data in data_list):
+                    try:
+                        vehicle = o.driver_id.vehicle.vehicle_num
+                    except ObjectDoesNotExist:
+                        vehicle = ''
+                    data_list.append({
+                        'name': o.driver_id.name,
+                        'vehicle': vehicle,
+                        'phone_num': o.driver_id.phone_num
+                    })
+
                 driver_check = o.check_order_connect
-                
                 temp_dict = {
                     'work_type': '일반',
                     'bus': o.bus_id.vehicle_num,
@@ -253,16 +264,27 @@ class ScheduleList(generic.ListView):
                 check_time2 = datetime.strftime(departure_time - timedelta(hours=1), "%H:%M")
                 check_time3 = datetime.strftime(departure_time - timedelta(minutes=20), "%H:%M")
 
-                if timeline > check_time1:
-                    if not driver_check.wake_time or driver_check.wake_time > check_time1:
+                if date == TODAY:
+                    if timeline > check_time1 and not driver_check.wake_time:
                         temp_dict['check'] = 'x'
-                    elif not driver_check.drive_time or driver_check.drive_time > check_time2:
+                    elif timeline > check_time2 and not driver_check.drive_time:
                         temp_dict['check'] = 'x'
-                    elif not driver_check.departure_time or driver_check.departure_time > check_time3:
+                    elif timeline > check_time3 and not driver_check.departure_time:
                         temp_dict['check'] = 'x'
+
                 temp.append(temp_dict)
-                
             for regularly in regulary_list:
+                if False not in (regularly.driver_id.name not in iter(data.values()) for data in data_list):
+                    try:
+                        vehicle = regularly.driver_id.vehicle.vehicle_num
+                    except ObjectDoesNotExist:
+                        vehicle = ''
+                    data_list.append({
+                        'name': regularly.driver_id.name,
+                        'vehicle': vehicle,
+                        'phone_num': regularly.driver_id.phone_num
+                    })
+
                 driver_check = regularly.check_regularly_connect
                 temp_dict = {
                     'departure_date': regularly.departure_date,
@@ -282,22 +304,24 @@ class ScheduleList(generic.ListView):
                 check_time2 = datetime.strftime(departure_time - timedelta(hours=1), "%H:%M")
                 check_time3 = datetime.strftime(departure_time - timedelta(minutes=20), "%H:%M")
 
-                if timeline > check_time1:
-                    if not driver_check.wake_time or driver_check.wake_time > check_time1:
+                if date == TODAY:
+                    if timeline > check_time1 and not driver_check.wake_time:
                         temp_dict['check'] = 'x'
-                    elif not driver_check.drive_time or driver_check.drive_time > check_time2:
+                    elif timeline > check_time2 and not driver_check.drive_time:
                         temp_dict['check'] = 'x'
-                    elif not driver_check.departure_time or driver_check.departure_time > check_time3:
+                    elif timeline > check_time3 and not driver_check.departure_time:
                         temp_dict['check'] = 'x'
-                else:
-                    temp_dict['check'] = ''
+
                 temp.append(temp_dict)
             temp.sort(key = lambda x:x['departure_date']) # departure_date를 기준으로 정렬
-            schedule_list.append(temp)
+            if len(temp) != 0:
+                schedule_list.append(temp)
+            
         context['schedule_list'] = schedule_list
         context['select'] = self.request.GET.get('select', '')
         context['search'] = self.request.GET.get('search', '')
         context['date'] = date
+        context['data_list'] = data_list
         return context
     
 
