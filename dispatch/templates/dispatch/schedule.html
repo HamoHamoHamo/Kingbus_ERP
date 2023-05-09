@@ -43,7 +43,9 @@
 
 <div class="contentsAreaBox">
     <div class="scheduleTableBox">
+        {% if timeline %}
         <div style="left: {{timeline}}%;" class="timeline"></div>
+        {% endif %}
         <table class="scheduleTableHeader">
             <thead>
                 <tr>
@@ -68,7 +70,7 @@
         <div class="scheduleTableCell">
             <div class="table">
                 <div class="tbody">
-                    {% for driver in driver_list %}
+                    {% for driver in data_list %}
                     <div class="tr">
                         <div class="td"></div>
                         <div class="td"></div>
@@ -97,7 +99,7 @@
                         <div class="tdStatus"></div>
                         <div class="tdDriver">
                             <span class="{{forloop.counter0}}">{{driver.name}}</span>
-                            <span style="display:none">{{driver.vehicle.vehicle_num}}</span>
+                            <span style="display:none">{{driver.vehicle}}</span>
                             <span style="display:none">{{driver.phone_num}}</span>
                         </div>
                     </div>
