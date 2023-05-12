@@ -1215,7 +1215,7 @@ def regularly_order_upload(request):
     try:
         for data in post_data:
             group = get_object_or_404(RegularlyGroup, name=data['group'])
-            regularly = DispatchRegularly(
+            regularly_data = DispatchRegularlyData(
                 group = group,
                 references = data['references'],
                 departure = data['departure'],
@@ -1226,12 +1226,40 @@ def regularly_order_upload(request):
                 driver_allowance = data['driver_allowance'],
                 number1 = data['number1'],
                 number2 = data['number2'],
+                num1 = re.sub(r'[^0-9]', '', data['number1']),
+                num2 = re.sub(r'[^0-9]', '', data['number2']),
                 week = data['week'],
                 work_type = data['work_type'],
                 route = data['route'],
                 location = data['location'],
                 detailed_route = data['detailed_route'],
+                use = '사용',
                 creator = get_object_or_404(Member, pk=request.session['user']),
+            )
+            regularly_data.save()
+
+            regularly = DispatchRegularly(
+                regularly_id = regularly_data,
+                edit_date = TODAY,
+                group = group,
+                references = data['references'],
+                departure = data['departure'],
+                arrival = data['arrival'],
+                departure_time = data['departure_time'],
+                arrival_time = data['arrival_time'],
+                price = data['price'],
+                driver_allowance = data['driver_allowance'],
+                number1 = data['number1'],
+                number2 = data['number2'],
+                num1 = re.sub(r'[^0-9]', '', data['number1']),
+                num2 = re.sub(r'[^0-9]', '', data['number2']),
+                week = data['week'],
+                work_type = data['work_type'],
+                route = data['route'],
+                location = data['location'],
+                detailed_route = data['detailed_route'],
+                use = '사용',
+                creator = get_object_or_404(Member, pk=request.session['user'])
             )
             regularly.save()
             count += 1
