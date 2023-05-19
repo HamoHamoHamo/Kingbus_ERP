@@ -65,7 +65,7 @@ function thisMonth(prevDay, nowDay) {
     if (41 - (6 - nowDay) >= 38) {
         for (i = prevDay; i < 41 - (6 - nowDay) - 7; i++) {
             calenderDateBox[i + 1].children[0].children[0].innerText = i - (prevDay - 1)
-            if (AUTHORITY < 3) {
+            if (AUTHORITY < 4) {
                 if (parms.has("change")) {
                     cloneNode = orderContentesArea.cloneNode(true);
                     calenderDateBox[i + 1].children[0].after(cloneNode)
@@ -86,7 +86,7 @@ function thisMonth(prevDay, nowDay) {
         for (i = prevDay; i < 41 - (6 - nowDay); i++) {
             calenderDateBox[i + 1].children[0].children[0].innerText = i - (prevDay - 1)
 
-            if (AUTHORITY < 3) {
+            if (AUTHORITY < 4) {
                 if (parms.has("change")) {
                     cloneNode = orderContentesArea.cloneNode(true);
                     calenderDateBox[i + 1].children[0].after(cloneNode)
