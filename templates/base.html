@@ -185,6 +185,33 @@
             </li>
           </div>
         </ul>
+        {% elif request.session.authority == 3 %}
+        <ul class="sideMenuNav1">
+          <div class="nav1Box">
+            <li class="nav1BoxMenu">
+              <img src="{% static 'images/calendar.png' %}" alt="일정 아이콘">
+              <a href="{% url 'home' %}" class="nonDepth2Menu">일정</a>
+            </li>
+          </div>
+          <div class="nav1Box">
+            <li class="nav1BoxMenu">
+              <img src="{% static 'images/notice.png' %}" alt="공지사항 아이콘">
+              <a href="{% url 'notice:kinds' 'driver' %}" class="nonDepth2Menu">공지사항</a>
+            </li>
+          </div>
+          <div class="nav1Box">
+            <li class="nav1BoxMenu">
+              <img src="{% static 'images/dispatchSystem.png' %}" alt="배차시스템 아이콘">
+              <a href="{% url 'dispatch:schedule' %}" class="nonDepth2Menu">운행확인</a>
+            </li>
+          </div>
+          <div class="nav1Box">
+            <li class="nav1BoxMenu">
+              <img src="{% static 'images/HRManagement.png' %}" alt="인사관리 아이콘">
+              <a href="{% url 'HR:salary' %}" class="nonDepth2Menu">급여관리</a>
+            </li>
+          </div>
+        </ul>
         {% else %}
         <ul class="sideMenuNav1">
           <div class="nav1Box">
