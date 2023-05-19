@@ -23,19 +23,19 @@ WEEK = ['(월)', '(화)', '(수)', '(목)', '(금)', '(토)', '(일)', ]
 WEEK2 = ['월', '화', '수', '목', '금', '토', '일', ]
 
 # settings.py 작성한 LinkID, SecretKey를 이용해 EasyFinBankService 서비스 객체 생성
-easyFinBankService = EasyFinBankService(settings.LinkID, settings.SecretKey)
+easyFinBankService = EasyFinBankService(my_settings.LinkID, my_settings.SecretKey)
 
 # 연동환경 설정값, 개발용(True), 상업용(False)
-easyFinBankService.IsTest = settings.IsTest
+easyFinBankService.IsTest = my_settings.IsTest
 
 # 인증토큰 IP제한기능 사용여부, 권장(True)
-easyFinBankService.IPRestrictOnOff = settings.IPRestrictOnOff
+easyFinBankService.IPRestrictOnOff = my_settings.IPRestrictOnOff
 
 # 팝빌 API 서비스 고정 IP 사용여부, true-사용, false-미사용, 기본값(false)
-easyFinBankService.UseStaticIP = settings.UseStaticIP
+easyFinBankService.UseStaticIP = my_settings.UseStaticIP
 
 #로컬시스템 시간 사용여부, 권장(True)
-easyFinBankService.UseLocalTimeYN = settings.UseLocalTimeYN
+easyFinBankService.UseLocalTimeYN = my_settings.UseLocalTimeYN
 
 
 class SalesList(generic.ListView):

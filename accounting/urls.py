@@ -20,7 +20,7 @@ urlpatterns = [
     path('regularly/load', views.regularly_load, name='regularly_load'),
     
     path('deposit', views.DepositList.as_view(), name='deposit'),
-    path('deposit/data', views.load_deposit_data, name='load_deposit_data'),
+    #path('deposit/data', views.load_deposit_data, name='load_deposit_data'),
     path('deposit/create', views.deposit_create, name='deposit_create'),
     path('deposit/edit', views.deposit_edit, name='deposit_edit'),
     path('deposit/hide', views.deposit_hide, name='deposit_hide'),
