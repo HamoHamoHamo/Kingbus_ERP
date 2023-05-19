@@ -23,7 +23,7 @@ function dataLoad() {
         };
     }
 }
-if(AUTHORITY < 3){
+if(AUTHORITY < 4){
     dataLoad()
 }
 
