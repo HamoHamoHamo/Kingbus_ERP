@@ -34,7 +34,7 @@ class RegularlyPrintList(generic.ListView):
     model = DispatchRegularlyData
 
     def get(self, request, *args, **kwargs):
-        if request.session.get('authority') > 1:
+        if request.session.get('authority') > 3:
             return render(request, 'authority.html')
         return super().get(request, *args, **kwargs)
 
@@ -110,7 +110,7 @@ class RegularlyPrintList(generic.ListView):
 
 
 def order_print(request):
-    if request.session.get('authority') > 1:
+    if request.session.get('authority') > 3:
         return render(request, 'authority.html')
 
     date1 = request.GET.get('date1', TODAY)
@@ -143,7 +143,7 @@ def order_print(request):
     return render(request, 'dispatch/order_print.html', context)
 
 def calendar_create(request):
-    if request.session.get('authority') > 1:
+    if request.session.get('authority') > 3:
         return render(request, 'authority.html')
     if request.method == "POST":
         creator = get_object_or_404(Member, id=request.session.get('user'))
@@ -173,7 +173,7 @@ def calendar_delete(request):
         return HttpResponseNotAllowed(['post'])
 
 def schedule_create(request):
-    if request.session.get('authority') > 1:
+    if request.session.get('authority') > 3:
         return render(request, 'authority.html')
     if request.method == "POST":
         date = request.POST.get('date', None)
@@ -189,7 +189,7 @@ def schedule_create(request):
     else:
         return HttpResponseNotAllowed(['post'])
 def schedule_delete(request):
-    if request.session.get('authority') > 1:
+    if request.session.get('authority') > 3:
         return render(request, 'authority.html')
     if request.method == "POST":
         check_list = request.POST.getlist('check')
@@ -387,7 +387,7 @@ class RegularlyDispatchList(generic.ListView):
     model = DispatchRegularly
 
     def get(self, request, *args, **kwargs):
-        if request.session.get('authority') > 1:
+        if request.session.get('authority') > 3:
             return render(request, 'authority.html')
         return super().get(request, *args, **kwargs)
 
@@ -597,7 +597,7 @@ class RegularlyDispatchList(generic.ListView):
 
 
 def regularly_connect_create(request):
-    if request.session.get('authority') > 1:
+    if request.session.get('authority') > 3:
         return render(request, 'authority.html')
     if request.method == "POST":
         creator = get_object_or_404(Member, id=request.session.get('user'))
@@ -640,7 +640,7 @@ def regularly_connect_create(request):
         return HttpResponseNotAllowed(['post'])
 
 def regularly_connect_load(request, week):
-    if request.session.get('authority') > 1:
+    if request.session.get('authority') > 3:
         return render(request, 'authority.html')
 
     if week != 1 and week != 2:
@@ -727,7 +727,7 @@ def regularly_connect_load(request, week):
 
 
 def regularly_connect_delete(request):
-    if request.session.get('authority') > 1:
+    if request.session.get('authority') > 3:
         return render(request, 'authority.html')
 
     if request.method == "POST":
@@ -1431,7 +1431,7 @@ class OrderList(generic.ListView):
     model = DispatchOrder
 
     def get(self, request, *args, **kwargs):
-        if request.session.get('authority') > 1:
+        if request.session.get('authority') > 3:
             return render(request, 'authority.html')
         return super().get(request, *args, **kwargs)
 
@@ -1628,7 +1628,7 @@ class OrderList(generic.ListView):
         return context
 
 def order_connect_create(request):
-    if request.session.get('authority') > 1:
+    if request.session.get('authority') > 3:
         return render(request, 'authority.html')
     if request.method == "POST":
         creator = get_object_or_404(Member, id=request.session.get('user'))
@@ -1692,7 +1692,7 @@ def order_connect_create(request):
 
 
 def order_create(request):
-    if request.session.get('authority') > 1:
+    if request.session.get('authority') > 3:
         return render(request, 'authority.html')
 
     if request.method == "POST":
@@ -1780,7 +1780,7 @@ def order_create(request):
         return HttpResponseNotAllowed(['post'])
 
 def order_edit_check(request):
-    if request.session.get('authority') > 1:
+    if request.session.get('authority') > 3:
         return render(request, 'authority.html')
         
 
@@ -1845,7 +1845,7 @@ def order_edit_check(request):
     return JsonResponse({'status': 'success', 'departure_date': post_departure_date, 'arrival_date': post_arrival_date})
 
 def order_edit(request):
-    if request.session.get('authority') > 1:
+    if request.session.get('authority') > 3:
         return render(request, 'authority.html')
         
 
@@ -1984,7 +1984,7 @@ def order_edit(request):
         return HttpResponseNotAllowed(['post'])
 
 def order_delete(request):
-    if request.session.get('authority') > 1:
+    if request.session.get('authority') > 3:
         return render(request, 'authority.html')
         
     if request.method == "POST":
