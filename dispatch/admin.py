@@ -18,7 +18,12 @@ from .models import Schedule, DispatchOrder, DispatchOrderConnect, RegularlyGrou
 @admin.register(DriverCheck)
 class DriverCheckAdmin(admin.ModelAdmin):
     list_display = ['regularly_id', 'order_id', 'wake_time','drive_time','departure_time', 'updated_at']
+
+@admin.register(ConnectRefusal)
+class ConnectRefusalAdmin(admin.ModelAdmin):
+    list_display = ['regularly_id', 'order_id', 'driver_id', 'refusal', 'updated_at']
     
+
 admin.site.register(DispatchOrder)
 admin.site.register(DispatchOrderConnect)
 admin.site.register(RegularlyGroup)
@@ -28,5 +33,4 @@ admin.site.register(DispatchRegularlyConnect)
 admin.site.register(DispatchCheck)
 admin.site.register(DispatchOrderWaypoint)
 admin.site.register(Schedule)
-admin.site.register(ConnectRefusal)
 
