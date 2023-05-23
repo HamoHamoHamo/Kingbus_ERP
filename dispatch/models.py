@@ -181,7 +181,7 @@ class DriverCheck(models.Model):
 class ConnectRefusal(models.Model):
     regularly_id = models.OneToOneField(DispatchRegularlyConnect, on_delete=models.SET_NULL, related_name="refusal_regularly_connect", null=True)
     order_id = models.OneToOneField(DispatchOrderConnect, on_delete=models.SET_NULL, related_name="refusal_order_connect", null=True)
-    driver_id = models.OneToOneField(Member, on_delete=models.CASCADE, related_name="refusal_driver_id", null=False)
+    driver_id = models.ForeignKey(Member, on_delete=models.CASCADE, related_name="refusal_driver_id", null=False)
     departure_date = models.CharField(verbose_name='출발시간', max_length=16, null=False, blank=True)
     arrival_date = models.CharField(verbose_name='출발시간', max_length=16, null=False, blank=True)
     check_date = models.CharField(verbose_name='확인날짜', max_length=16, null=False, blank=True)
