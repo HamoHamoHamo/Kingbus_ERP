@@ -25,11 +25,18 @@ function openScheduleDetail() {
     
     for (i = 0; i < data[this.childNodes[1].className].length; i++) {
         let curData = data[this.childNodes[1].className][i];
+        let connectCheck = '';
+        if (curData.connect_check == '1')
+            connectCheck = '확인';
+        else if (curData.connect_check == '0')
+            connectCheck = '거부';
+
         const newTr = document.createElement('tr');
         const newTdType = document.createElement('td');
         const newTdBus = document.createElement('td');
         const newTdTime = document.createElement('td');
         const newTdRout = document.createElement('td');
+        const newTdConnectCheck = document.createElement('td');
         const newTdCheck1 = document.createElement('td');
         const newTdCheck2 = document.createElement('td');
         const newTdCheck3 = document.createElement('td');
@@ -42,6 +49,7 @@ function openScheduleDetail() {
         const newTextRoutDeparture = document.createTextNode(`${curData.departure}▶`);
         const newTextRoutArrival = document.createTextNode(`${curData.arrival}`);
         const newTextBus = document.createTextNode(curData.bus);
+        const newTextConnectCheck = document.createTextNode(connectCheck);
         const newTextWakeT = document.createTextNode(curData.wake_t);
         const newTextDriveT = document.createTextNode(curData.drive_t);
         const newTextDepartureT = document.createTextNode(curData.departure_t);
@@ -59,6 +67,7 @@ function openScheduleDetail() {
         newTdRout.appendChild(document.createElement('br'));
         newTdRout.appendChild(newTextRoutArrival);
         newTdBus.appendChild(newTextBus);
+        newTdConnectCheck.appendChild(newTextConnectCheck)
         newTdCheck1.appendChild(newTextWakeT);
         newTdCheck2.appendChild(newTextDriveT);
         newTdCheck3.appendChild(newTextDepartureT);
@@ -67,6 +76,7 @@ function openScheduleDetail() {
         newTr.appendChild(newTdBus);
         newTr.appendChild(newTdTime);
         newTr.appendChild(newTdRout);
+        newTr.appendChild(newTdConnectCheck);
         newTr.appendChild(newTdCheck1);
         newTr.appendChild(newTdCheck2);
         newTr.appendChild(newTdCheck3);
@@ -96,6 +106,11 @@ let curData = ""
 let order = ""
 window.onload = function () {
     for (i = 0; i < data.length; i++) {
+        console.log(scheduleDriver[i].children[0].innerText);
+        scheduleDriver[i].children[0].innerText = data[i][0].driver;
+        scheduleDriver[i].children[1].innerText = data[i][0].driver_vehicle;
+        scheduleDriver[i].children[2].innerText = data[i][0].driver_phone_num;
+
         for (j = 0; j < data[i].length; j++) {
             curData = data[i][j];
             order = document.createElement('div');
@@ -120,7 +135,12 @@ window.onload = function () {
                 } else {
                     order.setAttribute("style", `left: 0%; width: 83.52%;`);
                 }
-                if (curData.check == 'x') {
+                if (curData.connect_check == '')
+                {
+                    order.style.border = '1px solid black';
+                    order.style.backgroundColor = 'white';
+                }
+                else if (curData.check == 'x' || curData.connect_check == '0') {
                     order.style.backgroundColor = 'red';
                 }
                 tr[i].appendChild(order);
@@ -129,7 +149,12 @@ window.onload = function () {
                 regularly.setAttribute("class", "regularlyLine");
                 regularly.setAttribute("title", `[${curData.bus} || ${startH}:${startM} ~ ${endH}:${endM} || ${curData.departure}▶${curData.arrival}`);
                 regularly.setAttribute("style", `left: ${((intStartH * 60 + intStartM) * 0.058)}%; width: ${(((intEndH * 60 + intEndM) - (intStartH * 60 + intStartM)) * 0.058)}%;`);
-                if (curData.check == 'x') {
+                if (curData.connect_check == '')
+                {
+                    regularly.style.border = '1px solid black';
+                    regularly.style.backgroundColor = 'white';
+                }
+                else if (curData.check == 'x' || curData.connect_check == '0') {
                     regularly.style.backgroundColor = 'red';
                 }
                 tr[i].appendChild(regularly);
