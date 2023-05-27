@@ -70,7 +70,7 @@
         <div class="scheduleTableCell">
             <div class="table">
                 <div class="tbody">
-                    {% for driver in data_list %}
+                    {% for driver in schedule_list %}
                     <div class="tr">
                         <div class="td"></div>
                         <div class="td"></div>
@@ -98,9 +98,9 @@
                         <div class="td"></div>
                         <div class="tdStatus"></div>
                         <div class="tdDriver">
-                            <span class="{{forloop.counter0}}">{{driver.name}}</span>
-                            <span style="display:none">{{driver.vehicle}}</span>
-                            <span style="display:none">{{driver.phone_num}}</span>
+                            <span class="{{forloop.counter0}}"></span>
+                            <span style="display:none"></span>
+                            <span style="display:none"></span>
                         </div>
                     </div>
                     {% endfor %}
@@ -152,6 +152,7 @@
                             <td>운행차량</td>
                             <td>운행시간</td>
                             <td>노선</td>
+                            <td>배차확인</td>
                             <td>기상확인</td>
                             <td>운행시작</td>
                             <td>출발지도착</td>
