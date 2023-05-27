@@ -311,7 +311,7 @@ class ScheduleList(generic.ListView):
             if len(temp) != 0:
                 schedule_list.append(temp)
         
-        sorted_data = sorted(schedule_list, key=lambda x: all(item["connect_check"] == "0" for item in x), reverse=True)
+        sorted_data = sorted(schedule_list, key=lambda x: any(item["connect_check"] == "0" for item in x), reverse=True)
         context['schedule_list'] = sorted_data
         context['select'] = self.request.GET.get('select', '')
         context['search'] = self.request.GET.get('search', '')
