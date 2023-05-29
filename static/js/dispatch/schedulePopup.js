@@ -138,9 +138,14 @@ window.onload = function () {
                 if (curData.connect_check == '')
                 {
                     order.style.border = '1px solid black';
-                    order.style.backgroundColor = 'white';
+                    order.style.backgroundColor = 'gray';
                 }
-                else if (curData.check == 'x' || curData.connect_check == '0') {
+                else if (curData.connect_check == '0')
+                {
+                    order.style.backgroundColor = 'red';
+                    order.style.border = '1px solid black';
+                }
+                else if (curData.check == 'x') {
                     order.style.backgroundColor = 'red';
                 }
                 tr[i].appendChild(order);
@@ -152,9 +157,14 @@ window.onload = function () {
                 if (curData.connect_check == '')
                 {
                     regularly.style.border = '1px solid black';
-                    regularly.style.backgroundColor = 'white';
+                    regularly.style.backgroundColor = 'gray';
                 }
-                else if (curData.check == 'x' || curData.connect_check == '0') {
+                else if (curData.connect_check == '0')
+                {
+                    regularly.style.backgroundColor = 'red';
+                    regularly.style.border = '1px solid black';
+                }
+                else if (curData.check == 'x') {
                     regularly.style.backgroundColor = 'red';
                 }
                 tr[i].appendChild(regularly);

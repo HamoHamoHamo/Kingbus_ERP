@@ -409,7 +409,6 @@ class RegularlyDispatchList(generic.ListView):
 
             if dispatch.use == '사용':
                 dispatch_list.append(dispatch)
-        print("ssssssssss", dispatch_list)
         return dispatch_list
 
 
@@ -511,6 +510,7 @@ class RegularlyDispatchList(generic.ListView):
         r_connect_list = DispatchRegularlyConnect.objects.select_related('regularly_id').exclude(departure_date__gt=f'{date} 24:00').exclude(arrival_date__lt=f'{date} 00:00')
         dispatch_list = []
         for rc in r_connect_list:
+            driver_check = rc.check_regularly_connect
             dispatch = rc.regularly_id
             data = {
                 'work_type': dispatch.work_type,
@@ -524,10 +524,12 @@ class RegularlyDispatchList(generic.ListView):
                 'driver_id': rc.driver_id.id,
                 'driver_name': rc.driver_id.name,
                 'outsourcing': rc.outsourcing,
+                'connect_check': driver_check.connect_check,
             }
             dispatch_list.append(data)
         connect_list = DispatchOrderConnect.objects.select_related('order_id').exclude(departure_date__gt=f'{date} 24:00').exclude(arrival_date__lt=f'{date} 00:00')
         for cc in connect_list:
+            driver_check = cc.check_order_connect
             dispatch = cc.order_id
             data = {
                 'work_type': '일반',
@@ -541,6 +543,7 @@ class RegularlyDispatchList(generic.ListView):
                 'driver_id': cc.driver_id.id,
                 'driver_name': cc.driver_id.name,
                 'outsourcing': cc.outsourcing,
+                'connect_check': driver_check.connect_check,
             }
             dispatch_list.append(data)
 
@@ -1495,6 +1498,7 @@ class OrderList(generic.ListView):
         dispatch_list2 = []
         dispatch_data_list = []
         for rc in r_connect_list:
+            driver_check = rc.check_regularly_connect
             dispatch = rc.regularly_id
             data = {
                 'work_type': dispatch.work_type,
@@ -1508,6 +1512,7 @@ class OrderList(generic.ListView):
                 'driver_id': rc.driver_id.id,
                 'driver_name': rc.driver_id.name,
                 'outsourcing': rc.outsourcing,
+                'connect_check': driver_check.connect_check,
             }
             if detail_id:
                 if context['detail'].departure_date[:10] in rc.arrival_date[:10]:
@@ -1524,6 +1529,7 @@ class OrderList(generic.ListView):
             connect_list = DispatchOrderConnect.objects.select_related('order_id').exclude(departure_date__gt=f'{date} 24:00').exclude(arrival_date__lt=f'{date} 00:00')
 
         for cc in connect_list:
+            driver_check = cc.check_order_connect
             dispatch = cc.order_id
             data = {
                 'work_type': '일반',
@@ -1537,6 +1543,7 @@ class OrderList(generic.ListView):
                 'driver_id': cc.driver_id.id,
                 'driver_name': cc.driver_id.name,
                 'outsourcing': cc.outsourcing,
+                'connect_check': driver_check.connect_check,
             }
             if detail_id:
                 if context['detail'].departure_date[:10] in dispatch.arrival_date[:10]:
