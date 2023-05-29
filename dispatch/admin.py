@@ -1,7 +1,7 @@
 from django.contrib import admin
 from .models import Schedule, DispatchOrder, DispatchOrderConnect, RegularlyGroup, \
     DispatchRegularly, DispatchRegularlyData, DispatchRegularlyConnect, DispatchCheck, \
-    DispatchOrderWaypoint, DriverCheck
+    DispatchOrderWaypoint, DriverCheck, ConnectRefusal
 
 # class DispatchInfoInline(admin.TabularInline):
 #     model = DispatchOrderConnect
@@ -18,7 +18,12 @@ from .models import Schedule, DispatchOrder, DispatchOrderConnect, RegularlyGrou
 @admin.register(DriverCheck)
 class DriverCheckAdmin(admin.ModelAdmin):
     list_display = ['regularly_id', 'order_id', 'wake_time','drive_time','departure_time', 'updated_at']
+
+@admin.register(ConnectRefusal)
+class ConnectRefusalAdmin(admin.ModelAdmin):
+    list_display = ['regularly_id', 'order_id', 'driver_id', 'refusal', 'updated_at']
     
+
 admin.site.register(DispatchOrder)
 admin.site.register(DispatchOrderConnect)
 admin.site.register(RegularlyGroup)

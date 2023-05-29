@@ -330,7 +330,8 @@
 .popupTable td:nth-child(2),
 .popupTable td:nth-child(5),
 .popupTable td:nth-child(6),
-.popupTable td:nth-child(7) {
+.popupTable td:nth-child(7),
+.popupTable td:nth-child(8) {
     text-align: center;
 }
 
@@ -341,24 +342,24 @@
 }
 
 .popupTable td:nth-child(2) {
-    width: 10%;
+    width: 8%;
 }
 
 .popupTable td:nth-child(3) {
     width: 15%;
 }
 .popupTable td:nth-child(4) {
-    width: 40%;
+    width: 37%;
 }
 
 .popupTable td:nth-child(5) {
-    width: 10%;
+    width: 8%;
 }
-.popupTable td:nth-child(6) {
-    width: 10%;
-}
-.popupTable td:nth-child(7) {
-    width: 10%;
+
+.popupTable td:nth-child(6),
+.popupTable td:nth-child(7),
+.popupTable td:nth-child(8) {
+    width: 9%;
 }
 
 .PopupBtnBox {

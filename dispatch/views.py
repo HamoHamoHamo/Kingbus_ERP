@@ -226,7 +226,6 @@ class ScheduleList(generic.ListView):
         timeline = datetime.strftime(datetime.now(), "%H:%M")
         if date == TODAY:
             context['timeline'] = (int(timeline[:2]) * 60 + int(timeline[3:])) * 0.058
-        data_list = []
         schedule_list = []
 
         for driver in context['driver_list']:
@@ -235,19 +234,16 @@ class ScheduleList(generic.ListView):
             regulary_list = driver.info_regularly_driver_id.exclude(arrival_date__lte=f'{date} 00:00').exclude(departure_date__gte=f'{date} 24:00')
             
             for o in order_list:
-                if False not in (o.driver_id.name not in iter(data.values()) for data in data_list):
-                    try:
-                        vehicle = o.driver_id.vehicle.vehicle_num
-                    except ObjectDoesNotExist:
-                        vehicle = ''
-                    data_list.append({
-                        'name': o.driver_id.name,
-                        'vehicle': vehicle,
-                        'phone_num': o.driver_id.phone_num
-                    })
-
+                print(o.driver_id.name)
                 driver_check = o.check_order_connect
+                try:
+                    vehicle = o.driver_id.vehicle.vehicle_num
+                except Vehicle.DoesNotExist:
+                    vehicle = ''
                 temp_dict = {
+                    'driver': o.driver_id.name,
+                    'driver_vehicle': vehicle,
+                    'driver_phone_num': o.driver_id.phone_num,
                     'work_type': '일반',
                     'bus': o.bus_id.vehicle_num,
                     'departure_date': o.departure_date,
@@ -258,6 +254,7 @@ class ScheduleList(generic.ListView):
                     'drive_t': driver_check.drive_time,
                     'departure_t': driver_check.departure_time,
                     'check': '',
+                    'connect_check': driver_check.connect_check,
                 }
                 departure_time = datetime.strptime(o.departure_date, "%Y-%m-%d %H:%M")
                 check_time1 = datetime.strftime(departure_time - timedelta(hours=1.5), "%H:%M")
@@ -274,19 +271,15 @@ class ScheduleList(generic.ListView):
 
                 temp.append(temp_dict)
             for regularly in regulary_list:
-                if False not in (regularly.driver_id.name not in iter(data.values()) for data in data_list):
-                    try:
-                        vehicle = regularly.driver_id.vehicle.vehicle_num
-                    except ObjectDoesNotExist:
-                        vehicle = ''
-                    data_list.append({
-                        'name': regularly.driver_id.name,
-                        'vehicle': vehicle,
-                        'phone_num': regularly.driver_id.phone_num
-                    })
-
                 driver_check = regularly.check_regularly_connect
+                try:
+                    vehicle = regularly.driver_id.vehicle.vehicle_num
+                except ObjectDoesNotExist:
+                    vehicle = ''
                 temp_dict = {
+                    'driver': regularly.driver_id.name,
+                    'driver_vehicle': vehicle,
+                    'driver_phone_num': regularly.driver_id.phone_num,
                     'departure_date': regularly.departure_date,
                     'bus': regularly.bus_id.vehicle_num,
                     'arrival_date': regularly.arrival_date,
@@ -296,6 +289,7 @@ class ScheduleList(generic.ListView):
                     'drive_t': driver_check.drive_time,
                     'departure_t': driver_check.departure_time,
                     'check': '',
+                    'connect_check': driver_check.connect_check,
                 }
                 temp_dict['work_type'] = regularly.work_type
 
@@ -316,12 +310,12 @@ class ScheduleList(generic.ListView):
             temp.sort(key = lambda x:x['departure_date']) # departure_date를 기준으로 정렬
             if len(temp) != 0:
                 schedule_list.append(temp)
-            
-        context['schedule_list'] = schedule_list
+        
+        sorted_data = sorted(schedule_list, key=lambda x: any(item["connect_check"] == "0" for item in x), reverse=True)
+        context['schedule_list'] = sorted_data
         context['select'] = self.request.GET.get('select', '')
         context['search'] = self.request.GET.get('search', '')
         context['date'] = date
-        context['data_list'] = data_list
         return context
     
 
@@ -415,7 +409,6 @@ class RegularlyDispatchList(generic.ListView):
 
             if dispatch.use == '사용':
                 dispatch_list.append(dispatch)
-        print("ssssssssss", dispatch_list)
         return dispatch_list
 
 
@@ -517,6 +510,7 @@ class RegularlyDispatchList(generic.ListView):
         r_connect_list = DispatchRegularlyConnect.objects.select_related('regularly_id').exclude(departure_date__gt=f'{date} 24:00').exclude(arrival_date__lt=f'{date} 00:00')
         dispatch_list = []
         for rc in r_connect_list:
+            driver_check = rc.check_regularly_connect
             dispatch = rc.regularly_id
             data = {
                 'work_type': dispatch.work_type,
@@ -530,10 +524,12 @@ class RegularlyDispatchList(generic.ListView):
                 'driver_id': rc.driver_id.id,
                 'driver_name': rc.driver_id.name,
                 'outsourcing': rc.outsourcing,
+                'connect_check': driver_check.connect_check,
             }
             dispatch_list.append(data)
         connect_list = DispatchOrderConnect.objects.select_related('order_id').exclude(departure_date__gt=f'{date} 24:00').exclude(arrival_date__lt=f'{date} 00:00')
         for cc in connect_list:
+            driver_check = cc.check_order_connect
             dispatch = cc.order_id
             data = {
                 'work_type': '일반',
@@ -547,6 +543,7 @@ class RegularlyDispatchList(generic.ListView):
                 'driver_id': cc.driver_id.id,
                 'driver_name': cc.driver_id.name,
                 'outsourcing': cc.outsourcing,
+                'connect_check': driver_check.connect_check,
             }
             dispatch_list.append(data)
 
@@ -1501,6 +1498,7 @@ class OrderList(generic.ListView):
         dispatch_list2 = []
         dispatch_data_list = []
         for rc in r_connect_list:
+            driver_check = rc.check_regularly_connect
             dispatch = rc.regularly_id
             data = {
                 'work_type': dispatch.work_type,
@@ -1514,6 +1512,7 @@ class OrderList(generic.ListView):
                 'driver_id': rc.driver_id.id,
                 'driver_name': rc.driver_id.name,
                 'outsourcing': rc.outsourcing,
+                'connect_check': driver_check.connect_check,
             }
             if detail_id:
                 if context['detail'].departure_date[:10] in rc.arrival_date[:10]:
@@ -1530,6 +1529,7 @@ class OrderList(generic.ListView):
             connect_list = DispatchOrderConnect.objects.select_related('order_id').exclude(departure_date__gt=f'{date} 24:00').exclude(arrival_date__lt=f'{date} 00:00')
 
         for cc in connect_list:
+            driver_check = cc.check_order_connect
             dispatch = cc.order_id
             data = {
                 'work_type': '일반',
@@ -1543,6 +1543,7 @@ class OrderList(generic.ListView):
                 'driver_id': cc.driver_id.id,
                 'driver_name': cc.driver_id.name,
                 'outsourcing': cc.outsourcing,
+                'connect_check': driver_check.connect_check,
             }
             if detail_id:
                 if context['detail'].departure_date[:10] in dispatch.arrival_date[:10]:
