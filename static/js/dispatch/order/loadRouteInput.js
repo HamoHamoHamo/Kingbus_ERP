@@ -24,8 +24,8 @@ for (i = 0; i < orderListMain.length; i++) {
 function ListOver() {
     if (!this.classList.contains("thisRoute")) {
         this.style.backgroundColor = "#FFF2CC"
-        orderListMain[this.classList[1] - 1].style.backgroundColor = "#FFF2CC"
-        orderListSub[this.classList[1] - 1].style.backgroundColor = "#FFF2CC"
+        orderListMain[this.classList[1].substr(1)].style.backgroundColor = "#FFF2CC"
+        orderListSub[this.classList[1].substr(1)].style.backgroundColor = "#FFF2CC"
     }
 }
 

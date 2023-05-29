@@ -535,7 +535,7 @@
                     <div class="orderListSubScroll">
                         <div class="orderListScrollBox">
                             {% for order in order_list %}
-                            <div class="orderListItem {{forloop.counter}} {{order.id}}">
+                            <div class="orderListItem c{{forloop.counter0}} {{order.id}}">
                                 <div class="orderListMainContents orderListMain1">
                                     {% if order.departure_date|slice:':10' == order.arrival_date|slice:':10' %}
                                     {{order.departure_date|slice:'2:10'}}<br>
@@ -588,7 +588,7 @@
                         <div class="orderListSubScroll">
                             <div class="orderListScrollBox">
                                 {% for order in order_list %}
-                                <div class="orderListItem {{forloop.counter}} {{order.id}}">
+                                <div class="orderListItem c{{forloop.counter0}} {{order.id}}">
                                     <div class="orderListSubContents">
                                         {% for connect in order.info_order.all %}
                                         <span title="{{connect.driver_id.phone_num}}">{{connect.bus_id.vehicle_num}}({{connect.driver_id.name}})</span><!--tilte="기사 전화번호 추가"-->
