@@ -73,6 +73,17 @@ function drawSchdule() {
 
                 startWork.setAttribute("title", `${data[i].driver_name} || ${data[i].departure_date.split(" ")[1]}~${data[i].arrival_date.split(" ")[1]} || ${data[i].departure}▶${data[i].arrival}`);
 
+                // 배차확인 값 따라 backgroundColor 변경
+                if (data[i].connect_check == '')
+                {
+                    startWork.style.border = '1px solid black';
+                    startWork.style.backgroundColor = 'gray';
+                }
+                else if (data[i].connect_check == '0')
+                {
+                    startWork.style.border = '1px solid black';
+                    startWork.style.backgroundColor = 'red';
+                }
                 // 스케줄 생성
                 driverTd[j].parentNode.appendChild(startWork);
             }
