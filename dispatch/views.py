@@ -11,7 +11,7 @@ from django.urls import reverse
 from django.views import generic
 
 from .forms import OrderForm, ConnectForm, RegularlyDataForm
-from .models import DispatchCheck, DispatchRegularlyData, Schedule, DispatchOrderConnect, DispatchOrder, DispatchRegularly, RegularlyGroup, DispatchRegularlyConnect, DispatchOrderWaypoint
+from .models import DispatchCheck, DispatchRegularlyData, Schedule, DispatchOrderConnect, DispatchOrder, DispatchRegularly, RegularlyGroup, DispatchRegularlyConnect, DispatchOrderWaypoint, ConnectRefusal
 from accounting.models import Collect, TotalPrice
 from crudmember.models import Category, Client
 from humanresource.models import Member, Salary
@@ -318,12 +318,80 @@ class ScheduleList(generic.ListView):
         context['date'] = date
         return context
     
+class RefusalList(generic.ListView):
+    template_name = 'dispatch/refusal.html'
+    context_object_name = 'refusal_list'
+    model = ConnectRefusal
+    paginate_by = 10
 
+    def get(self, request, **kwargs):
+        if request.session.get('authority') >= 3:
+            return render(request, 'authority.html')
+        else:
+            return super().get(request, **kwargs)
+        
+    def get_queryset(self):
+        date1 = self.request.GET.get('date1', TODAY)
+        date2 = self.request.GET.get('date2', TODAY)
+        name = self.request.GET.get('name')
+        role = self.request.GET.get('role', '담당업무')
+
+        if date1 > date2:
+            raise Http404
+        refusal_list = ConnectRefusal.objects.select_related('driver_id').filter(check_date__gte=date1).filter(check_date__lte=date2)
+
+        if name:
+            refusal_list = refusal_list.filter(driver_id__name=name)
+        if role != '담당업무':
+            refusal_list = refusal_list.filter(driver_id__role=role)
+        return refusal_list
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        paginator = context['paginator']
+        page_numbers_range = 5
+        max_index = len(paginator.page_range)
+        page = self.request.GET.get('page')
+        current_page = int(page) if page else 1
+
+        start_index = int((current_page - 1) / page_numbers_range) * page_numbers_range
+        end_index = start_index + page_numbers_range
+        if end_index >= max_index:
+            end_index = max_index
+        page_range = paginator.page_range[start_index:end_index]
+        context['page_range'] = page_range
+        #페이징 끝
+
+        context['num'] = context['refusal_list'].count()
+        context['date1'] = self.request.GET.get('date1', TODAY)
+        context['date2'] = self.request.GET.get('date2', TODAY)
+        context['name'] = self.request.GET.get('name', '')
+        context['role'] = self.request.GET.get('role', '담당업무')
+        return context
+
+
+def refusal_delete(request):
+    if request.method == 'POST':
+        user_auth = request.session.get('authority')
+        if user_auth >= 3:
+            return render(request, 'authority.html')
+
+        del_list = request.POST.getlist('delete_check', '')
+        
+        for pk in del_list:
+            refusal = get_object_or_404(ConnectRefusal, pk=pk)
+            refusal.delete()
+            # refusal만 삭제하면 되는지? 
+
+        return redirect(request.META.get('HTTP_REFERER', 'redirect_if_referer_not_found'))
+    else:
+        return HttpResponseNotAllowed(['post'])
 
 class DocumentList(generic.ListView):
     template_name = 'dispatch/document.html'
     context_object_name = 'order_list'
     model = DispatchOrder
+    paginate_by = 10
 
     def get_queryset(self):
         date = self.request.GET.get('date', TODAY)
@@ -386,7 +454,7 @@ class RegularlyDispatchList(generic.ListView):
         return super().get(request, *args, **kwargs)
 
     def get_queryset(self):
-        
+        search = self.request.GET.get('search', '')
         date = self.request.GET.get('date', TODAY)
         group_id = self.request.GET.get('group', '')
 
@@ -397,8 +465,11 @@ class RegularlyDispatchList(generic.ListView):
         else:
             group = RegularlyGroup.objects.order_by('number','name').first()
 
-        regularly_list = DispatchRegularlyData.objects.filter(group=group).filter(week__contains=weekday).order_by('num1', 'number1', 'num2', 'number2')
-        temp = []
+        if search:
+            regularly_list = DispatchRegularlyData.objects.filter(route__contains=search).filter(week__contains=weekday).order_by('num1', 'number1', 'num2', 'number2')
+        else:
+            regularly_list = DispatchRegularlyData.objects.filter(group=group).filter(week__contains=weekday).order_by('num1', 'number1', 'num2', 'number2')
+
         dispatch_list = []
         for regularly in regularly_list:
             # first 확인필요
@@ -414,7 +485,7 @@ class RegularlyDispatchList(generic.ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-
+        context['search'] = self.request.GET.get('search', '')
         date = self.request.GET.get('date', TODAY)
         selected_group = self.request.GET.get('group', '')
         detail_id = self.request.GET.get('id')
