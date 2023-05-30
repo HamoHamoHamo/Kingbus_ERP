@@ -185,7 +185,7 @@
   <div class="mainLayout">
 
     <div class="toolbar">
-      <input type="text" placeholder="노선명" name="search" class="">
+      <input type="text" placeholder="노선명" value="{{search}}" name="search" class="searchInput">
       <input autocomplete="off" type="date" name="date" class="searchDate" max="9999-12-31">
       <div class="dateControllBtnBox">
         <div class="dateToday">오늘</div>
@@ -522,7 +522,8 @@
 <script>
 
   function dateSearch(){
-    targetLink = `${window.location.href.split("?")[0]}?group=${urlGroup}&date=${searchDate.value}`
+    const search = document.querySelector(".searchInput")
+    targetLink = `${window.location.href.split("?")[0]}?search=${search.value}&group=${urlGroup}&date=${searchDate.value}`
     location.href = targetLink
   }
 
