@@ -26,9 +26,12 @@ urlpatterns = [
     path('order/route/edit', views.order_edit, name="order_edit"),
     path('order/route/edit/check', views.order_edit_check, name="order_edit_check"),
     path('order/route/delete', views.order_delete, name="order_delete"),
+    #운행확인
     path('schedule', views.ScheduleList.as_view(), name="schedule"),
+    #배차거부
+    path('refusal', views.RefusalList.as_view(), name="refusal"),
+    path('refusal/delete', views.refusal_delete, name="refusal_delete"),
     # path('document', views.DocumentList.as_view(), name="document"),
-    #배차확인
     path('calendar/create', views.calendar_create, name='calendar_create'),
     # path('calendar/delete', views.calendar_delete, name='calendar_delete'),
     # 일정
