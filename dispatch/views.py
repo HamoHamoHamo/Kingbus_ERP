@@ -344,6 +344,7 @@ class RefusalList(generic.ListView):
             refusal_list = refusal_list.filter(driver_id__name=name)
         if role != '담당업무':
             refusal_list = refusal_list.filter(driver_id__role=role)
+        self.num = refusal_list.count()
         return refusal_list
 
     def get_context_data(self, **kwargs):
@@ -362,7 +363,7 @@ class RefusalList(generic.ListView):
         context['page_range'] = page_range
         #페이징 끝
 
-        context['num'] = context['refusal_list'].count()
+        context['num'] = self.num - (current_page - 1) * 10
         context['date1'] = self.request.GET.get('date1', TODAY)
         context['date2'] = self.request.GET.get('date2', TODAY)
         context['name'] = self.request.GET.get('name', '')
