@@ -3,6 +3,9 @@ import logging
 import my_settings
 from pathlib import Path
 from os.path import join
+from datetime import datetime
+
+TODAY = str(datetime.now())[:10]
 
 VERSION = my_settings.VERSION
 
@@ -49,6 +52,7 @@ INSTALLED_APPS = [
     'vehicle.apps.VehicleConfig',
     'homepage',
     'document',
+    'complaint',
     "debug_toolbar",
 ]
 

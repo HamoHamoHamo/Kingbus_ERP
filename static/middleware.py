@@ -18,7 +18,7 @@ class LoginCheckMiddleware(object):
             "/document",
             "/member/setting/client",
             "/member/setting",
-
+            "/complaint",
         ]
         # One-time configuration and initialization.
     def __call__(self, request):
