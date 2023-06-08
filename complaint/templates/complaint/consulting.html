@@ -3,13 +3,13 @@
 {% load custom_tags %}
 {% block head %}
 <link rel="stylesheet" href="{% static 'css/listpage.css' %}" type="text/css" />
-<link rel="stylesheet" href="{% static 'css/dispatch/refusal.css' %}" type="text/css" />
+<link rel="stylesheet" href="{% static 'css/complaint/consulting.css' %}" type="text/css" />
 <link rel="stylesheet" href="{% static 'css/pagination.css' %}" type="text/css" />
 {% endblock %}
 
 {% block content-header %}
 <div class="HeaderTitle">
-    배차거부관리
+    상담신청관리
 </div>
 {% endblock %}
 
@@ -39,12 +39,13 @@
             <div class="searchBtn btnModules">검색</div>
         </div>
     </form>
+    <button id="saveBtn" class="btnModulesCreate btnModules">저장</button>
 </div>
 
 
 
 
-<form method="post" action="{% url 'dispatch:refusal_delete' %}" class="deleteForm" onsubmit="return confirm('정말로 삭제하시겠습니까?');">
+<form method="post" action="{% url 'complaint:consulting_delete' %}" class="deleteForm" onsubmit="return confirm('정말로 삭제하시겠습니까?');">
     {% csrf_token %}
     <div class="contentsAreaBox">
         <table class="tableHead">
@@ -52,46 +53,38 @@
                 <tr class="headerLine">
                     <td>선택</td>
                     <td>번호</td>
-                    <td>운행시간</td>
-                    <td>노선명</td>
-                    <td>거부날짜</td>
+                    <td>신청일</td>
                     <td>이름</td>
                     <td>담당업무</td>
                     <td>입사일</td>
                     <td>사유</td>
+                    <td>처리상태</td>
+                    <td>확인</td>
                 </tr>
             </thead>
         </table>
 
         <table class="tableBody">
             <tbody>
-                {% for data in refusal_list %}
+                {% for data in consulting_list %}
                 <tr class="{{data.id}}">
                     <td>
-                        <input autocomplete="off" name="delete_check" value="{{data.id}}" type="checkbox">
+                        <input autocomplete="off" name="check" value="{{data.id}}" type="checkbox">
                     </td>
                     <td>{{num|sub:forloop.counter0}}</td>
-                    <td>{{data.departure_date}}<br>{{data.arrival_date}}</td>
-                    <td class="clickLink"
-                    {% if data.regularly_id %}
-                        {% if not data.regularly_id.regularly_id %}
-                            onclick="window.alert('노선 정보가 삭제되었습니다.')"
-                        {% endif %}
-                        onclick="location.href='{% url 'dispatch:regularly' %}?type=route&search={{data.route}}&date={{data.departure_date|slice:':10'}}'"
-                    {% else %}
-                        {% if not data.order_id.order_id %}
-                            onclick="window.alert('노선 정보가 삭제되었습니다.')"
-                        {% endif %}
-                        onclick="location.href='{% url 'dispatch:order' %}?type=route&search={{data.route}}&date1={{data.departure_date|slice:':10'}}&date2={{data.arrival_date|slice:':10'}}'"
-                    {% endif %}
-                    >
-                        {{data.route}}
+                    <td>{{data.date}}</td>
+                    <td>{{data.member_id.name}}</td>
+                    <td>{{data.member_id.role}}</td>
+                    <td>{{data.member_id.entering_date}}</td>
+                    <td>{{data.content}}</td>
+                    <td>
+                        <select class="tableSelect">
+                            <option {% if data.status == '처리전' %} selected {% endif %} value="처리전">처리전</option>
+                            <option {% if data.status == '처리중' %} selected {% endif %} value="처리중">처리중</option>
+                            <option {% if data.status == '완료' %} selected {% endif %} value="완료">완료</option>
+                        </select>
                     </td>
-                    <td>{{data.check_date}}</td>
-                    <td>{{data.driver_id.name}}</td>
-                    <td>{{data.driver_id.role}}</td>
-                    <td>{{data.driver_id.entering_date}}</td>
-                    <td>{{data.refusal}}</td>
+                    <td>{{data.check_member_id.name}}</td>
                 </tr>
                 {% endfor %}
                 <tr class="blanckTr"></tr>
@@ -146,6 +139,7 @@
 
 {% block script %}
 <script>
+    const saveUrl = '{% url "complaint:consulting_edit" %}';
     const searchBtn = document.querySelector(".searchBtn")
     const searchForm = document.querySelector(".searchForm")
     const searchDate = document.querySelectorAll(".searchDateInput")
@@ -162,6 +156,6 @@
             searchForm.submit()
         }
     }
-
 </script>
+<script src="{% static 'js/complaint/consulting.js' %}"></script>
 {% endblock %}
