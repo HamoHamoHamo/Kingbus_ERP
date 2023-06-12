@@ -570,11 +570,11 @@ class RegularlyDispatchList(generic.ListView):
             context['group'] = RegularlyGroup.objects.order_by('number','name').first()
         context['date'] = date
 
-        driver_list = Member.objects.filter(Q(role='운전원')|Q(role='팀장')).values_list('id', 'name')
+        driver_list = Member.objects.filter(Q(role='운전원')|Q(role='팀장')).filter(use='사용').values_list('id', 'name')
         context['driver_dict'] = {}
         for driver in driver_list:
             context['driver_dict'][driver[0]] = driver[1]
-        outsourcing_list = Member.objects.filter(Q(role='용역')|Q(role='임시')).values_list('id', 'name')
+        outsourcing_list = Member.objects.filter(Q(role='용역')|Q(role='임시')).filter(use='사용').values_list('id', 'name')
         context['outsourcing_dict'] = {}
         for outsourcing in outsourcing_list:
             context['outsourcing_dict'][outsourcing[0]] = outsourcing[1]
@@ -1551,12 +1551,12 @@ class OrderList(generic.ListView):
             context['detail_connect_list'] = context['detail'].info_order.all()
             context['detail_connect_cnt'] = int(context['detail'].bus_cnt) - int(context['detail_connect_list'].count())
 
-        driver_list = Member.objects.filter(Q(role='운전원')|Q(role='팀장')).values_list('id', 'name')
+        driver_list = Member.objects.filter(Q(role='운전원')|Q(role='팀장')).filter(use='사용').values_list('id', 'name')
         context['driver_dict'] = {}
         for driver in driver_list:
             context['driver_dict'][driver[0]] = driver[1]
 
-        outsourcing_list = Member.objects.filter(Q(role='용역')|Q(role='임시')).values_list('id', 'name')
+        outsourcing_list = Member.objects.filter(Q(role='용역')|Q(role='임시')).filter(use='사용').values_list('id', 'name')
         context['outsourcing_dict'] = {}
         for outsourcing in outsourcing_list:
             context['outsourcing_dict'][outsourcing[0]] = outsourcing[1]
