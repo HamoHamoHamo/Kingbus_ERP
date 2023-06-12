@@ -3,13 +3,13 @@
 {% load custom_tags %}
 {% block head %}
 <link rel="stylesheet" href="{% static 'css/listpage.css' %}" type="text/css" />
-<link rel="stylesheet" href="{% static 'css/complaint/consulting.css' %}" type="text/css" />
+<link rel="stylesheet" href="{% static 'css/complaint/inspection.css' %}" type="text/css" />
 <link rel="stylesheet" href="{% static 'css/pagination.css' %}" type="text/css" />
 {% endblock %}
 
 {% block content-header %}
 <div class="HeaderTitle">
-    상담신청관리
+    차량정비신청관리
 </div>
 {% endblock %}
 
@@ -45,7 +45,7 @@
 
 
 
-<form method="post" action="{% url 'complaint:consulting_delete' %}" class="deleteForm" onsubmit="return confirm('정말로 삭제하시겠습니까?');">
+<form method="post" action="{% url 'complaint:inspection_delete' %}" class="deleteForm" onsubmit="return confirm('정말로 삭제하시겠습니까?');">
     {% csrf_token %}
     <div class="contentsAreaBox">
         <table class="tableHead">
@@ -54,6 +54,7 @@
                     <td>선택</td>
                     <td>번호</td>
                     <td>신청일</td>
+                    <td>차량번호</td>
                     <td>이름</td>
                     <td>담당업무</td>
                     <td>입사일</td>
@@ -67,20 +68,21 @@
 
         <table class="tableBody">
             <tbody>
-                {% for data in consulting_list %}
+                {% for data in inspection_list %}
                 <tr class="{{data.id}}">
                     <td>
                         <input autocomplete="off" name="check" value="{{data.id}}" type="checkbox">
                     </td>
                     <td>{{num|sub:forloop.counter0}}</td>
                     <td>{{data.date}}</td>
+                    <td>{{data.vehicle_id.vehicle_num0}} {{data.vehicle_id.vehicle_num}}</td>
                     <td>{{data.member_id.name}}</td>
                     <td>{{data.member_id.role}}</td>
                     <td>{{data.member_id.entering_date}}</td>
                     <td>{{data.content}}</td>
                     <td>
-                        <div class="bluelink" onclick='openBlankPage("{% url 'complaint:consulting_img' data.id %}")'>
-                        {% for file in data.consulting_file.all %}
+                        <div class="bluelink" onclick='openBlankPage("{% url 'complaint:inspection_img' data.id %}")'>
+                        {% for file in data.inspection_request_file.all %}
                             {{file.filename | slice:":10"}}
                             {% if forloop.count > 1 %}<br>{% endif %}
                         {% endfor %}
@@ -148,7 +150,7 @@
 
 {% block script %}
 <script>
-    const saveUrl = '{% url "complaint:consulting_edit" %}';
+    const saveUrl = '{% url "complaint:inspection_edit" %}';
     const searchBtn = document.querySelector(".searchBtn")
     const searchForm = document.querySelector(".searchForm")
     const searchDate = document.querySelectorAll(".searchDateInput")

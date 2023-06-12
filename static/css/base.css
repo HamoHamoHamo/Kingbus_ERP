@@ -1078,7 +1078,10 @@ html::-webkit-scrollbar-track {
   margin-left: 2rem;
 }
 
-
+.bluelink {
+  color: #0069D9;
+  cursor: pointer;
+}
 
 
 
