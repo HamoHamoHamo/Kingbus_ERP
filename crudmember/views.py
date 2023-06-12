@@ -503,7 +503,7 @@ def login(request):
             res_data['error'] = "아이디/비밀번호가 다릅니다"
             return render(request, 'crudmember/login.html', res_data)
         
-        if user.role == '임시':
+        if user.role == '임시' or user.use == '삭제' or user.use == '미사용':
             res_data['error'] = "접근 권한이 없습니다"
             return render(request, 'crudmember/login.html', res_data)
         if check_password(login_password, user.password):
