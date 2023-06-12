@@ -303,7 +303,9 @@ def member_delete(request):
             for vehicle in vehicle_list:
                 vehicle.driver_name = ''
                 vehicle.save()
-            member.delete()
+            member.use = '삭제'
+            member.user_id = ''
+            member.save()
 
         return redirect(request.META.get('HTTP_REFERER', 'redirect_if_referer_not_found'))
     else:
