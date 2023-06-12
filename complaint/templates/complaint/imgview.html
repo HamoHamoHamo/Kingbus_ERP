@@ -1,0 +1,17 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="utf-8">
+  <title>TRP</title>
+  <link href="{% static 'css/complaint/popup.css' %}" rel="stylesheet" type="text/css" />
+</head>
+
+<body>
+  <div>
+    {% for image in images %}
+      <img src="{{image.file.url}}">
+    {% endfor %}
+  </div>
+</body>
