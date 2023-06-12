@@ -58,7 +58,7 @@
   <div class="commentBox">
     <div class="commentUserDataCell">
       <span class="commentUserTitle">{{comment.creator}}</span>
-      <span class="commentCreateDate">{{comment.pub_date | date:'Y.m.d H:i:s'}}</span>
+      <span class="commentCreateDate">{{comment.pub_date | date:'Y-m-d H:i'}}</span>
       {% if request.session.user == comment.creator.id or request.session.authority == 0 %}
       <form method="post" action="{% url 'notice:comment_del' notice.kinds notice.id comment.id %}" onsubmit="return confirm('정말로 삭제하시겠습니까?');">
         {% csrf_token %}
