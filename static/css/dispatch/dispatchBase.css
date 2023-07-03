@@ -223,6 +223,7 @@
 .searchBtn {
     margin-left: 2rem;
     background-color: #444;
+    z-index: 20;
 }
 
 .search form {

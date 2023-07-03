@@ -2,7 +2,7 @@ html, body{
     margin-bottom: 10px;
     padding: 0;
     width: 100vw;
-    height: 100vh;
+    height: auto;
     overflow-x: hidden;
     background-color: #EFEFEF;
 }
