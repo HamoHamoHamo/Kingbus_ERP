@@ -11,7 +11,7 @@ from django.urls import reverse
 from django.views import generic
 
 from .forms import OrderForm, ConnectForm, RegularlyDataForm
-from .models import DispatchCheck, DispatchRegularlyData, Schedule, DispatchOrderConnect, DispatchOrder, DispatchRegularly, RegularlyGroup, DispatchRegularlyConnect, DispatchOrderWaypoint, ConnectRefusal
+from .models import DispatchCheck, DispatchRegularlyData, DispatchRegularlyWaypoint, Schedule, DispatchOrderConnect, DispatchOrder, DispatchRegularly, RegularlyGroup, DispatchRegularlyConnect, DispatchOrderWaypoint, ConnectRefusal
 from accounting.models import Collect, TotalPrice
 from crudmember.models import Category, Client
 from humanresource.models import Member, Salary
@@ -856,10 +856,9 @@ class RegularlyRouteList(generic.ListView):
         context['search'] = self.request.GET.get('search', '')
         context['search_use'] = self.request.GET.get('use', '')
 
-
         if id:
             context['detail'] = get_object_or_404(DispatchRegularlyData, id=id)
-            
+            context['waypoint_list'] = DispatchRegularlyWaypoint.objects.filter(regularly_id=context['detail'])
         context['group_list'] = RegularlyGroup.objects.all().order_by('number', 'name')
         group_id = self.request.GET.get('group', '')
         if group_id:
@@ -925,10 +924,7 @@ def regularly_order_create(request):
     if request.method == "POST":
         creator = get_object_or_404(Member, pk=request.session.get('user'))
         order_form = RegularlyDataForm(request.POST)
-        print("RRRR", request.POST)
-
         if order_form.is_valid():
-            print("VALID")
             # if datetime.strptime(request.POST.get('contract_start_date'), FORMAT) > datetime.strptime(request.POST.get('contract_end_date'), FORMAT):
             #     context = {}
             #     # context['order_list'] = DispatchOrder.objects.exclude(regularly=None).order_by('-pk')
@@ -1003,10 +999,20 @@ def regularly_order_create(request):
                 route = order.route,
                 location = order.location,
                 detailed_route = order.detailed_route,
+                maplink = order.maplink,
                 use = order.use,
                 creator = order.creator
             )
             regularly.save()
+
+            waypoint_list = request.POST.getlist('waypoint')
+            for waypoint in waypoint_list:
+                regularly_waypoint = DispatchRegularlyWaypoint(
+                    regularly_id = order,
+                    waypoint = waypoint,
+                    creator = order.creator
+                )
+                regularly_waypoint.save()
             return redirect(request.META.get('HTTP_REFERER', 'redirect_if_referer_not_found'))
         else:
             raise Http404
@@ -1136,6 +1142,7 @@ def regularly_order_edit(request):
             order.route = order_form.cleaned_data['route']
             order.location = order_form.cleaned_data['location']
             order.detailed_route = order_form.cleaned_data['detailed_route']
+            order.maplink = order_form.cleaned_data['maplink']
             order.use = order_form.cleaned_data['use']
             
             order.week = week
@@ -1165,6 +1172,7 @@ def regularly_order_edit(request):
                 regularly.route = order.route
                 regularly.location = order.location
                 regularly.detailed_route = order.detailed_route
+                regularly.maplink = order.maplink
                 regularly.use = order.use
                 regularly.creator = order.creator
             except DispatchRegularly.DoesNotExist:
@@ -1188,11 +1196,20 @@ def regularly_order_edit(request):
                     route = order.route,
                     location = order.location,
                     detailed_route = order.detailed_route,
+                    maplink = order.maplink,
                     use = order.use,
                     creator = order.creator
                 )
             regularly.save()
-
+            DispatchRegularlyWaypoint.objects.filter(regularly_id=order).delete()
+            waypoint_list = request.POST.getlist('waypoint')
+            for waypoint in waypoint_list:
+                regularly_waypoint = DispatchRegularlyWaypoint(
+                    regularly_id = order,
+                    waypoint = waypoint,
+                    creator = order.creator
+                )
+                regularly_waypoint.save()
             
 
             #### 금액, 기사수당 수정 시 입력한 월 이후 배차들 금액, 기사수당 수정
