@@ -1083,7 +1083,9 @@ html::-webkit-scrollbar-track {
   cursor: pointer;
 }
 
-
+.backgroundBlue {
+  background-color: #0069D9;
+}
 
 @media all and (min-width:1460px) and (max-width: 1600px) {
   html {

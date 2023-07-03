@@ -26,6 +26,7 @@ class RegularlyDataForm(forms.ModelForm):
             'route',
             'location',
             'detailed_route',
+            'maplink',
             'use',
             ]
 

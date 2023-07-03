@@ -33,6 +33,7 @@ class DispatchRegularlyData(models.Model):
     route = models.CharField(verbose_name='노선이름', max_length=15, null=False)
     location = models.CharField(verbose_name='위치', max_length=100, null=False, blank=True)
     detailed_route = models.TextField(verbose_name='상세노선', null=False, blank=True)
+    maplink = models.CharField(verbose_name='카카오맵', max_length=100, null=False, blank=True)
     use = models.CharField(verbose_name='사용여부', max_length=50, null=False, blank=True, default='사용')
     
     pub_date = models.DateTimeField(auto_now_add=True, verbose_name='작성시간')
@@ -61,6 +62,7 @@ class DispatchRegularly(models.Model):
     route = models.CharField(verbose_name='노선이름', max_length=15, null=False)
     location = models.CharField(verbose_name='위치', max_length=100, null=False, blank=True)
     detailed_route = models.TextField(verbose_name='상세노선', null=False, blank=True)
+    maplink = models.CharField(verbose_name='카카오맵', max_length=100, null=False, blank=True)
     use = models.CharField(verbose_name='사용여부', max_length=50, null=False, blank=True, default='사용')
     
     pub_date = models.DateTimeField(auto_now_add=True, verbose_name='작성시간')
@@ -68,6 +70,16 @@ class DispatchRegularly(models.Model):
     creator = models.ForeignKey(Member, on_delete=models.SET_NULL, related_name="regularly_monthly_creator", db_column="creator_id", null=True)
     def __str__(self):
         return self.edit_date + ' ' + self.route
+
+class DispatchRegularlyWaypoint(models.Model):
+    regularly_id = models.ForeignKey(DispatchRegularlyData, verbose_name='정기배차 데이터', related_name="detail_map", on_delete=models.CASCADE, null=False)
+    waypoint = models.CharField(verbose_name='경유지명', max_length=50, null=False)
+    pub_date = models.DateTimeField(auto_now_add=True, verbose_name='작성시간')
+    updated_at = models.DateTimeField(auto_now=True, verbose_name='수정시간')
+    creator = models.ForeignKey(Member, on_delete=models.SET_NULL, related_name="detail_map", db_column="creator_id", null=True)
+    
+    def __str__(self):
+        return f'{self.regularly_id.route} {self.waypoint}'
 
 class DispatchOrder(models.Model):
     operation_type = models.CharField(verbose_name='왕복,편도,', max_length=100, null=False)
