@@ -122,9 +122,7 @@ class SalesList(generic.ListView):
 
         payment = {}
 
-        print("order", context['dispatch_list'])
         for order in context['dispatch_list']:
-            print("order", order)
             if order.order_type :
                 type_cnt[order.order_type] += 1
                 bus_cnt[order.order_type] += int(order.bus_cnt)
@@ -364,8 +362,6 @@ def r_collect_create(request):
             collect.save()
             used_price = int(income.used_price) + int(price)
             income.used_price = used_price
-            print("TEST", used_price)
-            print("total", income.total_income)
             if int(used_price) == int(income.total_income):
                 income.state = '완료'
             income.save()
@@ -432,12 +428,9 @@ def regularly_load(request):
                     regularly = regularly_data.monthly.filter(edit_date__gte=date2).order_by('edit_date').first()
                 
                 cnt = DispatchRegularlyConnect.objects.filter(regularly_id__regularly_id=regularly_data).filter(departure_date__range=(f'{date1} 00:00', f'{date2} 24:00')).count()
-                print('cnttt', cnt)
-                print('regularlarra', regularly_data)
                 # cnt = regularly.info_regularly.filter(departure_date__range=(f'{date1} 00:00', f'{date2} 24:00')).count(),
                 # cnt = cnt[0]
                 supply_price = int(regularly.price) * int(cnt)
-                print(supply_price)
                 VAT = math.floor(supply_price * 0.1 + 0.5)
 
                 temp_list.append({
@@ -615,8 +608,6 @@ def collect_create(request):
             collect.save()
             used_price = int(income.used_price) + int(price)
             income.used_price = used_price
-            print("TEST", used_price)
-            print("total", income.total_income)
             if int(used_price) == int(income.total_income):
                 income.state = '완료'
             income.save()
@@ -837,13 +828,11 @@ def load_deposit_data(request):
             BankCode = my_settings.BANKCODE[i]
             AccountNumber = my_settings.ACCOUNTNUMBER[i]
             if last_income:
-                print('last_incomeeee')
                 SDate = last_income.tr_date[:8]
                 last_save_date = last_income.tr_date
             else:
                 SDate = datetime.strftime(datetime.strptime(TODAY, FORMAT) - relativedelta(months=1), '%Y%m%d')
                 last_save_date = SDate
-            print("SDATEE", SDate)        
             EDate = TODAY
 
             jobID = easyFinBankService.requestJob(CorpNum, BankCode, AccountNumber, SDate, EDate, UserID=None)
@@ -886,10 +875,8 @@ def load_deposit_data(request):
         cnt = 1
         list_cnt = 0
         result_cnt = cnt_list[list_cnt]
-        print("CNTLISTTT", cnt_list)
         for r in result:
             if cnt > result_cnt:
-                print("LSSSSSS", cnt, result_cnt)
                 list_cnt += 1
                 cnt = 0
                 result_cnt = cnt_list[list_cnt]
