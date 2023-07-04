@@ -62,7 +62,6 @@ class RegularlyPrintList(generic.ListView):
 
             if dispatch.use == '사용':
                 dispatch_list.append(dispatch)
-        print("ssssssssss", dispatch_list)
         return dispatch_list
     
     def get_context_data(self, **kwargs):
@@ -125,13 +124,11 @@ def order_print(request):
 
         collect_amount = Collect.objects.filter(order_id=order).aggregate(Sum('price'))['price__sum']
         if collect_amount:
-            print('collect_amount', collect_amount)
             collect_list.append(int(collect_amount))
             outstanding_list.append(total_price - int(collect_amount))
         else:
             outstanding_list.append(0)
             collect_list.append(0)
-    print('collect_list', collect_list)
     context = {
         'date1': date1,
         'date2': date2,
@@ -234,7 +231,6 @@ class ScheduleList(generic.ListView):
             regulary_list = driver.info_regularly_driver_id.exclude(arrival_date__lte=f'{date} 00:00').exclude(departure_date__gte=f'{date} 24:00')
             
             for o in order_list:
-                print(o.driver_id.name)
                 driver_check = o.check_order_connect
                 try:
                     vehicle = o.driver_id.vehicle.vehicle_num
@@ -435,7 +431,6 @@ class DocumentList(generic.ListView):
         connect_list = []
         for order in context['order_list']:
             connect_list.append(order.info_order.all())
-        print("CONNETCTT", connect_list)
         context['connect_list'] = connect_list
         context['departure_date'] = departure_date
         context['num_days'] = num_days
@@ -474,9 +469,9 @@ class RegularlyDispatchList(generic.ListView):
         dispatch_list = []
         for regularly in regularly_list:
             # first 확인필요
-            dispatch = regularly.monthly.filter(edit_date__lte=date).order_by('-edit_date').first()
+            dispatch = regularly.monthly.select_related('regularly_id', 'group').filter(edit_date__lte=date).order_by('-edit_date').first()
             if not dispatch:
-                dispatch = regularly.monthly.filter(edit_date__gte=date).order_by('edit_date').first()
+                dispatch = regularly.monthly.select_related('regularly_id', 'group').filter(edit_date__gte=date).order_by('edit_date').first()
                 
 
             if dispatch.use == '사용':
@@ -535,34 +530,10 @@ class RegularlyDispatchList(generic.ListView):
                         block_list[date_calculation] = 'y'
                     else:
                         block_list[date_calculation] = ''
-
             
-            #
-            # connect_history = context['detail'].info_regularly.get(departure_date__startswith=list_date)
-            # history_list.append(connect_history)
-            
-            # h_driver = connect_history.driver_id
-            # h_bus = connect_history.bus_id
-
-            
-
-
-            # if DispatchRegularlyConnect.objects.filter(driver_id=h_driver).exclude(departure_date__gt=arrival_date).exclude(arrival_date__lt=departure_date).exists():
-            #     block_list.append('y')
-            # elif DispatchRegularlyConnect.objects.filter(bus_id=h_bus).exclude(departure_date__gt=arrival_date).exclude(arrival_date__lt=departure_date).exists():
-            #     block_list.append('y')
-            # else:
-            #     block_list.append('')
-
-
-                # history_list.append('')
-                # block_list.append('y')
-                # continue
-
             context['history_list'] = history_list
             context['date_list'] = date_list
             context['block_list'] = block_list
-            # print('block_listsssssss', context['block_list'])
 
         if selected_group:
             context['group'] = get_object_or_404(RegularlyGroup, id=selected_group)
@@ -582,7 +553,6 @@ class RegularlyDispatchList(generic.ListView):
         r_connect_list = DispatchRegularlyConnect.objects.select_related('regularly_id').exclude(departure_date__gt=f'{date} 24:00').exclude(arrival_date__lt=f'{date} 00:00')
         dispatch_list = []
         for rc in r_connect_list:
-            driver_check = rc.check_regularly_connect
             dispatch = rc.regularly_id
             data = {
                 'work_type': dispatch.work_type,
@@ -596,12 +566,10 @@ class RegularlyDispatchList(generic.ListView):
                 'driver_id': rc.driver_id.id,
                 'driver_name': rc.driver_id.name,
                 'outsourcing': rc.outsourcing,
-                'connect_check': driver_check.connect_check,
             }
             dispatch_list.append(data)
         connect_list = DispatchOrderConnect.objects.select_related('order_id').exclude(departure_date__gt=f'{date} 24:00').exclude(arrival_date__lt=f'{date} 00:00')
         for cc in connect_list:
-            driver_check = cc.check_order_connect
             dispatch = cc.order_id
             data = {
                 'work_type': '일반',
@@ -615,7 +583,6 @@ class RegularlyDispatchList(generic.ListView):
                 'driver_id': cc.driver_id.id,
                 'driver_name': cc.driver_id.name,
                 'outsourcing': cc.outsourcing,
-                'connect_check': driver_check.connect_check,
             }
             dispatch_list.append(data)
 
@@ -633,8 +600,6 @@ class RegularlyDispatchList(generic.ListView):
         arrival_time_list = []
         for order in context['order_list']:
             connect = order.info_regularly.filter(departure_date__contains=date)
-            print('orderrr', order, )
-            print('connectrr', connect)
             if connect:
                 connect = connect[0]
                 c_bus = connect.bus_id
@@ -686,8 +651,16 @@ def regularly_connect_create(request):
         date = request.POST.get('date', None)
         vehicle = get_object_or_404(Vehicle, id=bus)
 
-        old_connect = order.info_regularly.filter(departure_date__startswith=date)
-        old_connect.delete()
+        try:
+            old_connect = order.info_regularly.get(departure_date__startswith=date)
+            if old_connect.price == order.price and old_connect.driver_allowance == order.driver_allowance:
+                same_accounting = True
+            else:
+                same_accounting = False
+            old_connect.same_accounting = same_accounting
+            old_connect.delete()
+        except:
+            same_accounting = False
 
         r_connect = DispatchRegularlyConnect(
             regularly_id = order,
@@ -699,8 +672,9 @@ def regularly_connect_create(request):
             driver_allowance = order.driver_allowance,
             price = order.price,
             outsourcing = outsourcing,
-            creator = creator
+            creator = creator,
         )
+        r_connect.same_accounting = same_accounting
         r_connect.save()
         group = request.POST.get('group')
         date = request.POST.get('date')
@@ -742,12 +716,10 @@ def regularly_connect_load(request, week):
             # 체크된 노선의 선택된 날짜에 배차가 없을 경우
             cur_connect_id = 0
         try:
-            print("CCCCCCCCCCCCCCCCCC", cur_connect_id)
             connect = DispatchRegularlyConnect.objects.select_related('regularly_id', 'bus_id', 'driver_id').filter(regularly_id__regularly_id=regularly_data).get(departure_date__startswith=date)
             bus = connect.bus_id
             driver = connect.driver_id
             outsourcing = connect.outsourcing
-            print("conneecttt", connect)
             
             order_arrival_time = f'{req_date} {regularly.arrival_time}'
             order_departure_time = f'{req_date} {regularly.departure_time}'
@@ -763,7 +735,6 @@ def regularly_connect_load(request, week):
             regularly_list.append(regularly_data)
 
         except DispatchRegularlyConnect.DoesNotExist:
-            print('does not exists')
             bus_list.append('')
             driver_list.append('')
             outsourcing_list.append('')
@@ -774,7 +745,17 @@ def regularly_connect_load(request, week):
 
     
     for i in range(len(check_list)):
-        DispatchRegularlyConnect.objects.filter(regularly_id__regularly_id=regularly_list[i]).filter(departure_date__startswith=req_date).delete()
+        try:
+            old_connect = DispatchRegularlyConnect.objects.filter(regularly_id__regularly_id=regularly_list[i]).get(departure_date__startswith=req_date)
+            if bus_list[i] and old_connect.price == regularly_list[i].price and old_connect.driver_allowance == regularly_list[i].driver_allowance:
+                same_accounting = True
+            else:
+                same_accounting = False
+            old_connect.same_accounting = same_accounting
+            old_connect.delete()
+        except:
+            same_accounting = False
+
         regularly_id = DispatchRegularly.objects.get(id=check_list[i])
         if bus_list[i]:
             connect = DispatchRegularlyConnect(
@@ -785,9 +766,11 @@ def regularly_connect_load(request, week):
                 departure_date = f'{req_date} {regularly_list[i].departure_time}',
                 arrival_date = f'{req_date} {regularly_list[i].arrival_time}',
                 work_type = regularly_list[i].work_type,
+                price = regularly_list[i].price,
                 driver_allowance = regularly_list[i].driver_allowance,
                 creator = creator
             )
+            connect.same_accounting = same_accounting
             connect.save()
 
 
@@ -809,7 +792,6 @@ def regularly_connect_delete(request):
 
                 regularly_data = order.regularly_id
                 connects = DispatchRegularlyConnect.objects.filter(regularly_id__regularly_id=regularly_data).filter(departure_date__startswith=date)
-                print('conncec', connects)
                 connects.delete()
             
             except DispatchRegularlyConnect.DoesNotExist:
@@ -1030,7 +1012,6 @@ def regularly_order_edit_check(request):
     post_arrival_date = request.POST.get('arrival_date', None)
 
     regularly = order.monthly.order_by('-edit_date').first()
-    print("REEEEEEEEE", regularly)
     connect_list = regularly.info_regularly.filter(departure_date__gte=TODAY)
 
     for connect in connect_list:
@@ -1232,15 +1213,10 @@ def regularly_order_edit(request):
                     salary.save()
 
                     total = TotalPrice.objects.filter(group_id=group).get(month=month)
-                    print("price", price)
-                    print("connnect'", connect)
-                    print("connect.price", connect.price)
                     # connect.price = '' 이면 0으로 넣어주기
                     if not connect.price:
                         connect.price = 0
-                    print("total.total_price", total.total_price)
                     total.total_price = int(total.total_price) + price + math.floor(price * 0.1 + 0.5) - (int(connect.price) + math.floor(int(connect.price) * 0.1 + 0.5))
-                    print("total.total_price222", total.total_price)
 
                     total.save()
 
@@ -1255,9 +1231,7 @@ def regularly_order_edit(request):
                         c_regularly = connect.regularly_id
                     
                     
-            # print("rrrrrrrrr", regularly)
             connects = DispatchRegularlyConnect.objects.filter(regularly_id__regularly_id=order).filter(departure_date__gte=f'{TODAY} 00:00')
-            # print("CONNNN", connects)
             for connect in connects:
                 connect.regularly_id = regularly
                 connect.departure_date = f'{connect.departure_date[:10]} {regularly.departure_time}'
@@ -1284,7 +1258,6 @@ def regularly_order_upload(request):
     post_data = json.loads(request.body)
     
     group_list = RegularlyGroup.objects.values('name')
-    print(post_data)
 
     count = 1
     for data in post_data:
@@ -1351,7 +1324,6 @@ def regularly_order_upload(request):
             count += 1
         return JsonResponse({'status': 'success', 'count': count})
     except Exception as e:
-        print("ERROR", e)
 
         return JsonResponse({'status': 'fail', 'count': count})
 
@@ -1420,7 +1392,6 @@ def regularly_order_delete(request):
 
             # 오늘부터 미래의 배차 전부 삭제
             connects = DispatchRegularlyConnect.objects.filter(regularly_id=regularly).filter(departure_date__gte=f'{TODAY} 00:00')
-            # print("CONNNN", connects)
             for connect in connects:
                 connect.delete()
 
@@ -1587,7 +1558,6 @@ class OrderList(generic.ListView):
         dispatch_list2 = []
         dispatch_data_list = []
         for rc in r_connect_list:
-            driver_check = rc.check_regularly_connect
             dispatch = rc.regularly_id
             data = {
                 'work_type': dispatch.work_type,
@@ -1601,7 +1571,6 @@ class OrderList(generic.ListView):
                 'driver_id': rc.driver_id.id,
                 'driver_name': rc.driver_id.name,
                 'outsourcing': rc.outsourcing,
-                'connect_check': driver_check.connect_check,
             }
             if detail_id:
                 if context['detail'].departure_date[:10] in rc.arrival_date[:10]:
@@ -1618,7 +1587,6 @@ class OrderList(generic.ListView):
             connect_list = DispatchOrderConnect.objects.select_related('order_id').exclude(departure_date__gt=f'{date} 24:00').exclude(arrival_date__lt=f'{date} 00:00')
 
         for cc in connect_list:
-            driver_check = cc.check_order_connect
             dispatch = cc.order_id
             data = {
                 'work_type': '일반',
@@ -1632,7 +1600,6 @@ class OrderList(generic.ListView):
                 'driver_id': cc.driver_id.id,
                 'driver_name': cc.driver_id.name,
                 'outsourcing': cc.outsourcing,
-                'connect_check': driver_check.connect_check,
             }
             if detail_id:
                 if context['detail'].departure_date[:10] in dispatch.arrival_date[:10]:
@@ -1793,8 +1760,6 @@ def order_create(request):
         delegate_list = request.POST.getlist('delegate')
         delegate_phone_list = request.POST.getlist('delegate_phone')
 
-
-        print("POST", request.POST)
         if order_form.is_valid() and len(waypoint_list) == len(waypoint_time_list):
             departure_time1 = request.POST.get('departure_time1')
             departure_time2 = request.POST.get('departure_time2')
@@ -1889,7 +1854,6 @@ def order_edit_check(request):
 
         format = '%Y-%m-%d %H:%M'
         if datetime.strptime(post_departure_date, format) > datetime.strptime(post_arrival_date, format):
-            print("term begin > term end")
             raise Http404
         o_connect = bus.info_bus_id.exclude(arrival_date__lt=post_departure_date).exclude(departure_date__gt=post_arrival_date).exclude(id__in=connects)
         if o_connect:
@@ -1974,7 +1938,6 @@ def order_edit(request):
             arrival_date = f'{post_arrival_date} {arrival_time1}:{arrival_time2}'
             format = '%Y-%m-%d'
             if datetime.strptime(post_departure_date, format) > datetime.strptime(post_arrival_date, format):
-                print("term begin > term end")
                 raise Http404
 
             if request.POST.get('price'):
@@ -2050,7 +2013,6 @@ def order_edit(request):
             order.VAT = request.POST.get('VAT', 'n')
             order.route = order_form.cleaned_data['departure'] + " ▶ " + order_form.cleaned_data['arrival']
             order.creator = creator
-            print("ORDER", order)
             order.save()
 
             # 경유지 처리
@@ -2110,7 +2072,6 @@ def line_print(request):
     regularly_list = []
     no_list = []
     for regularly in regulalry_data_list:
-        print('regggg', regularly)
         # first 확인필요
         dispatch = regularly.monthly.prefetch_related('info_regularly').filter(edit_date__lte=date).order_by('-edit_date').first()
         if not dispatch:
@@ -2124,7 +2085,6 @@ def line_print(request):
         if not dispatch_connect:
             no_list.append(dispatch)
     
-    print(regularly_list)
     temp = []
     temp2 = []
     
@@ -2143,21 +2103,11 @@ def line_print(request):
         temp.append(r)
         regularly_connect = r.info_regularly.filter(departure_date__startswith=date)
         temp2.append(regularly_connect)
-        print('regularly_Concnnnenct', regularly_connect)
-
-
 
     if r == regularly_list[len(regularly_list)-1]:
         context['regularly_list'].append(temp)
         context['connect_list'].append(temp2)
 
-        
-        
-    
-    
-    print('REGULSRY', context['regularly_list'])
-    print('connect_list', context['connect_list'])
-    print('no_list', no_list)
     context['no_list'] = no_list
 
     return render(request, 'dispatch/line_print.html', context)
@@ -2188,7 +2138,6 @@ def bus_print(request):
             c_connect_object[connect.bus_id.id].append(connect)
 
     connect_list = DispatchOrderConnect.objects.select_related('bus_id', 'order_id').filter(departure_date__lte=f'{date} 24:00').filter(arrival_date__gte=f'{date} 00:00')
-    print("CONNECTSLIST", connect_list)
     for connect in connect_list:
         connect_object[connect.bus_id.id].append(connect)
 
@@ -2233,7 +2182,6 @@ def daily_driving_list(request):
     for connect in connect_list:
         connect_object[connect.driver_id.id].append(connect)
 
-    print(connect_object)
     context['connect_object'] = connect_object
     context['e_connect_object'] = e_connect_object
     context['c_connect_object'] = c_connect_object
