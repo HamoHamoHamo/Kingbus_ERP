@@ -1087,6 +1087,34 @@ html::-webkit-scrollbar-track {
   background-color: #0069D9;
 }
 
+
+.loadingBg{
+  position: absolute;
+  z-index: 11000;
+  display: none;
+  justify-content: center;
+  align-items: center;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(255, 255, 255, 0.3);
+}
+
+.loadingBox{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.loadingBox img{
+  width: 12rem;
+}
+
+.loadingBox span{
+  font-size: 1.4rem;
+}
+
+
 @media all and (min-width:1460px) and (max-width: 1600px) {
   html {
     font-size: 52%;

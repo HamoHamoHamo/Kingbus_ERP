@@ -72,7 +72,6 @@ class NoticeKindsView(generic.ListView):
         context['page_range'] = page_range
         context['current_page'] = current_page
 
-        print("pageinasa", dir(paginator), paginator.count)
         context['start_num'] = paginator.count - paginator.per_page * (current_page-1)
         
         context['kinds'] = self.kwargs['kinds']
@@ -195,7 +194,6 @@ class NoticeDetail(generic.DetailView):
                 )
         except Exception as e:
             # 처음 게시글을 조회한 경우엔 조회 기록이 없음
-            print("error:", e)
             view_cnt = NoticeViewCnt(
                 user_id=self.user,
                 notice_id=self.notice
@@ -216,7 +214,6 @@ def download(request, kinds, notice_id, file_id):
     if download_file.notice_id == Notice.objects.get(pk=notice_id):
         url = download_file.file.url
         root = str(BASE_DIR)+url
-        print("\n테스트\n", root)
 
         if os.path.exists(root):
             with open(root, 'rb') as fh:
@@ -226,7 +223,6 @@ def download(request, kinds, notice_id, file_id):
                 return response
             raise Http404
         else:
-            print("에러")
             raise Http404
     else:
         raise Http404
