@@ -474,13 +474,20 @@
         </div>
       </form>
     </div>
-
   </div>
 
 </div>
 
 {% endblock %}
 
+{% block outSide %}
+    <div class="loadingBg">
+        <div class="loadingBox">
+            <img src="{% static 'images/loading.gif' %}" alt="일정 아이콘">
+            <span>배차를 불러오고 있습니다.</span>
+        </div>
+    </div>
+{% endblock %}
 
 
 {% block script %}

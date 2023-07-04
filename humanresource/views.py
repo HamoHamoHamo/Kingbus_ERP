@@ -519,7 +519,6 @@ def salary_detail(request):
 
         connects = DispatchOrderConnect.objects.filter(departure_date__range=(f'{month}-01 00:00', f'{month}-{last_date} 24:00')).filter(driver_id=member)
         order_cnt = connects.count()
-        print('conccccc', connects, last_date)
         for connect in connects:
             c_date = int(connect.departure_date[8:10]) - 1
             if not order_list[c_date]:
@@ -767,7 +766,6 @@ def salary_load(request):
         id_list = request.POST.getlist('member_id')
         month = request.POST.get('month')
         prev_month = datetime.strftime(datetime.strptime(f'{month}-01', FORMAT) - relativedelta(months=1), FORMAT)[:7]
-        print("PREV MONTH", prev_month)
 
         for id in id_list:
             member = get_object_or_404(Member, id=id)

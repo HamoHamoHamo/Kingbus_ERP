@@ -44,9 +44,6 @@ class VehicleList(generic.ListView):
         select = self.request.GET.get('select', '')
         search = self.request.GET.get('search', '')
         use = self.request.GET.get('use', '사용')
-
-        print("SDSFFD", select, search, use)
-        
         
         if select == 'vehicle' and search:
             vehicle = Vehicle.objects.filter(use=use).filter(vehicle_num__contains=search).order_by('vehicle_num0', 'vehicle_num')
@@ -55,7 +52,6 @@ class VehicleList(generic.ListView):
         elif select == 'passenger' and search:
             vehicle = Vehicle.objects.filter(use=use).filter(passenger_num__contains=search).order_by('vehicle_num0', 'vehicle_num')
         else:
-            print("ELSEEE")
             vehicle = Vehicle.objects.filter(use=use).order_by('vehicle_num0', 'vehicle_num')
         return vehicle
 
@@ -108,7 +104,6 @@ class VehicleList(generic.ListView):
 def vehicle_create(request):
     if request.method == 'POST':
         vehicle_form = VehicleForm(request.POST)
-        print("TEST")
         if vehicle_form.is_valid():
             creator = get_object_or_404(Member, pk=request.session.get('user'))
             vehicle_registration_file = request.FILES.get('vehicle_registration', None)
@@ -116,7 +111,6 @@ def vehicle_create(request):
             
             vehicle = vehicle_form.save(commit=False)
             if request.POST.get('driver'):
-                print("TEST3")
                 driver = get_object_or_404(Member, pk=request.POST.get('driver'))
                 vehicle.driver = driver
                 vehicle.driver_name = driver.name
@@ -130,7 +124,6 @@ def vehicle_create(request):
 
             return redirect(request.META.get('HTTP_REFERER', 'redirect_if_referer_not_found'))
         else:
-            print(vehicle_form)
             raise Http404
 
     else:
@@ -224,7 +217,6 @@ def vehicle_file_save(upload_file, vehicle, type, creator):
         creator=creator,
     )
     vehicle_file.save()
-    # print(vehicle_file)
     return
 
 
@@ -242,7 +234,6 @@ def download(request, vehicle_id, file_id):
                 return response
             raise Http404
         else:
-            #print("에러")
             raise Http404
     else:
         raise Http404
@@ -328,7 +319,6 @@ def insurance_edit(request):
         
         insurance_file = request.FILES.get('insurance_receipt', None)
         i_file_name = request.POST.get('insurance_receipt_name', None)
-        print("FILEEE", insurance_file)
         cur_files = VehicleDocument.objects.filter(vehicle_id=vehicle)
         try:
             cur_insurance_files = cur_files.get(type='insurance_receipt')
