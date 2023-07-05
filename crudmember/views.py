@@ -32,6 +32,11 @@ class CategoryList(generic.ListView):
     context_object_name = 'category_list'
     model = Category
 
+    def get(self, request, *args, **kwargs):
+        if request.session.get('authority') > 2:
+            return render(request, 'authority.html')
+        return super().get(request, *args, **kwargs)
+
     def get_context_data(self, **kwargs):
         context =  super().get_context_data(**kwargs)
 
@@ -76,6 +81,9 @@ class CategoryList(generic.ListView):
 
 def setting_create(request):
     if request.method == 'POST':
+        if request.session.get('authority') > 2:
+            return render(request, 'authority.html')
+    
         type = request.POST.get('type')
         category = request.POST.get('category')
         creator = get_object_or_404(Member, pk=request.session.get('user'))
@@ -94,6 +102,8 @@ def setting_create(request):
 
 def setting_delete(request):
     if request.method == 'POST':
+        if request.session.get('authority') > 2:
+            return render(request, 'authority.html')
         id_list = request.POST.getlist('check')
 
         for id in id_list:
@@ -110,6 +120,11 @@ class ClientList(generic.ListView):
     template_name = 'crudmember/setting_client.html'
     context_object_name = 'client_list'
     model = Client
+
+    def get(self, request, *args, **kwargs):
+        if request.session.get('authority') > 3:
+            return render(request, 'authority.html')
+        return super().get(request, *args, **kwargs)
 
     def get_queryset(self):
         select = self.request.GET.get('select', '')
@@ -153,7 +168,8 @@ class ClientList(generic.ListView):
 
 def setting_client_create(request):
     if request.method == 'POST':
-
+        if request.session.get('authority') > 3:
+            return render(request, 'authority.html')
         client_form = ClientForm(request.POST)
         if client_form.is_valid():
             creator = get_object_or_404(Member, pk=request.session.get('user'))
@@ -171,7 +187,8 @@ def setting_client_create(request):
 
 def setting_client_edit(request):
     if request.method == 'POST':
-
+        if request.session.get('authority') > 3:
+            return render(request, 'authority.html')
         client_id = request.POST.get('id')
         client = get_object_or_404(Client, id=client_id)
 
@@ -197,6 +214,8 @@ def setting_client_edit(request):
 
 def setting_client_delete(request):
     if request.method == 'POST':
+        if request.session.get('authority') > 3:
+            return render(request, 'authority.html')
         id_list = request.POST.getlist('check')
 
         for id in id_list:
