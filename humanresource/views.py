@@ -345,7 +345,7 @@ class SalaryList(generic.ListView):
             if name:
                 member_list = member_list.filter(name__contains=name)
         else:
-            member_list = Member.objects.filter(entering_date__lt=month+'-32').filter(Q(role='팀장')|Q(role='운전원')|Q(role='용역')).filter(use='사용').order_by('-role', 'name')
+            member_list = Member.objects.filter(entering_date__lt=month+'-32').filter(Q(role='팀장')|Q(role='운전원')|Q(role='용역')).filter(use='사용').order_by('name')
             if name:
                 member_list = member_list.filter(name__contains=name)
         
@@ -419,7 +419,7 @@ def new_salary(creator, month, member):
 
     base = 0
     service_allowance = 0
-    performance_allowance = 0
+    position_allowance = 0
     annual_allowance = 0
     meal = 0
     
@@ -427,14 +427,14 @@ def new_salary(creator, month, member):
     if TODAY[:7] <= month:
         base = int(member.base)
         service_allowance = int(member.service_allowance)
-        performance_allowance = int(member.performance_allowance)
+        position_allowance = int(member.position_allowance)
         annual_allowance = int(member.annual_allowance)
         meal = int(member.meal)
 
     # if salary:
     #     base = salary.base
     #     service_allowance = salary.service_allowance
-    #     performance_allowance = salary.performance_allowance
+    #     position_allowance = salary.position_allowance
 
     if attendance['driver_allowance__sum']:
         attendance_price = int(attendance['driver_allowance__sum'])
@@ -453,13 +453,13 @@ def new_salary(creator, month, member):
         member_id = member,
         base = base,
         service_allowance = service_allowance,
-        performance_allowance = performance_allowance,
+        position_allowance = position_allowance,
         annual_allowance = annual_allowance,
         meal = meal,
         attendance = attendance_price,
         leave = leave_price,
         order = order_price,
-        total = attendance_price + leave_price + order_price + base + service_allowance + performance_allowance + annual_allowance + int(meal),
+        total = attendance_price + leave_price + order_price + base + service_allowance + position_allowance + annual_allowance + int(meal),
         month = month,
         payment_date = payment_date,
         creator = creator
@@ -623,16 +623,16 @@ def salary_edit(request):
             salary = Salary.objects.filter(member_id=member).get(month=month)
             salary.base = base
             salary.service_allowance = service
-            salary.performance_allowance = position
+            salary.position_allowance = position
             salary.annual_allowance = annual
             salary.meal = meal
-            salary.total = int(salary.meal) + int(salary.attendance) + int(salary.leave) + int(salary.order) + int(salary.base) + int(salary.service_allowance) + int(salary.performance_allowance) + int(salary.annual_allowance) + int(salary.additional) - int(salary.deduction)
+            salary.total = int(salary.meal) + int(salary.attendance) + int(salary.leave) + int(salary.order) + int(salary.base) + int(salary.service_allowance) + int(salary.position_allowance) + int(salary.annual_allowance) + int(salary.additional) - int(salary.deduction)
             salary.save()
 
             if TODAY[:7] <= month:
                 member.base = base
                 member.service_allowance = service
-                member.performance_allowance = position
+                member.position_allowance = position
                 member.annual_allowance = annual
                 member.save()
 
@@ -641,8 +641,8 @@ def salary_edit(request):
                 # for e_salary in edit_salary_list:
                 #     e_salary.base = base
                 #     e_salary.service_allowance = service
-                #     e_salary.performance_allowance = position
-                #     e_salary.total = int(e_salary.meal) + int(e_salary.attendance) + int(e_salary.leave) + int(e_salary.order) + int(e_salary.base) + int(e_salary.service_allowance) + int(e_salary.performance_allowance) + int(e_salary.additional) - int(e_salary.deduction)
+                #     e_salary.position_allowance = position
+                #     e_salary.total = int(e_salary.meal) + int(e_salary.attendance) + int(e_salary.leave) + int(e_salary.order) + int(e_salary.base) + int(e_salary.service_allowance) + int(e_salary.position_allowance) + int(e_salary.additional) - int(e_salary.deduction)
                 #     e_salary.save()
 
 
@@ -775,17 +775,17 @@ def salary_load(request):
                 continue
             base = prev_salary.base
             service_allowance = prev_salary.service_allowance
-            performance_allowance = prev_salary.performance_allowance
+            position_allowance = prev_salary.position_allowance
             annual_allowance = prev_salary.annual_allowance
             meal = prev_salary.meal
 
             salary = Salary.objects.filter(month=month).get(member_id=member)
             salary.base = base
             salary.service_allowance = service_allowance
-            salary.performance_allowance = performance_allowance
+            salary.position_allowance = position_allowance
             salary.annual_allowance = annual_allowance
             salary.meal = meal
-            salary.total = int(salary.meal) + int(salary.attendance) + int(salary.leave) + int(salary.order) + int(salary.base) + int(salary.service_allowance) + int(salary.performance_allowance) + int(salary.annual_allowance) + int(salary.additional) - int(salary.deduction)
+            salary.total = int(salary.meal) + int(salary.attendance) + int(salary.leave) + int(salary.order) + int(salary.base) + int(salary.service_allowance) + int(salary.position_allowance) + int(salary.annual_allowance) + int(salary.additional) - int(salary.deduction)
             salary.save()
             
 
