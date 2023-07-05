@@ -319,7 +319,7 @@
 
 
     function loadPrevMonthlyBase() {
-        if (confirm('저번달 기본급, 근속수당, 연차수당, 성과급, 식대를 불러오시겠습니까?')) {
+        if (confirm('저번달 기본급, 근속수당, 연차수당, 직급수당, 식대를 불러오시겠습니까?')) {
             loadForm.action = "{% url 'HR:salary_load' %}"
             loadForm.submit()
         }
