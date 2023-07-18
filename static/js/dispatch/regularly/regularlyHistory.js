@@ -17,9 +17,9 @@ const loadConnectBtn1 = document.querySelector(".loadConnectBtn1")
 const loadConnectBtn2 = document.querySelector(".loadConnectBtn2")
 
 // 지난배차 불러오기
-loadConnectBtn1.addEventListener('click', () => loadConnect(1))
+loadConnectBtn1.addEventListener('click', () => loadConnect(7))
 
-loadConnectBtn2.addEventListener('click', () => loadConnect(2))
+loadConnectBtn2.addEventListener('click', () => loadConnect(1))
 
 function loadConnect(type) {
     const formValues = $('.RouteList').serialize();
