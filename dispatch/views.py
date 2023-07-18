@@ -2,7 +2,11 @@ import json
 import math
 import pandas as pd
 import re
+import urllib
+import os
+import mimetypes
 
+from config.settings import MEDIA_ROOT
 from django.db.models import Q, Sum
 from django.core.exceptions import ObjectDoesNotExist, MultipleObjectsReturned, BadRequest
 from django.http import Http404, JsonResponse, HttpResponse, HttpResponseNotAllowed
@@ -682,19 +686,17 @@ def regularly_connect_create(request):
     else:
         return HttpResponseNotAllowed(['post'])
 
-def regularly_connect_load(request, week):
+def regularly_connect_load(request, day):
     if request.session.get('authority') > 3:
         return render(request, 'authority.html')
 
-    if week != 1 and week != 2:
-        raise Http404
     creator = get_object_or_404(Member, id=request.session.get('user'))
     check_list = request.POST.getlist('check', '')
     if not check_list:
         return JsonResponse({'status': 'check'})
     req_date = request.POST.get('date', TODAY)
 
-    minus_week = 7 if week == 1 else 14
+    minus_week = day
     date = datetime.strftime(datetime.strptime(req_date, FORMAT) - timedelta(days=minus_week), FORMAT)
 
     bus_list = []
