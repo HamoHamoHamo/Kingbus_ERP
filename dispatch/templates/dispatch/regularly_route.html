@@ -377,6 +377,7 @@
             <input autocomplete="off" type="hidden" value="{{group.id}}" name="group">
             <input autocomplete="off" type="submit" class="btnModules routeListSearchBtn" value="검색">
             <div class="btnModules excelUpload">엑셀 업로드</div>
+            <div class="btnModules excelDownload" onclick="location.href='{% url 'dispatch:regularly_route_download' %}'">엑셀 다운로드</div>
         </form>
 
         <form method="post" action="{% url 'dispatch:regularly_route_delete' %}" class="RouteListForm">
