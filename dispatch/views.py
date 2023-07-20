@@ -1257,6 +1257,7 @@ def regularly_order_upload(request):
     # count = 0
     # for data in post_data:
     #     count = count + 1
+    creator = get_object_or_404(Member, pk=request.session['user'])
     post_data = json.loads(request.body)
     
     group_list = RegularlyGroup.objects.values('name')
@@ -1269,13 +1270,45 @@ def regularly_order_upload(request):
                 overlap = True
             
         if overlap == False:
-            return JsonResponse({'group_error': data['group'], 'line': count})
+            return JsonResponse({'error': 'group', 'data': data['group'], 'line': count})
+        try:
+            if data['group'] and data['route'] and data['departure'] and data['arrival'] and data['number1'] and data['number2'] and data['departure_time'] and data['arrival_time'] and data['work_type'] and data['week'] and data['price'] and data['driver_allowance'] and data['use']:
+                pass
+        except:
+            return JsonResponse({'error': 'required', 'line': count})
+        
         count += 1
 
     count = 0
-    try:
-        for data in post_data:
-            group = get_object_or_404(RegularlyGroup, name=data['group'])
+    #try:
+    for data in post_data:
+        group = get_object_or_404(RegularlyGroup, name=data['group'])
+        if data['id']:
+            try:
+                regularly_data = DispatchRegularlyData.objects.get(id=data['id'])
+            except DispatchRegularlyData.DoesNotExist:
+                return JsonResponse({'status': 'fail', 'count': count})
+            regularly_data.group = group
+            regularly_data.references = data['references']
+            regularly_data.departure = data['departure']
+            regularly_data.arrival = data['arrival']
+            regularly_data.departure_time = data['departure_time']
+            regularly_data.arrival_time = data['arrival_time']
+            regularly_data.price = data['price']
+            regularly_data.driver_allowance = data['driver_allowance']
+            regularly_data.number1 = f'{data["number1"]}'
+            regularly_data.number2 = f"{data['number2']}"
+            regularly_data.num1 = re.sub(r'[^0-9]', '', f'{data["number1"]}')
+            regularly_data.num2 = re.sub(r'[^0-9]', '', f"{data['number2']}")
+            regularly_data.week = data['week']
+            regularly_data.work_type = data['work_type']
+            regularly_data.route = data['route']
+            regularly_data.location = data['location']
+            regularly_data.detailed_route = data['detailed_route']
+            regularly_data.maplink = data['maplink']
+            regularly_data.use = data['use']
+            regularly_data.creator = creator
+        else:
             regularly_data = DispatchRegularlyData(
                 group = group,
                 references = data['references'],
@@ -1285,20 +1318,55 @@ def regularly_order_upload(request):
                 arrival_time = data['arrival_time'],
                 price = data['price'],
                 driver_allowance = data['driver_allowance'],
-                number1 = data['number1'],
-                number2 = data['number2'],
-                num1 = re.sub(r'[^0-9]', '', data['number1']),
-                num2 = re.sub(r'[^0-9]', '', data['number2']),
+                number1 = f'{data["number1"]}',
+                number2 = f"{data['number2']}",
+                num1 = re.sub(r'[^0-9]', '', f'{data["number1"]}'),
+                num2 = re.sub(r'[^0-9]', '', f"{data['number2']}"),
                 week = data['week'],
                 work_type = data['work_type'],
                 route = data['route'],
                 location = data['location'],
                 detailed_route = data['detailed_route'],
-                use = '사용',
-                creator = get_object_or_404(Member, pk=request.session['user']),
+                maplink = data['maplink'],
+                use = data['use'],
+                creator = creator,
             )
-            regularly_data.save()
+        regularly_data.save()
 
+        # 경유지 생성
+        waypoint_list = data['waypoint'].split(", ")
+        for waypoint in waypoint_list:
+            DispatchRegularlyWaypoint.objects.create(
+                regularly_id = regularly_data,
+                waypoint = waypoint,
+                creator = creator
+            )
+
+        try:
+            regularly = DispatchRegularly.objects.filter(regularly_id=regularly_data).get(edit_date=TODAY)
+            regularly.regularly_id = regularly_data
+            regularly.edit_date = TODAY
+            regularly.group = group
+            regularly.references = data['references']
+            regularly.departure = data['departure']
+            regularly.arrival = data['arrival']
+            regularly.departure_time = data['departure_time']
+            regularly.arrival_time = data['arrival_time']
+            regularly.price = data['price']
+            regularly.driver_allowance = data['driver_allowance']
+            regularly.number1 = f'{data["number1"]}'
+            regularly.number2 = f"{data['number2']}"
+            regularly.num1 = re.sub(r'[^0-9]', '', f'{data["number1"]}')
+            regularly.num2 = re.sub(r'[^0-9]', '', f"{data['number2']}")
+            regularly.week = data['week']
+            regularly.work_type = data['work_type']
+            regularly.route = data['route']
+            regularly.location = data['location']
+            regularly.detailed_route = data['detailed_route']
+            regularly.maplink = data['maplink']
+            regularly.use = data['use']
+            regularly.creator = creator
+        except DispatchRegularly.DoesNotExist:
             regularly = DispatchRegularly(
                 regularly_id = regularly_data,
                 edit_date = TODAY,
@@ -1310,24 +1378,62 @@ def regularly_order_upload(request):
                 arrival_time = data['arrival_time'],
                 price = data['price'],
                 driver_allowance = data['driver_allowance'],
-                number1 = data['number1'],
-                number2 = data['number2'],
-                num1 = re.sub(r'[^0-9]', '', data['number1']),
-                num2 = re.sub(r'[^0-9]', '', data['number2']),
+                number1 = f'{data["number1"]}',
+                number2 = f"{data['number2']}",
+                num1 = re.sub(r'[^0-9]', '', f'{data["number1"]}'),
+                num2 = re.sub(r'[^0-9]', '', f"{data['number2']}"),
                 week = data['week'],
                 work_type = data['work_type'],
                 route = data['route'],
                 location = data['location'],
                 detailed_route = data['detailed_route'],
-                use = '사용',
-                creator = get_object_or_404(Member, pk=request.session['user'])
+                maplink = data['maplink'],
+                use = data['use'],
+                creator = creator
             )
-            regularly.save()
-            count += 1
-        return JsonResponse({'status': 'success', 'count': count})
+        regularly.save()
+        count += 1
+    return JsonResponse({'status': 'success', 'count': count})
+    #except Exception as e:
+    #    return JsonResponse({'status': 'fail', 'count': count, 'error': f'{e}'})
+
+def regularly_order_download(request):
+    datalist = list(DispatchRegularlyData.objects.exclude(use='삭제').order_by('group__number', 'group__name', 'num1', 'number1', 'num2', 'number2').values_list('id', 'group_id__name', 'route', 'departure', 'arrival', 'number1', 'number2', 'departure_time', 'arrival_time', 'work_type', 'location', 'week', 'detailed_route', 'maplink', 'price', 'driver_allowance', 'references', 'use'))
+    queryset = DispatchRegularlyWaypoint.objects.exclude(regularly_id__use='삭제').order_by('regularly_id__group__number', 'regularly_id__group__name', 'regularly_id__num1', 'regularly_id__number1', 'regularly_id__num2', 'regularly_id__number2').values_list('regularly_id__id', 'waypoint')
+    waypoints = []
+    previous_id = None
+    for regularly_id, waypoint in queryset:
+        if regularly_id != previous_id:
+            waypoints.append((regularly_id, [waypoint]))
+            previous_id = regularly_id
+        else:
+            waypoints[-1][1].append(waypoint)
+    cnt = 0
+    i = 0
+    for data in datalist:
+        data = list(data)
+        if len(waypoints) > cnt and data[0] == waypoints[cnt][0]:
+            data.insert(14, ', '.join(waypoints[cnt][1]))
+            cnt = cnt + 1
+        else:
+            data.insert(14, '')
+        datalist[i] = data
+        i = i+1
+    try:
+        df = pd.DataFrame(datalist, columns=['id', '그룹', '노선명', '출발지', '도착지', '순번1', '순번2', '출발시간', '도착시간', '출/퇴근', '위치', '운행요일', '상세노선', '카카오맵', '경유지', '금액', '기사수당', '참조사항', '사용'])
+        url = f'{MEDIA_ROOT}/dispatch/regularlyDataList.xlsx'
+        df.to_excel(url, index=False)
+
+        if os.path.exists(url):
+            with open(url, 'rb') as fh:
+                quote_file_url = urllib.parse.quote('출퇴근노선.xlsx'.encode('utf-8'))
+                response = HttpResponse(fh.read(), content_type=mimetypes.guess_type(url)[0])
+                response['Content-Disposition'] = 'attachment;filename*=UTF-8\'\'%s' % quote_file_url
+                return response
     except Exception as e:
 
-        return JsonResponse({'status': 'fail', 'count': count})
+        return JsonResponse({'status': 'fail', 'e': e})
+        raise Http404
 
 def regularly_order_delete(request):
     if request.session.get('authority') > 1:
