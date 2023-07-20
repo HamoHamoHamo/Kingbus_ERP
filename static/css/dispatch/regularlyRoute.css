@@ -486,8 +486,15 @@
 
 .excelUpload {
   position: absolute;
-  right: 1rem;
+  right: 13.4rem;
   width: 10.4rem;
+  background-color: #444;
+}
+
+.excelDownload {
+  position: absolute;
+  right: 1rem;
+  width: 11.4rem;
   background-color: #444;
 }
 
@@ -533,7 +540,7 @@ select[name=use]{
 .routeInputDelete {
   position: absolute;
   top: -4.5rem;
-  right: 12.3rem;
+  right: 24.8rem;
   background-color: #444;
 }
 
