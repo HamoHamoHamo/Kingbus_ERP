@@ -663,7 +663,6 @@ select[name=use]{
 }
 
 .RouteListBody td:nth-child(4),
-.RouteListBody td:nth-child(8),
 .RouteListBody td:nth-child(11),
 .RouteListBody td:nth-child(12) {
   text-align: left;

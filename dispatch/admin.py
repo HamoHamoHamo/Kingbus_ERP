@@ -1,7 +1,7 @@
 from django.contrib import admin
 from .models import Schedule, DispatchOrder, DispatchOrderConnect, RegularlyGroup, \
     DispatchRegularly, DispatchRegularlyData, DispatchRegularlyConnect, DispatchCheck, \
-    DispatchOrderWaypoint, DriverCheck, ConnectRefusal, DispatchRegularlyWaypoint
+    DispatchOrderWaypoint, DriverCheck, ConnectRefusal, DispatchRegularlyWaypoint, DispatchRegularlyRouteKnow
 
 # class DispatchInfoInline(admin.TabularInline):
 #     model = DispatchOrderConnect
@@ -33,5 +33,6 @@ admin.site.register(DispatchRegularlyWaypoint)
 admin.site.register(DispatchRegularlyConnect)
 admin.site.register(DispatchCheck)
 admin.site.register(DispatchOrderWaypoint)
+admin.site.register(DispatchRegularlyRouteKnow)
 admin.site.register(Schedule)
 
