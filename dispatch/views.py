@@ -15,7 +15,7 @@ from django.urls import reverse
 from django.views import generic
 
 from .forms import OrderForm, ConnectForm, RegularlyDataForm
-from .models import DispatchCheck, DispatchRegularlyData, DispatchRegularlyWaypoint, Schedule, DispatchOrderConnect, DispatchOrder, DispatchRegularly, RegularlyGroup, DispatchRegularlyConnect, DispatchOrderWaypoint, ConnectRefusal
+from .models import DispatchRegularlyRouteKnow, DispatchCheck, DispatchRegularlyData, DispatchRegularlyWaypoint, Schedule, DispatchOrderConnect, DispatchOrder, DispatchRegularly, RegularlyGroup, DispatchRegularlyConnect, DispatchOrderWaypoint, ConnectRefusal
 from accounting.models import Collect, TotalPrice
 from crudmember.models import Category, Client
 from humanresource.models import Member, Salary
@@ -849,55 +849,6 @@ class RegularlyRouteList(generic.ListView):
             context['group'] = get_object_or_404(RegularlyGroup, id=group_id)
         elif not self.request.GET.get('new'):
             context['group'] = RegularlyGroup.objects.order_by('number').first()
-
-
-        ## DispatchRegularlyData 생성하고 반영해야됨
-        # dispatch_list = DispatchRegularly.objects.all()
-        # for dispatch in dispatch_list:
-        #     group = dispatch.group
-        #     references = dispatch.references
-        #     departure = dispatch.departure
-        #     arrival = dispatch.arrival
-        #     departure_time = dispatch.departure_time
-        #     arrival_time = dispatch.arrival_time
-        #     price = dispatch.price
-        #     driver_allowance = dispatch.driver_allowance
-        #     number1 = dispatch.number1
-        #     number2 = dispatch.number2
-        #     num1 = dispatch.num1
-        #     num2 = dispatch.num2
-        #     week = dispatch.week
-        #     work_type = dispatch.work_type
-        #     route = dispatch.route
-        #     location = dispatch.location
-        #     detailed_route = dispatch.detailed_route
-        #     use = dispatch.use
-        #     creator = dispatch.creator
-
-        #     dispatch_data = DispatchRegularlyData(
-        #         group = group,
-        #         references = references,
-        #         departure = departure,
-        #         arrival = arrival,
-        #         departure_time = departure_time,
-        #         arrival_time = arrival_time,
-        #         price = price,
-        #         driver_allowance = driver_allowance,
-        #         number1 = number1,
-        #         number2 = number2,
-        #         num1 = num1,
-        #         num2 = num2,
-        #         week = week,
-        #         work_type = work_type,
-        #         route = route,
-        #         location = location,
-        #         detailed_route = detailed_route,
-        #         use = use,
-        #         creator = creator,
-        #     )
-        #     dispatch_data.save()
-        #     dispatch.regularly_id = dispatch_data
-        #     dispatch.save()
         
         return context
 
@@ -1506,6 +1457,86 @@ def regularly_order_delete(request):
         return redirect(reverse('dispatch:regularly_route') + f'?group={group}')
     else:
         return HttpResponseNotAllowed(['post'])
+
+class RegularlyRouteKnowList(generic.ListView):
+    template_name = 'dispatch/regularly_route_know.html'
+    context_object_name = 'order_list'
+    model = DispatchRegularlyRouteKnow
+
+    def get(self, request, *args, **kwargs):
+        if request.session.get('authority') > 3:
+            return render(request, 'authority.html')
+        return super().get(request, *args, **kwargs)
+    
+    def get_queryset(self):
+        group_id = self.request.GET.get('group', '')
+        search = self.request.GET.get('search', '')
+        search_type = self.request.GET.get('type', '')
+        if not group_id:
+            group = RegularlyGroup.objects.order_by('number').first()
+        else:
+            group = get_object_or_404(RegularlyGroup, id=group_id)
+        if search:
+            if search_type == '운전원':
+                return DispatchRegularlyData.objects.prefetch_related('regularly_route_know').filter(use='사용').filter(group=group).filter(regularly_route_know__driver_id__name__contains=search).order_by('num1', 'number1', 'num2', 'number2')
+            else:
+                return DispatchRegularlyData.objects.prefetch_related('regularly_route_know').filter(use='사용').filter(group=group).filter(Q(route__contains=search) | Q(departure__contains=search) | Q(arrival__contains=search)).order_by('num1', 'number1', 'num2', 'number2')
+        else:
+            return DispatchRegularlyData.objects.prefetch_related('regularly_route_know').filter(use='사용').filter(group=group).order_by('num1', 'number1', 'num2', 'number2')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['search'] = self.request.GET.get('search', '')
+        context['type'] = self.request.GET.get('type', '')
+
+        context['group_list'] = RegularlyGroup.objects.all().order_by('number', 'name')
+        group_id = self.request.GET.get('group', '')
+        if group_id:
+            context['group'] = get_object_or_404(RegularlyGroup, id=group_id)
+        else:
+            context['group'] = RegularlyGroup.objects.order_by('number').first()
+        
+        context['driver_list'] = Member.objects.filter(use='사용').filter(Q(role='운전원')|Q(role='팀장')).values('id', 'name').order_by('name')
+        context['knows'] = {}
+        for order in context['order_list']:
+            know = order.regularly_route_know.all()
+            if know:
+                context['knows'][order.id] = list(know.values('id', 'driver_id__id', 'driver_id__name', 'driver_id__role').order_by('driver_id__name'))
+            else:
+                context['knows'][order.id] = ''
+        return context
+
+def regularly_route_know_create(request):
+    if request.session.get('authority') > 1:
+        return render(request, 'authority.html')
+    
+    if request.method == "POST":        
+        regularly = get_object_or_404(DispatchRegularlyData, id=request.POST.get('regularly_id'))
+        driver = get_object_or_404(Member, id=request.POST.get('driver_id'))
+
+        if DispatchRegularlyRouteKnow.objects.filter(driver_id=driver).filter(regularly_id=regularly).exists():
+            return redirect(request.META.get('HTTP_REFERER', 'redirect_if_referer_not_found'))
+        route_know = DispatchRegularlyRouteKnow(
+            regularly_id = regularly,
+            driver_id = driver,
+            creator = get_object_or_404(Member, pk=request.session['user'])
+        )
+        route_know.save()
+        return redirect(request.META.get('HTTP_REFERER', 'redirect_if_referer_not_found'))
+    else:
+        return HttpResponseNotAllowed(['POST'])
+
+def regularly_route_know_delete(request):
+    if request.session.get('authority') > 1:
+        return render(request, 'authority.html')
+    
+    if request.method == "POST":        
+        id_list = request.POST.getlist('id')
+        for pk in id_list:
+            DispatchRegularlyRouteKnow.objects.get(id=pk).delete()
+        return redirect(request.META.get('HTTP_REFERER', 'redirect_if_referer_not_found'))
+    else:
+        return HttpResponseNotAllowed(['POST'])
 
 def regularly_group_create(request):
     if request.session.get('authority') > 1:
