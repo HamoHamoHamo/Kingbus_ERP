@@ -28,7 +28,7 @@ function openSideNav() {
     switch (idx) {
       case 0:
         if (AUTHORITY == 3)
-          sideMenuNav2Box[idx].style.height = "15.4rem";
+          sideMenuNav2Box[idx].style.height = "18.4rem";
         else
           sideMenuNav2Box[idx].style.height = "10.4rem";
         sideMenuNav2[idx].style.height = "8.4rem";
