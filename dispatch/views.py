@@ -1507,7 +1507,7 @@ class RegularlyRouteKnowList(generic.ListView):
         return context
 
 def regularly_route_know_create(request):
-    if request.session.get('authority') > 1:
+    if request.session.get('authority') > 3:
         return render(request, 'authority.html')
     
     if request.method == "POST":        
@@ -1527,7 +1527,7 @@ def regularly_route_know_create(request):
         return HttpResponseNotAllowed(['POST'])
 
 def regularly_route_know_delete(request):
-    if request.session.get('authority') > 1:
+    if request.session.get('authority') > 3:
         return render(request, 'authority.html')
     
     if request.method == "POST":        
