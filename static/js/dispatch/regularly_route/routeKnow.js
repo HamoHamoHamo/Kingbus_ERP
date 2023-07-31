@@ -52,9 +52,9 @@ function loadTargetRoute() {
     let parms = new URLSearchParams(location.search)
     noPopup = 1;
     if (parms.has("search")) {
-        location.href = `${regularlyRouteUrl}?id=${this.parentNode.classList[1]}&group=${this.parentNode.classList[2]}&use={{search_use}}&search=${parms.get("search")}&height=${this.parentNode.parentNode.parentNode.parentNode.scrollTop}`
+        location.href = `${regularlyRouteUrl}?id=${this.parentNode.classList[1]}&group=${this.parentNode.classList[2]}&search=${parms.get("search")}`
     } else {
-        location.href = `${regularlyRouteUrl}?id=${this.parentNode.classList[1]}&group=${this.parentNode.classList[2]}&use={{search_use}}&height=${this.parentNode.parentNode.parentNode.parentNode.scrollTop}`
+        location.href = `${regularlyRouteUrl}?id=${this.parentNode.classList[1]}&group=${this.parentNode.classList[2]}`
     }
 }
 
