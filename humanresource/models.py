@@ -25,7 +25,7 @@ class Member(models.Model):
     meal = models.CharField(verbose_name='식대', max_length=20, null=False, default=0)
     pub_date = models.DateTimeField(verbose_name="등록날짜", auto_now_add=True, null=False)
     creator = models.CharField(verbose_name='작성자 이름', max_length=100, null=False, blank=True)
-    token = models.CharField(verbose_name='fcmtoken', max_length=100, null=False, blank=True)
+    token = models.CharField(verbose_name='fcmtoken', max_length=500, null=False, blank=True)
     authority = models.IntegerField(verbose_name='권한', null=False, default=4)
     use = models.CharField(verbose_name='사용여부', max_length=30, null=False, default='사용')
     def __str__(self):
