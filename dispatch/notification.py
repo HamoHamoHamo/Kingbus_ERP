@@ -18,16 +18,16 @@ def driver_check_notification():
 	for i in range(3):
 		if i == 0:
 			data_list = set(data1 + data4)
-			title = '기상 확인 바랍니다'
-			text = '운행 1시간 30분 전입니다.'
+			text = '기상 확인 바랍니다'
+			title = '운행 1시간 30분 전입니다'
 		if i == 1:
 			data_list = set(data2 + data5)
-			title = '운행 출발 확인 바랍니다'
-			text = '운행 1시간 전입니다.'
+			text = '운행 출발 확인 바랍니다'
+			title = '운행 1시간 전입니다'
 		if i == 2:
 			data_list = set(data3 + data6)
-			title = '첫 정류장 도착 확인 바랍니다'
-			text = '운행 20분 전입니다.'
+			text = '첫 정류장 도착 확인 바랍니다'
+			title = '운행 20분 전입니다'
 			
 		for user_id in data_list:
 			user = Member.objects.get(id=user_id)
