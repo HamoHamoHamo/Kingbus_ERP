@@ -6,17 +6,42 @@ from django.db.models import Sum, Q
 from django.http import Http404, HttpResponse, HttpResponseNotAllowed, HttpResponseBadRequest
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views import generic
-from dispatch.views import FORMAT
+from config.settings import FORMAT
 from datetime import datetime, timedelta
-
+from config.settings import BASE_DIR
 from crudmember.models import Category
 from vehicle.models import Vehicle
 from .forms import MemberForm
 from .models import Member, MemberFile, Salary, AdditionalSalary, DeductionSalary
 import math
+from my_settings import CRED_PATH
+import firebase_admin
+from firebase_admin import credentials
+from firebase_admin import messaging
 
 TODAY = str(datetime.now())[:10]
 WEEK = ['(월)', '(화)', '(수)', '(목)', '(금)', '(토)', '(일)', ]
+
+
+def send_message(title, body, token, topic):
+    cred_path = os.path.join(BASE_DIR, CRED_PATH)
+    cred = credentials.Certificate(cred_path)
+    
+    if not firebase_admin._apps:
+        firebase_admin.initialize_app(cred)
+
+    message = messaging.Message(
+        notification = messaging.Notification(
+            title=title,
+            body=body
+        ),
+        token=token,
+        topic=topic
+    )
+
+    response = messaging.send(message)
+    print('Successfully sent message:', response)
+
 
 class MemberList(generic.ListView):
     template_name = 'HR/member.html'

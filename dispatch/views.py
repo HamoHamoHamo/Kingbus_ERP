@@ -19,6 +19,7 @@ from .models import DispatchRegularlyRouteKnow, DispatchCheck, DispatchRegularly
 from accounting.models import Collect, TotalPrice
 from crudmember.models import Category, Client
 from humanresource.models import Member, Salary
+from humanresource.views import send_message
 from itertools import chain
 from vehicle.models import Vehicle
 
@@ -680,6 +681,10 @@ def regularly_connect_create(request):
         )
         r_connect.same_accounting = same_accounting
         r_connect.save()
+        try:
+            send_message('배차를 확인해 주세요', f'{order.route}\n{r_connect.departure_date} ~ {r_connect.arrival_date}', driver.token, None)
+        except Exception as e:
+            print(e)
         group = request.POST.get('group')
         date = request.POST.get('date')
         return redirect(reverse('dispatch:regularly') + f'?id={order.regularly_id.id}&group={group}&date={date}')
@@ -1880,6 +1885,10 @@ def order_connect_create(request):
             )
             connect.save()
             count = count + 1
+            try:
+                send_message('배차를 확인해 주세요', f'{order.route}\n{order.departure_date} ~ {order.arrival_date}', driver.token, None)
+            except Exception as e:
+                print(e)
         
         return redirect(request.META.get('HTTP_REFERER', 'redirect_if_referer_not_found'))
 
