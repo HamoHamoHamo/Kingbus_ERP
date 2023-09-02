@@ -6,9 +6,10 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
 from django.views import generic
 from humanresource.models import Member
+from humanresource.views import send_message
 from notice.forms import NoticeForm
 from notice.models import Notice, NoticeFile, NoticeComment, NoticeViewCnt
-from ERP.settings import BASE_DIR
+from config.settings import BASE_DIR
 '''
 class NoticeKindsView(generic.ListView):
     model = Notice
@@ -102,6 +103,9 @@ def create(request):
             notice.save()
             notice_file_save(files, notice)
         #auth.login(request, user)
+        if notice.kinds == 'driver':
+            send_message('공지를 확인해 주세요', notice.title, None, 'trp')
+
         return redirect(reverse('notice:kinds', args=(notice.kinds,)))
     return render(request, 'notice/create.html', context)
 

@@ -2,7 +2,11 @@ import json
 import math
 import pandas as pd
 import re
+import urllib
+import os
+import mimetypes
 
+from config.settings import MEDIA_ROOT
 from django.db.models import Q, Sum
 from django.core.exceptions import ObjectDoesNotExist, MultipleObjectsReturned, BadRequest
 from django.http import Http404, JsonResponse, HttpResponse, HttpResponseNotAllowed
@@ -11,10 +15,11 @@ from django.urls import reverse
 from django.views import generic
 
 from .forms import OrderForm, ConnectForm, RegularlyDataForm
-from .models import DispatchCheck, DispatchRegularlyData, DispatchRegularlyWaypoint, Schedule, DispatchOrderConnect, DispatchOrder, DispatchRegularly, RegularlyGroup, DispatchRegularlyConnect, DispatchOrderWaypoint, ConnectRefusal
+from .models import DispatchRegularlyRouteKnow, DispatchCheck, DispatchRegularlyData, DispatchRegularlyWaypoint, Schedule, DispatchOrderConnect, DispatchOrder, DispatchRegularly, RegularlyGroup, DispatchRegularlyConnect, DispatchOrderWaypoint, ConnectRefusal
 from accounting.models import Collect, TotalPrice
 from crudmember.models import Category, Client
 from humanresource.models import Member, Salary
+from humanresource.views import send_message
 from itertools import chain
 from vehicle.models import Vehicle
 
@@ -676,6 +681,10 @@ def regularly_connect_create(request):
         )
         r_connect.same_accounting = same_accounting
         r_connect.save()
+        try:
+            send_message('배차를 확인해 주세요', f'{order.route}\n{r_connect.departure_date} ~ {r_connect.arrival_date}', driver.token, None)
+        except Exception as e:
+            print(e)
         group = request.POST.get('group')
         date = request.POST.get('date')
         return redirect(reverse('dispatch:regularly') + f'?id={order.regularly_id.id}&group={group}&date={date}')
@@ -683,18 +692,16 @@ def regularly_connect_create(request):
         return HttpResponseNotAllowed(['post'])
 
 def regularly_connect_load(request, week):
-    if request.session.get('authority') > 3:
+    if request.session.get('authority') > 1:
         return render(request, 'authority.html')
 
-    if week != 1 and week != 2:
-        raise Http404
     creator = get_object_or_404(Member, id=request.session.get('user'))
     check_list = request.POST.getlist('check', '')
     if not check_list:
         return JsonResponse({'status': 'check'})
     req_date = request.POST.get('date', TODAY)
 
-    minus_week = 7 if week == 1 else 14
+    minus_week = day
     date = datetime.strftime(datetime.strptime(req_date, FORMAT) - timedelta(days=minus_week), FORMAT)
 
     bus_list = []
@@ -847,55 +854,6 @@ class RegularlyRouteList(generic.ListView):
             context['group'] = get_object_or_404(RegularlyGroup, id=group_id)
         elif not self.request.GET.get('new'):
             context['group'] = RegularlyGroup.objects.order_by('number').first()
-
-
-        ## DispatchRegularlyData 생성하고 반영해야됨
-        # dispatch_list = DispatchRegularly.objects.all()
-        # for dispatch in dispatch_list:
-        #     group = dispatch.group
-        #     references = dispatch.references
-        #     departure = dispatch.departure
-        #     arrival = dispatch.arrival
-        #     departure_time = dispatch.departure_time
-        #     arrival_time = dispatch.arrival_time
-        #     price = dispatch.price
-        #     driver_allowance = dispatch.driver_allowance
-        #     number1 = dispatch.number1
-        #     number2 = dispatch.number2
-        #     num1 = dispatch.num1
-        #     num2 = dispatch.num2
-        #     week = dispatch.week
-        #     work_type = dispatch.work_type
-        #     route = dispatch.route
-        #     location = dispatch.location
-        #     detailed_route = dispatch.detailed_route
-        #     use = dispatch.use
-        #     creator = dispatch.creator
-
-        #     dispatch_data = DispatchRegularlyData(
-        #         group = group,
-        #         references = references,
-        #         departure = departure,
-        #         arrival = arrival,
-        #         departure_time = departure_time,
-        #         arrival_time = arrival_time,
-        #         price = price,
-        #         driver_allowance = driver_allowance,
-        #         number1 = number1,
-        #         number2 = number2,
-        #         num1 = num1,
-        #         num2 = num2,
-        #         week = week,
-        #         work_type = work_type,
-        #         route = route,
-        #         location = location,
-        #         detailed_route = detailed_route,
-        #         use = use,
-        #         creator = creator,
-        #     )
-        #     dispatch_data.save()
-        #     dispatch.regularly_id = dispatch_data
-        #     dispatch.save()
         
         return context
 
@@ -1255,6 +1213,7 @@ def regularly_order_upload(request):
     # count = 0
     # for data in post_data:
     #     count = count + 1
+    creator = get_object_or_404(Member, pk=request.session['user'])
     post_data = json.loads(request.body)
     
     group_list = RegularlyGroup.objects.values('name')
@@ -1267,13 +1226,45 @@ def regularly_order_upload(request):
                 overlap = True
             
         if overlap == False:
-            return JsonResponse({'group_error': data['group'], 'line': count})
+            return JsonResponse({'error': 'group', 'data': data['group'], 'line': count})
+        try:
+            if data['group'] and data['route'] and data['departure'] and data['arrival'] and data['number1'] and data['number2'] and data['departure_time'] and data['arrival_time'] and data['work_type'] and data['week'] and data['price'] and data['driver_allowance'] and data['use']:
+                pass
+        except:
+            return JsonResponse({'error': 'required', 'line': count})
+        
         count += 1
 
     count = 0
-    try:
-        for data in post_data:
-            group = get_object_or_404(RegularlyGroup, name=data['group'])
+    #try:
+    for data in post_data:
+        group = get_object_or_404(RegularlyGroup, name=data['group'])
+        if data['id']:
+            try:
+                regularly_data = DispatchRegularlyData.objects.get(id=data['id'])
+            except DispatchRegularlyData.DoesNotExist:
+                return JsonResponse({'status': 'fail', 'count': count})
+            regularly_data.group = group
+            regularly_data.references = data['references']
+            regularly_data.departure = data['departure']
+            regularly_data.arrival = data['arrival']
+            regularly_data.departure_time = data['departure_time']
+            regularly_data.arrival_time = data['arrival_time']
+            regularly_data.price = data['price']
+            regularly_data.driver_allowance = data['driver_allowance']
+            regularly_data.number1 = f'{data["number1"]}'
+            regularly_data.number2 = f"{data['number2']}"
+            regularly_data.num1 = re.sub(r'[^0-9]', '', f'{data["number1"]}')
+            regularly_data.num2 = re.sub(r'[^0-9]', '', f"{data['number2']}")
+            regularly_data.week = data['week']
+            regularly_data.work_type = data['work_type']
+            regularly_data.route = data['route']
+            regularly_data.location = data['location']
+            regularly_data.detailed_route = data['detailed_route']
+            regularly_data.maplink = data['maplink']
+            regularly_data.use = data['use']
+            regularly_data.creator = creator
+        else:
             regularly_data = DispatchRegularlyData(
                 group = group,
                 references = data['references'],
@@ -1283,20 +1274,55 @@ def regularly_order_upload(request):
                 arrival_time = data['arrival_time'],
                 price = data['price'],
                 driver_allowance = data['driver_allowance'],
-                number1 = data['number1'],
-                number2 = data['number2'],
-                num1 = re.sub(r'[^0-9]', '', data['number1']),
-                num2 = re.sub(r'[^0-9]', '', data['number2']),
+                number1 = f'{data["number1"]}',
+                number2 = f"{data['number2']}",
+                num1 = re.sub(r'[^0-9]', '', f'{data["number1"]}'),
+                num2 = re.sub(r'[^0-9]', '', f"{data['number2']}"),
                 week = data['week'],
                 work_type = data['work_type'],
                 route = data['route'],
                 location = data['location'],
                 detailed_route = data['detailed_route'],
-                use = '사용',
-                creator = get_object_or_404(Member, pk=request.session['user']),
+                maplink = data['maplink'],
+                use = data['use'],
+                creator = creator,
             )
-            regularly_data.save()
+        regularly_data.save()
 
+        # 경유지 생성
+        waypoint_list = data['waypoint'].split(", ")
+        for waypoint in waypoint_list:
+            DispatchRegularlyWaypoint.objects.create(
+                regularly_id = regularly_data,
+                waypoint = waypoint,
+                creator = creator
+            )
+
+        try:
+            regularly = DispatchRegularly.objects.filter(regularly_id=regularly_data).get(edit_date=TODAY)
+            regularly.regularly_id = regularly_data
+            regularly.edit_date = TODAY
+            regularly.group = group
+            regularly.references = data['references']
+            regularly.departure = data['departure']
+            regularly.arrival = data['arrival']
+            regularly.departure_time = data['departure_time']
+            regularly.arrival_time = data['arrival_time']
+            regularly.price = data['price']
+            regularly.driver_allowance = data['driver_allowance']
+            regularly.number1 = f'{data["number1"]}'
+            regularly.number2 = f"{data['number2']}"
+            regularly.num1 = re.sub(r'[^0-9]', '', f'{data["number1"]}')
+            regularly.num2 = re.sub(r'[^0-9]', '', f"{data['number2']}")
+            regularly.week = data['week']
+            regularly.work_type = data['work_type']
+            regularly.route = data['route']
+            regularly.location = data['location']
+            regularly.detailed_route = data['detailed_route']
+            regularly.maplink = data['maplink']
+            regularly.use = data['use']
+            regularly.creator = creator
+        except DispatchRegularly.DoesNotExist:
             regularly = DispatchRegularly(
                 regularly_id = regularly_data,
                 edit_date = TODAY,
@@ -1308,24 +1334,62 @@ def regularly_order_upload(request):
                 arrival_time = data['arrival_time'],
                 price = data['price'],
                 driver_allowance = data['driver_allowance'],
-                number1 = data['number1'],
-                number2 = data['number2'],
-                num1 = re.sub(r'[^0-9]', '', data['number1']),
-                num2 = re.sub(r'[^0-9]', '', data['number2']),
+                number1 = f'{data["number1"]}',
+                number2 = f"{data['number2']}",
+                num1 = re.sub(r'[^0-9]', '', f'{data["number1"]}'),
+                num2 = re.sub(r'[^0-9]', '', f"{data['number2']}"),
                 week = data['week'],
                 work_type = data['work_type'],
                 route = data['route'],
                 location = data['location'],
                 detailed_route = data['detailed_route'],
-                use = '사용',
-                creator = get_object_or_404(Member, pk=request.session['user'])
+                maplink = data['maplink'],
+                use = data['use'],
+                creator = creator
             )
-            regularly.save()
-            count += 1
-        return JsonResponse({'status': 'success', 'count': count})
+        regularly.save()
+        count += 1
+    return JsonResponse({'status': 'success', 'count': count})
+    #except Exception as e:
+    #    return JsonResponse({'status': 'fail', 'count': count, 'error': f'{e}'})
+
+def regularly_order_download(request):
+    datalist = list(DispatchRegularlyData.objects.exclude(use='삭제').order_by('group__number', 'group__name', 'num1', 'number1', 'num2', 'number2').values_list('id', 'group_id__name', 'route', 'departure', 'arrival', 'number1', 'number2', 'departure_time', 'arrival_time', 'work_type', 'location', 'week', 'detailed_route', 'maplink', 'price', 'driver_allowance', 'references', 'use'))
+    queryset = DispatchRegularlyWaypoint.objects.exclude(regularly_id__use='삭제').order_by('regularly_id__group__number', 'regularly_id__group__name', 'regularly_id__num1', 'regularly_id__number1', 'regularly_id__num2', 'regularly_id__number2').values_list('regularly_id__id', 'waypoint')
+    waypoints = []
+    previous_id = None
+    for regularly_id, waypoint in queryset:
+        if regularly_id != previous_id:
+            waypoints.append((regularly_id, [waypoint]))
+            previous_id = regularly_id
+        else:
+            waypoints[-1][1].append(waypoint)
+    cnt = 0
+    i = 0
+    for data in datalist:
+        data = list(data)
+        if len(waypoints) > cnt and data[0] == waypoints[cnt][0]:
+            data.insert(14, ', '.join(waypoints[cnt][1]))
+            cnt = cnt + 1
+        else:
+            data.insert(14, '')
+        datalist[i] = data
+        i = i+1
+    try:
+        df = pd.DataFrame(datalist, columns=['id', '그룹', '노선명', '출발지', '도착지', '순번1', '순번2', '출발시간', '도착시간', '출/퇴근', '위치', '운행요일', '상세노선', '카카오맵', '경유지', '금액', '기사수당', '참조사항', '사용'])
+        url = f'{MEDIA_ROOT}/dispatch/regularlyDataList.xlsx'
+        df.to_excel(url, index=False)
+
+        if os.path.exists(url):
+            with open(url, 'rb') as fh:
+                quote_file_url = urllib.parse.quote('출퇴근노선.xlsx'.encode('utf-8'))
+                response = HttpResponse(fh.read(), content_type=mimetypes.guess_type(url)[0])
+                response['Content-Disposition'] = 'attachment;filename*=UTF-8\'\'%s' % quote_file_url
+                return response
     except Exception as e:
 
-        return JsonResponse({'status': 'fail', 'count': count})
+        return JsonResponse({'status': 'fail', 'e': e})
+        raise Http404
 
 def regularly_order_delete(request):
     if request.session.get('authority') > 1:
@@ -1398,6 +1462,86 @@ def regularly_order_delete(request):
         return redirect(reverse('dispatch:regularly_route') + f'?group={group}')
     else:
         return HttpResponseNotAllowed(['post'])
+
+class RegularlyRouteKnowList(generic.ListView):
+    template_name = 'dispatch/regularly_route_know.html'
+    context_object_name = 'order_list'
+    model = DispatchRegularlyRouteKnow
+
+    def get(self, request, *args, **kwargs):
+        if request.session.get('authority') > 3:
+            return render(request, 'authority.html')
+        return super().get(request, *args, **kwargs)
+    
+    def get_queryset(self):
+        group_id = self.request.GET.get('group', '')
+        search = self.request.GET.get('search', '')
+        search_type = self.request.GET.get('type', '')
+        if not group_id:
+            group = RegularlyGroup.objects.order_by('number').first()
+        else:
+            group = get_object_or_404(RegularlyGroup, id=group_id)
+        if search:
+            if search_type == '운전원':
+                return DispatchRegularlyData.objects.prefetch_related('regularly_route_know').filter(use='사용').filter(group=group).filter(regularly_route_know__driver_id__name__contains=search).order_by('num1', 'number1', 'num2', 'number2')
+            else:
+                return DispatchRegularlyData.objects.prefetch_related('regularly_route_know').filter(use='사용').filter(group=group).filter(Q(route__contains=search) | Q(departure__contains=search) | Q(arrival__contains=search)).order_by('num1', 'number1', 'num2', 'number2')
+        else:
+            return DispatchRegularlyData.objects.prefetch_related('regularly_route_know').filter(use='사용').filter(group=group).order_by('num1', 'number1', 'num2', 'number2')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['search'] = self.request.GET.get('search', '')
+        context['type'] = self.request.GET.get('type', '')
+
+        context['group_list'] = RegularlyGroup.objects.all().order_by('number', 'name')
+        group_id = self.request.GET.get('group', '')
+        if group_id:
+            context['group'] = get_object_or_404(RegularlyGroup, id=group_id)
+        else:
+            context['group'] = RegularlyGroup.objects.order_by('number').first()
+        
+        context['driver_list'] = Member.objects.filter(use='사용').filter(Q(role='운전원')|Q(role='팀장')).values('id', 'name').order_by('name')
+        context['knows'] = {}
+        for order in context['order_list']:
+            know = order.regularly_route_know.all()
+            if know:
+                context['knows'][order.id] = list(know.values('id', 'driver_id__id', 'driver_id__name', 'driver_id__role').order_by('driver_id__name'))
+            else:
+                context['knows'][order.id] = ''
+        return context
+
+def regularly_route_know_create(request):
+    if request.session.get('authority') > 3:
+        return render(request, 'authority.html')
+    
+    if request.method == "POST":        
+        regularly = get_object_or_404(DispatchRegularlyData, id=request.POST.get('regularly_id'))
+        driver = get_object_or_404(Member, id=request.POST.get('driver_id'))
+
+        if DispatchRegularlyRouteKnow.objects.filter(driver_id=driver).filter(regularly_id=regularly).exists():
+            return redirect(request.META.get('HTTP_REFERER', 'redirect_if_referer_not_found'))
+        route_know = DispatchRegularlyRouteKnow(
+            regularly_id = regularly,
+            driver_id = driver,
+            creator = get_object_or_404(Member, pk=request.session['user'])
+        )
+        route_know.save()
+        return redirect(request.META.get('HTTP_REFERER', 'redirect_if_referer_not_found'))
+    else:
+        return HttpResponseNotAllowed(['POST'])
+
+def regularly_route_know_delete(request):
+    if request.session.get('authority') > 3:
+        return render(request, 'authority.html')
+    
+    if request.method == "POST":        
+        id_list = request.POST.getlist('id')
+        for pk in id_list:
+            DispatchRegularlyRouteKnow.objects.get(id=pk).delete()
+        return redirect(request.META.get('HTTP_REFERER', 'redirect_if_referer_not_found'))
+    else:
+        return HttpResponseNotAllowed(['POST'])
 
 def regularly_group_create(request):
     if request.session.get('authority') > 1:
@@ -1741,6 +1885,10 @@ def order_connect_create(request):
             )
             connect.save()
             count = count + 1
+            try:
+                send_message('배차를 확인해 주세요', f'{order.route}\n{order.departure_date} ~ {order.arrival_date}', driver.token, None)
+            except Exception as e:
+                print(e)
         
         return redirect(request.META.get('HTTP_REFERER', 'redirect_if_referer_not_found'))
 
