@@ -71,6 +71,26 @@ class DispatchRegularly(models.Model):
     def __str__(self):
         return self.edit_date + ' ' + self.route
 
+class DispatchRegularlyWaypoint(models.Model):
+    regularly_id = models.ForeignKey(DispatchRegularlyData, verbose_name='정기배차 데이터', related_name="regularly_waypoint", on_delete=models.CASCADE, null=False)
+    waypoint = models.CharField(verbose_name='경유지명', max_length=50, null=False)
+    pub_date = models.DateTimeField(auto_now_add=True, verbose_name='작성시간')
+    updated_at = models.DateTimeField(auto_now=True, verbose_name='수정시간')
+    creator = models.ForeignKey(Member, on_delete=models.SET_NULL, related_name="regularly_waypoint", db_column="creator_id", null=True)
+    
+    def __str__(self):
+        return f'{self.regularly_id.route} {self.waypoint}'
+
+class DispatchRegularlyRouteKnow(models.Model):
+    regularly_id = models.ForeignKey(DispatchRegularlyData, related_name="regularly_route_know", on_delete=models.CASCADE, null=False)
+    driver_id = models.ForeignKey(Member, related_name="regularly_route_know", on_delete=models.CASCADE, null=False)
+    pub_date = models.DateTimeField(auto_now_add=True, verbose_name='작성시간')
+    updated_at = models.DateTimeField(auto_now=True, verbose_name='수정시간')
+    creator = models.ForeignKey(Member, on_delete=models.SET_NULL, related_name="regularly_route_know_creator", db_column="creator_id", null=True)
+    
+    def __str__(self):
+        return f'{self.regularly_id.route} {self.driver_id.name}'
+
 class DispatchOrder(models.Model):
     operation_type = models.CharField(verbose_name='왕복,편도,', max_length=100, null=False)
     references = models.CharField(verbose_name='참조사항', max_length=100, null=False, blank=True)

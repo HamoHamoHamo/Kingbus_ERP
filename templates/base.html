@@ -6,7 +6,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width">
   <!-- <meta http-equiv="Cache-Control" content="private, no-cache, no-store, max-age=0, must-revalidate"> -->
-  <title>까꿍투어 TRP</title>
+  <title>까꿍투어</title>
   <link href="{% static 'css/setting/setting.css' %}" rel="stylesheet" type="text/css" />
   <link href="{% static 'css/base.css' %}" rel="stylesheet" type="text/css" />
   <link rel="shortcut icon" href="{% static 'images/tilteIcon.png' %}">
@@ -29,7 +29,7 @@
       <!--sidemenuLogo-->
       <div class="logoBox">
         <a href="{% url 'home' %}" style="color: white; font-size: 5rem;">
-          DEV
+          까꿍투어
           <!--<img src="{% static 'images/TRPlogo.png' %}" alt="">-->
         </a>
       </div>
@@ -208,6 +208,58 @@
             <li class="nav1BoxMenu">
               <img src="{% static 'images/calendar.png' %}" alt="일정 아이콘">
               <a href="{% url 'crudmember:setting' %}" class="nonDepth2Menu">항목 관리</a>
+            </li>
+          </div>
+        </ul>
+        {% elif request.session.authority == 3 %}
+        <ul class="sideMenuNav1">
+          <div class="nav1Box">
+            <li class="nav1BoxMenu">
+              <img src="{% static 'images/calendar.png' %}" alt="일정 아이콘">
+              <a href="{% url 'home' %}" class="nonDepth2Menu">일정</a>
+            </li>
+          </div>
+          <div class="nav1Box">
+            <li class="nav1BoxMenu">
+              <img src="{% static 'images/notice.png' %}" alt="공지사항 아이콘">
+              <a href="{% url 'notice:kinds' 'driver' %}" class="nonDepth2Menu">공지사항</a>
+            </li>
+          </div>
+          <div class="nav1Box">
+            <li class="nav1BoxMenu nav1BoxMenuHaveDepth2">
+              <img src="{% static 'images/dispatchSystem.png' %}" alt="배차시스템 아이콘">
+              <div>배차시스템</div>
+              <svg xmlns="http://www.w3.org/2000/svg" width="18.228" height="11.84" viewBox="0 0 18.228 11.84">
+                <path id="패스_256" data-name="패스 256" d="M0,0,6.753,8.223,14,0" transform="translate(2.111 2.117)" fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="3"/>
+              </svg>            
+            </li>
+            <div class="sideMenuNav2Box">
+              <ul class="sideMenuNav2">
+                <a href="{% url 'dispatch:order' %}" class="sideMenuNav2Link">
+                  <li class="sideMenuNav2Menu">일반배차</li>
+                </a>
+                <a href="{% url 'dispatch:regularly' %}" class="sideMenuNav2Link">
+                  <li class="sideMenuNav2Menu">출/퇴근배차</li>
+                </a>
+                <a href="{% url 'dispatch:regularly_route_know' %}" class="sideMenuNav2Link">
+                  <li class="sideMenuNav2Menu">출/퇴근 노선숙지</li>
+                </a>
+                <a href="{% url 'dispatch:schedule' %}" class="sideMenuNav2Link">
+                  <li class="sideMenuNav2Menu">운행확인</li>
+                </a>
+              </ul>
+            </div>
+          </div>
+          <div class="nav1Box">
+            <li class="nav1BoxMenu">
+              <img src="{% static 'images/HRManagement.png' %}" alt="인사관리 아이콘">
+              <a href="{% url 'HR:salary' %}" class="nonDepth2Menu">급여관리</a>
+            </li>
+          </div>
+          <div class="nav1Box">
+            <li class="nav1BoxMenu">
+              <img src="{% static 'images/calendar.png' %}" alt="일정 아이콘">
+              <a href="{% url 'crudmember:setting_client' %}" class="nonDepth2Menu">거래처 관리</a>
             </li>
           </div>
         </ul>
