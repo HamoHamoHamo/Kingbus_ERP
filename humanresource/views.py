@@ -684,7 +684,9 @@ def salary_additional_create(request):
             return render(request, 'authority.html')
 
         member_id = request.POST.get('id', '')
-        price = request.POST.get('price').replace(',','')
+        price = request.POST.get('price', '0').replace(',','')
+        if price == '':
+            price = '0'
         remark = request.POST.get('remark')
         month = request.POST.get('month')
         creator = Member.objects.get(pk=request.session.get('user'))
@@ -737,7 +739,9 @@ def salary_deduction_create(request):
             return render(request, 'authority.html')
 
         member_id = request.POST.get('id', '')
-        price = request.POST.get('price').replace(',','')
+        price = request.POST.get('price', '0').replace(',','')
+        if price == '':
+            price = '0'
         remark = request.POST.get('remark')
         month = request.POST.get('month')
         creator = Member.objects.get(pk=request.session.get('user'))
