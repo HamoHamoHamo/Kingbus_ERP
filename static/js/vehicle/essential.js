@@ -11,9 +11,6 @@ function createCheck(){
             return alert("입력하지 않은 필수 입력사항이 있습니다.")
         }
     };
-    if(BusLicenseFileInput.value == ""){
-        return alert("입력하지 않은 필수 입력사항이 있습니다.")
-    }    
     vehicleCreateForm.submit()
 }
 
@@ -25,8 +22,5 @@ function editCheck(){
             return alert("입력하지 않은 필수 입력사항이 있습니다.")
         }
     };
-    if(BusLicenseFileTextEdit.value == ""){
-        return alert("입력하지 않은 필수 입력사항이 있습니다.")
-    }
     vehicleEditForm.submit()
 }
