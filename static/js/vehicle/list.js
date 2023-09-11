@@ -1,4 +1,5 @@
 const openCrete = document.querySelector(".addVehicle")
+const uploadExcelBtn = document.querySelector(".uploadExcel")
 const popupAreaModules = document.querySelectorAll(".popupAreaModules")
 const popupBgModules = document.querySelectorAll(".popupBgModules")
 const SidemenuUseClose = document.querySelector(".Sidemenu")
@@ -51,6 +52,13 @@ function openCreatePopup() {
 }
 
 
+uploadExcelBtn.addEventListener("click", openUploadExcelPopup)
+
+function openUploadExcelPopup() {
+  popupAreaModules[2].style.display = "block"
+}
+
+
 
 //팝업닫기
 for (i = 0; i < popupAreaModules.length; i++) {
@@ -87,9 +95,9 @@ function openDetailPopup() {
   PopupData[1].innerText = regDatas[this.className].vehicle_num
   PopupData[2].innerText = regDatas[this.className].driver_name
   PopupData[3].innerText = regDatas[this.className].maker
-  if (regDatas[this.className].use == "y") {
+  if (regDatas[this.className].use == "사용") {
     PopupData[4].innerText = "사용"
-  } else if (regDatas[this.className].use == "n") {
+  } else if (regDatas[this.className].use == "미사용") {
     PopupData[4].innerText = "미사용"
   } else {
     PopupData[4].innerText = "삭제"

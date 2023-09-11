@@ -1,3 +1,7 @@
+.searchAreaRight {
+    display: flex;
+}
+
 .FilterBox select {
     width: 10rem;
     padding: 0;
@@ -16,7 +20,7 @@ select[name=use]{
     margin-left: 2rem;
 }
 
-.addVehicle {
+.searchAreaBtn {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -27,6 +31,11 @@ select[name=use]{
     font-size: 1.4rem;
     color: white;
     cursor: pointer;
+    margin-left: 1rem;
+}
+
+.addVehicle {
+    background-color: #0069D9;
 }
 
 .tableHead {

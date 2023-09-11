@@ -1354,6 +1354,8 @@ def regularly_order_upload(request):
     #    return JsonResponse({'status': 'fail', 'count': count, 'error': f'{e}'})
 
 def regularly_order_download(request):
+    if request.session.get('authority') > 1:
+        return render(request, 'authority.html')
     datalist = list(DispatchRegularlyData.objects.exclude(use='삭제').order_by('group__number', 'group__name', 'num1', 'number1', 'num2', 'number2').values_list('id', 'group_id__name', 'route', 'departure', 'arrival', 'number1', 'number2', 'departure_time', 'arrival_time', 'work_type', 'location', 'week', 'detailed_route', 'maplink', 'price', 'driver_allowance', 'references', 'use'))
     queryset = DispatchRegularlyWaypoint.objects.exclude(regularly_id__use='삭제').order_by('regularly_id__group__number', 'regularly_id__group__name', 'regularly_id__num1', 'regularly_id__number1', 'regularly_id__num2', 'regularly_id__number2').values_list('regularly_id__id', 'waypoint')
     waypoints = []
