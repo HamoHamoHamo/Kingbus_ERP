@@ -5,11 +5,11 @@ const excelUploadFile = document.querySelector(".excelUploadFile")
 const excelUploadFileText = document.querySelector(".excelUploadFileText")
 const uploadCrateBtn = document.querySelector(".uploadCrateBtn")
 const visibleLoading = document.querySelector(".visibleLoading")
-const downloadExcelbtn = document.querySelector("#downloadExcel")
+const downloadExcelBtn = document.querySelector("#downloadExcel")
 
 let excelData = ""
 
-downloadExcelbtn.addEventListener('click', downloadExcel);
+downloadExcelBtn.addEventListener('click', downloadExcel);
 
 function downloadExcel() {
     if (confirm('차량 목록을 다운로드 하시겠습니까?')) {
@@ -140,6 +140,8 @@ function dataParsing(e) {
                     alert(`${data['count']}번째 데이터의 담당기사id 항목이 맞지 않습니다.`) 
                 } else if (data['error'] == 'vehicle_num') {
                     alert(`${data['count']}번째 데이터의 차량번호 항목이 입력되지 않았습니다.`) 
+                } else if (data['error'] == 'driver_overlap') {
+                    alert(`${data['count']}번째 데이터의 담당기사에게 이미 배정된 차량이 있습니다.`) 
                 } else {
                     alert('에러 발생\n' + data['error']);
                 }

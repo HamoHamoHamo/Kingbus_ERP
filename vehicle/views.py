@@ -267,6 +267,9 @@ def vehicle_upload(request):
                 if driver.name != data['driver_name']:
                     # 기사 이름 안 맞음
                     return JsonResponse({'error': 'driver_name', 'status': 'fail', 'count': count})
+                if Vehicle.objects.filter(driver=driver).exists():
+                    # 담당 기사는 차량 1대에 1명씩
+                    return JsonResponse({'error': 'driver_overlap', 'status': 'fail', 'count': count})
         except Vehicle.DoesNotExist:
             # 차량 id 안 맞음
             return JsonResponse({'error': 'vehicle_id', 'status': 'fail', 'count': count})
