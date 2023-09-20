@@ -9,6 +9,8 @@ urlpatterns = [
     path('member/edit', views.member_edit, name='member_edit'),
     path('member/delete', views.member_delete, name='member_delete'),
     path('member/image/<str:file_id>', views.member_img, name='member_img'),
+    path('member/download', views.member_download, name='member_download'),
+    #path('member/upload', views.member_upload, name='member_upload'),
 
     path('salary', views.SalaryList.as_view(), name='salary'),
     path('salary/edit', views.salary_edit, name='salary_edit'),

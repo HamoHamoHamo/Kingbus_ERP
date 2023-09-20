@@ -173,7 +173,7 @@ def vehicle_print(request):
 
         file = connect.bus_id.vehicle_file.all()
         if file.exists():
-            file_list.append(file.get(type='vehicle_registration'))
+            file_list.append(file.get(type='차량등록증'))
 
     
 

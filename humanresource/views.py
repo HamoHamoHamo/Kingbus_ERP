@@ -1,4 +1,9 @@
+import pandas as pd
+import json
+import mimetypes
 import os
+import urllib
+from config.settings import MEDIA_ROOT
 from dateutil.relativedelta import relativedelta
 from dispatch.models import DispatchRegularlyConnect, DispatchOrderConnect
 from django.contrib.auth.hashers import make_password, check_password
@@ -346,6 +351,26 @@ def member_img(request, file_id):
     }
     return render(request, 'HR/member_img.html', context)
 
+def member_download(request):
+    if request.session.get('authority') > 1:
+        return render(request, 'authority.html')
+    datalist = list(Member.objects.exclude(use='삭제').order_by('name').values_list('id', 'user_id', 'name', 'role', 'birthdate', 'phone_num', 'emergency', 'address', 'entering_date', 'note', 'use'))
+    
+    try:
+        df = pd.DataFrame(datalist, columns=['id', '사용자id', '이름', '업무', '생년월일', '전화번호', '비상연락망', '주소', '입사일', '비고', '사용여부'])
+        url = f'{MEDIA_ROOT}/humanresource/memberDataList.xlsx'
+        df.to_excel(url, index=False)
+
+        if os.path.exists(url):
+            with open(url, 'rb') as fh:
+                quote_file_url = urllib.parse.quote('직원목록.xlsx'.encode('utf-8'))
+                response = HttpResponse(fh.read(), content_type=mimetypes.guess_type(url)[0])
+                response['Content-Disposition'] = 'attachment;filename*=UTF-8\'\'%s' % quote_file_url
+                return response
+    except Exception as e:
+        print(e)
+        #return JsonResponse({'status': 'fail', 'e': e})
+        raise Http404
 
 class SalaryList(generic.ListView):
     template_name = 'HR/salary_list.html'
