@@ -130,7 +130,7 @@ def vehicle_create(request):
             vehicle.creator = creator
             vehicle.save()
             if vehicle_registration_file:
-                vehicle_file_save(vehicle_registration_file, vehicle, "vehicle_registration", creator)
+                vehicle_file_save(vehicle_registration_file, vehicle, "차량등록증", creator)
 
             if insurance_receipt_file:
                 vehicle_file_save(insurance_receipt_file, vehicle, "insurance_receipt", creator)
