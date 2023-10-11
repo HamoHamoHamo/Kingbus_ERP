@@ -30,7 +30,7 @@ def save_order(sender, instance, created, **kwargs):
         total_price = int(instance.price) * int(instance.bus_cnt)
     else:
         total_price = int(instance.price) * int(instance.bus_cnt) + math.floor(int(instance.price) * int(instance.bus_cnt) * 0.1 + 0.5)
-    
+    print("TESTTTTTTTTTTTTTT", total_price)
     if created:
         total = TotalPrice(
             order_id = instance,

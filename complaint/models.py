@@ -7,7 +7,7 @@ from vehicle.models import Vehicle
 class Consulting(models.Model):
     member_id = models.ForeignKey(Member, verbose_name='신청인', related_name="consulting", on_delete=models.CASCADE, null=True)
     content = models.TextField(verbose_name='상담사유', null=False)
-    date = models.CharField(verbose_name='신청일', max_length=16, null=False)
+    date = models.CharField(verbose_name='신청일', max_length=16, null=False, blank=True)
     check_member_id = models.ForeignKey(Member, verbose_name='확인한 직원', related_name="consulting_check", on_delete=models.SET_NULL, null=True)
     status = models.CharField(verbose_name='처리상태', max_length=50, null=False, default="처리전")
     pub_date = models.DateTimeField(auto_now_add=True, verbose_name='작성시간')
