@@ -6,6 +6,7 @@
 <meta http-equiv="Cache-Control" content="private, no-cache, no-store, max-age=0, must-revalidate">
 <link rel="stylesheet" href="{% static 'css/dispatch/dispatchBase.css' %}" type="text/css" />
 <link rel="stylesheet" href="{% static 'css/dispatch/order.css' %}" type="text/css" />
+<link rel="stylesheet" href="{% static 'css/dispatch/order.css' %}" type="text/css" />
 {% endblock %}
 
 {% block content-header %}
@@ -182,10 +183,10 @@
                             <input autocomplete="off" value="{{detail.price}}" name="price" type="text"
                                 class="inputText inputTextUnit inputTextPrice length100 essential" tabindex="15">원
                         </td>
-                        <td class="tdTypeA">상여금</td>
+                        <td class="tdTypeA">*상여금</td>
                         <td class="tdTypeC">
                             <input autocomplete="off" value="{{detail.driver_allowance}}" name="driver_allowance" type="text"
-                                class="inputText inputTextUnit inputTextDriverAllowance length100" max="9999-12-31" tabindex="16">원
+                                class="inputText inputTextUnit inputTextDriverAllowance length100 essential" max="9999-12-31" tabindex="16">원
                         </td>
                     </tr>
                     <tr>
@@ -520,6 +521,10 @@
         <div class="orderListBox">
             <div class="orderListHeader">
                 <span></span>
+                <div class="orderExcelList">
+                    <div id="uploadExcel" class="btnModules excelBtn">엑셀 업로드</div>
+                    <div id="downloadExcel" class="btnModules excelBtn">엑셀 다운로드</div>
+                </div>
                 <div class="orderListBtnBox">
                     <div class="btnModules dispatchBtn">배차</div>
                     <div class="btnModules printBtn" onclick="openOrderPrint('/dispatch/print/order')">인쇄</div>
@@ -780,6 +785,74 @@
             </div>
         </div>
     </div>
+    <div class="popupAreaModules" id="excelPopup">
+        <div class="popupBgModules"></div>
+        <form method="post" action="" class="popupContainer excelUploadPopupContainer">
+            {% csrf_token %}
+            <div class="popupHeader">
+                <div class="popupTitle">엑셀 업로드</div>
+            </div>
+            <div class="popupBody">
+                <div class="popupSection excelUploadPopupSection">
+                    <div class="popupArticleFileDouble excelUploadPopupArticleFileDouble">
+                        <label for="excelUploadFile" class="popupArticleLabel">파일선택</label>
+                        <input autocomplete="off" name="" type="file" id="excelUploadFile" class="excelUploadFile"
+                            onchange="readExcel()">
+                        <input autocomplete="off" name="" type="text" class="excelUploadFileText" readonly>
+                        <svg class="fileDeleteBtn" xmlns="http://www.w3.org/2000/svg" width="11.314" height="11.314"
+                            viewBox="0 0 11.314 11.314">
+                            <g id="그룹_1513" data-name="그룹 1513" transform="translate(-442.649 -1001.97) rotate(45)">
+                                <line id="선_691" data-name="선 691" y2="12" transform="translate(1029.5 389.5)" fill="none"
+                                    stroke="#000" stroke-linecap="round" stroke-width="2" />
+                                <line id="선_692" data-name="선 692" y2="12" transform="translate(1035.5 395.5) rotate(90)"
+                                    fill="none" stroke="#000" stroke-linecap="round" stroke-width="2" />
+                            </g>
+                        </svg>
+                    </div>
+                </div>
+                <div class="popupFooter excelUploadPopupFooter">
+                    <div class="popupFooterMinibox">
+                        <a href="{% static 'form/일반배차 엑셀 업로드 양식.xlsx' %}" download>
+                            <div class="btnModules backgroundBlack">양식다운</div>
+                        </a>
+                        <div class="visibleLoadingBox">
+                            <div class="visibleLoading">
+                                <span>파일이 업로드 중입니다</span>
+                                <iframe src="https://giphy.com/embed/sSgvbe1m3n93G" width="18" height="18" frameBorder="0"
+                                    class="giphy-embed" allowFullScreen></iframe>
+                            </div>
+                        </div>
+                    </div>
+                    <input autocomplete="off" type="submit" class="btnModules uploadCrateBtn backgroundBlue" value="등록">
+                    <div class="btnModules popupCloseBtn closeBtn">닫기</div>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="popupAreaModules" id="excelPopup">
+        <div class="popupBgModules"></div>
+        <form id="excelDownloadForm" method="get" action="{% url 'dispatch:order_download' %}" class="popupContainer excelUploadPopupContainer">
+            {% csrf_token %}
+            <div class="popupHeader">
+                <div class="popupTitle">엑셀 다운로드</div>
+            </div>
+            <div class="popupBody">
+                <div class="popupSection excelUploadPopupSection">
+                    <div class="popupArticleFileDouble excelUploadPopupArticleFileDouble">
+                        <input name="date1" class="excelDownloadDateInput" type="date"/>
+                        <span>~</span>
+                        <input name="date2" class="excelDownloadDateInput" type="date"/>
+                    </div>
+                </div>
+                <div class="popupFooter excelUploadPopupFooter">
+                    <div class="popupFooterMinibox">
+                    </div>
+                    <input autocomplete="off" type="submit" class="btnModules uploadCrateBtn backgroundBlue" value="다운로드">
+                    <div class="btnModules popupCloseBtn closeBtn">닫기</div>
+                </div>
+            </div>
+        </form>
+    </div>
   {% endblock %}
   
   
@@ -827,6 +900,7 @@
     }
 
 </script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.15.5/xlsx.full.min.js"></script>
 <script src="{% static 'js/lodash.js' %}"></script>
 <script src="{% static 'js/dispatch/order/orderAll.js' %}"></script>
 <script src="{% static 'js/dispatch/order/layoutChanger.js' %}"></script>
@@ -843,5 +917,6 @@
 <script src="{% static 'js/dispatch/order/dateFollow.js' %}"></script>
 <script src="{% static 'js/dispatch/order/routeCopy.js' %}"></script>
 <script src="{% static 'js/dispatch/order/loadAccount.js' %}"></script>
+<script src="{% static 'js/dispatch/order/excel.js' %}"></script>
 
 {% endblock %}

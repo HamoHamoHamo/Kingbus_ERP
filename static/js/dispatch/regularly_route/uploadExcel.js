@@ -67,7 +67,7 @@ function dateFormat(e) {
 
         
         const regex = /^(0[0-9]|1[0-9]|2[0-3]):(0[1-9]|[0-5][0-9])$/;
-        let column;
+        const regexMonth = RegExp(/^\d{4}-(0[1-9]|1[012])$/);
 
         for (i = 0; i < excelData.length; i++) {
             if (excelData[i]["그룹"] == undefined ||
@@ -87,7 +87,14 @@ function dateFormat(e) {
                 uploadState = true;
                 return alert(`${i + 1}번째 데이터의 필수 입력 사항이 입력되지 않았습니다.`)
             }
-            
+            console.log("기줒ㄴ일 테스트", excelData[i]['기준일']);
+            // 기준일
+            if (excelData[i]['기준일'] && !(regexMonth.test(excelData[i]['기준일']))) {
+                excelUploadFile.value = ""
+                excelUploadFileText.value = ""
+                uploadState = true;
+                return alert(`${i + 1}번째 데이터의 기준일이 형식에 맞지 않습니다.`)
+            }
             // 운행시간
             if (!(regex.test(excelData[i].출발시간)) || !(regex.test(excelData[i].도착시간))) {
                 excelUploadFile.value = ""
@@ -146,6 +153,7 @@ function dateFormat(e) {
                 waypoint: excelData[i]["경유지"] == undefined ? "" : excelData[i]["경유지"],
                 price: excelData[i]["금액"],
                 driver_allowance: excelData[i]["기사수당"],
+                month: excelData[i]["기준일"] == undefined ? "" : excelData[i]["기준일"],
                 references: excelData[i]["참조사항"] == undefined ? "" : excelData[i]["참조사항"],
                 use: excelData[i]["사용"],
             }
@@ -169,6 +177,12 @@ function dateFormat(e) {
                     return;
                 } else if (data['error'] == 'required') {
                     alert(`${data['line']}번째 데이터의 필수 입력 사항이 입력되지 않았습니다.`)
+                    excelUploadFile.value = ""
+                    excelUploadFileText.value = ""
+                    uploadState = true;
+                    return;
+                } else if (data['error'] == 'id') {
+                    alert(`${data['line']}번째 데이터의 id가 올바르지 않습니다.`)
                     excelUploadFile.value = ""
                     excelUploadFileText.value = ""
                     uploadState = true;
