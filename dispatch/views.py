@@ -1233,6 +1233,11 @@ def regularly_order_upload(request):
         except:
             return JsonResponse({'error': 'required', 'line': count})
         
+        if data['id']:
+            try:
+                DispatchRegularlyData.objects.get(id=data['id'])
+            except DispatchRegularlyData.DoesNotExist:
+                return JsonResponse({'error': 'id', 'line': count})
         count += 1
 
     count = 0
@@ -1243,7 +1248,7 @@ def regularly_order_upload(request):
             try:
                 regularly_data = DispatchRegularlyData.objects.get(id=data['id'])
             except DispatchRegularlyData.DoesNotExist:
-                return JsonResponse({'error': 'id', 'line': count})
+                return JsonResponse({'error': 'id', 'line': count + 1})
             regularly_data.group = group
             regularly_data.references = data['references']
             regularly_data.departure = data['departure']
@@ -2089,7 +2094,7 @@ def order_edit_check(request):
                 'bus': r_connect[0].bus_id.vehicle_num,
                 'arrival_date': r_connect[0].arrival_date,
                 'departure_date': r_connect[0].departure_date,
-                })
+            })
         r_connect_driver = DispatchRegularlyConnect.objects.filter(driver_id=driver).exclude(arrival_date__lt=post_departure_date).exclude(departure_date__gt=post_arrival_date)
         if r_connect_driver:
             return JsonResponse({
@@ -2099,7 +2104,7 @@ def order_edit_check(request):
                 'bus': r_connect_driver[0].bus_id.vehicle_num,
                 'arrival_date': r_connect_driver[0].arrival_date,
                 'departure_date': r_connect_driver[0].departure_date,
-                })
+            })
     
     return JsonResponse({'status': 'success', 'departure_date': post_departure_date, 'arrival_date': post_arrival_date})
 
@@ -2263,14 +2268,51 @@ def order_upload(request):
         return render(request, 'authority.html')
     creator = get_object_or_404(Member, pk=request.session['user'])
     post_data = json.loads(request.body)
-    count = 0
+
+    count = 1
     for data in post_data:
         # 딕셔너리에 없는 키 넣으면 에러나서 try 씀
         try:
             if data['departure'] and data['arrival'] and data['departure_date'] and data['arrival_date'] and data['bus_cnt'] and data['customer'] and data['customer_phone'] and data['operation_type'] and data['price'] and data['driver_allowance']:
                 pass
         except:
-            return JsonResponse({'error': 'required', 'line': count + 1})
+            return JsonResponse({'error': 'required', 'line': count})
+    
+
+        data_str = data['waypoints'].strip("[]")
+        waypoint_list = re.findall(r"\('(.*?)', '(.*?)', '(.*?)', '(.*?)'\)", data_str)
+
+        if data['waypoints'] and not waypoint_list:
+            return JsonResponse({'error': 'waypoints', 'line': count})
+        for i in range(len(waypoint_list)):
+            if not waypoint_list[i][0]:
+                return JsonResponse({'error': 'required', 'line': count})
+        if not(data['bus_cnt'].isdigit() and data['price'].isdigit() and data['driver_allowance'].isdigit()):
+            return JsonResponse({'error': 'digit', 'line': count, 'data' : [data['bus_cnt'], data['price'], data['driver_allowance']]})
+        
+        if data['id']:
+            try:
+                DispatchOrder.objects.get(id=data['id'])
+            except DispatchOrder.DoesNotExist:
+                return JsonResponse({'error': 'id', 'line': count})
+        #항목 체크
+        if not Category.objects.filter(category=data['bus_type']).exists():
+            return JsonResponse({'error': 'category', 'line': count, 'data': '차량종류'})
+        if not Category.objects.filter(category=data['operation_type']).exists():
+            return JsonResponse({'error': 'category', 'line': count, 'data': '운행종류'})
+        if not Category.objects.filter(category=data['order_type']).exists():
+            return JsonResponse({'error': 'category', 'line': count, 'data': '유형'})
+        if not Category.objects.filter(category=data['bill_place']).exists():
+            return JsonResponse({'error': 'category', 'line': count, 'data': '계산서'})
+        if not Category.objects.filter(category=data['reservation_company']).exists():
+            return JsonResponse({'error': 'category', 'line': count, 'data': '예약회사'})
+        if not Category.objects.filter(category=data['operating_company']).exists():
+            return JsonResponse({'error': 'category', 'line': count, 'data': '운행회사'})
+
+        count += 1
+
+    count = 1
+    for data in post_data:
         VAT = data['VAT'] if data['VAT'] == 'y' else 'n'
         option = data['option']
         departure = data['departure']
@@ -2293,7 +2335,7 @@ def order_upload(request):
             try:
                 order = DispatchOrder.objects.get(id=data['id'])
             except DispatchOrder.DoesNotExist:
-                return JsonResponse({'error': 'id', 'line': count + 1})
+                return JsonResponse({'error': 'id', 'line': count})
             
             order.operation_type = data['operation_type']
             order.references = data['references']
@@ -2379,9 +2421,9 @@ def order_upload(request):
                 creator=creator,
             )
             waypoint.save()
+        
         count = count + 1
-
-    return JsonResponse({'status': 'success', 'count': count})
+    return JsonResponse({'status': 'success', 'count': count - 1})
 
 
 def order_download(request):
