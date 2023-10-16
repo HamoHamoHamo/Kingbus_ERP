@@ -170,7 +170,7 @@ function dateFormat(e) {
                 uploadState = true
                 console.log("DATASS", data);
                 if (data['error'] == 'group') {
-                    alert(`${data['line']}번째 데이터의 그룹 항목 ${data['group_error']} 가 그룹목록에 존재하지 않습니다.`)
+                    alert(`${data['line']}번째 데이터의 그룹 항목 ${data['data']} 가 그룹목록에 존재하지 않습니다.`)
                     excelUploadFile.value = ""
                     excelUploadFileText.value = ""
                     uploadState = true;

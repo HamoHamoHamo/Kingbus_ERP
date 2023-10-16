@@ -14,7 +14,7 @@ let excelData = ""
 
 excelDownloadForm.addEventListener('submit', (e) => {
     e.preventDefault();
-    if (confirm(`${excelDownloadDateInput[0].value}~${excelDownloadDateInput[1].value}\n일반배차 목록을 다운로드 하시겠습니까?`))
+    if (confirm(`${excelDownloadDateInput[0].value}~${excelDownloadDateInput[1].value}\n일반 노선 목록을 다운로드 하시겠습니까?`))
     excelDownloadForm.submit();
 })
 
@@ -71,7 +71,7 @@ function dataParsing(e) {
         // 유효성검사
         //console.log("TEST", excelData);
 
-        
+
 		const regex = /^(?:20\d{2})-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01]) (0\d|1\d|2[0-3]):([0-5]\d)$/;
         let column;
 
@@ -105,6 +105,8 @@ function dataParsing(e) {
                 errorLog = '데이터의 계약금액 항목이 형식에 맞지 않습니다.';
             else if (isNaN(excelData[i]["상여금"]))
                 errorLog = '데이터의 상여금 항목이 형식에 맞지 않습니다.';
+            else if (isNaN(excelData[i]["차량대수"]))
+                errorLog = '데이터의 차량대수 항목이 형식에 맞지 않습니다.';
             
             if (errorLog)
             {
@@ -125,7 +127,7 @@ function dataParsing(e) {
                 arrival: excelData[i]["도착지"] == undefined ? "" : excelData[i]["도착지"],
                 departure_date: excelData[i]["출발날짜"] == undefined ? "" : excelData[i]["출발날짜"],
                 arrival_date: excelData[i]["복귀날짜"] == undefined ? "" : excelData[i]["복귀날짜"],
-                bus_cnt: excelData[i]["차량대수"] == undefined ? "" : excelData[i]["차량대수"],
+                bus_cnt: excelData[i]["차량대수"] == undefined ? "" : excelData[i]["차량대수"].toString(),
                 bus_type: excelData[i]["차량종류"] == undefined ? "" : excelData[i]["차량종류"],
                 customer: excelData[i]["예약자"] == undefined ? "" : excelData[i]["예약자"],
                 customer_phone: excelData[i]["예약자 전화번호"] == undefined ? "" : excelData[i]["예약자 전화번호"],
@@ -133,8 +135,8 @@ function dataParsing(e) {
                 operation_type: excelData[i]["운행종류"] == undefined ? "" : excelData[i]["운행종류"],
                 reservation_company: excelData[i]["예약회사"] == undefined ? "" : excelData[i]["예약회사"],
                 operating_company: excelData[i]["운행회사"] == undefined ? "" : excelData[i]["운행회사"],
-                price: excelData[i]["계약금액"] == undefined ? "" : excelData[i]["계약금액"],
-                driver_allowance: excelData[i]["상여금"] == undefined ? "" : excelData[i]["상여금"],
+                price: excelData[i]["계약금액"] == undefined ? "" : excelData[i]["계약금액"].toString(),
+                driver_allowance: excelData[i]["상여금"] == undefined ? "" : excelData[i]["상여금"].toString(),
                 option: excelData[i]["버스옵션"] == undefined ? "" : excelData[i]["버스옵션"],
                 cost_type: excelData[i]["비용구분"] == undefined ? "" : excelData[i]["비용구분"],
                 bill_place: excelData[i]["계산서 발행처"] == undefined ? "" : excelData[i]["계산서 발행처"],
@@ -167,6 +169,12 @@ function dataParsing(e) {
                     alert(`${data['line']}번째 데이터의 필수 입력 사항이 입력되지 않았습니다.`)
                 } else if (data['error'] == 'id') {
                     alert(`${data['line']}번째 데이터의 id가 올바르지 않습니다.`)
+                } else if (data['error'] == 'waypoints') {
+                    alert(`${data['line']}번째 데이터의 경유지 항목이 형식에 맞지 않습니다.`)
+                } else if (data['error'] == 'digit') {
+                    alert(`${data['line']}번째 데이터의 차량대수 또는 계약금액 또는 상여금 항목이 형식에 맞지 않습니다.`)
+                } else if (data['error'] == 'category') {
+                    alert(`${data['line']}번째 데이터의 ${data['data']} 항목이 형식에 맞지 않습니다.`)
                 } else {
                     alert('에러 발생\n' + data['error']);
                 }
