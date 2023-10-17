@@ -335,7 +335,7 @@
           <div class="last">
             <label for="">지난배차</label>
             <div class="btnModules loadConnectBtn1">1주전</div>
-            <div class="btnModules loadConnectBtn2">2주전</div>
+            <div class="btnModules loadConnectBtn2">1일전</div>
             <div class="btnModules dispatchHistory">배차내역</div>
           </div>
           <div class="Tools">
@@ -474,13 +474,20 @@
         </div>
       </form>
     </div>
-
   </div>
 
 </div>
 
 {% endblock %}
 
+{% block outSide %}
+    <div class="loadingBg">
+        <div class="loadingBox">
+            <img src="{% static 'images/loading.gif' %}" alt="일정 아이콘">
+            <span>배차를 불러오고 있습니다.</span>
+        </div>
+    </div>
+{% endblock %}
 
 
 {% block script %}

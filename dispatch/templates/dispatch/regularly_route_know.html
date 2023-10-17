@@ -1,0 +1,215 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load dispatch_custom_tags %}
+
+{% block head %}
+<meta http-equiv="Cache-Control" content="private, no-cache, no-store, max-age=0, must-revalidate">
+<link rel="stylesheet" href="{% static 'css/dispatch/dispatchBase.css' %}" type="text/css" />
+<link rel="stylesheet" href="{% static 'css/dispatch/regularlyRoute.css' %}" type="text/css" />
+<link rel="stylesheet" href="{% static 'css/dispatch/regularlyRouteKnow.css' %}" type="text/css" />
+{% endblock %}
+
+{% block content-header %}
+<div class="HeaderTitle">
+    출/퇴근 노선숙지
+</div>
+{% endblock %}
+
+
+{% block content %}
+
+<div class="routeLayout">
+    <div class="groupLayout">
+        <div class="groupList">
+            <div class="groupListHead">
+                <span class="groupListTitle">그룹목록</span>
+                
+            </div>
+            <div class="groupListBody">
+                {% for group in group_list %}
+                <div class="groupListItem {{group.id}} {% if group.fix == 'y' %}fixedGroup{% endif %}" draggable="true">
+                    <div class="groupNum">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="16.5" viewBox="0 0 22 16.5">
+                            <path id="Icon_awesome-folder" data-name="Icon awesome-folder"
+                                d="M19.938,7.25h-8.25L8.938,4.5H2.063A2.062,2.062,0,0,0,0,6.563V18.938A2.062,2.062,0,0,0,2.063,21H19.938A2.062,2.062,0,0,0,22,18.938V9.313A2.062,2.062,0,0,0,19.938,7.25Z"
+                                transform="translate(0 -4.5)" fill="#444" />
+                        </svg>
+                    </div>
+                    <div class="groupName"
+                        onclick="location.href='{% url 'dispatch:regularly_route_know' %}?group={{group.id}}'">{{group.name}}
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+
+
+        <div class="foldGroup">
+            <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 30 30">
+                <g id="그룹_1629" data-name="그룹 1629" transform="translate(-13664 -4980)">
+                    <rect id="사각형_11725" data-name="사각형 11725" width="30" height="30" rx="15"
+                        transform="translate(13664 4980)" fill="#444" />
+                    <path id="패스_327" data-name="패스 327" d="M0,0,5.788,7.048,12,0"
+                        transform="translate(13681.063 5001) rotate(-90)" fill="none" stroke="#fff"
+                        stroke-linecap="round" stroke-linejoin="round" stroke-width="3" />
+                    <path id="패스_329" data-name="패스 329" d="M0,0H12"
+                        transform="translate(13677.063 5001) rotate(-90)" fill="none" stroke="#fff"
+                        stroke-linecap="round" stroke-linejoin="round" stroke-width="3" />
+                    <path id="패스_330" data-name="패스 330" d="M0,0H12"
+                        transform="translate(13673.063 5001) rotate(-90)" fill="none" stroke="#fff"
+                        stroke-linecap="round" stroke-linejoin="round" stroke-width="3" />
+                </g>
+            </svg>
+        </div>
+    </div>
+
+    <div class="mainLayout">
+        <form action="{% url 'dispatch:regularly_route_know' %}" class="routListSearch">
+            <select name="type">
+                <option {% if type == '노선' %} selected {% endif %} value="노선">노선</option>
+                <option {% if type == '운전원' %} selected {% endif %} value="운전원">운전원</option>
+            </select>
+            <input autocomplete="off" name="search" value="{{search}}" type="text" id="routeListsearch">
+            <input autocomplete="off" type="hidden" value="{{group.id}}" name="group">
+            <input autocomplete="off" type="submit" class="btnModules routeListSearchBtn" value="검색">
+        </form>
+
+        <form method="" action="" class="RouteListForm">
+            <div class="RouteList">
+                <div class="RouteListHeadScroll">
+                    <table class="RouteListHeader">
+                        <thead>
+                            <tr>
+                                <td>번호</td>
+                                <td>순번</td>
+                                <td>노선명</td>
+                                <td>출발지 ▶ 도착지</td>
+                                <td>요일</td>
+                                <td>출/퇴근</td>
+                                <td>운행시간</td>
+                                <td>위치</td>
+                                <td>기사수당</td>
+                                <td>금액</td>
+                                <td>상세노선</td>
+                                <td>참조사항</td>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+
+                <div class="RouteListScroll">
+                    <table class="RouteListBody">
+                        <tbody>
+                            {% for order in order_list %}
+                            <tr class="RouteListBodyTr {{order.id}} {{order.group.id}} {{forloop.counter}}">
+                                <td>
+                                    {{forloop.counter}}
+                                </td>
+                                <td>{{order.number1}}{% if order.number2 %} - {{order.number2}} {% endif %}</td>
+                                <td class="orderRoute">{{order.route}}</td>
+                                <td>
+                                    <div style="white-space: pre-line;">{{order.departure}} ▶
+                                        {{order.arrival}}
+                                    </div>
+                                </td>
+                                <td>{{order.week}}</td>
+                                <td>{{order.work_type}}</td>
+                                <td>{{order.departure_time}} ~ {{order.arrival_time}}</td>
+                                <td>{{order.location}}</td>
+                                <td>{{order.driver_allowance}}</td>
+                                <td>{{order.price}}</td>
+                                <td>{{order.detailed_route}}</td>
+                                <td>{{order.references}}</td>
+                            </tr>
+                            {% endfor %}
+                            <tr class="blanckTr"></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+
+        </form>
+
+    </div>
+</div>
+
+{% endblock %}
+
+{% block popup %}
+
+<div class="popupAreaModules" id="detailMapPopup">
+    <div class="popupBgModules" id="detailMapPopupBg"></div>
+    <div method="post" action="" class="popupContainer popupContainerMap">
+        <div class="popupHeader">
+            <div class="popupTitle">숙지 인원</div>
+        </div>
+        <div class="popupBody popupBodyMap">
+            <div class="popupSection">
+                <form action="{% url 'dispatch:regularly_route_know_create' %}" method="post">
+                    {% csrf_token %}
+                    <div class="popupArticleInput">
+                        <input name="regularly_id" type="hidden" id="routeId"/>
+                        <div class="popupArticletitle">이름</div>
+                        <div class="popupDiv">
+                            <select name="driver_id" class="detailMapLinkInput">
+                                <option></option>
+                                {% for driver in driver_list %}
+                                <option value="{{driver.id}}">{{driver.name}}</option>
+                                {% endfor %}
+                            </select>
+                            <input class="popupSaveBtn btnModules backgroundBlue" type="submit" value="저장">
+                        </div>
+                    </div>
+                </form>
+                <form id="deleteForm" action="{% url 'dispatch:regularly_route_know_delete' %}" method="post">
+                    {% csrf_token %}
+                    <div class="popupArticle popupArticleCollectiong">
+                        <table class="detailMapPopupHeader">
+                            <tr>
+                                <td><input type="checkbox"></td>
+                                <td>번호</td>
+                                <td>이름</td>
+                                <td>구분</td>
+                            </tr>
+                        </table>
+                        <div class="detailMapPopupScrollBox">
+                            <table>
+                                <tbody id="detailMapTable">
+                                    <template id="popupTr">
+                                        <tr>
+                                            <td><input name="id" type="checkbox"></td>
+                                            <td>{{forloop.counter}}</td>
+                                            <td>{{know.driver_id__name}}</td>
+                                            <td>{{know.driver_id__role}}</td>
+                                        </tr>
+                                    </template>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </form>
+                <!--<div class="detailMapList">
+                    <input autocomplete="off" type="text" class="detailMapListInput" readonly>
+                </div>-->
+            </div>
+            <div class="popupFooter">
+                <div id="deleteBtn" class="btnModules popupDeleteBtn">삭제</div>
+                <div class="btnModules popupCloseBtn" id="detailPopupCloseBtn">닫기</div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+
+
+{% block script %}
+<script>
+    const regularlyRouteUrl = "{% url 'dispatch:regularly_route' %}";
+    {% autoescape off %}
+    const knows = {{knows}}
+    {% endautoescape %}
+</script>
+<script src="{% static 'js/dispatch/regularly_route/routeKnow.js' %}"></script>
+{% endblock %}

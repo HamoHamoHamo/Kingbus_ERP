@@ -49,6 +49,7 @@ const memberFormCreate = document.querySelector(".memberFormCreate")
 const essential = document.querySelectorAll(".essential")
 const authorityDivision = document.querySelectorAll(".authorityDivision")
 
+
 //직원상세
 for (i = 0; i < editMember.length; i++) {
   editMember[i].addEventListener('click', openDetailPopup)

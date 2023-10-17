@@ -26,11 +26,19 @@ from django.core.mail import EmailMessage
 from .tokens import account_activation_token
 
 WEEK = ['월', '화', '수', '목', '금', '토', '일']
+def sunghwatour_rule(request):
+    return render(request, 'crudmember/sunghwatour_rule.html')
+
 
 class CategoryList(generic.ListView):
     template_name = 'crudmember/setting.html'
     context_object_name = 'category_list'
     model = Category
+
+    def get(self, request, *args, **kwargs):
+        if request.session.get('authority') > 2:
+            return render(request, 'authority.html')
+        return super().get(request, *args, **kwargs)
 
     def get_context_data(self, **kwargs):
         context =  super().get_context_data(**kwargs)
@@ -76,6 +84,9 @@ class CategoryList(generic.ListView):
 
 def setting_create(request):
     if request.method == 'POST':
+        if request.session.get('authority') > 2:
+            return render(request, 'authority.html')
+    
         type = request.POST.get('type')
         category = request.POST.get('category')
         creator = get_object_or_404(Member, pk=request.session.get('user'))
@@ -94,6 +105,8 @@ def setting_create(request):
 
 def setting_delete(request):
     if request.method == 'POST':
+        if request.session.get('authority') > 2:
+            return render(request, 'authority.html')
         id_list = request.POST.getlist('check')
 
         for id in id_list:
@@ -110,6 +123,11 @@ class ClientList(generic.ListView):
     template_name = 'crudmember/setting_client.html'
     context_object_name = 'client_list'
     model = Client
+
+    def get(self, request, *args, **kwargs):
+        if request.session.get('authority') > 3:
+            return render(request, 'authority.html')
+        return super().get(request, *args, **kwargs)
 
     def get_queryset(self):
         select = self.request.GET.get('select', '')
@@ -153,7 +171,8 @@ class ClientList(generic.ListView):
 
 def setting_client_create(request):
     if request.method == 'POST':
-
+        if request.session.get('authority') > 3:
+            return render(request, 'authority.html')
         client_form = ClientForm(request.POST)
         if client_form.is_valid():
             creator = get_object_or_404(Member, pk=request.session.get('user'))
@@ -171,7 +190,8 @@ def setting_client_create(request):
 
 def setting_client_edit(request):
     if request.method == 'POST':
-
+        if request.session.get('authority') > 3:
+            return render(request, 'authority.html')
         client_id = request.POST.get('id')
         client = get_object_or_404(Client, id=client_id)
 
@@ -197,6 +217,8 @@ def setting_client_edit(request):
 
 def setting_client_delete(request):
     if request.method == 'POST':
+        if request.session.get('authority') > 3:
+            return render(request, 'authority.html')
         id_list = request.POST.getlist('check')
 
         for id in id_list:
@@ -287,20 +309,17 @@ class Calendar(generic.ListView):
         regularly_list = DispatchRegularlyConnect.objects.filter(departure_date__startswith=month)
 
         for dispatch in dispatch_list:
-            print("DISSSSSSSSS", dispatch)
             departure_date = datetime.strptime(dispatch.departure_date[:10], FORMAT)
             arrival_date = datetime.strptime(dispatch.arrival_date[:10], FORMAT)
             days = (arrival_date - departure_date).days + 1
             
             temp_list = []
             for i in range(days):
-                print(departure_date)
                 date = int(datetime.strftime(departure_date, FORMAT)[8:10])
                 total_bus_cnt[date-1] += int(dispatch.bus_cnt)
                 cur_bus_cnt[date-1] += dispatch.info_order.all().count()
 
                 # 배차달력 노선별 버스 대수
-                print('test', change_order_list)
                 temp_list.append
                 if not isinstance(change_order_list[date-1], list): change_order_list[date-1] = []
                 change_order_list[date-1].append({
@@ -465,12 +484,9 @@ def signup(request):
 
         if User.objects.filter(user_id=user_id).exists(): #아이디 중복체크
             res_data['error'] = '사용중인 아이디입니다.'
-            print("error")
         elif password1 != password2:
             res_data['error'] = "비밀번호가 다릅니다."
-            print("error")
         elif user_form.is_valid():
-            print("PASS")
             user = user_form.save(commit=False)
             user.password = make_password(password1)
             user.manager_mail = mail
@@ -484,8 +500,6 @@ def signup(request):
                 user_file.save()
             #auth.login(request, user)
             return render(request, 'crudmember/welcome.html', res_data)
-        else:
-            print("NOOO", user_form)
         return render(request, 'crudmember/signup.html', res_data)
         
 
@@ -499,11 +513,10 @@ def login(request):
         try:
             user = Member.objects.get(user_id=login_username)
         except Exception as e:
-            print("error", e)
             res_data['error'] = "아이디/비밀번호가 다릅니다"
             return render(request, 'crudmember/login.html', res_data)
         
-        if user.role == '임시':
+        if user.role == '임시' or user.use == '삭제' or user.use == '미사용':
             res_data['error'] = "접근 권한이 없습니다"
             return render(request, 'crudmember/login.html', res_data)
         if check_password(login_password, user.password):
@@ -525,7 +538,6 @@ def login(request):
             return redirect('home')
         else:
             res_data['error'] = "아이디/비밀번호가 다릅니다."
-            print("비밀번호다름")
             return render(request, 'crudmember/login.html', res_data)
     else:
         user_id = request.session.get('user')
@@ -589,7 +601,6 @@ def passwordfinder(request):
                 res_data['error'] = "아이디없음"
                 return render(request, 'crudmember/passwordfinder.html', res_data)
             if user.name == name:
-                print("aaaaaaaaaaaaaaaaa", user.tel, tel)
                 if user.tel == str(tel):  # tel을 숫자로받아야함 (임시)
                     result = ""    # 난수생성해서 비번초기화하기
                     for i in range(4):

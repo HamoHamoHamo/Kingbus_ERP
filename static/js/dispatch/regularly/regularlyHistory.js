@@ -11,18 +11,19 @@ const historyHiddenDate = document.querySelector(".historyHiddenDate")
 const historyHiddenOutsourcing = document.querySelector(".historyHiddenOutsourcing")
 const popupContainerDispatchHistory = document.querySelector(".popupContainerDispatchHistory")
 const loadHistory = document.querySelector(".loadHistory")
+const loadingBg = document.querySelector(".loadingBg")
 
 const loadConnectBtn1 = document.querySelector(".loadConnectBtn1")
 const loadConnectBtn2 = document.querySelector(".loadConnectBtn2")
 
 // 지난배차 불러오기
-loadConnectBtn1.addEventListener('click', () => loadConnect(1))
+loadConnectBtn1.addEventListener('click', () => loadConnect(7))
 
-loadConnectBtn2.addEventListener('click', () => loadConnect(2))
+loadConnectBtn2.addEventListener('click', () => loadConnect(1))
 
 function loadConnect(type) {
     const formValues = $('.RouteList').serialize();
-
+    loadingBg.style.display = "flex";
     $.ajax({
         url: `regularly/connect/load/${type}`,
         method: "POST",
@@ -33,15 +34,20 @@ function loadConnect(type) {
             // 중복 배차일 경우
             if (data['status'] === 'overlap') {
                 alert(`${data.route}의 지난 배차를 불러올 수 없습니다`)
+                loadingBg.style.display = "none";
+                location.reload();
             } else if (data['status'] === 'check') {
                 alert('노선을 선택해 주세요.')
+                loadingBg.style.display = "none";
             } else {
                 alert('배차가 저장되었습니다.');
                 location.reload();
             }
         },
         error: function (request, status, error) {
+            alert(`${data.route}의 지난 배차를 불러올 수 없습니다`)
             console.log("CODE:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
+            loadingBg.style.display = "none";
         },
     });
 }

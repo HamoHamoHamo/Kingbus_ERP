@@ -68,7 +68,6 @@ def company_document_download(request, id):
 
     url = download_file.file.url
     root = str(BASE_DIR)+url
-    print("\n테스트\n", root)
 
     if os.path.exists(root):
         with open(root, 'rb') as fh:
@@ -78,7 +77,6 @@ def company_document_download(request, id):
             return response
         raise Http404
     else:
-        print("에러")
         raise Http404
 
 def company_delete(request):
@@ -160,7 +158,6 @@ class DocumentList(generic.ListView):
         connect_list = []
         for order in context['order_list']:
             connect_list.append(order.info_order.all())
-        print("CONNETCTT", connect_list)
         context['connect_list'] = connect_list
         
         context['date1'] = self.request.GET.get('date1', TODAY)
@@ -176,7 +173,7 @@ def vehicle_print(request):
 
         file = connect.bus_id.vehicle_file.all()
         if file.exists():
-            file_list.append(file.get(type='vehicle_registration'))
+            file_list.append(file.get(type='차량등록증'))
 
     
 

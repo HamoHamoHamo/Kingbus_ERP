@@ -65,18 +65,18 @@ function testEndDateYearValidation() {
 
 
 
-//팝업닫기
-for (i = 0; i < 2; i++) {
-    popupBgModules[i].addEventListener("click", closePopup)
-    dispatchCloseBtn[i].addEventListener("click", closePopup)
-}
-SidemenuUseClose.addEventListener("click", closePopup)
+////팝업닫기
+//for (i = 0; i < popupAreaModules.length; i++) {
+//    popupBgModules[i].addEventListener("click", closePopup)
+//    dispatchCloseBtn[i].addEventListener("click", closePopup)
+//}
+//SidemenuUseClose.addEventListener("click", closePopup)
 
-function closePopup() {
-    for (i = 0; i < 2; i++) {
-        popupAreaModules[i].style.display = "none"
-    }
-}
+//function closePopup() {
+//    for (i = 0; i < popupAreaModules.length; i++) {
+//        popupAreaModules[i].style.display = "none"
+//    }
+//}
 
 
 //파일삭제

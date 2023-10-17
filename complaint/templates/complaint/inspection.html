@@ -1,0 +1,175 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load custom_tags %}
+{% block head %}
+<link rel="stylesheet" href="{% static 'css/listpage.css' %}" type="text/css" />
+<link rel="stylesheet" href="{% static 'css/complaint/inspection.css' %}" type="text/css" />
+<link rel="stylesheet" href="{% static 'css/pagination.css' %}" type="text/css" />
+{% endblock %}
+
+{% block content-header %}
+<div class="HeaderTitle">
+    차량정비신청관리
+</div>
+{% endblock %}
+
+{% block content %}
+
+
+
+
+<div class="searchAreaBox">
+    <form class="searchForm" action="">
+        <div class="searchTool">
+            <span class="searchName">직원검색</span>
+            <div class="routeFilterBox">
+                <input autocomplete="off" value="{{name}}" name="name" type="text" class="inputModules" list="hrFilter"
+                    placeholder="직원이름" autocomplete="off">
+                <select name="role" class="inputModules">
+                    <option {% if role == '담당업무' %} selected {% endif %} value="담당업무">담당업무</option>
+                    <option {% if role == '팀장' %} selected {% endif %} value="팀장">팀장</option>
+                    <option {% if role == '운전원' %} selected {% endif %} value="운전원">운전원</option>
+                    <option {% if role == '용역' %} selected {% endif %} value="용역">용역</option>
+                    <option {% if role == '임시' %} selected {% endif %} value="임시">임시</option>
+                </select>
+                <span class="searchName searchDate">날짜</span>
+                <input class="searchDateInput" value={{date1}} autocomplete="off" type="date" name="date1" class="" max="9999-12-31">~
+                <input class="searchDateInput" value={{date2}} autocomplete="off" type="date" name="date2" class="" max="9999-12-31">
+            </div>
+            <div class="searchBtn btnModules">검색</div>
+        </div>
+    </form>
+    <button id="saveBtn" class="btnModulesCreate btnModules">저장</button>
+</div>
+
+
+
+
+<form method="post" action="{% url 'complaint:inspection_delete' %}" class="deleteForm" onsubmit="return confirm('정말로 삭제하시겠습니까?');">
+    {% csrf_token %}
+    <div class="contentsAreaBox">
+        <table class="tableHead">
+            <thead>
+                <tr class="headerLine">
+                    <td>선택</td>
+                    <td>번호</td>
+                    <td>신청일</td>
+                    <td>차량번호</td>
+                    <td>이름</td>
+                    <td>담당업무</td>
+                    <td>입사일</td>
+                    <td>사유</td>
+                    <td>사진</td>
+                    <td>처리상태</td>
+                    <td>확인</td>
+                </tr>
+            </thead>
+        </table>
+
+        <table class="tableBody">
+            <tbody>
+                {% for data in inspection_list %}
+                <tr class="{{data.id}}">
+                    <td>
+                        <input autocomplete="off" name="check" value="{{data.id}}" type="checkbox">
+                    </td>
+                    <td>{{num|sub:forloop.counter0}}</td>
+                    <td>{{data.date}}</td>
+                    <td>{{data.vehicle_id.vehicle_num0}} {{data.vehicle_id.vehicle_num}}</td>
+                    <td>{{data.member_id.name}}</td>
+                    <td>{{data.member_id.role}}</td>
+                    <td>{{data.member_id.entering_date}}</td>
+                    <td>{{data.content}}</td>
+                    <td>
+                        <div class="bluelink" onclick='openBlankPage("{% url 'complaint:inspection_img' data.id %}")'>
+                        {% for file in data.inspection_request_file.all %}
+                            {{file.filename | slice:":10"}}
+                            {% if forloop.count > 1 %}<br>{% endif %}
+                        {% endfor %}
+                        </div>
+                    </td>
+                    <td>
+                        <select class="tableSelect">
+                            <option {% if data.status == '처리전' %} selected {% endif %} value="처리전">처리전</option>
+                            <option {% if data.status == '처리중' %} selected {% endif %} value="처리중">처리중</option>
+                            <option {% if data.status == '완료' %} selected {% endif %} value="완료">완료</option>
+                        </select>
+                    </td>
+                    <td>{{data.check_member_id.name}}</td>
+                </tr>
+                {% endfor %}
+                <tr class="blanckTr"></tr>
+            </tbody>
+        </table>
+
+        <div class="btnAreaBox">
+            <div class="pagination">
+                <!-- 페이징 처리 -->
+                {% if is_paginated %}
+                <div class="pagination">
+                    {% if page_obj.has_previous %}
+                    <div class="page-item page-pre">
+                        <a class="page-link"
+                            href="?&name={{name}}&role={{role}}&date1={{date1}}&date2={{date2}}&page={{ page_obj.previous_page_number }}"
+                            tabindex="-1">이전</a>
+                    </div>
+                    {% else %}
+                    <div class="page-item page-pre disabled">
+                        <a class="page-link" href="#" tabindex="-1">이전</a>
+                    </div>
+                    {% endif %}
+                    {% for page in page_range %}
+                    <div class="page-item {% if page == page_obj.number %} page-activate {% endif %}">
+                        <a class="page-link" href="?&name={{name}}&role={{role}}&date1={{date1}}&date2={{date2}}&page={{ page }}">{{ page }}</a>
+                    </div>
+                    {% endfor %}
+
+                    {% if page_obj.has_next %}
+                    <div class="page-item">
+                        <a class="page-link page-next"
+                            href="?&name={{name}}&role={{role}}&date1={{date1}}&date2={{date2}}&page={{ page_obj.next_page_number }}">다음</a>
+                    </div>
+                    {% else %}
+                    <div class="page-item page-next disabled">
+                        <a class="page-link" href="#">다음</a>
+                    </div>
+                    {% endif %}
+                </div>
+                {% endif %}
+            </div>
+            <div class="btnBox">
+                <input class="btnModules" type="submit" value="삭제">
+            </div>
+
+        </div>
+    </div>
+</form>
+
+{% endblock %}
+
+
+{% block script %}
+<script>
+    const saveUrl = '{% url "complaint:inspection_edit" %}';
+    const searchBtn = document.querySelector(".searchBtn")
+    const searchForm = document.querySelector(".searchForm")
+    const searchDate = document.querySelectorAll(".searchDateInput")
+    const deleteForm = document.querySelectorAll(".deleteForm")
+
+        // 검색 날짜 역전 방지
+    searchBtn.addEventListener("click", orderPeriod)
+
+    function orderPeriod() {
+        if (searchDate[0].value.replace(/\-/g, "") > searchDate[1].value.replace(/\-/g, "")) {
+            alert("잘못된 범위입니다. 날짜를 다시 확인해 주세요.")
+            searchDate[1].value = ""
+        } else {
+            searchForm.submit()
+        }
+    }
+    function openBlankPage(url) {
+        window.open(url, "사진", "width=630, height=891" )
+    }
+</script>
+<script src="{% static 'js/complaint/complaint.js' %}"></script>
+{% endblock %}

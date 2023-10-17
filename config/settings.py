@@ -3,7 +3,10 @@ import logging
 import my_settings
 from pathlib import Path
 from os.path import join
+from datetime import datetime
 
+TODAY = str(datetime.now())[:10]
+FORMAT = "%Y-%m-%d"
 VERSION = my_settings.VERSION
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -39,6 +42,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django_crontab',
 
     'crudmember.apps.CrudmemberConfig',
     'notice.apps.NoticeConfig',
@@ -49,6 +53,7 @@ INSTALLED_APPS = [
     'vehicle.apps.VehicleConfig',
     'homepage',
     'document',
+    'complaint',
     "debug_toolbar",
 ]
 
@@ -167,4 +172,8 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 INTERNAL_IPS = [
     "127.0.0.1",
+]
+
+CRONJOBS = [
+    ('* * * * *', 'dispatch.notification.driver_check_notification', '>> /home/kingbus/trp/data_backup/cpu_log/noti_`date +\%Y\%m\%d`.log 2>&1'),
 ]

@@ -1,4 +1,9 @@
+import pandas as pd
+import json
+import mimetypes
 import os
+import urllib
+from config.settings import MEDIA_ROOT
 from dateutil.relativedelta import relativedelta
 from dispatch.models import DispatchRegularlyConnect, DispatchOrderConnect
 from django.contrib.auth.hashers import make_password, check_password
@@ -6,17 +11,42 @@ from django.db.models import Sum, Q
 from django.http import Http404, HttpResponse, HttpResponseNotAllowed, HttpResponseBadRequest
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views import generic
-from dispatch.views import FORMAT
+from config.settings import FORMAT
 from datetime import datetime, timedelta
-
+from config.settings import BASE_DIR
 from crudmember.models import Category
 from vehicle.models import Vehicle
 from .forms import MemberForm
 from .models import Member, MemberFile, Salary, AdditionalSalary, DeductionSalary
 import math
+from my_settings import CRED_PATH
+import firebase_admin
+from firebase_admin import credentials
+from firebase_admin import messaging
 
 TODAY = str(datetime.now())[:10]
 WEEK = ['(월)', '(화)', '(수)', '(목)', '(금)', '(토)', '(일)', ]
+
+
+def send_message(title, body, token, topic):
+    cred_path = os.path.join(BASE_DIR, CRED_PATH)
+    cred = credentials.Certificate(cred_path)
+    
+    if not firebase_admin._apps:
+        firebase_admin.initialize_app(cred)
+
+    message = messaging.Message(
+        notification = messaging.Notification(
+            title=title,
+            body=body
+        ),
+        token=token,
+        topic=topic
+    )
+
+    response = messaging.send(message)
+    print('Successfully sent message:', response)
+
 
 class MemberList(generic.ListView):
     template_name = 'HR/member.html'
@@ -303,7 +333,9 @@ def member_delete(request):
             for vehicle in vehicle_list:
                 vehicle.driver_name = ''
                 vehicle.save()
-            member.delete()
+            member.use = '삭제'
+            member.user_id = ''
+            member.save()
 
         return redirect(request.META.get('HTTP_REFERER', 'redirect_if_referer_not_found'))
     else:
@@ -319,6 +351,26 @@ def member_img(request, file_id):
     }
     return render(request, 'HR/member_img.html', context)
 
+def member_download(request):
+    if request.session.get('authority') > 1:
+        return render(request, 'authority.html')
+    datalist = list(Member.objects.exclude(use='삭제').order_by('name').values_list('id', 'user_id', 'name', 'role', 'birthdate', 'phone_num', 'emergency', 'address', 'entering_date', 'note', 'use'))
+    
+    try:
+        df = pd.DataFrame(datalist, columns=['id', '사용자id', '이름', '업무', '생년월일', '전화번호', '비상연락망', '주소', '입사일', '비고', '사용여부'])
+        url = f'{MEDIA_ROOT}/humanresource/memberDataList.xlsx'
+        df.to_excel(url, index=False)
+
+        if os.path.exists(url):
+            with open(url, 'rb') as fh:
+                quote_file_url = urllib.parse.quote('직원목록.xlsx'.encode('utf-8'))
+                response = HttpResponse(fh.read(), content_type=mimetypes.guess_type(url)[0])
+                response['Content-Disposition'] = 'attachment;filename*=UTF-8\'\'%s' % quote_file_url
+                return response
+    except Exception as e:
+        print(e)
+        #return JsonResponse({'status': 'fail', 'e': e})
+        raise Http404
 
 class SalaryList(generic.ListView):
     template_name = 'HR/salary_list.html'
@@ -343,7 +395,7 @@ class SalaryList(generic.ListView):
             if name:
                 member_list = member_list.filter(name__contains=name)
         else:
-            member_list = Member.objects.filter(entering_date__lt=month+'-32').filter(Q(role='팀장')|Q(role='운전원')|Q(role='용역')).filter(use='사용').order_by('-role', 'name')
+            member_list = Member.objects.filter(entering_date__lt=month+'-32').filter(Q(role='팀장')|Q(role='운전원')|Q(role='용역')).filter(use='사용').order_by('name')
             if name:
                 member_list = member_list.filter(name__contains=name)
         
@@ -417,7 +469,7 @@ def new_salary(creator, month, member):
 
     base = 0
     service_allowance = 0
-    position_allowance = 0
+    performance_allowance = 0
     annual_allowance = 0
     meal = 0
     
@@ -425,14 +477,14 @@ def new_salary(creator, month, member):
     if TODAY[:7] <= month:
         base = int(member.base)
         service_allowance = int(member.service_allowance)
-        position_allowance = int(member.position_allowance)
+        performance_allowance = int(member.performance_allowance)
         annual_allowance = int(member.annual_allowance)
         meal = int(member.meal)
 
     # if salary:
     #     base = salary.base
     #     service_allowance = salary.service_allowance
-    #     position_allowance = salary.position_allowance
+    #     performance_allowance = salary.performance_allowance
 
     if attendance['driver_allowance__sum']:
         attendance_price = int(attendance['driver_allowance__sum'])
@@ -451,13 +503,13 @@ def new_salary(creator, month, member):
         member_id = member,
         base = base,
         service_allowance = service_allowance,
-        position_allowance = position_allowance,
+        performance_allowance = performance_allowance,
         annual_allowance = annual_allowance,
         meal = meal,
         attendance = attendance_price,
         leave = leave_price,
         order = order_price,
-        total = attendance_price + leave_price + order_price + base + service_allowance + position_allowance + annual_allowance + int(meal),
+        total = attendance_price + leave_price + order_price + base + service_allowance + performance_allowance + annual_allowance + int(meal),
         month = month,
         payment_date = payment_date,
         creator = creator
@@ -517,7 +569,6 @@ def salary_detail(request):
 
         connects = DispatchOrderConnect.objects.filter(departure_date__range=(f'{month}-01 00:00', f'{month}-{last_date} 24:00')).filter(driver_id=member)
         order_cnt = connects.count()
-        print('conccccc', connects, last_date)
         for connect in connects:
             c_date = int(connect.departure_date[8:10]) - 1
             if not order_list[c_date]:
@@ -622,16 +673,16 @@ def salary_edit(request):
             salary = Salary.objects.filter(member_id=member).get(month=month)
             salary.base = base
             salary.service_allowance = service
-            salary.position_allowance = position
+            salary.performance_allowance = position
             salary.annual_allowance = annual
             salary.meal = meal
-            salary.total = int(salary.meal) + int(salary.attendance) + int(salary.leave) + int(salary.order) + int(salary.base) + int(salary.service_allowance) + int(salary.position_allowance) + int(salary.annual_allowance) + int(salary.additional) - int(salary.deduction)
+            salary.total = int(salary.meal) + int(salary.attendance) + int(salary.leave) + int(salary.order) + int(salary.base) + int(salary.service_allowance) + int(salary.performance_allowance) + int(salary.annual_allowance) + int(salary.additional) - int(salary.deduction)
             salary.save()
 
             if TODAY[:7] <= month:
                 member.base = base
                 member.service_allowance = service
-                member.position_allowance = position
+                member.performance_allowance = position
                 member.annual_allowance = annual
                 member.save()
 
@@ -640,8 +691,8 @@ def salary_edit(request):
                 # for e_salary in edit_salary_list:
                 #     e_salary.base = base
                 #     e_salary.service_allowance = service
-                #     e_salary.position_allowance = position
-                #     e_salary.total = int(e_salary.meal) + int(e_salary.attendance) + int(e_salary.leave) + int(e_salary.order) + int(e_salary.base) + int(e_salary.service_allowance) + int(e_salary.position_allowance) + int(e_salary.additional) - int(e_salary.deduction)
+                #     e_salary.performance_allowance = position
+                #     e_salary.total = int(e_salary.meal) + int(e_salary.attendance) + int(e_salary.leave) + int(e_salary.order) + int(e_salary.base) + int(e_salary.service_allowance) + int(e_salary.performance_allowance) + int(e_salary.additional) - int(e_salary.deduction)
                 #     e_salary.save()
 
 
@@ -658,7 +709,9 @@ def salary_additional_create(request):
             return render(request, 'authority.html')
 
         member_id = request.POST.get('id', '')
-        price = request.POST.get('price').replace(',','')
+        price = request.POST.get('price', '0').replace(',','')
+        if price == '':
+            price = '0'
         remark = request.POST.get('remark')
         month = request.POST.get('month')
         creator = Member.objects.get(pk=request.session.get('user'))
@@ -711,7 +764,9 @@ def salary_deduction_create(request):
             return render(request, 'authority.html')
 
         member_id = request.POST.get('id', '')
-        price = request.POST.get('price').replace(',','')
+        price = request.POST.get('price', '0').replace(',','')
+        if price == '':
+            price = '0'
         remark = request.POST.get('remark')
         month = request.POST.get('month')
         creator = Member.objects.get(pk=request.session.get('user'))
@@ -765,7 +820,6 @@ def salary_load(request):
         id_list = request.POST.getlist('member_id')
         month = request.POST.get('month')
         prev_month = datetime.strftime(datetime.strptime(f'{month}-01', FORMAT) - relativedelta(months=1), FORMAT)[:7]
-        print("PREV MONTH", prev_month)
 
         for id in id_list:
             member = get_object_or_404(Member, id=id)
@@ -775,17 +829,17 @@ def salary_load(request):
                 continue
             base = prev_salary.base
             service_allowance = prev_salary.service_allowance
-            position_allowance = prev_salary.position_allowance
+            performance_allowance = prev_salary.performance_allowance
             annual_allowance = prev_salary.annual_allowance
             meal = prev_salary.meal
 
             salary = Salary.objects.filter(month=month).get(member_id=member)
             salary.base = base
             salary.service_allowance = service_allowance
-            salary.position_allowance = position_allowance
+            salary.performance_allowance = performance_allowance
             salary.annual_allowance = annual_allowance
             salary.meal = meal
-            salary.total = int(salary.meal) + int(salary.attendance) + int(salary.leave) + int(salary.order) + int(salary.base) + int(salary.service_allowance) + int(salary.position_allowance) + int(salary.annual_allowance) + int(salary.additional) - int(salary.deduction)
+            salary.total = int(salary.meal) + int(salary.attendance) + int(salary.leave) + int(salary.order) + int(salary.base) + int(salary.service_allowance) + int(salary.performance_allowance) + int(salary.annual_allowance) + int(salary.additional) - int(salary.deduction)
             salary.save()
             
 

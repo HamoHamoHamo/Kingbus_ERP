@@ -24,7 +24,7 @@
         <div class="searchTool">
             <span class="searchName">검색종류</span>
             <div class="FilterBox">
-                <select name="select" id="" class="inputModules">
+                <select name="select" class="inputModules">
                     <option {% if select == 'vehicle' %} selected {% endif %} value="vehicle">차량번호</option>
                     <option {% if select == 'driver' %} selected {% endif %} value="driver">담당기사</option>
                     <option {% if select == 'passenger' %} selected {% endif %} value="passenger">승차인원</option>
@@ -35,7 +35,7 @@
                     <option value="{{member.name}}"></option>
                     {% endfor %}
                 </datalist>
-                <select name="use" id="" class="inputModules">
+                <select name="use" class="inputModules">
                     <option {% if use == '사용' %} selected {% endif %} value="사용">사용</option>
                     <option {% if use == '미사용' %} selected {% endif %} value="미사용">미사용</option>
                 </select>
@@ -43,7 +43,11 @@
             <input autocomplete="off" type="submit" value="검색" class="btnModules">
         </div>
     </form>
-    <div class="addVehicle">차량등록</div>
+    <div class="searchAreaRight">
+        <div class="searchAreaBtn uploadExcel">엑셀 업로드</div>
+        <div id="downloadExcel" class="searchAreaBtn">엑셀 다운로드</div>
+        <div class="searchAreaBtn addVehicle">차량등록</div>
+    </div>
 </div>
 
 
@@ -116,7 +120,7 @@
                     {% if page_obj.has_previous %}
                     <div class="page-item page-pre">
                         <a class="page-link"
-                            href="?select={{select}}&search={{search}}&page={{ page_obj.previous_page_number }}"
+                            href="?select={{select}}&search={{search}}&page={{ page_obj.previous_page_number }}&use={{use}}"
                             tabindex="-1">이전</a>
                     </div>
                     {% else %}
@@ -127,14 +131,14 @@
                     {% for page in page_range %}
                     <div class="page-item {% if page == page_obj.number %} page-activate {% endif %}">
                         <a class="page-link"
-                            href="?select={{select}}&search={{search}}&page={{ page }}">{{ page }}</a>
+                            href="?select={{select}}&search={{search}}&page={{ page }}&use={{use}}">{{ page }}</a>
                     </div>
                     {% endfor %}
 
                     {% if page_obj.has_next %}
                     <div class="page-item">
                         <a class="page-link page-next"
-                            href="?select={{select}}&search={{search}}&page={{ page_obj.next_page_number }}">다음</a>
+                            href="?select={{select}}&search={{search}}&page={{ page_obj.next_page_number }}&use={{use}}">다음</a>
                     </div>
                     {% else %}
                     <div class="page-item page-next disabled">
@@ -252,7 +256,7 @@
                         <input autocomplete="off" name="check_date" type="date" class="popupArticleinput" max="9999-12-31">
                     </div>
                     <div class="popupArticleDouble">
-                        <label for="" class="popupArticleLabel"><span class="importantStar">*</span>차량등록증</label>
+                        <label for="" class="popupArticleLabel">차량등록증</label>
                         <div class="popupArticleFileDouble">
                             <label for="BusLicenseFile">파일 선택</label>
                             <input autocomplete="off" name="vehicle_registration" id="BusLicenseFile" type="file" class="popupArticleinput BusLicenseFileInput">
@@ -272,7 +276,7 @@
                 </div>
             </div>
             <div class="popupFooter">
-                <div class="btnModules createBtn">등록</div>
+                <div class="btnModules createBtn marginR1">등록</div>
                 <div class="btnModules closeBtn">닫기</div>
             </div>
         </div>
@@ -446,7 +450,7 @@
                         <input autocomplete="off" name="check_date" type="date" class="popupArticleinput checkdate" max="9999-12-31">
                     </div>
                     <div class="popupArticleDouble">
-                        <label for="" class="popupArticleLabel"><span class="importantStar">*</span>차량등록증</label>
+                        <label for="" class="popupArticleLabel">차량등록증</label>
                         <div class="popupArticleFileDouble">
                             <label for="BusLicenseFileEdit">파일 선택</label>
                             <input autocomplete="off" name="vehicle_registration" id="BusLicenseFileEdit" type="file" class="popupArticleinput BusLicenseFileInputEdit">
@@ -475,7 +479,50 @@
     </form>
 </div>
 
-
+<div class="popupAreaModules" id="excelPopup">
+    <div class="popupBgModules"></div>
+    <form method="post" action="" class="popupContainer excelUploadPopupContainer">
+        {% csrf_token %}
+        <div class="popupHeader">
+            <div class="popupTitle">엑셀 업로드</div>
+        </div>
+        <div class="popupBody">
+            <div class="popupSection excelUploadPopupSection">
+                <div class="popupArticleFileDouble excelUploadPopupArticleFileDouble">
+                    <label for="excelUploadFile" class="popupArticleLabel">파일선택</label>
+                    <input autocomplete="off" name="" type="file" id="excelUploadFile" class="excelUploadFile"
+                        onchange="readExcel()">
+                    <input autocomplete="off" name="" type="text" class="excelUploadFileText" readonly>
+                    <svg class="fileDeleteBtn" xmlns="http://www.w3.org/2000/svg" width="11.314" height="11.314"
+                        viewBox="0 0 11.314 11.314">
+                        <g id="그룹_1513" data-name="그룹 1513" transform="translate(-442.649 -1001.97) rotate(45)">
+                            <line id="선_691" data-name="선 691" y2="12" transform="translate(1029.5 389.5)" fill="none"
+                                stroke="#000" stroke-linecap="round" stroke-width="2" />
+                            <line id="선_692" data-name="선 692" y2="12" transform="translate(1035.5 395.5) rotate(90)"
+                                fill="none" stroke="#000" stroke-linecap="round" stroke-width="2" />
+                        </g>
+                    </svg>
+                </div>
+            </div>
+            <div class="popupFooter excelUploadPopupFooter">
+                <div class="popupFooterMinibox">
+                    <a href="{% static 'form/차량목록 엑셀 업로드 양식.xlsx' %}" download>
+                        <div class="btnModules backgroundBlack">양식다운</div>
+                    </a>
+                    <div class="visibleLoadingBox">
+                        <div class="visibleLoading">
+                            <span>파일이 업로드 중입니다</span>
+                            <iframe src="https://giphy.com/embed/sSgvbe1m3n93G" width="18" height="18" frameBorder="0"
+                                class="giphy-embed" allowFullScreen></iframe>
+                        </div>
+                    </div>
+                </div>
+                <input autocomplete="off" type="submit" class="btnModules uploadCrateBtn backgroundBlue" value="등록">
+                <div class="btnModules popupCloseBtn closeBtn">닫기</div>
+            </div>
+        </div>
+    </form>
+</div>
 {% endblock %}
 
 
@@ -510,6 +557,7 @@
           },
         {% endfor %}
     ]
+    const excelDownloadUrl = '{% url "vehicle:vehicle_download" %}';
     console.log(regDatas)
 
     function openViweBlankVehilcle(url) {
@@ -517,6 +565,8 @@
     }
 
 </script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.15.5/xlsx.full.min.js"></script>
 <script src="{% static 'js/vehicle/list.js' %}"></script>
 <script src="{% static 'js/vehicle/essential.js' %}"></script>
+<script src="{% static 'js/vehicle/excel.js' %}"></script>
 {% endblock %}

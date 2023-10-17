@@ -1,5 +1,4 @@
 from django.db import models
-from crudmember.models import User
 from uuid import uuid4
 from datetime import datetime
 
