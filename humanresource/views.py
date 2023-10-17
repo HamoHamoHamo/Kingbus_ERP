@@ -19,33 +19,34 @@ from vehicle.models import Vehicle
 from .forms import MemberForm
 from .models import Member, MemberFile, Salary, AdditionalSalary, DeductionSalary
 import math
-from my_settings import CRED_PATH
-import firebase_admin
-from firebase_admin import credentials
-from firebase_admin import messaging
+#from my_settings import CRED_PATH
+#import firebase_admin
+#from firebase_admin import credentials
+#from firebase_admin import messaging
 
 TODAY = str(datetime.now())[:10]
 WEEK = ['(월)', '(화)', '(수)', '(목)', '(금)', '(토)', '(일)', ]
 
 
 def send_message(title, body, token, topic):
-    cred_path = os.path.join(BASE_DIR, CRED_PATH)
-    cred = credentials.Certificate(cred_path)
+    print("미사용")
+    #cred_path = os.path.join(BASE_DIR, CRED_PATH)
+    #cred = credentials.Certificate(cred_path)
     
-    if not firebase_admin._apps:
-        firebase_admin.initialize_app(cred)
+    #if not firebase_admin._apps:
+    #    firebase_admin.initialize_app(cred)
 
-    message = messaging.Message(
-        notification = messaging.Notification(
-            title=title,
-            body=body
-        ),
-        token=token,
-        topic=topic
-    )
+    #message = messaging.Message(
+    #    notification = messaging.Notification(
+    #        title=title,
+    #        body=body
+    #    ),
+    #    token=token,
+    #    topic=topic
+    #)
 
-    response = messaging.send(message)
-    print('Successfully sent message:', response)
+    #response = messaging.send(message)
+    #print('Successfully sent message:', response)
 
 
 class MemberList(generic.ListView):

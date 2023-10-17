@@ -174,6 +174,6 @@ INTERNAL_IPS = [
     "127.0.0.1",
 ]
 
-CRONJOBS = [
-    ('* * * * *', 'dispatch.notification.driver_check_notification', '>> /home/kingbus/trp/data_backup/cpu_log/noti_`date +\%Y\%m\%d`.log 2>&1'),
-]
+#CRONJOBS = [
+#    ('* * * * *', 'dispatch.notification.driver_check_notification', '>> /home/kingbus/trp/data_backup/cpu_log/noti_`date +\%Y\%m\%d`.log 2>&1'),
+#]
