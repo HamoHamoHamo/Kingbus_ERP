@@ -35,7 +35,7 @@ class TotalPrice(models.Model):
     group_id = models.ForeignKey(RegularlyGroup, on_delete=models.CASCADE, related_name="total_price_group", null=True, blank=True)
     order_id = models.ForeignKey(DispatchOrder, on_delete=models.CASCADE, related_name="total_price_order", null=True, blank=True)
     month = models.CharField(verbose_name='월', max_length=10, null=False)
-    total_price = models.CharField(verbose_name='총 계약금액', max_length=30, null=False)
+    total_price = models.CharField(verbose_name='총 계약금액', max_length=30, null=False, default=0)
     pub_date = models.DateTimeField(auto_now_add=True, verbose_name='작성시간')
     creator = models.ForeignKey(Member, on_delete=models.SET_NULL, related_name="total_price_creator", db_column="creator_id", null=True)
     

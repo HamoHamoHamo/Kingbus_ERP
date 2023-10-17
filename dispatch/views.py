@@ -1233,6 +1233,11 @@ def regularly_order_upload(request):
         except:
             return JsonResponse({'error': 'required', 'line': count})
         
+        if data['id']:
+            try:
+                DispatchRegularlyData.objects.get(id=data['id'])
+            except DispatchRegularlyData.DoesNotExist:
+                return JsonResponse({'error': 'id', 'line': count})
         count += 1
 
     count = 0
@@ -1243,7 +1248,7 @@ def regularly_order_upload(request):
             try:
                 regularly_data = DispatchRegularlyData.objects.get(id=data['id'])
             except DispatchRegularlyData.DoesNotExist:
-                return JsonResponse({'status': 'fail', 'count': count})
+                return JsonResponse({'error': 'id', 'line': count + 1})
             regularly_data.group = group
             regularly_data.references = data['references']
             regularly_data.departure = data['departure']
@@ -1289,14 +1294,17 @@ def regularly_order_upload(request):
             )
         regularly_data.save()
 
+        old_waypoints = DispatchRegularlyWaypoint.objects.filter(regularly_id=regularly_data)
+        old_waypoints.delete()
         # 경유지 생성
-        waypoint_list = data['waypoint'].split(", ")
-        for waypoint in waypoint_list:
-            DispatchRegularlyWaypoint.objects.create(
-                regularly_id = regularly_data,
-                waypoint = waypoint,
-                creator = creator
-            )
+        if data['waypoint']:
+            waypoint_list = data['waypoint'].split(", ")
+            for waypoint in waypoint_list:
+                DispatchRegularlyWaypoint.objects.create(
+                    regularly_id = regularly_data,
+                    waypoint = waypoint,
+                    creator = creator
+                )
 
         try:
             regularly = DispatchRegularly.objects.filter(regularly_id=regularly_data).get(edit_date=TODAY)
@@ -1348,6 +1356,57 @@ def regularly_order_upload(request):
                 creator = creator
             )
         regularly.save()
+
+        order = regularly_data
+        driver_allowance = data['driver_allowance']
+        price = data['price']
+        post_month = data['month']
+        if post_month:
+            day = order.group.settlement_date
+            day = day if int(day) > 9 else f'0{day}'
+            connect_list = DispatchRegularlyConnect.objects.filter(regularly_id__regularly_id=order).filter(departure_date__gte=f'{post_month}-{day} 00:00').order_by('departure_date')
+            c_regularly = ''
+            for connect in connect_list:
+                month = connect.departure_date[:7]
+                member = connect.driver_id
+
+                salary = Salary.objects.filter(member_id=member).get(month=month)
+                if connect.work_type == '출근':
+                    salary.attendance = int(salary.attendance) + int(driver_allowance) - int(connect.driver_allowance)
+                elif connect.work_type == '퇴근':
+                    salary.leave = int(salary.leave) + int(driver_allowance) - int(connect.driver_allowance)
+                salary.total = int(salary.total) + int(driver_allowance) - int(connect.driver_allowance)
+                salary.save()
+
+                total = TotalPrice.objects.filter(group_id=group).get(month=month)
+                # connect.price = '' 이면 0으로 넣어주기
+                if not connect.price:
+                    connect.price = 0
+                total.total_price = int(total.total_price) + price + math.floor(price * 0.1 + 0.5) - (int(connect.price) + math.floor(int(connect.price) * 0.1 + 0.5))
+
+                total.save()
+
+                connect.price = price
+                connect.driver_allowance = driver_allowance
+                connect.save()
+
+                if c_regularly != connect.regularly_id:
+                    connect.regularly_id.price = price
+                    connect.regularly_id.driver_allowance = driver_allowance
+                    connect.regularly_id.save()
+                    c_regularly = connect.regularly_id
+
+
+        connects = DispatchRegularlyConnect.objects.filter(regularly_id__regularly_id=order).filter(departure_date__gte=f'{TODAY} 00:00')
+        for connect in connects:
+            connect.regularly_id = regularly
+            connect.departure_date = f'{connect.departure_date[:10]} {regularly.departure_time}'
+            connect.arrival_date = f'{connect.departure_date[:10]} {regularly.arrival_time}'
+            connect.work_type = regularly.work_type
+            connect.price = regularly.price
+            connect.driver_allowance = regularly.driver_allowance
+            connect.save()
+
         count += 1
     return JsonResponse({'status': 'success', 'count': count})
     #except Exception as e:
@@ -1375,10 +1434,11 @@ def regularly_order_download(request):
             cnt = cnt + 1
         else:
             data.insert(14, '')
+        data.insert(17, '')
         datalist[i] = data
         i = i+1
     try:
-        df = pd.DataFrame(datalist, columns=['id', '그룹', '노선명', '출발지', '도착지', '순번1', '순번2', '출발시간', '도착시간', '출/퇴근', '위치', '운행요일', '상세노선', '카카오맵', '경유지', '금액', '기사수당', '참조사항', '사용'])
+        df = pd.DataFrame(datalist, columns=['id', '그룹', '노선명', '출발지', '도착지', '순번1', '순번2', '출발시간', '도착시간', '출/퇴근', '위치', '운행요일', '상세노선', '카카오맵', '경유지', '금액', '기사수당', '기준일', '참조사항', '사용'])
         url = f'{MEDIA_ROOT}/dispatch/regularlyDataList.xlsx'
         df.to_excel(url, index=False)
 
@@ -2034,7 +2094,7 @@ def order_edit_check(request):
                 'bus': r_connect[0].bus_id.vehicle_num,
                 'arrival_date': r_connect[0].arrival_date,
                 'departure_date': r_connect[0].departure_date,
-                })
+            })
         r_connect_driver = DispatchRegularlyConnect.objects.filter(driver_id=driver).exclude(arrival_date__lt=post_departure_date).exclude(departure_date__gt=post_arrival_date)
         if r_connect_driver:
             return JsonResponse({
@@ -2044,7 +2104,7 @@ def order_edit_check(request):
                 'bus': r_connect_driver[0].bus_id.vehicle_num,
                 'arrival_date': r_connect_driver[0].arrival_date,
                 'departure_date': r_connect_driver[0].departure_date,
-                })
+            })
     
     return JsonResponse({'status': 'success', 'departure_date': post_departure_date, 'arrival_date': post_arrival_date})
 
@@ -2161,6 +2221,7 @@ def order_edit(request):
                     order.payment_method = post_collection_type.split('(')[1][:-1]
             
             order.VAT = request.POST.get('VAT', 'n')
+            # route를 옵션 넣은 departure, arrival로 해야되나?
             order.route = order_form.cleaned_data['departure'] + " ▶ " + order_form.cleaned_data['arrival']
             order.creator = creator
             order.save()
@@ -2201,6 +2262,257 @@ def order_delete(request):
         return redirect(reverse('dispatch:order') + f'?date1={date1}&date2={date2}')
     else:
         return HttpResponseNotAllowed(['post'])
+
+def order_upload(request):
+    if request.session.get('authority') > 1:
+        return render(request, 'authority.html')
+    creator = get_object_or_404(Member, pk=request.session['user'])
+    post_data = json.loads(request.body)
+
+    count = 1
+    for data in post_data:
+        # 딕셔너리에 없는 키 넣으면 에러나서 try 씀
+        try:
+            if data['departure'] and data['arrival'] and data['departure_date'] and data['arrival_date'] and data['bus_cnt'] and data['customer'] and data['customer_phone'] and data['operation_type'] and data['price'] and data['driver_allowance']:
+                pass
+        except:
+            return JsonResponse({'error': 'required', 'line': count})
+    
+
+        data_str = data['waypoints'].strip("[]")
+        waypoint_list = re.findall(r"\('(.*?)', '(.*?)', '(.*?)', '(.*?)'\)", data_str)
+
+        if data['waypoints'] and not waypoint_list:
+            return JsonResponse({'error': 'waypoints', 'line': count})
+        for i in range(len(waypoint_list)):
+            if not waypoint_list[i][0]:
+                return JsonResponse({'error': 'required', 'line': count})
+        if not(data['bus_cnt'].isdigit() and data['price'].isdigit() and data['driver_allowance'].isdigit()):
+            return JsonResponse({'error': 'digit', 'line': count, 'data' : [data['bus_cnt'], data['price'], data['driver_allowance']]})
+        
+        if data['id']:
+            try:
+                DispatchOrder.objects.get(id=data['id'])
+            except DispatchOrder.DoesNotExist:
+                return JsonResponse({'error': 'id', 'line': count})
+        #항목 체크
+        if not Category.objects.filter(category=data['bus_type']).exists():
+            return JsonResponse({'error': 'category', 'line': count, 'data': '차량종류'})
+        if not Category.objects.filter(category=data['operation_type']).exists():
+            return JsonResponse({'error': 'category', 'line': count, 'data': '운행종류'})
+        if not Category.objects.filter(category=data['order_type']).exists():
+            return JsonResponse({'error': 'category', 'line': count, 'data': '유형'})
+        if not Category.objects.filter(category=data['bill_place']).exists():
+            return JsonResponse({'error': 'category', 'line': count, 'data': '계산서'})
+        if not Category.objects.filter(category=data['reservation_company']).exists():
+            return JsonResponse({'error': 'category', 'line': count, 'data': '예약회사'})
+        if not Category.objects.filter(category=data['operating_company']).exists():
+            return JsonResponse({'error': 'category', 'line': count, 'data': '운행회사'})
+
+        count += 1
+
+    count = 1
+    for data in post_data:
+        VAT = data['VAT'] if data['VAT'] == 'y' else 'n'
+        option = data['option']
+        departure = data['departure']
+        if '카드기' in option and (not '<카드기>' in departure):
+            departure = '<카드기>' + departure
+        elif not '카드기' in option and '<카드기>' in departure:
+            departure = departure.replace('<카드기>','')
+
+        if '카시트' in option and (not '<카시트>' in departure):
+            departure = '<카시트>' + departure
+        elif not '카시트' in option and '<카시트>' in departure:
+            departure = departure.replace('<카시트>','')
+
+        if '음향' in option and (not '<음향>' in departure):
+            departure = '<음향>' + departure
+        elif not '음향' in option and '<음향>' in departure:
+            departure = departure.replace('<음향>','')
+
+        if data['id']:
+            try:
+                order = DispatchOrder.objects.get(id=data['id'])
+            except DispatchOrder.DoesNotExist:
+                return JsonResponse({'error': 'id', 'line': count})
+            
+            order.operation_type = data['operation_type']
+            order.references = data['references']
+            order.departure = departure
+            order.arrival = data['arrival']
+            order.departure_date = data['departure_date']
+            order.arrival_date = data['arrival_date']
+            order.bus_type = data['bus_type']
+            order.bus_cnt = data['bus_cnt']
+            order.price = data['price']
+            order.driver_allowance = data['driver_allowance']
+            order.contract_status = data['contract_status']
+            order.cost_type = data['cost_type']
+            order.option = option
+            order.customer = data['customer']
+            order.customer_phone = data['customer_phone']
+            order.bill_place = data['bill_place']
+            order.ticketing_info = data['ticketing_info']
+            order.order_type = data['order_type']
+            order.operating_company = data['operating_company']
+            order.reservation_company = data['reservation_company']
+            order.driver_lease = data['driver_lease']
+            order.vehicle_lease = data['vehicle_lease']
+            order.collection_type = data['collection_type']
+            order.payment_method = data['payment_method']
+            order.VAT = VAT
+            order.route = data['departure'] + " ▶ " + data['arrival']
+
+            connects = order.info_order.all()
+            if data['contract_status'] == '취소':
+                connects.delete()
+            else:
+                for connect in connects:
+                    connect.departure_date = data['departure_date']
+                    connect.arrival_date = data['arrival_date']
+                    connect.price = data['price']
+                    connect.driver_allowance = data['driver_allowance']
+                    connect.save()
+        else:
+            order = DispatchOrder(
+                operation_type = data['operation_type'],
+                references = data['references'],
+                departure = departure,
+                arrival = data['arrival'],
+                departure_date = data['departure_date'],
+                arrival_date = data['arrival_date'],
+                bus_type = data['bus_type'],
+                bus_cnt = data['bus_cnt'],
+                price = data['price'],
+                driver_allowance = data['driver_allowance'],
+                contract_status = data['contract_status'],
+                cost_type = data['cost_type'],
+                option = option,
+                customer = data['customer'],
+                customer_phone = data['customer_phone'],
+                bill_place = data['bill_place'],
+                ticketing_info = data['ticketing_info'],
+                order_type = data['order_type'],
+                operating_company = data['operating_company'],
+                reservation_company = data['reservation_company'],
+                driver_lease = data['driver_lease'],
+                vehicle_lease = data['vehicle_lease'],
+                collection_type = data['collection_type'],
+                payment_method = data['payment_method'],
+                VAT = VAT,
+                route = data['departure'] + " ▶ " + data['arrival'],
+                creator = creator,
+            )
+
+        order.save()
+        order.waypoint.all().delete()
+
+        data_str = data['waypoints'].strip("[]")
+        waypoint_list = re.findall(r"\('(.*?)', '(.*?)', '(.*?)', '(.*?)'\)", data_str)
+
+        for i in range(len(waypoint_list)):
+            waypoint = DispatchOrderWaypoint(
+                order_id=order,
+                waypoint=waypoint_list[i][0],
+                time=waypoint_list[i][1],
+                delegate=waypoint_list[i][2],
+                delegate_phone=waypoint_list[i][3],
+                creator=creator,
+            )
+            waypoint.save()
+        
+        count = count + 1
+    return JsonResponse({'status': 'success', 'count': count - 1})
+
+
+def order_download(request):
+    if request.session.get('authority') > 1:
+        return render(request, 'authority.html')
+    start_date = request.GET.get('date1', TODAY)
+    end_date = request.GET.get('date2', TODAY)
+    datalist = list(DispatchOrder.objects.exclude(arrival_date__lt=f'{start_date} 00:00').exclude(departure_date__gt=f'{end_date} 24:00').order_by('departure_date').values_list(
+        'id',
+        'departure',
+        'arrival',
+        'departure_date',
+        'arrival_date',
+        'bus_cnt',
+        'bus_type',
+        'customer',
+        'customer_phone',
+        'contract_status',
+        'operation_type',
+        'reservation_company',
+        'operating_company',
+        'price',
+        'driver_allowance',
+        'option',
+        'cost_type',
+        'bill_place',
+        'collection_type',
+        'payment_method',
+        'VAT',
+        'ticketing_info',
+        'order_type',
+        'references',
+        'driver_lease',
+        'vehicle_lease',
+    ))
+    i = 0
+    for data in datalist:
+        data = list(data)
+        waypoints = list(DispatchOrderWaypoint.objects.filter(order_id__id=data[0]).values_list('waypoint', 'time', 'delegate', 'delegate_phone'))
+        if waypoints:
+            data.insert(9, waypoints)
+        else:
+            data.insert(9, '')
+        datalist[i] = data
+        i = i + 1
+    try:
+        df = pd.DataFrame(datalist, columns=[
+            'id',
+            '출발지',
+            '도착지',
+            '출발날짜',
+            '복귀날짜',
+            '차량대수',
+            '차량종류',
+            '예약자',
+            '예약자 전화번호',
+            '경유지 정보',
+            '계약현황',
+            '운행종류',
+            '예약회사',
+            '운행회사',
+            '계약금액',
+            '상여금',
+            '버스옵션',
+            '비용구분',
+            '계산서 발행처',
+            '수금구분',
+            '결제방법',
+            'VAT포함여부',
+            '표찰정보',
+            '유형',
+            '참조사항',
+            '인력임대차',
+            '차량임대차',
+        ])
+        url = f'{MEDIA_ROOT}/dispatch/dispatchOrderList.xlsx'
+        df.to_excel(url, index=False)
+
+        if os.path.exists(url):
+            with open(url, 'rb') as fh:
+                quote_file_url = urllib.parse.quote('일반배차.xlsx'.encode('utf-8'))
+                response = HttpResponse(fh.read(), content_type=mimetypes.guess_type(url)[0])
+                response['Content-Disposition'] = 'attachment;filename*=UTF-8\'\'%s' % quote_file_url
+                return response
+    except Exception as e:
+        print(e)
+        #return JsonResponse({'status': 'fail', 'e': e})
+        raise Http404
+    
 
 def line_print(request):
     if request.session.get('authority') > 3:

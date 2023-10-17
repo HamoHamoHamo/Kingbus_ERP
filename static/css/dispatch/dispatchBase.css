@@ -246,7 +246,8 @@
 
 .search_inputArea select,
 .search_inputArea input[type=text],
-.search_inputArea input[type=date] {
+.search_inputArea input[type=date],
+.excelDownloadDateInput {
     width: 16rem;
     height: 2.4rem;
     padding-left: 0.3rem;
