@@ -1517,7 +1517,7 @@ def regularly_order_delete(request):
             regularly.save()
 
             # 오늘부터 미래의 배차 전부 삭제
-            connects = DispatchRegularlyConnect.objects.filter(regularly_id=regularly).filter(departure_date__gte=f'{TODAY} 00:00')
+            connects = DispatchRegularlyConnect.objects.filter(regularly_id__regularly_id=order).filter(departure_date__gte=f'{TODAY} 00:00')
             for connect in connects:
                 connect.delete()
 
