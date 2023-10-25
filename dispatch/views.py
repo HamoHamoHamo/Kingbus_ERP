@@ -1255,8 +1255,6 @@ def regularly_order_upload(request):
             regularly_data.arrival = data['arrival']
             regularly_data.departure_time = data['departure_time']
             regularly_data.arrival_time = data['arrival_time']
-            regularly_data.price = data['price']
-            regularly_data.driver_allowance = data['driver_allowance']
             regularly_data.number1 = f'{data["number1"]}'
             regularly_data.number2 = f"{data['number2']}"
             regularly_data.num1 = re.sub(r'[^0-9]', '', f'{data["number1"]}')
@@ -1269,6 +1267,11 @@ def regularly_order_upload(request):
             regularly_data.maplink = data['maplink']
             regularly_data.use = data['use']
             regularly_data.creator = creator
+
+            if (data['month']):
+                regularly_data.price = data['price']
+                regularly_data.driver_allowance = data['driver_allowance']
+
         else:
             regularly_data = DispatchRegularlyData(
                 group = group,
@@ -1316,8 +1319,6 @@ def regularly_order_upload(request):
             regularly.arrival = data['arrival']
             regularly.departure_time = data['departure_time']
             regularly.arrival_time = data['arrival_time']
-            regularly.price = data['price']
-            regularly.driver_allowance = data['driver_allowance']
             regularly.number1 = f'{data["number1"]}'
             regularly.number2 = f"{data['number2']}"
             regularly.num1 = re.sub(r'[^0-9]', '', f'{data["number1"]}')
@@ -1330,6 +1331,9 @@ def regularly_order_upload(request):
             regularly.maplink = data['maplink']
             regularly.use = data['use']
             regularly.creator = creator
+
+            regularly.price = regularly_data.price
+            regularly.driver_allowance = regularly_data.driver_allowance
         except DispatchRegularly.DoesNotExist:
             regularly = DispatchRegularly(
                 regularly_id = regularly_data,
@@ -1340,8 +1344,6 @@ def regularly_order_upload(request):
                 arrival = data['arrival'],
                 departure_time = data['departure_time'],
                 arrival_time = data['arrival_time'],
-                price = data['price'],
-                driver_allowance = data['driver_allowance'],
                 number1 = f'{data["number1"]}',
                 number2 = f"{data['number2']}",
                 num1 = re.sub(r'[^0-9]', '', f'{data["number1"]}'),
@@ -1353,7 +1355,9 @@ def regularly_order_upload(request):
                 detailed_route = data['detailed_route'],
                 maplink = data['maplink'],
                 use = data['use'],
-                creator = creator
+                creator = creator,
+                price = regularly_data.price,
+                driver_allowance = regularly_data.driver_allowance,
             )
         regularly.save()
 

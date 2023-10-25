@@ -177,35 +177,34 @@ def update_total_price(instance):
 
 @receiver(post_save, sender=DispatchRegularlyConnect)
 def save_regularly_connect(sender, instance, created, **kwargs):
+    month = instance.departure_date[:7]
+    creator = instance.creator
+    member = instance.driver_id
     if created:
-        month = instance.departure_date[:7]
-        creator = instance.creator
-        member = instance.driver_id
-
         # DriverCheck 생성
         DriverCheck.objects.create(
             regularly_id = instance,
             creator = creator
         )
 
-        # Salary 업데이트
-        try:
-            salary = Salary.objects.filter(member_id=member).get(month=month)
-            if instance.work_type == '출근':
-                order = DispatchRegularlyConnect.objects.filter(work_type='출근').filter(driver_id=member).filter(departure_date__startswith=month).aggregate(Sum('driver_allowance'))
-                salary.attendance = int(order['driver_allowance__sum']) if order['driver_allowance__sum'] else 0
-            elif instance.work_type == '퇴근':
-                order = DispatchRegularlyConnect.objects.filter(work_type='퇴근').filter(driver_id=member).filter(departure_date__startswith=month).aggregate(Sum('driver_allowance'))
-                salary.leave = int(order['driver_allowance__sum']) if order['driver_allowance__sum'] else 0
-            salary.total = int(salary.base) + int(salary.service_allowance) + int(salary.performance_allowance) + int(salary.annual_allowance) + int(salary.meal) + int(salary.attendance) + int(salary.leave) + int(salary.order) + int(salary.additional) - int(salary.deduction)
-            salary.save()
-        except Salary.DoesNotExist:
-            new_salary(creator, month, member)
+    # Salary 업데이트
+    try:
+        salary = Salary.objects.filter(member_id=member).get(month=month)
+        if instance.work_type == '출근':
+            order = DispatchRegularlyConnect.objects.filter(work_type='출근').filter(driver_id=member).filter(departure_date__startswith=month).aggregate(Sum('driver_allowance'))
+            salary.attendance = int(order['driver_allowance__sum']) if order['driver_allowance__sum'] else 0
+        elif instance.work_type == '퇴근':
+            order = DispatchRegularlyConnect.objects.filter(work_type='퇴근').filter(driver_id=member).filter(departure_date__startswith=month).aggregate(Sum('driver_allowance'))
+            salary.leave = int(order['driver_allowance__sum']) if order['driver_allowance__sum'] else 0
+        salary.total = int(salary.base) + int(salary.service_allowance) + int(salary.performance_allowance) + int(salary.annual_allowance) + int(salary.meal) + int(salary.attendance) + int(salary.leave) + int(salary.order) + int(salary.additional) - int(salary.deduction)
+        salary.save()
+    except Salary.DoesNotExist:
+        new_salary(creator, month, member)
 
-        if not hasattr(instance, 'same_accounting') or not instance.same_accounting:
-            print('create update accounting')
-            # TotalPrice 업데이트
-            total = update_total_price(instance)
+    if not hasattr(instance, 'same_accounting') or not instance.same_accounting:
+        print('create update accounting')
+        # TotalPrice 업데이트
+        total = update_total_price(instance)
 
 @receiver(post_delete, sender=DispatchRegularlyConnect)
 def delete_regularly_connect(sender, instance, **kwargs):
