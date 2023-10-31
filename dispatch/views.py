@@ -1025,10 +1025,9 @@ def regularly_order_edit_check(request):
 def regularly_order_edit(request):
     if request.session.get('authority') > 1:
         return render(request, 'authority.html')
-    id = request.POST.get('id', None)
-    order = get_object_or_404(DispatchRegularlyData, pk=id)
-    
     if request.method == 'POST':
+        id = request.POST.get('id', None)
+        order = get_object_or_404(DispatchRegularlyData, pk=id)
         creator = get_object_or_404(Member, pk=request.session.get('user'))
         order_form = RegularlyDataForm(request.POST)
         if order_form.is_valid():
