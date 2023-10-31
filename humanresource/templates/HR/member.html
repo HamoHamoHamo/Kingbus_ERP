@@ -10,7 +10,7 @@
 
 {% block content-header %}
 <div class="HeaderTitle">
-  직원관리
+    직원관리
 </div>
 {% endblock %}
 
@@ -20,142 +20,152 @@
 
 
 <div class="searchAreaBox">
-  <form action="">
-	<div class="searchTool">
-	  <span class="searchName">직원검색</span>
-	  <div class="routeFilterBox">
-		<input autocomplete="off" value="{{name}}" name="name" type="text" class="inputModules" list="hrFilter" placeholder="직원이름"
-		  autocomplete="off" >
-		<datalist id="hrFilter">
-		  {% for member in member_all %}
-		  <option value="{{member.name}}"></option>
-		  {% endfor %}
-		</datalist>
-		<select name="role" class="inputModules">
-			<option {% if role == '담당업무' %} selected {% endif %} value="담당업무">담당업무</option>
-			<option {% if role == '관리자' %} selected {% endif %} value="관리자">관리자</option>
-			<option {% if role == '팀장' %} selected {% endif %} value="팀장">팀장</option>
-			<option {% if role == '운전원' %} selected {% endif %} value="운전원">운전원</option>
-			<option {% if role == '용역' %} selected {% endif %} value="용역">용역</option>
-			<option {% if role == '임시' %} selected {% endif %} value="임시">임시</option>
-		</select>
-		<select name="use" id="filterUse" class="inputModules">
-			<option {% if use == '사용' %} selected {% endif %} value="사용">사용</option>
-			<option {% if use == '미사용' %} selected {% endif %} value="미사용">미사용</option>
-		</select>
-		<select name="age" id="filterAge" class="inputModules">
-			<option {% if age == '나이' %} selected {% endif %} value="나이">나이</option>
-			<option {% if age == '65세 이상' %} selected {% endif %} value="65세 이상">65세 이상</option>
-		</select>
-	  </div>
-	  <input autocomplete="off" type="submit" value="검색" class="btnModules">
-	</div>
-  </form>
-  <div class="headerFlex">
-	  <div id="uploadExcelBtn" class="headerBtn">엑셀 업로드</div>
-	  <div id="downloadExcelBtn" class="headerBtn">엑셀 다운로드</div>
-	  <div class="headerBtn addPeople">직원등록</div>
-  </div>
+    <form action="">
+        <div class="searchTool">
+            <span class="searchName">직원검색</span>
+            <div class="routeFilterBox">
+                <input autocomplete="off" value="{{name}}" name="name" type="text" class="inputModules" list="hrFilter"
+                    placeholder="직원이름" autocomplete="off">
+                <datalist id="hrFilter">
+                    {% for member in member_all %}
+                    <option value="{{member.name}}"></option>
+                    {% endfor %}
+                </datalist>
+                <select name="role" class="inputModules">
+                    <option {% if role == '담당업무' %} selected {% endif %} value="담당업무">담당업무</option>
+                    <option {% if role == '관리자' %} selected {% endif %} value="관리자">관리자</option>
+                    <option {% if role == '팀장' %} selected {% endif %} value="팀장">팀장</option>
+                    <option {% if role == '운전원' %} selected {% endif %} value="운전원">운전원</option>
+                    <option {% if role == '용역' %} selected {% endif %} value="용역">용역</option>
+                    <option {% if role == '임시' %} selected {% endif %} value="임시">임시</option>
+                </select>
+                <select name="use" id="filterUse" class="inputModules">
+                    <option {% if use == '사용' %} selected {% endif %} value="사용">사용</option>
+                    <option {% if use == '미사용' %} selected {% endif %} value="미사용">미사용</option>
+                </select>
+                <select name="age" id="filterAge" class="inputModules">
+                    <option {% if age == '나이' %} selected {% endif %} value="나이">나이</option>
+                    <option {% if age == '65세 이상' %} selected {% endif %} value="65세 이상">65세 이상</option>
+                </select>
+            </div>
+            <input autocomplete="off" type="submit" value="검색" class="btnModules">
+        </div>
+    </form>
+    <div class="headerFlex">
+        <div id="uploadExcelBtn" class="headerBtn">엑셀 업로드</div>
+        <div id="downloadExcelBtn" class="headerBtn">엑셀 다운로드</div>
+        <div class="headerBtn addPeople">직원등록</div>
+    </div>
 </div>
 
 
 
 
 <form method="post" action="{% url 'HR:member_delete' %}" class="hrMemberListForm">
-  {% csrf_token %}
-  <div class="contentsAreaBox">
-	<table class="tableHead">
-	  <thead>
-		<tr class="headerLine">
-		  <td>선택</td>
-		  <td>번호</td>
-		  <td>이름</td>
-		  <td>나이(만)</td>
-		  <td>아이디</td>
-		  <td>담당업무</td>
-		  <td class="headerOrderBy" {% if req_order_by != "entering_date" %}onclick="location.href='{% url 'HR:member' %}?&name={{name}}&order_by=entering_date&role={{role}}&use={{use}}&age={{age}}'"
-		  {% else %}onclick="location.href='{% url 'HR:member' %}?&name={{name}}&role={{role}}&use={{use}}&age={{age}}'"{% endif %}>
-			입사일{% if req_order_by == 'entering_date' %}↓{% endif %}
-		  </td>
-		  <td>휴대폰 번호</td>
-		  <td>비상연락망(관계)</td>
-		  <td>생년월일</td>
-		  <td>주소</td>
-		  <td>면허증</td>
-		  <td>버스운전 자격증</td>
-		</tr>
-	  </thead>
-	</table>
+    {% csrf_token %}
+    <div class="contentsAreaBox">
+        <table class="tableHead">
+            <thead>
+                <tr class="headerLine">
+                    <td>선택</td>
+                    <td>번호</td>
+                    <td>이름</td>
+                    <td>나이(만)</td>
+                    <td>아이디</td>
+                    <td>담당업무</td>
+                    <td class="headerOrderBy" {% if req_order_by != "entering_date"%}onclick="location.href='{% url 'HR:member' %}?&name={{name}}&order_by=entering_date&role={{role}}&use={{use}}&age={{age}}'"
+                        {% else %}
+                        onclick="location.href='{% url 'HR:member' %}?&name={{name}}&role={{role}}&use={{use}}&age={{age}}'"{% endif %}>
+                        입사일{% if req_order_by == 'entering_date' %}↓{% endif %}
+                    </td>
+                    <td>휴대폰 번호</td>
+                    <td>비상연락망(관계)</td>
+                    <td>생년월일</td>
+                    <td>주소</td>
+                    <td>면허증</td>
+                    <td>버스운전 자격증</td>
+                </tr>
+            </thead>
+        </table>
 
-	<table class="tableBody">
-	  <tbody>
-		{% for member in member_list %}
-		<tr class="{{member.id}}">
-		  <td>
-			<input autocomplete="off" name="delete_check" value="{{member.id}}" type="checkbox">
-		  </td>
-		  <td>{{start_num|add:forloop.counter0}}</td>
-		  <td class="{{ forloop.counter0 }}">{{member.name}}</td>
-		  <td></td>
-		  <td>{% if member.user_id %}{{member.user_id}}{% endif %}</td>
-		  <td>{{member.role}}</td>
-		  <td>{{member.entering_date}}</td>
-		  <td>{{member.phone_num}}</td>
-		  <td>{{member.emergency}}</td>
-		  <td>{{member.birthdate}}</td>
-		  <td>{{member.address}}</td>
-		  {% with data=data_list|index:forloop.counter0 %}
-		  
-		  <td {% if data.license_id %}onclick="openLisence('{% url 'HR:member_img' data.license_id %}', true)"{% endif %}>{{data.license}}</td>
-		  <td {% if data.bus_license_id %}onclick="openLisence('{% url 'HR:member_img' data.bus_license_id %}', false)"{% endif %}>{{data.bus_license}}</td>
-		  {% endwith %}
-		</tr>
-		{% endfor %}
-		<tr class="blanckTr"></tr>
-	  </tbody>
-	</table>
+        <table class="tableBody">
+            <tbody>
+                {% for member in member_list %}
+                <tr class="{{member.id}}">
+                    <td>
+                        <input autocomplete="off" name="delete_check" value="{{member.id}}" type="checkbox">
+                    </td>
+                    <td>{{start_num|add:forloop.counter0}}</td>
+                    <td class="{{ forloop.counter0 }}">{{member.name}}</td>
+                    <td></td>
+                    <td>{% if member.user_id %}{{member.user_id}}{% endif %}</td>
+                    <td>{{member.role}}</td>
+                    <td>{{member.entering_date}}</td>
+                    <td>{{member.phone_num}}</td>
+                    <td>{{member.emergency}}</td>
+                    <td>{{member.birthdate}}</td>
+                    <td>{{member.address}}</td>
+                    {% with data=data_list|index:forloop.counter0 %}
 
-	<div class="btnAreaBox">
-	  <div class="pagination">
-		<!-- 페이징 처리 -->
-		{% if is_paginated %}
-		<div class="pagination">
-		  {% if page_obj.has_previous %}
-		  <div class="page-item page-pre">
-			<a class="page-link"
-			  href="?&name={{name}}&order_by={{req_order_by}}&role={{role}}&use={{use}}&age={{age}}&page={{ page_obj.previous_page_number }}"
-			  tabindex="-1">이전</a>
-		  </div>
-		  {% else %}
-		  <div class="page-item page-pre disabled">
-			<a class="page-link" href="#" tabindex="-1">이전</a>
-		  </div>
-		  {% endif %}
-		  {% for page in page_range %}
-		  <div class="page-item {% if page == page_obj.number %} page-activate {% endif %}">
-			<a class="page-link" href="?&name={{name}}&order_by={{req_order_by}}&role={{role}}&use={{use}}&age={{age}}&page={{ page }}">{{ page }}</a>
-		  </div>
-		  {% endfor %}
+                    <td {% if data.license_id %}onclick="openLisence('{% url 'HR:member_img' data.license_id %}', true)"{% endif %}>
+                        {{data.license}}
+                    </td>
+                    <td {% if data.bus_license_id%}onclick="openLisence('{% url 'HR:member_img' data.bus_license_id %}', false)" {% endif %}>
+                        {{data.bus_license}}
+                    </td>
+                    {% endwith %}
+                </tr>
+                {% endfor %}
+                <tr class="blanckTr"></tr>
+            </tbody>
+        </table>
 
-		  {% if page_obj.has_next %}
-		  <div class="page-item">
-			<a class="page-link page-next"
-			  href="?&name={{name}}&order_by={{req_order_by}}&role={{role}}&use={{use}}&age={{age}}&page={{ page_obj.next_page_number }}">다음</a>
-		  </div>
-		  {% else %}
-		  <div class="page-item page-next disabled">
-			<a class="page-link" href="#">다음</a>
-		  </div>
-		  {% endif %}
-		</div>
-		{% endif %}
-	  </div>
-	  <div class="btnBox">
-		<input autocomplete="off" type="submit" value="삭제" class="btnModules">
-	  </div>
+        <div class="btnAreaBox">
+            <div class="pagination">
+                <!-- 페이징 처리 -->
+                {% if is_paginated %}
+                <div class="pagination">
+                    {% if page_obj.has_previous %}
+                    <div class="page-item page-pre">
+                        <a class="page-link"
+                            href="?&name={{name}}&order_by={{req_order_by}}&role={{role}}&use={{use}}&age={{age}}&page={{ page_obj.previous_page_number }}"
+                            tabindex="-1">이전</a>
+                    </div>
+                    {% else %}
+                    <div class="page-item page-pre disabled">
+                        <a class="page-link" href="#" tabindex="-1">이전</a>
+                    </div>
+                    {% endif %}
+                    {% for page in page_range %}
+                    <div class="page-item {% if page == page_obj.number %} page-activate {% endif %}">
+                        <a class="page-link"
+                            href="?&name={{name}}&order_by={{req_order_by}}&role={{role}}&use={{use}}&age={{age}}&page={{ page }}">
+                            {{ page }}
+                        </a>
+                    </div>
+                    {% endfor %}
 
-	</div>
-  </div>
+                    {% if page_obj.has_next %}
+                    <div class="page-item">
+                        <a class="page-link page-next"
+                            href="?&name={{name}}&order_by={{req_order_by}}&role={{role}}&use={{use}}&age={{age}}&page={{ page_obj.next_page_number }}">
+                            다음
+                        </a>
+                    </div>
+                    {% else %}
+                    <div class="page-item page-next disabled">
+                        <a class="page-link" href="#">다음</a>
+                    </div>
+                    {% endif %}
+                </div>
+                {% endif %}
+            </div>
+            <div class="btnBox">
+                <input autocomplete="off" type="submit" value="삭제" class="btnModules">
+            </div>
+
+        </div>
+    </div>
 </form>
 
 
@@ -171,136 +181,152 @@
 {% block popup %}
 
 <div class="popupAreaModules">
-  <div class="popupBgModules"></div>
-  <form method="post" action="{% url 'HR:member_create' %}" class="popupContainer popupContainerDouble memberFormCreate" enctype="multipart/form-data">
-	  {% csrf_token %}
-	  <div class="popupHeader">
-		  <div class="popupTitle">직원등록</div>
-	  </div>
-	  <div class="popupBody">
-		  <div class="popupSection">
-			  <div class="popupArticleCategori">기본정보</div>
-			  <div class="popupArticleBox">
-				  <div class="popupArticleDouble">
-					  <label for="" class="popupArticleLabel"><span class="importantStar">*</span>이름</label>
-					  <input autocomplete="off"name="name" type="text" class="popupArticleinput createName length100 essential">
-				  </div>
-				  <div class="popupArticleDouble">
-					  <label for="" class="popupArticleLabel"><span class="importantStar">*</span>담당업무</label>
-					  <select name="role" id="role" class="popupArticleinput PopupDataInputWork">
-						<option value="">담당업무 선택</option>
-						<option value="임시">임시</option>
-						<option value="용역">용역</option>
-						<option value="운전원">운전원</option>
-						<option value="팀장">팀장</option>
-						<option value="관리자">관리자</option>
-						<option value="최고관리자">최고관리자</option>
-					  </select>
-				  </div>
-			  </div>
-			  <div class="popupArticleBox">
-				  <div class="popupArticleDouble">
-					  <label for="" class="popupArticleLabel"><span class="importantStar">*</span>입사일</label>
-					  <input autocomplete="off"name="entering_date" type="date" max="9999-12-31" class="popupArticleinput PopupDataInputEntering essential">
-				  </div>
-				  <div class="popupArticleDouble popupArticleUse">
-					  <label for="" class="popupArticleLabel"><span class="importantStar">*</span>사용여부</label>
-					  <input type="radio" value="사용" name="use" id="use" checked>
-					  <label for="use">사용</label>
-					  <input type="radio" value="미사용" name="use" id="unUse">
-					  <label for="unUse">미사용</label>
-				  </div>
-			  </div>
-			  <div class="popupArticleBox">
-				  <div class="popupArticleDouble">
-					  <label for="" class="popupArticleLabel"><span class="importantStar">*</span>생년월일</label>
-					  <input autocomplete="off"name="birthdate" type="date" class="popupArticleinput PopupDataInputBirth essential" placeholder="ex)19990101">
-				  </div>
-				  <div class="popupArticleDouble">
-					  <label for="" class="popupArticleLabel"><span class="importantStar">*</span>휴대폰번호</label>
-					  <input autocomplete="off"name="phone_num" type="text" class="popupArticleinput PopupDataInputPhoneNum length100 essential makeHyphen" placeholder="'-'을 생략하고 입력해 주세요.">
-				  </div>
-			  </div>
-			  <div class="popupArticleBox">
-				  <div class="popupArticleDouble">
-					  <label for="" class="popupArticleLabel">비상연락망</label>
-					  <input autocomplete="off"name="emergency1" type="text" class="popupArticleinput PopupDataInputEmergency length100 makeHyphen" placeholder="'-'을 생략하고 입력해 주세요.">
-				  </div>
-				  <div class="popupArticleDouble">
-					  <label for="" class="popupArticleLabel">관계</label>
-					  <input autocomplete="off"name="emergency2" type="text" class="popupArticleinput PopupDataInputRelation length100" placeholder="비상연락망 전화번호와 관계(부,모,배우자 등)">
-				  </div>
-			  </div>
-			  <div class="popupArticleBox">
-				<div class="popupArticleDouble">
-					<label for="" class="popupArticleLabel"><span class="importantStar">*</span>주소</label>
-					<input autocomplete="off"name="address" type="text" class="popupArticleinput PopupDataInputAddress length100 essential">
-				</div>
-				  <div class="popupArticleDouble">
-					  <label for="" class="popupArticleLabel">비고</label>
-					  <input autocomplete="off"name="note" type="text" class="popupArticleinput PopupDataInputBranck length100">
-				  </div>
-			  </div>
-			  <div class="popupArticleCategori">운전정보</div>
-			  <div class="popupArticleBox">
-				  <div class="popupArticleDouble">
-					  <label for="" class="popupArticleLabel">면허증</label>
-					  <div class="popupArticleFileDouble">
-						  <label for="LicenseFile">파일 선택</label>
-						  <input autocomplete="off" name="license_file" type="file" id="LicenseFile" class="LicenseFileInput">
-						  <input autocomplete="off" name="license" type="text" class="LicenseFileText" readonly>
-						  <svg class="fileDeleteBtn" xmlns="http://www.w3.org/2000/svg" width="11.314" height="11.314"
-							  viewBox="0 0 11.314 11.314">
-							  <g id="그룹_1513" data-name="그룹 1513" transform="translate(-442.649 -1001.97) rotate(45)">
-								  <line id="선_691" data-name="선 691" y2="12" transform="translate(1029.5 389.5)"
-									  fill="none" stroke="#000" stroke-linecap="round" stroke-width="2" />
-								  <line id="선_692" data-name="선 692" y2="12"
-									  transform="translate(1035.5 395.5) rotate(90)" fill="none" stroke="#000"
-									  stroke-linecap="round" stroke-width="2" />
-							  </g>
-						  </svg>
-					  </div>
-				  </div>
-				  <div class="popupArticleDouble">
-					  <label for="" class="popupArticleLabel">버스운전 자격증</label>
-					  <div class="popupArticleFileDouble">
-						  <label for="DriverLicenseFile">파일 선택</label>
-						  <input autocomplete="off" name="bus_license_file" type="file" id="DriverLicenseFile" class="DriverLicenseFileInput">
-						  <input autocomplete="off" name="bus_license" type="text" class="DriverLicenseFileText" readonly>
-						  <svg class="fileDeleteBtn" xmlns="http://www.w3.org/2000/svg" width="11.314" height="11.314"
-							  viewBox="0 0 11.314 11.314">
-							  <g id="그룹_1513" data-name="그룹 1513" transform="translate(-442.649 -1001.97) rotate(45)">
-								  <line id="선_691" data-name="선 691" y2="12" transform="translate(1029.5 389.5)"
-									  fill="none" stroke="#000" stroke-linecap="round" stroke-width="2" />
-								  <line id="선_692" data-name="선 692" y2="12"
-									  transform="translate(1035.5 395.5) rotate(90)" fill="none" stroke="#000"
-									  stroke-linecap="round" stroke-width="2" />
-							  </g>
-						  </svg>
-					  </div>
-				  </div>
-			  </div>
-			  <div class="popupArticleCategori authorityDivision">계정정보</div>
-			  <div class="popupArticleBox authorityDivision">
-				  <div class="popupArticleDouble">
-					  <label for="" class="popupArticleLabel">아이디</label>
-					  <div class="popupIdBox">
-						<input autocomplete="off"name="user_id" type="text" class="popupArticleinput createID length100 essential">
-						<div class="idchecker" onClick="id_overlap_check_hr()">중복확인</div>
-					  </div>
-				  </div>
-				  <div class="popupArticleDouble">
-					  <label for="" class="popupArticleLabel">비밀번호</label>
-					  <input autocomplete="off"name="pw" type="text" class="popupArticleinput" readonly value="0000">
-				  </div>
-			  </div>
-		  </div>
-		  <div class="popupFooter">
-				<div class="btnModules btnModulesCreate">등록</div>
-			  <div class="btnModules popupCloseBtn">닫기</div>
-		  </div>
-	  </div>
-  </form>
+    <div class="popupBgModules"></div>
+    <form method="post" action="{% url 'HR:member_create' %}"
+        class="popupContainer popupContainerDouble memberFormCreate" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="popupHeader">
+            <div class="popupTitle">직원등록</div>
+        </div>
+        <div class="popupBody">
+            <div class="popupSection">
+                <div class="popupArticleCategori">기본정보</div>
+                <div class="popupArticleBox">
+                    <div class="popupArticleDouble">
+                        <label for="" class="popupArticleLabel"><span class="importantStar">*</span>이름</label>
+                        <input autocomplete="off" name="name" type="text"
+                            class="popupArticleinput createName length100 essential">
+                    </div>
+                    <div class="popupArticleDouble">
+                        <label for="" class="popupArticleLabel"><span class="importantStar">*</span>담당업무</label>
+                        <select name="role" id="role" class="popupArticleinput PopupDataInputWork">
+                            <option value="">담당업무 선택</option>
+                            <option value="임시">임시</option>
+                            <option value="용역">용역</option>
+                            <option value="운전원">운전원</option>
+                            <option value="팀장">팀장</option>
+                            <option value="관리자">관리자</option>
+                            <option value="최고관리자">최고관리자</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="popupArticleBox">
+                    <div class="popupArticleDouble">
+                        <label for="" class="popupArticleLabel"><span class="importantStar">*</span>입사일</label>
+                        <input autocomplete="off" name="entering_date" type="date" max="9999-12-31"
+                            class="popupArticleinput PopupDataInputEntering essential">
+                    </div>
+                    <div class="popupArticleDouble popupArticleUse">
+                        <label for="" class="popupArticleLabel"><span class="importantStar">*</span>사용여부</label>
+                        <input type="radio" value="사용" name="use" id="use" checked>
+                        <label for="use">사용</label>
+                        <input type="radio" value="미사용" name="use" id="unUse">
+                        <label for="unUse">미사용</label>
+                    </div>
+                </div>
+                <div class="popupArticleBox">
+                    <div class="popupArticleDouble">
+                        <label for="" class="popupArticleLabel"><span class="importantStar">*</span>생년월일</label>
+                        <input autocomplete="off" name="birthdate" type="date"
+                            class="popupArticleinput PopupDataInputBirth essential" placeholder="ex)19990101">
+                    </div>
+                    <div class="popupArticleDouble">
+                        <label for="" class="popupArticleLabel"><span class="importantStar">*</span>휴대폰번호</label>
+                        <input autocomplete="off" name="phone_num" type="text"
+                            class="popupArticleinput PopupDataInputPhoneNum length100 essential makeHyphen"
+                            placeholder="'-'을 생략하고 입력해 주세요.">
+                    </div>
+                </div>
+                <div class="popupArticleBox">
+                    <div class="popupArticleDouble">
+                        <label for="" class="popupArticleLabel">비상연락망</label>
+                        <input autocomplete="off" name="emergency1" type="text"
+                            class="popupArticleinput PopupDataInputEmergency length100 makeHyphen"
+                            placeholder="'-'을 생략하고 입력해 주세요.">
+                    </div>
+                    <div class="popupArticleDouble">
+                        <label for="" class="popupArticleLabel">관계</label>
+                        <input autocomplete="off" name="emergency2" type="text"
+                            class="popupArticleinput PopupDataInputRelation length100"
+                            placeholder="비상연락망 전화번호와 관계(부,모,배우자 등)">
+                    </div>
+                </div>
+                <div class="popupArticleBox">
+                    <div class="popupArticleDouble">
+                        <label for="" class="popupArticleLabel"><span class="importantStar">*</span>주소</label>
+                        <input autocomplete="off" name="address" type="text"
+                            class="popupArticleinput PopupDataInputAddress length100 essential">
+                    </div>
+                    <div class="popupArticleDouble">
+                        <label for="" class="popupArticleLabel">비고</label>
+                        <input autocomplete="off" name="note" type="text"
+                            class="popupArticleinput PopupDataInputBranck length100">
+                    </div>
+                </div>
+                <div class="popupArticleCategori">운전정보</div>
+                <div class="popupArticleBox">
+                    <div class="popupArticleDouble">
+                        <label for="" class="popupArticleLabel">면허증</label>
+                        <div class="popupArticleFileDouble">
+                            <label for="LicenseFile">파일 선택</label>
+                            <input autocomplete="off" name="license_file" type="file" id="LicenseFile"
+                                class="LicenseFileInput">
+                            <input autocomplete="off" name="license" type="text" class="LicenseFileText" readonly>
+                            <svg class="fileDeleteBtn" xmlns="http://www.w3.org/2000/svg" width="11.314" height="11.314"
+                                viewBox="0 0 11.314 11.314">
+                                <g id="그룹_1513" data-name="그룹 1513" transform="translate(-442.649 -1001.97) rotate(45)">
+                                    <line id="선_691" data-name="선 691" y2="12" transform="translate(1029.5 389.5)"
+                                        fill="none" stroke="#000" stroke-linecap="round" stroke-width="2" />
+                                    <line id="선_692" data-name="선 692" y2="12"
+                                        transform="translate(1035.5 395.5) rotate(90)" fill="none" stroke="#000"
+                                        stroke-linecap="round" stroke-width="2" />
+                                </g>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="popupArticleDouble">
+                        <label for="" class="popupArticleLabel">버스운전 자격증</label>
+                        <div class="popupArticleFileDouble">
+                            <label for="DriverLicenseFile">파일 선택</label>
+                            <input autocomplete="off" name="bus_license_file" type="file" id="DriverLicenseFile"
+                                class="DriverLicenseFileInput">
+                            <input autocomplete="off" name="bus_license" type="text" class="DriverLicenseFileText"
+                                readonly>
+                            <svg class="fileDeleteBtn" xmlns="http://www.w3.org/2000/svg" width="11.314" height="11.314"
+                                viewBox="0 0 11.314 11.314">
+                                <g id="그룹_1513" data-name="그룹 1513" transform="translate(-442.649 -1001.97) rotate(45)">
+                                    <line id="선_691" data-name="선 691" y2="12" transform="translate(1029.5 389.5)"
+                                        fill="none" stroke="#000" stroke-linecap="round" stroke-width="2" />
+                                    <line id="선_692" data-name="선 692" y2="12"
+                                        transform="translate(1035.5 395.5) rotate(90)" fill="none" stroke="#000"
+                                        stroke-linecap="round" stroke-width="2" />
+                                </g>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+                <div class="popupArticleCategori authorityDivision">계정정보</div>
+                <div class="popupArticleBox authorityDivision">
+                    <div class="popupArticleDouble">
+                        <label for="" class="popupArticleLabel">아이디</label>
+                        <div class="popupIdBox">
+                            <input autocomplete="off" name="user_id" type="text"
+                                class="popupArticleinput createID length100 essential">
+                            <div class="idchecker" onClick="id_overlap_check_hr()">중복확인</div>
+                        </div>
+                    </div>
+                    <div class="popupArticleDouble">
+                        <label for="" class="popupArticleLabel">비밀번호</label>
+                        <input autocomplete="off" name="pw" type="text" class="popupArticleinput" readonly value="0000">
+                    </div>
+                </div>
+            </div>
+            <div class="popupFooter">
+                <div class="btnModules btnModulesCreate">등록</div>
+                <div class="btnModules popupCloseBtn">닫기</div>
+            </div>
+        </div>
+    </form>
 </div>
 
 
@@ -308,141 +334,155 @@
 
 
 <div class="popupAreaModules">
-	<div class="popupBgModules"></div>
-	<form method="post" action="{% url 'HR:member_edit' %}" class="editPopupContainer popupContainerDouble memberEditForm" enctype="multipart/form-data">
-		{% csrf_token %}
-		<div class="popupHeader">
-			<div class="popupTitle">직원수정</div>
-		</div>
-		<div class="popupBody">
-			<div class="popupSection">
-				<div class="popupArticleCategori">기본정보</div>
-				<div class="popupArticleBox">
-					<div class="popupArticleDouble">
-						<label for="" class="popupArticleLabel"><span class="importantStar">*</span>이름</label>
-						<input autocomplete="off" name="name" type="text" class="popupArticleinput hrName length100 editEssential">
-					</div>
-					<div class="popupArticleDouble">
-						<label for="" class="popupArticleLabel"><span class="importantStar">*</span>담당업무</label>
-						<select name="role" id="editRole" class="popupArticleinput hrRole">
-						  <option value="">담당업무 선택</option>
-						  <option value="임시">임시</option>
-						  <option value="용역">용역</option>
-						  <option value="운전원">운전원</option>
-						  <option value="팀장">팀장</option>
-						  <option value="관리자">관리자</option>
-						  <option value="최고관리자">최고관리자</option>
-						</select>
-					</div>
-				</div>
-				<div class="popupArticleBox">
-					<div class="popupArticleDouble">
-						<label for="" class="popupArticleLabel"><span class="importantStar">*</span>입사일</label>
-						<input autocomplete="off"name="entering_date" type="date" max="9999-12-31" class="popupArticleinput hrEntering length100 editEssential">
-					</div>
-					<div class="popupArticleDouble popupArticleUseEdit">
-						<label for="" class="popupArticleLabel"><span class="importantStar">*</span>사용여부</label>
-						<input name="use" value="사용" type="radio" class="hrUse" id="hrUse">
-						<label for="hrUse">사용</label>
-						<input name="use" value="미사용" type="radio" class="hrUse" id="hrUnuse">
-						<label for="hrUnuse">미사용</label>
-					</div>
-				</div>
-				<div class="popupArticleBox">
-					<div class="popupArticleDouble">
-						<label for="" class="popupArticleLabel"><span class="importantStar">*</span>생년월일</label>
-						<input autocomplete="off"name="birthdate" type="date" class="popupArticleinput hrBirth length100 editEssential" placeholder="ex)19990101">
-					</div>
-					<div class="popupArticleDouble">
-						<label for="" class="popupArticleLabel"><span class="importantStar">*</span>휴대폰번호</label>
-						<input autocomplete="off"name="phone_num" type="text" class="popupArticleinput hrPhone length100 editEssential makeHyphen" placeholder="'-'을 생략하고 입력해 주세요.">
-					</div>
-				</div>
-				<div class="popupArticleBox">
-					<div class="popupArticleDouble">
-						<label for="" class="popupArticleLabel">비상연락망</label>
-						<input autocomplete="off"name="emergency1" type="text" class="popupArticleinput hrEmergency length100 makeHyphen" placeholder="'-'을 생략하고 입력해 주세요.">
-					</div>
-					<div class="popupArticleDouble">
-						<label for="" class="popupArticleLabel">관계</label>
-						<input autocomplete="off"name="emergency2" type="text" class="popupArticleinput hrReation length100" placeholder="비상연락망 전화번호와 관계(부,모,배우자 등)">
-					</div>
-				</div>
-				<div class="popupArticleBox">
-					<div class="popupArticleDouble">
-						<label for="" class="popupArticleLabel"><span class="importantStar">*</span>주소</label>
-						<input autocomplete="off"name="address" type="text" class="popupArticleinput hrAddress length100 editEssential">
-					</div>
-					<div class="popupArticleDouble">
-						<label for="" class="popupArticleLabel">비고</label>
-						<input autocomplete="off"name="note" type="text" class="popupArticleinput hrBlanck length100">
-					</div>
-				</div>
-				<div class="popupArticleCategori">운전정보</div>
-				<div class="popupArticleBox">
-					<div class="popupArticleDouble">
-						<label for="" class="popupArticleLabel">면허증</label>
-						<div class="popupArticleFileDouble">
-							<label for="LicenseFileEdit">파일 선택</label>
-							<input autocomplete="off" name="license_file" type="file" id="LicenseFileEdit" class="LicenseFileInputEdit">
-							<input autocomplete="off" name="license" type="text" class="LicenseFileTextEdit" readonly>
-							<svg class="fileDeleteBtn" xmlns="http://www.w3.org/2000/svg" width="11.314" height="11.314"
-								viewBox="0 0 11.314 11.314">
-								<g id="그룹_1513" data-name="그룹 1513" transform="translate(-442.649 -1001.97) rotate(45)">
-									<line id="선_691" data-name="선 691" y2="12" transform="translate(1029.5 389.5)"
-										fill="none" stroke="#000" stroke-linecap="round" stroke-width="2" />
-									<line id="선_692" data-name="선 692" y2="12"
-										transform="translate(1035.5 395.5) rotate(90)" fill="none" stroke="#000"
-										stroke-linecap="round" stroke-width="2" />
-								</g>
-							</svg>
-						</div>
-					</div>
-					<div class="popupArticleDouble">
-						<label for="" class="popupArticleLabel">버스운전 자격증</label>
-						<div class="popupArticleFileDouble">
-							<label for="DriverLicenseFileEdit">파일 선택</label>
-							<input autocomplete="off" name="bus_license_file" type="file" id="DriverLicenseFileEdit" class="DriverLicenseFileInputEdit">
-							<input autocomplete="off" name="bus_license" type="text" class="DriverLicenseFileTextEdit" readonly>
-							<svg class="fileDeleteBtn" xmlns="http://www.w3.org/2000/svg" width="11.314" height="11.314"
-								viewBox="0 0 11.314 11.314">
-								<g id="그룹_1513" data-name="그룹 1513" transform="translate(-442.649 -1001.97) rotate(45)">
-									<line id="선_691" data-name="선 691" y2="12" transform="translate(1029.5 389.5)"
-										fill="none" stroke="#000" stroke-linecap="round" stroke-width="2" />
-									<line id="선_692" data-name="선 692" y2="12"
-										transform="translate(1035.5 395.5) rotate(90)" fill="none" stroke="#000"
-										stroke-linecap="round" stroke-width="2" />
-								</g>
-							</svg>
-						</div>
-					</div>
-				</div>
-				<div class="popupArticleCategori authorityDivision">계정정보</div>
-				<div class="popupArticleBox authorityDivision">
-					<div class="popupArticleDouble">
-						<label for="" class="popupArticleLabel">아이디</label>
-						<div class="popupIdBox">
-							<input autocomplete="off" type="text" class="popupArticleinput hrID" readonly>
-						</div>
-					</div>
-					<div class="popupArticleDouble">
-						<label for="" class="popupArticleLabel">비밀번호</label>
-						<div class="hrPW">
-						  <svg xmlns="http://www.w3.org/2000/svg" width="18.012" height="18" viewBox="0 0 18.012 18">
-							<path id="Icon_awesome-redo" data-name="Icon awesome-redo" d="M18.146,0H16.452a.429.429,0,0,0-.429.449L16.167,3.4a8.857,8.857,0,1,0-.812,12.313.429.429,0,0,0,.017-.622l-1.214-1.214a.429.429,0,0,0-.585-.02,6.286,6.286,0,1,1,1.065-8.225l-3.626-.174a.429.429,0,0,0-.449.429V7.584a.429.429,0,0,0,.429.429h7.155a.429.429,0,0,0,.429-.429V.429A.429.429,0,0,0,18.146,0Z" transform="translate(-0.563)" fill="#fff"/>
-						  </svg>          
-						  <span>비밀번호 초기화</span>
-						</div>
-					</div>
-				</div>
-				<input name="id" type="hidden" class="sendToHidden">
-			</div>
-			<div class="popupFooter">
-				<div class="btnModules btnModulesCreate memberEditSaveBtn">저장</div>
-				<div class="btnModules popupCloseBtn">닫기</div>
-			</div>
-		</div>
-	</form>
+    <div class="popupBgModules"></div>
+    <form method="post" action="{% url 'HR:member_edit' %}"
+        class="editPopupContainer popupContainerDouble memberEditForm" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="popupHeader">
+            <div class="popupTitle">직원수정</div>
+        </div>
+        <div class="popupBody">
+            <div class="popupSection">
+                <div class="popupArticleCategori">기본정보</div>
+                <div class="popupArticleBox">
+                    <div class="popupArticleDouble">
+                        <label for="" class="popupArticleLabel"><span class="importantStar">*</span>이름</label>
+                        <input autocomplete="off" name="name" type="text"
+                            class="popupArticleinput hrName length100 editEssential">
+                    </div>
+                    <div class="popupArticleDouble">
+                        <label for="" class="popupArticleLabel"><span class="importantStar">*</span>담당업무</label>
+                        <select name="role" id="editRole" class="popupArticleinput hrRole">
+                            <option value="">담당업무 선택</option>
+                            <option value="임시">임시</option>
+                            <option value="용역">용역</option>
+                            <option value="운전원">운전원</option>
+                            <option value="팀장">팀장</option>
+                            <option value="관리자">관리자</option>
+                            <option value="최고관리자">최고관리자</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="popupArticleBox">
+                    <div class="popupArticleDouble">
+                        <label for="" class="popupArticleLabel"><span class="importantStar">*</span>입사일</label>
+                        <input autocomplete="off" name="entering_date" type="date" max="9999-12-31"
+                            class="popupArticleinput hrEntering length100 editEssential">
+                    </div>
+                    <div class="popupArticleDouble popupArticleUseEdit">
+                        <label for="" class="popupArticleLabel"><span class="importantStar">*</span>사용여부</label>
+                        <input name="use" value="사용" type="radio" class="hrUse" id="hrUse">
+                        <label for="hrUse">사용</label>
+                        <input name="use" value="미사용" type="radio" class="hrUse" id="hrUnuse">
+                        <label for="hrUnuse">미사용</label>
+                    </div>
+                </div>
+                <div class="popupArticleBox">
+                    <div class="popupArticleDouble">
+                        <label for="" class="popupArticleLabel"><span class="importantStar">*</span>생년월일</label>
+                        <input autocomplete="off" name="birthdate" type="date"
+                            class="popupArticleinput hrBirth length100 editEssential" placeholder="ex)19990101">
+                    </div>
+                    <div class="popupArticleDouble">
+                        <label for="" class="popupArticleLabel"><span class="importantStar">*</span>휴대폰번호</label>
+                        <input autocomplete="off" name="phone_num" type="text"
+                            class="popupArticleinput hrPhone length100 editEssential makeHyphen"
+                            placeholder="'-'을 생략하고 입력해 주세요.">
+                    </div>
+                </div>
+                <div class="popupArticleBox">
+                    <div class="popupArticleDouble">
+                        <label for="" class="popupArticleLabel">비상연락망</label>
+                        <input autocomplete="off" name="emergency1" type="text"
+                            class="popupArticleinput hrEmergency length100 makeHyphen" placeholder="'-'을 생략하고 입력해 주세요.">
+                    </div>
+                    <div class="popupArticleDouble">
+                        <label for="" class="popupArticleLabel">관계</label>
+                        <input autocomplete="off" name="emergency2" type="text"
+                            class="popupArticleinput hrReation length100" placeholder="비상연락망 전화번호와 관계(부,모,배우자 등)">
+                    </div>
+                </div>
+                <div class="popupArticleBox">
+                    <div class="popupArticleDouble">
+                        <label for="" class="popupArticleLabel"><span class="importantStar">*</span>주소</label>
+                        <input autocomplete="off" name="address" type="text"
+                            class="popupArticleinput hrAddress length100 editEssential">
+                    </div>
+                    <div class="popupArticleDouble">
+                        <label for="" class="popupArticleLabel">비고</label>
+                        <input autocomplete="off" name="note" type="text" class="popupArticleinput hrBlanck length100">
+                    </div>
+                </div>
+                <div class="popupArticleCategori">운전정보</div>
+                <div class="popupArticleBox">
+                    <div class="popupArticleDouble">
+                        <label for="" class="popupArticleLabel">면허증</label>
+                        <div class="popupArticleFileDouble">
+                            <label for="LicenseFileEdit">파일 선택</label>
+                            <input autocomplete="off" name="license_file" type="file" id="LicenseFileEdit"
+                                class="LicenseFileInputEdit">
+                            <input autocomplete="off" name="license" type="text" class="LicenseFileTextEdit" readonly>
+                            <svg class="fileDeleteBtn" xmlns="http://www.w3.org/2000/svg" width="11.314" height="11.314"
+                                viewBox="0 0 11.314 11.314">
+                                <g id="그룹_1513" data-name="그룹 1513" transform="translate(-442.649 -1001.97) rotate(45)">
+                                    <line id="선_691" data-name="선 691" y2="12" transform="translate(1029.5 389.5)"
+                                        fill="none" stroke="#000" stroke-linecap="round" stroke-width="2" />
+                                    <line id="선_692" data-name="선 692" y2="12"
+                                        transform="translate(1035.5 395.5) rotate(90)" fill="none" stroke="#000"
+                                        stroke-linecap="round" stroke-width="2" />
+                                </g>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="popupArticleDouble">
+                        <label for="" class="popupArticleLabel">버스운전 자격증</label>
+                        <div class="popupArticleFileDouble">
+                            <label for="DriverLicenseFileEdit">파일 선택</label>
+                            <input autocomplete="off" name="bus_license_file" type="file" id="DriverLicenseFileEdit"
+                                class="DriverLicenseFileInputEdit">
+                            <input autocomplete="off" name="bus_license" type="text" class="DriverLicenseFileTextEdit"
+                                readonly>
+                            <svg class="fileDeleteBtn" xmlns="http://www.w3.org/2000/svg" width="11.314" height="11.314"
+                                viewBox="0 0 11.314 11.314">
+                                <g id="그룹_1513" data-name="그룹 1513" transform="translate(-442.649 -1001.97) rotate(45)">
+                                    <line id="선_691" data-name="선 691" y2="12" transform="translate(1029.5 389.5)"
+                                        fill="none" stroke="#000" stroke-linecap="round" stroke-width="2" />
+                                    <line id="선_692" data-name="선 692" y2="12"
+                                        transform="translate(1035.5 395.5) rotate(90)" fill="none" stroke="#000"
+                                        stroke-linecap="round" stroke-width="2" />
+                                </g>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+                <div class="popupArticleCategori authorityDivision">계정정보</div>
+                <div class="popupArticleBox authorityDivision">
+                    <div class="popupArticleDouble">
+                        <label for="" class="popupArticleLabel">아이디</label>
+                        <div class="popupIdBox">
+                            <input autocomplete="off" type="text" class="popupArticleinput hrID" readonly>
+                        </div>
+                    </div>
+                    <div class="popupArticleDouble">
+                        <label for="" class="popupArticleLabel">비밀번호</label>
+                        <div class="hrPW">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="18.012" height="18" viewBox="0 0 18.012 18">
+                                <path id="Icon_awesome-redo" data-name="Icon awesome-redo"
+                                    d="M18.146,0H16.452a.429.429,0,0,0-.429.449L16.167,3.4a8.857,8.857,0,1,0-.812,12.313.429.429,0,0,0,.017-.622l-1.214-1.214a.429.429,0,0,0-.585-.02,6.286,6.286,0,1,1,1.065-8.225l-3.626-.174a.429.429,0,0,0-.449.429V7.584a.429.429,0,0,0,.429.429h7.155a.429.429,0,0,0,.429-.429V.429A.429.429,0,0,0,18.146,0Z"
+                                    transform="translate(-0.563)" fill="#fff" />
+                            </svg>
+                            <span>비밀번호 초기화</span>
+                        </div>
+                    </div>
+                </div>
+                <input name="id" type="hidden" class="sendToHidden">
+            </div>
+            <div class="popupFooter">
+                <div class="btnModules btnModulesCreate memberEditSaveBtn">저장</div>
+                <div class="btnModules popupCloseBtn">닫기</div>
+            </div>
+        </div>
+    </form>
 </div>
 
 <div class="popupAreaModules" id="excelPopup">
@@ -456,7 +496,8 @@
             <div class="popupSection excelUploadPopupSection">
                 <div class="popupArticleFileDouble excelUploadPopupArticleFileDouble popupArticleFileDoubleExcel">
                     <label for="excelUploadFile" class="popupArticleLabel">파일선택</label>
-                    <input autocomplete="off" name="" type="file" id="excelUploadFile" class="excelUploadFile" onchange="readExcel()">
+                    <input autocomplete="off" name="" type="file" id="excelUploadFile" class="excelUploadFile"
+                        onchange="readExcel()">
                     <input autocomplete="off" name="" type="text" class="excelUploadFileText" readonly>
                     <svg class="fileDeleteBtn" xmlns="http://www.w3.org/2000/svg" width="11.314" height="11.314"
                         viewBox="0 0 11.314 11.314">
@@ -497,19 +538,19 @@
 
 {% block script %}
 <script>
-	{% autoescape off %}
-	const regDatas = {{data_list}};
-	console.log("DATA", {{data_list}});
-	{% endautoescape %}
+    {% autoescape off %}
+    const regDatas = {{ data_list }};
+    console.log("DATA", {{ data_list }});
+    {% endautoescape %}
 
-	function openLisence(url, type) {
-		if(type){
-			window.open(url, "면허증", "width=630, height=891")
-		} else{
-			window.open(url, "버스운전 자격증", "width=630, height=891")
-		}
-	}
-	const excelDownloadUrl = '{% url "HR:member_download" %}'
+    function openLisence(url, type) {
+        if (type) {
+            window.open(url, "면허증", "width=630, height=891")
+        } else {
+            window.open(url, "버스운전 자격증", "width=630, height=891")
+        }
+    }
+    const excelDownloadUrl = '{% url "HR:member_download" %}'
 </script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.15.5/xlsx.full.min.js"></script>
 <script src="{% static 'js/hr/hrListPopup.js' %}"></script>
