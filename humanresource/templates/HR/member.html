@@ -214,9 +214,9 @@
                     </div>
                     <div class="popupArticleDouble popupArticleUse">
                         <label for="" class="popupArticleLabel"><span class="importantStar">*</span>사용여부</label>
-                        <input type="radio" value="사용" name="use" id="use" checked>
+                        <input class="inputUse" type="radio" value="사용" name="use" id="use" checked>
                         <label for="use">사용</label>
-                        <input type="radio" value="미사용" name="use" id="unUse">
+                        <input class="inputUse" type="radio" value="미사용" name="use" id="unUse">
                         <label for="unUse">미사용</label>
                     </div>
                 </div>
@@ -316,6 +316,14 @@
                         </select>
                     </div>
                 </div>
+                <div class="popupArticleCategori">진행상황 견습노선 및 내용</div>
+                <div class="popupArticleBox popupArticleBoxDoubleHeight">
+                    <textarea class="popupArticleBoxTextarea" name="apprenticeship_note"></textarea>
+                </div>
+                <div class="popupArticleCategori">퇴사 사유</div>
+                <div class="popupArticleBox popupArticleBoxDoubleHeight">
+                    <textarea class="popupArticleBoxTextarea" name="leave_reason"></textarea>
+                </div>
                 <div class="popupArticleCategori">운전정보</div>
                 <div class="popupArticleBox">
                     <div class="popupArticleDouble">
@@ -389,7 +397,7 @@
 <div class="popupAreaModules">
     <div class="popupBgModules"></div>
     <form method="post" action="{% url 'HR:member_edit' %}"
-        class="editPopupContainer popupContainerDouble memberEditForm" enctype="multipart/form-data">
+        class="popupContainer popupContainerDouble memberEditForm" enctype="multipart/form-data">
         {% csrf_token %}
         <div class="popupHeader">
             <div class="popupTitle">직원수정</div>
@@ -424,9 +432,9 @@
                     </div>
                     <div class="popupArticleDouble popupArticleUseEdit">
                         <label for="" class="popupArticleLabel"><span class="importantStar">*</span>사용여부</label>
-                        <input name="use" value="사용" type="radio" class="hrUse" id="hrUse">
+                        <input name="use" value="사용" type="radio" class="inputUse hrUse" id="hrUse">
                         <label for="hrUse">사용</label>
-                        <input name="use" value="미사용" type="radio" class="hrUse" id="hrUnuse">
+                        <input name="use" value="미사용" type="radio" class="inputUse hrUse" id="hrUnuse">
                         <label for="hrUnuse">미사용</label>
                     </div>
                 </div>
@@ -522,6 +530,14 @@
                             <option value="부장">부장</option>
                         </select>
                     </div>
+                </div>
+                <div class="popupArticleCategori">진행상황 견습노선 및 내용</div>
+                <div class="popupArticleBox popupArticleBoxDoubleHeight">
+                    <textarea id="apprenticeship_note" class="popupArticleBoxTextarea" name="apprenticeship_note"></textarea>
+                </div>
+                <div class="popupArticleCategori">퇴사 사유</div>
+                <div class="popupArticleBox popupArticleBoxDoubleHeight">
+                    <textarea id="leave_reason" class="popupArticleBoxTextarea" name="leave_reason"></textarea>
                 </div>
                 <div class="popupArticleCategori">운전정보</div>
                 <div class="popupArticleBox">

@@ -49,7 +49,9 @@ const memberFormCreate = document.querySelector(".memberFormCreate")
 const essential = document.querySelectorAll(".essential")
 const authorityDivision = document.querySelectorAll(".authorityDivision")
 
-// 추가된 input 항목 8개
+//const inputUse = document.querySelectorAll(".inputUse")
+
+// 추가된 input 항목
 const interview_date = document.querySelector("#interview_date")
 const contract_date = document.querySelector("#contract_date")
 const contract_renewal_date = document.querySelector("#contract_renewal_date")
@@ -58,6 +60,8 @@ const renewal_reason = document.querySelector("#renewal_reason")
 const apply_path = document.querySelector("#apply_path")
 const career = document.querySelector("#career")
 const position_option = document.querySelectorAll("#position option")
+const apprenticeship_note = document.querySelector("#apprenticeship_note")
+const leave_reason = document.querySelector("#leave_reason")
 
 
 //직원상세
@@ -66,51 +70,55 @@ for (i = 0; i < editMember.length; i++) {
 }
 
 function openDetailPopup() {
+  const data = regDatas[this.className];
+
   popupAreaModules[1].style.display = 'block'
   
   for (i = 0; i < hrRole.length; i++) {
-    if (hrRole[i].innerText == regDatas[this.className].role) {
+    if (hrRole[i].innerText == data.role) {
       hrRole[i].selected = true;
     }
   }
   
-  hrName.value = regDatas[this.className].name;
-  hrEntering.value = regDatas[this.className].entering_date;
-  hrPhone.value = regDatas[this.className].phone_num;
-  hrBirth.value = regDatas[this.className].birthdate;
-  hrAddress.value = regDatas[this.className].address;
-  if(regDatas[this.className].emergency !== ""){
-    hrEmergency.value = regDatas[this.className].emergency.split(" ")[0];
-    hrReation.value = regDatas[this.className].emergency.split(" ")[1];
+  hrName.value = data.name;
+  hrEntering.value = data.entering_date;
+  hrPhone.value = data.phone_num;
+  hrBirth.value = data.birthdate;
+  hrAddress.value = data.address;
+  if(data.emergency !== ""){
+    hrEmergency.value = data.emergency.split(" ")[0];
+    hrReation.value = data.emergency.split(" ")[1];
   }else{
     hrEmergency.value = ""
     hrReation.value = ""
   }
-  if(regDatas[this.className].use === "사용"){
+  if(data.use === "사용"){
     hrUse[0].checked = true
-  }else if (regDatas[this.className].use === "미사용"){
+  }else if (data.use === "미사용"){
     hrUse[1].checked = true
   }
-  hrBlanck.value = regDatas[this.className].note;
+  hrBlanck.value = data.note;
   
   authorityDivision[2].style.display = "block"
   authorityDivision[3].style.display = "flex"
-  hrID.value = regDatas[this.className].id
+  hrID.value = data.id
   
-  LicenseFileTextEdit.value = regDatas[this.className].license
-  DriverLicenseFileTextEdit.value = regDatas[this.className].bus_license
+  LicenseFileTextEdit.value = data.license
+  DriverLicenseFileTextEdit.value = data.bus_license
   sendToHidden.value = this.parentNode.className;
   
-  interview_date.value = regDatas[this.className].interview_date
-  contract_date.value = regDatas[this.className].contract_date
-  contract_renewal_date.value = regDatas[this.className].contract_renewal_date
-  contract_condition.value = regDatas[this.className].contract_condition
-  renewal_reason.value = regDatas[this.className].renewal_reason
-  apply_path.value = regDatas[this.className].apply_path
-  career.value = regDatas[this.className].career
+  interview_date.value = data.interview_date
+  contract_date.value = data.contract_date
+  contract_renewal_date.value = data.contract_renewal_date
+  contract_condition.value = data.contract_condition
+  renewal_reason.value = data.renewal_reason
+  apply_path.value = data.apply_path
+  career.value = data.career
+  apprenticeship_note.value = data.apprenticeship_note ? data.apprenticeship_note : '';
+  leave_reason.value = data.leave_reason ? data.leave_reason : '';
 
   for (i = 0; i < position_option.length; i++) {
-    if (position_option[i].innerText == regDatas[this.className].position) {
+    if (position_option[i].innerText == data.position) {
       position_option[i].selected = true;
     }
   }
