@@ -14,6 +14,16 @@ class MemberForm(forms.ModelForm):
             'phone_num',
             'entering_date',
             'note',
+            'interview_date',
+            'contract_date',
+            'contract_renewal_date',
+            'contract_condition',
+            'renewal_reason',
+            'apply_path',
+            'career',
+            'position',
+            'apprenticeship_note',
+            'leave_reason',
         ]
 
 # class HRForm(forms.ModelForm):
