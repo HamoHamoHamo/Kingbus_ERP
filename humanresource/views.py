@@ -143,6 +143,8 @@ class MemberList(generic.ListView):
                 'apply_path' : member.apply_path,
                 'career' : member.career,
                 'position' : member.position,
+                'apprenticeship_note' : member.apprenticeship_note,
+                'leave_reason' : member.leave_reason,
             })
         context['data_list'] = data_list
         context['name'] = self.request.GET.get('name', '')
@@ -203,7 +205,7 @@ def member_create(request):
                 member_file_save(bus_license, member, '버스운전 자격증', creator)
 
 
-            return redirect('HR:member')
+            return redirect(request.META.get('HTTP_REFERER', 'redirect_if_referer_not_found'))
     else:
         return HttpResponseNotAllowed(['post'])
 

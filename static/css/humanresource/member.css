@@ -180,6 +180,17 @@ td:nth-child(13) {
 
 
 /*popup*/
+
+.popupContainer {
+    max-height: 80rem;
+}
+
+.popupBody {
+    height: 100%;
+    overflow: scroll;
+    display: block;
+}
+
 .popupContainerDouble {
     width: 84rem;
 }
@@ -246,12 +257,13 @@ td:nth-child(13) {
     visibility: hidden;
 }
 
-.editPopupContainer {
-    position: fixed;
-    top: 50%;
-    left: calc(50% + 11rem);
-    background-color: white;
-    transform: translate(-50%, -50%);
+.popupArticleBoxDoubleHeight {
+    height: 5.6rem;
+}
+
+.popupArticleBoxTextarea {
+    width: 100%;
+    height: 100%;
 }
 
 .hrPW {
