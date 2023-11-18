@@ -8,7 +8,7 @@ class Member(models.Model):
         if self.user_id == "":
             self.user_id = None
             
-    user_id = models.CharField(max_length=100, verbose_name='사용자id', unique=True, null=True, blank=True)
+    user_id = models.CharField(max_length=100, verbose_name='사용자id', null=True, blank=True)
     password = models.TextField(verbose_name='비밀번호', null=False, blank=True)
     name = models.CharField(verbose_name='이름', max_length=100, null=False)
     role = models.CharField(verbose_name='업무', max_length=100, null=False)
