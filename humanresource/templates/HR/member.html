@@ -15,10 +15,6 @@
 {% endblock %}
 
 {% block content %}
-
-
-
-
 <div class="searchAreaBox">
     <form action="">
         <div class="searchTool">
@@ -263,6 +259,63 @@
                             class="popupArticleinput PopupDataInputBranck length100">
                     </div>
                 </div>
+                <div class="popupArticleBox">
+                    <div class="popupArticleDouble">
+                        <label for="" class="popupArticleLabel">면접일</label>
+                        <input autocomplete="off" name="interview_date" type="date"
+                            class="popupArticleinput length100">
+                    </div>
+                    <div class="popupArticleDouble">
+                        <label for="" class="popupArticleLabel">계약일</label>
+                        <input autocomplete="off" name="contract_date" type="date"
+                            class="popupArticleinput length100">
+                    </div>
+                </div>
+                <div class="popupArticleBox">
+                    <div class="popupArticleDouble">
+                        <label for="" class="popupArticleLabel">근로계약갱신일</label>
+                        <input autocomplete="off" name="contract_renewal_date" type="date"
+                            class="popupArticleinput length100">
+                    </div>
+                    <div class="popupArticleDouble">
+                        <label for="" class="popupArticleLabel">근로계약조건</label>
+                        <input autocomplete="off" name="contract_condition" type="text"
+                            class="popupArticleinput length100">
+                    </div>
+                </div>
+                <div class="popupArticleBox">
+                    <div class="popupArticleDouble">
+                        <label for="" class="popupArticleLabel">갱신사유</label>
+                        <input autocomplete="off" name="renewal_reason" type="text"
+                            class="popupArticleinput length100">
+                    </div>
+                    <div class="popupArticleDouble">
+                        <label for="" class="popupArticleLabel">지원경로</label>
+                        <input autocomplete="off" name="apply_path" type="text"
+                            class="popupArticleinput length100">
+                    </div>
+                </div>
+                <div class="popupArticleBox">
+                    <div class="popupArticleDouble">
+                        <label for="" class="popupArticleLabel">경력사항</label>
+                        <input autocomplete="off" name="career" type="text"
+                            class="popupArticleinput length100">
+                    </div>
+                    <div class="popupArticleDouble">
+                        <label for="" class="popupArticleLabel">직급</label>
+                        <select name="position" class="popupArticleinput PopupDataInputWork">
+                            <option value="">직급 선택</option>
+                            <option value="인턴">인턴</option>
+                            <option value="사원">사원</option>
+                            <option value="주임">주임</option>
+                            <option value="계장">계장</option>
+                            <option value="대리">대리</option>
+                            <option value="과장">과장</option>
+                            <option value="차장">차장</option>
+                            <option value="부장">부장</option>
+                        </select>
+                    </div>
+                </div>
                 <div class="popupArticleCategori">운전정보</div>
                 <div class="popupArticleBox">
                     <div class="popupArticleDouble">
@@ -411,6 +464,63 @@
                     <div class="popupArticleDouble">
                         <label for="" class="popupArticleLabel">비고</label>
                         <input autocomplete="off" name="note" type="text" class="popupArticleinput hrBlanck length100">
+                    </div>
+                </div>
+                <div class="popupArticleBox">
+                    <div class="popupArticleDouble">
+                        <label for="" class="popupArticleLabel">면접일</label>
+                        <input autocomplete="off" id="interview_date" name="interview_date" type="date"
+                            class="popupArticleinput length100">
+                    </div>
+                    <div class="popupArticleDouble">
+                        <label for="" class="popupArticleLabel">계약일</label>
+                        <input autocomplete="off" id="contract_date" name="contract_date" type="date"
+                            class="popupArticleinput length100">
+                    </div>
+                </div>
+                <div class="popupArticleBox">
+                    <div class="popupArticleDouble">
+                        <label for="" class="popupArticleLabel">근로계약갱신일</label>
+                        <input autocomplete="off" id="contract_renewal_date" name="contract_renewal_date" type="date"
+                            class="popupArticleinput length100">
+                    </div>
+                    <div class="popupArticleDouble">
+                        <label for="" class="popupArticleLabel">근로계약조건</label>
+                        <input autocomplete="off" id="contract_condition" name="contract_condition" type="text"
+                            class="popupArticleinput length100">
+                    </div>
+                </div>
+                <div class="popupArticleBox">
+                    <div class="popupArticleDouble">
+                        <label for="" class="popupArticleLabel">갱신사유</label>
+                        <input autocomplete="off" id="renewal_reason" name="renewal_reason" type="text"
+                            class="popupArticleinput length100">
+                    </div>
+                    <div class="popupArticleDouble">
+                        <label for="" class="popupArticleLabel">지원경로</label>
+                        <input autocomplete="off" id="apply_path" name="apply_path" type="text"
+                            class="popupArticleinput length100">
+                    </div>
+                </div>
+                <div class="popupArticleBox">
+                    <div class="popupArticleDouble">
+                        <label for="" class="popupArticleLabel">경력사항</label>
+                        <input autocomplete="off" id="career" name="career" type="text"
+                            class="popupArticleinput length100">
+                    </div>
+                    <div class="popupArticleDouble">
+                        <label for="" class="popupArticleLabel">직급</label>
+                        <select name="position" id="position" class="popupArticleinput PopupDataInputWork">
+                            <option value="">직급 선택</option>
+                            <option value="인턴">인턴</option>
+                            <option value="사원">사원</option>
+                            <option value="주임">주임</option>
+                            <option value="계장">계장</option>
+                            <option value="대리">대리</option>
+                            <option value="과장">과장</option>
+                            <option value="차장">차장</option>
+                            <option value="부장">부장</option>
+                        </select>
                     </div>
                 </div>
                 <div class="popupArticleCategori">운전정보</div>

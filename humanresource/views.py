@@ -134,7 +134,15 @@ class MemberList(generic.ListView):
                 'emergency': member.emergency,
                 'license_id': license_id,
                 'bus_license_id': bus_license_id,
-                'use': member.use
+                'use': member.use,
+                'interview_date' : member.interview_date,
+                'contract_date' : member.contract_date,
+                'contract_renewal_date' : member.contract_renewal_date,
+                'contract_condition' : member.contract_condition,
+                'renewal_reason' : member.renewal_reason,
+                'apply_path' : member.apply_path,
+                'career' : member.career,
+                'position' : member.position,
             })
         context['data_list'] = data_list
         context['name'] = self.request.GET.get('name', '')
@@ -251,6 +259,16 @@ def member_edit(request):
             member.birthdate = member_form.cleaned_data['birthdate']
             member.address = member_form.cleaned_data['address']
             member.note = member_form.cleaned_data['note']
+            member.interview_date = member_form.cleaned_data['interview_date']
+            member.contract_date = member_form.cleaned_data['contract_date']
+            member.contract_renewal_date = member_form.cleaned_data['contract_renewal_date']
+            member.contract_condition = member_form.cleaned_data['contract_condition']
+            member.renewal_reason = member_form.cleaned_data['renewal_reason']
+            member.apply_path = member_form.cleaned_data['apply_path']
+            member.career = member_form.cleaned_data['career']
+            member.position = member_form.cleaned_data['position']
+            member.apprenticeship_note = member_form.cleaned_data['apprenticeship_note']
+            member.leave_reason = member_form.cleaned_data['leave_reason']
             member.emergency = request.POST.get('emergency1', '') + ' ' + request.POST.get('emergency2', '')
             member.use = request.POST.get('use')
             member.authority = req_auth

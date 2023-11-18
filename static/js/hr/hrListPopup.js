@@ -49,6 +49,16 @@ const memberFormCreate = document.querySelector(".memberFormCreate")
 const essential = document.querySelectorAll(".essential")
 const authorityDivision = document.querySelectorAll(".authorityDivision")
 
+// 추가된 input 항목 8개
+const interview_date = document.querySelector("#interview_date")
+const contract_date = document.querySelector("#contract_date")
+const contract_renewal_date = document.querySelector("#contract_renewal_date")
+const contract_condition = document.querySelector("#contract_condition")
+const renewal_reason = document.querySelector("#renewal_reason")
+const apply_path = document.querySelector("#apply_path")
+const career = document.querySelector("#career")
+const position_option = document.querySelectorAll("#position option")
+
 
 //직원상세
 for (i = 0; i < editMember.length; i++) {
@@ -57,11 +67,6 @@ for (i = 0; i < editMember.length; i++) {
 
 function openDetailPopup() {
   popupAreaModules[1].style.display = 'block'
-
-  for (i = 0; i < hrRole.length; i++){
-    hrRole[i].style.display = "block"
-  };
-
   
   for (i = 0; i < hrRole.length; i++) {
     if (hrRole[i].innerText == regDatas[this.className].role) {
@@ -95,6 +100,20 @@ function openDetailPopup() {
   LicenseFileTextEdit.value = regDatas[this.className].license
   DriverLicenseFileTextEdit.value = regDatas[this.className].bus_license
   sendToHidden.value = this.parentNode.className;
+  
+  interview_date.value = regDatas[this.className].interview_date
+  contract_date.value = regDatas[this.className].contract_date
+  contract_renewal_date.value = regDatas[this.className].contract_renewal_date
+  contract_condition.value = regDatas[this.className].contract_condition
+  renewal_reason.value = regDatas[this.className].renewal_reason
+  apply_path.value = regDatas[this.className].apply_path
+  career.value = regDatas[this.className].career
+
+  for (i = 0; i < position_option.length; i++) {
+    if (position_option[i].innerText == regDatas[this.className].position) {
+      position_option[i].selected = true;
+    }
+  }
 }
 
 
