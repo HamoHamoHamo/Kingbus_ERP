@@ -88,7 +88,7 @@ function openDetailPopup() {
   }
   if(regDatas[this.className].use === "사용"){
     hrUse[0].checked = true
-  }else{
+  }else if (regDatas[this.className].use === "미사용"){
     hrUse[1].checked = true
   }
   hrBlanck.value = regDatas[this.className].note;
