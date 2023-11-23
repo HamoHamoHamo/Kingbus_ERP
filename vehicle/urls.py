@@ -12,6 +12,9 @@ urlpatterns = [
     path('list/file/download', views.vehicle_file_download, name='vehicle_file_download'),
 	path('list/upload', views.vehicle_upload, name='vehicle_upload'),
     path('list/image/<str:file_id>', views.document_image, name='vehicle_document_img'),
+    path('list/image/<str:file_id>', views.document_image, name='vehicle_document_img'),
+    path('refueling', views.RefuelingList.as_view(), name='refueling'),
+    path('refueling/delete', views.refueling_delete, name='refueling_delete'),
     path('maintenance', views.MaintenanceList.as_view(), name='maintenance'),
     path('accident', views.AccidentList.as_view(), name='accident'),
 
