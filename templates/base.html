@@ -137,7 +137,7 @@
               </ul>
             </div>
           </div>
-          <!-- <div class="nav1Box">
+          <div class="nav1Box">
             <li class="nav1BoxMenu nav1BoxMenuHaveDepth2">
               <img src="{% static 'images/vehicleManagement.png' %}" alt="차량관리 아이콘">
               <div>차량관리</div>
@@ -148,16 +148,13 @@
             <div class="sideMenuNav2Box">
               <ul class="sideMenuNav2">
                 <a href="{% url 'vehicle:list' %}" class="sideMenuNav2Link">
-                  <li class="sideMenuNav2Menu">차량목록</li>
+                  <li class="sideMenuNav2Menu">차량관리</li>
+                </a>
+                <a href="{% url 'vehicle:refueling' %}" class="sideMenuNav2Link">
+                  <li class="sideMenuNav2Menu">주유관리</li>
                 </a>
               </ul>
             </div>
-          </div> -->
-          <div class="nav1Box">
-            <li class="nav1BoxMenu">
-              <img src="{% static 'images/vehicleManagement.png' %}" alt="차량관리 아이콘">
-              <a href="{% url 'vehicle:list' %}" class="nonDepth2Menu">차량목록</a>
-            </li>
           </div>
           <div class="nav1Box">
             <li class="nav1BoxMenu nav1BoxMenuHaveDepth2">

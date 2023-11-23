@@ -43,3 +43,15 @@ class VehicleDocument(models.Model):
     pub_date = models.DateTimeField(verbose_name='작성시간', auto_now_add=True, null=False)
     updated_at = models.DateTimeField(auto_now=True, verbose_name='수정시간')
 
+class Refueling(models.Model):
+    refueling_date = models.CharField(verbose_name='주유일', max_length=100, null=False)
+    vehicle = models.ForeignKey(Vehicle, on_delete=models.SET_NULL, related_name="vehicle_refueling", null=True)
+    driver = models.ForeignKey(Member, on_delete=models.SET_NULL, related_name="driver_refueling", null=True)
+    km = models.CharField(verbose_name='주유 시 km', max_length=100, null=False)
+    suit_gauge = models.CharField(verbose_name='수트게이지', max_length=100, null=False)
+    engine_oil = models.CharField(verbose_name='엔진오일', max_length=100, null=False)
+    urea_solution = models.CharField(verbose_name='요소수 L', max_length=100, null=False)
+    creator = models.ForeignKey(Member, on_delete=models.SET_NULL, related_name="refueling_user", db_column="user_id", null=True)
+    pub_date = models.DateTimeField(verbose_name='작성시간', auto_now_add=True, null=False)
+    updated_at = models.DateTimeField(auto_now=True, verbose_name='수정시간')
+    

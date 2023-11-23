@@ -11,7 +11,7 @@ from django.views import generic
 from django.urls import reverse
 from config.settings import MEDIA_ROOT
 import pandas as pd
-from .models import Vehicle, VehicleDocument
+from .models import Vehicle, VehicleDocument, Refueling
 from .forms import VehicleForm
 from humanresource.models import Member
 from ERP.settings import BASE_DIR
@@ -221,7 +221,7 @@ def vehicle_delete(request):
             documents.delete()
             #insurance.delete()
             vehicle.delete()
-        return redirect('vehicle:list')
+        return redirect(request.META.get('HTTP_REFERER', 'redirect_if_referer_not_found'))
     else:
         raise Http404
 
@@ -359,6 +359,63 @@ def download(request, vehicle_id, file_id):
             raise Http404
     else:
         raise Http404
+
+class RefuelingList(generic.ListView):
+    template_name = 'vehicle/refueling.html'
+    context_object_name = 'refueling_list'
+    model = Refueling
+    paginate_by = 10
+
+    def get(self, request, *args, **kwargs):
+        if request.session.get('authority') > 1:
+            return render(request, 'authority.html')
+        return super().get(request, *args, **kwargs)
+
+    def get_queryset(self):
+        select = self.request.GET.get('select', '')
+        search = self.request.GET.get('search', '')
+        
+        if select == 'vehicle' and search:
+            vehicle = Refueling.objects.filter(vehicle__vehicle_num__contains=search).order_by('refueling_date')
+        elif select == 'driver' and search:
+            vehicle = Refueling.objects.filter(driver_driver_name__contains=search).order_by('refueling_date')
+        else:
+            vehicle = Refueling.objects.order_by('refueling_date')
+        return vehicle
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        paginator = context['paginator']
+        page_numbers_range = 5
+        max_index = len(paginator.page_range)
+        page = self.request.GET.get('page')
+        current_page = int(page) if page else 1
+
+        start_index = int((current_page - 1) / page_numbers_range) * page_numbers_range
+        end_index = start_index + page_numbers_range
+        if end_index >= max_index:
+            end_index = max_index
+        page_range = paginator.page_range[start_index:end_index]
+        context['page_range'] = page_range
+
+        context['start_num'] = 1 + paginator.per_page * (current_page-1)
+        context['select'] = self.request.GET.get('select', '')
+        context['search'] = self.request.GET.get('search', '')
+
+        return context
+
+def refueling_delete(request):
+    if request.session.get('authority') > 1:
+        return render(request, 'authority.html')
+    if request.method == 'POST':
+        pk_list = request.POST.getlist('check',None)
+        for pk in pk_list:
+            refueling = get_object_or_404(Refueling, pk=pk)
+            
+            refueling.delete()
+        return redirect(request.META.get('HTTP_REFERER', 'redirect_if_referer_not_found'))
+    else:
+        return HttpResponseNotAllowed(['post'])
 
 
 
