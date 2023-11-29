@@ -55,11 +55,11 @@
                     <td>순번</td>
                     <td>주유일</td>
                     <td>차량번호</td>
-                    <td>승무원명</td>
+                    <td>주유자</td>
                     <td>주유시 (km)</td>
-                    <td>수트게이지</td>
-                    <td>엔진오일</td>
+                    <td>주유량</td>
                     <td>요소수 (L)</td>
+                    <td>주유장소</td>
                 </tr>
             </thead>
         </table>
@@ -78,9 +78,9 @@
                     </td>
                     <td>{{refueling.driver.name}}</td>
                     <td>{{refueling.km}}</td>
-                    <td>{{refueling.suit_gauge}}</td>
-                    <td>{{refueling.engine_oil}}</td>
+                    <td>{{refueling.refueling_amount}}</td>
                     <td>{{refueling.urea_solution}}</td>
+                    <td>{{refueling.gas_station.category}}</td>
                 </tr>
                 {% endfor %}
                 <tr class="blanckTr"></tr>
