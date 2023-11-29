@@ -1,5 +1,5 @@
 from django.db import models
-from crudmember.models import User
+from crudmember.models import User, Category
 from humanresource.models import Member
 from datetime import datetime
 from uuid import uuid4
@@ -48,9 +48,9 @@ class Refueling(models.Model):
     vehicle = models.ForeignKey(Vehicle, on_delete=models.SET_NULL, related_name="vehicle_refueling", null=True)
     driver = models.ForeignKey(Member, on_delete=models.SET_NULL, related_name="driver_refueling", null=True)
     km = models.CharField(verbose_name='주유 시 km', max_length=100, null=False)
-    suit_gauge = models.CharField(verbose_name='수트게이지', max_length=100, null=False)
-    engine_oil = models.CharField(verbose_name='엔진오일', max_length=100, null=False)
+    refueling_amount = models.CharField(verbose_name='주유량', max_length=100, null=False)
     urea_solution = models.CharField(verbose_name='요소수 L', max_length=100, null=False)
+    gas_station = models.ForeignKey(Category, on_delete=models.SET_NULL, related_name="gas_station", null=True)
     creator = models.ForeignKey(Member, on_delete=models.SET_NULL, related_name="refueling_user", db_column="user_id", null=True)
     pub_date = models.DateTimeField(verbose_name='작성시간', auto_now_add=True, null=False)
     updated_at = models.DateTimeField(auto_now=True, verbose_name='수정시간')
