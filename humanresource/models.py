@@ -37,6 +37,7 @@ class Member(models.Model):
     
     pub_date = models.DateTimeField(verbose_name="등록날짜", auto_now_add=True, null=False)
     creator = models.CharField(verbose_name='작성자 이름', max_length=100, null=False, blank=True)
+    updated_at = models.DateTimeField(auto_now=True, verbose_name='수정시간')
     token = models.CharField(verbose_name='fcmtoken', max_length=500, null=False, blank=True)
     authority = models.IntegerField(verbose_name='권한', null=False, default=4)
     use = models.CharField(verbose_name='사용여부', max_length=30, null=False, default='사용')
@@ -56,6 +57,7 @@ class MemberFile(models.Model):
     type = models.CharField(max_length=100, null=False, verbose_name='면허증, 버스운전자격증')
     creator = models.ForeignKey(Member, on_delete=models.SET_NULL, related_name="member_file_user", db_column="user_id", null=True)
     pub_date = models.DateTimeField(verbose_name='작성시간', auto_now_add=True, null=False)
+    updated_at = models.DateTimeField(auto_now=True, verbose_name='수정시간')
     def __str__(self):
         return self.member_id.name + "_" + self.filename
 # class HR(models.Model):
@@ -94,6 +96,7 @@ class Salary(models.Model):
     payment_date = models.CharField(verbose_name='급여지급일', null=False, max_length=10, blank=True)
     creator = models.ForeignKey(Member, on_delete=models.SET_NULL, related_name="salary_user", db_column="user_id", null=True)
     pub_date = models.DateTimeField(verbose_name='작성시간', auto_now_add=True, null=False)
+    updated_at = models.DateTimeField(auto_now=True, verbose_name='수정시간')
     
     def __str__(self):
         if self.member_id:
@@ -106,6 +109,7 @@ class AdditionalSalary(models.Model):
     remark = models.CharField(verbose_name='비고', null=False, blank=True, max_length=100)
     creator = models.ForeignKey(Member, on_delete=models.SET_NULL, related_name="additional_user", db_column="user_id", null=True)
     pub_date = models.DateTimeField(verbose_name='작성시간', auto_now_add=True, null=False)
+    updated_at = models.DateTimeField(auto_now=True, verbose_name='수정시간')
 
     def __str__(self):
         if self.member_id:
@@ -118,7 +122,16 @@ class DeductionSalary(models.Model):
     remark = models.CharField(verbose_name='비고', null=False, blank=True, max_length=100)
     creator = models.ForeignKey(Member, on_delete=models.SET_NULL, related_name="deduction_user", null=True)
     pub_date = models.DateTimeField(verbose_name='작성시간', auto_now_add=True, null=False)
+    updated_at = models.DateTimeField(auto_now=True, verbose_name='수정시간')
      
     def __str__(self):
         if self.member_id:
             return self.member_id.name + ' ' + self.salary_id.month
+
+
+class SalaryChecked(models.Model):
+    salary = models.OneToOneField(Salary, on_delete=models.SET_NULL, related_name="salary_checked", null=True)
+    creator = models.ForeignKey(Member, on_delete=models.SET_NULL, related_name="salary_checked_user", null=True)
+    pub_date = models.DateTimeField(verbose_name='작성시간', auto_now_add=True, null=False)
+    updated_at = models.DateTimeField(auto_now=True, verbose_name='수정시간')
+    

@@ -74,7 +74,7 @@
                         <input tabindex="100" type="checkbox" class="amountCheck" name="member_id" value="{{member.id}}">
                     </td>
                     <td class="table-list_body-tr_td">{{forloop.counter}}</td>
-                    <td class="table-list_body-tr_td">{{member.name}}</td>
+                    <td class="table-list_body-tr_td {% if salary.salary_checked %} bluelink {% endif %}">{{member.name}}</td>
                     <td class="table-list_body-tr_td">{{member.role}}</td>
                     <td class="table-list_body-tr_td">
                         {{member.entering_date}} {% if year_list|index:forloop.counter0|slice:':1' != '0' %}({{year_list|index:forloop.counter0}}년){% else %}({{year_list|index:forloop.counter0|slice:'1:'}}개월){% endif %}

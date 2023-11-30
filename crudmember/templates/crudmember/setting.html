@@ -25,6 +25,7 @@
       <option value="계산서 발행처">계산서 발행처</option>
       <option value="예약회사">예약회사</option>
       <option value="운행회사">운행회사</option>
+      <option value="주유장소">주유장소</option>
     </select>
     <input name="category" autocomplete="off" type="text" class="search-Form_input">
     <input type="submit" class="btnModules creteItem" value="등록">
@@ -241,9 +242,46 @@
         </table>
       </div>
     </form>
-
   </div>
 </div>
+<div class="main-layout_container">
+  <div class="settingContainer">
+    <form method="post" action="{% url 'crudmember:setting_delete' %}" class="settingBox">
+      {% csrf_token %}
+      <div class="settinHeader">
+        <span>주유장소</span>
+        <input type="submit" class="btnModules" value="삭제">
+      </div>
+      <div class="scrolling_table-list_header">
+        <table class="table-list">
+          <thead>
+            <tr class="table-list_head-tr">
+              <td class="table-list_head-tr_td">
+                <input type="checkbox">
+              </td>
+              <td class="table-list_head-tr_td">항목</td>
+            </tr>
+          </thead>
+        </table>
+      </div>
+      <div class="scrolling_table-list_body">
+        <table class="table-list">
+          <tbody>
+            {% for gas_station in gas_station_list %}
+            <tr class="table-list_body-tr">
+              <td class="table-list_body-tr_td">
+                <input type="checkbox" name="check" value="{{gas_station.id}}">
+              </td>
+              <td class="table-list_body-tr_td">{{gas_station.category}}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </form>
+  </div>
+</div>
+
 <div class="salarySettingContainer">
   <div class="salarySettingTitle">급여관리 항목</div>
   <form method="post" action="{% url 'crudmember:salary_date' %}" class="salarySettingForm">
