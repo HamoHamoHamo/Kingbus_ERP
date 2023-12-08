@@ -26,6 +26,7 @@
       <option value="예약회사">예약회사</option>
       <option value="운행회사">운행회사</option>
       <option value="주유장소">주유장소</option>
+      <option value="차고지">차고지</option>
     </select>
     <input name="category" autocomplete="off" type="text" class="search-Form_input">
     <input type="submit" class="btnModules creteItem" value="등록">
@@ -273,6 +274,39 @@
                 <input type="checkbox" name="check" value="{{gas_station.id}}">
               </td>
               <td class="table-list_body-tr_td">{{gas_station.category}}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </form>
+    <form method="post" action="{% url 'crudmember:setting_delete' %}" class="settingBox">
+      {% csrf_token %}
+      <div class="settinHeader">
+        <span>차고지</span>
+        <input type="submit" class="btnModules" value="삭제">
+      </div>
+      <div class="scrolling_table-list_header">
+        <table class="table-list">
+          <thead>
+            <tr class="table-list_head-tr">
+              <td class="table-list_head-tr_td">
+                <input type="checkbox">
+              </td>
+              <td class="table-list_head-tr_td">항목</td>
+            </tr>
+          </thead>
+        </table>
+      </div>
+      <div class="scrolling_table-list_body">
+        <table class="table-list">
+          <tbody>
+            {% for garage in garage_list %}
+            <tr class="table-list_body-tr">
+              <td class="table-list_body-tr_td">
+                <input type="checkbox" name="check" value="{{garage.id}}">
+              </td>
+              <td class="table-list_body-tr_td">{{garage.category}}</td>
             </tr>
             {% endfor %}
           </tbody>

@@ -52,6 +52,7 @@ class CategoryList(generic.ListView):
         reservation_list = []
         operating_list = []
         gas_station_list = []
+        garage_list = []
 
         for category in category_list:
             if category.type == '차량종류':
@@ -68,6 +69,8 @@ class CategoryList(generic.ListView):
                 operating_list.append(category)
             elif category.type == '주유장소':
                 gas_station_list.append(category)
+            elif category.type == '차고지':
+                garage_list.append(category)
             #elif category.type == '식대':
             #    context['meal'] = category.category
             elif category.type == '급여지급일':
@@ -81,6 +84,7 @@ class CategoryList(generic.ListView):
         context['reservation_list'] = reservation_list
         context['operating_list'] = operating_list
         context['gas_station_list'] = gas_station_list
+        context['garage_list'] = garage_list
 
         
 
