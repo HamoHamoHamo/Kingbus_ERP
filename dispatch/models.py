@@ -1,7 +1,7 @@
 from django.db import models
+from crudmember.models import Category
 from humanresource.models import Member
 from vehicle.models import Vehicle
-import re
 
 class RegularlyGroup(models.Model):
     name = models.CharField(verbose_name='그룹 이름', max_length=50, null=False, unique=True)
@@ -212,3 +212,44 @@ class ConnectRefusal(models.Model):
     pub_date = models.DateTimeField(auto_now_add=True, verbose_name='작성시간')
     updated_at = models.DateTimeField(auto_now=True, verbose_name='수정시간')
     creator = models.ForeignKey(Member, on_delete=models.SET_NULL, related_name="connect_refusal_creator", db_column="creator_id", null=True)
+
+class MorningChecklist(models.Model):
+    def get_vehicle_list(self):
+        order_bus = list(DispatchOrderConnect.objects.filter(departure_date__startswith=self.date[:10]).filter(driver_id=self.member).values_list('bus_id__vehicle_num'))
+        regularly_bus = list(DispatchRegularlyConnect.objects.filter(departure_date__startswith=self.date[:10]).filter(driver_id=self.member).values_list('bus_id__vehicle_num'))
+        result = []
+        for i in order_bus:
+            result.append(i[0])
+        for i in regularly_bus:
+            result.append(i[0])
+        result = set(result)
+        if result:
+            return list(result)
+        return ''
+
+    member = models.ForeignKey(Member, on_delete=models.SET_NULL, related_name="morning_checklist_member", null=True)
+    date = models.CharField(verbose_name="날짜", max_length=100, null=False, blank=False)
+    arrival_time = models.CharField(verbose_name="점호지 도착시간", max_length=100, null=False, blank=True)
+    garage_location = models.CharField(verbose_name="차고지", max_length=100, null=False, blank=True)
+    health_condition = models.CharField(verbose_name="건강상태", max_length=100, null=False, blank=True)
+    cleanliness_condition = models.CharField(verbose_name="청소상태", max_length=100, null=False, blank=True)
+    route_familiarity = models.CharField(verbose_name="노선숙지", max_length=100, null=False, blank=True)
+    alcohol_test = models.CharField(verbose_name="음주측정", max_length=100, null=False, blank=True)
+    pub_date = models.DateTimeField(auto_now_add=True, verbose_name='작성시간')
+    updated_at = models.DateTimeField(auto_now=True, verbose_name='수정시간')
+    creator = models.ForeignKey(Member, on_delete=models.SET_NULL, related_name="morning_checklist_creator", db_column="creator_id", null=True)
+
+class EveningChecklist(models.Model):
+    member = models.ForeignKey(Member, on_delete=models.SET_NULL, related_name="evening_checklist_member", null=True)
+    date = models.CharField(verbose_name="날짜", max_length=100, null=False, blank=False)
+    garage_location = models.ForeignKey(Category, on_delete=models.SET_NULL, related_name="garage_location", verbose_name="차고지", null=True)
+    battery_condition = models.CharField(verbose_name="메인스위치(배터리)", max_length=100, null=False, blank=True)
+    drive_distance = models.CharField(verbose_name="운행거리", max_length=100, null=False, blank=True)
+    fuel_quantity = models.CharField(verbose_name="주유량", max_length=100, null=False, blank=True)
+    urea_solution_quantity = models.CharField(verbose_name="요소수량", max_length=100, null=False, blank=True)
+    suit_gauge = models.CharField(verbose_name="수트게이지", max_length=100, null=False, blank=True)
+    special_notes = models.CharField(verbose_name="특이사항", max_length=100, null=False, blank=True)
+    pub_date = models.DateTimeField(auto_now_add=True, verbose_name='작성시간')
+    updated_at = models.DateTimeField(auto_now=True, verbose_name='수정시간')
+    creator = models.ForeignKey(Member, on_delete=models.SET_NULL, related_name="evening_checklist_creator", db_column="creator_id", null=True)
+
