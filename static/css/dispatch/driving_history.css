@@ -1,0 +1,209 @@
+.scrollContainer {
+    overflow-y: scroll;
+    height: 64em;
+}
+
+td:nth-child(1) {
+    width: 3%;
+}
+
+td:nth-child(2) {
+    width: 10%;
+}
+
+td:nth-child(3) {
+    width: 9%;
+}
+
+td:nth-child(4),
+td:nth-child(5),
+td:nth-child(6) {
+    width: 15%;
+}
+
+
+td:nth-child(7),
+td:nth-child(8),
+td:nth-child(9) {
+    width: 12%;
+}
+
+
+td {
+    text-align: center;
+}
+
+
+.PopupData {
+    width: 24rem;
+}
+
+.popupArticleLabel11 {
+    width: 11rem;
+    text-align: left;
+    font-size: 1.4rem;
+}
+
+.popupContainer {
+    width: 100rem;
+    height: auto;
+}
+
+.PopupTitle {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 4.8rem;
+    font-size: 1.6rem;
+    font-weight: 500;
+    border-bottom: 0.1rem solid #191919;
+}
+
+.PopupDataArea {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 100%;
+    height: calc(100% - 9.7rem);
+    padding: 4.2rem 0 0 0;
+    box-sizing: border-box;
+}
+
+.PopupDataBox {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+.PopupDataCell {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: flex-start;
+    width: 23rem;
+    height: 6rem;
+}
+
+.PopupDataTitle {
+    font-size: 1.4rem;
+    color: #7A7A7A;
+}
+
+.PopupDataCell div {
+    width: 100%;
+    font-size: 1.4rem;
+    border-bottom: 0.1rem solid #191919;
+}
+
+.shcedulePopupTableBox {
+    width: 100%;
+    height: 36rem;
+}
+
+.shcedulePopupTableHeader {
+    width: 100%;
+    height: 3.6rem;
+    border: 0.1rem solid #CDCDCE;
+    border-radius: 0.5rem 0.5rem 0 0;
+    box-sizing: border-box;
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: #7A7A7A;
+    border-spacing: 0;
+}
+
+.shcedulePopupTableBodyBox {
+    width: 100%;
+    height: calc(100% - 3.6rem);
+    border: 0.1rem solid #CDCDCE;
+    border-radius: 0 0 0.5rem 0.5rem;
+    overflow-y: scroll;
+    box-sizing: border-box;
+}
+
+.shcedulePopupTableBodyBox::-webkit-scrollbar {
+    width: 0.6rem;
+}
+
+.shcedulePopupTableBodyBox::-webkit-scrollbar-thumb {
+    height: 17%;
+    background-color: #444444;
+    border-radius: 10px;
+}
+
+.shcedulePopupTableBodyBox::-webkit-scrollbar-track {
+    background-color: #F5F5F5;
+}
+
+.shcedulePopupTableBody {
+    width: 100%;
+    box-sizing: border-box;
+    font-size: 1.4rem;
+    border-spacing: 0;
+}
+
+.shcedulePopupTableBody tr {
+    height: 3.6rem;
+}
+
+.shcedulePopupTableBody tr:nth-child(odd) {
+    background-color: white;
+}
+
+.shcedulePopupTableBody tr:nth-child(even) {
+    background-color: #EFEFEF;
+}
+
+.shcedulePopupTableBody td {
+    border-bottom: 0.1rem solid #CDCDCE;
+}
+
+.popupTable td:nth-child(1),
+.popupTable td:nth-child(2),
+.popupTable td:nth-child(5),
+.popupTable td:nth-child(6),
+.popupTable td:nth-child(7),
+.popupTable td:nth-child(8) {
+    text-align: center;
+}
+
+.popupTable td:nth-child(1) {
+    width: 5%;
+}
+
+.popupTable td:nth-child(2) {
+    width: 8%;
+}
+
+.popupTable td:nth-child(3) {
+    width: 15%;
+    text-align: left;
+}
+.popupTable td:nth-child(4) {
+    width: 25%;
+    text-align: left;
+}
+
+.popupTable td:nth-child(5),
+.popupTable td:nth-child(6) {
+    width: 11%;
+}
+
+.popupTable td:nth-child(7) {
+    width: 5%;
+}
+
+.popupTable td:nth-child(8) {
+    width: 20%;
+}
+
+.PopupBtnBox {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 4.8rem;
+    box-sizing: border-box;
+}

@@ -5,7 +5,7 @@ from django.db.models.signals import post_save, post_delete, pre_delete
 from django.db.models import Sum
 from django.dispatch import receiver
 from django.shortcuts import get_object_or_404
-from .models import RegularlyGroup, DriverCheck, DispatchRegularlyData, DispatchOrder, DispatchOrderConnect, DispatchRegularlyConnect, DispatchCheck
+from .models import RegularlyGroup, DriverCheck, DispatchRegularlyData, DispatchOrder, DispatchOrderConnect, DispatchRegularlyConnect, DispatchCheck, DrivingHistory
 from accounting.models import TotalPrice, AdditionalCollect
 from humanresource.models import Salary, Member
 from humanresource.views import new_salary
@@ -186,6 +186,12 @@ def save_regularly_connect(sender, instance, created, **kwargs):
             regularly_id = instance,
             creator = creator
         )
+        DrivingHistory.objects.create(
+            regularly_connect_id = instance,
+            creator = creator,
+            date = instance.departure_date[:10],
+            member = instance.driver_id,
+        )
 
     # Salary 업데이트
     try:
@@ -253,6 +259,12 @@ def save_connect(sender, instance, created, **kwargs):
         DriverCheck.objects.create(
             order_id = instance,
             creator = creator
+        )
+        DrivingHistory.objects.create(
+            order_connect_id = instance,
+            creator = creator,
+            date = instance.departure_date[:10],
+            member = instance.driver_id,
         )
 
 @receiver(post_delete, sender=DispatchOrderConnect)

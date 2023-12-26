@@ -66,7 +66,7 @@
           <div class="nav1Box">
             <li class="nav1BoxMenu nav1BoxMenuHaveDepth2">
               <img src="{% static 'images/dispatchSystem.png' %}" alt="배차시스템 아이콘">
-              <div>배차시스템</div>
+              <div>배차관리</div>
               <svg xmlns="http://www.w3.org/2000/svg" width="18.228" height="11.84" viewBox="0 0 18.228 11.84">
                 <path id="패스_256" data-name="패스 256" d="M0,0,6.753,8.223,14,0" transform="translate(2.111 2.117)" fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="3"/>
               </svg>            
@@ -90,6 +90,9 @@
                 </a>
                 <a href="{% url 'dispatch:refusal' %}" class="sideMenuNav2Link">
                   <li class="sideMenuNav2Menu">배차거부관리</li>
+                </a>
+                <a href="{% url 'dispatch:driving' %}" class="sideMenuNav2Link">
+                  <li class="sideMenuNav2Menu">운행일보</li>
                 </a>
               </ul>
             </div>
@@ -411,145 +414,6 @@
             </div>
         </form>
       </div>
-
-      <!-- 검색모듈 -->
-      <!-- 
-        <div class="search-Container">
-          <form method="post" action="" class="search-Form">
-            <label for="" class="search-Form_label">검색라벨</label>
-            <input autocomplete="off" type="text" class="search-Form_input">
-            <input type="submit" class="search-Form_search-btn" value="검색">
-          </form>
-          <div class="popup-area-box">
-            <div class="popup-area-box_btn">팝업이름</div>
-          </div>
-        </div>
-       -->
-
-
-
-      <!-- 일반 테이블리스트 -->
-      <!-- 
-        <table class="table-list">
-          <thead>
-            <tr class="table-list_head-tr">
-              <td class="table-list_head-tr_td"></td>
-            </tr>
-          </thead>
-          <tbody>
-            <tr class="table-list_body-tr">
-              <td class="table-list_body-tr_td"></td>
-            </tr>
-            <tr class="table-list_body-tr">
-              <td class="table-list_body-tr_td"></td>
-            </tr>
-            <tr class="table-list_body-tr">
-              <td class="table-list_body-tr_td"></td>
-            </tr>
-            <tr class="table-list_body-tr">
-              <td class="table-list_body-tr_td"></td>
-            </tr>
-          </tbody>
-        </table>
-       -->
-
-       
-
-
-      <!-- 스크롤 테이블리스트 -->
-      <!-- 
-        <div class="scrolling_table-list_header">
-          <table class="table-list">
-            <thead>
-              <tr class="table-list_head-tr">
-                <td class="table-list_head-tr_td"></td>
-              </tr>
-            </thead>
-          </table>
-        </div>
-        <div class="scrolling_table-list_body">
-          <table class="table-list">
-            <tbody>
-              <tr class="table-list_body-tr">
-                <td class="table-list_body-tr_td"></td>
-              </tr>
-              <tr class="table-list_body-tr">
-                <td class="table-list_body-tr_td"></td>
-              </tr>
-              <tr class="table-list_body-tr">
-                <td class="table-list_body-tr_td"></td>
-              </tr>
-              <tr class="table-list_body-tr">
-                <td class="table-list_body-tr_td"></td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-       -->
-
-       
-
-
-      <!-- 버튼 모듈 -->
-      <!-- 
-        <div class="btnModules"></div>
-       -->
-      
-
-      
-<!--  -->
-<!-- <div class="popupAreaModules">
-  <div class="popupBgModules"></div>
-  <form method="post" action="" class="popupContainer popupContainerDouble">
-      {% csrf_token %}
-      <div class="popupHeader">
-          <div class="popupTitle">팝업이름</div>
-      </div>
-      <div class="popupBody">
-          <div class="popupSection">
-              <div class="popupArticleBox">
-                  <div class="popupArticleDouble">
-                      <label for="" class="popupArticleLabel">항목이름</label>
-                      <input autocomplete="off"type="text" class="popupArticleinput">
-                  </div>
-                  <div class="popupArticleDouble">
-                      <label for="" class="popupArticleLabel">항목이름</label>
-                      <input autocomplete="off"type="text" class="popupArticleinput">
-                  </div>
-              </div>
-          </div>
-          <div class="popupFooter">
-              <input autocomplete="off"type="submit" class="btnModules" value="등록">
-              <div class="btnModules">닫기</div>
-          </div>
-      </div>
-  </form>
-</div>
-
-<div class="popupAreaModules">
-  <div class="popupBgModules"></div>
-  <form method="post" action="" class="popupContainer">
-      {% csrf_token %}
-      <div class="popupHeader">
-          <div class="popupTitle">팝업이름</div>
-      </div>
-      <div class="popupBody">
-          <div class="popupSection">
-              <div class="popupArticle">
-                  <label for="" class="popupArticleLabel">항목이름</label>
-                  <input autocomplete="off"type="text" class="popupArticleinput">
-              </div>
-          </div>
-          <div class="popupFooter">
-              <input autocomplete="off"type="submit" class="btnModules" value="등록">
-              <div class="btnModules">닫기</div>
-          </div>
-      </div>
-  </form>
-</div> -->
-
-<!--  -->
-
     </div>
 
   </div>

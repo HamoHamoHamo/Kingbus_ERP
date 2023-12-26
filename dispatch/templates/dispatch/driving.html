@@ -1,0 +1,273 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load custom_tags %}
+{% block head %}
+<link rel="stylesheet" href="{% static 'css/dispatch/driving_history.css' %}" type="text/css" />
+<link rel="stylesheet" href="{% static 'css/listpage.css' %}" type="text/css" />
+<link rel="stylesheet" href="{% static 'css/pagination.css' %}" type="text/css" />
+{% endblock %}
+
+{% block content-header %}
+<div class="HeaderTitle">
+    운행일보
+</div>
+{% endblock %}
+
+{% block content %}
+
+
+
+
+<div class="searchAreaBox">
+    <form class="searchForm" action="">
+        <div class="searchTool">
+            <span class="searchName">직원검색</span>
+            <div class="routeFilterBox">
+                <input autocomplete="off" value="{{name}}" name="name" type="text" class="inputModules" list="hrFilter"
+                    placeholder="직원이름" autocomplete="off">
+                <select name="role" class="inputModules">
+                    <option {% if role == '' %} selected {% endif %} value="">구분</option>
+                    <option {% if role == '팀장' %} selected {% endif %} value="팀장">팀장</option>
+                    <option {% if role == '운전원' %} selected {% endif %} value="운전원">운전원</option>
+                    <option {% if role == '용역' %} selected {% endif %} value="용역">용역</option>
+                    <option {% if role == '임시' %} selected {% endif %} value="임시">임시</option>
+                </select>
+                <span class="searchName searchDate">날짜</span>
+                <input class="searchDateInput" value={{date}} autocomplete="off" type="date" name="date" class="" max="9999-12-31">
+            </div>
+            <input type="submit" class="searchBtn btnModules" value="검색">
+        </div>
+    </form>
+</div>
+
+
+
+
+<form method="post" action="{% url 'dispatch:refusal_delete' %}" class="deleteForm" onsubmit="return confirm('정말로 삭제하시겠습니까?');">
+    {% csrf_token %}
+    <div class="contentsAreaBox">
+        <table class="tableHead">
+            <thead>
+                <tr class="headerLine">
+                    <td>번호</td>
+                    <td>이름</td>
+                    <td>구분</td>
+                    <td>아침점호</td>
+                    <td>운행일보</td>
+                    <td>저녁점호</td>
+                    <td>총km</td>
+                    <td>공차거리</td>
+                    <td>총매출</td>
+                </tr>
+            </thead>
+        </table>
+        <div class="scrollContainer">
+            <table class="tableBody">
+                <tbody>
+                    {% for member in member_list %}
+                    
+                    <tr class="{{forloop.counter0}}">
+                        <td>{{forloop.counter}}</td>
+                        <td>{{member.name}}</td>
+                        <td>{{member.role}}</td>
+                        <td class="morningPopup bluelink">{% if morning_check_list|index:forloop.counter0 == True %}O{% else %}X{% endif %}</td>
+                        <td id="{{member.id}}" class="drivingPopup bluelink">{{driving_check_connect_list|index:forloop.counter0}}/{{driving_connect_list|index:forloop.counter0}}</td>
+                        <td class="eveningPopup bluelink">{% if evening_check_list|index:forloop.counter0 == True %}O{% else %}X{% endif %}</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    
+                    {% endfor %}
+                    <tr class="blanckTr"></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="btnAreaBox">
+            <div class="btnBox">
+            </div>
+
+        </div>
+    </div>
+</form>
+
+{% endblock %}
+
+{% block popup %}
+<div class="popupAreaModules">
+    <div class="popupBgModules"></div>
+    <form class="popupContainer popupContainerDouble vehicleCreateForm">
+        <div class="popupHeader">
+            <div class="popupTitle">아침점호</div>
+        </div>
+        <div class="popupBody">
+            <div class="popupSection">
+                <div class="popupArticleBox">
+                    <div class="popupArticleDouble">
+                        <label for="" class="popupArticleLabel11">점호지 도착시간</label>
+                        <div class="PopupData morningPopupData"></div>
+                    </div>
+                    <div class="popupArticleDouble">
+                        <label for="" class="popupArticleLabel11">배정 차량</label>
+                        <div class="PopupData morningPopupData"></div>
+                    </div>
+                </div>
+                <div class="popupArticleBox">
+                    <div class="popupArticleDouble">
+                        <label for="" class="popupArticleLabel11">건강상태</label>
+                        <div class="PopupData morningPopupData"></div>
+                    </div>
+                    <div class="popupArticleDouble">
+                        <label for="" class="popupArticleLabel11">청소상태</label>
+                        <div class="PopupData morningPopupData"></div>
+                    </div>
+                </div>
+                <div class="popupArticleBox">
+                    <div class="popupArticleDouble">
+                        <label for="" class="popupArticleLabel11">노선숙지</label>
+                        <div class="PopupData morningPopupData"></div>
+                    </div>
+                    <div class="popupArticleDouble">
+                        <label for="" class="popupArticleLabel11">음주측정</label>
+                        <div class="PopupData morningPopupData"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="popupFooter">
+                <div class="btnModules closeBtn">닫기</div>
+            </div>
+        </div>
+    </form>
+</div>
+<div class="popupAreaModules">
+    <div class="popupBgModules"></div>
+    <form class="popupContainer">
+
+        <div class="popupHeader">
+            <div class="popupTitle">운행일보</div>
+        </div>
+        <div class="popupBody">
+            <div class="PopupDataArea">
+                <div class="shcedulePopupTableBox">
+                    <table class="shcedulePopupTableHeader popupTable">
+                        <thead>
+                            <tr>
+                                <td>구분</td>
+                                <td>운행차량</td>
+                                <td>운행시간</td>
+                                <td>노선</td>
+                                <td>출발계기km</td>
+                                <td>도착계기km</td>
+                                <td>인원수</td>
+                                <td>특이사항</td>
+                            </tr>
+                        </thead>
+                    </table>
+                    <div class="shcedulePopupTableBodyBox">
+                        <table class="shcedulePopupTableBody popupTable">
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="popupFooter">
+                <div class="btnModules closeBtn">닫기</div>
+            </div>
+        </div>
+
+    </form>
+</div>
+<div class="popupAreaModules">
+    <div class="popupBgModules"></div>
+    <form class="popupContainer popupContainerDouble vehicleCreateForm">
+        <div class="popupHeader">
+            <div class="popupTitle">저녁점호</div>
+        </div>
+        <div class="popupBody">
+            <div class="popupSection">
+                <div class="popupArticleBox">
+                    <div class="popupArticleDouble">
+                        <label for="" class="popupArticleLabel11">차량번호</label>
+                        <div class="PopupData eveningPopupData"></div>
+                    </div>
+                    <div class="popupArticleDouble">
+                        <label for="" class="popupArticleLabel11">입고장소</label>
+                        <div class="PopupData eveningPopupData"></div>
+                    </div>
+                </div>
+                <div class="popupArticleBox">
+                    <div class="popupArticleDouble">
+                        <label for="" class="popupArticleLabel11">메인스위치</label>
+                        <div class="PopupData eveningPopupData"></div>
+                    </div>
+                    <div class="popupArticleDouble">
+                        <label for="" class="popupArticleLabel11">운행거리</label>
+                        <div class="PopupData eveningPopupData"></div>
+                    </div>
+                </div>
+                <div class="popupArticleBox">
+                    <div class="popupArticleDouble">
+                        <label for="" class="popupArticleLabel11">현재 주유량</label>
+                        <div class="PopupData eveningPopupData"></div>
+                    </div>
+                    <div class="popupArticleDouble">
+                        <label for="" class="popupArticleLabel11">현재 요소수량</label>
+                        <div class="PopupData eveningPopupData"></div>
+                    </div>
+                </div>
+                <div class="popupArticleBox">
+                    <div class="popupArticleDouble">
+                        <label for="" class="popupArticleLabel11">수트게이지</label>
+                        <div class="PopupData eveningPopupData"></div>
+                    </div>
+                    <div class="popupArticleDouble">
+                        <label for="" class="popupArticleLabel11">특이사항</label>
+                        <div class="PopupData eveningPopupData"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="popupFooter">
+                <div class="btnModules closeBtn">닫기</div>
+            </div>
+        </div>
+    </form>
+</div>
+{% endblock %}
+
+
+{% block script %}
+<script>
+    {% autoescape off %}
+    let morningData = [
+        {% for morning in morning_list %}
+        {
+            arrival_time: "{{morning.arrival_time}}",
+            health_condition: "{{morning.health_condition}}",
+            cleanliness_condition: "{{morning.cleanliness_condition}}",
+            route_familiarity: "{{morning.route_familiarity}}",
+            alcohol_test: "{{morning.alcohol_test}}",
+            vehicle_list: "{{morning.get_vehicle_list}}",
+        },
+        {% endfor %}
+    ]
+    let eveningData = [
+        {% for evening in evening_list %}
+        {
+            garage_location: "{{evening.garage_location.category}}",
+            battery_condition: "{{evening.battery_condition}}",
+            drive_distance: "{{evening.drive_distance}}",
+            fuel_quantity: "{{evening.fuel_quantity}}",
+            urea_solution_quantity: "{{evening.urea_solution_quantity}}",
+            suit_gauge: "{{evening.suit_gauge}}",
+            special_notes: "{{evening.special_notes}}",
+            vehicle: "{{evening.get_vehicle}}",
+        },
+        {% endfor %}
+    ]
+    const driving_history_url = "{% url 'dispatch:driving_history' %}"
+    {% endautoescape %}
+</script>
+<script src="{% static 'js/dispatch/driving_history/popup.js' %}"></script>
+{% endblock %}

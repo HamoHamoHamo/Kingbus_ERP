@@ -40,6 +40,8 @@ urlpatterns = [
     # path('document', views.DocumentList.as_view(), name="document"),
     path('calendar/create', views.calendar_create, name='calendar_create'),
     # path('calendar/delete', views.calendar_delete, name='calendar_delete'),
+    path('driving', views.DrivingList.as_view(), name='driving'),
+    path('driving/history', views.driving_history, name='driving_history'),
     # 일정
     path('schedule/create', views.schedule_create, name='schedule_create'),
     path('schedule/delete', views.schedule_delete, name='schedule_delete'),
