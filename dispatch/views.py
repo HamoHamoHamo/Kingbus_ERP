@@ -15,7 +15,7 @@ from django.urls import reverse
 from django.views import generic
 
 from .forms import OrderForm, ConnectForm, RegularlyDataForm
-from .models import DispatchRegularlyRouteKnow, DispatchCheck, DispatchRegularlyData, DispatchRegularlyWaypoint, Schedule, DispatchOrderConnect, DispatchOrder, DispatchRegularly, RegularlyGroup, DispatchRegularlyConnect, DispatchOrderWaypoint, ConnectRefusal
+from .models import DispatchRegularlyRouteKnow, DispatchCheck, DispatchRegularlyData, DispatchRegularlyWaypoint, Schedule, DispatchOrderConnect, DispatchOrder, DispatchRegularly, RegularlyGroup, DispatchRegularlyConnect, DispatchOrderWaypoint, ConnectRefusal, MorningChecklist, EveningChecklist, DrivingHistory
 from accounting.models import Collect, TotalPrice
 from crudmember.models import Category, Client
 from humanresource.models import Member, Salary
@@ -173,6 +173,115 @@ def calendar_delete(request):
         return redirect(request.META.get('HTTP_REFERER', 'redirect_if_referer_not_found'))
     else:
         return HttpResponseNotAllowed(['post'])
+
+class DrivingList(generic.ListView):
+    template_name = 'dispatch/driving.html'
+    context_object_name = 'member_list'
+    model = Member
+
+    def get_queryset(self):
+        role = self.request.GET.get('role', None)
+        name = self.request.GET.get('name', None)
+
+        member_list = Member.objects.filter(Q(role='팀장')|Q(role='운전원')|Q(role='용역')|Q(role='임시')).filter(use='사용').order_by('name')
+
+        if role:
+            member_list = member_list.filter(role=role)
+        if name:
+            member_list = member_list.filter(name__contains=name)
+        return member_list
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        date = self.request.GET.get('date', TODAY)
+        
+        morning_list = []
+        morning_check_list = []
+        morning_id_list = []
+        evening_list = []
+        evening_check_list = []
+        evening_id_list = []
+        driving_list = []
+        driving_connect_list = []
+        driving_check_connect_list = []
+
+        for member in context['member_list']:
+            morning = member.morning_checklist_member.filter(date=date).first()
+            if morning:
+                morning_list.append(morning)
+                morning_check_list.append(morning.submit_check)
+                morning_id_list.append(morning.id)
+            else:
+                morning_list.append('')
+                morning_check_list.append('')
+                morning_id_list.append('')
+
+            evening = member.evening_checklist_member.filter(date=date).first()
+            if evening:
+                evening_list.append(evening)
+                evening_check_list.append(evening.submit_check)
+                evening_id_list.append(evening.id)
+            else:
+                evening_list.append('')
+                evening_check_list.append('')
+                evening_id_list.append('')
+
+            connect_cnt = member.info_driver_id.filter(departure_date__startswith=date).count() + member.info_regularly_driver_id.filter(departure_date__startswith=date).count()
+            if connect_cnt:
+                driving_connect_list.append(connect_cnt)
+            else:
+                driving_connect_list.append(0)
+
+            driving_list.append(member.driving_history_member.filter(date=date))
+            check_connect_cnt = member.driving_history_member.filter(date=date).filter(submit_check=True).count()
+            if check_connect_cnt:
+                driving_check_connect_list.append(check_connect_cnt)
+            else:
+                driving_check_connect_list.append(0)
+    
+        context['morning_list'] = morning_list
+        context['evening_list'] = evening_list
+        context['morning_check_list'] = morning_check_list
+        context['evening_check_list'] = evening_check_list
+        context['morning_id_list'] = morning_id_list
+        context['evening_id_list'] = evening_id_list
+        context['driving_list'] = driving_list
+        context['driving_connect_list'] = driving_connect_list
+        context['driving_check_connect_list'] = driving_check_connect_list
+        context['date'] = date
+        context['role'] = self.request.GET.get('role', '')
+        context['name'] = self.request.GET.get('name', '')
+        return context
+
+def driving_history(request):
+    date = request.GET.get('date')
+    member_id = request.GET.get('member_id')
+
+    try:
+        datetime.strptime(date, FORMAT)
+    except:
+        return JsonResponse({'result': 'false', 'message': 'dateformat'})
+
+    try:
+        member = Member.objects.get(id=member_id)
+    except:
+        return JsonResponse({'result': 'false', 'message': 'member_id'})
+
+    driving_history_list = member.driving_history_member.filter(date=date)
+    driving_history_values = list(driving_history_list.values())
+
+    connect_data_list = []
+    for driving in driving_history_list:
+        connect_data_list.append(driving.get_connect_data())
+
+    response = {
+        'result' : 'true',
+        'driving_history_values' : driving_history_values,
+        'connect_data_list' : connect_data_list,
+    }
+    return JsonResponse(response)
+    
+    
 
 def schedule_create(request):
     if request.session.get('authority') > 3:
