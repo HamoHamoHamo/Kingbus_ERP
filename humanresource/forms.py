@@ -24,6 +24,14 @@ class MemberForm(forms.ModelForm):
             'position',
             'apprenticeship_note',
             'leave_reason',
+            'resident_number1',
+            'resident_number2',
+            #'company',
+            #'team',
+            'final_opinion',
+            'interviewer',
+            'end_date',
+            'leave_date',
         ]
 
 # class HRForm(forms.ModelForm):

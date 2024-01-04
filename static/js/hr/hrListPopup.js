@@ -62,7 +62,14 @@ const career = document.querySelector("#career")
 const position_option = document.querySelectorAll("#position option")
 const apprenticeship_note = document.querySelector("#apprenticeship_note")
 const leave_reason = document.querySelector("#leave_reason")
-
+const company = document.querySelector("#company")
+const team = document.querySelector("#team")
+const final_opinion = document.querySelector("#final_opinion")
+const interviewer = document.querySelector("#interviewer")
+const end_date = document.querySelector("#end_date")
+const leave_date = document.querySelector("#leave_date")
+const resident_number1 = document.querySelector("#resident_number1")
+const resident_number2 = document.querySelector("#resident_number2")
 
 //직원상세
 for (i = 0; i < editMember.length; i++) {
@@ -83,7 +90,6 @@ function openDetailPopup() {
   hrName.value = data.name;
   hrEntering.value = data.entering_date;
   hrPhone.value = data.phone_num;
-  hrBirth.value = data.birthdate;
   hrAddress.value = data.address;
   if(data.emergency !== ""){
     hrEmergency.value = data.emergency.split(" ")[0];
@@ -116,6 +122,16 @@ function openDetailPopup() {
   career.value = data.career
   apprenticeship_note.value = data.apprenticeship_note ? data.apprenticeship_note : '';
   leave_reason.value = data.leave_reason ? data.leave_reason : '';
+  company.value = data.company
+  team.value = data.team
+  final_opinion.value = data.final_opinion
+  interviewer.value = data.interviewer
+  console.log("TST", data.interviewer);
+  end_date.value = data.end_date
+  leave_date.value = data.leave_date
+  resident_number1.value = data.resident_number1
+  resident_number2.value = data.resident_number2
+
 
   for (i = 0; i < position_option.length; i++) {
     if (position_option[i].innerText == data.position) {

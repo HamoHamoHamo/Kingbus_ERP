@@ -212,25 +212,47 @@
                         <input autocomplete="off" name="entering_date" type="date" max="9999-12-31"
                             class="popupArticleinput PopupDataInputEntering essential">
                     </div>
-                    <div class="popupArticleDouble popupArticleUse">
-                        <label for="" class="popupArticleLabel"><span class="importantStar">*</span>사용여부</label>
-                        <input class="inputUse" type="radio" value="사용" name="use" id="use" checked>
-                        <label for="use">사용</label>
-                        <input class="inputUse" type="radio" value="미사용" name="use" id="unUse">
-                        <label for="unUse">미사용</label>
+                    <div class="popupArticleDouble">
+                        <label for="" class="popupArticleLabel">직급</label>
+                        <select name="position" class="popupArticleinput PopupDataInputWork">
+                            <option value="">직급 선택</option>
+                            <option value="인턴">인턴</option>
+                            <option value="사원">사원</option>
+                            <option value="주임">주임</option>
+                            <option value="계장">계장</option>
+                            <option value="대리">대리</option>
+                            <option value="과장">과장</option>
+                            <option value="차장">차장</option>
+                            <option value="부장">부장</option>
+                        </select>
                     </div>
                 </div>
                 <div class="popupArticleBox">
                     <div class="popupArticleDouble">
-                        <label for="" class="popupArticleLabel"><span class="importantStar">*</span>생년월일</label>
-                        <input autocomplete="off" name="birthdate" type="date"
-                            class="popupArticleinput PopupDataInputBirth essential" placeholder="ex)19990101">
+                        <label for="" class="popupArticleLabel"></span>주민등록번호</label>
+                        <div class="popupIdBox">
+                            <input maxlength="6" autocomplete="off" name="resident_number1" class="popupArticleinputShort popupArticleinput PopupDataInputResidentNumber1">
+                            -
+                            <input maxlength="7" autocomplete="off" name="resident_number2" class="popupArticleinputShort popupArticleinput PopupDataInputResidentNumber2">
+                        </div>
                     </div>
                     <div class="popupArticleDouble">
                         <label for="" class="popupArticleLabel"><span class="importantStar">*</span>휴대폰번호</label>
                         <input autocomplete="off" name="phone_num" type="text"
                             class="popupArticleinput PopupDataInputPhoneNum length100 essential makeHyphen"
                             placeholder="'-'을 생략하고 입력해 주세요.">
+                    </div>
+                </div>
+                <div class="popupArticleBox">
+                    <div class="popupArticleDouble">
+                        <label for="" class="popupArticleLabel">소속회사</label>
+                        <input autocomplete="off" name="company" type="text"
+                            class="popupArticleinput PopupDataInputCompany length100">
+                    </div>
+                    <div class="popupArticleDouble">
+                        <label for="" class="popupArticleLabel">소속팀</label>
+                        <input autocomplete="off" name="team" type="text"
+                            class="popupArticleinput PopupDataInputTeam length100">
                     </div>
                 </div>
                 <div class="popupArticleBox">
@@ -297,23 +319,40 @@
                 </div>
                 <div class="popupArticleBox">
                     <div class="popupArticleDouble">
+                        <label for="" class="popupArticleLabel">최종소견</label>
+                        <input autocomplete="off" name="final_opinion" type="text"
+                            class="popupArticleinput length100">
+                    </div>
+                    <div class="popupArticleDouble">
+                        <label for="" class="popupArticleLabel">면접담당자</label>
+                        <input autocomplete="off" name="interviewer" type="text"
+                            class="popupArticleinput length100">
+                    </div>
+                </div>
+                <div class="popupArticleBox">
+                    <div class="popupArticleDouble">
                         <label for="" class="popupArticleLabel">경력사항</label>
                         <input autocomplete="off" name="career" type="text"
                             class="popupArticleinput length100">
                     </div>
+                    <div class="popupArticleDouble popupArticleUse">
+                        <label for="" class="popupArticleLabel"><span class="importantStar">*</span>사용여부</label>
+                        <input class="inputUse" type="radio" value="사용" name="use" id="use" checked>
+                        <label for="use">사용</label>
+                        <input class="inputUse" type="radio" value="미사용" name="use" id="unUse">
+                        <label for="unUse">미사용</label>
+                    </div>
+                </div>
+                <div class="popupArticleBox">
                     <div class="popupArticleDouble">
-                        <label for="" class="popupArticleLabel">직급</label>
-                        <select name="position" class="popupArticleinput PopupDataInputWork">
-                            <option value="">직급 선택</option>
-                            <option value="인턴">인턴</option>
-                            <option value="사원">사원</option>
-                            <option value="주임">주임</option>
-                            <option value="계장">계장</option>
-                            <option value="대리">대리</option>
-                            <option value="과장">과장</option>
-                            <option value="차장">차장</option>
-                            <option value="부장">부장</option>
-                        </select>
+                        <label for="" class="popupArticleLabel">종료일</label>
+                        <input autocomplete="off" name="end_date" type="date"
+                            class="popupArticleinput length100">
+                    </div>
+                    <div class="popupArticleDouble">
+                        <label for="" class="popupArticleLabel">퇴사일</label>
+                        <input autocomplete="off" name="leave_date" type="date"
+                            class="popupArticleinput length100">
                     </div>
                 </div>
                 <div class="popupArticleCategori">진행상황 견습노선 및 내용</div>
@@ -430,25 +469,47 @@
                         <input autocomplete="off" name="entering_date" type="date" max="9999-12-31"
                             class="popupArticleinput hrEntering length100 editEssential">
                     </div>
-                    <div class="popupArticleDouble popupArticleUseEdit">
-                        <label for="" class="popupArticleLabel"><span class="importantStar">*</span>사용여부</label>
-                        <input name="use" value="사용" type="radio" class="inputUse hrUse" id="hrUse">
-                        <label for="hrUse">사용</label>
-                        <input name="use" value="미사용" type="radio" class="inputUse hrUse" id="hrUnuse">
-                        <label for="hrUnuse">미사용</label>
+                    <div class="popupArticleDouble">
+                        <label for="" class="popupArticleLabel">직급</label>
+                        <select name="position" id="position" class="popupArticleinput PopupDataInputWork">
+                            <option value="">직급 선택</option>
+                            <option value="인턴">인턴</option>
+                            <option value="사원">사원</option>
+                            <option value="주임">주임</option>
+                            <option value="계장">계장</option>
+                            <option value="대리">대리</option>
+                            <option value="과장">과장</option>
+                            <option value="차장">차장</option>
+                            <option value="부장">부장</option>
+                        </select>
                     </div>
                 </div>
                 <div class="popupArticleBox">
                     <div class="popupArticleDouble">
-                        <label for="" class="popupArticleLabel"><span class="importantStar">*</span>생년월일</label>
-                        <input autocomplete="off" name="birthdate" type="date"
-                            class="popupArticleinput hrBirth length100 editEssential" placeholder="ex)19990101">
+                        <label for="" class="popupArticleLabel">주민등록번호</label>
+                        <div class="popupIdBox">
+                            <input maxlength="6" autocomplete="off" id="resident_number1" name="resident_number1" class="popupArticleinput hrBirth length100 popupArticleinputShort">
+                            -
+                            <input maxlength="7" autocomplete="off" id="resident_number2" name="resident_number2" class="popupArticleinput hrBirth length100 popupArticleinputShort">
+                        </div>
                     </div>
                     <div class="popupArticleDouble">
                         <label for="" class="popupArticleLabel"><span class="importantStar">*</span>휴대폰번호</label>
                         <input autocomplete="off" name="phone_num" type="text"
                             class="popupArticleinput hrPhone length100 editEssential makeHyphen"
                             placeholder="'-'을 생략하고 입력해 주세요.">
+                    </div>
+                </div>
+                <div class="popupArticleBox">
+                    <div class="popupArticleDouble">
+                        <label for="" class="popupArticleLabel">소속회사</label>
+                        <input autocomplete="off" id="company" name="company" type="text"
+                            class="popupArticleinput hrCompany length100">
+                    </div>
+                    <div class="popupArticleDouble">
+                        <label for="" class="popupArticleLabel">소속팀</label>
+                        <input autocomplete="off" id="team" name="team" type="text"
+                            class="popupArticleinput hrTeam length100">
                     </div>
                 </div>
                 <div class="popupArticleBox">
@@ -500,6 +561,18 @@
                 </div>
                 <div class="popupArticleBox">
                     <div class="popupArticleDouble">
+                        <label for="" class="popupArticleLabel">최종소견</label>
+                        <input autocomplete="off" id="final_opinion" name="final_opinion" type="text"
+                            class="popupArticleinput length100">
+                    </div>
+                    <div class="popupArticleDouble">
+                        <label for="" class="popupArticleLabel">면접담당자</label>
+                        <input autocomplete="off" id="interviewer" name="interviewer" type="text"
+                            class="popupArticleinput length100">
+                    </div>
+                </div>
+                <div class="popupArticleBox">
+                    <div class="popupArticleDouble">
                         <label for="" class="popupArticleLabel">갱신사유</label>
                         <input autocomplete="off" id="renewal_reason" name="renewal_reason" type="text"
                             class="popupArticleinput length100">
@@ -512,23 +585,28 @@
                 </div>
                 <div class="popupArticleBox">
                     <div class="popupArticleDouble">
+                        <label for="" class="popupArticleLabel">종료일</label>
+                        <input autocomplete="off" id="end_date" name="end_date" type="date"
+                            class="popupArticleinput length100">
+                    </div>
+                    <div class="popupArticleDouble">
+                        <label for="" class="popupArticleLabel">퇴사일</label>
+                        <input autocomplete="off" id="leave_date" name="leave_date" type="date"
+                            class="popupArticleinput length100">
+                    </div>
+                </div>
+                <div class="popupArticleBox">
+                    <div class="popupArticleDouble">
                         <label for="" class="popupArticleLabel">경력사항</label>
                         <input autocomplete="off" id="career" name="career" type="text"
                             class="popupArticleinput length100">
                     </div>
-                    <div class="popupArticleDouble">
-                        <label for="" class="popupArticleLabel">직급</label>
-                        <select name="position" id="position" class="popupArticleinput PopupDataInputWork">
-                            <option value="">직급 선택</option>
-                            <option value="인턴">인턴</option>
-                            <option value="사원">사원</option>
-                            <option value="주임">주임</option>
-                            <option value="계장">계장</option>
-                            <option value="대리">대리</option>
-                            <option value="과장">과장</option>
-                            <option value="차장">차장</option>
-                            <option value="부장">부장</option>
-                        </select>
+                    <div class="popupArticleDouble popupArticleUseEdit">
+                        <label for="" class="popupArticleLabel"><span class="importantStar">*</span>사용여부</label>
+                        <input name="use" value="사용" type="radio" class="inputUse hrUse" id="hrUse">
+                        <label for="hrUse">사용</label>
+                        <input name="use" value="미사용" type="radio" class="inputUse hrUse" id="hrUnuse">
+                        <label for="hrUnuse">미사용</label>
                     </div>
                 </div>
                 <div class="popupArticleCategori">진행상황 견습노선 및 내용</div>
