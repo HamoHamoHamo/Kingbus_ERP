@@ -204,7 +204,11 @@ td:nth-child(13) {
     width: 28rem;
 }
 
-.popupArticleDouble .popupArticleinput {
+.popupArticleinputShort {
+    width: 12rem !important; 
+}
+
+.popupArticleDouble .popupArticleinput{
     width: 28rem;
 }
 

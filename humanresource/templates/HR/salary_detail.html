@@ -82,7 +82,7 @@
                     <td>{{forloop.counter}}{{data.week_list|index:forloop.counter0}}</td>
                     <td title="{{data.attendance_list|index:forloop.counter0}}">
                         {% for d in data.attendance_list|index:forloop.counter0 %}
-                            {{d.0|slice:':4'}}. {{d.1|slice:':4'}}/
+                            {{d}},
                         {% endfor %}
                     </td>
                     <td class="printComma">
@@ -93,7 +93,7 @@
                     <!-- <td>기흥기숙.마북동 /</td> -->
                     <td title="{{data.leave_list|index:forloop.counter0}}">
                         {% for d in data.leave_list|index:forloop.counter0 %}
-                            {{d.0|slice:':4'}}. {{d.1|slice:':4'}}/
+                            {{d}},
                         {% endfor %}
                     </td>
                     <td class="printComma">

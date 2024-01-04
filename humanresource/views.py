@@ -145,6 +145,14 @@ class MemberList(generic.ListView):
                 'position' : member.position,
                 'apprenticeship_note' : member.apprenticeship_note,
                 'leave_reason' : member.leave_reason,
+                'resident_number1' : member.resident_number1,
+                'resident_number2' : member.resident_number2,
+                'company' : member.company,
+                'team' : member.team,
+                'final_opinion' : member.final_opinion,
+                'interviewer' : member.interviewer,
+                'end_date' : member.end_date,
+                'leave_date' : member.leave_date,
             })
         context['data_list'] = data_list
         context['name'] = self.request.GET.get('name', '')
@@ -155,6 +163,15 @@ class MemberList(generic.ListView):
         context['member_all'] = Member.objects.order_by('name')
         
         return context
+
+def calculate_birthdate_by_resident_number(number):
+    birthdate = f'{number[:2]}-{number[2:4]}-{number[4:6]}'
+    # 주민번호 앞에 19를 붙일지 20을 붙일지 확인
+    if number > TODAY[2:4] + "0000":
+        birthdate = "19" + birthdate
+    else:
+        birthdate = "20" + birthdate
+    return birthdate
 
 def member_create(request):
     if request.method == "POST":
@@ -182,6 +199,9 @@ def member_create(request):
                 return HttpResponseBadRequest()
             creator = Member.objects.get(pk=request.session.get('user'))
             member = member_form.save(commit=False)
+            member.birthdate = calculate_birthdate_by_resident_number(member.resident_number1)
+            member.company = request.POST.get('company', '')
+            member.team = request.POST.get('team', '')
             member.creator = creator
             member.authority = req_auth
             user_id = request.POST.get('user_id', None)
@@ -258,7 +278,6 @@ def member_edit(request):
             member.role = member_form.cleaned_data['role']
             member.entering_date = member_form.cleaned_data['entering_date']
             member.phone_num = member_form.cleaned_data['phone_num']
-            member.birthdate = member_form.cleaned_data['birthdate']
             member.address = member_form.cleaned_data['address']
             member.note = member_form.cleaned_data['note']
             member.interview_date = member_form.cleaned_data['interview_date']
@@ -274,6 +293,16 @@ def member_edit(request):
             member.emergency = request.POST.get('emergency1', '') + ' ' + request.POST.get('emergency2', '')
             member.use = request.POST.get('use')
             member.authority = req_auth
+            
+            member.resident_number1 = request.POST.get('resident_number1')
+            member.resident_number2 = request.POST.get('resident_number2')
+            member.company = request.POST.get('company')
+            member.team = request.POST.get('team')
+            member.final_opinion = request.POST.get('final_opinion')
+            member.interviewer = request.POST.get('interviewer')
+            member.end_date = request.POST.get('end_date')
+            member.leave_date = request.POST.get('leave_date')
+            member.birthdate = calculate_birthdate_by_resident_number(member.resident_number1)
             
             member.save()
 
@@ -582,7 +611,7 @@ def salary_detail(request):
         if payment_date == '말일':
             salary_date = datetime.strftime(datetime.strptime(month+'-01', FORMAT) + relativedelta(months=1) - timedelta(days=1), FORMAT)
         else:
-            salary_date = f'{month}-{payment_date}'
+            salary_date = datetime.strftime(datetime.strptime(f'{month}-{payment_date}', FORMAT) - relativedelta(months=1), FORMAT)
 
         additional = salary.additional_salary.all()
         deduction = salary.deduction_salary.all()
@@ -602,27 +631,27 @@ def salary_detail(request):
 
         attendances = DispatchRegularlyConnect.objects.filter(departure_date__range=(f'{month}-01 00:00', f'{month}-{last_date} 24:00')).filter(work_type='출근').filter(driver_id=member)
         attendance_cnt = attendances.count()
-        for attendance in attendances:            
-            c_date = int(attendance.departure_date[8:10]) - 1
+        for attendance in list(attendances.values('regularly_id__route', 'departure_date', 'driver_allowance')):
+            c_date = int(attendance['departure_date'][8:10]) - 1
             if not attendance_list[c_date]:
                 attendance_list[c_date] = []
-            attendance_list[c_date].append([attendance.regularly_id.departure, attendance.regularly_id.arrival])
+            attendance_list[c_date].append(attendance['regularly_id__route'])
 
-            attendance_price_list[c_date] += int(attendance.driver_allowance)
+            attendance_price_list[c_date] += int(attendance['driver_allowance'])
         # if attendances:
-            total_list[c_date] += int(attendance.driver_allowance)
+            total_list[c_date] += int(attendance['driver_allowance'])
 
         leaves = DispatchRegularlyConnect.objects.filter(departure_date__range=(f'{month}-01 00:00', f'{month}-{last_date} 24:00')).filter(work_type='퇴근').filter(driver_id=member)
         leave_cnt = leaves.count()
-        for leave in leaves:
-            c_date = int(leave.departure_date[8:10]) - 1
+        for leave in list(leaves.values('regularly_id__route', 'departure_date', 'driver_allowance')):
+            c_date = int(leave['departure_date'][8:10]) - 1
             if not leave_list[c_date]:
                 leave_list[c_date] = []
-            leave_list[c_date].append([leave.regularly_id.departure, leave.regularly_id.arrival])
+            leave_list[c_date].append(leave['regularly_id__route'])
         
-            leave_price_list[c_date] += int(leave.driver_allowance)
+            leave_price_list[c_date] += int(leave['driver_allowance'])
         # if leaves:
-            total_list[c_date] += int(leave.driver_allowance)
+            total_list[c_date] += int(leave['driver_allowance'])
 
 
         for i in range(int(last_date)):
