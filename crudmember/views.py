@@ -120,6 +120,12 @@ def setting_delete(request):
 
         for id in id_list:
             category = Category.objects.get(id=id)
+            if category.type == "유형":
+                order_list = DispatchOrder.objects.filter(order_type = category.category)
+                for order in order_list:
+                    order.order_type = ""
+                    order.save()
+                
             category.delete()
         
         return redirect(request.META.get('HTTP_REFERER', 'redirect_if_referer_not_found'))
