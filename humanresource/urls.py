@@ -11,7 +11,11 @@ urlpatterns = [
     path('member/image/<str:file_id>', views.member_img, name='member_img'),
     path('member/download', views.member_download, name='member_download'),
     #path('member/upload', views.member_upload, name='member_upload'),
-
+    path('team', views.TeamList.as_view(), name='team'),
+    path('team/create', views.team_create, name='team_create'),
+    path('team/edit', views.team_edit, name='team_edit'),
+    path('team/delete', views.team_delete, name='team_delete'),
+    path('team/member', views.team_member, name='team_member'),
     path('salary', views.SalaryList.as_view(), name='salary'),
     path('salary/edit', views.salary_edit, name='salary_edit'),
     path('salary/detail', views.salary_detail, name='salary_detail'),

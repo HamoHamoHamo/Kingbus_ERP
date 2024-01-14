@@ -17,7 +17,7 @@ from config.settings import BASE_DIR
 from crudmember.models import Category
 from vehicle.models import Vehicle
 from .forms import MemberForm
-from .models import Member, MemberFile, Salary, AdditionalSalary, DeductionSalary
+from .models import Member, MemberFile, Salary, AdditionalSalary, DeductionSalary, Team
 import math
 from my_settings import CRED_PATH
 import firebase_admin
@@ -303,7 +303,7 @@ def member_edit(request):
             member.end_date = request.POST.get('end_date')
             member.leave_date = request.POST.get('leave_date')
             member.birthdate = calculate_birthdate_by_resident_number(member.resident_number1)
-            
+
             member.save()
 
             # 파일
@@ -421,10 +421,140 @@ def member_download(request):
         #return JsonResponse({'status': 'fail', 'e': e})
         raise Http404
 
+class TeamList(generic.ListView):
+    template_name = 'HR/team.html'
+    context_object_name = 'member_list'
+    model = Member
+
+    def get(self, request, **kwargs):
+        if request.session.get('authority') >= 3:
+            return render(request, 'authority.html')
+        else:
+            return super().get(request, **kwargs)
+
+    def get_queryset(self):
+        team = self.request.GET.get('team', '')
+        name = self.request.GET.get('name', '')
+        age = self.request.GET.get('age', '나이')
+        use = self.request.GET.get('use', '사용')
+        role = self.request.GET.get('role', '담당업무')
+        team_none = self.request.GET.get('team_none', '')
+        
+        up65 = f'{int(TODAY[:4]) - 65}{TODAY[4:10]}'
+
+        authority = self.request.session.get('authority')
+        
+        if name:
+            member_list = Member.objects.exclude(Q(role="관리자")|Q(role="최고관리자")).filter(use=use).filter(authority__gte=authority).filter(name__contains=name).order_by("name")
+        else:
+            member_list = Member.objects.exclude(Q(role="관리자")|Q(role="최고관리자")).filter(use=use).filter(authority__gte=authority).order_by("name")
+        if age == '65세 이상':
+            member_list = member_list.filter(birthdate__lte=up65)
+        if role != '담당업무':
+            member_list = member_list.filter(role=role)
+        if team:
+            searched_team = get_object_or_404(Team, id=team)
+            member_list = member_list.filter(team=searched_team)
+        
+        if team_none == "팀없음":
+            member_list = member_list.filter(team=None)
+        return member_list
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        team_id = self.request.GET.get('team', '')
+        if team_id:
+            team = get_object_or_404(Team, id=team_id)
+        else:
+            team = '전체'
+
+        null = self.request.GET.get('team_none', '')
+        if null == '팀없음':
+            team = '팀없음'
+
+        context['team_list'] = Team.objects.order_by('name')
+        context['team'] = team
+        context['name'] = self.request.GET.get('name', '')
+        context['use'] = self.request.GET.get('use', '사용')
+        context['role'] = self.request.GET.get('role', '담당업무')
+        return context
+
+
+def team_create(request):
+    if request.session.get('authority') > 1:
+        return render(request, 'authority.html')
+
+    if request.method == "POST":
+        team = Team(
+            name = request.POST.get('name'),
+        )
+        team.save()
+        return redirect(request.META.get('HTTP_REFERER', 'redirect_if_referer_not_found'))
+    else:
+        return HttpResponseNotAllowed(['POST'])
+
+def team_edit(request):
+    if request.session.get('authority') > 1:
+        return render(request, 'authority.html')
+
+    if request.method == "POST":
+        id = request.POST.get('id', None)
+        name = request.POST.get('name', None)
+        team = get_object_or_404(Team, id=id)
+        team.name = name
+        team.save()
+        
+        return redirect(request.META.get('HTTP_REFERER', 'redirect_if_referer_not_found'))
+    else:
+        return HttpResponseNotAllowed(['POST'])
+
+def team_delete(request):
+    if request.session.get('authority') > 1:
+        return render(request, 'authority.html')
+
+    if request.method == "POST":
+        team = get_object_or_404(Team, id=request.POST.get('id', None))
+        team.delete()
+        return redirect('HR:team')
+    else:
+        return HttpResponseNotAllowed(['POST'])
+
+def team_member(request):
+    if request.session.get('authority') > 1:
+        return render(request, 'authority.html')
+
+    if request.method == "POST":
+        member_list = request.POST.getlist('id', None)
+        team_list = request.POST.getlist('team_id', None)
+        
+        cnt = 0
+        for member in member_list:
+            member = get_object_or_404(Member, id=member)
+            team_id = team_list[cnt]
+            if team_id == 'none':
+                member.team = None
+            else:
+                team = get_object_or_404(Team, id=team_id)
+                member.team = team
+            member.save()
+            cnt += 1
+        
+        return redirect(request.META.get('HTTP_REFERER', 'redirect_if_referer_not_found'))
+    else:
+        return HttpResponseNotAllowed(['POST'])
+
+
 class SalaryList(generic.ListView):
     template_name = 'HR/salary_list.html'
     context_object_name = 'member_list'
     model = Member
+
+    def get(self, request, **kwargs):
+        if request.session.get('authority') >= 3:
+            return render(request, 'authority.html')
+        else:
+            return super().get(request, **kwargs)
 
     def get_queryset(self):
         month = self.request.GET.get('month', TODAY[:7])

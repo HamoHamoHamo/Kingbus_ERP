@@ -3,6 +3,11 @@ from uuid import uuid4
 from django.db import models
 import datetime
 
+class Team(models.Model):
+    name =models.CharField(verbose_name='팀이름', max_length=100, null=False, blank=False)
+    pub_date = models.DateTimeField(verbose_name='작성시간', auto_now_add=True, null=False)
+    updated_at = models.DateTimeField(auto_now=True, verbose_name='수정시간')
+
 class Member(models.Model):
     def clean(self):
         if self.user_id == "":
@@ -31,7 +36,7 @@ class Member(models.Model):
     apprenticeship_note = models.CharField(verbose_name='견습노선 및 내용', max_length=100, null=False, blank=True)
     leave_reason = models.CharField(verbose_name='퇴사사유', max_length=100, null=False, blank=True)
     company =models.CharField(verbose_name='소속회사', max_length=100, null=False, blank=True)
-    team =models.CharField(verbose_name='소속팀', max_length=100, null=False, blank=True)
+    team =models.ForeignKey(Team, on_delete=models.SET_NULL, related_name="member_team", null=True)
     final_opinion =models.CharField(verbose_name='최종소견', max_length=100, null=False, blank=True)
     interviewer =models.CharField(verbose_name='면접담당자', max_length=100, null=False, blank=True)
     end_date =models.CharField(verbose_name='종료일', max_length=100, null=False, blank=True)
@@ -68,6 +73,7 @@ class MemberFile(models.Model):
     updated_at = models.DateTimeField(auto_now=True, verbose_name='수정시간')
     def __str__(self):
         return self.member_id.name + "_" + self.filename
+
 # class HR(models.Model):
 #     member_id = models.ForeignKey(Member, on_delete=models.SET_NULL, related_name="hr_member", null=True)
 #     hr_type = models.CharField(verbose_name="종류", max_length=30, null=False)
