@@ -118,7 +118,10 @@ class MemberList(generic.ListView):
                 elif file.type == '버스운전 자격증':
                     bus_license_name = file.filename
                     bus_license_id = file.id
-                    
+            if member.team:
+                team = member.team
+            else:
+                team = ''
             data_list.append({
                 'name': member.name,
                 'role': member.role,
@@ -148,7 +151,7 @@ class MemberList(generic.ListView):
                 'resident_number1' : member.resident_number1,
                 'resident_number2' : member.resident_number2,
                 'company' : member.company,
-                'team' : member.team,
+                'team' : team,
                 'final_opinion' : member.final_opinion,
                 'interviewer' : member.interviewer,
                 'end_date' : member.end_date,
