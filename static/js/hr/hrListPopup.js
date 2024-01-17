@@ -64,6 +64,7 @@ const apprenticeship_note = document.querySelector("#apprenticeship_note")
 const leave_reason = document.querySelector("#leave_reason")
 const company = document.querySelector("#company")
 const team = document.querySelector("#team")
+const teamOptions = document.querySelectorAll("#team option")
 const final_opinion = document.querySelector("#final_opinion")
 const interviewer = document.querySelector("#interviewer")
 const end_date = document.querySelector("#end_date")
@@ -123,10 +124,15 @@ function openDetailPopup() {
   apprenticeship_note.value = data.apprenticeship_note ? data.apprenticeship_note : '';
   leave_reason.value = data.leave_reason ? data.leave_reason : '';
   company.value = data.company
-  team.value = data.team
+  
+  for (i = 0; i < teamOptions.length; i++) {
+    if (teamOptions[i].innerText == data.team) {
+      teamOptions[i].selected = true;
+    }
+  }
+
   final_opinion.value = data.final_opinion
   interviewer.value = data.interviewer
-  console.log("TST", data.interviewer);
   end_date.value = data.end_date
   leave_date.value = data.leave_date
   resident_number1.value = data.resident_number1

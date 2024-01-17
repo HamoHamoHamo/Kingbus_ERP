@@ -119,7 +119,7 @@ class MemberList(generic.ListView):
                     bus_license_name = file.filename
                     bus_license_id = file.id
             if member.team:
-                team = member.team
+                team = member.team.name
             else:
                 team = ''
             data_list.append({
@@ -164,7 +164,7 @@ class MemberList(generic.ListView):
         context['age'] = self.request.GET.get('age', '나이')
         context['req_order_by'] = self.request.GET.get('order_by', 'name')
         context['member_all'] = Member.objects.order_by('name')
-        
+        context['team_list'] = Team.objects.all().order_by('name')
         return context
 
 def calculate_birthdate_by_resident_number(number):
@@ -204,7 +204,12 @@ def member_create(request):
             member = member_form.save(commit=False)
             member.birthdate = calculate_birthdate_by_resident_number(member.resident_number1)
             member.company = request.POST.get('company', '')
-            member.team = request.POST.get('team', '')
+            request_team = request.POST.get('team', '')
+            try:
+                team =Team.objects.get(id=request_team)
+            except:
+                team = None
+            member.team = team
             member.creator = creator
             member.authority = req_auth
             user_id = request.POST.get('user_id', None)
@@ -300,7 +305,12 @@ def member_edit(request):
             member.resident_number1 = request.POST.get('resident_number1')
             member.resident_number2 = request.POST.get('resident_number2')
             member.company = request.POST.get('company')
-            member.team = request.POST.get('team')
+            request_team = request.POST.get('team', '')
+            try:
+                team =Team.objects.get(id=request_team)
+            except:
+                team = None
+            member.team = team
             member.final_opinion = request.POST.get('final_opinion')
             member.interviewer = request.POST.get('interviewer')
             member.end_date = request.POST.get('end_date')
@@ -552,12 +562,6 @@ class SalaryList(generic.ListView):
     template_name = 'HR/salary_list.html'
     context_object_name = 'member_list'
     model = Member
-
-    def get(self, request, **kwargs):
-        if request.session.get('authority') >= 3:
-            return render(request, 'authority.html')
-        else:
-            return super().get(request, **kwargs)
 
     def get_queryset(self):
         month = self.request.GET.get('month', TODAY[:7])
