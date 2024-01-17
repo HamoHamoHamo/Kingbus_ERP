@@ -251,8 +251,12 @@
                     </div>
                     <div class="popupArticleDouble">
                         <label for="" class="popupArticleLabel">소속팀</label>
-                        <input autocomplete="off" name="team" type="text"
-                            class="popupArticleinput PopupDataInputTeam length100">
+                        <select name="team" type="text" class="popupArticleinput PopupDataInputTeam length100">
+                            <option></option>
+                            {% for team in team_list %}
+                            <option value="{{team.id}}">{{team.name}}</option>
+                            {% endfor %}
+                        </select>
                     </div>
                 </div>
                 <div class="popupArticleBox">
@@ -508,8 +512,12 @@
                     </div>
                     <div class="popupArticleDouble">
                         <label for="" class="popupArticleLabel">소속팀</label>
-                        <input autocomplete="off" id="team" name="team" type="text"
-                            class="popupArticleinput hrTeam length100">
+                        <select id="team" name="team" type="text" class="popupArticleinput hrTeam length100">
+                            <option></option>
+                            {% for team in team_list %}
+                            <option value="{{team.id}}">{{team.name}}</option>
+                            {% endfor %}
+                        </select>
                     </div>
                 </div>
                 <div class="popupArticleBox">
