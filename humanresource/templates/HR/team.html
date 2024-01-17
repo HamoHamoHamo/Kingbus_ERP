@@ -154,7 +154,7 @@
                                 <td>{{member.position}}</td>
                                 <td>{{member.phone_num}}</td>
                                 <td class="{{member.id}}">
-                                    <select name="team_id" class="tableSelect">
+                                    <select class="tableSelect">
                                         <option value="none"></option>
                                         {% for team in team_list %}
                                         <option {% if member.team == team %} selected {% endif %} value="{{team.id}}">{{team.name}}</option>
