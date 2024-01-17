@@ -8,6 +8,8 @@ for (i = 0; i < tableSelects.length; i++){
 
 function createIdInput() {
     if(this.parentNode.parentNode.children[6] === undefined){
+        console.log("TEST", this)
+        this.setAttribute("name", "team_id")
         const hidden = document.createElement("input")
         hidden.setAttribute("class", "teamSaveId")
         hidden.setAttribute("type", "hidden")
