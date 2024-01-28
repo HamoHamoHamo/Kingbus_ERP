@@ -33,17 +33,13 @@ const editPopupContainer = document.querySelector(".editPopupContainer")
 const btnModulesCreate = document.querySelectorAll(".btnModulesCreate")
 const PopupDataInputLicense = document.querySelector(".PopupDataInputLicense")
 const hrRoleSelect = document.querySelector(".hrRole")
-const fileDeleteBtn = document.querySelectorAll(".fileDeleteBtn")
-const FileTextLicense = document.querySelector(".LicenseFileText")
-const FileInputLicense = document.querySelector(".LicenseFileInput")
-const FileTextDriverLicense = document.querySelector(".DriverLicenseFileText")
-const FileInputDriverLicense = document.querySelector(".DriverLicenseFileInput")
 
-const LicenseFileTextEdit = document.querySelector(".LicenseFileTextEdit")
-const LicenseFileInputEdit = document.querySelector(".LicenseFileInputEdit")
 
-const DriverLicenseFileTextEdit = document.querySelector(".DriverLicenseFileTextEdit")
-const DriverLicenseFileInputEdit = document.querySelector(".DriverLicenseFileInputEdit")
+const tableDocuments = document.querySelectorAll(".tableDocument")
+const documentLabel = document.querySelectorAll("#documentPopup .popupArticleLabel")
+const documentSendToHidden = document.querySelector(".documentSendToHidden")
+const documentFiles = document.querySelectorAll(".documentFile")
+const documentDeleteBtn = document.querySelectorAll(".documentDeleteBtn")
 
 const memberFormCreate = document.querySelector(".memberFormCreate")
 const essential = document.querySelectorAll(".essential")
@@ -59,6 +55,7 @@ const contract_condition = document.querySelector("#contract_condition")
 const renewal_reason = document.querySelector("#renewal_reason")
 const apply_path = document.querySelector("#apply_path")
 const career = document.querySelector("#career")
+const careerOptions = document.querySelectorAll("#career option")
 const position_option = document.querySelectorAll("#position option")
 const apprenticeship_note = document.querySelector("#apprenticeship_note")
 const leave_reason = document.querySelector("#leave_reason")
@@ -82,9 +79,31 @@ function openDetailPopup() {
 
   popupAreaModules[1].style.display = 'block'
   
+  hrRole[0].selected = true;
   for (i = 0; i < hrRole.length; i++) {
     if (hrRole[i].innerText == data.role) {
       hrRole[i].selected = true;
+    }
+  }
+
+  careerOptions[0].selected = true;
+  for (i = 0; i < careerOptions.length; i++) {
+    if (careerOptions[i].innerText == data.career) {
+      careerOptions[i].selected = true;
+    }
+  }
+
+  teamOptions[0].selected = true;
+  for (i = 0; i < teamOptions.length; i++) {
+    if (teamOptions[i].innerText == data.team) {
+      teamOptions[i].selected = true;
+    }
+  }
+
+  position_option[0].selected = true;
+  for (i = 0; i < position_option.length; i++) {
+    if (position_option[i].innerText == data.position) {
+      position_option[i].selected = true;
     }
   }
   
@@ -110,8 +129,6 @@ function openDetailPopup() {
   authorityDivision[3].style.display = "flex"
   hrID.value = data.id
   
-  LicenseFileTextEdit.value = data.license
-  DriverLicenseFileTextEdit.value = data.bus_license
   sendToHidden.value = this.parentNode.className;
   
   interview_date.value = data.interview_date
@@ -120,16 +137,9 @@ function openDetailPopup() {
   contract_condition.value = data.contract_condition
   renewal_reason.value = data.renewal_reason
   apply_path.value = data.apply_path
-  career.value = data.career
   apprenticeship_note.value = data.apprenticeship_note ? data.apprenticeship_note : '';
   leave_reason.value = data.leave_reason ? data.leave_reason : '';
   company.value = data.company
-  
-  for (i = 0; i < teamOptions.length; i++) {
-    if (teamOptions[i].innerText == data.team) {
-      teamOptions[i].selected = true;
-    }
-  }
 
   final_opinion.value = data.final_opinion
   interviewer.value = data.interviewer
@@ -137,13 +147,6 @@ function openDetailPopup() {
   leave_date.value = data.leave_date
   resident_number1.value = data.resident_number1
   resident_number2.value = data.resident_number2
-
-
-  for (i = 0; i < position_option.length; i++) {
-    if (position_option[i].innerText == data.position) {
-      position_option[i].selected = true;
-    }
-  }
 }
 
 
@@ -238,7 +241,7 @@ hrMemberListForm.addEventListener('submit', deleteData)
 function deleteData(e) {
   if (!checkCounte) {
     e.preventDefault()
-    alert('삭제할 차량을 선택해 주세요.')
+    alert('삭제할 직원을 선택해 주세요.')
   } else {
     if (confirm('정말로 삭제하시겠습니까?') == false) {
       e.preventDefault()
@@ -307,52 +310,66 @@ window.onload = function () {
 }
 
 
+//구비서류 팝업
+for (i = 0; i < tableDocuments.length; i++) {
+  tableDocuments[i].addEventListener('click', openDocumentPopup)
+}
 
+function openDocumentPopup() {
+  popupAreaModules[3].style.display = 'block'
+  documentSendToHidden.value = this.parentNode.className;
 
+  const datas = fileDatas[this.classList[1]];
+  
+
+  for (i = 0; i < documentLabel.length; i++) {
+    let type = documentLabel[i].innerText;
+    let label = documentLabel[i];
+    
+    // 초기화
+    label.nextElementSibling.children[2].value = ''
+    label.nextElementSibling.children[4].value = ''
+
+    for (j = 0; j < datas.length; j++) {
+      let data = datas[j];
+      if (data['type'] == type) {
+        // console.log("AAAAA",data)
+        // console.log("AAAAA",label.nextElementSibling.children[4])
+        label.nextElementSibling.children[2].value = data['filename']
+        label.nextElementSibling.children[2].addEventListener("click", () => getDownloadUrl(data))
+        label.nextElementSibling.children[4].value = data['id']
+        break
+      }
+    }
+  }
+}
+
+function getDownloadUrl(data) {
+  window.open(`member/file/${data['id']}`, data['type'], "width=630, height=891")
+}
 
 //파일명 변경
-FileInputLicense.addEventListener("change", changeFileLicense)
-FileInputDriverLicense.addEventListener("change", changeFileDriverLicense)
-LicenseFileInputEdit.addEventListener("change", changeFileLicenseEdit)
-DriverLicenseFileInputEdit.addEventListener("change", changeFileDriverLicenseEdit)
+for (i = 0; i < documentFiles.length; i++) {
+  documentFiles[i].addEventListener('change', changeFileText)
+}
 
-function changeFileLicense() {
-  FileTextLicense.value = FileInputLicense.files[0].name
-}
-function changeFileDriverLicense() {
-  FileTextDriverLicense.value = FileInputDriverLicense.files[0].name
-}
-function changeFileLicenseEdit() {
-  console.log('a');
+function changeFileText() {
+  console.log("TEST", this.nextElementSibling, this.files[0].name)
+  this.nextElementSibling.value = this.files[0].name
+  // console.log("tset", this.parentNode.children[4])
+  // 삭제용 name값 초기화
+  this.parentNode.children[4].name = ''
   
-  LicenseFileTextEdit.value = LicenseFileInputEdit.files[0].name
 }
-function changeFileDriverLicenseEdit() {
-  DriverLicenseFileTextEdit.value = DriverLicenseFileInputEdit.files[0].name
-}
-
-
-
 
 // 파일삭제
-fileDeleteBtn[0].addEventListener("click", deleteFileLicens)
-fileDeleteBtn[1].addEventListener("click", deleteFileDriverLicens)
-fileDeleteBtn[2].addEventListener("click", deleteFileLicensEdit)
-fileDeleteBtn[3].addEventListener("click", deleteFileDriverLicensEdit)
+for (i = 0; i < documentDeleteBtn.length; i++) {
+  documentDeleteBtn[i].addEventListener('click', deleteFile)
+}
 
-function deleteFileLicens() {
-  FileTextLicense.value = ""
-  FileInputLicense.value = ""
-}
-function deleteFileDriverLicens() {
-  FileTextDriverLicense.value = ""
-  FileInputDriverLicense.value = ""
-}
-function deleteFileLicensEdit() {
-  LicenseFileTextEdit.value = ""
-  LicenseFileInputEdit.value = ""
-}
-function deleteFileDriverLicensEdit() {
-  DriverLicenseFileTextEdit.value = ""
-  DriverLicenseFileInputEdit.value = ""
+function deleteFile() {
+  this.previousElementSibling.previousElementSibling.value = ""
+  this.previousElementSibling.value = ""
+  this.nextElementSibling.name = "delete_file_id"
+  console.log(this.nextElementSibling)
 }

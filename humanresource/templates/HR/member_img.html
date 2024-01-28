@@ -8,9 +8,12 @@
 </head>
 
 <body>
-    <img src="{{img.file.url}}">
+    <img src="{{url}}">
 </body>
 
 <script>
   window.print()
+  {% if not url %}
+  alert('url 에러')
+  {% endif %}
 </script>

@@ -67,6 +67,7 @@ class MemberFile(models.Model):
     member_id = models.ForeignKey(Member, on_delete=models.CASCADE, related_name="member_file", db_column="member_id", null=False)
     file = models.FileField(upload_to=get_file_path, null=False)
     filename = models.TextField(null=True, verbose_name='첨부파일명')
+    path = models.TextField(null=True, verbose_name='경로')
     type = models.CharField(max_length=100, null=False, verbose_name='면허증, 버스운전자격증')
     creator = models.ForeignKey(Member, on_delete=models.SET_NULL, related_name="member_file_user", db_column="user_id", null=True)
     pub_date = models.DateTimeField(verbose_name='작성시간', auto_now_add=True, null=False)
