@@ -161,6 +161,7 @@ td:nth-child(13) {
 .tableBody td:nth-child(12),
 .tableBody td:nth-child(13) {
     color: #0069D9;
+    cursor: pointer;
 }
 
 .btnBox div {
@@ -185,7 +186,7 @@ td:nth-child(13) {
     max-height: 80rem;
 }
 
-.popupBody {
+.popupBodyMember {
     height: 100%;
     overflow: scroll;
     display: block;
@@ -201,7 +202,7 @@ td:nth-child(13) {
 }
 
 .popupArticleFileDouble {
-    width: 28rem;
+    width: 26rem;
 }
 
 .popupArticleinputShort {

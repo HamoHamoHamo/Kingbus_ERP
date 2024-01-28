@@ -11,6 +11,7 @@ from django.db.models import Sum, Q
 from django.http import Http404, HttpResponse, HttpResponseNotAllowed, HttpResponseBadRequest
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views import generic
+from enum import Enum
 from config.settings import FORMAT
 from datetime import datetime, timedelta
 from config.settings import BASE_DIR
@@ -19,10 +20,11 @@ from vehicle.models import Vehicle
 from .forms import MemberForm
 from .models import Member, MemberFile, Salary, AdditionalSalary, DeductionSalary, Team
 import math
-from my_settings import CRED_PATH
+from my_settings import CRED_PATH, CLOUD_MEDIA_PATH
 import firebase_admin
 from firebase_admin import credentials
 from firebase_admin import messaging
+from media_firebase import upload_to_firebase, get_download_url, delete_firebase_file
 
 TODAY = str(datetime.now())[:10]
 WEEK = ['(월)', '(화)', '(수)', '(목)', '(금)', '(토)', '(일)', ]
@@ -106,22 +108,10 @@ class MemberList(generic.ListView):
 
         member_list = context['member_list']
         data_list = []
+        file_list = []
+        file_count_list = []
+        
         for member in member_list:
-            bus_license_name = ''
-            license_name = ''
-            license_id = ''
-            bus_license_id = ''
-            for file in member.member_file.all():
-                if file.type == '면허증':
-                    license_name = file.filename
-                    license_id = file.id
-                elif file.type == '버스운전 자격증':
-                    bus_license_name = file.filename
-                    bus_license_id = file.id
-            if member.team:
-                team = member.team.name
-            else:
-                team = ''
             data_list.append({
                 'name': member.name,
                 'role': member.role,
@@ -130,13 +120,9 @@ class MemberList(generic.ListView):
                 'phone_num': member.phone_num,
                 'entering_date': member.entering_date,
                 'id': member.user_id if member.user_id else '',
-                'license': license_name,
-                'bus_license': bus_license_name,
                 'note': member.note,
                 'user_id': member.id,
                 'emergency': member.emergency,
-                'license_id': license_id,
-                'bus_license_id': bus_license_id,
                 'use': member.use,
                 'interview_date' : member.interview_date,
                 'contract_date' : member.contract_date,
@@ -151,12 +137,18 @@ class MemberList(generic.ListView):
                 'resident_number1' : member.resident_number1,
                 'resident_number2' : member.resident_number2,
                 'company' : member.company,
-                'team' : team,
+                'team' : member.team.name if member.team else '',
                 'final_opinion' : member.final_opinion,
                 'interviewer' : member.interviewer,
                 'end_date' : member.end_date,
                 'leave_date' : member.leave_date,
             })
+            files = list(MemberFile.objects.filter(member_id=member).order_by('type').values('id', 'type', 'filename'))
+            file_list.append(files)
+            file_count_list.append(len(files))
+
+        context['file_count_list'] = file_count_list
+        context['file_list'] = file_list
         context['data_list'] = data_list
         context['name'] = self.request.GET.get('name', '')
         context['role'] = self.request.GET.get('role', '담당업무')
@@ -247,7 +239,7 @@ def member_file_save(upload_file, member, type, creator):
     )
     member_file.save()
     # print(vehicle_file)
-    return
+    return member_file
 
 def member_edit(request):
     if request.method == "POST":
@@ -403,13 +395,80 @@ def member_delete(request):
     else:
         return HttpResponseNotAllowed(['post'])
 
-def member_img(request, file_id):
+class DocumentType(Enum):
+    RESUME = '이력서'
+    CARPOOLING_AGREEMENT = '공동운행동의서'
+    FAMILY_RELATIONS_CERTIFICATE = '등본'
+    APPRENTICESHIP_CONTRACT = '견습계약서'
+    EMPLOYMENT_CONTRACT = '근로계약서'
+    COMPREHENSIVE_EVALUATION_SHEET = '종합판정표'
+    BANK_STATEMENT = '통장사본'
+    DRIVER_LICENSE = '운전면허증/버스자격증사본'
+    HEALTH_CHECKUP_RESULTS = '건강검진결과'
+    DRIVING_EXPERIENCE_CERTIFICATE = '운전경력증명서/경찰'
+    OATH_DOCUMENT = '확약서'
+    EXTENSION_OF_EMPLOYMENT_AGREEMENT = '연장근로동의서'
+    PLEDGE_AGREEMENT = '서약서'
+    SEXUAL_HARASSMENT_CONTRACT = '성희롱계약서'
+
+def member_file_delete(id_list):
+    for id in id_list:
+        try:
+            MemberFile.objects.get(id=id).delete()
+        except:
+            print("MemberFile delete error id : ", id)
+
+def member_file_upload(request):
     user_auth = request.session.get('authority')
     if user_auth >= 3:
         return render(request, 'authority.html')
 
+    if request.method == "GET":
+        return HttpResponseNotAllowed(['POST'])
+
+    creator = Member.objects.get(pk=request.session.get('user'))
+    member = get_object_or_404(Member, id=request.POST.get('member_id'))
+
+    for document_type in DocumentType:
+        request_file = request.FILES.get(document_type.name, None)
+        if request_file:
+            try:
+                old_file = MemberFile.objects.filter(member_id=member).get(type=document_type.value)
+            except MemberFile.DoesNotExist:
+                old_file = None
+
+            print("test", old_file, document_type.name)
+            file = member_file_save(request_file, member, document_type.value, creator)
+            print("test22", old_file, document_type.name)
+            try:
+                file_path = f'{CLOUD_MEDIA_PATH}{file.file}_{file.filename}'
+                upload_to_firebase(file, file_path)
+                file.path = file_path
+                file.save()
+                os.remove(file.file.path)
+            except Exception as e:
+                print("Firebase upload error", e)
+                #파이어베이스 업로드 실패 시 파일 삭제
+                os.remove(file.file.path)
+                file.delete()
+
+            if old_file:
+                #파이어베이스에서 예전 파일 삭제 / signals에서 삭제
+                old_file.delete()
+    
+    delete_list = request.POST.getlist('delete_file_id', None)
+    member_file_delete(delete_list)
+    
+
+    return redirect(request.META.get('HTTP_REFERER', 'redirect_if_referer_not_found'))
+
+def member_file_download(request, file_id):
+    user_auth = request.session.get('authority')
+    if user_auth >= 3:
+        return render(request, 'authority.html')
+    file = get_object_or_404(MemberFile, id=file_id)
     context = {
-        'img': get_object_or_404(MemberFile, id=file_id)
+        'url' : get_download_url(file.path)
     }
     return render(request, 'HR/member_img.html', context)
 

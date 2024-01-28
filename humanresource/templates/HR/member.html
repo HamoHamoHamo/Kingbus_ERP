@@ -78,8 +78,8 @@
                     <td>비상연락망(관계)</td>
                     <td>생년월일</td>
                     <td>주소</td>
-                    <td>면허증</td>
-                    <td>버스운전 자격증</td>
+                    <td>세부사항</td>
+                    <td>구비서류</td>
                 </tr>
             </thead>
         </table>
@@ -101,15 +101,8 @@
                     <td>{{member.emergency}}</td>
                     <td>{{member.birthdate}}</td>
                     <td>{{member.address}}</td>
-                    {% with data=data_list|index:forloop.counter0 %}
-
-                    <td {% if data.license_id %}onclick="openLisence('{% url 'HR:member_img' data.license_id %}', true)"{% endif %}>
-                        {{data.license}}
-                    </td>
-                    <td {% if data.bus_license_id%}onclick="openLisence('{% url 'HR:member_img' data.bus_license_id %}', false)" {% endif %}>
-                        {{data.bus_license}}
-                    </td>
-                    {% endwith %}
+                    <td class="{{ forloop.counter0 }}">세부사항</td>
+                    <td class="tableDocument {{ forloop.counter0 }}">{{file_count_list | index:forloop.counter0}}/14</td>
                 </tr>
                 {% endfor %}
                 <tr class="blanckTr"></tr>
@@ -184,7 +177,7 @@
         <div class="popupHeader">
             <div class="popupTitle">직원등록</div>
         </div>
-        <div class="popupBody">
+        <div class="popupBody popupBodyMember">
             <div class="popupSection">
                 <div class="popupArticleCategori">기본정보</div>
                 <div class="popupArticleBox">
@@ -336,8 +329,14 @@
                 <div class="popupArticleBox">
                     <div class="popupArticleDouble">
                         <label for="" class="popupArticleLabel">경력사항</label>
-                        <input autocomplete="off" name="career" type="text"
-                            class="popupArticleinput length100">
+                        <select autocomplete="off" name="career" class="popupArticleinput length100">
+                            <option></option>
+                            <option value="3개월 미만">3개월 미만</option>
+                            <option value="1년 미만">1년 미만</option>
+                            <option value="3년 미만">3년 미만</option>
+                            <option value="5년 미만">5년 미만</option>
+                            <option value="5년 이상">5년 이상</option>
+                        </select>
                     </div>
                     <div class="popupArticleDouble popupArticleUse">
                         <label for="" class="popupArticleLabel"><span class="importantStar">*</span>사용여부</label>
@@ -366,48 +365,6 @@
                 <div class="popupArticleCategori">퇴사 사유</div>
                 <div class="popupArticleBox popupArticleBoxDoubleHeight">
                     <textarea class="popupArticleBoxTextarea" name="leave_reason"></textarea>
-                </div>
-                <div class="popupArticleCategori">운전정보</div>
-                <div class="popupArticleBox">
-                    <div class="popupArticleDouble">
-                        <label for="" class="popupArticleLabel">면허증</label>
-                        <div class="popupArticleFileDouble">
-                            <label for="LicenseFile">파일 선택</label>
-                            <input autocomplete="off" name="license_file" type="file" id="LicenseFile"
-                                class="LicenseFileInput">
-                            <input autocomplete="off" name="license" type="text" class="LicenseFileText" readonly>
-                            <svg class="fileDeleteBtn" xmlns="http://www.w3.org/2000/svg" width="11.314" height="11.314"
-                                viewBox="0 0 11.314 11.314">
-                                <g id="그룹_1513" data-name="그룹 1513" transform="translate(-442.649 -1001.97) rotate(45)">
-                                    <line id="선_691" data-name="선 691" y2="12" transform="translate(1029.5 389.5)"
-                                        fill="none" stroke="#000" stroke-linecap="round" stroke-width="2" />
-                                    <line id="선_692" data-name="선 692" y2="12"
-                                        transform="translate(1035.5 395.5) rotate(90)" fill="none" stroke="#000"
-                                        stroke-linecap="round" stroke-width="2" />
-                                </g>
-                            </svg>
-                        </div>
-                    </div>
-                    <div class="popupArticleDouble">
-                        <label for="" class="popupArticleLabel">버스운전 자격증</label>
-                        <div class="popupArticleFileDouble">
-                            <label for="DriverLicenseFile">파일 선택</label>
-                            <input autocomplete="off" name="bus_license_file" type="file" id="DriverLicenseFile"
-                                class="DriverLicenseFileInput">
-                            <input autocomplete="off" name="bus_license" type="text" class="DriverLicenseFileText"
-                                readonly>
-                            <svg class="fileDeleteBtn" xmlns="http://www.w3.org/2000/svg" width="11.314" height="11.314"
-                                viewBox="0 0 11.314 11.314">
-                                <g id="그룹_1513" data-name="그룹 1513" transform="translate(-442.649 -1001.97) rotate(45)">
-                                    <line id="선_691" data-name="선 691" y2="12" transform="translate(1029.5 389.5)"
-                                        fill="none" stroke="#000" stroke-linecap="round" stroke-width="2" />
-                                    <line id="선_692" data-name="선 692" y2="12"
-                                        transform="translate(1035.5 395.5) rotate(90)" fill="none" stroke="#000"
-                                        stroke-linecap="round" stroke-width="2" />
-                                </g>
-                            </svg>
-                        </div>
-                    </div>
                 </div>
                 <div class="popupArticleCategori authorityDivision">계정정보</div>
                 <div class="popupArticleBox authorityDivision">
@@ -445,7 +402,7 @@
         <div class="popupHeader">
             <div class="popupTitle">직원수정</div>
         </div>
-        <div class="popupBody">
+        <div class="popupBody popupBodyMember">
             <div class="popupSection">
                 <div class="popupArticleCategori">기본정보</div>
                 <div class="popupArticleBox">
@@ -606,8 +563,14 @@
                 <div class="popupArticleBox">
                     <div class="popupArticleDouble">
                         <label for="" class="popupArticleLabel">경력사항</label>
-                        <input autocomplete="off" id="career" name="career" type="text"
-                            class="popupArticleinput length100">
+                        <select autocomplete="off" id="career" name="career" class="popupArticleinput length100">
+                            <option></option>
+                            <option value="3개월 미만">3개월 미만</option>
+                            <option value="1년 미만">1년 미만</option>
+                            <option value="3년 미만">3년 미만</option>
+                            <option value="5년 미만">5년 미만</option>
+                            <option value="5년 이상">5년 이상</option>
+                        </select>
                     </div>
                     <div class="popupArticleDouble popupArticleUseEdit">
                         <label for="" class="popupArticleLabel"><span class="importantStar">*</span>사용여부</label>
@@ -624,48 +587,6 @@
                 <div class="popupArticleCategori">퇴사 사유</div>
                 <div class="popupArticleBox popupArticleBoxDoubleHeight">
                     <textarea id="leave_reason" class="popupArticleBoxTextarea" name="leave_reason"></textarea>
-                </div>
-                <div class="popupArticleCategori">운전정보</div>
-                <div class="popupArticleBox">
-                    <div class="popupArticleDouble">
-                        <label for="" class="popupArticleLabel">면허증</label>
-                        <div class="popupArticleFileDouble">
-                            <label for="LicenseFileEdit">파일 선택</label>
-                            <input autocomplete="off" name="license_file" type="file" id="LicenseFileEdit"
-                                class="LicenseFileInputEdit">
-                            <input autocomplete="off" name="license" type="text" class="LicenseFileTextEdit" readonly>
-                            <svg class="fileDeleteBtn" xmlns="http://www.w3.org/2000/svg" width="11.314" height="11.314"
-                                viewBox="0 0 11.314 11.314">
-                                <g id="그룹_1513" data-name="그룹 1513" transform="translate(-442.649 -1001.97) rotate(45)">
-                                    <line id="선_691" data-name="선 691" y2="12" transform="translate(1029.5 389.5)"
-                                        fill="none" stroke="#000" stroke-linecap="round" stroke-width="2" />
-                                    <line id="선_692" data-name="선 692" y2="12"
-                                        transform="translate(1035.5 395.5) rotate(90)" fill="none" stroke="#000"
-                                        stroke-linecap="round" stroke-width="2" />
-                                </g>
-                            </svg>
-                        </div>
-                    </div>
-                    <div class="popupArticleDouble">
-                        <label for="" class="popupArticleLabel">버스운전 자격증</label>
-                        <div class="popupArticleFileDouble">
-                            <label for="DriverLicenseFileEdit">파일 선택</label>
-                            <input autocomplete="off" name="bus_license_file" type="file" id="DriverLicenseFileEdit"
-                                class="DriverLicenseFileInputEdit">
-                            <input autocomplete="off" name="bus_license" type="text" class="DriverLicenseFileTextEdit"
-                                readonly>
-                            <svg class="fileDeleteBtn" xmlns="http://www.w3.org/2000/svg" width="11.314" height="11.314"
-                                viewBox="0 0 11.314 11.314">
-                                <g id="그룹_1513" data-name="그룹 1513" transform="translate(-442.649 -1001.97) rotate(45)">
-                                    <line id="선_691" data-name="선 691" y2="12" transform="translate(1029.5 389.5)"
-                                        fill="none" stroke="#000" stroke-linecap="round" stroke-width="2" />
-                                    <line id="선_692" data-name="선 692" y2="12"
-                                        transform="translate(1035.5 395.5) rotate(90)" fill="none" stroke="#000"
-                                        stroke-linecap="round" stroke-width="2" />
-                                </g>
-                            </svg>
-                        </div>
-                    </div>
                 </div>
                 <div class="popupArticleCategori authorityDivision">계정정보</div>
                 <div class="popupArticleBox authorityDivision">
@@ -741,6 +662,306 @@
         </div>
     </form>
 </div>
+
+<div class="popupAreaModules" id="documentPopup">
+    <div class="popupBgModules"></div>
+    <form method="post" action="{% url 'HR:member_file_upload' %}" class="popupContainer popupContainerDouble" enctype="multipart/form-data">
+        {% csrf_token %}
+        <input name="member_id" type="hidden" class="documentSendToHidden">
+        <div class="popupHeader">
+            <div class="popupTitle">구비서류 목록</div>
+        </div>
+        <div class="popupBody">
+            <div class="popupSection">
+                <div class="popupArticleBox">
+                    <div class="popupArticleDouble">
+                        <label for="" class="popupArticleLabel">이력서</label>
+                        <div class="popupArticleFileDouble">
+                            <label for="resume">파일 선택</label>
+                            <input autocomplete="off" name="RESUME" type="file" id="resume" class="documentFile">
+                            <input autocomplete="off" type="text" readonly class="pointer">
+                            <svg class="fileDeleteBtn documentDeleteBtn" xmlns="http://www.w3.org/2000/svg" width="11.314" height="11.314"
+                                viewBox="0 0 11.314 11.314">
+                                <g id="그룹_1513" data-name="그룹 1513" transform="translate(-442.649 -1001.97) rotate(45)">
+                                    <line id="선_691" data-name="선 691" y2="12" transform="translate(1029.5 389.5)"
+                                        fill="none" stroke="#000" stroke-linecap="round" stroke-width="2" />
+                                    <line id="선_692" data-name="선 692" y2="12"
+                                        transform="translate(1035.5 395.5) rotate(90)" fill="none" stroke="#000"
+                                        stroke-linecap="round" stroke-width="2" />
+                                </g>
+                            </svg>
+                            <input type="hidden">
+                        </div>
+                    </div>
+                    <div class="popupArticleDouble">
+                        <label for="" class="popupArticleLabel">공동운행동의서</label>
+                        <div class="popupArticleFileDouble">
+                            <label for="carpooling_agreement">파일 선택</label>
+                            <input autocomplete="off" name="CARPOOLING_AGREEMENT" type="file" id="carpooling_agreement" class="documentFile">
+                            <input autocomplete="off" type="text" readonly class="pointer">
+                            <svg class="fileDeleteBtn documentDeleteBtn" xmlns="http://www.w3.org/2000/svg" width="11.314" height="11.314"
+                                viewBox="0 0 11.314 11.314">
+                                <g id="그룹_1513" data-name="그룹 1513" transform="translate(-442.649 -1001.97) rotate(45)">
+                                    <line id="선_691" data-name="선 691" y2="12" transform="translate(1029.5 389.5)"
+                                        fill="none" stroke="#000" stroke-linecap="round" stroke-width="2" />
+                                    <line id="선_692" data-name="선 692" y2="12"
+                                        transform="translate(1035.5 395.5) rotate(90)" fill="none" stroke="#000"
+                                        stroke-linecap="round" stroke-width="2" />
+                                </g>
+                            </svg>
+                            <input type="hidden">
+                        </div>
+                    </div>
+                </div>
+                <div class="popupArticleBox">
+                    <div class="popupArticleDouble">
+                        <label for="" class="popupArticleLabel">등본</label>
+                        <div class="popupArticleFileDouble">
+                            <label for="family_relations_certificate">파일 선택</label>
+                            <input autocomplete="off" name="FAMILY_RELATIONS_CERTIFICATE" type="file" id="family_relations_certificate" class="documentFile">
+                            <input autocomplete="off" type="text" readonly class="pointer">
+                            <svg class="fileDeleteBtn documentDeleteBtn" xmlns="http://www.w3.org/2000/svg" width="11.314" height="11.314"
+                                viewBox="0 0 11.314 11.314">
+                                <g id="그룹_1513" data-name="그룹 1513" transform="translate(-442.649 -1001.97) rotate(45)">
+                                    <line id="선_691" data-name="선 691" y2="12" transform="translate(1029.5 389.5)"
+                                        fill="none" stroke="#000" stroke-linecap="round" stroke-width="2" />
+                                    <line id="선_692" data-name="선 692" y2="12"
+                                        transform="translate(1035.5 395.5) rotate(90)" fill="none" stroke="#000"
+                                        stroke-linecap="round" stroke-width="2" />
+                                </g>
+                            </svg>
+                            <input type="hidden">
+                        </div>
+                    </div>
+                    <div class="popupArticleDouble">
+                        <label for="" class="popupArticleLabel">견습계약서</label>
+                        <div class="popupArticleFileDouble">
+                            <label for="apprenticeship_contract">파일 선택</label>
+                            <input autocomplete="off" name="APPRENTICESHIP_CONTRACT" type="file" id="apprenticeship_contract" class="documentFile">
+                            <input autocomplete="off" type="text" readonly class="pointer">
+                            <svg class="fileDeleteBtn documentDeleteBtn" xmlns="http://www.w3.org/2000/svg" width="11.314" height="11.314"
+                                viewBox="0 0 11.314 11.314">
+                                <g id="그룹_1513" data-name="그룹 1513" transform="translate(-442.649 -1001.97) rotate(45)">
+                                    <line id="선_691" data-name="선 691" y2="12" transform="translate(1029.5 389.5)"
+                                        fill="none" stroke="#000" stroke-linecap="round" stroke-width="2" />
+                                    <line id="선_692" data-name="선 692" y2="12"
+                                        transform="translate(1035.5 395.5) rotate(90)" fill="none" stroke="#000"
+                                        stroke-linecap="round" stroke-width="2" />
+                                </g>
+                            </svg>
+                            <input type="hidden">
+                        </div>
+                    </div>
+                </div>
+                <div class="popupArticleBox">
+                    <div class="popupArticleDouble">
+                        <label for="" class="popupArticleLabel">근로계약서</label>
+                        <div class="popupArticleFileDouble">
+                            <label for="employment_contract">파일 선택</label>
+                            <input autocomplete="off" name="EMPLOYMENT_CONTRACT" type="file" id="employment_contract" class="documentFile">
+                            <input autocomplete="off" type="text" readonly class="pointer">
+                            <svg class="fileDeleteBtn documentDeleteBtn" xmlns="http://www.w3.org/2000/svg" width="11.314" height="11.314"
+                                viewBox="0 0 11.314 11.314">
+                                <g id="그룹_1513" data-name="그룹 1513" transform="translate(-442.649 -1001.97) rotate(45)">
+                                    <line id="선_691" data-name="선 691" y2="12" transform="translate(1029.5 389.5)"
+                                        fill="none" stroke="#000" stroke-linecap="round" stroke-width="2" />
+                                    <line id="선_692" data-name="선 692" y2="12"
+                                        transform="translate(1035.5 395.5) rotate(90)" fill="none" stroke="#000"
+                                        stroke-linecap="round" stroke-width="2" />
+                                </g>
+                            </svg>
+                            <input type="hidden">
+                        </div>
+                    </div>
+                    <div class="popupArticleDouble">
+                        <label for="" class="popupArticleLabel">종합판정표</label>
+                        <div class="popupArticleFileDouble">
+                            <label for="comprehensive_evaluation_sheet">파일 선택</label>
+                            <input autocomplete="off" name="COMPREHENSIVE_EVALUATION_SHEET" type="file" id="comprehensive_evaluation_sheet" class="documentFile">
+                            <input autocomplete="off" type="text" readonly class="pointer">
+                            <svg class="fileDeleteBtn documentDeleteBtn" xmlns="http://www.w3.org/2000/svg" width="11.314" height="11.314"
+                                viewBox="0 0 11.314 11.314">
+                                <g id="그룹_1513" data-name="그룹 1513" transform="translate(-442.649 -1001.97) rotate(45)">
+                                    <line id="선_691" data-name="선 691" y2="12" transform="translate(1029.5 389.5)"
+                                        fill="none" stroke="#000" stroke-linecap="round" stroke-width="2" />
+                                    <line id="선_692" data-name="선 692" y2="12"
+                                        transform="translate(1035.5 395.5) rotate(90)" fill="none" stroke="#000"
+                                        stroke-linecap="round" stroke-width="2" />
+                                </g>
+                            </svg>
+                            <input type="hidden">
+                        </div>
+                    </div>
+                </div>
+                <div class="popupArticleBox">
+                    <div class="popupArticleDouble">
+                        <label for="" class="popupArticleLabel">통장사본</label>
+                        <div class="popupArticleFileDouble">
+                            <label for="bank_statement">파일 선택</label>
+                            <input autocomplete="off" name="BANK_STATEMENT" type="file" id="bank_statement" class="documentFile">
+                            <input autocomplete="off" type="text" readonly class="pointer">
+                            <svg class="fileDeleteBtn documentDeleteBtn" xmlns="http://www.w3.org/2000/svg" width="11.314" height="11.314"
+                                viewBox="0 0 11.314 11.314">
+                                <g id="그룹_1513" data-name="그룹 1513" transform="translate(-442.649 -1001.97) rotate(45)">
+                                    <line id="선_691" data-name="선 691" y2="12" transform="translate(1029.5 389.5)"
+                                        fill="none" stroke="#000" stroke-linecap="round" stroke-width="2" />
+                                    <line id="선_692" data-name="선 692" y2="12"
+                                        transform="translate(1035.5 395.5) rotate(90)" fill="none" stroke="#000"
+                                        stroke-linecap="round" stroke-width="2" />
+                                </g>
+                            </svg>
+                            <input type="hidden">
+                        </div>
+                    </div>
+                    <div class="popupArticleDouble">
+                        <label for="" class="popupArticleLabel">운전면허증/버스자격증사본</label>
+                        <div class="popupArticleFileDouble">
+                            <label for="driver_license">파일 선택</label>
+                            <input autocomplete="off" name="DRIVER_LICENSE" type="file" id="driver_license" class="documentFile">
+                            <input autocomplete="off" type="text" readonly class="pointer">
+                            <svg class="fileDeleteBtn documentDeleteBtn" xmlns="http://www.w3.org/2000/svg" width="11.314" height="11.314"
+                                viewBox="0 0 11.314 11.314">
+                                <g id="그룹_1513" data-name="그룹 1513" transform="translate(-442.649 -1001.97) rotate(45)">
+                                    <line id="선_691" data-name="선 691" y2="12" transform="translate(1029.5 389.5)"
+                                        fill="none" stroke="#000" stroke-linecap="round" stroke-width="2" />
+                                    <line id="선_692" data-name="선 692" y2="12"
+                                        transform="translate(1035.5 395.5) rotate(90)" fill="none" stroke="#000"
+                                        stroke-linecap="round" stroke-width="2" />
+                                </g>
+                            </svg>
+                            <input type="hidden">
+                        </div>
+                    </div>
+                </div>
+                <div class="popupArticleBox">
+                    <div class="popupArticleDouble">
+                        <label for="" class="popupArticleLabel">건강검진결과</label>
+                        <div class="popupArticleFileDouble">
+                            <label for="health_checkup_results">파일 선택</label>
+                            <input autocomplete="off" name="HEALTH_CHECKUP_RESULTS" type="file" id="health_checkup_results" class="documentFile">
+                            <input autocomplete="off" type="text" readonly class="pointer">
+                            <svg class="fileDeleteBtn documentDeleteBtn" xmlns="http://www.w3.org/2000/svg" width="11.314" height="11.314"
+                                viewBox="0 0 11.314 11.314">
+                                <g id="그룹_1513" data-name="그룹 1513" transform="translate(-442.649 -1001.97) rotate(45)">
+                                    <line id="선_691" data-name="선 691" y2="12" transform="translate(1029.5 389.5)"
+                                        fill="none" stroke="#000" stroke-linecap="round" stroke-width="2" />
+                                    <line id="선_692" data-name="선 692" y2="12"
+                                        transform="translate(1035.5 395.5) rotate(90)" fill="none" stroke="#000"
+                                        stroke-linecap="round" stroke-width="2" />
+                                </g>
+                            </svg>
+                            <input type="hidden">
+                        </div>
+                    </div>
+                    <div class="popupArticleDouble">
+                        <label for="" class="popupArticleLabel">운전경력증명서/경찰</label>
+                        <div class="popupArticleFileDouble">
+                            <label for="driving_experience_certificate">파일 선택</label>
+                            <input autocomplete="off" name="DRIVING_EXPERIENCE_CERTIFICATE" type="file" id="driving_experience_certificate" class="documentFile">
+                            <input autocomplete="off" type="text" readonly class="pointer">
+                            <svg class="fileDeleteBtn documentDeleteBtn" xmlns="http://www.w3.org/2000/svg" width="11.314" height="11.314"
+                                viewBox="0 0 11.314 11.314">
+                                <g id="그룹_1513" data-name="그룹 1513" transform="translate(-442.649 -1001.97) rotate(45)">
+                                    <line id="선_691" data-name="선 691" y2="12" transform="translate(1029.5 389.5)"
+                                        fill="none" stroke="#000" stroke-linecap="round" stroke-width="2" />
+                                    <line id="선_692" data-name="선 692" y2="12"
+                                        transform="translate(1035.5 395.5) rotate(90)" fill="none" stroke="#000"
+                                        stroke-linecap="round" stroke-width="2" />
+                                </g>
+                            </svg>
+                            <input type="hidden">
+                        </div>
+                    </div>
+                </div>
+                <div class="popupArticleBox">
+                    <div class="popupArticleDouble">
+                        <label for="" class="popupArticleLabel">확약서</label>
+                        <div class="popupArticleFileDouble">
+                            <label for="oath_document">파일 선택</label>
+                            <input autocomplete="off" name="OATH_DOCUMENT" type="file" id="oath_document" class="documentFile">
+                            <input autocomplete="off" type="text" readonly class="pointer">
+                            <svg class="fileDeleteBtn documentDeleteBtn" xmlns="http://www.w3.org/2000/svg" width="11.314" height="11.314"
+                                viewBox="0 0 11.314 11.314">
+                                <g id="그룹_1513" data-name="그룹 1513" transform="translate(-442.649 -1001.97) rotate(45)">
+                                    <line id="선_691" data-name="선 691" y2="12" transform="translate(1029.5 389.5)"
+                                        fill="none" stroke="#000" stroke-linecap="round" stroke-width="2" />
+                                    <line id="선_692" data-name="선 692" y2="12"
+                                        transform="translate(1035.5 395.5) rotate(90)" fill="none" stroke="#000"
+                                        stroke-linecap="round" stroke-width="2" />
+                                </g>
+                            </svg>
+                            <input type="hidden">
+                        </div>
+                    </div>
+                    <div class="popupArticleDouble">
+                        <label for="" class="popupArticleLabel">연장근로동의서</label>
+                        <div class="popupArticleFileDouble">
+                            <label for="extension_of_employment_agreement">파일 선택</label>
+                            <input autocomplete="off" name="EXTENSION_OF_EMPLOYMENT_AGREEMENT" type="file" id="extension_of_employment_agreement" class="documentFile">
+                            <input autocomplete="off" type="text" readonly class="pointer">
+                            <svg class="fileDeleteBtn documentDeleteBtn" xmlns="http://www.w3.org/2000/svg" width="11.314" height="11.314"
+                                viewBox="0 0 11.314 11.314">
+                                <g id="그룹_1513" data-name="그룹 1513" transform="translate(-442.649 -1001.97) rotate(45)">
+                                    <line id="선_691" data-name="선 691" y2="12" transform="translate(1029.5 389.5)"
+                                        fill="none" stroke="#000" stroke-linecap="round" stroke-width="2" />
+                                    <line id="선_692" data-name="선 692" y2="12"
+                                        transform="translate(1035.5 395.5) rotate(90)" fill="none" stroke="#000"
+                                        stroke-linecap="round" stroke-width="2" />
+                                </g>
+                            </svg>
+                            <input type="hidden">
+                        </div>
+                    </div>
+                </div>
+                <div class="popupArticleBox">
+                    <div class="popupArticleDouble">
+                        <label for="" class="popupArticleLabel">서약서</label>
+                        <div class="popupArticleFileDouble">
+                            <label for="pledge_agreement">파일 선택</label>
+                            <input autocomplete="off" name="PLEDGE_AGREEMENT" type="file" id="pledge_agreement" class="documentFile">
+                            <input autocomplete="off" type="text" readonly class="pointer">
+                            <svg class="fileDeleteBtn documentDeleteBtn" xmlns="http://www.w3.org/2000/svg" width="11.314" height="11.314"
+                                viewBox="0 0 11.314 11.314">
+                                <g id="그룹_1513" data-name="그룹 1513" transform="translate(-442.649 -1001.97) rotate(45)">
+                                    <line id="선_691" data-name="선 691" y2="12" transform="translate(1029.5 389.5)"
+                                        fill="none" stroke="#000" stroke-linecap="round" stroke-width="2" />
+                                    <line id="선_692" data-name="선 692" y2="12"
+                                        transform="translate(1035.5 395.5) rotate(90)" fill="none" stroke="#000"
+                                        stroke-linecap="round" stroke-width="2" />
+                                </g>
+                            </svg>
+                            <input type="hidden">
+                        </div>
+                    </div>
+                    <div class="popupArticleDouble">
+                        <label for="" class="popupArticleLabel">성희롱계약서</label>
+                        <div class="popupArticleFileDouble">
+                            <label for="sexual_harassment_contract">파일 선택</label>
+                            <input autocomplete="off" name="SEXUAL_HARASSMENT_CONTRACT" type="file" id="sexual_harassment_contract" class="documentFile">
+                            <input autocomplete="off" type="text" readonly class="pointer">
+                            <svg class="fileDeleteBtn documentDeleteBtn" xmlns="http://www.w3.org/2000/svg" width="11.314" height="11.314"
+                                viewBox="0 0 11.314 11.314">
+                                <g id="그룹_1513" data-name="그룹 1513" transform="translate(-442.649 -1001.97) rotate(45)">
+                                    <line id="선_691" data-name="선 691" y2="12" transform="translate(1029.5 389.5)"
+                                        fill="none" stroke="#000" stroke-linecap="round" stroke-width="2" />
+                                    <line id="선_692" data-name="선 692" y2="12"
+                                        transform="translate(1035.5 395.5) rotate(90)" fill="none" stroke="#000"
+                                        stroke-linecap="round" stroke-width="2" />
+                                </g>
+                            </svg>
+                            <input type="hidden">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="popupFooter excelUploadPopupFooter">
+
+                <input autocomplete="off" type="submit" class="btnModules uploadCrateBtn backgroundBlue" value="저장">
+                <div class="btnModules popupCloseBtn closeBtn">닫기</div>
+            </div>
+        </div>
+    </form>
+</div>
 {% endblock %}
 
 
@@ -752,7 +973,9 @@
 <script>
     {% autoescape off %}
     const regDatas = {{ data_list }};
+    const fileDatas = {{ file_list }};
     console.log("DATA", {{ data_list }});
+    console.log("files", {{ file_list }})
     {% endautoescape %}
 
     function openLisence(url, type) {
