@@ -101,7 +101,7 @@
                     <td>{{member.emergency}}</td>
                     <td>{{member.birthdate}}</td>
                     <td>{{member.address}}</td>
-                    <td class="{{ forloop.counter0 }}">세부사항</td>
+                    <td class="{{ forloop.counter0 }}">{{data_count_list | index:forloop.counter0}}/25</td>
                     <td class="tableDocument {{ forloop.counter0 }}">{{file_count_list | index:forloop.counter0}}/14</td>
                 </tr>
                 {% endfor %}
@@ -217,6 +217,11 @@
                             <option value="과장">과장</option>
                             <option value="차장">차장</option>
                             <option value="부장">부장</option>
+                            <option value="임원">임원</option>
+                            <option value="승무원">승무원</option>
+                            <option value="팀장">팀장</option>
+                            <option value="수석팀장">수석팀장</option>
+                            <option value="소장">소장</option>
                         </select>
                     </div>
                 </div>
@@ -442,6 +447,11 @@
                             <option value="과장">과장</option>
                             <option value="차장">차장</option>
                             <option value="부장">부장</option>
+                            <option value="임원">임원</option>
+                            <option value="승무원">승무원</option>
+                            <option value="팀장">팀장</option>
+                            <option value="수석팀장">수석팀장</option>
+                            <option value="소장">소장</option>
                         </select>
                     </div>
                 </div>
