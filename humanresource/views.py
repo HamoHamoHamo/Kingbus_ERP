@@ -108,6 +108,7 @@ class MemberList(generic.ListView):
 
         member_list = context['member_list']
         data_list = []
+        data_count_list = []
         file_list = []
         file_count_list = []
         
@@ -143,12 +144,21 @@ class MemberList(generic.ListView):
                 'end_date' : member.end_date,
                 'leave_date' : member.leave_date,
             })
+            data_count = 0
+            for key, value in data_list[-1].items():
+                if key != 'birthdate' and value != '' and value != " ":
+                    data_count += 1
+            # id, user_id, use 개수 빼줌
+            data_count -= 3
+            data_count_list.append(data_count)
+
             files = list(MemberFile.objects.filter(member_id=member).order_by('type').values('id', 'type', 'filename'))
             file_list.append(files)
             file_count_list.append(len(files))
 
         context['file_count_list'] = file_count_list
         context['file_list'] = file_list
+        context['data_count_list'] = data_count_list
         context['data_list'] = data_list
         context['name'] = self.request.GET.get('name', '')
         context['role'] = self.request.GET.get('role', '담당업무')

@@ -89,12 +89,6 @@ table tbody tr:nth-child(even) {
 }
 
 
-.tableBody td:nth-child(3) {
-    font-size: 1.4rem;
-    color: #0069D9;
-    cursor: pointer;
-}
-
 .headerOrderBy {
     cursor: pointer;
     font-weight: bold;
