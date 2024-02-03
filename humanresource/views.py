@@ -642,11 +642,11 @@ class SalaryList(generic.ListView):
             id = self.request.session.get('user')
             member_list = Member.objects.filter(entering_date__lt=month+'-32').filter(id=id)
         elif search_type == '일반':
-            member_list = Member.objects.filter(entering_date__lt=month+'-32').filter(Q(role='팀장')|Q(role='운전원')).filter(use='사용').order_by('-role', 'name')
+            member_list = Member.objects.filter(entering_date__lt=month+'-32').filter(Q(role='팀장')|Q(role='운전원')).filter(use='사용').order_by('name')
             if name:
                 member_list = member_list.filter(name__contains=name)
         elif search_type == '용역':
-            member_list = Member.objects.filter(entering_date__lt=month+'-32').filter(role='용역').filter(use='사용').order_by('-role', 'name')
+            member_list = Member.objects.filter(entering_date__lt=month+'-32').filter(role='용역').filter(use='사용').order_by('name')
             if name:
                 member_list = member_list.filter(name__contains=name)
         else:
