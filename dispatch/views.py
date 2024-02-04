@@ -15,10 +15,10 @@ from django.urls import reverse
 from django.views import generic
 
 from .forms import OrderForm, ConnectForm, RegularlyDataForm
-from .models import DispatchRegularlyRouteKnow, DispatchCheck, DispatchRegularlyData, DispatchRegularlyWaypoint, Schedule, DispatchOrderConnect, DispatchOrder, DispatchRegularly, RegularlyGroup, DispatchRegularlyConnect, DispatchOrderWaypoint, ConnectRefusal, MorningChecklist, EveningChecklist, DrivingHistory
+from .models import DispatchRegularlyRouteKnow, DispatchCheck, DispatchRegularlyData, DispatchRegularlyWaypoint, Schedule, DispatchOrderConnect, DispatchOrder, DispatchRegularly, RegularlyGroup, DispatchRegularlyConnect, DispatchOrderWaypoint, ConnectRefusal, MorningChecklist, EveningChecklist, DrivingHistory, BusinessEntity
 from accounting.models import Collect, TotalPrice
 from crudmember.models import Category, Client
-from humanresource.models import Member, Salary
+from humanresource.models import Member, Salary, Team
 from humanresource.views import send_message
 from itertools import chain
 from vehicle.models import Vehicle
@@ -570,15 +570,14 @@ class RegularlyDispatchList(generic.ListView):
 
         weekday = WEEK2[datetime.strptime(date, FORMAT).weekday()]
         
-        if group_id:
-            group = RegularlyGroup.objects.get(id=group_id)
-        else:
-            group = RegularlyGroup.objects.order_by('number','name').first()
-
         if search:
             regularly_list = DispatchRegularlyData.objects.filter(route__contains=search).filter(week__contains=weekday).order_by('num1', 'number1', 'num2', 'number2')
         else:
-            regularly_list = DispatchRegularlyData.objects.filter(group=group).filter(week__contains=weekday).order_by('num1', 'number1', 'num2', 'number2')
+            if group_id:
+                group = RegularlyGroup.objects.get(id=group_id)
+                regularly_list = DispatchRegularlyData.objects.filter(group=group).filter(week__contains=weekday).order_by('num1', 'number1', 'num2', 'number2')
+            else:
+                regularly_list = DispatchRegularlyData.objects.filter(week__contains=weekday).order_by('num1', 'number1', 'num2', 'number2')            
 
         dispatch_list = []
         for regularly in regularly_list:
@@ -590,6 +589,7 @@ class RegularlyDispatchList(generic.ListView):
 
             if dispatch.use == '사용':
                 dispatch_list.append(dispatch)
+        print("TEST", len(dispatch_list))
         return dispatch_list
 
 
@@ -1799,6 +1799,144 @@ def regularly_group_fix(request):
             return JsonResponse({'status': 'fail'})
     else:
         return HttpResponseNotAllowed(['POST'])
+
+class RegularlyConnectList(generic.ListView):
+    template_name = 'dispatch/regularly_connect_list.html'
+    context_object_name = 'connect_list'
+    model = DispatchRegularly
+
+    def get(self, request, **kwargs):
+        if request.session.get('authority') > 3:
+            return render(request, 'authority.html')
+        else:
+            return super().get(request, **kwargs)
+
+    def get_queryset(self):
+        group_list = self.request.GET.getlist('group_id', '')
+        team_list = self.request.GET.getlist('team', '')
+        time_list = self.request.GET.getlist('time', '')
+        no_team = self.request.GET.get('no_team', '')
+        search = self.request.GET.get('search', '')
+        date = self.request.GET.get('date', TODAY)
+
+        connect_list = DispatchRegularlyConnect.objects.filter(driver_id__team__id__in=team_list)
+        if no_team:
+            connect_list = connect_list | DispatchRegularlyConnect.objects.filter(driver_id__team=None)
+
+        connect_list = connect_list.filter(regularly_id__group__id__in=group_list).filter(departure_date__startswith=date).order_by('regularly_id__num1', 'regularly_id__number1', 'regularly_id__num2', 'regularly_id__number2')
+        q_objects = Q()
+        for time_value in time_list:
+            min_time = f'{date} {time_value}:00'
+            max_time = f'{date} {time_value}:59'
+            q_objects |= (Q(departure_date__lte=max_time) & Q(departure_date__gte=min_time))
+
+        connect_list = connect_list.filter(q_objects)
+
+        if search:
+            connect_list = connect_list.filter(regularly_id__route__contains=search)
+
+        return connect_list
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        business_list = BusinessEntity.objects.all().order_by('number')
+        business_group_data = {}
+        for business in business_list:
+            business_group_data[business.id] = [*business.regularly_groups.values('id', 'name')]
+
+        time_list = []
+        count = 5
+        for i in range(19):
+            if count < 10:
+                time_list.append(f"0{count}")
+            else:
+                time_list.append(f"{count}")
+            count += 1
+
+        context['time_list'] = time_list
+        context['business_group_data'] = business_group_data
+        context['business_list'] = business_list
+        context['group_list'] = RegularlyGroup.objects.all().order_by('number')
+        context['team_list'] = Team.objects.order_by('name')
+
+        context['search_group_list'] = self.request.GET.getlist('group_id', '')
+        context['search_team_list'] = self.request.GET.getlist('team', '')
+        context['search_time_list'] = self.request.GET.getlist('time', '')
+        context['no_team'] = self.request.GET.get('no_team', '')
+        context['search'] = self.request.GET.get('search', '')
+        context['date'] = self.request.GET.get('date', TODAY)
+        return context
+
+
+def business_edit(request):
+    if request.session.get('authority') > 3:
+        return render(request, 'authority.html')
+    if request.method == "POST":
+        creator = get_object_or_404(Member, id=request.session.get('user'))
+        
+        business_id = request.POST.get('business_id', '')
+        name = request.POST.get('business_name', '')
+        number = request.POST.get('business_number', '')
+        if not name:
+            raise Http404
+        
+        if business_id:
+            business = get_object_or_404(BusinessEntity, id=business_id)
+            business.name = name
+            business.number = number
+            business.creator = creator
+            business.save()
+        else:
+            business = BusinessEntity.objects.create(name=name, number=number, creator=creator)
+        
+        group_id_list = request.POST.getlist('group_id', '')
+        group_list = []
+        for group_id in group_id_list:
+            group_list.append(get_object_or_404(RegularlyGroup, id=group_id))
+
+        business.regularly_groups.clear()
+        business.regularly_groups.add(*group_list)
+
+        return redirect('dispatch:regularly_connect')
+    else:
+        return HttpResponseNotAllowed(['post'])
+
+class RegularlyConnectPrintList(generic.ListView):
+    template_name = 'dispatch/regularly_connect_print.html'
+    context_object_name = 'connect_list'
+    model = DispatchRegularlyData
+
+    def get(self, request, *args, **kwargs):
+        if request.session.get('authority') > 3:
+            return render(request, 'authority.html')
+        return super().get(request, *args, **kwargs)
+
+    def get_queryset(self):
+        group_list = self.request.GET.getlist('group_id', '')
+        team_list = self.request.GET.getlist('team', '')
+        time_list = self.request.GET.getlist('time', '')
+        no_team = self.request.GET.get('no_team', '')
+        search = self.request.GET.get('search', '')
+        date = self.request.GET.get('date', TODAY)
+
+        connect_list = DispatchRegularlyConnect.objects.filter(driver_id__team__id__in=team_list)
+        if no_team:
+            connect_list = connect_list | DispatchRegularlyConnect.objects.filter(driver_id__team=None)
+
+        connect_list = connect_list.filter(regularly_id__group__id__in=group_list).filter(departure_date__startswith=date).order_by('regularly_id__num1', 'regularly_id__number1', 'regularly_id__num2', 'regularly_id__number2')
+        q_objects = Q()
+        for time_value in time_list:
+            min_time = f'{date} {time_value}:00'
+            max_time = f'{date} {time_value}:59'
+            q_objects |= (Q(departure_date__lte=max_time) & Q(departure_date__gte=min_time))
+
+        connect_list = connect_list.filter(q_objects)
+
+        if search:
+            connect_list = connect_list.filter(regularly_id__route__contains=search)
+
+        return connect_list
 
 class OrderList(generic.ListView):
     template_name = 'dispatch/order.html'
