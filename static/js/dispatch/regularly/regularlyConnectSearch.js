@@ -1,8 +1,35 @@
 const groupListItem = document.querySelectorAll(".groupOpen")
 const teamCheckAll = document.querySelector("#teamCheckAll")
+const groupCheckboxList = document.querySelectorAll(".groupCheckbox")
 const teamCheckboxList = document.querySelectorAll(".teamCheckbox")
 const timeCheckAll = document.querySelector("#timeCheckAll")
 const timeCheckboxList = document.querySelectorAll(".timeCheckbox")
+const searchForm = document.querySelector(".searchForm")
+
+searchForm.addEventListener('submit', e => {
+    e.preventDefault()
+    
+    const groupCheck = Array.from(groupCheckboxList).filter(checkbox => checkbox.checked == true)
+    console.log(groupCheck)
+    if (groupCheck.length == 0) {
+        window.alert("사업장을 선택해 주세요.")
+        return
+    }
+    const teamCheck = Array.from(teamCheckboxList).filter(checkbox => checkbox.checked == true)
+    console.log(teamCheck)
+    if (teamCheck.length == 0) {
+        window.alert("팀을 선택해 주세요.")
+        return
+    }
+    const timeCheck = Array.from(timeCheckboxList).filter(checkbox => checkbox.checked == true)
+    console.log(timeCheck)
+    if (timeCheck.length == 0) {
+        window.alert("시간을 선택해 주세요.")
+        return
+    }
+    searchForm.submit()
+})
+
 
 // 사업장 열기
 for (i = 0; i < groupListItem.length; i++) {
@@ -39,7 +66,7 @@ for (let i = 0; i < businessCheckboxList.length; i++) {
     for (let j = 0; j < searchGroupList.length; j++) {
         if (businessCheckboxList[i].value == searchGroupList[j]) {
             businessCheckboxList[i].checked = true
-            console.log("checkbox.parentNode.parentNode.parentNode", businessCheckboxList[i].parentNode.parentNode.parentNode)
+            // console.log("checkbox.parentNode.parentNode.parentNode", businessCheckboxList[i].parentNode.parentNode.parentNode)
             businessCheckboxList[i].parentNode.parentNode.parentNode.style.display = "flex"
         }
     }
@@ -58,9 +85,11 @@ function teamCheckboxCheckAll() {
 Array.from(teamCheckboxList).map((checkbox) => {
     checkbox.addEventListener("click", teamCheckAllCheckFalse)
     // 팀목록 검색한 값 체크하기
-    for (let i = 0; i < searchTeamList.length; i++) {
-        if (checkbox.value == searchTeamList[i]) {
-            checkbox.checked = true
+    if (searchTeamList) {
+        for (let i = 0; i < searchTeamList.length; i++) {
+            if (checkbox.value == searchTeamList[i]) {
+                checkbox.checked = true
+            }
         }
     }
 })
@@ -78,10 +107,12 @@ function timeCheckboxCheckAll() {
 
 Array.from(timeCheckboxList).map((checkbox) => {
     checkbox.addEventListener("click", timeCheckAllCheckFalse)
-    // 팀목록 검색한 값 체크하기
-    for (let i = 0; i < searchTimeList.length; i++) {
-        if (checkbox.value == searchTimeList[i]) {
-            checkbox.checked = true
+    // 시간목록 검색한 값 체크하기
+    if (searchTimeList) {
+        for (let i = 0; i < searchTimeList.length; i++) {
+            if (checkbox.value == searchTimeList[i]) {
+                checkbox.checked = true
+            }
         }
     }
 })

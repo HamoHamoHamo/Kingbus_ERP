@@ -19,7 +19,7 @@
 
 {% block content %}
 
-<form class="routeLayout">
+<form class="routeLayout searchForm">
     <div class="groupLayout">
         <div class="groupList">
             <div class="groupListBox">
@@ -56,7 +56,7 @@
                         <div class="detailItem {{route.id}}">
                             <!--클래스에 노선 아이디 추가-->
                             <div class="groupNum routeGap">
-                                <input id="businessGroup{{group.id}}" value="{{group.id}}" name="group_id" type="checkbox">
+                                <input class="groupCheckbox" id="businessGroup{{group.id}}" value="{{group.id}}" name="group_id" type="checkbox">
                             </div>
                             <label for="businessGroup{{group.id}}" class="routeNameBox">
                                 <div class="routeNumber">{{group.name}}</div>
