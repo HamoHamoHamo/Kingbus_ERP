@@ -1860,9 +1860,9 @@ class RegularlyConnectList(generic.ListView):
         context['group_list'] = RegularlyGroup.objects.all().order_by('number')
         context['team_list'] = Team.objects.order_by('name')
 
-        context['search_group_list'] = self.request.GET.getlist('group_id', '')
-        context['search_team_list'] = self.request.GET.getlist('team', '')
-        context['search_time_list'] = self.request.GET.getlist('time', '')
+        context['search_group_list'] = self.request.GET.getlist('group_id', [])
+        context['search_team_list'] = self.request.GET.getlist('team', [])
+        context['search_time_list'] = self.request.GET.getlist('time', [])
         context['no_team'] = self.request.GET.get('no_team', '')
         context['search'] = self.request.GET.get('search', '')
         context['date'] = self.request.GET.get('date', TODAY)
@@ -1937,6 +1937,14 @@ class RegularlyConnectPrintList(generic.ListView):
             connect_list = connect_list.filter(regularly_id__route__contains=search)
 
         return connect_list
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        date = self.request.GET.get('date', TODAY)
+        context['date'] = date
+        context['weekday'] = WEEK[datetime.strptime(date, FORMAT).weekday()]
+
+        return context
 
 class OrderList(generic.ListView):
     template_name = 'dispatch/order.html'
