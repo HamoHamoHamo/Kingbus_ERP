@@ -3,9 +3,21 @@ from crudmember.models import Category
 from humanresource.models import Member
 from vehicle.models import Vehicle
 
+class BusinessEntity(models.Model):
+    name = models.CharField(verbose_name='사업장 이름', max_length=50, null=False, unique=True)
+    number = models.IntegerField(verbose_name='순번', null=False, default=999)
+    regularly_groups = models.ManyToManyField('RegularlyGroup', blank=True)
+    pub_date = models.DateTimeField(auto_now_add=True, verbose_name='작성시간')
+    updated_at = models.DateTimeField(auto_now=True, verbose_name='수정시간')
+    creator = models.ForeignKey(Member, on_delete=models.SET_NULL, related_name="business_creator", db_column="creator_id", null=True)
+    
+    def __str__(self):
+        return self.name
+
+
 class RegularlyGroup(models.Model):
     name = models.CharField(verbose_name='그룹 이름', max_length=50, null=False, unique=True)
-    number = models.IntegerField(verbose_name='순번', null=False, default=999 )
+    number = models.IntegerField(verbose_name='순번', null=False, default=999)
     fix = models.CharField(verbose_name='고정', max_length=1, null=False, default='n')
     settlement_date = models.CharField(verbose_name='정산일', max_length=5, null=False, default='1')
     pub_date = models.DateTimeField(auto_now_add=True, verbose_name='작성시간')

@@ -8,6 +8,9 @@ class Team(models.Model):
     pub_date = models.DateTimeField(verbose_name='작성시간', auto_now_add=True, null=False)
     updated_at = models.DateTimeField(auto_now=True, verbose_name='수정시간')
 
+    def __str__(self):
+        return self.name
+
 class Member(models.Model):
     def clean(self):
         if self.user_id == "":

@@ -23,6 +23,8 @@ urlpatterns = [
     path('regularly/group/edit', views.regularly_group_edit, name="regularly_group_edit"),
     path('regularly/group/delete', views.regularly_group_delete, name="regularly_group_delete"),
     path('regularly/group/fix', views.regularly_group_fix, name="regularly_group_fix"),
+    path('regularly/connect', views.RegularlyConnectList.as_view(), name="regularly_connect"),
+    path('regularly/business/edit', views.business_edit, name="business_edit"),
 
     path('order', views.OrderList.as_view(), name="order"),
     path('order/create', views.order_connect_create, name="order_connect_create"),
@@ -47,6 +49,7 @@ urlpatterns = [
     path('schedule/delete', views.schedule_delete, name='schedule_delete'),
     # 배차지시서
     path('print/regularly', views.RegularlyPrintList.as_view(), name='regularly_print'),
+    path('print/regularly/connect', views.RegularlyConnectPrintList.as_view(), name='regularly_connect_print'),
     path('print/order', views.order_print, name='order_print'),
     
     path('print/line', views.line_print, name='line_print'),
