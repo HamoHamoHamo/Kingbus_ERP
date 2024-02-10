@@ -44,6 +44,7 @@ class Member(models.Model):
     interviewer =models.CharField(verbose_name='면접담당자', max_length=100, null=False, blank=True)
     end_date =models.CharField(verbose_name='종료일', max_length=100, null=False, blank=True)
     leave_date =models.CharField(verbose_name='퇴사일', max_length=100, null=False, blank=True)
+    allowance_type =models.CharField(verbose_name='수당지급기준', max_length=100, null=False, default="기사수당(현재)")
 
     base = models.CharField(verbose_name='기본급', max_length=20, null=False, default=0)
     service_allowance = models.CharField(verbose_name='근속수당', max_length=20, null=False, default=0)

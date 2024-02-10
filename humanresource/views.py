@@ -143,10 +143,11 @@ class MemberList(generic.ListView):
                 'interviewer' : member.interviewer,
                 'end_date' : member.end_date,
                 'leave_date' : member.leave_date,
+                'allowance_type' : member.allowance_type,
             })
             data_count = 0
             for key, value in data_list[-1].items():
-                if key != 'birthdate' and value != '' and value != " ":
+                if key != 'birthdate' and key != 'allowance_type' and value != '' and value != " ":
                     data_count += 1
             # id, user_id, use 개수 빼줌
             data_count -= 3
@@ -224,18 +225,9 @@ def member_create(request):
             member.emergency = request.POST.get('emergency1', '') + ' ' + request.POST.get('emergency2', '')
             member.use = request.POST.get('use')
             member.save()
-
-            license = request.FILES.get('license_file', None)
-            bus_license = request.FILES.get('bus_license_file', None)
-
-            if license:
-                member_file_save(license, member, '면허증', creator)
-            
-            if bus_license:
-                member_file_save(bus_license, member, '버스운전 자격증', creator)
-
-
             return redirect(request.META.get('HTTP_REFERER', 'redirect_if_referer_not_found'))
+        print("ERRRRRRRRRRRR", member_form.errors)
+        return HttpResponseBadRequest()
     else:
         return HttpResponseNotAllowed(['post'])
 
@@ -318,7 +310,7 @@ def member_edit(request):
             member.end_date = request.POST.get('end_date')
             member.leave_date = request.POST.get('leave_date')
             member.birthdate = calculate_birthdate_by_resident_number(member.resident_number1)
-
+            member.allowance_type = request.POST.get('allowance_type')
             member.save()
 
             # 파일

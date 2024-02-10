@@ -28,20 +28,25 @@ const PopupDataInputBirth = document.querySelector(".PopupDataInputBirth")
 const PopupDataInputAddress = document.querySelector(".PopupDataInputAddress")
 const createID = document.querySelector(".createID")
 const hrID = document.querySelector(".hrID")
-const hrPW = document.querySelector(".hrPW")
-const editPopupContainer = document.querySelector(".editPopupContainer")
+const popupEditId = document.querySelector(".popupEditId")
+const popupRegisterId = document.querySelector(".popupRegisterId")
+const hrEditPW = document.querySelector(".hrEditPW")
+const hrRegisterPW = document.querySelector(".hrRegisterPW")
+const memberForm = document.querySelector(".memberForm")
 const btnModulesCreate = document.querySelectorAll(".btnModulesCreate")
 const PopupDataInputLicense = document.querySelector(".PopupDataInputLicense")
 const hrRoleSelect = document.querySelector(".hrRole")
+const popupArticleBoxAllowanceType = document.querySelector(".popupArticleBoxAllowanceType")
+const allowanceType = document.querySelector("#allowanceType")
+const allowanceTypeOptions = document.querySelectorAll("#allowanceType option")
 
-
+const popupTitle = document.querySelector(".popupHR")
 const tableDocuments = document.querySelectorAll(".tableDocument")
 const documentLabel = document.querySelectorAll("#documentPopup .popupArticleLabel")
 const documentSendToHidden = document.querySelector(".documentSendToHidden")
 const documentFiles = document.querySelectorAll(".documentFile")
 const documentDeleteBtn = document.querySelectorAll(".documentDeleteBtn")
 
-const memberFormCreate = document.querySelector(".memberFormCreate")
 const essential = document.querySelectorAll(".essential")
 const authorityDivision = document.querySelectorAll(".authorityDivision")
 
@@ -69,20 +74,45 @@ const leave_date = document.querySelector("#leave_date")
 const resident_number1 = document.querySelector("#resident_number1")
 const resident_number2 = document.querySelector("#resident_number2")
 
+let memberPopupStatus = ''
+
 //직원상세
 for (i = 0; i < editMember.length; i++) {
   editMember[i].addEventListener('click', openDetailPopup)
 }
 
 function openDetailPopup() {
+  memberPopupStatus = 'edit'
   const data = regDatas[this.className];
 
-  popupAreaModules[1].style.display = 'block'
+  popupAreaModules[0].style.display = 'block'
+
+  popupArticleBoxAllowanceType.style.display = 'none'
+  allowanceType.setAttribute('name', '')
+  
+  popupTitle.innerText = "직원수정"
+  memberForm.action = "/HR/member/edit"
+  //비밀번호 부분 표시
+  popupEditId.style.display = 'flex'
+  popupRegisterId.style.display = 'none'
+  hrEditPW.style.display = 'flex'
+  hrRegisterPW.style.display = 'none'
   
   hrRole[0].selected = true;
   for (i = 0; i < hrRole.length; i++) {
     if (hrRole[i].innerText == data.role) {
       hrRole[i].selected = true;
+      if (hrRole[i].innerText == '운전원') {
+        popupArticleBoxAllowanceType.style.display = 'flex'
+        allowanceType.setAttribute('name', 'allowance_type')
+      }
+    }
+  }
+
+  allowanceTypeOptions[0].selected = true;
+  for (i = 0; i < allowanceTypeOptions.length; i++) {
+    if (allowanceTypeOptions[i].innerText == data.allowance_type) {
+      allowanceTypeOptions[i].selected = true;
     }
   }
 
@@ -125,8 +155,8 @@ function openDetailPopup() {
   }
   hrBlanck.value = data.note;
   
-  authorityDivision[2].style.display = "block"
-  authorityDivision[3].style.display = "flex"
+  //authorityDivision[2].style.display = "block"
+  //authorityDivision[3].style.display = "flex"
   hrID.value = data.id
   
   sendToHidden.value = this.parentNode.className;
@@ -155,8 +185,69 @@ function openDetailPopup() {
 openPopup.addEventListener('click', hrRegistration);
 
 function hrRegistration() {
+  memberPopupStatus = 'create'
   popupAreaModules[0].style.display = 'block'
+
+  popupArticleBoxAllowanceType.style.display = 'none'
+  allowanceType.setAttribute('name', '')
+
+  popupTitle.innerText = "직원등록"
+  memberForm.action = "/HR/member/create"
+
+  //id 비밀번호 부분 표시
+  popupEditId.style.display = 'none'
+  popupRegisterId.style.display = 'flex'
+  hrEditPW.style.display = 'none'
+  hrRegisterPW.style.display = 'block'
+
+  hrRole[0].selected = true;
+  careerOptions[0].selected = true;
+  teamOptions[0].selected = true;
+  position_option[0].selected = true;
+  
+  hrName.value = "";
+  hrEntering.value = "";
+  hrPhone.value = "";
+  hrAddress.value = "";
+  hrEmergency.value = "";
+  hrReation.value = "";
+
+  hrUse[0].checked = true
+
+  hrBlanck.value = ""
+  hrID.value = ""
+  
+  sendToHidden.value = ""
+  
+  interview_date.value = ""
+  contract_date.value = ""
+  contract_renewal_date.value = ""
+  contract_condition.value = ""
+  renewal_reason.value = ""
+  apply_path.value = ""
+  apprenticeship_note.value = ""
+  leave_reason.value = ""
+  company.value = ""
+
+  final_opinion.value = ""
+  interviewer.value = ""
+  end_date.value = ""
+  leave_date.value = ""
+  resident_number1.value = ""
+  resident_number2.value = ""
 }
+
+// 담당업무 운전원일 경우만 기사수당 기준 입력창 보이게 
+hrRoleSelect.addEventListener('change', () => {
+  if (hrRoleSelect.options[hrRoleSelect.selectedIndex].value == '운전원') {
+    popupArticleBoxAllowanceType.style.display = 'flex'
+    allowanceType.setAttribute('name', 'allowance_type')
+  }
+  else {
+    popupArticleBoxAllowanceType.style.display = 'none'
+    allowanceType.setAttribute('name', '')
+  }
+})
 
 
 //이름 작성
@@ -183,23 +274,22 @@ let birthPAttern = /^(19[0-9][0-9]|20\d{2})(0[0-9]|1[0-2])(0[1-9]|[1-2][0-9]|3[0
 function createChecker() {
   for (i = 0; i < essential.length; i++) {
     if (essential[i].value == "") {
+      console.log("TEST", i, essential[i])
       return alert("입력하지 않은 필수 입력사항이 있습니다.")
     }
   };
   if (PopupDataInputWork.options[PopupDataInputWork.selectedIndex].value == "") {
     return alert("입력하지 않은 필수 입력사항이 있습니다.")
   }
-  if(PopupDataInputWork.options[PopupDataInputWork.selectedIndex].value !== "임시"){
+  if (memberPopupStatus == 'create' && PopupDataInputWork.options[PopupDataInputWork.selectedIndex].value !== "임시"){
     if (!idCheckCount) {
-      alert("아이디 중복확인을 진행해 주세요.")
-      e.preventDefault()
+      return alert("아이디 중복확인을 진행해 주세요.")
     }
     if (createID.attributes.check_result.value == "fail") {
-      alert("이미 사용중인 아이디 입니다.")
-      e.preventDefault()
+      return alert("이미 사용중인 아이디 입니다.")
     }
   }
-  memberFormCreate.submit()
+  memberForm.submit()
 }
 
 
@@ -251,7 +341,7 @@ function deleteData(e) {
 
 
 //비밀번호 초기화 
-hrPW.addEventListener('click', resetPW)
+hrEditPW.addEventListener('click', resetPW)
 
 async function resetPW() {
   if (confirm('비밀번호를 0000으로 초기화 하시겠습니까?')){
@@ -316,7 +406,7 @@ for (i = 0; i < tableDocuments.length; i++) {
 }
 
 function openDocumentPopup() {
-  popupAreaModules[3].style.display = 'block'
+  popupAreaModules[2].style.display = 'block'
   documentSendToHidden.value = this.parentNode.className;
 
   const datas = fileDatas[this.classList[1]];
