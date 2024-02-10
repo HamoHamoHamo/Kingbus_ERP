@@ -240,7 +240,7 @@ td:nth-child(9) {
     transform: translate(-50%, -50%);
 }
 
-.hrPW {
+.hrEditPW {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -255,7 +255,7 @@ td:nth-child(9) {
     cursor: pointer;
 }
 
-.hrPW svg {
+.hrEditPW svg {
     margin-right: 1rem;
 }
 

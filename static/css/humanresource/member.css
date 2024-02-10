@@ -265,7 +265,7 @@ td:nth-child(13) {
     height: 100%;
 }
 
-.hrPW {
+.hrEditPW {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -280,7 +280,7 @@ td:nth-child(13) {
     cursor: pointer;
 }
 
-.hrPW svg {
+.hrEditPW svg {
     margin-right: 1rem;
 }
 
@@ -314,6 +314,9 @@ td:nth-child(13) {
     width: 100%;
 }
 
+.popupArticleBoxAllowanceType {
+    display: none;
+}
 
 @media all and (min-width:1600px) and (max-width: 1780px) {
     .tableHead tr {

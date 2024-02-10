@@ -1,19 +1,8 @@
 const memberEditForm = document.querySelector(".memberEditForm")
-const memberEditSaveBtn = document.querySelector(".memberEditSaveBtn")
 const editEssential = document.querySelectorAll(".editEssential")
 const makeHyphen = document.querySelectorAll(".makeHyphen")
 
-memberEditSaveBtn.addEventListener("click", essentialCheck)
 
-function essentialCheck() {
-    for (i = 0; i < editEssential.length; i++) {
-        if (editEssential[i].value == "") {
-            return alert("입력하지 않은 필수 입력사항이 있습니다.")
-        }
-    };
-
-    memberEditForm.submit()
-}
 
 
 for (i = 0; i < makeHyphen.length; i++) {

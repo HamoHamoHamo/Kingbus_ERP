@@ -32,6 +32,7 @@ class MemberForm(forms.ModelForm):
             'interviewer',
             'end_date',
             'leave_date',
+            'allowance_type',
         ]
 
 # class HRForm(forms.ModelForm):

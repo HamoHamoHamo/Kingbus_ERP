@@ -11,5 +11,5 @@ function downloadExcel() {
 
 // 엑셀 업로드 팝업 열기
 uploadExcelBtn.addEventListener("click", () => {
-  popupAreaModules[2].style.display = 'block'
+  popupAreaModules[1].style.display = 'block'
 })
