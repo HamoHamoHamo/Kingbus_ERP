@@ -575,7 +575,7 @@ select[name=use]{
 }
 
 .RouteList table td:nth-child(4) {
-  width: 16%;
+  width: 12%;
 }
 
 .RouteList table td:nth-child(5),
@@ -589,7 +589,7 @@ select[name=use]{
 
 .RouteList table td:nth-child(12),
 .RouteList table td:nth-child(13) {
-  width: 18%;
+  width: 17%;
 }
 
 .RouteListHeadScroll {
