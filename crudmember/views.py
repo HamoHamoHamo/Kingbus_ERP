@@ -524,8 +524,11 @@ def login(request):
         
         try:
             user = Member.objects.get(user_id=login_username)
-        except Exception as e:
+        except Member.DoesNotExist:
             res_data['error'] = "아이디/비밀번호가 다릅니다"
+            return render(request, 'crudmember/login.html', res_data)
+        except Exception as e:
+            res_data['error'] = "에러 :" + e
             return render(request, 'crudmember/login.html', res_data)
         
         if user.role == '임시' or user.use == '삭제' or user.use == '미사용':

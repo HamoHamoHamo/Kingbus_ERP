@@ -28,6 +28,7 @@ class RegularlyDataForm(forms.ModelForm):
             'detailed_route',
             'maplink',
             'use',
+            'distance',
             ]
 
 class OrderForm(forms.ModelForm):

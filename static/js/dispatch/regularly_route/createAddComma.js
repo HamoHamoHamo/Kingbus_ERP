@@ -1,4 +1,6 @@
-if (!parms.has("id")) {
+let params = new URLSearchParams(location.search)
+
+if (!params.has("id")) {
     amountComma[0].addEventListener("change", amountAddComma)
     amountComma[1].addEventListener("change", amountAddComma)
     amountComma[0].addEventListener("click", removeComma)
@@ -6,9 +8,9 @@ if (!parms.has("id")) {
 }
 
 function amountAddComma() {
-    this.value = this.value.replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
+    this.innerText = this.innerText.replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
 }
 
 function removeComma() {
-    this.value = this.value.replace(/\,/g, "")
+    this.innerText = this.innerText.replace(/\,/g, "")
 }

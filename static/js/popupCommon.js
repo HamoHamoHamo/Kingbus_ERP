@@ -3,10 +3,18 @@
 let commonPopupAreaModules = document.querySelectorAll('.popupAreaModules')
 
 const addClosePopupEvent = () => {
-    const commonPopupBgModules = document.querySelector(".popupBgModules")
+    const commonPopupBgModules = document.querySelectorAll(".popupBgModules")
     const commonSidemenuUseClose = document.querySelector(".Sidemenu")
+    const popupCloseBtn = document.querySelectorAll(".popupCloseBtn")
 
-    commonPopupBgModules.addEventListener('click', closePopup)
+    if (popupCloseBtn) {
+        Array.from(popupCloseBtn).map(btn => {
+            btn.addEventListener('click', closePopup)
+        })
+    }
+    Array.from(commonPopupBgModules).map(bg => {
+        bg.addEventListener('click', closePopup)
+    })
     commonSidemenuUseClose.addEventListener('click', closePopup)
     console.log("add close popup event")
 }
