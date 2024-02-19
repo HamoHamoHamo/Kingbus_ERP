@@ -582,12 +582,13 @@ select[name=use]{
 .RouteList table td:nth-child(7),
 .RouteList table td:nth-child(8),
 .RouteList table td:nth-child(9),
-.RouteList table td:nth-child(10) {
+.RouteList table td:nth-child(10),
+.RouteList table td:nth-child(11) {
   width: 6%;
 }
 
-.RouteList table td:nth-child(11),
-.RouteList table td:nth-child(12) {
+.RouteList table td:nth-child(12),
+.RouteList table td:nth-child(13) {
   width: 18%;
 }
 
@@ -663,8 +664,8 @@ select[name=use]{
 }
 
 .RouteListBody td:nth-child(4),
-.RouteListBody td:nth-child(11),
-.RouteListBody td:nth-child(12) {
+.RouteListBody td:nth-child(12),
+.RouteListBody td:nth-child(13) {
   text-align: left;
   padding-left: 1rem;
 }
@@ -776,6 +777,7 @@ select[name=use]{
 
 .referenceeContainer {
   width: 36rem;
+  min-height: 22.4rem;
 }
 
 .referenceDateInput {

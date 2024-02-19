@@ -1,9 +1,7 @@
+import { addClosePopupEvent, closePopup } from "/static/js/popupCommon.js"
+
 const excelUpload = document.querySelector(".excelUpload")
-const popupAreaModules = document.querySelectorAll(".popupAreaModules")
 const excelPopup = document.querySelector("#excelPopup")
-const popupBgModules = document.querySelectorAll(".popupBgModules")
-const SidemenuUseClose = document.querySelector(".Sidemenu")
-const popupCloseBtn = document.querySelector(".popupCloseBtn")
 const excelUploadFile = document.querySelector(".excelUploadFile")
 const excelUploadFileText = document.querySelector(".excelUploadFileText")
 const uploadCrateBtn = document.querySelector(".uploadCrateBtn")
@@ -11,30 +9,19 @@ const visibleLoading = document.querySelector(".visibleLoading")
 
 let parms = new URLSearchParams(location.search)
 
+addClosePopupEvent()
+
 excelUpload.addEventListener("click", openUploadPopup)
 
 function openUploadPopup() {
     excelPopup.style.display = "block"
 }
 
-if(parms.has("id")){
-    popupBgModules[1].addEventListener("click", closePopup)
-}else{
-    popupBgModules[0].addEventListener("click", closePopup)
-}
-SidemenuUseClose.addEventListener("click", closePopup)
-popupCloseBtn.addEventListener("click", closePopup)
-
-function closePopup() {
-    excelPopup.style.display = "none"
-    excelUploadFile.value = ""
-    excelUploadFileText.value = ""
-}
-
 let excelData = ""
 
-function readExcel() {
+excelUploadFile.addEventListener("change", readExcel)
 
+function readExcel() {
     excelUploadFileText.value = excelUploadFile.files[0].name
 
     let input = event.target;
@@ -68,6 +55,7 @@ function dateFormat(e) {
         
         const regex = /^(0[0-9]|1[0-9]|2[0-3]):(0[1-9]|[0-5][0-9])$/;
         const regexMonth = RegExp(/^\d{4}-(0[1-9]|1[012])$/);
+        const numberPattern = /^\d+$/;
 
         for (i = 0; i < excelData.length; i++) {
             if (excelData[i]["그룹"] == undefined ||
@@ -81,13 +69,15 @@ function dateFormat(e) {
                 excelData[i]["출/퇴근"] == undefined ||
                 excelData[i]["운행요일"] == undefined ||
                 excelData[i]["금액"] == undefined ||
-                excelData[i]["기사수당"] == undefined ||
+                excelData[i]["기사수당(현재)"] == undefined ||
+                excelData[i]["기사수당(변경)"] == undefined ||
+                excelData[i]["용역수당"] == undefined ||
                 excelData[i]["사용"] == undefined)
             {
                 uploadState = true;
                 return alert(`${i + 1}번째 데이터의 필수 입력 사항이 입력되지 않았습니다.`)
             }
-            console.log("기줒ㄴ일 테스트", excelData[i]['기준일']);
+            console.log("기준일 테스트", excelData[i]['기준일']);
             // 기준일
             if (excelData[i]['기준일'] && !(regexMonth.test(excelData[i]['기준일']))) {
                 excelUploadFile.value = ""
@@ -127,7 +117,12 @@ function dateFormat(e) {
                 uploadState = true;
                 return alert(`${i + 1}번째 데이터의 사용 항목이 형식에 맞지 않습니다.`)
             }
-            
+            if (excelData[i]['거리'] && !(numberPattern.test(excelData[i]['거리']))) {
+                excelUploadFile.value = ""
+                excelUploadFileText.value = ""
+                uploadState = true;
+                return alert(`${i + 1}번째 데이터의 거리 항목이 형식에 맞지 않습니다.`)
+            }
         };
 
 
@@ -148,11 +143,14 @@ function dateFormat(e) {
                 work_type: excelData[i]["출/퇴근"],
                 location: excelData[i]["위치"] == undefined ? "" : excelData[i]["위치"],
                 week: excelData[i]['운행요일'],
+                distance: excelData[i]['거리'],
                 detailed_route: excelData[i]["상세노선"] == undefined ? "" : excelData[i]["상세노선"],
                 maplink: excelData[i]["카카오맵"] == undefined ? "" : excelData[i]["카카오맵"],
                 waypoint: excelData[i]["경유지"] == undefined ? "" : excelData[i]["경유지"],
                 price: excelData[i]["금액"],
-                driver_allowance: excelData[i]["기사수당"],
+                driver_allowance: excelData[i]["기사수당(현재)"],
+                driver_allowance2: excelData[i]["기사수당(변경)"],
+                outsourcing_allowance: excelData[i]["용역수당"],
                 month: excelData[i]["기준일"] == undefined ? "" : excelData[i]["기준일"],
                 references: excelData[i]["참조사항"] == undefined ? "" : excelData[i]["참조사항"],
                 use: excelData[i]["사용"],

@@ -1,7 +1,5 @@
 const detailMapBtn = document.querySelector("#detailMapBtn")
 const detailMapPopup = document.querySelector("#detailMapPopup")
-const detailMapPopupBg = document.querySelector("#detailMapPopupBg")
-const detailPopupCloseBtn = document.querySelector("#detailPopupCloseBtn")
 const addDetailMapBtn = document.querySelector(".addDetailMapBtn")
 const waypointInput = document.querySelector("#waypointInput")
 const detailMapTable = document.querySelector("#detailMapTable")
@@ -16,10 +14,6 @@ saveWaypoint.addEventListener("click", makeWaypointInput)
 addDetailMapBtn.addEventListener("click", addWaypoint)
 
 detailMapBtn.addEventListener("click", opendetailMapPopup)
-
-detailMapPopupBg.addEventListener("click", closeDetailMapPopup)
-SidemenuUseClose.addEventListener("click", closeDetailMapPopup)
-detailPopupCloseBtn.addEventListener("click", closeDetailMapPopup)
 
 function deleteWaypointTr() {
     for (i=0; i<popupCheckbox.length; i++) {

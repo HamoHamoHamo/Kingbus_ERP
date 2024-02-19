@@ -19,6 +19,7 @@ from crudmember.models import Category
 from vehicle.models import Vehicle
 from .forms import MemberForm
 from .models import Member, MemberFile, Salary, AdditionalSalary, DeductionSalary, Team
+from accounting.models import TotalPrice
 import math
 from my_settings import CRED_PATH, CLOUD_MEDIA_PATH
 import firebase_admin
@@ -333,55 +334,33 @@ def member_edit(request):
             member.allowance_type = request.POST.get('allowance_type')
             member.save()
 
-            # 파일
-            creator = Member.objects.get(pk=request.session.get('user'))
-            license_file = request.FILES.get('license_file', None)
-            bus_license_file = request.FILES.get('bus_license_file', None)
-            l_file_name = request.POST.get('license', None)
-            b_file_name = request.POST.get('bus_license', None)
+            #### 금액, 기사수당 수정 시 입력한 월 이후 배차들 금액, 기사수당 수정
+            post_month = request.POST.get('allowance_type_month')
+            if post_month:
+                day = '01'
+                connect_list = DispatchRegularlyConnect.objects.filter(driver_id=member).filter(departure_date__gte=f'{post_month}-{day} 00:00').order_by('departure_date')
+                for connect in connect_list:
+                    month = connect.departure_date[:7]
+                    regularly = connect.regularly_id
 
-            cur_files = MemberFile.objects.filter(member_id=member)
-            try:
-                cur_license_file = cur_files.get(type='면허증')
-            except:
-                cur_license_file = None
-            try:
-                cur_bus_license_file = cur_files.get(type='버스운전 자격증')
-            except:
-                cur_bus_license_file = None
+                    if connect.outsourcing == 'y':
+                        allowance = regularly.outsourcing_allowance
+                    else:
+                        if connect.driver_id.allowance_type == '기사수당(변경)':
+                            allowance = regularly.driver_allowance2
+                        else:
+                            allowance = regularly.driver_allowance
 
-            if license_file:
-                if cur_license_file:
-                    os.remove(cur_license_file.file.path)
-                    cur_license_file.delete()
-                file = MemberFile(
-                    member_id=member,
-                    file=license_file,
-                    filename=license_file.name,
-                    type='면허증',
-                    creator=creator,
-                )
-                file.save()
-            elif not l_file_name and cur_license_file:
-                os.remove(cur_license_file.file.path)
-                cur_license_file.delete()
+                    salary = Salary.objects.filter(member_id=member).get(month=month)
+                    if connect.work_type == '출근':
+                        salary.attendance = int(salary.attendance) + int(allowance) - int(connect.driver_allowance)
+                    elif connect.work_type == '퇴근':
+                        salary.leave = int(salary.leave) + int(allowance) - int(connect.driver_allowance)
+                    salary.total = int(salary.total) + int(allowance) - int(connect.driver_allowance)
+                    salary.save()
 
-            if bus_license_file:
-                if cur_bus_license_file:
-                    os.remove(cur_bus_license_file.file.path)
-                    cur_bus_license_file.delete()
-
-                file = MemberFile(
-                    member_id=member,
-                    file=bus_license_file,
-                    filename=bus_license_file.name,
-                    type='버스운전 자격증',
-                    creator=creator,
-                )
-                file.save()
-            elif not b_file_name and cur_bus_license_file:
-                os.remove(cur_bus_license_file.file.path)
-                cur_bus_license_file.delete()
+                    connect.driver_allowance = allowance
+                    connect.save()
                 
             return redirect(request.META.get('HTTP_REFERER', 'redirect_if_referer_not_found'))
         else:

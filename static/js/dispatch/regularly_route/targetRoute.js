@@ -17,22 +17,15 @@ window.onload = function () {
     RouteListScroll.scrollTop = parms.get("height")
 
 
-    if (!parms.has("id")) {
-        amountComma[0].value = amountComma[0].value.replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
-        amountComma[1].value = amountComma[1].value.replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
-    }else{
-        amountComma[0].innerText = amountComma[0].innerText.replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
-        amountComma[1].innerText = amountComma[1].innerText.replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
+    // 닫기 에러 나는 부분 수정해ㅑ됨
+    amountComma[0].innerText = amountComma[0].innerText.replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
+    amountComma[1].innerText = amountComma[1].innerText.replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
 
-        for (i = 0; i < RouteListBodyTr.length; i++) {
-            if (RouteListBodyTr[i].classList[1] == parms.get("id")) {
-                RouteListBodyTr[i].style.backgroundColor = "#CDCDCE"
-            }
-        };
-        
-        savePrice0 =  pricePopupArea[0].innerText.replace(/\,/g,"")
-        savePrice1 =  pricePopupArea[1].innerText.replace(/\,/g,"")
-    }
+    for (i = 0; i < RouteListBodyTr.length; i++) {
+        if (RouteListBodyTr[i].classList[1] == parms.get("id")) {
+            RouteListBodyTr[i].style.backgroundColor = "#CDCDCE"
+        }
+    };
 
     if (parseInt(parms.get("close"))) {
         groupClose()

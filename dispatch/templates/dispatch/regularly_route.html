@@ -220,8 +220,13 @@
                 </tr>
                 <tr>
                     <td class="tdTypeA">*노선명</td>
-                    <td colspan="3" class="tdTypeB">
+                    <td class="tdTypeC">
                         <input autocomplete="off" value="{{detail.route}}" name="route" type="text"
+                            class="inputText essential length15" tabindex="2">
+                    </td>
+                    <td class="tdTypeA">거리km</td>
+                    <td class="tdTypeC">
+                        <input autocomplete="off" value="{{detail.distance}}" name="distance" type="number"
                             class="inputText essential length15" tabindex="2">
                     </td>
                     <td class="tdTypeA">*운행요일</td>
@@ -269,21 +274,17 @@
                     </td>
                     <td class="tdTypeA">*금액</td>
                     <td class="tdTypeC">
-                        {% if detail %}
-                        <div class="pricePopupArea amountComma">{{detail.price}}</div>
-                        {% else %}
-                        <input autocomplete="off" name="price" type="text"
-                            class="inputText amountComma essential inputPrice length100" tabindex="16">
-                        {% endif %}
+                        <div class="pricePopupArea amountComma">
+                            {{detail.price}}
+                        </div>
+                        <!--<input autocomplete="off" name="price" type="text"
+                            class="inputText amountComma essential inputPrice length100" tabindex="16">-->
                     </td>
                     <td class="tdTypeA">*기사수당</td>
                     <td class="tdTypeC">
-                        {% if detail %}
                         <div class="pricePopupArea amountComma">{{detail.driver_allowance}}</div>
-                        {% else %}
-                        <input autocomplete="off" name="driver_allowance" type="text"
-                            class="inputText essential inputDriverAllowance amountComma length100" tabindex="17">
-                        {% endif %}
+                        <!--<input autocomplete="off" name="driver_allowance" type="text"
+                            class="inputText essential inputDriverAllowance amountComma length100" tabindex="17">-->
                     </td>
                 </tr>
                 <tr>
@@ -321,7 +322,7 @@
                 </tr>
             </table>
 
-            {% if detail %}
+            
             <div class="popupAreaModules">
                 <div class="popupBgModules"></div>
                 <div class="popupContainer referenceeContainer">
@@ -334,15 +335,29 @@
                                 <label for="" class="popupArticleLabel"><span
                                         class="importantStar">*</span>금액</label>
                                 <input autocomplete="off" name="price" type="text"
-                                    class="inputText amountComma essential inputPrice length100"
+                                    class="inputMoney popupPrice inputText amountComma essential inputPrice length100"
                                     value="{{detail.price}}">
                             </div>
                             <div class="popupArticle">
                                 <label for="" class="popupArticleLabel"><span
-                                        class="importantStar">*</span>기사수당</label>
+                                        class="importantStar">*</span>기사수당(현재)</label>
                                 <input autocomplete="off" name="driver_allowance" type="text"
-                                    class="inputText essential inputDriverAllowance amountComma length100"
+                                    class="inputMoney popupPrice inputText essential inputDriverAllowance amountComma length100"
                                     value="{{detail.driver_allowance}}">
+                            </div>
+                            <div class="popupArticle">
+                                <label for="" class="popupArticleLabel"><span
+                                        class="importantStar">*</span>기사수당(변경)</label>
+                                <input autocomplete="off" name="driver_allowance2" type="text"
+                                    class="inputMoney popupPrice inputText essential inputDriverAllowance2 amountComma length100"
+                                    value="{{detail.driver_allowance2}}">
+                            </div>
+                            <div class="popupArticle">
+                                <label for="" class="popupArticleLabel"><span
+                                        class="importantStar">*</span>용역수당</label>
+                                <input autocomplete="off" name="outsourcing_allowance" type="text"
+                                    class="inputMoney popupPrice inputText essential inputOutsourcingAllowance amountComma length100"
+                                    value="{{detail.outsourcing_allowance}}">
                             </div>
                             <div class="popupArticle">
                                 <label for="" class="popupArticleLabel"><span
@@ -354,12 +369,11 @@
                         </div>
                         <div class="popupFooter">
                             <div class="btnModules referenceEditBtn">확인</div>
-                            <div class="btnModules referenceCloseBtn">취소</div>
+                            <div class="btnModules popupCloseBtn">취소</div>
                         </div>
                     </div>
                 </div>
             </div>
-            {% endif %}
             {% if detail %}
             <input class="waypointHidden" name="maplink" type="hidden" value="{{detail.maplink}}">
             {% for waypoint in waypoint_list %}
@@ -402,6 +416,7 @@
                                 <td>위치</td>
                                 <td>기사수당</td>
                                 <td>금액</td>
+                                <td>거리</td>
                                 <td>상세노선</td>
                                 <td>참조사항</td>
                             </tr>
@@ -430,6 +445,7 @@
                                 <td>{{order.location}}</td>
                                 <td>{{order.driver_allowance}}</td>
                                 <td>{{order.price}}</td>
+                                <td>{{order.distance}}</td>
                                 <td>{{order.detailed_route}}</td>
                                 <td>{{order.references}}</td>
                             </tr>
@@ -462,8 +478,7 @@
             <div class="popupSection">
                 <div class="popupArticleFileDouble">
                     <label for="excelUploadFile" class="popupArticleLabel">파일선택</label>
-                    <input autocomplete="off" name="" type="file" id="excelUploadFile" class="excelUploadFile"
-                        onchange="readExcel()">
+                    <input autocomplete="off" name="" type="file" id="excelUploadFile" class="excelUploadFile">
                     <input autocomplete="off" name="" type="text" class="excelUploadFileText" readonly>
                     <svg class="fileDeleteBtn" xmlns="http://www.w3.org/2000/svg" width="11.314" height="11.314"
                         viewBox="0 0 11.314 11.314">
@@ -478,7 +493,7 @@
             </div>
             <div class="popupFooter">
                 <div class="popupFooterMinibox">
-                    <a href="{% static 'form/출,퇴근 노선관리 엑셀 업로드 양식.xlsx' %}" download>
+                    <a href="{% static 'form/출,퇴근 노선관리 엑셀 업로드 양식.xlsx' %}" download>
                         <div class="btnModules downloadFormat">양식다운</div>
                     </a>
                     <div class="visibleLoadingBox">
@@ -562,6 +577,11 @@
 
 {% block script %}
 <script>
+    let driverAllowanceValue = "{{detail.driver_allowance}}".replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
+    let driverAllowanceValue2 = "{{detail.driver_allowance2}}".replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
+    let outsourcingAllowanceValue = "{{detail.outsourcing_allowance}}".replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
+    let priceValue = "{{detail.price}}".replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
+
 
     const groupCreateChangeForm = document.querySelector(".groupCreate")
 
@@ -606,9 +626,9 @@
 
 </script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.15.5/xlsx.full.min.js"></script>
-<script src="{% static 'js/dispatch/regularly_route/uploadExcel.js' %}"></script>
+<script type="module" src="{% static 'js/dispatch/regularly_route/uploadExcel.js' %}"></script>
 <script src="{% static 'js/dispatch/regularly_route/targetRoute.js' %}"></script>
-<script src="{% static 'js/dispatch/regularly_route/craetRoute.js' %}"></script>
+<script src="{% static 'js/dispatch/regularly_route/createRoute.js' %}"></script>
 <script src="{% static 'js/dispatch/regularly_route/routeListValidation.js' %}"></script>
 <script src="{% static 'js/dispatch/regularly_route/routeLayoutChanger.js' %}"></script>
 <script src="{% static 'js/dispatch/regularly_route/routeScrollLink.js' %}"></script>
@@ -618,6 +638,6 @@
 <script src="{% static 'js/dispatch/regularly_route/groupCalculating.js' %}"></script>
 <script src="{% static 'js/dispatch/regularly_route/lengthBreak.js' %}"></script>
 <script src="{% static 'js/dispatch/regularly_route/createAddComma.js' %}"></script>
-<script src="{% static 'js/dispatch/regularly_route/ReferenceDate.js' %}"></script>
+<script src="{% static 'js/dispatch/regularly_route/allowancePopup.js' %}"></script>
 <script src="{% static 'js/dispatch/regularly_route/detailMap.js' %}"></script>
 {% endblock %}

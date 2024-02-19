@@ -757,17 +757,22 @@ def regularly_connect_create(request):
         
         if outsourcing_id:
             outsourcing = 'y'
+            order_allowance = order.outsourcing_allowance
             driver = get_object_or_404(Member, id=outsourcing_id)
         else:
             outsourcing = 'n'
             driver = get_object_or_404(Member, id=driver_id)
+            if driver.allowance_type == '기사수당(변경)':
+                order_allowance = order.driver_allowance2
+            else:
+                order_allowance = order.driver_allowance
             
         date = request.POST.get('date', None)
         vehicle = get_object_or_404(Vehicle, id=bus)
 
         try:
             old_connect = order.info_regularly.get(departure_date__startswith=date)
-            if old_connect.price == order.price and old_connect.driver_allowance == order.driver_allowance:
+            if old_connect.price == order.price and old_connect.driver_allowance == order_allowance:
                 same_accounting = True
             else:
                 same_accounting = False
@@ -783,7 +788,7 @@ def regularly_connect_create(request):
             departure_date = f'{date} {order.departure_time}',
             arrival_date = f'{date} {order.arrival_time}',
             work_type = order.work_type,
-            driver_allowance = order.driver_allowance,
+            driver_allowance = order_allowance,
             price = order.price,
             outsourcing = outsourcing,
             creator = creator,
@@ -863,13 +868,22 @@ def regularly_connect_load(request, day):
     for i in range(len(check_list)):
         try:
             old_connect = DispatchRegularlyConnect.objects.filter(regularly_id__regularly_id=regularly_list[i]).get(departure_date__startswith=req_date)
-            if bus_list[i] and old_connect.price == regularly_list[i].price and old_connect.driver_allowance == regularly_list[i].driver_allowance:
+            if old_connect.outsourcing == 'y':
+                allowance = regularly_list[i].outsourcing_allowance
+            else:
+                if old_connect.driver_id.allowance_type == '기사수당(변경)':
+                    allowance = regularly_list[i].driver_allowance2
+                else:
+                    allowance = regularly_list[i].driver_allowance
+
+            if bus_list[i] and old_connect.price == regularly_list[i].price and old_connect.driver_allowance == allowance:
                 same_accounting = True
             else:
                 same_accounting = False
             old_connect.same_accounting = same_accounting
             old_connect.delete()
-        except:
+        except Exception as e:
+            print("ERROR : ", e)
             same_accounting = False
 
         regularly_id = DispatchRegularly.objects.get(id=check_list[i])
@@ -883,7 +897,7 @@ def regularly_connect_load(request, day):
                 arrival_date = f'{req_date} {regularly_list[i].arrival_time}',
                 work_type = regularly_list[i].work_type,
                 price = regularly_list[i].price,
-                driver_allowance = regularly_list[i].driver_allowance,
+                driver_allowance = regularly_id.driver_allowance2 if driver_list[i].allowance_type == '기사수당(변경)' else regularly_id.driver_allowance,
                 creator = creator
             )
             connect.same_accounting = same_accounting
@@ -969,7 +983,7 @@ class RegularlyRouteList(generic.ListView):
 def regularly_order_create(request):
     if request.session.get('authority') > 1:
         return render(request, 'authority.html')
-    context = {}
+    
     if request.method == "POST":
         creator = get_object_or_404(Member, pk=request.session.get('user'))
         order_form = RegularlyDataForm(request.POST)
@@ -1015,12 +1029,26 @@ def regularly_order_create(request):
             else:
                 driver_allowance = 0
 
+            post_driver_allowance2 = request.POST.get('driver_allowance2')
+            if post_driver_allowance2:
+                driver_allowance2 = int(post_driver_allowance2.replace(',',''))
+            else:
+                driver_allowance2 = 0
+
+            post_outsourcing_allowance = request.POST.get('outsourcing_allowance')
+            if post_outsourcing_allowance:
+                outsourcing_allowance = int(post_outsourcing_allowance.replace(',',''))
+            else:
+                outsourcing_allowance = 0
+
             order = order_form.save(commit=False)
             
             order.num1 = re.sub(r'[^0-9]', '', order.number1)
             order.num2 = re.sub(r'[^0-9]', '', order.number2)
             order.price = price
             order.driver_allowance = driver_allowance
+            order.driver_allowance2 = driver_allowance2
+            order.outsourcing_allowance = outsourcing_allowance
             order.departure_time = f'{departure_time1}:{departure_time2}'
             order.arrival_time = f'{arrival_time1}:{arrival_time2}'
             order.week = week
@@ -1039,6 +1067,8 @@ def regularly_order_create(request):
                 arrival_time = order.arrival_time,
                 price = order.price,
                 driver_allowance = order.driver_allowance,
+                driver_allowance2 = order.driver_allowance2,
+                outsourcing_allowance = order.outsourcing_allowance,
                 number1 = order.number1,
                 number2 = order.number2,
                 num1 = order.num1,
@@ -1050,6 +1080,7 @@ def regularly_order_create(request):
                 detailed_route = order.detailed_route,
                 maplink = order.maplink,
                 use = order.use,
+                distance = order.distance,
                 creator = order.creator
             )
             regularly.save()
@@ -1169,6 +1200,18 @@ def regularly_order_edit(request):
             else:
                 driver_allowance = 0
 
+            post_driver_allowance2 = request.POST.get('driver_allowance2')
+            if post_driver_allowance2:
+                driver_allowance2 = int(post_driver_allowance2.replace(',',''))
+            else:
+                driver_allowance2 = 0
+
+            post_outsourcing_allowance = request.POST.get('outsourcing_allowance')
+            if post_outsourcing_allowance:
+                outsourcing_allowance = int(post_outsourcing_allowance.replace(',',''))
+            else:
+                outsourcing_allowance = 0
+
             order.references = order_form.cleaned_data['references']
             order.departure = order_form.cleaned_data['departure']
             order.arrival = order_form.cleaned_data['arrival']
@@ -1180,6 +1223,8 @@ def regularly_order_edit(request):
 
             order.price = price
             order.driver_allowance = driver_allowance
+            order.driver_allowance2 = driver_allowance2
+            order.outsourcing_allowance = outsourcing_allowance
             order.number1 = order_form.cleaned_data['number1']
             order.number2 = order_form.cleaned_data['number2']
             order.num1 = re.sub(r'[^0-9]', '', order_form.cleaned_data['number1'])
@@ -1191,6 +1236,7 @@ def regularly_order_edit(request):
             order.detailed_route = order_form.cleaned_data['detailed_route']
             order.maplink = order_form.cleaned_data['maplink']
             order.use = order_form.cleaned_data['use']
+            order.distance = order_form.cleaned_data['distance']
             
             order.week = week
             order.group = group
@@ -1210,6 +1256,8 @@ def regularly_order_edit(request):
                 regularly.arrival_time = order.arrival_time
                 regularly.price = order.price
                 regularly.driver_allowance = order.driver_allowance
+                regularly.driver_allowance2 = order.driver_allowance2
+                regularly.outsourcing_allowance = order.outsourcing_allowance
                 regularly.number1 = order.number1
                 regularly.number2 = order.number2
                 regularly.num1 = order.num1
@@ -1221,6 +1269,7 @@ def regularly_order_edit(request):
                 regularly.detailed_route = order.detailed_route
                 regularly.maplink = order.maplink
                 regularly.use = order.use
+                regularly.distance = order.distance
                 regularly.creator = order.creator
             except DispatchRegularly.DoesNotExist:
                 regularly = DispatchRegularly(
@@ -1234,6 +1283,8 @@ def regularly_order_edit(request):
                     arrival_time = order.arrival_time,
                     price = order.price,
                     driver_allowance = order.driver_allowance,
+                    driver_allowance2 = order.driver_allowance2,
+                    outsourcing_allowance = order.outsourcing_allowance,
                     number1 = order.number1,
                     number2 = order.number2,
                     num1 = order.num1,
@@ -1245,6 +1296,7 @@ def regularly_order_edit(request):
                     detailed_route = order.detailed_route,
                     maplink = order.maplink,
                     use = order.use,
+                    distance = order.distance,
                     creator = order.creator
                 )
             regularly.save()
@@ -1265,17 +1317,24 @@ def regularly_order_edit(request):
                 day = order.group.settlement_date
                 day = day if int(day) > 9 else f'0{day}'
                 connect_list = DispatchRegularlyConnect.objects.filter(regularly_id__regularly_id=order).filter(departure_date__gte=f'{post_month}-{day} 00:00').order_by('departure_date')
-                c_regularly = ''
                 for connect in connect_list:
                     month = connect.departure_date[:7]
                     member = connect.driver_id
 
+                    if connect.outsourcing == 'y':
+                        allowance = outsourcing_allowance
+                    else:
+                        if connect.driver_id.allowance_type == '기사수당(변경)':
+                            allowance = driver_allowance2
+                        else:
+                            allowance = driver_allowance
+
                     salary = Salary.objects.filter(member_id=member).get(month=month)
                     if connect.work_type == '출근':
-                        salary.attendance = int(salary.attendance) + int(driver_allowance) - int(connect.driver_allowance)
+                        salary.attendance = int(salary.attendance) + int(allowance) - int(connect.driver_allowance)
                     elif connect.work_type == '퇴근':
-                        salary.leave = int(salary.leave) + int(driver_allowance) - int(connect.driver_allowance)
-                    salary.total = int(salary.total) + int(driver_allowance) - int(connect.driver_allowance)
+                        salary.leave = int(salary.leave) + int(allowance) - int(connect.driver_allowance)
+                    salary.total = int(salary.total) + int(allowance) - int(connect.driver_allowance)
                     salary.save()
 
                     total = TotalPrice.objects.filter(group_id=group).get(month=month)
@@ -1287,15 +1346,25 @@ def regularly_order_edit(request):
                     total.save()
 
                     connect.price = price
-                    connect.driver_allowance = driver_allowance
+                    connect.driver_allowance = allowance
                     connect.save()
 
-                    if c_regularly != connect.regularly_id:
-                        connect.regularly_id.price = price
-                        connect.regularly_id.driver_allowance = driver_allowance
-                        connect.regularly_id.save()
-                        c_regularly = connect.regularly_id
+                    # if c_regularly != connect.regularly_id:
+                    #     connect.regularly_id.price = price
+                    #     connect.regularly_id.driver_allowance = driver_allowance
+                    #     connect.regularly_id.driver_allowance2 = driver_allowance2
+                    #     connect.regularly_id.save()
+                    #     c_regularly = connect.regularly_id
                     
+                # post_month 기간의 DispatchRegularly 수정
+                old_regularly_list = DispatchRegularly.objects.filter(edit_date__gte=f'{post_month}-{day} 00:00')
+                for old_regularly in old_regularly_list:
+                    old_regularly.price = price
+                    old_regularly.driver_allowance = driver_allowance
+                    old_regularly.driver_allowance2 = driver_allowance2
+                    old_regularly.outsourcing_allowance = outsourcing_allowance
+                    old_regularly.save()
+                
                     
             connects = DispatchRegularlyConnect.objects.filter(regularly_id__regularly_id=order).filter(departure_date__gte=f'{TODAY} 00:00')
             for connect in connects:
@@ -1304,7 +1373,13 @@ def regularly_order_edit(request):
                 connect.arrival_date = f'{connect.departure_date[:10]} {regularly.arrival_time}'
                 connect.work_type = regularly.work_type
                 connect.price = regularly.price
-                connect.driver_allowance = regularly.driver_allowance
+                if connect.outsourcing == 'y':
+                    connect.driver_allowance = regularly.outsourcing_allowance
+                else:
+                    if connect.driver_id.allowance_type == '기사수당(변경)':
+                        connect.driver_allowance = regularly.driver_allowance2
+                    else:
+                        connect.driver_allowance = regularly.driver_allowance
                 connect.save()
 
             return redirect(request.META.get('HTTP_REFERER', 'redirect_if_referer_not_found'))
@@ -1336,7 +1411,7 @@ def regularly_order_upload(request):
         if overlap == False:
             return JsonResponse({'error': 'group', 'data': data['group'], 'line': count})
         try:
-            if data['group'] and data['route'] and data['departure'] and data['arrival'] and data['number1'] and data['number2'] and data['departure_time'] and data['arrival_time'] and data['work_type'] and data['week'] and data['price'] and data['driver_allowance'] and data['use']:
+            if data['group'] and data['route'] and data['departure'] and data['arrival'] and data['number1'] and data['number2'] and data['departure_time'] and data['arrival_time'] and data['work_type'] and data['week'] and data['price'] and data['driver_allowance'] and data['driver_allowance2'] and data['outsourcing_allowance'] and data['use']:
                 pass
         except:
             return JsonResponse({'error': 'required', 'line': count})
@@ -1374,11 +1449,14 @@ def regularly_order_upload(request):
             regularly_data.detailed_route = data['detailed_route']
             regularly_data.maplink = data['maplink']
             regularly_data.use = data['use']
+            regularly_data.distance = data['distance']
             regularly_data.creator = creator
 
             if (data['month']):
                 regularly_data.price = data['price']
                 regularly_data.driver_allowance = data['driver_allowance']
+                regularly_data.driver_allowance2 = data['driver_allowance2']
+                regularly_data.outsourcing_allowance = data['outsourcing_allowance']
 
         else:
             regularly_data = DispatchRegularlyData(
@@ -1390,6 +1468,8 @@ def regularly_order_upload(request):
                 arrival_time = data['arrival_time'],
                 price = data['price'],
                 driver_allowance = data['driver_allowance'],
+                driver_allowance2 = data['driver_allowance2'],
+                outsourcing_allowance = data['outsourcing_allowance'],
                 number1 = f'{data["number1"]}',
                 number2 = f"{data['number2']}",
                 num1 = re.sub(r'[^0-9]', '', f'{data["number1"]}'),
@@ -1401,6 +1481,7 @@ def regularly_order_upload(request):
                 detailed_route = data['detailed_route'],
                 maplink = data['maplink'],
                 use = data['use'],
+                distance = data['distance'],
                 creator = creator,
             )
         regularly_data.save()
@@ -1438,10 +1519,13 @@ def regularly_order_upload(request):
             regularly.detailed_route = data['detailed_route']
             regularly.maplink = data['maplink']
             regularly.use = data['use']
+            regularly.distance = data['distance']
             regularly.creator = creator
 
             regularly.price = regularly_data.price
             regularly.driver_allowance = regularly_data.driver_allowance
+            regularly.driver_allowance2 = regularly_data.driver_allowance2
+            regularly.outsourcing_allowance = regularly_data.outsourcing_allowance
         except DispatchRegularly.DoesNotExist:
             regularly = DispatchRegularly(
                 regularly_id = regularly_data,
@@ -1463,17 +1547,22 @@ def regularly_order_upload(request):
                 detailed_route = data['detailed_route'],
                 maplink = data['maplink'],
                 use = data['use'],
+                distance = data['distance'],
                 creator = creator,
                 price = regularly_data.price,
                 driver_allowance = regularly_data.driver_allowance,
+                driver_allowance2 = regularly_data.driver_allowance2,
+                outsourcing_allowance = regularly_data.outsourcing_allowance,
             )
         regularly.save()
 
         order = regularly_data
         driver_allowance = data['driver_allowance']
+        driver_allowance2 = data['driver_allowance2']
+        outsourcing_allowance = data['outsourcing_allowance']
         price = data['price']
         post_month = data['month']
-        if post_month:
+        if post_month and data['id']:
             day = order.group.settlement_date
             day = day if int(day) > 9 else f'0{day}'
             connect_list = DispatchRegularlyConnect.objects.filter(regularly_id__regularly_id=order).filter(departure_date__gte=f'{post_month}-{day} 00:00').order_by('departure_date')
@@ -1482,12 +1571,20 @@ def regularly_order_upload(request):
                 month = connect.departure_date[:7]
                 member = connect.driver_id
 
+                if connect.outsourcing == 'y':
+                    allowance = outsourcing_allowance
+                else:
+                    if connect.driver_id.allowance_type == '기사수당(변경)':
+                        allowance = driver_allowance2
+                    else:
+                        allowance = driver_allowance
+
                 salary = Salary.objects.filter(member_id=member).get(month=month)
                 if connect.work_type == '출근':
-                    salary.attendance = int(salary.attendance) + int(driver_allowance) - int(connect.driver_allowance)
+                    salary.attendance = int(salary.attendance) + int(allowance) - int(connect.driver_allowance)
                 elif connect.work_type == '퇴근':
-                    salary.leave = int(salary.leave) + int(driver_allowance) - int(connect.driver_allowance)
-                salary.total = int(salary.total) + int(driver_allowance) - int(connect.driver_allowance)
+                    salary.leave = int(salary.leave) + int(allowance) - int(connect.driver_allowance)
+                salary.total = int(salary.total) + int(allowance) - int(connect.driver_allowance)
                 salary.save()
 
                 total = TotalPrice.objects.filter(group_id=group).get(month=month)
@@ -1499,15 +1596,17 @@ def regularly_order_upload(request):
                 total.save()
 
                 connect.price = price
-                connect.driver_allowance = driver_allowance
+                connect.driver_allowance = allowance
                 connect.save()
 
-                if c_regularly != connect.regularly_id:
-                    connect.regularly_id.price = price
-                    connect.regularly_id.driver_allowance = driver_allowance
-                    connect.regularly_id.save()
-                    c_regularly = connect.regularly_id
-
+            # post_month 기간의 DispatchRegularly 수정
+            old_regularly_list = DispatchRegularly.objects.filter(edit_date__gte=f'{post_month}-{day} 00:00')
+            for old_regularly in old_regularly_list:
+                old_regularly.price = price
+                old_regularly.driver_allowance = driver_allowance
+                old_regularly.driver_allowance2 = driver_allowance2
+                old_regularly.outsourcing_allowance = outsourcing_allowance
+                old_regularly.save()
 
         connects = DispatchRegularlyConnect.objects.filter(regularly_id__regularly_id=order).filter(departure_date__gte=f'{TODAY} 00:00')
         for connect in connects:
@@ -1516,7 +1615,14 @@ def regularly_order_upload(request):
             connect.arrival_date = f'{connect.departure_date[:10]} {regularly.arrival_time}'
             connect.work_type = regularly.work_type
             connect.price = regularly.price
-            connect.driver_allowance = regularly.driver_allowance
+            if connect.outsourcing == 'y':
+                connect.driver_allowance = regularly.outsourcing_allowance
+            else:
+                if connect.driver_id.allowance_type == '기사수당(변경)':
+                    connect.driver_allowance = regularly.driver_allowance2
+                else:
+                    connect.driver_allowance = regularly.driver_allowance
+                
             connect.save()
 
         count += 1
@@ -1527,7 +1633,7 @@ def regularly_order_upload(request):
 def regularly_order_download(request):
     if request.session.get('authority') > 1:
         return render(request, 'authority.html')
-    datalist = list(DispatchRegularlyData.objects.exclude(use='삭제').order_by('group__number', 'group__name', 'num1', 'number1', 'num2', 'number2').values_list('id', 'group_id__name', 'route', 'departure', 'arrival', 'number1', 'number2', 'departure_time', 'arrival_time', 'work_type', 'location', 'week', 'detailed_route', 'maplink', 'price', 'driver_allowance', 'references', 'use'))
+    datalist = list(DispatchRegularlyData.objects.exclude(use='삭제').order_by('group__number', 'group__name', 'num1', 'number1', 'num2', 'number2').values_list('id', 'group_id__name', 'route', 'departure', 'arrival', 'number1', 'number2', 'departure_time', 'arrival_time', 'work_type', 'location', 'week', 'distance', 'detailed_route', 'maplink', 'price', 'driver_allowance', 'driver_allowance2', 'outsourcing_allowance', 'references', 'use'))
     queryset = DispatchRegularlyWaypoint.objects.exclude(regularly_id__use='삭제').order_by('regularly_id__group__number', 'regularly_id__group__name', 'regularly_id__num1', 'regularly_id__number1', 'regularly_id__num2', 'regularly_id__number2').values_list('regularly_id__id', 'waypoint')
     waypoints = []
     previous_id = None
@@ -1550,7 +1656,7 @@ def regularly_order_download(request):
         datalist[i] = data
         i = i+1
     try:
-        df = pd.DataFrame(datalist, columns=['id', '그룹', '노선명', '출발지', '도착지', '순번1', '순번2', '출발시간', '도착시간', '출/퇴근', '위치', '운행요일', '상세노선', '카카오맵', '경유지', '금액', '기사수당', '기준일', '참조사항', '사용'])
+        df = pd.DataFrame(datalist, columns=['id', '그룹', '노선명', '출발지', '도착지', '순번1', '순번2', '출발시간', '도착시간', '출/퇴근', '위치', '운행요일', '거리', '상세노선', '카카오맵', '경유지', '금액', '기사수당(현재)', '기사수당(변경)', '용역수당', '기준일', '참조사항', '사용'])
         url = f'{MEDIA_ROOT}/dispatch/regularlyDataList.xlsx'
         df.to_excel(url, index=False)
 
@@ -1591,6 +1697,8 @@ def regularly_order_delete(request):
                 regularly.arrival_time = order.arrival_time
                 regularly.price = order.price
                 regularly.driver_allowance = order.driver_allowance
+                regularly.driver_allowance2 = order.driver_allowance2
+                regularly.outsourcing_allowance = order.outsourcing_allowance
                 regularly.number1 = order.number1
                 regularly.number2 = order.number2
                 regularly.num1 = order.num1
@@ -1601,6 +1709,7 @@ def regularly_order_delete(request):
                 regularly.location = order.location
                 regularly.detailed_route = order.detailed_route
                 regularly.use = order.use
+                regularly.distance = order.distance
                 regularly.creator = order.creator
             except DispatchRegularly.DoesNotExist:
                 regularly = DispatchRegularly(
@@ -1614,6 +1723,8 @@ def regularly_order_delete(request):
                     arrival_time = order.arrival_time,
                     price = order.price,
                     driver_allowance = order.driver_allowance,
+                    driver_allowance2 = order.driver_allowance2,
+                    outsourcing_allowance = order.outsourcing_allowance,
                     number1 = order.number1,
                     number2 = order.number2,
                     num1 = order.num1,
@@ -1624,6 +1735,7 @@ def regularly_order_delete(request):
                     location = order.location,
                     detailed_route = order.detailed_route,
                     use = order.use,
+                    distance = order.distance,
                     creator = order.creator
                 )
             regularly.save()
