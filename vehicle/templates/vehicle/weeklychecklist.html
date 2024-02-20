@@ -1,0 +1,87 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load custom_tags %}
+{% block head %}
+<link rel="stylesheet" href="{% static 'css/vehicle/weeklychecklist.css' %}" type="text/css" />
+<link rel="stylesheet" href="{% static 'css/listpage.css' %}" type="text/css" />
+<link rel="stylesheet" href="{% static 'css/pagination.css' %}" type="text/css" />
+{% endblock %}
+
+{% block content-header %}
+<div class="HeaderTitle">
+    주간점검
+</div>
+{% endblock %}
+
+{% block content %}
+
+
+
+
+<div class="searchAreaBox">
+    <form class="searchForm" action="">
+        <div class="searchTool">
+            <span class="searchName">직원검색</span>
+            <div class="routeFilterBox">
+                <input autocomplete="off" value="{{name}}" name="name" type="text" class="inputModules" list="hrFilter"
+                    placeholder="직원이름" autocomplete="off">
+                <span class="searchName searchDate">날짜</span>
+                <input class="searchDateInput" value={{date}} autocomplete="off" type="date" name="date" class="" max="9999-12-31">
+            </div>
+            <input type="submit" class="searchBtn btnModules" value="검색">
+        </div>
+    </form>
+</div>
+
+
+<div class="contentsAreaBox">
+    <table class="tableHead">
+        <thead>
+            <tr class="headerLine">
+                <td>제출여부</td>
+                <td>번호</td>
+                <td>이름</td>
+                <td>차량번호</td>
+                <td>유리/선팅</td>
+                <td>자격증/차고지증명서/운행기록증</td>
+                <td>타이어 휠 상태</td>
+                <td>차량청결(외부)</td>
+                <td>비상망치(수량 및 야광스티커)</td>
+                <td>소화기(수량 및 충전상태)</td>
+                <td>블랙박스 포맷확인</td>
+            </tr>
+        </thead>
+    </table>
+    <div class="scrollContainer">
+        <table class="tableBody">
+            <tbody>
+                {% for weekly in weeklychecklist_list %}
+                
+                <tr class="{{forloop.counter0}}">
+                    <td>{%if weekly.submit_check%}O{%else%}X{%endif%}</td>
+                    <td>{{forloop.counter}}</td>
+                    <td>{{weekly.member}}</td>
+                    <td>{{weekly.bus_id}}</td>
+                    <td>{{weekly.glass_tint_condition}}</td>
+                    <td>{{weekly.license_garage_record_condition}}</td>
+                    <td>{{weekly.tire_wheel_condition}}</td>
+                    <td>{{weekly.vehicle_cleanliness_condition}}</td>
+                    <td>{{weekly.emergency_hammer_condition}}</td>
+                    <td>{{weekly.fire_extinguisher_condition}}</td>
+                    <td>{{weekly.blackbox_format_check_condition}}</td>
+                </tr>
+                
+                {% endfor %}
+                <tr class="blanckTr"></tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="btnAreaBox">
+        <div class="btnBox">
+        </div>
+
+    </div>
+</div>
+
+{% endblock %}

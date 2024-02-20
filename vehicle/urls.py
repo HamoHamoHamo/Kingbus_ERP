@@ -17,6 +17,9 @@ urlpatterns = [
     path('refueling/delete', views.refueling_delete, name='refueling_delete'),
     path('maintenance', views.MaintenanceList.as_view(), name='maintenance'),
     path('accident', views.AccidentList.as_view(), name='accident'),
+    path('dailychecklist', views.DailyChecklistListView.as_view(), name='dailychecklist'),
+    path('weeklychecklist', views.WeeklyChecklistListView.as_view(), name='weeklychecklist'),
+    path('equipmentchecklist', views.EquipmentChecklistListView.as_view(), name='equipmentchecklist'),
 
     # path('mgmt', views.VehicleMgmt.as_view(), name='mgmt'),
     # path('mgmt/insurance/edit', views.insurance_edit, name='insurance_edit'),
