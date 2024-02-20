@@ -1,0 +1,200 @@
+.searchAreaRight {
+    display: flex;
+}
+
+.FilterBox select {
+    width: 10rem;
+    padding: 0;
+    margin-right: 1rem;
+}
+
+.FilterBox input{
+    margin-right: 1rem;
+}
+
+.searchTool input[type=submit] {
+    background-color: #444444;
+}
+
+select[name=use]{
+    margin-left: 2rem;
+}
+
+.searchAreaBtn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 10rem;
+    height: 3.8rem;
+    border-radius: 0.2rem;
+    background-color: #444444;
+    font-size: 1.4rem;
+    color: white;
+    cursor: pointer;
+    margin-left: 1rem;
+}
+
+.addVehicle {
+    background-color: #0069D9;
+}
+
+.tableHead {
+    width: 100%;
+    height: 3.6rem;
+    border-spacing: 0;
+}
+
+.tableHead thead{
+    width: 100%;
+    height: 100%;
+}
+
+table tr {
+    width: 100%;
+    height: 6.2rem;
+    border-bottom: 0.1rem solid #CDCDCE;
+}
+
+.tableHead tr {
+    width: 100%;
+    height: 100%;
+    align-items: center;
+    border: none;
+    font-size: 1.6rem;
+    color: white;
+    background-color: #444444;
+}
+
+.tableHead td{
+    text-align: center;
+}
+
+.tableBody tr:nth-child(odd) {
+    background-color: white;
+}
+
+.tableBody tr:nth-child(even) {
+    background-color: #EFEFEF;
+}
+
+table tr:nth-child(10) {
+    border-bottom: none;
+}
+
+
+.tableBody {
+    width: 100%;
+    height: 62em;
+    margin-top: -0.1rem;
+    border: 0.1rem solid #CDCDCE;
+    border-spacing: 0;
+}
+
+tbody {
+    width: 100%;
+    height: 100%;
+}
+
+.tableBody td {
+    font-size: 1.4rem;
+    color: #191919;
+    border-right: 0.1rem solid #D4D4D4;
+    border-bottom: 0.1rem solid #D4D4D4;
+}
+
+td:nth-child(1) {
+    width: 4%;
+}
+td:nth-child(2) {
+    width: 3%;
+}
+
+td:nth-child(3) {
+    width: 5%;
+}
+
+td:nth-child(4) {
+    width: 7%;
+}
+
+td:nth-child(5),
+td:nth-child(11),
+td:nth-child(12) {
+    width: 5%;
+}
+
+td:nth-child(6) {
+    width: 10%;
+}
+
+td:nth-child(7) {
+    width: 6%;
+}
+
+td:nth-child(8),
+td:nth-child(10) {
+    width: 7%;
+}
+
+td:nth-child(9),
+td:nth-child(14) {
+    width: 8%;
+}
+
+td:nth-child(13) {
+    width: 10%;
+}
+
+.tableBody td {
+    text-align: center;
+}
+
+.btnBox input{
+    background-color: #444444;
+}
+
+
+.vehicleNumBox{
+    display: flex;
+    justify-content: space-between;
+    width: 27rem;
+}
+.popupArticleinputTwice{
+    width: 12.4rem;
+    height: 2.4rem;
+    border: 0.1rem solid #CDCDCE;
+    border-radius: 0.3rem;
+    outline: none;
+}
+
+.popupSectionEdit{
+    display: none;
+}
+
+.popupFooterDetail .createBtn{
+    display: none;
+}
+
+.vehicleNumBox .PopupData{
+    width: 13rem;
+}
+
+.editBtn{
+    background-color: #0069D9;
+    margin-right: 1rem;
+}
+
+.blanckTr{
+    width: 100%;
+    height: 100%;
+}
+
+.albleRadioBox{
+    width: calc(100% - 9rem);
+}
+
+.albleRadioBox label{
+    font-size: 1.4rem;
+    margin-right: 1rem;
+    cursor: pointer;
+}

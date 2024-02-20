@@ -1,0 +1,102 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load custom_tags %}
+{% block head %}
+<link rel="stylesheet" href="{% static 'css/vehicle/dailychecklist.css' %}" type="text/css" />
+<link rel="stylesheet" href="{% static 'css/listpage.css' %}" type="text/css" />
+<link rel="stylesheet" href="{% static 'css/pagination.css' %}" type="text/css" />
+{% endblock %}
+
+{% block content-header %}
+<div class="HeaderTitle">
+    일일점검
+</div>
+{% endblock %}
+
+{% block content %}
+
+
+
+
+<div class="searchAreaBox">
+    <form class="searchForm" action="">
+        <div class="searchTool">
+            <span class="searchName">직원검색</span>
+            <div class="routeFilterBox">
+                <input autocomplete="off" value="{{name}}" name="name" type="text" class="inputModules" list="hrFilter"
+                    placeholder="직원이름" autocomplete="off">
+                {%comment%}
+                <select name="role" class="inputModules">
+                    <option {% if role == '' %} selected {% endif %} value="">구분</option>
+                    <option {% if role == '팀장' %} selected {% endif %} value="팀장">팀장</option>
+                    <option {% if role == '운전원' %} selected {% endif %} value="운전원">운전원</option>
+                    <option {% if role == '용역' %} selected {% endif %} value="용역">용역</option>
+                    <option {% if role == '임시' %} selected {% endif %} value="임시">임시</option>
+                </select>
+                {%endcomment%}
+                <span class="searchName searchDate">날짜</span>
+                <input class="searchDateInput" value={{date}} autocomplete="off" type="date" name="date" class="" max="9999-12-31">
+            </div>
+            <input type="submit" class="searchBtn btnModules" value="검색">
+        </div>
+    </form>
+</div>
+
+
+<div class="contentsAreaBox">
+    <table class="tableHead">
+        <thead>
+            <tr class="headerLine">
+                <td>제출여부</td>
+                <td>번호</td>
+                <td>이름</td>
+                <td>차량번호</td>
+                <td>오일/엔진,부동액</td>
+                <td>오일/파워,클러치</td>
+                <td>냉각수,워셔액</td>
+                <td>외부차체상태<br>(파손확인)</td>
+                <td>등화장치<br>(실내/외)</td>
+                <td>블랙박스<br>(작동여부확인)</td>
+                <td>타이어상태<br>(나사,못)</td>
+                <td>실내상태<br>(복도,선반,청소상태)</td>
+                <td>안전벨트/슬라이드 상태</td>
+                <td>제복착용</td>
+            </tr>
+        </thead>
+    </table>
+    <div class="scrollContainer">
+        <table class="tableBody">
+            <tbody>
+                {% for daily in dailychecklist_list %}
+                
+                <tr class="{{forloop.counter0}}">
+                    <td>{%if daily.submit_check%}O{%else%}X{%endif%}</td>
+                    <td>{{forloop.counter}}</td>
+                    <td>{{daily.member}}</td>
+                    <td>{{daily.bus_id}}</td>
+                    <td>{{daily.oil_engine_condition}}</td>
+                    <td>{{daily.oil_power_clutch_condition}}</td>
+                    <td>{{daily.coolant_washer_condition}}</td>
+                    <td>{{daily.external_body_condition}}</td>
+                    <td>{{daily.lighting_device_condition}}</td>
+                    <td>{{daily.blackbox_condition}}</td>
+                    <td>{{daily.tire_condition}}</td>
+                    <td>{{daily.interior_condition}}</td>
+                    <td>{{daily.safety_belt_slide_condition}}</td>
+                    <td>{{daily.uniform_worn_condition}}</td>
+                </tr>
+                
+                {% endfor %}
+                <tr class="blanckTr"></tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="btnAreaBox">
+        <div class="btnBox">
+        </div>
+
+    </div>
+</div>
+
+{% endblock %}
