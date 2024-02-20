@@ -1357,7 +1357,7 @@ def regularly_order_edit(request):
                     #     c_regularly = connect.regularly_id
                     
                 # post_month 기간의 DispatchRegularly 수정
-                old_regularly_list = DispatchRegularly.objects.filter(edit_date__gte=f'{post_month}-{day} 00:00')
+                old_regularly_list = DispatchRegularly.objects.filter(regularly_id=order).filter(edit_date__gte=f'{post_month}-{day} 00:00')
                 for old_regularly in old_regularly_list:
                     old_regularly.price = price
                     old_regularly.driver_allowance = driver_allowance
