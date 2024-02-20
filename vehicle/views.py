@@ -556,7 +556,7 @@ class DailyChecklistListView(generic.ListView):
         # use = self.request.GET.get('use', '사용')
         
         # dailychecklist = DailyChecklist.objects.filter(date__contains=date)
-        if date is '' : date = TODAY
+        if date == '' : date = TODAY
 
         if name:
             # dailychecklist = dailychecklist.daily_checklist_bus_id.objects.filter(vehicle_num__contains=search).order_by('vehicle_num0', 'vehicle_num')
@@ -584,7 +584,7 @@ class WeeklyChecklistListView(generic.ListView):
     def get_queryset(self):
         name = self.request.GET.get('name', '')
         date = self.request.GET.get('date', TODAY)
-        if date is '' : date = TODAY
+        if date == '' : date = TODAY
 
         if name:
             weeklychecklist = WeeklyChecklist.objects.filter(member__name__contains=name).filter(date__contains=date).order_by('member', 'bus_id__vehicle_num0', 'bus_id__vehicle_num')
@@ -610,7 +610,7 @@ class EquipmentChecklistListView(generic.ListView):
     def get_queryset(self):
         name = self.request.GET.get('name', '')
         date = self.request.GET.get('date', TODAY)
-        if date is '' : date = TODAY
+        if date == '' : date = TODAY
 
         if name:
             equipmentchecklist = EquipmentChecklist.objects.filter(member__name__contains=name).filter(date__contains=date).order_by('member', 'bus_id__vehicle_num0', 'bus_id__vehicle_num')
