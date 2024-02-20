@@ -1,0 +1,104 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load custom_tags %}
+{% block head %}
+<link rel="stylesheet" href="{% static 'css/vehicle/equipmentchecklist.css' %}" type="text/css" />
+<link rel="stylesheet" href="{% static 'css/listpage.css' %}" type="text/css" />
+<link rel="stylesheet" href="{% static 'css/pagination.css' %}" type="text/css" />
+{% endblock %}
+
+{% block content-header %}
+<div class="HeaderTitle">
+    비품점검
+</div>
+{% endblock %}
+
+{% block content %}
+
+
+
+
+<div class="searchAreaBox">
+    <form class="searchForm" action="">
+        <div class="searchTool">
+            <span class="searchName">직원검색</span>
+            <div class="routeFilterBox">
+                <input autocomplete="off" value="{{name}}" name="name" type="text" class="inputModules" list="hrFilter"
+                    placeholder="직원이름" autocomplete="off">
+                {%comment%}
+                <select name="role" class="inputModules">
+                    <option {% if role == '' %} selected {% endif %} value="">구분</option>
+                    <option {% if role == '팀장' %} selected {% endif %} value="팀장">팀장</option>
+                    <option {% if role == '운전원' %} selected {% endif %} value="운전원">운전원</option>
+                    <option {% if role == '용역' %} selected {% endif %} value="용역">용역</option>
+                    <option {% if role == '임시' %} selected {% endif %} value="임시">임시</option>
+                </select>
+                {%endcomment%}
+                <span class="searchName searchDate">날짜</span>
+                <input class="searchDateInput" value={{date}} autocomplete="off" type="date" name="date" class="" max="9999-12-31">
+            </div>
+            <input type="submit" class="searchBtn btnModules" value="검색">
+        </div>
+    </form>
+</div>
+
+
+<div class="contentsAreaBox">
+    <table class="tableHead">
+        <thead>
+            <tr class="headerLine">
+                <td>제출여부</td>
+                <td>번호</td>
+                <td>이름</td>
+                <td>차량번호</td>
+                <td>TV</td>
+                <td>DVD</td>
+                <td>노래방</td>
+                <td>바닥스피커</td>
+                <td>무선마이크</td>
+                <td>길성테크</td>
+                <td>바닥파워</td>
+                <td>인버터</td>
+                <td>블랙박스</td>
+                <td>전광판</td>
+                <td>블라인드</td>
+            </tr>
+        </thead>
+    </table>
+    <div class="scrollContainer">
+        <table class="tableBody">
+            <tbody>
+                {% for equipment in equipmentchecklist_list %}
+                
+                <tr class="{{forloop.counter0}}">
+                    <td>{%if equipment.submit_check%}O{%else%}X{%endif%}</td>
+                    <td>{{forloop.counter}}</td>
+                    <td>{{equipment.member}}</td>
+                    <td>{{equipment.bus_id}}</td>
+                    <td>{{equipment.tv_condition}}</td>
+                    <td>{{equipment.dvd_condition}}</td>
+                    <td>{{equipment.karaoke_condition}}</td>
+                    <td>{{equipment.floor_speaker_condition}}</td>
+                    <td>{{equipment.wireless_microphone_condition}}</td>
+                    <td>{{equipment.gilseong_tech_condition}}</td>
+                    <td>{{equipment.floor_power_condition}}</td>
+                    <td>{{equipment.inverter_condition}}</td>
+                    <td>{{equipment.blackbox_condition}}</td>
+                    <td>{{equipment.billboard_condition}}</td>
+                    <td>{{equipment.blind_condition}}</td>
+                </tr>
+                
+                {% endfor %}
+                <tr class="blanckTr"></tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="btnAreaBox">
+        <div class="btnBox">
+        </div>
+
+    </div>
+</div>
+
+{% endblock %}

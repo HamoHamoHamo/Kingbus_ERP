@@ -11,7 +11,7 @@ from django.views import generic
 from django.urls import reverse
 from config.settings import MEDIA_ROOT
 import pandas as pd
-from .models import Vehicle, VehicleDocument, Refueling
+from .models import Vehicle, VehicleDocument, Refueling, DailyChecklist, WeeklyChecklist, EquipmentChecklist
 from .forms import VehicleForm
 from humanresource.models import Member
 from ERP.settings import BASE_DIR
@@ -542,3 +542,88 @@ def check_edit(request):
         return redirect(request.META.get('HTTP_REFERER', 'redirect_if_referer_not_found'))
 
     return HttpResponseNotAllowed(['post'])
+
+
+class DailyChecklistListView(generic.ListView):
+    template_name = 'vehicle/dailychecklist.html'
+    context_object_name = 'dailychecklist_list'
+    model = DailyChecklist
+
+    def get_queryset(self):
+        # select = self.request.GET.get('select', '')
+        name = self.request.GET.get('name', '')
+        date = self.request.GET.get('date', TODAY)
+        # use = self.request.GET.get('use', '사용')
+        
+        # dailychecklist = DailyChecklist.objects.filter(date__contains=date)
+        if date is '' : date = TODAY
+
+        if name:
+            # dailychecklist = dailychecklist.daily_checklist_bus_id.objects.filter(vehicle_num__contains=search).order_by('vehicle_num0', 'vehicle_num')
+            dailychecklist = DailyChecklist.objects.filter(member__name__contains=name).filter(date__contains=date).order_by('member', 'bus_id__vehicle_num0', 'bus_id__vehicle_num')
+        else:
+            # dailychecklist = dailychecklist.daily_checklist_bus_id.objects.order_by('vehicle_num0', 'vehicle_num')
+            dailychecklist = DailyChecklist.objects.filter(date__contains=date).order_by('member', 'bus_id__vehicle_num0', 'bus_id__vehicle_num')
+        return dailychecklist
+
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        context['name'] = self.request.GET.get('name', '')
+        context['date'] = self.request.GET.get('date', TODAY)
+        
+        return context
+
+
+class WeeklyChecklistListView(generic.ListView):
+    template_name = 'vehicle/weeklychecklist.html'
+    context_object_name = 'weeklychecklist_list'
+    model = WeeklyChecklist
+
+    def get_queryset(self):
+        name = self.request.GET.get('name', '')
+        date = self.request.GET.get('date', TODAY)
+        if date is '' : date = TODAY
+
+        if name:
+            weeklychecklist = WeeklyChecklist.objects.filter(member__name__contains=name).filter(date__contains=date).order_by('member', 'bus_id__vehicle_num0', 'bus_id__vehicle_num')
+        else:
+            weeklychecklist = WeeklyChecklist.objects.filter(date__contains=date).order_by('member', 'bus_id__vehicle_num0', 'bus_id__vehicle_num')
+        return weeklychecklist
+
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        context['name'] = self.request.GET.get('name', '')
+        context['date'] = self.request.GET.get('date', TODAY)
+        
+        return context
+
+
+class EquipmentChecklistListView(generic.ListView):
+    template_name = 'vehicle/equipmentchecklist.html'
+    context_object_name = 'equipmentchecklist_list'
+    model = EquipmentChecklist
+
+    def get_queryset(self):
+        name = self.request.GET.get('name', '')
+        date = self.request.GET.get('date', TODAY)
+        if date is '' : date = TODAY
+
+        if name:
+            equipmentchecklist = EquipmentChecklist.objects.filter(member__name__contains=name).filter(date__contains=date).order_by('member', 'bus_id__vehicle_num0', 'bus_id__vehicle_num')
+        else:
+            equipmentchecklist = EquipmentChecklist.objects.filter(date__contains=date).order_by('member', 'bus_id__vehicle_num0', 'bus_id__vehicle_num')
+        return equipmentchecklist
+
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        context['name'] = self.request.GET.get('name', '')
+        context['date'] = self.request.GET.get('date', TODAY)
+        
+        return context
+

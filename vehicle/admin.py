@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Vehicle, VehicleDocument
+from .models import Vehicle, VehicleDocument, DailyChecklist, WeeklyChecklist, EquipmentChecklist
 
 # Register your models here.
 
@@ -13,4 +13,7 @@ class VehicleAdmin(admin.ModelAdmin):
 
 admin.site.register(Vehicle, VehicleAdmin)
 admin.site.register(VehicleDocument)
+admin.site.register(DailyChecklist)
+admin.site.register(WeeklyChecklist)
+admin.site.register(EquipmentChecklist)
 
