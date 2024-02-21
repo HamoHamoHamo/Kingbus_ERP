@@ -102,12 +102,6 @@ tbody {
     border-bottom: 0.1rem solid #D4D4D4;
 }
 
-tbody td:nth-child(3),
-tbody td:nth-child(13) {
-    color: #0069D9;
-    cursor: pointer;
-}
-
 td:nth-child(1) {
     width: 4%;
 }

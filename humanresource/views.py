@@ -43,7 +43,8 @@ def send_message(title, body, token, topic):
         notification=messaging.AndroidNotification(
             title=title,
             body=body,
-            sound='KingbusAlarmSound.caf'  # 알림 소리 지정
+            sound='kingbus.wav',  # 알림 소리 지정
+            channel_id='DefaultChannel',
         )
     )
 
@@ -61,10 +62,15 @@ def send_message(title, body, token, topic):
         )
     )
     message = messaging.Message(
-        android=android_config,
+        # android=android_config,
         apns=apns_config,
         token=token,
         topic=topic,
+        data = {
+            'title' : title,
+            'body' : body,
+            'sound' : 'kingbus.wav',  # 알림 소리 지정
+        }
     )
 
     response = messaging.send(message)
@@ -331,7 +337,7 @@ def member_edit(request):
             member.end_date = request.POST.get('end_date')
             member.leave_date = request.POST.get('leave_date')
             member.birthdate = calculate_birthdate_by_resident_number(member.resident_number1)
-            member.allowance_type = request.POST.get('allowance_type')
+            member.allowance_type = request.POST.get('allowance_type', '기사수당(현재)')
             member.save()
 
             #### 금액, 기사수당 수정 시 입력한 월 이후 배차들 금액, 기사수당 수정
@@ -364,6 +370,7 @@ def member_edit(request):
                 
             return redirect(request.META.get('HTTP_REFERER', 'redirect_if_referer_not_found'))
         else:
+            print(member_form.errors)
             return HttpResponseBadRequest()
     else:
         return HttpResponseNotAllowed(['post'])
