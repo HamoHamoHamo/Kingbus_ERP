@@ -70,6 +70,40 @@
     <div class="scrolling_table-list_body">
         <table class="table-list">
             <tbody>
+                <tr class="table-list_body-tr salaryList cursor">
+                    <td class="table-list_body-tr_td">
+                        <input tabindex="100" type="checkbox" class="amountCheck" name="member_id" value="{{member.id}}">
+                    </td>
+                    <td class="table-list_body-tr_td">0</td>
+                    <td class="table-list_body-tr_td {% if salary.salary_checked %} bluelink {% endif %}">
+                        이주성</td>
+                    <td class="table-list_body-tr_td">정규직</td>
+                    <td class="table-list_body-tr_td">2024년 3월 13일</td>
+                    <!-- JSCode -->
+                    <td class="table-list_body-tr_td">
+                        <input type="text" class="amountInput length100" value="{{salary.attendance}}"> <!-- 출근수당 -->
+                    </td>
+                    <td class="table-list_body-tr_td">
+                        <input type="text" class="amountInput length100" value="{{salary.leave}}"> <!-- 퇴근수당 -->
+                    </td>
+                    <td class="table-list_body-tr_td">
+                        <input type="text" class="amountInput length100" value="{{salary.order}}"> <!-- 일반수당 -->
+                    </td>
+                    <td class="table-list_body-tr_td">
+                        <input type="text" class="amountInput length100" value="{{salary.additional}}">
+                        <!-- 근로추가수당(additionalForWork) -->
+                    </td>
+                    <td class="table-list_body-tr_td">
+                        <input type="text" class="amountInput length100" value="{{salary.additional}}"> <!-- 추가수당 -->
+                    </td>
+                    <td class="table-list_body-tr_td">
+                        <input type="text" class="amountInput length100" value="{{salary.performance_allowance}}"> <!-- 성과급 -->
+                    </td>
+                    <td class="table-list_body-tr_td">
+                        <input type="text" class="amountInput length100" value="{{salary.deduction}}"> <!-- 공제 -->
+                    </td>
+                    <td class="table-list_body-tr_td addComma">{{salary.total}}</td> <!-- 합계 -->
+                </tr>
                 {% for member in member_list %}
                 {% with salary=salary_list|index:forloop.counter0 %}
                 <tr class="table-list_body-tr salaryList cursor">
