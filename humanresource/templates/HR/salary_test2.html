@@ -9,7 +9,7 @@
 
 {% block content-header %}
 <div class="HeaderTitle">
-    정규직 현재
+    정규직 변경
 </div>
 {% endblock %}
 
@@ -50,15 +50,17 @@
                     <td class="table-list_head-tr_td">이름</td>
                     <td class="table-list_head-tr_td">구분</td>
                     <td class="table-list_head-tr_td">입사일자</td>
-                    <td class="table-list_head-tr_td">기본급</td>
+                    <!-- <td class="table-list_head-tr_td">기본급</td>
                     <td class="table-list_head-tr_td">근속수당</td>
                     <td class="table-list_head-tr_td">연차수당</td>
                     <td class="table-list_head-tr_td">성과급</td>
-                    <td class="table-list_head-tr_td">식대</td>
+                    <td class="table-list_head-tr_td">식대</td> -->
                     <td class="table-list_head-tr_td">출근수당</td>
                     <td class="table-list_head-tr_td">퇴근수당</td>
                     <td class="table-list_head-tr_td">일반수당</td>
+                    <td class="table-list_head-tr_td">근로추가수당</td>
                     <td class="table-list_head-tr_td">추가수당</td>
+                    <td class="table-list_head-tr_td">성과급</td>
                     <td class="table-list_head-tr_td">공제</td>
                     <td class="table-list_head-tr_td">합계</td>
                 </tr>
@@ -85,27 +87,29 @@
                         {% else %}({{year_list|index:forloop.counter0|slice:'1:'}}개월)
                         {% endif %}
                     </td>
+                    <!-- JSCode -->
                     <td class="table-list_body-tr_td">
-                        <input type="text" class="amountInput length100" value="{{salary.base}}">
+                        <input type="text" class="amountInput length100" value="{{salary.attendance}}"> <!-- 출근수당 -->
                     </td>
                     <td class="table-list_body-tr_td">
-                        <input type="text" class="amountInput length100" value="{{salary.service_allowance}}">
+                        <input type="text" class="amountInput length100" value="{{salary.leave}}"> <!-- 퇴근수당 -->
                     </td>
                     <td class="table-list_body-tr_td">
-                        <input type="text" class="amountInput length100" value="{{salary.annual_allowance}}">
+                        <input type="text" class="amountInput length100" value="{{salary.order}}"> <!-- 일반수당 -->
                     </td>
                     <td class="table-list_body-tr_td">
-                        <input type="text" class="amountInput length100" value="{{salary.performance_allowance}}">
+                        <input type="text" class="amountInput length100" value="{{salary.additional}}"> <!-- 근로추가수당(additionalForWork) -->
                     </td>
                     <td class="table-list_body-tr_td">
-                        <input type="text" class="amountInput length100" value="{{salary.meal}}">
+                        <input type="text" class="amountInput length100" value="{{salary.additional}}"> <!-- 추가수당 -->
                     </td>
-                    <td class="table-list_body-tr_td addComma">{{salary.attendance}}</td>
-                    <td class="table-list_body-tr_td addComma">{{salary.leave}}</td>
-                    <td class="table-list_body-tr_td addComma">{{salary.order}}</td>
-                    <td class="table-list_body-tr_td addComma">{{salary.additional}}</td>
-                    <td class="table-list_body-tr_td addComma">{{salary.deduction}}</td>
-                    <td class="table-list_body-tr_td addComma">{{salary.total}}</td>
+                    <td class="table-list_body-tr_td">
+                        <input type="text" class="amountInput length100" value="{{salary.performance_allowance}}"> <!-- 성과급 -->
+                    </td>
+                    <td class="table-list_body-tr_td">
+                        <input type="text" class="amountInput length100" value="{{salary.deduction}}"> <!-- 공제 -->
+                    </td>
+                    <td class="table-list_body-tr_td addComma">{{salary.total}}</td> <!-- 합계 -->
                 </tr>
                 {% endwith %}
                 {% endfor %}
