@@ -110,6 +110,7 @@ class Salary(models.Model):
     order = models.CharField(verbose_name='일반주문요금', max_length=20, null=False)
     additional = models.CharField(verbose_name='추가요금', max_length=20, null=False, default=0)
     deduction = models.CharField(verbose_name='공제', max_length=20, null=False, default=0)
+    assignment = models.CharField(verbose_name='업무', max_length=20, null=False, default=0)
     total = models.CharField(verbose_name='총금액', max_length=20, null=False)
     month = models.CharField(verbose_name='지급월', null=False, max_length=7)
     payment_date = models.CharField(verbose_name='급여지급일', null=False, max_length=10, blank=True)
@@ -153,4 +154,45 @@ class SalaryChecked(models.Model):
     creator = models.ForeignKey(Member, on_delete=models.SET_NULL, related_name="salary_checked_user", null=True)
     pub_date = models.DateTimeField(verbose_name='작성시간', auto_now_add=True, null=False)
     updated_at = models.DateTimeField(auto_now=True, verbose_name='수정시간')
+
+class AccidentCase(models.Model):
+    def get_file_path():
     
+        ymd_path = datetime.now().strftime('%Y/%m/%d')
+        uuid_name = uuid4().hex
+        return '/'.join(['humanresource/accident', ymd_path, uuid_name])
+    
+    member = models.ForeignKey(Member, on_delete=models.SET_NULL, related_name="accident_member", null=True)
+    date = models.CharField(verbose_name="사고날짜", max_length=100, null=False, blank=True)
+    pub_date = models.DateTimeField(auto_now_add=True, verbose_name='작성시간')
+    updated_at = models.DateTimeField(auto_now=True, verbose_name='수정시간')
+    creator = models.ForeignKey(Member, on_delete=models.SET_NULL, related_name="accident_creator", db_column="creator_id", null=True)
+    
+    #세부사항부분
+    carnum = models.ForeignKey('vehicle.Vehicle', verbose_name='차량 번호', on_delete=models.SET_NULL, related_name="accident_details_car_id", null=True)
+    route_name = models.CharField(verbose_name='노선명', max_length=100, null=False, blank=True)
+    kind_of_accident = models.CharField(verbose_name='자차/대물', max_length=100, null=False, blank=True)
+    damaged_car = models.CharField(verbose_name='피해 차량', max_length=100, null=False, blank=True)
+    accident_location = models.CharField(verbose_name='사고 발생 지점', max_length=100, null=False, blank=True)
+    accident_time_occur = models.CharField(verbose_name='사고 발생 시간', max_length=100, null=False, blank=True) 
+    accident_time_solve = models.CharField(verbose_name='운행 재개 시간', max_length=100, null=False, blank=True)
+    vehicle_speed = models.CharField(verbose_name='사고당시 차량 속도', max_length=100, null=False, blank=True)
+    passenger_count = models.CharField(verbose_name='탑승인원', max_length=100, null=False, blank=True)
+    accident_description = models.TextField(verbose_name='사고 개요', null=False, blank=True)
+
+    #파일부분
+    picture_our_vehicle = models.TextField(verbose_name='내 차량', null=False, blank=True)
+    picture_thier_vehicle = models.TextField(verbose_name='상대방 차량', null=False, blank=True)
+    picture_all_vehicles = models.TextField(verbose_name='내 차량/상대방 차량', null=False, blank=True)
+    picture_from_far = models.TextField(verbose_name='먼 사진', null=False, blank=True)
+    picture_from_close = models.TextField(verbose_name='가까운 사진', null=False, blank=True)
+
+    picture_passenger_list = models.TextField(verbose_name='승객 명단 파일', null=False, blank=True)
+    
+    accident_report = models.TextField(verbose_name='사고 보고서', null=False, blank=True)
+    agreement = models.TextField(verbose_name='합의서', null=False, blank=True)
+    execution_confirm_oath = models.TextField(verbose_name='이행확약서', null=False, blank=True)
+    vehicle_accident_reception = models.TextField(verbose_name='자동차 공제 사고 접수서', null=False, blank=True)
+    vehicle_maintenence_bill = models.TextField(verbose_name='자동차 점검 정비 명세서', null=False, blank=True)
+    deducted_payment_bill = models.TextField(verbose_name='공제금 지급청구서', null=False, blank=True)
+
