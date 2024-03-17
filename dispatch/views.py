@@ -16,6 +16,7 @@ from django.views import generic
 
 from .forms import OrderForm, ConnectForm, RegularlyDataForm
 from .models import DispatchRegularlyRouteKnow, DispatchCheck, DispatchRegularlyData, DispatchRegularlyWaypoint, Schedule, DispatchOrderConnect, DispatchOrder, DispatchRegularly, RegularlyGroup, DispatchRegularlyConnect, DispatchOrderWaypoint, ConnectRefusal, MorningChecklist, EveningChecklist, DrivingHistory, BusinessEntity
+from assignment.models import AssignmentConnect
 from accounting.models import Collect, TotalPrice
 from crudmember.models import Category, Client
 from humanresource.models import Member, Salary, Team
@@ -589,7 +590,7 @@ class RegularlyDispatchList(generic.ListView):
 
             if dispatch.use == '사용':
                 dispatch_list.append(dispatch)
-        print("TEST", len(dispatch_list))
+        # print("TEST", len(dispatch_list))
         return dispatch_list
 
 
@@ -664,39 +665,51 @@ class RegularlyDispatchList(generic.ListView):
         for outsourcing in outsourcing_list:
             context['outsourcing_dict'][outsourcing[0]] = outsourcing[1]
 
-        r_connect_list = DispatchRegularlyConnect.objects.select_related('regularly_id').exclude(departure_date__gt=f'{date} 24:00').exclude(arrival_date__lt=f'{date} 00:00')
+        r_connect_list = list(DispatchRegularlyConnect.objects.select_related('regularly_id').exclude(departure_date__gt=f'{date} 24:00').exclude(arrival_date__lt=f'{date} 00:00').values('departure_date', 'arrival_date', 'bus_id__id', 'bus_id__vehicle_num', 'driver_id__id', 'driver_id__name', 'outsourcing', 'regularly_id__work_type', 'regularly_id__departure', 'regularly_id__arrival'))
+        # r_connect_list = DispatchRegularlyConnect.objects.select_related('regularly_id').exclude(departure_date__gt=f'{date} 24:00').exclude(arrival_date__lt=f'{date} 00:00')
         dispatch_list = []
         for rc in r_connect_list:
-            dispatch = rc.regularly_id
             data = {
-                'work_type': dispatch.work_type,
-                'departure_date': rc.departure_date,
-                'arrival_date': rc.arrival_date,
-                'departure': dispatch.departure,
-                'arrival': dispatch.arrival,
-                # 'week': rc.week,
-                'bus_id': rc.bus_id.id,
-                'bus_num': rc.bus_id.vehicle_num,
-                'driver_id': rc.driver_id.id,
-                'driver_name': rc.driver_id.name,
-                'outsourcing': rc.outsourcing,
+                'work_type': rc['regularly_id__work_type'],
+                'departure_date': rc['departure_date'],
+                'arrival_date': rc['arrival_date'],
+                'departure': rc['regularly_id__departure'],
+                'arrival': rc['regularly_id__arrival'],
+                'bus_id': rc['bus_id__id'],
+                'bus_num': rc['bus_id__vehicle_num'],
+                'driver_id': rc['driver_id__id'],
+                'driver_name': rc['driver_id__name'],
+                'outsourcing': rc['outsourcing'],
             }
             dispatch_list.append(data)
-        connect_list = DispatchOrderConnect.objects.select_related('order_id').exclude(departure_date__gt=f'{date} 24:00').exclude(arrival_date__lt=f'{date} 00:00')
+        connect_list = list(DispatchOrderConnect.objects.select_related('order_id').exclude(departure_date__gt=f'{date} 24:00').exclude(arrival_date__lt=f'{date} 00:00').values('departure_date', 'arrival_date', 'bus_id__id', 'bus_id__vehicle_num', 'driver_id__id', 'driver_id__name', 'outsourcing', 'order_id__departure', 'order_id__arrival'))
         for cc in connect_list:
-            dispatch = cc.order_id
             data = {
                 'work_type': '일반',
-                'departure_date': cc.departure_date,
-                'arrival_date': cc.arrival_date,
-                'departure': dispatch.departure,
-                'arrival': dispatch.arrival,
-                # 'week': cc.week,
-                'bus_id': cc.bus_id.id,
-                'bus_num': cc.bus_id.vehicle_num,
-                'driver_id': cc.driver_id.id,
-                'driver_name': cc.driver_id.name,
-                'outsourcing': cc.outsourcing,
+                'departure_date': cc['departure_date'],
+                'arrival_date': cc['arrival_date'],
+                'departure': cc['order_id__departure'],
+                'arrival': cc['order_id__arrival'],
+                'bus_id': cc['bus_id__id'],
+                'bus_num': cc['bus_id__vehicle_num'],
+                'driver_id': cc['driver_id__id'],
+                'driver_name': cc['driver_id__name'],
+                'outsourcing': cc['outsourcing'],
+            }
+            dispatch_list.append(data)
+
+        a_connect_list = list(AssignmentConnect.objects.select_related('assignment_id', 'member_id', 'bus_id').exclude(start_date__gt=f'{date} 24:00').exclude(end_date__lt=f'{date} 00:00').values('start_date', 'end_date', 'bus_id__id', 'bus_id__vehicle_num', 'member_id__id', 'member_id__name', 'assignment_id__assignment'))
+        for cc in a_connect_list:
+            data = {
+                'work_type': '업무',
+                'departure_date': cc['start_date'],
+                'arrival_date': cc['end_date'],
+                'bus_id': cc['bus_id__id'] if cc['bus_id__id'] else "",
+                'bus_num': cc['bus_id__vehicle_num'] if cc['bus_id__vehicle_num'] else "",
+                'driver_id': cc['member_id__id'],
+                'driver_name': cc['member_id__name'],
+                'outsourcing': 'n',
+                'assignment': cc['assignment_id__assignment']
             }
             dispatch_list.append(data)
 
@@ -799,9 +812,7 @@ def regularly_connect_create(request):
             send_message('배차를 확인해 주세요', f'{order.route}\n{r_connect.departure_date} ~ {r_connect.arrival_date}', driver.token, None)
         except Exception as e:
             print(e)
-        group = request.POST.get('group')
-        date = request.POST.get('date')
-        return redirect(reverse('dispatch:regularly') + f'?id={order.regularly_id.id}&group={group}&date={date}')
+        return redirect(request.META.get('HTTP_REFERER', 'redirect_if_referer_not_found'))
     else:
         return HttpResponseNotAllowed(['post'])
 
@@ -1051,6 +1062,8 @@ def regularly_order_create(request):
             order.outsourcing_allowance = outsourcing_allowance
             order.departure_time = f'{departure_time1}:{departure_time2}'
             order.arrival_time = f'{arrival_time1}:{arrival_time2}'
+            if order.arrival_time < order.departure_time:
+                raise BadRequest('출발시간이 도착시간보다 늦습니다.')
             order.week = week
             order.creator = creator
             order.group = regularly_group
@@ -1218,8 +1231,8 @@ def regularly_order_edit(request):
             order.departure_time = f'{departure_time1}:{departure_time2}'
             order.arrival_time = f'{arrival_time1}:{arrival_time2}'
             if order.arrival_time < order.departure_time:
-                #raise BadRequest('출발일이 도착일보다 늦습니다.')
-                raise Http404
+                raise BadRequest('출발시간이 도착시간보다 늦습니다.')
+                # raise Http404
 
             order.price = price
             order.driver_allowance = driver_allowance
@@ -2126,61 +2139,77 @@ class OrderList(generic.ListView):
             context['outsourcing_dict'][outsourcing[0]] = outsourcing[1]
         #
         #출발일 ~ 도착일 범위로 한번만 돌면서 for문 안에서 현재 connect date 따라서 list에 appned
+        filter_date1 = date
         if detail_id:
-            r_connect_list = DispatchRegularlyConnect.objects.select_related('regularly_id').exclude(departure_date__gt=f'{date2} 24:00').exclude(arrival_date__lt=f'{date} 00:00')
+            filter_date2 = date2
         else:
-            r_connect_list = DispatchRegularlyConnect.objects.select_related('regularly_id').exclude(departure_date__gt=f'{date} 24:00').exclude(arrival_date__lt=f'{date} 00:00')
+            filter_date2 = date
+
+        r_connect_list = list(DispatchRegularlyConnect.objects.select_related('regularly_id').exclude(departure_date__gt=f'{filter_date2} 24:00').exclude(arrival_date__lt=f'{filter_date1} 00:00').values('departure_date', 'arrival_date', 'bus_id__id', 'bus_id__vehicle_num', 'driver_id__id', 'driver_id__name', 'outsourcing', 'regularly_id__work_type', 'regularly_id__departure', 'regularly_id__arrival'))
         dispatch_list = []
         dispatch_list2 = []
         dispatch_data_list = []
         for rc in r_connect_list:
-            dispatch = rc.regularly_id
             data = {
-                'work_type': dispatch.work_type,
-                'departure_date': rc.departure_date,
-                'arrival_date': rc.arrival_date,
-                'departure': dispatch.departure,
-                'arrival': dispatch.arrival,
-                # 'week': rc.week,
-                'bus_id': rc.bus_id.id,
-                'bus_num': rc.bus_id.vehicle_num,
-                'driver_id': rc.driver_id.id,
-                'driver_name': rc.driver_id.name,
-                'outsourcing': rc.outsourcing,
+                'work_type': rc['regularly_id__work_type'],
+                'departure_date': rc['departure_date'],
+                'arrival_date': rc['arrival_date'],
+                'departure': rc['regularly_id__departure'],
+                'arrival': rc['regularly_id__arrival'],
+                'bus_id': rc['bus_id__id'],
+                'bus_num': rc['bus_id__vehicle_num'],
+                'driver_id': rc['driver_id__id'],
+                'driver_name': rc['driver_id__name'],
+                'outsourcing': rc['outsourcing'],
             }
             if detail_id:
-                if context['detail'].departure_date[:10] in rc.arrival_date[:10]:
+                if context['detail'].departure_date[:10] in data['arrival_date'][:10]:
                     dispatch_list.append(data)
-                elif context['detail'].arrival_date[:10] in rc.departure_date[:10]:
+                elif context['detail'].arrival_date[:10] in data['departure_date'][:10]:
                     dispatch_list2.append(data)
                 
             dispatch_data_list.append(data)
                 
-                
-        if detail_id:
-            connect_list = DispatchOrderConnect.objects.select_related('order_id').exclude(departure_date__gt=f'{date2} 24:00').exclude(arrival_date__lt=f'{date} 00:00')    
-        else:
-            connect_list = DispatchOrderConnect.objects.select_related('order_id').exclude(departure_date__gt=f'{date} 24:00').exclude(arrival_date__lt=f'{date} 00:00')
-
+        
+        connect_list = list(DispatchOrderConnect.objects.select_related('order_id').exclude(departure_date__gt=f'{filter_date2} 24:00').exclude(arrival_date__lt=f'{filter_date1} 00:00').values('departure_date', 'arrival_date', 'bus_id__id', 'bus_id__vehicle_num', 'driver_id__id', 'driver_id__name', 'outsourcing', 'order_id__departure', 'order_id__arrival'))
         for cc in connect_list:
-            dispatch = cc.order_id
             data = {
                 'work_type': '일반',
-                'departure_date': cc.departure_date,
-                'arrival_date': cc.arrival_date,
-                'departure': dispatch.departure,
-                'arrival': dispatch.arrival,
-                # 'week': cc.week,
-                'bus_id': cc.bus_id.id,
-                'bus_num': cc.bus_id.vehicle_num,
-                'driver_id': cc.driver_id.id,
-                'driver_name': cc.driver_id.name,
-                'outsourcing': cc.outsourcing,
+                'departure_date': cc['departure_date'],
+                'arrival_date': cc['arrival_date'],
+                'departure': cc['order_id__departure'],
+                'arrival': cc['order_id__arrival'],
+                'bus_id': cc['bus_id__id'],
+                'bus_num': cc['bus_id__vehicle_num'],
+                'driver_id': cc['driver_id__id'],
+                'driver_name': cc['driver_id__name'],
+                'outsourcing': cc['outsourcing'],
             }
             if detail_id:
-                if context['detail'].departure_date[:10] in dispatch.arrival_date[:10]:
+                if context['detail'].departure_date[:10] in data['arrival_date'][:10]:
                     dispatch_list.append(data)
-                elif context['detail'].arrival_date[:10] in dispatch.departure_date[:10]:
+                elif context['detail'].arrival_date[:10] in data['departure_date'][:10]:
+                    dispatch_list2.append(data)
+            
+            dispatch_data_list.append(data)
+
+        a_connect_list = list(AssignmentConnect.objects.select_related('assignment_id', 'member_id', 'bus_id').exclude(start_date__gt=f'{filter_date2} 24:00').exclude(end_date__lt=f'{filter_date1} 00:00').values('start_date', 'end_date', 'bus_id__id', 'bus_id__vehicle_num', 'member_id__id', 'member_id__name', 'assignment_id__assignment'))
+        for cc in a_connect_list:
+            data = {
+                'work_type': '업무',
+                'departure_date': cc['start_date'],
+                'arrival_date': cc['end_date'],
+                'bus_id': cc['bus_id__id'] if cc['bus_id__id'] else "",
+                'bus_num': cc['bus_id__vehicle_num'] if cc['bus_id__vehicle_num'] else "",
+                'driver_id': cc['member_id__id'],
+                'driver_name': cc['member_id__name'],
+                'outsourcing': 'n',
+                'assignment': cc['assignment_id__assignment']
+            }
+            if detail_id:
+                if context['detail'].departure_date[:10] in data['arrival_date'][:10]:
+                    dispatch_list.append(data)
+                elif context['detail'].arrival_date[:10] in data['departure_date'][:10]:
                     dispatch_list2.append(data)
             
             dispatch_data_list.append(data)

@@ -1,4 +1,4 @@
-const sideNavControll = document.querySelectorAll(".nav1BoxMenuHaveDepth2 svg")
+const sideNavControll = document.querySelectorAll(".nav1BoxMenuHaveDepth2 .sideMenuArrow")
 const nav1BoxMenuHaveDepth2 = document.querySelectorAll(".nav1BoxMenuHaveDepth2")
 const sideMenuNav2Box = document.querySelectorAll(".sideMenuNav2Box")
 const sideMenuNav2 = document.querySelectorAll(".sideMenuNav2")
@@ -38,10 +38,14 @@ function openSideNav() {
         sideMenuNav2[idx].style.height = "33.4rem";
         break;
       case 2:
+        sideMenuNav2Box[idx].style.height = "10.4rem";
+        sideMenuNav2[idx].style.height = "8.4rem";
+        break;
+      case 3:
         sideMenuNav2Box[idx].style.height = "14.4rem";
         sideMenuNav2[idx].style.height = "12.4rem";
         break;
-      case 3:
+      case 4:
         sideMenuNav2Box[idx].style.height = "20rem";
         sideMenuNav2[idx].style.height = "18rem";
         break;
@@ -53,15 +57,15 @@ function openSideNav() {
       //   sideMenuNav2Box[idx].style.height = "10.4rem";
       //   sideMenuNav2[idx].style.height = "8.4rem";
       //   break;
-      case 4:
+      case 5:
         sideMenuNav2Box[idx].style.height = "23rem";
         sideMenuNav2[idx].style.height = "21rem";
         break;
-      case 5:
+      case 6:
         sideMenuNav2Box[idx].style.height = "10.4rem";
         sideMenuNav2[idx].style.height = "8.4rem";
         break;
-      case 6:
+      case 7:
         sideMenuNav2Box[idx].style.height = "10.4rem";
         sideMenuNav2[idx].style.height = "8.4rem";
         break;

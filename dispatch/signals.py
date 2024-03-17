@@ -13,17 +13,6 @@ from humanresource.views import new_salary
 import re
 import math
 
-
-@receiver(post_save, sender=DispatchRegularlyData)
-def save_regularly(sender, instance, created, **kwargs):
-    if created:
-        instance.num1 = re.sub(r'[^0-9]', '', instance.number1)
-        instance.num2 = re.sub(r'[^0-9]', '', instance.number2)
-        if instance.num1 == '': instance.num1 = 0
-        if instance.num2 == '': instance.num2 = 0
-        instance.save()
-
-##############
 @receiver(post_save, sender=DispatchOrder)
 def save_order(sender, instance, created, **kwargs):
     if instance.VAT == 'y':

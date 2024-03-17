@@ -63,47 +63,53 @@ function regularlyDispatch() {
         }
 
         if (rangeCounter == rangeBeforeArr.length + rangeAfterArr.length) {
-            const businput = document.querySelector(".selectRoute input[type=text]")
             const driverSelect = document.querySelector(".driverSelect")
-            const busIdHidden = document.querySelector(".RouteList input[name=bus]")
-
-            busNum = this.innerText.split("(")[0]
-            busId = this.classList[1]
-            if(this.innerText.length > 4){
-                DriverName = this.innerText.split("(")[1].replace(/\)/g, "")
-            }else{
-                DriverName = ""
-            }
-            if(this.classList[2] === "d"){
-                DriverId = ""
-            }else{
-                DriverId = this.classList[2].split("d")[1]
-            }
-
-            businput.value = busNum;
-            busIdHidden.value = busId;
-
-
-            let departureInput = `${driveTimeSh.value}` + `${driveTimeSM.value}`
-            let arrivalInput = `${driveTimeEh.value}` + `${driveTimeEM.value}`
-            let arrivalDate = ""
-            let departureDate = ""
             let makeSelect = true
-
-            for (i = 0; i < data.length; i++) {
-                departureDate = data[i].departure_date.split(" ")[1].replace(/\:/g, "")
-                arrivalDate = data[i].arrival_date.split(" ")[1].replace(/\:/g, "")
+            if (useVehicle) {
+                const businput = document.querySelector(".selectRoute input[type=text]")
+                const busIdHidden = document.querySelector(".RouteList input[name=bus]")
+    
+                busNum = this.innerText.split("(")[0]
+                busId = this.classList[1]
                 if(this.innerText.length > 4){
-                    if (this.innerText.split("(")[1].replace(/\)/g, "") == data[i].driver_name) {
-                        if (arrivalInput >= departureDate && departureInput <= arrivalDate) {
-                            console.log(arrivalInput, departureDate, departureInput, arrivalDate)
-                            return makeSelect = false
+                    DriverName = this.innerText.split("(")[1].replace(/\)/g, "")
+                }else{
+                    DriverName = ""
+                }
+                if(this.classList[2] === "d"){
+                    DriverId = ""
+                }else{
+                    DriverId = this.classList[2].split("d")[1]
+                }
+    
+                businput.value = busNum;
+                busIdHidden.value = busId;
+    
+    
+                let departureInput = `${driveTimeSh.value}` + `${driveTimeSM.value}`
+                let arrivalInput = `${driveTimeEh.value}` + `${driveTimeEM.value}`
+                let arrivalDate = ""
+                let departureDate = ""
+    
+                for (i = 0; i < data.length; i++) {
+                    departureDate = data[i].departure_date.split(" ")[1].replace(/\:/g, "")
+                    arrivalDate = data[i].arrival_date.split(" ")[1].replace(/\:/g, "")
+                    if(this.innerText.length > 4){
+                        if (this.innerText.split("(")[1].replace(/\)/g, "") == data[i].driver_name) {
+                            if (arrivalInput >= departureDate && departureInput <= arrivalDate) {
+                                return makeSelect = false
+                            }
                         }
                     }
-                }
-            };
-
+                };
+    
+            } else {
+                DriverName = this.innerText
+                DriverId = this.classList[1]
+            }
+            console.log("TESTTTT")
             if (makeSelect) {
+                console.log("TESTTTT222", driverSelect)
                 driverSelect.innerText = ""
                 const driverOption = document.createElement('option');
                 driverOption.setAttribute("value", `${DriverId}`);

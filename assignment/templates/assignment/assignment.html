@@ -1,0 +1,474 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load dispatch_custom_tags %}
+
+{% block head %}
+<meta http-equiv="Cache-Control" content="private, no-cache, no-store, max-age=0, must-revalidate">
+<link rel="stylesheet" href="{% static 'css/dispatch/dispatchBase.css' %}" type="text/css" />
+<link rel="stylesheet" href="{% static 'css/dispatch/regularly.css' %}" type="text/css" />
+<link rel="stylesheet" href="{% static 'css/assignment/assignment.css' %}" type="text/css" />
+{% endblock %}
+
+{% block content-header %}
+<div class="HeaderTitle">
+  업무배정
+</div>
+{% endblock %}
+
+
+{% block content %}
+
+<div class="regularlyLayout">
+
+  <div class="sideLayout">
+
+    <div class="groupList">
+      <div class="groupListHead">
+        <span class="groupListTitle">그룹목록</span>
+        <div class="groupListHeadBtnBox">
+          <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 26 26">
+            <g id="그룹_1650" data-name="그룹 1650" transform="translate(-21005 -13821)">
+              <rect id="사각형_11727" data-name="사각형 11727" width="26" height="26" rx="6"
+                transform="translate(21005 13821)" fill="#fff" />
+              <g id="그룹_1648" data-name="그룹 1648" transform="translate(12.639 64.5)">
+                <path id="패스_331" data-name="패스 331" d="M-4.053,0l-7.086,5.457,7.086,5.358"
+                  transform="translate(21008.5 13764.5)" fill="none" stroke="#444" stroke-linecap="round"
+                  stroke-linejoin="round" stroke-width="2" />
+                <path id="패스_332" data-name="패스 332" d="M0,0V10.814" transform="translate(21009.307 13764.5)"
+                  fill="none" stroke="#444" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" />
+                <path id="패스_333" data-name="패스 333" d="M0,0V10.814" transform="translate(21013.123 13764.5)"
+                  fill="none" stroke="#444" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" />
+              </g>
+            </g>
+          </svg>
+          <svg xmlns="http://www.w3.org/2000/svg" width="56" height="26" viewBox="0 0 56 26">
+            <g id="그룹_1632" data-name="그룹 1632" transform="translate(-20476 -13790)">
+              <rect id="사각형_11727" data-name="사각형 11727" width="56" height="26" rx="6"
+                transform="translate(20476 13790)" fill="#fff" />
+              <text id="스케줄" transform="translate(20504 13809)" fill="#444" font-size="14"
+                font-family="NotoSansCJKkr-Regular, Noto Sans CJK KR">
+                <tspan x="-19.32" y="0">스케줄</tspan>
+              </text>
+            </g>
+          </svg>
+        </div>
+      </div>
+      <div class="groupListBody">
+        {% for group in group_list %}
+        <div class="groupListItemBox">
+          <div class="groupListItem">
+            <div class="groupOpen">
+              <svg xmlns="http://www.w3.org/2000/svg" width="22" height="16.5" viewBox="0 0 22 16.5">
+                <path id="Icon_awesome-folder" data-name="Icon awesome-folder"
+                  d="M19.938,7.25h-8.25L8.938,4.5H2.063A2.062,2.062,0,0,0,0,6.563V18.938A2.062,2.062,0,0,0,2.063,21H19.938A2.062,2.062,0,0,0,22,18.938V9.313A2.062,2.062,0,0,0,19.938,7.25Z"
+                  transform="translate(0 -4.5)" fill="#444" />
+              </svg>
+            </div>
+            <div class="groupName" onclick="location.href='{% url 'assignment:assignment' %}?group={{group.id}}&date={{date}}'">{{group.name}}</div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+
+    <div class="schedule">
+
+      <!-- 스케줄-헤더 -->
+      <div class="scheduleHeaderArea">
+        <div class="scheduleHeader">2022.09.16 (화)</div>
+        <div class="scheduleHeaderBtnBox">
+          <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 26 26">
+            <g id="그룹_1650" data-name="그룹 1650" transform="translate(-21005 -13821)">
+              <rect id="사각형_11727" data-name="사각형 11727" width="26" height="26" rx="6"
+                transform="translate(21005 13821)" fill="#fff" />
+              <g id="그룹_1648" data-name="그룹 1648" transform="translate(12.639 64.5)">
+                <path id="패스_331" data-name="패스 331" d="M-4.053,0l-7.086,5.457,7.086,5.358"
+                  transform="translate(21008.5 13764.5)" fill="none" stroke="#444" stroke-linecap="round"
+                  stroke-linejoin="round" stroke-width="2" />
+                <path id="패스_332" data-name="패스 332" d="M0,0V10.814" transform="translate(21009.307 13764.5)"
+                  fill="none" stroke="#444" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" />
+                <path id="패스_333" data-name="패스 333" d="M0,0V10.814" transform="translate(21013.123 13764.5)"
+                  fill="none" stroke="#444" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" />
+              </g>
+            </g>
+          </svg>
+          <svg xmlns="http://www.w3.org/2000/svg" width="56" height="26" viewBox="0 0 56 26">
+            <g id="그룹_1632" data-name="그룹 1632" transform="translate(-20476 -13790)">
+              <rect id="사각형_11727" data-name="사각형 11727" width="56" height="26" rx="6"
+                transform="translate(20476 13790)" fill="#fff" />
+              <text id="그룹" transform="translate(20504 13809)" fill="#444" font-size="14"
+                font-family="NotoSansCJKkr-Regular, Noto Sans CJK KR">
+                <tspan x="-12.88" y="0">그룹</tspan>
+              </text>
+            </g>
+          </svg>
+        </div>
+      </div>
+
+      <!-- 스케줄-바디 -->
+      <div class="scheduleBodyArea">
+        <div class="hourMarker">
+          <div>0</div>
+          <div>4</div>
+          <div>8</div>
+          <div>12</div>
+          <div>16</div>
+          <div>20</div>
+          <div>24</div>
+        </div>
+        <div class="scheduleTableScroll">
+          <div class="scheduleTable">
+            {% if detail and detail.use_vehicle == '사용' %}
+            {% for v in vehicles %}
+            <div class="scheduleTableTr">
+              <div class="hourTd"></div>
+              <div class="hourTd"></div>
+              <div class="hourTd"></div>
+              <div class="hourTd"></div>
+              <div class="hourTd"></div>
+              <div class="hourTd"></div>
+              <div class="driverTd {{v.id}} d{{v.driver.id}}" title="{{v.vehicle_num0}} {{v.vehicle_num}} ({{v.model_year}})">
+                {{v.vehicle_num}} {% if v.driver_name %}({{v.driver_name}}){% endif %}</div>
+            </div>
+            {% endfor %}
+            {% else %}
+            {% for m in members %}
+            <div class="scheduleTableTr">
+              <div class="hourTd"></div>
+              <div class="hourTd"></div>
+              <div class="hourTd"></div>
+              <div class="hourTd"></div>
+              <div class="hourTd"></div>
+              <div class="hourTd"></div>
+              <div class="driverTd {{m.id}}" title="{{m.role}}">
+                {{m.name}}
+              </div>
+            </div>
+            {% endfor %}
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="sideLayoutOpenBox">
+      <div class="scheduleOpenArea">
+        <svg xmlns="http://www.w3.org/2000/svg" width="46" height="46" viewBox="0 0 46 46">
+          <g id="그룹_1651" data-name="그룹 1651" transform="translate(-20473 -13790)">
+            <g id="그룹_1631" data-name="그룹 1631" transform="translate(-3)">
+              <rect id="사각형_11727" data-name="사각형 11727" width="46" height="46" rx="10"
+                transform="translate(20476 13790)" fill="#444" />
+              <text id="스케줄" transform="translate(20499 13812.877)" fill="#fff" font-size="14"
+                font-family="NotoSansCJKkr-Regular, Noto Sans CJK KR">
+                <tspan x="-19.32" y="0">스케줄</tspan>
+              </text>
+              <path id="Icon_ionic-ios-arrow-back" data-name="Icon ionic-ios-arrow-back"
+                d="M15.442,11.44,11.471,7.472a.75.75,0,0,1,1.062-1.059l4.5,4.5a.749.749,0,0,1,.022,1.034L12.536,16.47a.75.75,0,0,1-1.062-1.059Z"
+                transform="translate(20484.75 13812.436)" fill="#fff" />
+            </g>
+          </g>
+        </svg>
+      </div>
+      <div class="GroupOpenArea">
+        <svg xmlns="http://www.w3.org/2000/svg" width="46" height="46" viewBox="0 0 46 46">
+          <g id="그룹_1630" data-name="그룹 1630" transform="translate(-20473 -14312)">
+            <rect id="사각형_11728" data-name="사각형 11728" width="46" height="46" rx="10" transform="translate(20473 14312)"
+              fill="#444" />
+            <text id="그룹" transform="translate(20496 14334.877)" fill="#fff" font-size="14"
+              font-family="NotoSansCJKkr-Regular, Noto Sans CJK KR">
+              <tspan x="-12.88" y="0">그룹</tspan>
+            </text>
+            <path id="Icon_ionic-ios-arrow-back" data-name="Icon ionic-ios-arrow-back"
+              d="M15.442,11.44,11.471,7.472a.75.75,0,0,1,1.062-1.059l4.5,4.5a.749.749,0,0,1,.022,1.034L12.536,16.47a.75.75,0,0,1-1.062-1.059Z"
+              transform="translate(20481.75 14334.436)" fill="#fff" />
+          </g>
+        </svg>
+      </div>
+    </div>
+
+  </div>
+
+
+  <div class="mainLayout">
+
+    <div class="toolbar">
+      <div class="toolbarLeft">
+        <input type="text" placeholder="노선명" value="{{search}}" name="search" class="searchInput">
+        <input autocomplete="off" type="date" name="date" value="{{date}}" class="searchDate" max="9999-12-31">
+        <div class="dateControllBtnBox">
+          <div class="dateToday">오늘</div>
+          <div class="dateControllBtn">
+            <svg xmlns="http://www.w3.org/2000/svg" width="8.6" height="13" viewBox="0 0 8.6 13">
+              <path id="Icon_ionic-ios-arrow-back" data-name="Icon ionic-ios-arrow-back"
+                d="M13.843,12.692l5.692-4.915a.839.839,0,0,0,0-1.312,1.2,1.2,0,0,0-1.523,0l-6.449,5.569a.839.839,0,0,0-.031,1.281l6.475,5.608a1.205,1.205,0,0,0,1.523,0,.839.839,0,0,0,0-1.312Z"
+                transform="translate(-11.25 -6.194)" fill="#fff" />
+            </svg>
+          </div>
+          <div class="dateControllBtn">
+            <svg xmlns="http://www.w3.org/2000/svg" width="8.6" height="13" viewBox="0 0 8.6 13">
+              <path id="Icon_ionic-ios-arrow-back" data-name="Icon ionic-ios-arrow-back"
+                d="M17.258,12.692,11.566,7.777a.839.839,0,0,1,0-1.312,1.2,1.2,0,0,1,1.523,0l6.448,5.569a.839.839,0,0,1,.031,1.281l-6.475,5.608a1.205,1.205,0,0,1-1.523,0,.839.839,0,0,1,0-1.312Z"
+                transform="translate(-11.25 -6.194)" fill="#fff" />
+            </svg>
+          </div>
+        </div>
+        <div class="btnModules searchBtn" onclick="dateSearch()">검색</div>
+      </div>
+      <div class="toolbarRight">
+      </div>
+    </div>
+
+
+    <form method="post" action="{% if detail %}{% url 'assignment:assignment_edit' %}{% else %}{% url 'assignment:assignment_create' %}{% endif %}" class="routeDataArea assignmentForm">
+      <div class="routeDataAreaCover"></div>
+      {% csrf_token %}
+      <input value="{{detail_data_id}}" name="id" type="hidden">
+      <table class="dispatcTable">
+        <colgroup>
+          <col style="width: 7%;">
+          <col style="width: 18%;">
+          <col style="width: 7%;">
+          <col style="width: 18%;">
+          <col style="width: 7%;">
+          <col style="width: 18%;">
+          <col style="width: 7%;">
+          <col style="width: 18%;">
+        </colgroup>
+        <tr>
+          <td class="tdTypeA">*그룹</td>
+          <td class="tdTypeC">
+              <select name="group" class="inputGroup inputSelect essential" tabindex="1">
+                  <option value=""></option>
+                  {% for g in group_list %}
+                  <option {% if group == g %} selected {% endif %} value="{{g.id}}">{{g.name}}
+                  </option>
+                  {% endfor %}
+              </select>
+          </td>
+          <td class="tdTypeA">*사용여부</td>
+          <td class="tdTypeC">
+              <input {% if detail.use == '사용' %} checked {% elif not detail %} checked {% endif %} value="사용" type="radio" id="useRoute" name="use">
+              <label for="useRoute">사용</label>
+              <input {% if detail.use == '미사용' %} checked {% endif %} value="미사용" type="radio" id="unuseRoute" name="use">
+              <label for="unuseRoute">미사용</label>
+          </td>
+          <td class="tdTypeA">업무</td>
+          <td colspan="3" class="tdTypeB">
+            <input name="assignment" value="{{detail.assignment}}" type="text" class="inputText">
+          </td>
+        </tr>
+        <tr>
+          <td class="tdTypeA">업무시간</td>
+          <td colspan="3" class="tdTypeB">
+            <div class="routeTime">
+              <input autocomplete="off" value="{{detail.start_time|slice:':2'}}" name="start_time1" type="text" class="inputText">:
+              <input autocomplete="off" value="{{detail.start_time|slice:'3:'}}" name="start_time2" type="text" class="inputText">~
+              <input autocomplete="off" value="{{detail.end_time|slice:':2'}}" name="end_time1" type="text" class="inputText">:
+              <input autocomplete="off" value="{{detail.end_time|slice:'3:'}}" name="end_time2" type="text" class="inputText">
+            </div>
+          </td>
+          <td class="tdTypeA">위치</td>
+          <td colspan="3" class="tdTypeB">
+            <input name="location" value="{{detail.location}}" type="text" class="inputText">
+          </td>
+        </tr>
+        <tr>
+          <td class="tdTypeA">순번</td>
+          <td colspan="3" class="tdTypeB">
+            <div class="routeNumber">
+              <input autocomplete="off" value="{{detail.number1}}" name="number1" type="text" class="inputText">-
+              <input autocomplete="off" value="{{detail.number2}}" name="number2" type="text" class="inputText">
+            </div>
+          </td>
+          <td class="tdTypeA">금액</td>
+          <td class="tdTypeC">
+            {% if detail %}
+            <div class="pricePopupArea amountComma">{{detail.price}}</div>
+            {% else %}
+            <input autocomplete="off" value="{{detail.price}}" name="price" type="text" class="inputText">
+            {% endif %}
+          </td>
+          <td class="tdTypeA">수당단가</td>
+          <td class="tdTypeC">
+            {% if detail %}
+            <div class="pricePopupArea amountComma">{{detail.allowance}}</div>
+            {% else %}
+            <input autocomplete="off" value="{{detail.allowance}}" name="allowance" type="text" class="inputText">
+            {% endif %}
+          </td>
+        </tr>
+        <tr>
+          <td class="tdTypeA">참조사항</td>
+          <td colspan="3" class="tdTypeB">
+            <input autocomplete="off" value="{{detail.references}}" name="references" type="text" class="inputText">
+          </td>
+          <td class="tdTypeA">*차량사용</td>
+          <td colspan="3" class="tdTypeB">
+            <input {% if detail.use_vehicle == '사용' %} checked {% elif not detail %} checked {% endif %} value="사용" type="radio" id="useVehicle" name="use_vehicle">
+            <label for="useVehicle">사용</label>
+            <input {% if detail.use_vehicle == '미사용' %} checked {% endif %} value="미사용" type="radio" id="unuseVehicle" name="use_vehicle">
+            <label for="unuseVehicle">미사용</label>
+          </td>
+        </tr>
+      </table>
+    </form>
+
+
+    <form method="post" action="{% url 'assignment:connect_create' %}" class="RouteList">
+      {% csrf_token %}
+      <input autocomplete="off" value="{{detail.id}}" name="id" type="hidden">
+      <input autocomplete="off" value="{{date}}" name="date" type="hidden">
+      <div class="RouteListHead">
+        <div class="RouteListHeadBtnBox">
+          <div class="last">
+          </div>
+          <div class="Tools">
+            <div class="btnModules dispatchDeletBtn">삭제</div>
+            <div class="btnModules assignmentConnectSaveBtn backgroundBlue">저장</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="RouteListHBody">
+        <table>
+          <thead>
+            <tr>
+              <td>
+                <input autocomplete="off" type="checkbox" class="allChecker">
+              </td>
+              <td>순번</td>
+              <td>업무</td>
+              <td>시간</td>
+              <td>차량</td>
+              <td>직원</td>
+              <td>금액</td>
+              <td>수당단가</td>
+              <td>위치</td>
+            </tr>
+          </thead>
+        </table>
+      </div>
+      <div class="RouteListScrollBody">
+        <table>
+          <tbody class="RouteListTBody">
+            {% for assignment in assignment_list %}
+            {% with bus=group_bus_list|index:forloop.counter0 %}
+            {% with member=group_member_list|index:forloop.counter0 %}
+            <tr class="RouteListHBodyTr {{assignment.assignment_id.id}} {{forloop.counter}}">
+              <td>
+                <input autocomplete="off" value="{{assignment.id}}" name="check" type="checkbox">
+              </td>
+              <td onclick="moveToDetail(this)">{{assignment.number1}}{% if assignment.number2 %} - {{assignment.number2}}{% endif %}</td>
+              <td onclick="moveToDetail(this)">{{assignment.assignment}}</td>
+              <td onclick="moveToDetail(this)" class="connectTime">
+                {{assignment.start_time}} ~ {{assignment.end_time}}
+              </td>
+              <td {% if detail.id != assignment.id %}onclick="moveToDetail(this)"{% endif %}>
+                {% if detail.id == assignment.id and detail.use_vehicle == '사용' %}
+                  <input autocomplete="off" value="{{bus.vehicle_num}}" type="text" readonly>
+                  <input autocomplete="off" value="{{bus.id}}" name="bus" type="hidden">
+                {% else %}
+                  {{bus.vehicle_num}}
+                {% endif %}
+              </td>
+              <td {% if detail.id != assignment.id %}onclick="moveToDetail(this)"{% endif %}>
+                {% if detail.id == assignment.id %} 
+                  <select name="member" class="driverSelect">
+                    <option value="{{member.id}}">{{member.name}}</option>
+                  </select>
+                {% else %}
+                  {{member.name}}
+                {% endif %}
+              </td>
+              <td onclick="moveToDetail(this)">{{assignment.price}}</td>
+              <td onclick="moveToDetail(this)">{{assignment.allowance}}</td>
+              <td onclick="moveToDetail(this)">{{assignment.location}}</td>
+            </tr>
+            {% endwith %}
+            {% endwith %}
+            {% endfor %}
+            <tr class="blanckTr"></tr>
+          </tbody>
+        </table>
+      </div>
+
+    </form>
+
+  </div>
+
+</div>
+
+{% endblock %}
+
+{% block outSide %}
+    <div class="loadingBg">
+        <div class="loadingBox">
+            <img src="{% static 'images/loading.gif' %}" alt="일정 아이콘">
+            <span>배차를 불러오고 있습니다.</span>
+        </div>
+    </div>
+{% endblock %}
+
+
+{% block script %}
+<script>
+  {% autoescape off %}
+  const data = {{ dispatch_list }}
+  const driverObj = {{ driver_dict }}
+  console.log("DATA", data)
+  console.log("driverObj", driverObj)
+  const useVehicle = {% if detail.use_vehicle == '사용' %}true{% else %}false{% endif %}
+  {% endautoescape %}
+  const connectDeleteUrl = "{% url 'assignment:connect_delete' %}"
+
+</script>
+
+<script>
+
+  let parms = new URLSearchParams(location.search)
+  let targetLink = ""
+  let urlDate = "{{date}}"
+  let urlGroup = ""
+  if(parms.has("group")){
+    urlGroup = window.location.search.split("group=")[1].split("&")[0]
+  }
+
+  function opendispatchPrint(url){
+    if(window.location.search){
+    targetLink = `${url}?date=${urlDate}&group=${urlGroup}`
+    window.open(targetLink, `${urlDate}배차표`, "width=1640, height=640")
+    }else{
+      alert("그룹 또는 노선을 선택해 주세요")
+    }
+  }
+
+  function moveToDetail(e) {
+    console.log(e.parentNode.classList[1])
+    let id = e.parentNode.classList[1]
+    let loopCounter = e.parentNode.classList[2]
+    location.href=`{% url "assignment:assignment" %}?id=${id}&height=${loopCounter}&group={{group.id}}&date={{date}}`
+  }
+
+ </script>
+
+<script>
+
+  function dateSearch(){
+    const search = document.querySelector(".searchInput")
+    targetLink = `${window.location.href.split("?")[0]}?search=${search.value}&group=${urlGroup}&date=${searchDate.value}`
+    location.href = targetLink
+  }
+
+ </script>
+
+<script src="{% static 'js/dispatch/regularly/regularlyOnload.js' %}"></script>
+<script src="{% static 'js/dispatch/regularly/regularlyChangeLayout.js' %}"></script>
+<!-- <script src="{% static 'js/dispatch/regularly/regularlyHistory.js' %}"></script> -->
+<script src="{% static 'js/dispatch/regularly/regularlyDate.js' %}"></script>
+<script src="{% static 'js/dispatch/regularly/selectRoute.js' %}"></script>
+<script src="{% static 'js/dispatch/regularly/routeChecker.js' %}"></script>
+<script src="{% static 'js/assignment/fullSchedule.js' %}"></script>
+<script src="{% static 'js/assignment/assignmentConnect.js' %}"></script>
+<script src="{% static 'js/assignment/afterSelectRoute.js' %}"></script>
+<script src="{% static 'js/assignment/assignment.js' %}"></script>
+{% endblock %}

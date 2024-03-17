@@ -27,6 +27,10 @@ function afterSelectRoute() {
     driverSelect.addEventListener("click", addDriverOption);
 
     function addDriverOption() {
+        const connectTime = this.parentNode.parentNode.querySelector('.connectTime')
+        const departureDate = `${urlDate} ${connectTime.innerText.split(" ~ ")[0]}`
+        const arrivalDate = `${urlDate} ${connectTime.innerText.split(" ~ ")[1]}`
+
         if (businput.value !== "") {
             if (useSelect == true || useSelect !== this) {
 
@@ -55,16 +59,10 @@ function afterSelectRoute() {
                 let periodFilter = []
 
                 for (i = 0; i < data.length; i++) {
-                    let dataStartTime = ""
-                    let dataEndTime = ""
-                    if (data[i].outSoursing !== "y") {
-                        dataStartTime = data[i].departure_date.split(" ")[1].replace(/\:/g, "")
-                        dataEndTime = data[i].arrival_date.split(" ")[1].replace(/\:/g, "")
-                    } else {
-                        dataStartTime = data[i].departure_date.split(" ")[1].replace(/\:/g, "")
-                        dataEndTime = data[i].arrival_date.split(" ")[1].replace(/\:/g, "")
-                    }
-                    if (dataEndTime >= inputStartTime && dataStartTime <= inputEndTime) {
+                    let dataStartTime = data[i].departure_date
+                    let dataEndTime = data[i].arrival_date
+
+                    if (dataEndTime >= departureDate && dataStartTime <= arrivalDate) {
                         periodFilter.push(`${data[i].driver_id}`)
                     }
                 }

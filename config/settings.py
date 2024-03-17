@@ -54,6 +54,7 @@ INSTALLED_APPS = [
     'homepage',
     'document',
     'complaint',
+    'assignment',
     "debug_toolbar",
 ]
 

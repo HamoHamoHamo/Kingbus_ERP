@@ -467,7 +467,7 @@
 }
 
 #routeListsearch {
-  width: 36rem;
+  width: 30%;
   height: 2.6rem;
   margin: 0 2rem;
   border: 0.1rem solid #CDCDCE;
@@ -565,30 +565,29 @@ select[name=use]{
   width: 2%;
 }
 
-.RouteList table td:nth-child(2),
-.RouteList table td:nth-child(6) {
-  width: 4%;
-}
 
-.RouteList table td:nth-child(3) {
-  width: 8%;
+.RouteList table td:nth-child(6) {
+  width: 3%;
 }
 
 .RouteList table td:nth-child(4) {
   width: 12%;
 }
 
+.RouteList table td:nth-child(2),
+.RouteList table td:nth-child(3),
 .RouteList table td:nth-child(5),
 .RouteList table td:nth-child(7),
 .RouteList table td:nth-child(8),
 .RouteList table td:nth-child(9),
 .RouteList table td:nth-child(10),
-.RouteList table td:nth-child(11) {
+.RouteList table td:nth-child(11),
+.RouteList table td:nth-child(12) {
   width: 6%;
 }
 
-.RouteList table td:nth-child(12),
-.RouteList table td:nth-child(13) {
+.RouteList table td:nth-child(13),
+.RouteList table td:nth-child(14) {
   width: 17%;
 }
 
@@ -603,7 +602,7 @@ select[name=use]{
 }
 
 .RouteListHeader {
-  width: 170%;
+  width: 188%;
   height: 3.6rem;
 }
 
@@ -636,7 +635,7 @@ select[name=use]{
 }
 
 .RouteListBody {
-  width: 170%;
+  width: 188%;
   height: 100%;
 }
 

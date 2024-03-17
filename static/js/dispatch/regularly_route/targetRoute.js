@@ -5,6 +5,14 @@ const routeListsearch = document.querySelector("#routeListsearch")
 const amountComma = document.querySelectorAll(".amountComma")
 const pricePopupArea = document.querySelectorAll(".pricePopupArea")
 
+const comma = document.querySelectorAll(".comma")
+
+// 콤마 추가
+function addComma() {
+    for (i = 0; i < comma.length; i++) {
+        comma[i].innerText = comma[i].innerText.replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
+    }
+}
 
 window.onload = function () {
 
@@ -42,8 +50,5 @@ window.onload = function () {
                 return inputSelect.children[i].selected = true
             }
         };
-    }
-    if (parms.has("search")) {
-        routeListsearch.value = parms.get("search")
     }
 }

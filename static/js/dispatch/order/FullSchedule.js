@@ -79,23 +79,25 @@ function drawSchdule() {
                 }
 
                 // title 부여
-                if (dataStartDate == dataEndDate) {
+                if (dataList[i].work_type == '업무') {
+                    startWork.setAttribute("title", `${dataList[i].driver_name} || ${dataList[i].departure_date.split(" ")[1]}~${dataList[i].arrival_date.split(" ")[1]} || ${dataList[i].assignment}`);
+                } else if (dataStartDate == dataEndDate) {
                     startWork.setAttribute("title", `${dataList[i].driver_name} || ${dataList[i].departure_date.split(" ")[1]}~${dataList[i].arrival_date.split(" ")[1]} || ${dataList[i].departure.split("@")[0]}▶${dataList[i].arrival.split("@")[0]}`);
                 } else {
                     startWork.setAttribute("title", `${dataList[i].driver_name} || ${dataList[i].departure_date.split(" ")[0]} [${dataList[i].departure_date.split(" ")[1]}]~${dataList[i].arrival_date.split(" ")[0]} [${dataList[i].arrival_date.split(" ")[1]}] || ${dataList[i].departure.split("@")[0]}▶${dataList[i].arrival.split("@")[0]}`);
                 }
                 
-                // 배차확인 값 따라 backgroundColor 변경
-                if (dataList[i].connect_check == '')
-                {
-                    startWork.style.border = '1px solid black';
-                    startWork.style.backgroundColor = 'gray';
-                }
-                else if (dataList[i].connect_check == '0')
-                {
-                    startWork.style.border = '1px solid black';
-                    startWork.style.backgroundColor = 'red';
-                }
+                // // 배차확인 값 따라 backgroundColor 변경
+                // if (dataList[i].connect_check == '')
+                // {
+                //     startWork.style.border = '1px solid black';
+                //     startWork.style.backgroundColor = 'gray';
+                // }
+                // else if (dataList[i].connect_check == '0')
+                // {
+                //     startWork.style.border = '1px solid black';
+                //     startWork.style.backgroundColor = 'red';
+                // }
 
                 // 스케줄 생성
                 driverTd[j].parentNode.appendChild(startWork);

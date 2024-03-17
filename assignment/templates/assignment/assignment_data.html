@@ -6,11 +6,12 @@
 <meta http-equiv="Cache-Control" content="private, no-cache, no-store, max-age=0, must-revalidate">
 <link rel="stylesheet" href="{% static 'css/dispatch/dispatchBase.css' %}" type="text/css" />
 <link rel="stylesheet" href="{% static 'css/dispatch/regularlyRoute.css' %}" type="text/css" />
+<link rel="stylesheet" href="{% static 'css/assignment/assignment_data.css' %}" type="text/css" />
 {% endblock %}
 
 {% block content-header %}
 <div class="HeaderTitle">
-    출/퇴근 노선관리
+    업무관리
 </div>
 {% endblock %}
 
@@ -85,7 +86,7 @@
                         </svg>
                     </div>
                     <div class="groupName"
-                        onclick="location.href='{% url 'dispatch:regularly_route' %}?group={{group.id}}'">{{group.name}}
+                        onclick="location.href='{% url 'assignment:assignment_data' %}?group={{group.id}}'">{{group.name}}
                     </div>
                 </div>
                 {% endfor %}
@@ -93,9 +94,9 @@
         </div>
 
         {% if group %}
-        <form action="{% url 'dispatch:regularly_group_edit' %}" method="post" class="groupCreate">
+        <form action="{% url 'assignment:group_edit' %}" method="post" class="groupCreate">
         {% else %}
-        <form action="{% url 'dispatch:regularly_group_create' %}" method="post" class="groupCreate">
+        <form action="{% url 'assignment:group_create' %}" method="post" class="groupCreate">
         {% endif %}
             <input autocomplete="off" type="hidden" name="id" value="{{group.id}}">
             {% csrf_token %}
@@ -107,18 +108,10 @@
                         class="groupNameCreate length50">
                 </div>
                 <div class="groupCalculateinput">
-                    <span>정산기간 :</span>
-                    <span>이번달</span>
-                    <input type="text" name="settlement_date"
-                        value="{% if group.settlement_date %}{{group.settlement_date}}{% else %}1{% endif %}">
-                    <span>일</span>
-                    <span class="tilde">~</span>
-                    <span>이번달</span>
-                    <div>말일</div>
                 </div>
                 <div class="groupCreateBtnBox">
                     {% if group %}
-                    <a href="{% url 'dispatch:regularly_route' %}?new=y">
+                    <a href="{% url 'assignment:assignment_data' %}?new=y">
                         <div class="btnModules groupCreateNew">신규</div>
                     </a>
                     {% endif %}
@@ -150,21 +143,21 @@
     <div class="mainLayout">
 
         {% if detail %}
-        <form action="{% url 'dispatch:regularly_route_edit' %}" method="post" class="routeinput">
+        <form action="{% url 'assignment:assignment_edit' %}" method="post" class="routeinput assignmentForm">
         {% else %}
-        <form action="{% url 'dispatch:regularly_route_create' %}" method="post" class="routeinput">
+        <form action="{% url 'assignment:assignment_create' %}" method="post" class="routeinput assignmentForm">
         {% endif %}
             {% csrf_token %}
             <input autocomplete="off" type="hidden" name="id" value="{{detail.id}}" class="inputHidden">
             <div class="routeInputHead">
-                <span>노선등록</span>
+                <span>업무등록</span>
                 <div class="routeInputBtnBox">
                     {% if detail %}
-                    <a href="{% url 'dispatch:regularly_route' %}">
+                    <a href="{% url 'assignment:assignment_data' %}?group={{group.id}}">
                         <div class="btnModules routeInputNew">신규</div>
                     </a>
                     {% endif %}
-                    <div class="btnModules routeInputSave">저장</div>
+                    <div class="btnModules routeInputSave assignmentSaveBtn">저장</div>
                 </div>
             </div>
 
@@ -182,7 +175,7 @@
                 <tr>
                     <td class="tdTypeA">*그룹</td>
                     <td class="tdTypeC">
-                        <select name="group" class="inputSelect" tabindex="1">
+                        <select name="group" class="inputGroup inputSelect essential" tabindex="1">
                             <option value=""></option>
                             {% for g in group_list %}
                             <option {% if detail.group.id == g.id %} selected {% endif %} value="{{g.id}}">{{g.name}}
@@ -190,139 +183,73 @@
                             {% endfor %}
                         </select>
                     </td>
-                    <td class="tdTypeA">*사용/미사용</td>
+                    <td class="tdTypeA">*사용여부</td>
                     <td class="tdTypeC">
-                        <input {% if detail.use == '사용' %} checked {% endif %} value="사용" type="radio" id="useRoute"
-                            name="use">
+                        <input {% if detail.use == '사용' %} checked {% elif not detail %} checked {% endif %} value="사용" type="radio" id="useRoute" name="use">
                         <label for="useRoute">사용</label>
-                        <input {% if detail.use == '미사용' %} checked {% endif %} value="미사용" type="radio"
-                            id="unuseRoute" name="use">
+                        <input {% if detail.use == '미사용' %} checked {% endif %} value="미사용" type="radio" id="unuseRoute" name="use">
                         <label for="unuseRoute">미사용</label>
                     </td>
-                    <td class="tdTypeA">*출/퇴근</td>
-                    <td class="tdTypeC">
-                        <input autocomplete="off" {% if detail.work_type == '출근' %} checked {% endif %} value="출근"
-                            name="work_type" id="workStart" type="radio" tabindex="11" checked>
-                        <label for="workStart">출근</label>
-                        <input autocomplete="off" {% if detail.work_type == '퇴근' %} checked {% endif %} value="퇴근"
-                            name="work_type" id="workEnd" type="radio" tabindex="12">
-                        <label for="workEnd">퇴근</label>
-                    </td>
-                    <td class="tdTypeA">위치</td>
-                    <td class="tdTypeC">
-                        <select name="location" class="inputSelect" tabindex="13">
-                            <option value=""></option>
-                            <option {% if detail.location == '셔틀' %} selected {% endif %} value="셔틀">셔틀</option>
-                            <option {% if detail.location == '정문' %} selected {% endif %} value="정문">정문</option>
-                            <option {% if detail.location == '후문' %} selected {% endif %} value="후문">후문</option>
-                        </select>
+                    <td class="tdTypeA">*업무</td>
+                    <td colspan="3" class="tdTypeB">
+                        <input name="assignment" value="{{detail.assignment}}" type="text" class="inputText essential">
                     </td>
                 </tr>
                 <tr>
-                    <td class="tdTypeA">*노선명</td>
-                    <td class="tdTypeC">
-                        <input autocomplete="off" value="{{detail.route}}" name="route" type="text"
-                            class="inputText essential length15" tabindex="2">
-                    </td>
-                    <td class="tdTypeA">거리km</td>
-                    <td class="tdTypeC">
-                        <input autocomplete="off" value="{{detail.distance}}" name="distance" type="number"
-                            class="inputText length15" tabindex="2">
-                    </td>
-                    <td class="tdTypeA">*운행요일</td>
+                    <td class="tdTypeA">*업무시간</td>
                     <td colspan="3" class="tdTypeB">
-                        <div class="routeWeek driveDateBox">
-                            <input autocomplete="off" id="all" type="checkbox" tabindex="14">
-                            <label for="all">모두</label>
-                            <input autocomplete="off" {% if detail.week and detail.week|in_check:'월' %} checked {% endif %} name="week" value="월" id="mon" type="checkbox" class="driveDateCheck">
-                            <label for="mon">월</label>
-                            <input autocomplete="off" {% if detail.week and detail.week|in_check:'화' %} checked {% endif %} name="week" value="화" id="tue" type="checkbox" class="driveDateCheck">
-                            <label for="tue">화</label>
-                            <input autocomplete="off" {% if detail.week and detail.week|in_check:'수' %} checked {% endif %} name="week" value="수" id="wed" type="checkbox" class="driveDateCheck">
-                            <label for="wed">수</label>
-                            <input autocomplete="off" {% if detail.week and detail.week|in_check:'목' %} checked {% endif %} name="week" value="목" id="thu" type="checkbox" class="driveDateCheck">
-                            <label for="thu">목</label>
-                            <input autocomplete="off" {% if detail.week and detail.week|in_check:'금' %} checked {% endif %} name="week" value="금" id="fri" type="checkbox" class="driveDateCheck">
-                            <label for="fri">금</label>
-                            <input autocomplete="off" {% if detail.week and detail.week|in_check:'토' %} checked {% endif %} name="week" value="토" id="sat" type="checkbox" class="driveDateCheck">
-                            <label for="sat">토</label>
-                            <input autocomplete="off" {% if detail.week and detail.week|in_check:'일' %} checked {% endif %} name="week" value="일" id="sun" type="checkbox" class="driveDateCheck">
-                            <label for="sun">일</label>
+                        <div class="routeTime">
+                            <input id="start_time1" autocomplete="off" value="{{detail.start_time|slice:':2'}}" name="start_time1" type="text" class="essential inputText">:
+                            <input id="start_time2" autocomplete="off" value="{{detail.start_time|slice:'3:'}}" name="start_time2" type="text" class="essential inputText">~
+                            <input id="end_time1" autocomplete="off" value="{{detail.end_time|slice:':2'}}" name="end_time1" type="text" class="essential inputText">:
+                            <input id="end_time2" autocomplete="off" value="{{detail.end_time|slice:'3:'}}" name="end_time2" type="text" class="essential inputText">
                         </div>
                     </td>
-                </tr>
-                <tr>
-                    <td class="tdTypeA">*출발지</td>
+                    <td class="tdTypeA">*위치</td>
                     <td colspan="3" class="tdTypeB">
-                        <input autocomplete="off" value="{{detail.departure}}" name="departure" type="text"
-                            class="inputText essential length200" tabindex="3">
-                    </td>
-                    <td class="tdTypeA">상세노선</td>
-                    <td colspan="3" class="tdTypeB">
-                        <div class="waypointBox">
-                            <input autocomplete="off" value="{{detail.detailed_route}}" name="detailed_route"
-                                type="text" class="inputText inputWidthCalc" tabindex="15">
-                            <div class="btnModules backgroundBlue" id="detailMapBtn">경유지</div>
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="tdTypeA">*도착지</td>
-                    <td colspan="3" class="tdTypeB">
-                        <input autocomplete="off" value="{{detail.arrival}}" name="arrival" type="text"
-                            class="inputText essential length200" tabindex="4">
-                    </td>
-                    <td class="tdTypeA">*금액</td>
-                    <td class="tdTypeC">
-                        <div class="pricePopupArea amountComma">
-                            {{detail.price}}
-                        </div>
-                        <!--<input autocomplete="off" name="price" type="text"
-                            class="inputText amountComma essential inputPrice length100" tabindex="16">-->
-                    </td>
-                    <td class="tdTypeA">*기사수당</td>
-                    <td class="tdTypeC">
-                        <div class="pricePopupArea amountComma">{{detail.driver_allowance}}</div>
-                        <!--<input autocomplete="off" name="driver_allowance" type="text"
-                            class="inputText essential inputDriverAllowance amountComma length100" tabindex="17">-->
+                        <input name="location" value="{{detail.location}}" type="text" class="inputText essential">
                     </td>
                 </tr>
                 <tr>
                     <td class="tdTypeA">*순번</td>
-                    <td class="tdTypeC">
+                    <td colspan="3" class="tdTypeB">
                         <div class="routeNumber">
-                            <input autocomplete="off" value="{{detail.number1}}" name="number1" type="text"
-                                class="inputText essential length100" tabindex="5">-
-                            <input autocomplete="off" value="{{detail.number2}}" name="number2" type="text"
-                                class="inputText essential length100" tabindex="6">
+                            <input autocomplete="off" value="{{detail.number1}}" name="number1" type="text" class="inputText essential">-
+                            <input autocomplete="off" value="{{detail.number2}}" name="number2" type="text" class="inputText essential">
                         </div>
                     </td>
-                    <td class="tdTypeA">*운행시간</td>
+                    <td class="tdTypeA">*금액</td>
                     <td class="tdTypeC">
-                        <div class="routeTime">
-                            <input autocomplete="off" value="{{detail.departure_time|slice:':2'}}"
-                                name="departure_time1" id="departure_time1" type="text" class="inputText essential"
-                                maxlength="2" tabindex="7">:
-                            <input autocomplete="off" value="{{detail.departure_time|slice:'3:'}}"
-                                name="departure_time2" id="departure_time2" type="text" class="inputText essential"
-                                maxlength="2" tabindex="8">~
-                            <input autocomplete="off" value="{{detail.arrival_time|slice:':2'}}"
-                                name="arrival_time1" id="arrival_time1" type="text" class="inputText essential"
-                                maxlength="2" tabindex="9">:
-                            <input autocomplete="off" value="{{detail.arrival_time|slice:'3:'}}"
-                                name="arrival_time2" id="arrival_time2" type="text" class="inputText essential"
-                                maxlength="2" tabindex="10">
-                        </div>
+                        {% if detail %}
+                        <div class="pricePopupArea amountComma">{{detail.price}}</div>
+                        {% else %}
+                        <input autocomplete="off" value="{{detail.price}}" name="price" type="text" class="inputText essential">
+                        {% endif %}
                     </td>
+                    <td class="tdTypeA">*수당단가</td>
+                    <td class="tdTypeC">
+                        {% if detail %}
+                        <div class="pricePopupArea amountComma">{{detail.allowance}}</div>
+                        {% else %}
+                        <input autocomplete="off" value="{{detail.allowance}}" name="allowance" type="text" class="inputText essential">
+                        {% endif %}
+                    </td>
+                </tr>
+                <tr>
                     <td class="tdTypeA">참조사항</td>
                     <td colspan="3" class="tdTypeB">
-                        <input autocomplete="off" value="{{detail.references}}" name="references" type="text"
-                            class="inputText" tabindex="18">
+                        <input autocomplete="off" value="{{detail.references}}" name="references" type="text" class="inputText">
+                    </td>
+                    <td class="tdTypeA">*차량사용</td>
+                    <td colspan="3" class="tdTypeB">
+                        <input {% if detail.use_vehicle == '사용' %} checked {% elif not detail %} checked {% endif %} value="사용" type="radio" id="useVehicle" name="use_vehicle">
+                        <label for="useVehicle">사용</label>
+                        <input {% if detail.use_vehicle == '미사용' %} checked {% endif %} value="미사용" type="radio" id="unuseVehicle" name="use_vehicle">
+                        <label for="unuseVehicle">미사용</label>
                     </td>
                 </tr>
             </table>
 
-            
             <div class="popupAreaModules">
                 <div class="popupBgModules"></div>
                 <div class="popupContainer referenceeContainer">
@@ -334,30 +261,16 @@
                             <div class="popupArticle">
                                 <label for="" class="popupArticleLabel"><span
                                         class="importantStar">*</span>금액</label>
-                                <input autocomplete="off" name="price" type="text"
-                                    class="inputMoney popupPrice inputText amountComma essential inputPrice length100"
+                                <input autocomplete="off" name="{% if detail %}price{% endif %}" type="text"
+                                    class="inputMoney popupPrice inputText amountComma inputPrice length100"
                                     value="{{detail.price}}">
                             </div>
                             <div class="popupArticle">
                                 <label for="" class="popupArticleLabel"><span
-                                        class="importantStar">*</span>기사수당(현재)</label>
-                                <input autocomplete="off" name="driver_allowance" type="text"
-                                    class="inputMoney popupPrice inputText essential inputDriverAllowance amountComma length100"
-                                    value="{{detail.driver_allowance}}">
-                            </div>
-                            <div class="popupArticle">
-                                <label for="" class="popupArticleLabel"><span
-                                        class="importantStar">*</span>기사수당(변경)</label>
-                                <input autocomplete="off" name="driver_allowance2" type="text"
-                                    class="inputMoney popupPrice inputText essential inputDriverAllowance2 amountComma length100"
-                                    value="{{detail.driver_allowance2}}">
-                            </div>
-                            <div class="popupArticle">
-                                <label for="" class="popupArticleLabel"><span
-                                        class="importantStar">*</span>용역수당</label>
-                                <input autocomplete="off" name="outsourcing_allowance" type="text"
-                                    class="inputMoney popupPrice inputText essential inputOutsourcingAllowance amountComma length100"
-                                    value="{{detail.outsourcing_allowance}}">
+                                        class="importantStar">*</span>수당</label>
+                                <input autocomplete="off" name="allowance" type="text"
+                                    class="inputMoney popupPrice inputText inputAllowance amountComma length100"
+                                    value="{{detail.allowance}}">
                             </div>
                             <div class="popupArticle">
                                 <label for="" class="popupArticleLabel"><span
@@ -381,7 +294,7 @@
             {% endfor %}
             {% endif %}
         </form>
-        <form action="{% url 'dispatch:regularly_route' %}" class="routListSearch">
+        <form action="" class="routListSearch">
             <select name="use">
                 <option></option>
                 <option {% if search_use == '사용' %} selected {% endif %} value="사용">사용</option>
@@ -390,11 +303,11 @@
             <input autocomplete="off" name="search" value="{{search}}" type="text" id="routeListsearch">
             <input autocomplete="off" type="hidden" value="{{group.id}}" name="group">
             <input autocomplete="off" type="submit" class="btnModules routeListSearchBtn" value="검색">
-            <div class="btnModules excelUpload">엑셀 업로드</div>
-            <div class="btnModules excelDownload" onclick="location.href='{% url 'dispatch:regularly_route_download' %}'">엑셀 다운로드</div>
+            <!-- <div class="btnModules excelUpload">엑셀 업로드</div>
+            <div class="btnModules excelDownload" onclick="location.href='{% url 'dispatch:regularly_route_download' %}'">엑셀 다운로드</div> -->
         </form>
 
-        <form method="post" action="{% url 'dispatch:regularly_route_delete' %}" class="RouteListForm">
+        <form method="post" action="{% url 'assignment:assignment_delete' %}" class="RouteListForm">
             {% csrf_token %}
             <input type="hidden" name="group" value="{{group.id}}">
             <input type="submit" class="btnModules routeInputDelete" value="삭제">
@@ -408,18 +321,15 @@
                                     <input type="checkbox">
                                 </td>
                                 <td>순번</td>
-                                <td>노선명</td>
-                                <td>출발지 ▶ 도착지</td>
-                                <td>요일</td>
-                                <td>출/퇴근</td>
-                                <td>운행시간</td>
+                                <td>그룹</td>
+                                <td>업무</td>
                                 <td>위치</td>
-                                <td>기사수당</td>
-                                <td>용역수당</td>
+                                <td>시간</td>
                                 <td>금액</td>
-                                <td>거리</td>
-                                <td>상세노선</td>
+                                <td>수당단가</td>
+                                <td>사용여부</td>
                                 <td>참조사항</td>
+                                <td>차량사용</td>
                             </tr>
                         </thead>
                     </table>
@@ -428,28 +338,21 @@
                 <div class="RouteListScroll">
                     <table class="RouteListBody">
                         <tbody>
-                            {% for order in order_list %}
-                            <tr class="RouteListBodyTr {{order.id}} {{order.group.id}} {{forloop.counter}}">
+                            {% for assignment in assignment_list %}
+                            <tr class="RouteListBodyTr {{assignment.id}} {{assignment.group.id}} {{forloop.counter}}">
                                 <td>
-                                    <input value="{{order.id}}" name="check" type="checkbox">
+                                    <input value="{{assignment.id}}" name="check" type="checkbox">
                                 </td>
-                                <td>{{order.number1}}{% if order.number2 %} - {{order.number2}} {% endif %}</td>
-                                <td>{{order.route}}</td>
-                                <td>
-                                    <div style="white-space: pre-line;">{{order.departure}} ▶
-                                        {{order.arrival}}
-                                    </div>
-                                </td>
-                                <td>{{order.week}}</td>
-                                <td>{{order.work_type}}</td>
-                                <td>{{order.departure_time}} ~ {{order.arrival_time}}</td>
-                                <td>{{order.location}}</td>
-                                <td class="comma">{{order.driver_allowance}}</td>
-                                <td class="comma">{{order.outsourcing_allowance}}</td>
-                                <td class="comma">{{order.price}}</td>
-                                <td>{{order.distance}}</td>
-                                <td>{{order.detailed_route}}</td>
-                                <td>{{order.references}}</td>
+                                <td>{{assignment.number1}}{% if assignment.number2 %} - {{assignment.number2}} {% endif %}</td>
+                                <td>{{assignment.group.name}}</td>
+                                <td>{{assignment.assignment}}</td>
+                                <td>{{assignment.location}}</td>
+                                <td>{{assignment.start_time}} ~ {{assignment.end_time}}</td>
+                                <td class="comma">{{assignment.price}}</td>
+                                <td class="comma">{{assignment.allowance}}</td>
+                                <td>{{assignment.use}}</td>
+                                <td>{{assignment.references}}</td>
+                                <td>{{assignment.use_vehicle}}</td>
                             </tr>
                             {% endfor %}
                             <tr class="blanckTr"></tr>
@@ -579,11 +482,10 @@
 
 {% block script %}
 <script>
-    let driverAllowanceValue = "{{detail.driver_allowance}}".replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
-    let driverAllowanceValue2 = "{{detail.driver_allowance2}}".replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
-    let outsourcingAllowanceValue = "{{detail.outsourcing_allowance}}".replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
+    let allowanceValue = "{{detail.allowance}}".replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
     let priceValue = "{{detail.price}}".replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
     const detailExist = '{{detail}}' ? true : false
+    const editCheckUrl = "{% url 'assignment:assignment_edit_check' %}"
 
     const groupCreateChangeForm = document.querySelector(".groupCreate")
 
@@ -591,7 +493,7 @@
         {% autoescape off %}
         if (confirm("선택한 그룹을 정말로 삭제하시겠습니까?")) {
             if ('{{order_list.exists}}' == 'False') {
-                groupCreateChangeForm.action = "{% url 'dispatch:regularly_group_delete' %}"
+                groupCreateChangeForm.action = "{% url 'assignment:group_delete' %}"
                 groupCreateChangeForm.submit()
             }
             else {
@@ -611,33 +513,26 @@
 
     function loadTargetRoute() {
         let parms = new URLSearchParams(location.search)
+        let url = `{% url 'assignment:assignment_data' %}?id=${this.parentNode.classList[1]}&group=${this.parentNode.classList[2]}&use={{search_use}}&height=${this.parentNode.parentNode.parentNode.parentNode.scrollTop}`
         if (parms.has("search")) {
-            if (groupList.style.display == "none") {
-                location.href = `{% url 'dispatch:regularly_route' %}?id=${this.parentNode.classList[1]}&group=${this.parentNode.classList[2]}&use={{search_use}}&search=${parms.get("search")}&height=${this.parentNode.parentNode.parentNode.parentNode.scrollTop}&close=true`
-            } else {
-                location.href = `{% url 'dispatch:regularly_route' %}?id=${this.parentNode.classList[1]}&group=${this.parentNode.classList[2]}&use={{search_use}}&search=${parms.get("search")}&height=${this.parentNode.parentNode.parentNode.parentNode.scrollTop}`
-            }
-        } else {
-            if (groupList.style.display == "none") {
-                location.href = `{% url 'dispatch:regularly_route' %}?id=${this.parentNode.classList[1]}&group=${this.parentNode.classList[2]}&use={{search_use}}&height=${this.parentNode.parentNode.parentNode.parentNode.scrollTop}&close=true`
-            } else {
-                location.href = `{% url 'dispatch:regularly_route' %}?id=${this.parentNode.classList[1]}&group=${this.parentNode.classList[2]}&use={{search_use}}&height=${this.parentNode.parentNode.parentNode.parentNode.scrollTop}`
-            }
+            url = url + `&search=${parms.get("search")}`
         }
+        if (groupList.style.display == "none") {
+            url = url + "&close=true"
+        }
+        location.href = url
     }
+
 </script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.15.5/xlsx.full.min.js"></script>
 <script src="{% static 'js/popupCommon.js' %}"></script>
-<script src="{% static 'js/dispatch/regularly_route/uploadExcel.js' %}"></script>
 <script src="{% static 'js/dispatch/regularly_route/targetRoute.js' %}"></script>
-<script src="{% static 'js/dispatch/regularly_route/createRoute.js' %}"></script>
 <script src="{% static 'js/dispatch/regularly_route/routeLayoutChanger.js' %}"></script>
 <script src="{% static 'js/dispatch/regularly_route/routeScrollLink.js' %}"></script>
 <script src="{% static 'js/dispatch/regularly_route/groupOrderChange.js' %}"></script>
-<script src="{% static 'js/dispatch/regularly_route/checker.js' %}"></script>
-<script src="{% static 'js/dispatch/regularly_route/groupCalculating.js' %}"></script>
 <script src="{% static 'js/dispatch/regularly_route/lengthBreak.js' %}"></script>
 <script src="{% static 'js/dispatch/regularly_route/createAddComma.js' %}"></script>
-<script src="{% static 'js/dispatch/regularly_route/allowancePopup.js' %}"></script>
-<script src="{% static 'js/dispatch/regularly_route/detailMap.js' %}"></script>
+<script src="{% static 'js/assignment/allowancePopup.js' %}"></script>
+<script src="{% static 'js/assignment/assignmentData.js' %}"></script>
+<script src="{% static 'js/assignment/checker.js' %}"></script>
 {% endblock %}

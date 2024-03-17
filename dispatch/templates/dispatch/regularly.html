@@ -383,7 +383,7 @@
               </td>
               <td onclick="location.href='{% url 'dispatch:regularly' %}?id={{order.regularly_id.id}}&group={{order.group.id}}&height={{forloop.counter}}&date={{date}}'">{{order.number1}}{% if order.number2 %} - {{order.number2}}{% endif %}</td>
               <td onclick="location.href='{% url 'dispatch:regularly' %}?id={{order.regularly_id.id}}&group={{order.group.id}}&height={{forloop.counter}}&date={{date}}'">{{order.route}}</td>
-              <td onclick="location.href='{% url 'dispatch:regularly' %}?id={{order.regularly_id.id}}&group={{order.group.id}}&height={{forloop.counter}}&date={{date}}'">
+              <td onclick="location.href='{% url 'dispatch:regularly' %}?id={{order.regularly_id.id}}&group={{order.group.id}}&height={{forloop.counter}}&date={{date}}'" class="connectTime">
                 {% if departure_time_list|index:forloop.counter0 and arrival_time_list|index:forloop.counter0 %}
                 {{departure_time_list|index:forloop.counter0}} ~ {{arrival_time_list|index:forloop.counter0}}
                 {% else %}
@@ -503,6 +503,7 @@
   console.log("DATA", data)
   console.log("driverObj", driverObj)
   console.log("outsourcingObj", outsourcingObj)
+  const useVehicle = true
   {% endautoescape %}
  </script>
 
@@ -510,10 +511,7 @@
 
   let parms = new URLSearchParams(location.search)
   let targetLink = ""
-  let urlDate = ""
-  if(parms.has("date")){
-    urlDate = window.location.search.split("date=")[1].split("&")[0]
-  }
+  let urlDate = "{{date}}"
   let urlGroup = ""
   if(parms.has("group")){
     urlGroup = window.location.search.split("group=")[1].split("&")[0]

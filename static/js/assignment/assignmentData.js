@@ -1,14 +1,13 @@
 const crateRouteForm = document.querySelector(".routeinput")
 const routeInputSave = document.querySelector(".routeInputSave")
-const groupSelect = document.querySelector(".tdTypeC select[name=group]")
-const driveDateCheck = document.querySelectorAll(".driveDateCheck")
+const inputGroup = document.querySelector(".inputGroup")
 const essential = document.querySelectorAll(".essential")
 const inputHidden = document.querySelector(".inputHidden")
 
-const inputTime1 = document.querySelector("#departure_time1")
-const inputTime2 = document.querySelector("#departure_time2")
-const inputTime3 = document.querySelector("#arrival_time1")
-const inputTime4 = document.querySelector("#arrival_time2")
+const inputTime1 = document.querySelector("#start_time1")
+const inputTime2 = document.querySelector("#start_time2")
+const inputTime3 = document.querySelector("#end_time1")
+const inputTime4 = document.querySelector("#end_time2")
 
 const popupPriceList = document.querySelectorAll(".popupPrice")
 let popupPriceChangeCheck = false
@@ -26,39 +25,17 @@ function saveCheck(){
             return alert("입력하지 않은 필수 입력사항이 있습니다.")
         }
     };
-    let driveDateChecking = false
-    for (i = 0; i < driveDateCheck.length; i++){
-        if(driveDateCheck[i].checked){
-            driveDateChecking = true
-        }
-    };
-    let parms = new URLSearchParams(location.search)
-    if(parms.has("id")){
-        if(groupSelect.options[groupSelect.selectedIndex].value == ""){
-            return alert("그룹을 선택해 주세요")
-            
-        }else if(!driveDateCheck){
-            return alert("운행요일을 선택해 주세요")
-        }
-        // else{
-        //     // crateRouteForm.submit()
-        // }
-    }else{
-        if(groupSelect.options[groupSelect.selectedIndex].value == ""){
-            return alert("그룹을 선택해 주세요")
-        }else if(!driveDateCheck){
-            return alert("운행요일을 선택해 주세요")
-        }else{
-            // crateRouteForm.submit()
-        }
+    if(inputGroup.options[inputGroup.selectedIndex].value == ""){
+        return alert("그룹을 선택해 주세요")
     }
+
     if (detailExist) {
         $.ajax({
-            url: "/dispatch/regularly/route/edit/check",
+            url: editCheckUrl,
             method: "POST",
             data: {
-                "departure_date": `${inputTime1.value}:${inputTime2.value}`,
-                "arrival_date": `${inputTime3.value}:${inputTime4.value}`,
+                "departure_time": `${inputTime1.value}:${inputTime2.value}`,
+                "arrival_time": `${inputTime3.value}:${inputTime4.value}`,
                 "id": inputHidden.value,
                 'csrfmiddlewaretoken': csrftoken
             },

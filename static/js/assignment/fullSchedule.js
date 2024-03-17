@@ -21,33 +21,24 @@ function drawSchdule() {
 
         for (j = 0; j < driverTd.length; j++) {
 
-            if (data[i].bus_id == driverTd[j].classList[1]) {
+            if (data[i].bus_id == driverTd[j].classList[1] || data[i].driver_id == driverTd[j].classList[1]) {
 
                 const startWork = document.createElement('div');
 
                 // 기사 동일여부
-                if (data[i].driver_id !== parseInt(driverTd[j].classList[2].split("d")[1])) {
-
-                    // 타입구분
-                    if (data[i].work_type == "출근") {
-                        startWork.setAttribute("class", "regularlyLineStart scheduleBar otherDriver");
-                    } else if (data[i].work_type == "퇴근") {
-                        startWork.setAttribute("class", "regularlyLineEnd scheduleBar otherDriver");
-                    } else {
-                        startWork.setAttribute("class", "orderLine scheduleBar otherDriver");
-                    }
-
+                
+                // 타입구분
+                if (data[i].work_type == "출근") {
+                    startWork.setAttribute("class", "regularlyLineStart scheduleBar");
+                } else if (data[i].work_type == "퇴근") {
+                    startWork.setAttribute("class", "regularlyLineEnd scheduleBar");
+                } else if (data[i].work_type == "일반") {
+                    startWork.setAttribute("class", "orderLine scheduleBar");
                 } else {
-
-                    // 타입구분
-                    if (data[i].work_type == "출근") {
-                        startWork.setAttribute("class", "regularlyLineStart scheduleBar");
-                    } else if (data[i].work_type == "퇴근") {
-                        startWork.setAttribute("class", "regularlyLineEnd scheduleBar");
-                    } else {
-                        startWork.setAttribute("class", "orderLine scheduleBar");
-                    }
-
+                    startWork.setAttribute("class", "orderLine scheduleBar");
+                }
+                if (useVehicle && data[i].driver_id !== parseInt(driverTd[j].classList[2].split("d")[1])) {
+                    startWork.className += " otherDriver"
                 }
 
                 dataStartDate = data[i].departure_date.split(" ")[0]
@@ -112,7 +103,11 @@ function DispatcBusFilterRegularly() {
 
         // data기간 필터링
         if (inputEndDate >= startDate && inputStartDate <= endDate) {
-            scheduleBus.push(data[i].bus_id)
+            if (useVehicle) {
+                scheduleBus.push(data[i].bus_id)
+            } else {
+                scheduleBus.push(data[i].driver_id)
+            }
         }
 
     }

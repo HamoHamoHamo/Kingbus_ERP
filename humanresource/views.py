@@ -20,6 +20,7 @@ from vehicle.models import Vehicle
 from .forms import MemberForm
 from .models import Member, MemberFile, Salary, AdditionalSalary, DeductionSalary, Team
 from accounting.models import TotalPrice
+from assignment.models import AssignmentConnect
 import math
 from my_settings import CRED_PATH, CLOUD_MEDIA_PATH
 import firebase_admin
@@ -712,13 +713,14 @@ class SalaryList(generic.ListView):
 # month의 출근 퇴근 일반 요금 계산해서 Salary 생성
 def new_salary(creator, month, member):
     last_date = datetime.strftime(datetime.strptime(month+'-01', FORMAT) + relativedelta(months=1) - timedelta(days=1), FORMAT)
-    attendance = DispatchRegularlyConnect.objects.filter(work_type='출근').filter(driver_id=member).filter(departure_date__range=(month+'-01 00:00', last_date+' 24:00')).aggregate(Sum('driver_allowance'))
-    leave = DispatchRegularlyConnect.objects.filter(work_type='퇴근').filter(driver_id=member).filter(departure_date__range=(month+'-01 00:00', last_date+' 24:00')).aggregate(Sum('driver_allowance'))
-    order = DispatchOrderConnect.objects.filter(driver_id=member).filter(departure_date__range=(month+'-01 00:00', last_date+' 24:00')).aggregate(Sum('driver_allowance'))
+    # attendance = DispatchRegularlyConnect.objects.filter(work_type='출근').filter(driver_id=member).filter(departure_date__range=(month+'-01 00:00', last_date+' 24:00')).aggregate(Sum('driver_allowance'))
+    # leave = DispatchRegularlyConnect.objects.filter(work_type='퇴근').filter(driver_id=member).filter(departure_date__range=(month+'-01 00:00', last_date+' 24:00')).aggregate(Sum('driver_allowance'))
+    # order = DispatchOrderConnect.objects.filter(driver_id=member).filter(departure_date__range=(month+'-01 00:00', last_date+' 24:00')).aggregate(Sum('driver_allowance'))
 
     attendance_price = 0
     leave_price = 0
     order_price = 0
+    assignment_price = 0
 
     base = 0
     service_allowance = 0
@@ -739,12 +741,13 @@ def new_salary(creator, month, member):
     #     service_allowance = salary.service_allowance
     #     performance_allowance = salary.performance_allowance
 
-    if attendance['driver_allowance__sum']:
-        attendance_price = int(attendance['driver_allowance__sum'])
-    if leave['driver_allowance__sum']:
-        leave_price = int(leave['driver_allowance__sum'])
-    if order['driver_allowance__sum']:
-        order_price = int(order['driver_allowance__sum'])
+    # Salary가 없을 때만 동작하는 함수라서 계산할 필요 없음
+    # if attendance['driver_allowance__sum']:
+    #     attendance_price = int(attendance['driver_allowance__sum'])
+    # if leave['driver_allowance__sum']:
+    #     leave_price = int(leave['driver_allowance__sum'])
+    # if order['driver_allowance__sum']:
+    #     order_price = int(order['driver_allowance__sum'])
     
     try:
         payment_date = Category.objects.get(type='급여지급일').category
@@ -762,7 +765,8 @@ def new_salary(creator, month, member):
         attendance = attendance_price,
         leave = leave_price,
         order = order_price,
-        total = attendance_price + leave_price + order_price + base + service_allowance + performance_allowance + annual_allowance + int(meal),
+        assignment = assignment_price,
+        total = attendance_price + leave_price + order_price + base + service_allowance + performance_allowance + annual_allowance + int(meal) + assignment_price,
         month = month,
         payment_date = payment_date,
         creator = creator
