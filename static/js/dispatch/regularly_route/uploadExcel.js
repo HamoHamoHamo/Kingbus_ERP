@@ -1,5 +1,3 @@
-import { addClosePopupEvent, closePopup } from "/static/js/popupCommon.js"
-
 const excelUpload = document.querySelector(".excelUpload")
 const excelPopup = document.querySelector("#excelPopup")
 const excelUploadFile = document.querySelector(".excelUploadFile")
@@ -9,7 +7,6 @@ const visibleLoading = document.querySelector(".visibleLoading")
 
 let parms = new URLSearchParams(location.search)
 
-addClosePopupEvent()
 
 excelUpload.addEventListener("click", openUploadPopup)
 

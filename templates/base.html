@@ -48,7 +48,7 @@
             <li class="nav1BoxMenu nav1BoxMenuHaveDepth2">
               <img src="{% static 'images/notice.png' %}" alt="공지사항 아이콘">
               <div>공지사항</div>
-              <svg xmlns="http://www.w3.org/2000/svg" width="18.228" height="11.84" viewBox="0 0 18.228 11.84">
+              <svg class="sideMenuArrow" xmlns="http://www.w3.org/2000/svg" width="18.228" height="11.84" viewBox="0 0 18.228 11.84">
                 <path id="패스_256" data-name="패스 256" d="M0,0,6.753,8.223,14,0" transform="translate(2.111 2.117)" fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="3"/>
               </svg>        
             </li>
@@ -67,7 +67,7 @@
             <li class="nav1BoxMenu nav1BoxMenuHaveDepth2">
               <img src="{% static 'images/dispatchSystem.png' %}" alt="배차시스템 아이콘">
               <div>배차관리</div>
-              <svg xmlns="http://www.w3.org/2000/svg" width="18.228" height="11.84" viewBox="0 0 18.228 11.84">
+              <svg class="sideMenuArrow" xmlns="http://www.w3.org/2000/svg" width="18.228" height="11.84" viewBox="0 0 18.228 11.84">
                 <path id="패스_256" data-name="패스 256" d="M0,0,6.753,8.223,14,0" transform="translate(2.111 2.117)" fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="3"/>
               </svg>            
             </li>
@@ -102,9 +102,43 @@
           </div>
           <div class="nav1Box">
             <li class="nav1BoxMenu nav1BoxMenuHaveDepth2">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="15"
+                height="15"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                <line x1="16" y1="2" x2="16" y2="6"></line>
+                <line x1="8" y1="2" x2="8" y2="6"></line>
+                <line x1="3" y1="10" x2="21" y2="10"></line>
+              </svg>
+              <div>업무관리</div>
+              <svg class="sideMenuArrow" xmlns="http://www.w3.org/2000/svg" width="18.228" height="11.84" viewBox="0 0 18.228 11.84">
+                <path id="패스_256" data-name="패스 256" d="M0,0,6.753,8.223,14,0" transform="translate(2.111 2.117)" fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="3"/>
+              </svg>        
+            </li>
+            <div class="sideMenuNav2Box">
+              <ul class="sideMenuNav2">
+                <a href="{% url 'assignment:assignment_data' %}" class="sideMenuNav2Link">
+                  <li class="sideMenuNav2Menu">업무관리</li>
+                </a>
+                <a href="{% url 'assignment:assignment' %}" class="sideMenuNav2Link">
+                  <li class="sideMenuNav2Menu">업무배정</li>
+                </a>
+              </ul>
+            </div>
+          </div>
+          <div class="nav1Box">
+            <li class="nav1BoxMenu nav1BoxMenuHaveDepth2">
               <img src="{% static 'images/HRManagement.png' %}" alt="인사관리 아이콘">
               <div>인사관리</div>
-              <svg xmlns="http://www.w3.org/2000/svg" width="18.228" height="11.84" viewBox="0 0 18.228 11.84">
+              <svg class="sideMenuArrow" xmlns="http://www.w3.org/2000/svg" width="18.228" height="11.84" viewBox="0 0 18.228 11.84">
                 <path id="패스_256" data-name="패스 256" d="M0,0,6.753,8.223,14,0" transform="translate(2.111 2.117)" fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="3"/>
               </svg>        
             </li>
@@ -126,7 +160,7 @@
             <li class="nav1BoxMenu nav1BoxMenuHaveDepth2">
               <img src="{% static 'images/accountingSystem.png' %}" alt="경리시스템 아이콘">
               <div>매출관리</div>
-              <svg xmlns="http://www.w3.org/2000/svg" width="18.228" height="11.84" viewBox="0 0 18.228 11.84">
+              <svg class="sideMenuArrow" xmlns="http://www.w3.org/2000/svg" width="18.228" height="11.84" viewBox="0 0 18.228 11.84">
                 <path id="패스_256" data-name="패스 256" d="M0,0,6.753,8.223,14,0" transform="translate(2.111 2.117)" fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="3"/>
               </svg>        
             </li>
@@ -151,7 +185,7 @@
             <li class="nav1BoxMenu nav1BoxMenuHaveDepth2">
               <img src="{% static 'images/vehicleManagement.png' %}" alt="차량관리 아이콘">
               <div>차량관리</div>
-              <svg xmlns="http://www.w3.org/2000/svg" width="18.228" height="11.84" viewBox="0 0 18.228 11.84">
+              <svg class="sideMenuArrow" xmlns="http://www.w3.org/2000/svg" width="18.228" height="11.84" viewBox="0 0 18.228 11.84">
                 <path id="패스_256" data-name="패스 256" d="M0,0,6.753,8.223,14,0" transform="translate(2.111 2.117)" fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="3"/>
               </svg>        
             </li>
@@ -179,7 +213,7 @@
             <li class="nav1BoxMenu nav1BoxMenuHaveDepth2">
               <img src="{% static 'images/document.png' %}" alt="공지사항 아이콘">
               <div>서류관리</div>
-              <svg xmlns="http://www.w3.org/2000/svg" width="18.228" height="11.84" viewBox="0 0 18.228 11.84">
+              <svg class="sideMenuArrow" xmlns="http://www.w3.org/2000/svg" width="18.228" height="11.84" viewBox="0 0 18.228 11.84">
                 <path id="패스_256" data-name="패스 256" d="M0,0,6.753,8.223,14,0" transform="translate(2.111 2.117)" fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="3"/>
               </svg>        
             </li>
@@ -198,7 +232,7 @@
             <li class="nav1BoxMenu nav1BoxMenuHaveDepth2">
               <img src="{% static 'images/document.png' %}" alt="공지사항 아이콘">
               <div>민원관리</div>
-              <svg xmlns="http://www.w3.org/2000/svg" width="18.228" height="11.84" viewBox="0 0 18.228 11.84">
+              <svg class="sideMenuArrow" xmlns="http://www.w3.org/2000/svg" width="18.228" height="11.84" viewBox="0 0 18.228 11.84">
                 <path id="패스_256" data-name="패스 256" d="M0,0,6.753,8.223,14,0" transform="translate(2.111 2.117)" fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="3"/>
               </svg>        
             </li>
@@ -244,7 +278,7 @@
             <li class="nav1BoxMenu nav1BoxMenuHaveDepth2">
               <img src="{% static 'images/dispatchSystem.png' %}" alt="배차시스템 아이콘">
               <div>배차시스템</div>
-              <svg xmlns="http://www.w3.org/2000/svg" width="18.228" height="11.84" viewBox="0 0 18.228 11.84">
+              <svg class="sideMenuArrow" xmlns="http://www.w3.org/2000/svg" width="18.228" height="11.84" viewBox="0 0 18.228 11.84">
                 <path id="패스_256" data-name="패스 256" d="M0,0,6.753,8.223,14,0" transform="translate(2.111 2.117)" fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="3"/>
               </svg>            
             </li>

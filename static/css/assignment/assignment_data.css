@@ -1,0 +1,36 @@
+.routeinput {
+    height: 18rem;
+}
+
+.RouteListForm {
+    height: calc(100% - 24.6rem);
+}
+
+.RouteList table td:nth-child(4) {
+    text-align: center;
+}
+
+.RouteList table td:nth-child(2),
+.RouteList table td:nth-child(3),
+.RouteList table td:nth-child(7),
+.RouteList table td:nth-child(8) {
+    width: 5%;
+}
+
+.RouteList table td:nth-child(6) {
+    width: 6%;
+}
+
+.RouteList table td:nth-child(9) {
+    width: 4%;
+}
+
+.RouteList table td:nth-child(4),
+.RouteList table td:nth-child(5),
+.RouteList table td:nth-child(10) {
+    width: 12%;
+}
+
+.RouteList table {
+    width: 140%;
+}

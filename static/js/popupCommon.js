@@ -25,6 +25,6 @@ const closePopup = () => {
     })
 }
 
+addClosePopupEvent()
 
-
-export { addClosePopupEvent, closePopup }
+// export { addClosePopupEvent, closePopup }

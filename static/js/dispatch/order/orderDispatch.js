@@ -18,6 +18,8 @@ for (i = 0; i < driverTd.length; i++) {
 
 
 function addOrderDispatch() {
+    const detailDepartureDate = `${inputTextquarter[0].value} ${inputTextTwice[0].value}:${inputTextTwice[1].value}`
+    const detailArrivalData = `${inputTextquarter[1].value} ${inputTextTwice[2].value}:${inputTextTwice[3].value}`
     let dispatchDoneCount = 0
     for (i = 0; i < dispatchBus.length; i++) {
         if (dispatchBus[i].value !== "") {
@@ -29,7 +31,7 @@ function addOrderDispatch() {
 
         let busNum = ""
         let busId = ""
-        let DriverName = ""
+        let driverName = ""
         let DriverId = ""
 
         if (params.get("id") !== null) {
@@ -37,9 +39,9 @@ function addOrderDispatch() {
                 busNum = this.innerText.substr(0,4)
                 busId = this.classList[1]
                 if(this.innerText.length > 4){
-                    DriverName = this.innerText.split("(")[1].replace(/\)/g, "")
+                    driverName = this.innerText.split("(")[1].replace(/\)/g, "")
                 }else{
-                    DriverName = ""
+                    driverName = ""
                 }
                 if(this.classList[2] === "d"){
                     DriverId = ""
@@ -94,57 +96,60 @@ function addOrderDispatch() {
                 }
             }
 
-            // 배차
-            function addOrderDispatch() {
-                targetBus.parentNode.classList.add("haveSchedule")
-                for (j = 0; j < dispatchLine.length; j++) {
-                    dispatchLine[j].style.backgroundColor = "white"
+            //알림 출력
+            for (i = 0; i < beforeArr.length; i++) {
+                if (this.classList[1] == beforeArr[i].bus_id || this.classList[2] == `d${beforeArr[i].driver_id}`) {
+                    if (!confirm(`운행시작 1시간 이내에 노선이 있습니다. 배차하시겠습니까?\n[${beforeArr[i].bus_num}(${beforeArr[i].driver_name}) || ${beforeArr[i].departure_date} ~ ${beforeArr[i].arrival_date}]`)) {
+                        return
+                    }
                 }
-                for (j = 0; j < dispatchLine.length; j++) {
-                    if (dispatchLine[j].children[0].children[0].children[1].children[0].value == "") {
-                        dispatchLine[j].style.backgroundColor = "#CDCDCD"
-                        dispatchLine[j].children[0].children[0].children[1].children[0].value = busNum
-                        dispatchLine[j].children[0].children[2].value = busId
-
-                        orderDriver[j].innerText = ""
-
-                        const driverOption = document.createElement('option');
-                        driverOption.setAttribute("value", `${DriverId}`);
-                        driverOption.innerText = DriverName
-                        orderDriver[j].appendChild(driverOption);
+            }
+            for (i = 0; i < afterArr.length; i++) {
+                if (this.classList[1] == afterArr[i].bus_id || this.classList[2] == `d${afterArr[i].driver_id}`) {
+                    if (!confirm(`운행종료 1시간 이내에 노선이 있습니다. 배차하시겠습니까?\n[${afterArr[i].bus_num}(${afterArr[i].driver_name}) || ${afterArr[i].departure_date} ~ ${afterArr[i].arrival_date}]`)) {
                         return
                     }
                 }
             }
 
-            //알림 출력
-            if (beforeArr.length !== 0 || afterArr.length !== 0) {
-                for (i = 0; i < beforeArr.length; i++) {
-                    if (this.classList[1] == beforeArr[i].bus_id || this.classList[2] == `d${beforeArr[i].driver_id}`) {
-                        if (confirm(`운행시작 1시간 이내에 노선이 있습니다. 배차하시겠습니까?\n[${beforeArr[i].bus_num}(${beforeArr[i].driver_name}) || ${beforeArr[i].departure_date} ~ ${beforeArr[i].arrival_date}]`)) {
-                            addOrderDispatch()
-                            return
-                        } else {
-                            return
-                        }
-                    }
-                }
-                for (i = 0; i < afterArr.length; i++) {
-                    if (this.classList[1] == afterArr[i].bus_id || this.classList[2] == `d${afterArr[i].driver_id}`) {
-                        if (confirm(`운행종료 1시간 이내에 노선이 있습니다. 배차하시겠습니까?\n[${afterArr[i].bus_num}(${afterArr[i].driver_name}) || ${afterArr[i].departure_date} ~ ${afterArr[i].arrival_date}]`)) {
-                            addOrderDispatch()
-                            return
-                        } else {
-                            return
-                        }
-                    }
-                }
-                addOrderDispatch()
-                return
-            } else {
-                addOrderDispatch()
-                return
+            targetBus.parentNode.classList.add("haveSchedule")
+            for (j = 0; j < dispatchLine.length; j++) {
+                dispatchLine[j].style.backgroundColor = "white"
             }
+
+            // 
+            
+            let makeSelect = true
+
+            for (i = 0; i < dataList.length; i++) {
+                departureDate = dataList[i].departure_date
+                arrivalDate = dataList[i].arrival_date
+                if (driverName == dataList[i].driver_name) {
+                    if (detailArrivalData >= departureDate && detailDepartureDate <= arrivalDate) {
+                        makeSelect = false
+                    }
+                }
+            };
+
+            for (j = 0; j < dispatchLine.length; j++) {
+                if (dispatchLine[j].children[0].children[0].children[1].children[0].value == "") {
+                    dispatchLine[j].style.backgroundColor = "#CDCDCD"
+                    dispatchLine[j].children[0].children[0].children[1].children[0].value = busNum
+                    dispatchLine[j].children[0].children[2].value = busId
+
+                    
+                    if (makeSelect) {
+                        orderDriver[j].innerText = ""
+                        const driverOption = document.createElement('option');
+                        driverOption.setAttribute("value", `${DriverId}`);
+                        driverOption.innerText = driverName
+                        orderDriver[j].appendChild(driverOption);
+                    }
+                    return
+                }
+            }
+            
+            
         }
     }
 }
@@ -237,7 +242,6 @@ function addDriverOption() {
             for (i = 0; i < orderDriver.length; i++) {
                 for (j = 0; j < orderDriver[i].children.length; j++) {
                     if (orderDriver[i].children[j].selected) {
-                        orderDriver[i].children[j]
                         selectedDriver.push(orderDriver[i].children[j].value)
                     }
                 }

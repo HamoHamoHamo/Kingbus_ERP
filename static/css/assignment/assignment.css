@@ -1,0 +1,75 @@
+.routeDataArea {
+    height: 12.3rem;
+}
+
+.RouteList {
+    height: calc(100% - 19.9rem);
+}
+
+.toolbar {
+    justify-content: space-between;
+}
+
+.toolbarLeft {
+    display: flex;
+    justify-content: flex-start;
+}
+
+.toolbarRight {
+    display: flex;
+    justify-content: flex-end;
+    margin-right: 1rem;
+}
+
+
+.pricePopupArea {
+    text-align: right;
+    width: calc(100% - 2.4rem);
+    height: 2.2rem;
+    margin: 0 0.8rem;
+    padding: 0 0.6rem;
+    border: 0.1rem solid black;
+    box-sizing: border-box;
+    border-radius: 0.2rem;
+    cursor: pointer;
+    background-color: #CDCDCE;
+}
+
+.newAssignmentBtn {
+    margin-right: 1rem;
+}
+
+.RouteList td:nth-child(1) {
+    width: 4%;
+}
+  
+.RouteList td:nth-child(2) {
+    width: 8%;
+}
+  
+.RouteList td:nth-child(3) {
+    width: 18%;
+}
+  
+.RouteList td:nth-child(4) {
+    width: 10%;
+}
+  
+.RouteList td:nth-child(5),
+.RouteList td:nth-child(6),
+.RouteList td:nth-child(7) {
+    width: 9%;
+}
+  
+.RouteList td:nth-child(8) {
+    width: 9%;
+}
+
+.RouteList td:nth-child(9) {
+    width: 24%;
+}
+
+.RouteList tbody td:nth-child(8) {
+    text-align: center;
+    padding-left: 0rem;
+}
