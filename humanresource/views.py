@@ -32,6 +32,14 @@ TODAY = str(datetime.now())[:10]
 WEEK = ['(월)', '(화)', '(수)', '(목)', '(금)', '(토)', '(일)', ]
 
 
+def salary_test2(request):
+    
+    return render(request, 'HR/salary_test2.html')
+
+def salary_test3(request):
+    
+    return render(request, 'HR/salary_test3.html')
+
 def send_message(title, body, token, topic):
     cred_path = os.path.join(BASE_DIR, CRED_PATH)
     cred = credentials.Certificate(cred_path)
