@@ -339,7 +339,7 @@
                     <table class="RouteListBody">
                         <tbody>
                             {% for assignment in assignment_list %}
-                            <tr class="RouteListBodyTr {{assignment.id}} {{assignment.group.id}} {{forloop.counter}}">
+                            <tr class="RouteListBodyTr {{assignment.id}} g{{assignment.group.id}} {{forloop.counter}}">
                                 <td>
                                     <input value="{{assignment.id}}" name="check" type="checkbox">
                                 </td>
@@ -513,7 +513,8 @@
 
     function loadTargetRoute() {
         let parms = new URLSearchParams(location.search)
-        let url = `{% url 'assignment:assignment_data' %}?id=${this.parentNode.classList[1]}&group=${this.parentNode.classList[2]}&use={{search_use}}&height=${this.parentNode.parentNode.parentNode.parentNode.scrollTop}`
+        let groupId = this.parentNode.classList[2].split('g')[1]
+        let url = `{% url 'assignment:assignment_data' %}?id=${this.parentNode.classList[1]}&group=${groupId}&use={{search_use}}&height=${this.parentNode.parentNode.parentNode.parentNode.scrollTop}`
         if (parms.has("search")) {
             url = url + `&search=${parms.get("search")}`
         }
