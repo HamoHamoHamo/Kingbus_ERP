@@ -135,8 +135,8 @@ function createDrivingHistoryElements(data) {
         newTr.appendChild(newTdBus);
         newTr.appendChild(newTdTime);
         newTr.appendChild(newTdRout);
-        newTr.appendChild(newTdArrivalKm);
         newTr.appendChild(newTdDepartureKm);
+        newTr.appendChild(newTdArrivalKm);
         newTr.appendChild(newTdPassenger_num);
         newTr.appendChild(newTdSpecialNotes);
         popupListBox.appendChild(newTr);
