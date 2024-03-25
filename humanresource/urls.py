@@ -11,6 +11,7 @@ urlpatterns = [
     path('member/file/upload', views.member_file_upload, name='member_file_upload'),
     path('member/file/<int:file_id>', views.member_file_download, name='member_file_download'),
     path('member/download', views.member_download, name='member_download'),
+    path('member/efficiency', views.member_efficiency, name='member_efficiency'),
     #path('member/upload', views.member_upload, name='member_upload'),
     path('team', views.TeamList.as_view(), name='team'),
     path('team/create', views.team_create, name='team_create'),

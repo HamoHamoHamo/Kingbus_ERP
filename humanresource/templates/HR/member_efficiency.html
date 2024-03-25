@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load custom_tags %}
+{% block head %}
+<meta http-equiv="Cache-Control" content="private, no-cache, no-store, max-age=0, must-revalidate">
+
+<link rel="stylesheet" href="{% static 'css/humanresource/salary.css' %}" type="text/css" />
+{% endblock %}
+
+{% block content-header %}
+<div class="HeaderTitle">
+    인당효율
+</div>
+{% endblock %}
+
+<!-- Content Block -->
+{% block content %}
+
+{% endblock %}
+
+<!-- Popup Block -->
+{% block popup %}
+{% endblock %}
+
+<!-- Script Block -->
+{% block script %}
+<script src="{% static 'js/hr/authority.js' %}"></script>
+
+{% endblock %}
