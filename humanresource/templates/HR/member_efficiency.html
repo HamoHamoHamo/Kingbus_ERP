@@ -4,7 +4,7 @@
 {% block head %}
 <meta http-equiv="Cache-Control" content="private, no-cache, no-store, max-age=0, must-revalidate">
 
-<link rel="stylesheet" href="{% static 'css/humanresource/salary.css' %}" type="text/css" />
+<link rel="stylesheet" href="{% static 'css/humanresource/member_efficiency.css' %}" type="text/css" />
 {% endblock %}
 
 {% block content-header %}
@@ -15,6 +15,70 @@
 
 <!-- Content Block -->
 {% block content %}
+<div class="all-container efficiency-div"> 
+    <div class="run-container efficiency-div"> <!-- 운행량 -->
+        <div class="total-run-box efficiency-div"> <!-- 총 운행량 box -->
+            <!-- 총 운행량 contents -->
+            <div class="total-run-title-box efficiency-div">
+                <p class="total-run-title-label">총 운행량 달성 비율</p>
+            </div>
+
+            <div class="total-run-chart-box">
+                <div class="total-run-pie-chart efficiency-div">
+                    <span class="total-run-pie-chart-center">
+                        76%
+                    </span>
+                </div>
+
+                <div class="total-run-chart-description-box efficiency-div">
+                    <input class="total-run-chart-filter-button" type="button" value="일별">
+                    
+                </div>
+            </div>
+
+        </div>
+    
+        <div class="personal-run-box efficiency-div"> <!-- 개인 운행량 box -->
+            <!-- 개인 운행량 contents -->
+            <div class="personal-run-title-box efficiency-div">
+                <p class="personal-run-title-label">개인 운행량 달성 비율</p>
+            </div>
+
+            <div class="personal-run-chart-box efficiency-div">
+                <div class="personal-run-pie-chart efficiency-div">
+                    <span class="personal-run-pie-chart-center">
+                        76%
+                    </span>
+                </div>
+
+                <div class="personal-run-chart-description-box efficiency-div">
+                
+                </div>
+            </div>
+            
+        </div>
+
+    </div>
+    
+    <div class="search-container efficiency-div"> <!-- 검색 box-->
+        <div class="search-dispatch-path-box efficiency-div">
+
+        </div>
+
+        <div class="search-detail-box efficiency-div">
+
+        </div>
+
+        <div class="search-filter-box efficiency-div">
+        
+        </div>
+
+        <div class="search-table-box efficiency-div">
+
+        </div>
+    </div>
+
+</div>
 
 {% endblock %}
 
