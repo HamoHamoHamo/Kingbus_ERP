@@ -1,4 +1,4 @@
-const addSalarly = document.querySelectorAll(".scrolling_table-list_body td:nth-child(14)")
+const addSalarly = document.querySelectorAll(".additionalTd")
 const addSalaryPopup = document.querySelector(".addSalaryPopup")
 const popupBgModulesAddSalary = document.querySelector(".popupBgModulesAddSalary")
 const addSalaryCloseBtn = document.querySelector(".addSalaryCloseBtn")

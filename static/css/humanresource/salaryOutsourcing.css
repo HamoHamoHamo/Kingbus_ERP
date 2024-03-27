@@ -1,0 +1,31 @@
+.salaryContainer td:nth-child(6) {
+    width: 6%;
+}
+
+.salaryContainer td:nth-child(7),
+.salaryContainer td:nth-child(9),
+.salaryContainer td:nth-child(10),
+.salaryContainer td:nth-child(11),
+.salaryContainer td:nth-child(12) {
+    width: 5%;
+}
+
+.salaryContainer td:nth-child(13) {
+    width: 7%;
+}
+
+.salaryTotalContainer td:nth-child(2) {
+    width: 6%;
+}
+
+.salaryTotalContainer td:nth-child(3),
+.salaryTotalContainer td:nth-child(4),
+.salaryTotalContainer td:nth-child(5),
+.salaryTotalContainer td:nth-child(6),
+.salaryTotalContainer td:nth-child(7) {
+    width: 5%;
+}
+
+.salaryTotalContainer td:nth-child(8) {
+    width: 7%;
+}

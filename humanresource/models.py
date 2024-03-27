@@ -50,6 +50,7 @@ class Member(models.Model):
     service_allowance = models.CharField(verbose_name='근속수당', max_length=20, null=False, default=0)
     annual_allowance = models.CharField(verbose_name='연차수당', max_length=20, null=False, default=0)
     performance_allowance = models.CharField(verbose_name='성과급', max_length=20, null=False, default=0)
+    overtime_allowance = models.CharField(verbose_name='근로추가수당', max_length=20, null=False, default=0)
     meal = models.CharField(verbose_name='식대', max_length=20, null=False, default=0)
     
     pub_date = models.DateTimeField(verbose_name="등록날짜", auto_now_add=True, null=False)
@@ -99,11 +100,23 @@ class MemberFile(models.Model):
 
 
 class Salary(models.Model):
+    def calculate_total(self):
+        member = self.member_id
+        if member.role == '용역' or member.role == '관리자':
+            return int(self.performance_allowance) + int(self.attendance) + int(self.leave) + int(self.order) + int(self.assignment) + int(self.additional) - int(self.deduction)
+        elif (member.role == '팀장' or member.role == '운전원') and member.allowance_type == '기사수당(현재)':
+            return int(self.base) + int(self.service_allowance) + int(self.performance_allowance) + int(self.annual_allowance) + int(self.meal) + int(self.attendance) + int(self.leave) + int(self.order) + int(self.assignment) + int(self.additional) - int(self.deduction)
+        elif (member.role == '팀장' or member.role == '운전원') and member.allowance_type == '기사수당(변경)':
+            return int(self.overtime_allowance) + int(self.performance_allowance) + int(self.attendance) + int(self.leave) + int(self.order) + int(self.assignment) + int(self.additional) - int(self.deduction)
+        else:
+            return "error"
+
     member_id = models.ForeignKey(Member, on_delete=models.CASCADE, related_name="salary", null=True)
     base = models.CharField(verbose_name='기본급', max_length=20, null=False, default=0)
     service_allowance = models.CharField(verbose_name='근속수당', max_length=20, null=False, default=0)
     performance_allowance = models.CharField(verbose_name='성과급', max_length=20, null=False, default=0)
     annual_allowance = models.CharField(verbose_name='연차수당', max_length=20, null=False, default=0)
+    overtime_allowance = models.CharField(verbose_name='근로추가수당', max_length=20, null=False, default=0)
     meal = models.CharField(verbose_name='식대', max_length=20, null=False, default=0)
     attendance = models.CharField(verbose_name='출근요금', max_length=20, null=False)
     leave = models.CharField(verbose_name='퇴근요금', max_length=20, null=False)
