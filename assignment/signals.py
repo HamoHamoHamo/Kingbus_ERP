@@ -29,7 +29,8 @@ def save_connect(sender, instance, created, **kwargs):
         salary = Salary.objects.filter(member_id=member).get(month=month)
         allowance = AssignmentConnect.objects.filter(member_id=member).filter(start_date__startswith=month).aggregate(Sum('allowance'))
         salary.assignment = int(allowance['allowance__sum']) if allowance['allowance__sum'] else 0
-        salary.total = int(salary.base) + int(salary.service_allowance) + int(salary.performance_allowance) + int(salary.annual_allowance) + int(salary.meal) + int(salary.attendance) + int(salary.leave) + int(salary.order) + int(salary.assignment) + int(salary.additional) - int(salary.deduction)
+        salary.total = salary.calculate_total()
+        # salary.total = int(salary.base) + int(salary.service_allowance) + int(salary.performance_allowance) + int(salary.annual_allowance) + int(salary.meal) + int(salary.attendance) + int(salary.leave) + int(salary.order) + int(salary.assignment) + int(salary.additional) - int(salary.deduction)
         salary.save()
     except Salary.DoesNotExist:
         new_salary(creator, month, member)
@@ -48,7 +49,8 @@ def delete_connect(sender, instance, **kwargs):
         salary = Salary.objects.filter(member_id=member).get(month=month)
         allowance = AssignmentConnect.objects.filter(member_id=member).filter(start_date__startswith=month).aggregate(Sum('allowance'))
         salary.assignment = int(allowance['allowance__sum']) if allowance['allowance__sum'] else 0
-        salary.total = int(salary.base) + int(salary.service_allowance) + int(salary.performance_allowance) + int(salary.annual_allowance) + int(salary.meal) + int(salary.attendance) + int(salary.leave) + int(salary.order) + int(salary.assignment) + int(salary.additional) - int(salary.deduction)
+        salary.total = salary.calculate_total()
+        # salary.total = int(salary.base) + int(salary.service_allowance) + int(salary.performance_allowance) + int(salary.annual_allowance) + int(salary.meal) + int(salary.attendance) + int(salary.leave) + int(salary.order) + int(salary.assignment) + int(salary.additional) - int(salary.deduction)
         salary.save()
     except Member.DoesNotExist:
         pass

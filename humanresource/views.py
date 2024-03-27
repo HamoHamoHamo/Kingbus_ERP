@@ -10,6 +10,7 @@ from django.contrib.auth.hashers import make_password, check_password
 from django.db.models import Sum, Q
 from django.http import Http404, HttpResponse, HttpResponseNotAllowed, HttpResponseBadRequest
 from django.shortcuts import render, redirect, get_object_or_404
+from django.urls import resolve
 from django.views import generic
 from enum import Enum
 from config.settings import FORMAT
@@ -30,7 +31,6 @@ from media_firebase import upload_to_firebase, get_download_url, delete_firebase
 
 TODAY = str(datetime.now())[:10]
 WEEK = ['(월)', '(화)', '(수)', '(목)', '(금)', '(토)', '(일)', ]
-
 
 def send_message(title, body, token, topic):
     cred_path = os.path.join(BASE_DIR, CRED_PATH)
@@ -634,25 +634,28 @@ class SalaryList(generic.ListView):
     def get_queryset(self):
         month = self.request.GET.get('month', TODAY[:7])
         name = self.request.GET.get('name', '')
-        search_type = self.request.GET.get('type')
 
         authority = self.request.session.get('authority')
         if authority >= 3:
             id = self.request.session.get('user')
             member_list = Member.objects.filter(entering_date__lt=month+'-32').filter(id=id)
-        elif search_type == '일반':
-            member_list = Member.objects.filter(entering_date__lt=month+'-32').filter(Q(role='팀장')|Q(role='운전원')).filter(use='사용').order_by('name')
-            if name:
-                member_list = member_list.filter(name__contains=name)
-        elif search_type == '용역':
-            member_list = Member.objects.filter(entering_date__lt=month+'-32').filter(role='용역').filter(use='사용').order_by('name')
-            if name:
-                member_list = member_list.filter(name__contains=name)
+            return member_list
         else:
-            member_list = Member.objects.filter(entering_date__lt=month+'-32').filter(Q(role='팀장')|Q(role='운전원')|Q(role='용역')).filter(use='사용').order_by('name')
+            member_list = Member.objects.filter(entering_date__lt=month+'-32').filter(use='사용').order_by('name')
             if name:
                 member_list = member_list.filter(name__contains=name)
         
+        view_name = resolve(self.request.path_info).url_name
+        if view_name == 'salary':
+            member_list = member_list.filter(Q(role='팀장')|Q(role='운전원')).filter(allowance_type='기사수당(현재)')
+        elif view_name == 'salary_change':
+            member_list = member_list.filter(Q(role='팀장')|Q(role='운전원')).filter(allowance_type='기사수당(변경)')
+        elif view_name == 'salary_outsourcing':
+            member_list = member_list.filter(Q(role='용역'))
+        elif view_name == 'salary_manager':
+            member_list = member_list.filter(Q(role='관리자'))
+        else:
+            raise HttpResponseBadRequest('url에러')
         return member_list
 
     def get_context_data(self, **kwargs):
@@ -904,6 +907,20 @@ def salary_detail(request):
     }
     return render(request, 'HR/salary_detail.html', context)
 
+class ChangeSalaryList(SalaryList):
+    template_name = 'HR/salary_change.html'
+    context_object_name = 'member_list'
+    model = Member
+
+class OutsourcingSalaryList(SalaryList):
+    template_name = 'HR/salary_outsourcing.html'
+    context_object_name = 'member_list'
+    model = Member  
+
+class ManagerSalaryList(SalaryList):
+    template_name = 'HR/salary_manager.html'
+    context_object_name = 'member_list'
+    model = Member  
 
 def salary_edit(request):
     if request.method == 'POST':
@@ -913,33 +930,34 @@ def salary_edit(request):
 
         base_list = request.POST.getlist('base')
         service_list = request.POST.getlist('service')
-        position_list = request.POST.getlist('position')
+        performance_list = request.POST.getlist('performance')
         annual_list = request.POST.getlist('annual')
         meal_list = request.POST.getlist('meal')
         id_list = request.POST.getlist('id')
         month = request.POST.get('month')
 
-        for base, service, position, annual, meal, id in zip(base_list, service_list, position_list, annual_list, meal_list, id_list):
+        for base, service, performance, annual, meal, id in zip(base_list, service_list, performance_list, annual_list, meal_list, id_list):
             member = get_object_or_404(Member, id=id)
             base = int(base.replace(',',''))
             service = int(service.replace(',',''))
-            position = int(position.replace(',',''))
+            performance = int(performance.replace(',',''))
             annual = int(annual.replace(',',''))
             meal = int(str(meal).replace(',',''))
 
             salary = Salary.objects.filter(member_id=member).get(month=month)
             salary.base = base
             salary.service_allowance = service
-            salary.performance_allowance = position
+            salary.performance_allowance = performance
             salary.annual_allowance = annual
             salary.meal = meal
-            salary.total = int(salary.meal) + int(salary.attendance) + int(salary.leave) + int(salary.order) + int(salary.base) + int(salary.service_allowance) + int(salary.performance_allowance) + int(salary.annual_allowance) + int(salary.additional) - int(salary.deduction)
+            salary.save()
+            salary.total = salary.calculate_total()
             salary.save()
 
             if TODAY[:7] <= month:
                 member.base = base
                 member.service_allowance = service
-                member.performance_allowance = position
+                member.performance_allowance = performance
                 member.annual_allowance = annual
                 member.save()
 
@@ -948,7 +966,7 @@ def salary_edit(request):
                 # for e_salary in edit_salary_list:
                 #     e_salary.base = base
                 #     e_salary.service_allowance = service
-                #     e_salary.performance_allowance = position
+                #     e_salary.performance_allowance = performance
                 #     e_salary.total = int(e_salary.meal) + int(e_salary.attendance) + int(e_salary.leave) + int(e_salary.order) + int(e_salary.base) + int(e_salary.service_allowance) + int(e_salary.performance_allowance) + int(e_salary.additional) - int(e_salary.deduction)
                 #     e_salary.save()
 
@@ -958,6 +976,90 @@ def salary_edit(request):
     else:
         return HttpResponseNotAllowed(['post'])
 
+def salary_change_edit(request):
+    if request.method == 'POST':
+        user_auth = request.session.get('authority')
+        if user_auth >= 3:
+            return render(request, 'authority.html')
+
+        overtime_list = request.POST.getlist('overtime')
+        performance_list = request.POST.getlist('performance')
+        id_list = request.POST.getlist('id')
+        month = request.POST.get('month')
+
+        for overtime, performance, id in zip(overtime_list, performance_list, id_list):
+            member = get_object_or_404(Member, id=id)
+            overtime = int(overtime.replace(',',''))
+            performance = int(performance.replace(',',''))
+
+            salary = Salary.objects.filter(member_id=member).get(month=month)
+            salary.overtime_allowance = overtime
+            salary.performance_allowance = performance
+            salary.save()
+            salary.total = salary.calculate_total()
+            salary.save()
+
+            if TODAY[:7] <= month:
+                member.overtime_allowance = overtime
+                member.performance_allowance = performance
+                member.save()
+        return redirect(request.META.get('HTTP_REFERER', 'redirect_if_referer_not_found'))
+    else:
+        return HttpResponseNotAllowed(['post'])
+
+def salary_outsourcing_edit(request):
+    if request.method == 'POST':
+        user_auth = request.session.get('authority')
+        if user_auth >= 3:
+            return render(request, 'authority.html')
+
+        performance_list = request.POST.getlist('performance')
+        id_list = request.POST.getlist('id')
+        month = request.POST.get('month')
+
+        for performance, id in zip(performance_list, id_list):
+            member = get_object_or_404(Member, id=id)
+            performance = int(performance.replace(',',''))
+
+            salary = Salary.objects.filter(member_id=member).get(month=month)
+            salary.performance_allowance = performance
+            salary.save()
+            salary.total = salary.calculate_total()
+            salary.save()
+
+            if TODAY[:7] <= month:
+                member.performance_allowance = performance
+                member.save()
+        return redirect(request.META.get('HTTP_REFERER', 'redirect_if_referer_not_found'))
+    else:
+        return HttpResponseNotAllowed(['post'])
+
+def salary_manager_edit(request):
+    if request.method == 'POST':
+        user_auth = request.session.get('authority')
+        if user_auth >= 3:
+            return render(request, 'authority.html')
+
+        performance_list = request.POST.getlist('performance')
+        id_list = request.POST.getlist('id')
+        month = request.POST.get('month')
+
+        for performance, id in zip(performance_list, id_list):
+            member = get_object_or_404(Member, id=id)
+            performance = int(performance.replace(',',''))
+
+            salary = Salary.objects.filter(member_id=member).get(month=month)
+            salary.performance_allowance = performance
+            salary.save()
+            salary.total = salary.calculate_total()
+            salary.save()
+
+            if TODAY[:7] <= month:
+                member.performance_allowance = performance
+                member.save()
+        return redirect(request.META.get('HTTP_REFERER', 'redirect_if_referer_not_found'))
+    else:
+        return HttpResponseNotAllowed(['post'])
 
 def salary_additional_create(request):
     if request.method == 'POST':
@@ -1088,6 +1190,7 @@ def salary_load(request):
             service_allowance = prev_salary.service_allowance
             performance_allowance = prev_salary.performance_allowance
             annual_allowance = prev_salary.annual_allowance
+            overtime_allowance = prev_salary.overtime_allowance
             meal = prev_salary.meal
 
             salary = Salary.objects.filter(month=month).get(member_id=member)
@@ -1095,8 +1198,10 @@ def salary_load(request):
             salary.service_allowance = service_allowance
             salary.performance_allowance = performance_allowance
             salary.annual_allowance = annual_allowance
+            salary.overtime_allowance = overtime_allowance
             salary.meal = meal
-            salary.total = int(salary.meal) + int(salary.attendance) + int(salary.leave) + int(salary.order) + int(salary.base) + int(salary.service_allowance) + int(salary.performance_allowance) + int(salary.annual_allowance) + int(salary.additional) - int(salary.deduction)
+            salary.total = salary.calculate_total()
+            # salary.total = int(salary.meal) + int(salary.attendance) + int(salary.leave) + int(salary.order) + int(salary.base) + int(salary.service_allowance) + int(salary.performance_allowance) + int(salary.annual_allowance) + int(salary.additional) - int(salary.deduction)
             salary.save()
             
 

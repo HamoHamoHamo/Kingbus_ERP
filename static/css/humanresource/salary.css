@@ -34,7 +34,7 @@
 }
 
 .salaryContainer td {
-    padding: 0;
+    /* padding: 0; */
     box-sizing: border-box;
 }
 
@@ -67,16 +67,17 @@
 .salaryContainer td:nth-child(12),
 .salaryContainer td:nth-child(13),
 .salaryContainer td:nth-child(14),
-.salaryContainer td:nth-child(15) {
+.salaryContainer td:nth-child(15),
+.salaryContainer td:nth-child(16) {
     width: 5%;
 }
 
-.salaryContainer td:nth-child(16) {
+.salaryContainer td:nth-child(17) {
     width: 7%;
 }
 
-.salaryContainer tbody td:nth-child(14),
-.salaryContainer tbody td:nth-child(15) {
+.salaryContainer tbody td:nth-child(15),
+.salaryContainer tbody td:nth-child(16) {
     background-color: rgb(255, 242, 204);
     cursor: pointer;
 }
@@ -103,9 +104,10 @@
 .salaryContainer tbody td:nth-child(13),
 .salaryContainer tbody td:nth-child(14),
 .salaryContainer tbody td:nth-child(15),
-.salaryContainer tbody td:nth-child(16) {
+.salaryContainer tbody td:nth-child(16),
+.salaryContainer tbody td:nth-child(17) {
     text-align: right;
-    padding-right: 1rem;
+    padding-right: 0.5rem;
 }
 
 
@@ -343,10 +345,11 @@
 .salaryTotalContainer td:nth-child(8),
 .salaryTotalContainer td:nth-child(9),
 .salaryTotalContainer td:nth-child(10),
-.salaryTotalContainer td:nth-child(11) {
+.salaryTotalContainer td:nth-child(11),
+.salaryTotalContainer td:nth-child(12) {
     width: 5%;
 }
-.salaryTotalContainer td:nth-child(12) {
+.salaryTotalContainer td:nth-child(13) {
     width: 7%;
 }
 
@@ -358,4 +361,14 @@
 
 .popup-area-box_btn {
     margin-left: 1rem;
+}
+
+.backgroundYellow {
+    background-color: rgb(255, 242, 204);
+    cursor: pointer;
+}
+
+.textAlignRight {
+    text-align: right;
+    padding-right: 0.5rem;
 }

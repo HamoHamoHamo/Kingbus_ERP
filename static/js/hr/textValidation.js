@@ -3,18 +3,23 @@ for (i = 0; i < amountInput.length; i++){
 };
 
 function amountValidation(){
+    const tr = this.parentNode.parentNode
+
     this.value = this.value.replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
-    this.parentNode.parentNode.children[5].children[0].name = "base"
-    this.parentNode.parentNode.children[6].children[0].name = "service"
-    this.parentNode.parentNode.children[7].children[0].name = "annual"
-    this.parentNode.parentNode.children[8].children[0].name = "position"
-    this.parentNode.parentNode.children[9].children[0].name = "meal"
-    if(this.parentNode.parentNode.children[16] === undefined){
+    tr.querySelector('.salaryOvertimeAllowance') ? tr.querySelector('.salaryOvertimeAllowance').name = 'overtime' : null
+    tr.querySelector('.salaryBase') ? tr.querySelector('.salaryBase').name = 'base' : null
+    tr.querySelector('.salaryServiceAllowance') ? tr.querySelector('.salaryServiceAllowance').name = 'service' : null
+    tr.querySelector('.salaryAnnualAllowance') ? tr.querySelector('.salaryAnnualAllowance').name = 'annual' : null
+    tr.querySelector('.salaryPerformanceAllowance') ? tr.querySelector('.salaryPerformanceAllowance').name = 'performance' : null
+    tr.querySelector('.salaryMeal') ? tr.querySelector('.salaryMeal').name = 'meal' : null
+
+    if(tr.querySelector('.hiddenId') == undefined){
         const hidden = document.createElement("input")
+        hidden.setAttribute("class", "hiddenId")
         hidden.setAttribute("type", "hidden")
         hidden.setAttribute("name", "id")
-        hidden.setAttribute("value", this.parentNode.parentNode.children[0].children[0].value)
-        this.parentNode.parentNode.appendChild(hidden)
+        hidden.setAttribute("value", tr.children[0].children[0].value)
+        tr.appendChild(hidden)
     }    
 }
 

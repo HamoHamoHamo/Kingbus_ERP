@@ -5,11 +5,12 @@
 <meta http-equiv="Cache-Control" content="private, no-cache, no-store, max-age=0, must-revalidate">
 
 <link rel="stylesheet" href="{% static 'css/humanresource/salary.css' %}" type="text/css" />
+<link rel="stylesheet" href="{% static 'css/humanresource/salaryChange.css' %}" type="text/css" />
 {% endblock %}
 
 {% block content-header %}
 <div class="HeaderTitle">
-    급여(정규직 현재)
+    급여(정규직 변경)
 </div>
 {% endblock %}
 
@@ -17,13 +18,14 @@
 <div class="search-Container">
     <form class="search-Form">
         <label for="" class="search-Form_label">날짜 : </label>
-        <input autocomplete="off" name='month' value="{{month}}" type="month" class="search-Form_input search-Form_input-Month">
+        <input autocomplete="off" name='month' value="{{month}}" type="month"
+            class="search-Form_input search-Form_input-Month">
         <label for="" class="search-Form_label">이름 : </label>
         <input autocomplete="off" name="name" value="{{name}}" type="text" class="search-Form_input">
         <select class="inputModules marginLeft2" name="type">
-            <option {% if search_type == "" %} selected {% endif %} value="">구분</option>
-            <option {% if search_type == "일반" %} selected {% endif %} value="일반">일반</option>
-            <option {% if search_type == "용역" %} selected {% endif %} value="용역">용역</option>
+            <option {% if search_type == "" %} selected {% endif %} value = "">구분</option>
+            <option {% if search_type == "일반" %} selected {% endif %} value = "일반">일반</option>
+            <option {% if search_type == "용역" %} selected {% endif %} value = "용역">용역</option>
         </select>
         <input type="submit" class="search-Form_search-btn" value="검색">
     </form>
@@ -33,7 +35,7 @@
 </div>
 
 
-<form method="post" action="{% url 'HR:salary_edit' %}" class="salaryContainer">
+<form method="post" action="{% url 'HR:salary_change_edit' %}" class="salaryContainer">
     {% csrf_token %}
     <input type="hidden" name="month" value="{{month}}">
     <input class="btnModules salarySaveBtn" type="submit" value="저장">
@@ -49,11 +51,8 @@
                     <td class="table-list_head-tr_td">이름</td>
                     <td class="table-list_head-tr_td">구분</td>
                     <td class="table-list_head-tr_td">입사일자</td>
-                    <td class="table-list_head-tr_td">기본급</td>
-                    <td class="table-list_head-tr_td">근속수당</td>
-                    <td class="table-list_head-tr_td">연차수당</td>
+                    <td class="table-list_head-tr_td">근로추가수당</td>
                     <td class="table-list_head-tr_td">성과급</td>
-                    <td class="table-list_head-tr_td">식대</td>
                     <td class="table-list_head-tr_td">출근수당</td>
                     <td class="table-list_head-tr_td">퇴근수당</td>
                     <td class="table-list_head-tr_td">일반수당</td>
@@ -77,7 +76,8 @@
                     </td>
                     <td class="checkTd table-list_body-tr_td">{{forloop.counter}}</td>
                     <td class="checkTd table-list_body-tr_td {% if salary.salary_checked %} bluelink {% endif %}">
-                        {{member.name}}</td>
+                        {{member.name}}
+                    </td>
                     <td class="checkTd table-list_body-tr_td">{{member.role}}</td>
                     <td class="checkTd table-list_body-tr_td">
                         {{member.entering_date}} {% if year_list|index:forloop.counter0|slice:':1' != '0' %}
@@ -85,32 +85,36 @@
                         {% else %}({{year_list|index:forloop.counter0|slice:'1:'}}개월)
                         {% endif %}
                     </td>
+                    <!-- JSCode -->
                     <td class="checkTd table-list_body-tr_td">
-                        <input type="text" class="amountInput length100 salaryBase" value="{{salary.base}}">
+                        <input type="text" class="addComma amountInput length100 salaryOvertimeAllowance" value="{{salary.overtime_allowance}}">
                     </td>
                     <td class="checkTd table-list_body-tr_td">
-                        <input type="text" class="amountInput length100 salaryServiceAllowance" value="{{salary.service_allowance}}">
+                        <input type="text" class="addComma amountInput length100 salaryPerformanceAllowance" value="{{salary.performance_allowance}}"> <!-- 성과급 -->
                     </td>
-                    <td class="checkTd table-list_body-tr_td">
-                        <input type="text" class="amountInput length100 salaryAnnualAllowance" value="{{salary.annual_allowance}}">
+                    <td class="checkTd table-list_body-tr_td addComma textAlignRight salaryAttendance">
+                        {{salary.attendance}} <!-- 출근수당 -->
                     </td>
-                    <td class="checkTd table-list_body-tr_td">
-                        <input type="text" class="amountInput length100 salaryPerformanceAllowance" value="{{salary.performance_allowance}}">
+                    <td class="checkTd table-list_body-tr_td addComma textAlignRight salaryLeave">
+                        {{salary.leave}} <!-- 퇴근수당 -->
                     </td>
-                    <td class="checkTd table-list_body-tr_td">
-                        <input type="text" class="amountInput length100 salaryMeal" value="{{salary.meal}}">
+                    <td class="checkTd table-list_body-tr_td addComma textAlignRight salaryOrder">
+                        {{salary.order}} <!-- 일반수당 -->
                     </td>
-                    <td class="checkTd table-list_body-tr_td salaryAttendance addComma">{{salary.attendance}}</td>
-                    <td class="checkTd table-list_body-tr_td salaryLeave addComma">{{salary.leave}}</td>
-                    <td class="checkTd table-list_body-tr_td salaryOrder addComma">{{salary.order}}</td>
-                    <td class="checkTd table-list_body-tr_td salaryAssignment addComma">{{salary.assignment}}</td>
-                    <td class="table-list_body-tr_td salaryAdditional addComma additionalTd">{{salary.additional}}</td>
-                    <td class="table-list_body-tr_td salaryDeduction addComma deductionTd">{{salary.deduction}}</td>
-                    <td class="checkTd table-list_body-tr_td salaryTotal addComma">{{salary.total}}</td>
+                    <td class="checkTd table-list_body-tr_td addComma textAlignRight salaryAssignment">
+                        {{salary.assignment}}
+                    </td>
+                    <td class="table-list_body-tr_td addComma textAlignRight salaryAdditional backgroundYellow additionalTd">
+                        {{salary.additional}} <!-- 추가수당 -->
+                    </td>
+                    <td class="table-list_body-tr_td addComma textAlignRight salaryDeduction backgroundYellow deductionTd">
+                        {{salary.deduction}} <!-- 공제 -->
+                    </td>
+                    <td class="checkTd table-list_body-tr_td addComma textAlignRight salaryTotal addComma">{{salary.total}}</td> <!-- 합계 -->
                 </tr>
                 {% endwith %}
                 {% endfor %}
-                
+
             </tbody>
         </table>
     </div>
@@ -121,11 +125,8 @@
         <tbody>
             <tr class="table-list_body-tr totalSalaryList">
                 <td class="table-list_body-tr_td" colspan="4">합계</td>
-                <td class="table-list_body-tr_td totalBase"></td>
-                <td class="table-list_body-tr_td totalServiceAllowance"></td>
-                <td class="table-list_body-tr_td totalAnnualAllowance"></td>
+                <td class="table-list_body-tr_td totalOvertimeAllowance"></td>
                 <td class="table-list_body-tr_td totalPerformanceAllowance"></td>
-                <td class="table-list_body-tr_td totalMeal"></td>
                 <td class="table-list_body-tr_td totalAttendance"></td>
                 <td class="table-list_body-tr_td totalLeave"></td>
                 <td class="table-list_body-tr_td totalOrder"></td>
@@ -300,8 +301,8 @@
     function salaryPrint() {
         let checkDriver = 0
         let checkerArr = []
-        for (i = 0; i < amountCheck.length; i++){
-            if(amountCheck[i].checked){
+        for (i = 0; i < amountCheck.length; i++) {
+            if (amountCheck[i].checked) {
                 checkDriver++
                 checkerArr.push(amountCheck[i].value)
             }
@@ -318,21 +319,21 @@
     const loadForm = document.querySelector('.salaryContainer');
 
     {% autoescape off %}
-    const deductionList = {{deduction_list}};
+    const deductionList = {{ deduction_list }};
     console.log("deductionList", deductionList);
-    const additionalList = {{additional_list}};
+    const additionalList = {{ additional_list }};
     console.log("additionalList", additionalList);
-    
+
     {% endautoescape %}
 
 
     function loadPrevMonthlyBase() {
-        if (confirm('저번달 기본급, 근속수당, 연차수당, 직급수당, 식대를 불러오시겠습니까?')) {
+        if (confirm('저번달 근로추가수당, 성과급을 불러오시겠습니까?')) {
             loadForm.action = "{% url 'HR:salary_load' %}"
             loadForm.submit()
         }
     }
-    
+
 </script>
 <script src="{% static 'js/hr/authority.js' %}"></script>
 <script src="{% static 'js/hr/addSalary.js' %}"></script>

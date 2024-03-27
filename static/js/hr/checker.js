@@ -1,21 +1,8 @@
-const salaryItems = document.querySelectorAll(".salaryContainer .table-list_body-tr")
 const amountCheckAll = document.querySelector(".amountCheckAll")
+const checkTd = document.querySelectorAll(".checkTd")
 
-for (i = 0; i < salaryItems.length; i++){
-    salaryItems[i].children[0].addEventListener("click", checkingChecker)
-    salaryItems[i].children[1].addEventListener("click", checkingChecker)
-    salaryItems[i].children[2].addEventListener("click", checkingChecker)
-    salaryItems[i].children[3].addEventListener("click", checkingChecker)
-    salaryItems[i].children[4].addEventListener("click", checkingChecker)
-    salaryItems[i].children[5].addEventListener("click", checkingChecker)
-    salaryItems[i].children[6].addEventListener("click", checkingChecker)
-    salaryItems[i].children[7].addEventListener("click", checkingChecker)
-    salaryItems[i].children[8].addEventListener("click", checkingChecker)
-    salaryItems[i].children[9].addEventListener("click", checkingChecker)
-    salaryItems[i].children[10].addEventListener("click", checkingChecker)
-    salaryItems[i].children[11].addEventListener("click", checkingChecker)
-    salaryItems[i].children[12].addEventListener("click", checkingChecker)
-    salaryItems[i].children[15].addEventListener("click", checkingChecker)
+for (i = 0; i < checkTd.length; i++){
+    checkTd[i].addEventListener("click", checkingChecker)
 };
 
 function checkingChecker(){

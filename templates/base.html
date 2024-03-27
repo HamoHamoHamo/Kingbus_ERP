@@ -147,7 +147,16 @@
                   <li class="sideMenuNav2Menu">직원관리</li>
                 </a>
                 <a href="{% url 'HR:salary' %}" class="sideMenuNav2Link">
-                  <li class="sideMenuNav2Menu">급여관리</li>
+                  <li class="sideMenuNav2Menu">급여관리(현재)</li>
+                </a>
+                <a href="{% url 'HR:salary_change' %}" class="sideMenuNav2Link">
+                  <li class="sideMenuNav2Menu">급여관리(변경)</li>
+                </a>
+                <a href="{% url 'HR:salary_outsourcing' %}" class="sideMenuNav2Link">
+                  <li class="sideMenuNav2Menu">급여관리(용역)</li>
+                </a>
+                <a href="{% url 'HR:salary_manager' %}" class="sideMenuNav2Link">
+                  <li class="sideMenuNav2Menu">급여관리(관리자)</li>
                 </a>
                 <a href="{% url 'HR:team' %}" class="sideMenuNav2Link">
                   <li class="sideMenuNav2Menu">팀관리</li>
