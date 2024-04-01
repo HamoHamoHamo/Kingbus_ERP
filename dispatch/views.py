@@ -656,7 +656,7 @@ class RegularlyDispatchList(generic.ListView):
             context['group'] = RegularlyGroup.objects.order_by('number','name').first()
         context['date'] = date
 
-        driver_list = Member.objects.filter(Q(role='운전원')|Q(role='팀장')).filter(use='사용').values_list('id', 'name')
+        driver_list = Member.objects.filter(Q(role='운전원')|Q(role='팀장')|Q(role='관리자')).filter(use='사용').values_list('id', 'name')
         context['driver_dict'] = {}
         for driver in driver_list:
             context['driver_dict'][driver[0]] = driver[1]
