@@ -4,18 +4,18 @@
 {% block head %}
 <meta http-equiv="Cache-Control" content="private, no-cache, no-store, max-age=0, must-revalidate">
 
-<link rel="stylesheet" href="{% static 'css/humanresource/member_efficiency.css' %}" type="text/css" />
+<link rel="stylesheet" href="{% static 'css/vehicle/efficiency.css' %}" type="text/css" />
 {% endblock %}
 
 {% block content-header %}
 <div class="HeaderTitle">
-    인당효율
+    대당효율
 </div>
 {% endblock %}
 
 <!-- Content Block -->
-{% block content %} 
-<div class="all-container efficiency-div"> 
+{% block content %}
+<div class="all-container efficiency-div">
     <div class="run-container efficiency-div"> <!-- 운행량 -->
         <div class="total-run-box efficiency-div"> <!-- 총 운행량 box -->
             <!-- 총 운행량 contents -->
@@ -30,7 +30,7 @@
                             76%
                         </span>
                     </div>
-                
+
                     <div class="total-run-chart-description-box efficiency-div">
                         <div class="total-run-chart-description-input-box">
                             <input class="total-run-chart-filter-button" type="button" value="일별">
@@ -50,7 +50,7 @@
                         </div>
                     </div>
                 </div>
-                
+
                 <div class="total-run-average-figure-box efficiency-div">
                     <div class="total-run-average-figure-title-box efficiency-div">
                         <p class="total-run-average-figure-title-label">평균 운행량</p>
@@ -75,7 +75,7 @@
             </div>
 
         </div>
-    
+
         <div class="personal-run-box efficiency-div"> <!-- 개인 운행량 box -->
             <!-- 개인 운행량 contents -->
             <div class="personal-run-title-box efficiency-div">
@@ -89,10 +89,11 @@
                             76%
                         </span>
                     </div>
-                
+
                     <div class="personal-run-chart-description-box efficiency-div">
                         <div class="personal-run-chart-description-span-box">
-                            <div class="personal-run-chart-description-span-box-child" id="personal-target-driving-amount">
+                            <div class="personal-run-chart-description-span-box-child"
+                                id="personal-target-driving-amount">
                                 <span>목표 운행량: 6400KM</span>
                             </div>
                             <div class="personal-run-chart-description-span-box-child">
@@ -100,7 +101,8 @@
                                 <span>달성: 현재 달성한 운행량</span>
                             </div>
                             <div class="personal-run-chart-description-span-box-child">
-                                <img class="personal-run-description-image" src="/static/images/yellowCircle.png" alt="">
+                                <img class="personal-run-description-image" src="/static/images/yellowCircle.png"
+                                    alt="">
                                 <span>미달성: 앞으로 달성해야 할 운행량</span>
                             </div>
                         </div>
@@ -109,7 +111,7 @@
                         </div>
                     </div>
                 </div>
-                
+
                 <div class="personal-run-average-figure-box efficiency-div">
                     <div class="personal-run-average-figure-title-box efficiency-div">
                         <p class="personal-run-average-figure-title-label">평균 운행량</p>
@@ -132,11 +134,11 @@
                     </table>
                 </div>
             </div>
-            
+
         </div>
 
     </div>
-    
+
     <div class="search-container efficiency-div"> <!-- 검색 box-->
         <div class="search-dispatch-path-box efficiency-div">
             <input type="text" placeholder="노선명" class="search-dispatch-path">
@@ -196,7 +198,7 @@
                 <thead class="scrolling_table-list_header">
                     <tr class="table-list_head-tr">
                         <td class="table-list_head-tr_td">
-                                <input type="checkbox" class="amountCheckAll">
+                            <input type="checkbox" class="amountCheckAll">
                         </td>
                         <td class="table-list_head-tr_td">번호</td>
                         <td class="table-list_head-tr_td">등급</td>
@@ -218,7 +220,8 @@
                 <tbody class="scrolling_table-list_body">
                     <tr class="table-list_body-tr salaryList cursor">
                         <td class="table-list_body-tr_td">
-                            <input tabindex="100" type="checkbox" class="amountCheck" name="member_id" value="{{member.id}}">
+                            <input tabindex="100" type="checkbox" class="amountCheck" name="member_id"
+                                value="{{member.id}}">
                         </td>
                         <td class="table-list_body-tr_td">0</td> <!-- 번호 -->
                         <td class="table-list_body-tr_td">
@@ -269,7 +272,6 @@
 
 <!-- Script Block -->
 {% block script %}
-<script src="{% static 'js/hr/authority.js' %}"></script>
-<script src="{% static 'js/hr/member_efficiency.js' %}"></script>
+<script src="{% static 'js/vehicle/efficiency.js' %}"></script>
 
 {% endblock %}
