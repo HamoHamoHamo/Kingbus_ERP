@@ -1,38 +1,34 @@
 new Chart(document.getElementById("mixed-chart"), {
     type: 'bar',
     data: {
-        labels: ["1900", "1950", "1999", "2050"],
+        labels: ["1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월", "9월", "10월", "11월", "12월"],
         datasets: [{
-            label: "Europe",
+            label: "팀 별 숙지 평균",
             type: "line",
-            borderColor: "#8e5ea2",
-            data: [408, 547, 675, 734],
+            borderColor: "orange",
+            data: [10, 20, 43, 75, 75, 75, 75, 75, 75, 80, 87, 100],
             fill: false
         }, {
-            label: "Africa",
+            label: "총 숙지 평균",
             type: "line",
-            borderColor: "#3e95cd",
-            data: [133, 221, 783, 2478],
+            borderColor: "blue",
+            data: [1, 20, 37, 43, 52, 61, 70, 75, 80, 80, 80, 100],
             fill: false
         }, {
-            label: "Europe",
+            label: "개인 숙지 현황",
             type: "bar",
-            backgroundColor: "rgba(0,0,0,0.2)",
-            data: [408, 547, 675, 734],
-        }, {
-            label: "Africa",
-            type: "bar",
-            backgroundColor: "rgba(0,0,0,0.2)",
-            backgroundColorHover: "#3e95cd",
-            data: [133, 221, 783, 2478]
+            backgroundColor: "green",
+            data: [10, 20, 43, 75, 75, 75, 75, 75, 75, 80, 87, 100],
         }
         ]
     },
     options: {
+        responsive: false,
+        aspectRatio: 5,
         title: {
-            display: true,
-            text: 'Population growth (millions): Europe & Africa'
+            display: false,
         },
-        legend: { display: false }
+        legend: { display: false },
+        maintainAspectRatio: false,
     }
 });

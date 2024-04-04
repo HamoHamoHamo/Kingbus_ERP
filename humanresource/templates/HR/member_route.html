@@ -5,6 +5,7 @@
 <meta http-equiv="Cache-Control" content="private, no-cache, no-store, max-age=0, must-revalidate">
 
 <link rel="stylesheet" href="{% static 'css/humanresource/member_route.css' %}" type="text/css" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
 {% endblock %}
 
 {% block content-header %}
@@ -17,19 +18,83 @@
 {% block content %}
 <div class="all-container all-div">
     <div class="left-container all-div">
-        <div class="personal-status-container all-div"></div>
-        <div class="search-container all-div"></div>
+        <div class="personal-status-container all-div">
+            <div class="personal-status-title-div title-div all-div">
+                개인 숙지 현황
+            </div>
+            <div class="personal-status-chart-div all-div">
+                <div class="personal-status-pie-chart all-div">
+                    <span class="personal-status-pie-chart-center">
+                        345/463
+                    </span>
+                </div>
+            </div>
+            <div class="personal-status-name-div all-div">
+                <span class="personal-status-name-span">김원탁 - 승무원</span>
+            </div>
+        </div>
+        <div class="search-container all-div">
+            <div class="search-title-div title-div all-div">
+                검색&필터
+            </div>
+        </div>
     </div>
     <div class="right-container all-div">
         <div class="graph-container all-div">
             <div class="graph-title-div title-div all-div">총&평균숙지도</div>
             <div class="mixed-chart-div all-div">
                 <div class="mixed-chart-description-div all-div"></div>
-                <canvas id="mixed-chart" class="all-div"></canvas>
+                <div class="mixed-chart-graph-div all-div">
+                    <canvas id="mixed-chart" class="all-div"></canvas>
+                </div>
             </div>
         </div>
-        <div class="filter-container all-div"></div>
-        <div class="table-container all-div"></div>
+        <div class="table-container all-div">
+            <table class="table-list">
+                <thead class="scrolling_table-list_header">
+                    <tr class="table-list_head-tr">
+                        <td class="table-list_head-tr_td top-left-radius-td">
+                            <input type="checkbox" class="amountCheckAll">
+                        </td>
+                        <td class="table-list_head-tr_td">번호</td>
+                        <td class="table-list_head-tr_td">등급</td>
+                        <td class="table-list_head-tr_td">팀</td>
+                        <td class="table-list_head-tr_td">이름</td>
+                        <td class="table-list_head-tr_td">숙지현황</td>
+                        <td class="table-list_head-tr_td">급여</td>
+                        <td class="table-list_head-tr_td">최초입사일</td>
+                        <td class="table-list_head-tr_td">근로형태</td>
+                        <td class="table-list_head-tr_td top-right-radius-td">나이</td>
+                    </tr>
+                </thead>
+            
+                <tbody class="scrolling_table-list_body">
+                    <tr class="table-list_body-tr salaryList cursor">
+                        <td class="table-list_body-tr_td">
+                            <input tabindex="100" type="checkbox" class="amountCheck" name="member_id" value="{{member.id}}">
+                        </td>
+                        <td class="table-list_body-tr_td">0</td> <!-- 번호 -->
+                        <td class="table-list_body-tr_td">
+                            A</td> <!-- 등급 -->
+                        <td class="table-list_body-tr_td">개발팀</td> <!-- 팀 -->
+                        <td class="table-list_body-tr_td">이주성</td> <!-- 이름 -->
+                        <td class="table-list_body-tr_td">
+                            80/400 <!-- 숙지현황 -->
+                        </td>
+                        <td class="table-list_body-tr_td">396만원</td> <!-- 급여 -->
+                        <td class="table-list_body-tr_td">
+                            2021-12-01 <!-- 최초입사일 -->
+                        </td>
+                        <td class="table-list_body-tr_td">
+                            정규직 <!-- 근로형태 -->
+                        </td>
+                        <td class="table-list_body-tr_td">
+                            27 <!-- 나이  -->
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
 </div>
 
@@ -42,6 +107,5 @@
 <!-- Script Block -->
 {% block script %}
 <script src="{% static 'js/hr/member_route.js' %}"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/Chart.min.js"></script>
 
 {% endblock %}
