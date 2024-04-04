@@ -33,7 +33,7 @@
 
                     <div class="total-run-chart-description-box efficiency-div">
                         <div class="total-run-chart-description-input-box">
-                            <input class="total-run-chart-filter-button" type="button" value="일별">
+                            <input class="total-run-chart-filter-button" type="button" value="월별">
                         </div>
                         <div class="total-run-chart-description-span-box">
                             <div class="total-run-chart-description-span-box-child" id="total-target-driving-amount">
@@ -41,11 +41,15 @@
                             </div>
                             <div class="total-run-chart-description-span-box-child">
                                 <img class="total-run-description-image" src="/static/images/blueCircle.png" alt="">
-                                <span>달성: 목표 운행량 이상</span>
+                                <span>달성: 평균 운행량 이상</span>
                             </div>
                             <div class="total-run-chart-description-span-box-child">
                                 <img class="total-run-description-image" src="/static/images/redCircle.png" alt="">
-                                <span>미달성: 목표 운행량 미만</span>
+                                <span>미달성: 평균 운행량 미만</span>
+                            </div>
+                            <div class="total-run-chart-description-span-box-child">
+                                <img class="total-run-description-image" src="/static/images/yellowCircle.png" alt="">
+                                <span>미배차: 사용하지 않는 차량</span>
                             </div>
                         </div>
                     </div>
@@ -107,7 +111,7 @@
                             </div>
                         </div>
                         <div class="personal-run-chart-description-name-box">
-                            <span class="personal-run-chart-description-name">김원탁 - 승무원</span>
+                            <span class="personal-run-chart-description-name">차량번호 - 7786</span>
                         </div>
                     </div>
                 </div>
@@ -152,7 +156,7 @@
         <div class="search-detail-box efficiency-div">
             <table class="search-detail-table">
                 <tr> <!-- 이름 및 출퇴근 -->
-                    <td class="name-td">이름</td>
+                    <td class="name-td">차량번호</td>
                     <td class="name-input-td-background">
                         <input type="text" class="name-input-td">
                     </td>
@@ -169,11 +173,11 @@
                     </td>
                 </tr>
                 <tr> <!-- 급여 및 급여 형태 -->
-                    <td class="salary-td">급어</td>
+                    <td class="salary-td">운행수</td>
                     <td class="salary-input-td-background">
                         <input type="text" class="salary-input-td">
                     </td>
-                    <td class="salary-form-td">급여형태</td>
+                    <td class="salary-form-td">차량값</td>
                     <td class="salary-form-input-td-background">
                         <input type="text" class="salary-form-input-td">
                     </td>
@@ -186,7 +190,7 @@
                 <input type="button" value="일별" class="search-filter-button">
                 <input type="button" value="주별" class="search-filter-button">
                 <input type="button" value="월별" class="search-filter-button">
-                <input type="button" value="매출 높은 순" class="search-filter-button sales-filter">
+                <input type="button" value="운행량 높은 순" class="search-filter-button sales-filter">
             </div>
             <div class="search-filter-print-box">
                 <input type="button" value="인쇄" class="search-filter-button">
@@ -201,19 +205,19 @@
                             <input type="checkbox" class="amountCheckAll">
                         </td>
                         <td class="table-list_head-tr_td">번호</td>
-                        <td class="table-list_head-tr_td">등급</td>
-                        <td class="table-list_head-tr_td">이름</td>
-                        <td class="table-list_head-tr_td">팀</td>
-                        <td class="table-list_head-tr_td">급여</td>
-                        <td class="table-list_head-tr_td">목표운행량</td>
+                        <td class="table-list_head-tr_td">순수익</td>
+                        <td class="table-list_head-tr_td">차량값</td>
                         <td class="table-list_head-tr_td">매출액</td>
                         <td class="table-list_head-tr_td">운행수</td>
                         <td class="table-list_head-tr_td">KM</td>
                         <td class="table-list_head-tr_td">시간</td>
                         <td class="table-list_head-tr_td">유류비</td>
+                        <td class="table-list_head-tr_td">수리비</td>
                         <td class="table-list_head-tr_td">공차</td>
-                        <td class="table-list_head-tr_td">최초 고용일</td>
-                        <td class="table-list_head-tr_td">근무형태</td>
+                        <td class="table-list_head-tr_td">보험료</td>
+                        <td class="table-list_head-tr_td">차고지</td>
+                        <td class="table-list_head-tr_td">연식</td>
+                        <td class="table-list_head-tr_td">이름</td>
                     </tr>
                 </thead>
 
@@ -225,36 +229,36 @@
                         </td>
                         <td class="table-list_body-tr_td">0</td> <!-- 번호 -->
                         <td class="table-list_body-tr_td">
-                            A</td> <!-- 등급 -->
-                        <td class="table-list_body-tr_td">이주성</td> <!-- 이름 -->
-                        <td class="table-list_body-tr_td">개발팀</td> <!-- 팀 -->
-                        <td class="table-list_body-tr_td">396만원</td> <!-- 급여 -->
+                            800만</td> <!-- 순수익 -->
+                        <td class="table-list_body-tr_td">2억1000만</td> <!-- 차량값 -->
+                        <td class="table-list_body-tr_td">7200만</td> <!-- 매출액 -->
+                        <td class="table-list_body-tr_td">396</td> <!-- 운행수 -->
                         <td class="table-list_body-tr_td">
-                            7000KM <!-- 목표운행량 -->
+                            7000KM <!-- KM -->
                         </td>
                         <td class="table-list_body-tr_td">
-                            1500만원 <!-- 매출액 -->
+                            100시간 <!-- 시간 -->
                         </td>
                         <td class="table-list_body-tr_td">
-                            52 <!-- 운행수 -->
+                            52 <!-- 유류비 -->
                         </td>
                         <td class="table-list_body-tr_td">
-                            7600KM <!-- KM -->
-                        </td>
-                        <td class="table-list_body-tr_td">
-                            628시간 <!-- 시간 -->
-                        </td>
-                        <td class="table-list_body-tr_td">
-                            8000 <!-- 유류비 -->
+                            230 <!-- 수리비 -->
                         </td>
                         <td class="table-list_body-tr_td">
                             0 <!-- 공차 -->
                         </td>
                         <td class="table-list_body-tr_td">
-                            2021. 11. 22 <!-- 최초 고용일 -->
+                            70 <!-- 보험료 -->
                         </td>
                         <td class="table-list_body-tr_td">
-                            프리랜서 <!-- 근무형태 -->
+                            고색동 <!-- 차고지 -->
+                        </td>
+                        <td class="table-list_body-tr_td">
+                            2021. 11. 22 <!-- 연식 -->
+                        </td>
+                        <td class="table-list_body-tr_td">
+                            유니버스 <!-- 이름 -->
                         </td>
                     </tr>
                 </tbody>

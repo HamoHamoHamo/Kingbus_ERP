@@ -5,19 +5,24 @@ const totalChartMainValue = document.querySelector(".total-run-pie-chart-center"
 const personalChart = document.querySelector(".personal-run-pie-chart")
 const personalChartMainValue = document.querySelector(".personal-run-pie-chart-center")
 
-const setTotalChart = (percent) => {
-    totalChart.style.background = `conic-gradient(#3D36FF 25% ${percent}%, #FF8585 0% ${100 - percent}%)`
-    totalChartMainValue.textContent = `${percent}%`
+const setTotalChart = (percent, notDispatchCount) => {
+    const success = percent * 3.6;
+    const notDispatch = notDispatchCount * 3.6;
+    const failure = 360 - (success + notDispatch);
+    console.log(success, notDispatch, failure);
+
+    totalChart.style.background = `conic-gradient(#3D36FF ${success}deg, #FF8585 ${success}deg ${success + failure}deg, #EFFF8D ${success + failure}deg)`;
+    totalChartMainValue.textContent = `${percent}%`;
 
 }
 
 const setPersonalChart = (percent) => {
-    personalChart.style.background = `conic-gradient(#3D36FF 25% ${percent}%, #EFFF8D 0% ${100 - percent}%)`
-    personalChartMainValue.textContent = `${percent}%`
+    personalChart.style.background = `conic-gradient(#3D36FF 0% ${percent}%, #EFFF8D 0% ${100 - percent}%)`;
+    personalChartMainValue.textContent = `${percent}%`;
 
 }
 
-setTotalChart(54);
+setTotalChart(54, 20);
 setPersonalChart(86);
 
 // MARK: - Today, DayBefore, DayAfter Button

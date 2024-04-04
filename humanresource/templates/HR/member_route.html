@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load custom_tags %}
+{% block head %}
+<meta http-equiv="Cache-Control" content="private, no-cache, no-store, max-age=0, must-revalidate">
+
+<link rel="stylesheet" href="{% static 'css/humanresource/member_route.css' %}" type="text/css" />
+{% endblock %}
+
+{% block content-header %}
+<div class="HeaderTitle">
+    노선숙지
+</div>
+{% endblock %}
+
+<!-- Content Block -->
+{% block content %}
+<div class="all-container all-div">
+    <div class="left-container all-div">
+        <div class="personal-status-container all-div"></div>
+        <div class="search-container all-div"></div>
+    </div>
+    <div class="right-container all-div">
+        <div class="graph-container all-div">
+            <div class="graph-title-div title-div all-div">총&평균숙지도</div>
+            <div class="mixed-chart-div all-div">
+                <div class="mixed-chart-description-div all-div"></div>
+                <canvas id="mixed-chart" class="all-div"></canvas>
+            </div>
+        </div>
+        <div class="filter-container all-div"></div>
+        <div class="table-container all-div"></div>
+    </div>
+</div>
+
+{% endblock %}
+
+<!-- Popup Block -->
+{% block popup %}
+{% endblock %}
+
+<!-- Script Block -->
+{% block script %}
+<script src="{% static 'js/hr/member_route.js' %}"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/Chart.min.js"></script>
+
+{% endblock %}

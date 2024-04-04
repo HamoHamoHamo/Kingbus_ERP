@@ -44,6 +44,10 @@ def member_efficiency(request):
     
     return render(request, 'HR/member_efficiency.html')
 
+def member_route(request):
+
+    return render(request, 'HR/member_route.html')
+
 def send_message(title, body, token, topic):
     cred_path = os.path.join(BASE_DIR, CRED_PATH)
     cred = credentials.Certificate(cred_path)

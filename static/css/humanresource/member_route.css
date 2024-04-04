@@ -1,0 +1,102 @@
+.all-div {
+    box-sizing: border-box;
+}
+
+.all-container {
+    width: 100%;
+    height: 75rem;
+    background-color: blue;
+
+    display: flex;
+    flex-direction: row;
+}
+
+.title-div {
+    background-color: #444444;
+    color: white;
+    font-weight: 500;
+    font-size: 20px;
+}
+
+/* MARK: Left */
+.left-container {
+    width: 20%;
+    height: 80%;
+    background-color: red;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.personal-status-container {
+    width: 90%;
+    height: 48%;
+    background-color: white;
+}
+
+.search-container {
+    width: 90%;
+    height: 48%;
+    background-color: white;
+}
+
+/* MARK: Right */
+.right-container {
+    width: 80%;
+    height: 100%;
+    background-color: green;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.graph-container {
+    width: 98%;
+    height: 35%;
+    background-color: white;
+
+    display: flex;
+    flex-direction: row;
+}
+
+.graph-title-div {
+    width: 4rem;
+    height: 100%;
+
+    text-align: center;
+    line-height: 4rem;
+    writing-mode: vertical-lr;
+    text-orientation: upright;
+    letter-spacing: 1rem;
+}
+
+.mixed-chart-div {
+    width: calc(100% - 4rem);
+    height: 100%;
+}
+
+.mixed-chart-description-div {
+    width: 100%;
+    height: 20%;
+}
+
+#mixed-chart {
+    width: 100%;
+    height: 80%;
+}
+
+.filter-container {
+    width: 98%;
+    height: 5%;
+    background-color: white;
+}
+
+.table-container {
+    width: 98%;
+    height: 65%;
+    background-color: white;
+}
