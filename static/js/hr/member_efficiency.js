@@ -21,6 +21,12 @@
 // setPersonalChart(86);
 
 // MARK: - Today, DayBefore, DayAfter Button
+// document
+const todayButton = document.querySelector(".dispatch-path-today-button");
+const dayBeforeButton = document.querySelector(".day-before-button");
+const dayAfterButton = document.querySelector(".day-after-button");
+
+// function
 const setToday = () => {
     const today = new Date();
 
@@ -53,4 +59,73 @@ const setDayAfter = () => {
     const tomorrow = new Date(date.setDate(date.getDate() + 1));
 
     document.querySelector(".search-dispatch-path-date").value = tomorrow.toISOString().substring(0, 10);
+}
+
+// eventListener
+todayButton.addEventListener("click", () => {
+    setToday();
+});
+
+dayBeforeButton.addEventListener("click", () => {
+    setDayBefore();
+});
+
+dayAfterButton.addEventListener("click", () => {
+    setDayAfter();
+});
+
+
+
+// MARK: CheckBox
+// document
+const selectAllCheckBox = document.querySelector(".amountCheckAll");
+const selectCheckBox = document.querySelectorAll(".amountCheck");
+
+// variable
+let checkCount = 0;
+
+// function
+const selectAll = (selectAll) => {
+    const checkboxAll = document.querySelectorAll(".amountCheck");
+
+    checkboxAll.forEach((checkbox) => {
+        checkbox.checked = selectAll.checked;
+
+        if (selectAll.checked) {
+            checkCount = selectCheckBox.length;
+            checkbox.classList.add("checked")
+
+        } else {
+            checkCount = 0;
+            checkbox.classList.remove("checked")
+
+        }
+    })
+}
+
+// eventListener
+selectAllCheckBox.addEventListener("click", () => {
+    selectAll(selectAllCheckBox);
+});
+
+for (const checkbox of selectCheckBox) {
+    const count = selectCheckBox.length;
+
+    checkbox.addEventListener("click", () => {
+        checkbox.classList.toggle("checked")
+
+        if (checkbox.classList.contains("checked")) {
+            checkCount++;
+            if (count === checkCount) {
+                selectAllCheckBox.checked = true;
+
+            }
+
+        } else {
+            checkCount--;
+
+            selectAllCheckBox.checked = false;
+        }
+
+    })
 }

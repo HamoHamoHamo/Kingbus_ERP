@@ -108,6 +108,47 @@
 
 <!-- Popup Block -->
 {% block popup %}
+<div class="pop-up-bg-container">
+    <div class="pop-up-container">
+        <div class="title-container">
+            <div class="title-div">
+                <span id="title-first-child">상세</span>
+                <span id="title-second-child">사고관리</span>
+            </div>
+            <div id="close-button">
+                <img src="/static/images/xmark.png">
+            </div>
+        </div>
+
+        <div class="content-container">
+            <div class="content-first-container">
+                <div class="accident-detail-info-div">
+                    <span class="title-span">상세 정보</span>
+                    <div class="accident-detail-info-content-div">
+                        
+                    </div>
+                </div>
+                <div class="accident-photo-div">
+                    <span class="title-span">사고 사진</span>
+                    <div class="accident-photo-content-div"></div>
+                </div>
+                <div class="accident-file-div">
+                    <span class="title-span">사고 파일</span>
+                    <div class="accident-file-content-div"></div>
+                </div>
+            </div>
+            <div class="content-second-container">
+                <div>
+                    <span class="title-span">과실 - 상세</span>
+                </div>
+                <div class="report-div">
+                    <div class="accident-report-div"></div>
+                    <div class="driver-report-div"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}
 
 <!-- Script Block -->

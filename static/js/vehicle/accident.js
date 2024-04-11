@@ -32,3 +32,28 @@ const setDayAfter = () => {
 
     document.querySelector(".search-dispatch-path-date").value = tomorrow.toISOString().substring(0, 10);
 }
+
+// MARK: - Edit Pop Up
+const editButton = document.querySelector("#edit-button")
+const closeButton = document.querySelector("#close-button")
+
+const onPopUp = () => {
+    document.querySelector(".pop-up-bg-container").style.display = "flex";
+}
+
+const closePopUp = () => {
+    document.querySelector(".pop-up-bg-container").style.display = "none";
+}
+
+editButton.addEventListener("click", () => {
+    onPopUp();
+});
+
+closeButton.addEventListener("click", () => {
+    closePopUp();
+})
+
+// MARK: - Estimate Pop Up
+
+
+
