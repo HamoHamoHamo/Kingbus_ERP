@@ -2,7 +2,7 @@
 .all-container {
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
+    /* justify-content: space-between; */
 }
 
 .efficiency-div {
@@ -354,7 +354,7 @@
 
 /* 검색 관련 CSS: search- */
 .search-container {
-    width: 75%;
+    width: 100%;
     height: 75rem;
 
     display: flex;

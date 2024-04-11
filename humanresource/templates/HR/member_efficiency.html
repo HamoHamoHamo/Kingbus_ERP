@@ -16,127 +16,6 @@
 <!-- Content Block -->
 {% block content %} 
 <div class="all-container efficiency-div"> 
-    <div class="run-container efficiency-div"> <!-- 운행량 -->
-        <div class="total-run-box efficiency-div"> <!-- 총 운행량 box -->
-            <!-- 총 운행량 contents -->
-            <div class="total-run-title-box efficiency-div">
-                <p class="total-run-title-label">총 운행량 달성 비율</p>
-            </div>
-
-            <div class="total-run-content-box efficiency-div">
-                <div class="total-run-chart-box">
-                    <div class="total-run-pie-chart efficiency-div">
-                        <span class="total-run-pie-chart-center">
-                            76%
-                        </span>
-                    </div>
-                
-                    <div class="total-run-chart-description-box efficiency-div">
-                        <div class="total-run-chart-description-input-box">
-                            <input class="total-run-chart-filter-button" type="button" value="일별">
-                        </div>
-                        <div class="total-run-chart-description-span-box">
-                            <div class="total-run-chart-description-span-box-child" id="total-target-driving-amount">
-                                <span>목표 운행량: 8000KM</span>
-                            </div>
-                            <div class="total-run-chart-description-span-box-child">
-                                <img class="total-run-description-image" src="/static/images/blueCircle.png" alt="">
-                                <span>달성: 목표 운행량 이상</span>
-                            </div>
-                            <div class="total-run-chart-description-span-box-child">
-                                <img class="total-run-description-image" src="/static/images/redCircle.png" alt="">
-                                <span>미달성: 목표 운행량 미만</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="total-run-average-figure-box efficiency-div">
-                    <div class="total-run-average-figure-title-box efficiency-div">
-                        <p class="total-run-average-figure-title-label">평균 운행량</p>
-                    </div>
-                    <table class="run-table">
-                        <thead class="run-table-head">
-                            <tr class="run-table-head-tr">
-                                <td class="run-table-head-tr-td">운행수</td>
-                                <td class="run-table-head-tr-td">거리</td>
-                                <td class="run-table-head-tr-td">기름 사용량</td>
-                            </tr>
-                        </thead>
-                        <tbody class="run-table-body">
-                            <tr class="run-table-body-tr">
-                                <td class="run-table-body-tr-td">120</td>
-                                <td class="run-table-body-tr-td">5280KM</td>
-                                <td class="run-table-body-tr-td">800L</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-
-        </div>
-    
-        <div class="personal-run-box efficiency-div"> <!-- 개인 운행량 box -->
-            <!-- 개인 운행량 contents -->
-            <div class="personal-run-title-box efficiency-div">
-                <p class="personal-run-title-label">개인 운행량 달성 비율</p>
-            </div>
-
-            <div class="personal-run-content-box efficiency-div">
-                <div class="personal-run-chart-box efficiency-div">
-                    <div class="personal-run-pie-chart efficiency-div">
-                        <span class="personal-run-pie-chart-center">
-                            76%
-                        </span>
-                    </div>
-                
-                    <div class="personal-run-chart-description-box efficiency-div">
-                        <div class="personal-run-chart-description-span-box">
-                            <div class="personal-run-chart-description-span-box-child" id="personal-target-driving-amount">
-                                <span>목표 운행량: 6400KM</span>
-                            </div>
-                            <div class="personal-run-chart-description-span-box-child">
-                                <img class="personal-run-description-image" src="/static/images/blueCircle.png" alt="">
-                                <span>달성: 현재 달성한 운행량</span>
-                            </div>
-                            <div class="personal-run-chart-description-span-box-child">
-                                <img class="personal-run-description-image" src="/static/images/yellowCircle.png" alt="">
-                                <span>미달성: 앞으로 달성해야 할 운행량</span>
-                            </div>
-                        </div>
-                        <div class="personal-run-chart-description-name-box">
-                            <span class="personal-run-chart-description-name">김원탁 - 승무원</span>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="personal-run-average-figure-box efficiency-div">
-                    <div class="personal-run-average-figure-title-box efficiency-div">
-                        <p class="personal-run-average-figure-title-label">평균 운행량</p>
-                    </div>
-                    <table class="run-table">
-                        <thead class="run-table-head">
-                            <tr class="run-table-head-tr">
-                                <td class="run-table-head-tr-td">운행수</td>
-                                <td class="run-table-head-tr-td">거리</td>
-                                <td class="run-table-head-tr-td">유류비</td>
-                            </tr>
-                        </thead>
-                        <tbody class="run-table-body">
-                            <tr class="run-table-body-tr">
-                                <td class="run-table-body-tr-td">120</td>
-                                <td class="run-table-body-tr-td">5280KM</td>
-                                <td class="run-table-body-tr-td">800L</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-            
-        </div>
-
-    </div>
-    
     <div class="search-container efficiency-div"> <!-- 검색 box-->
         <div class="search-dispatch-path-box efficiency-div">
             <input type="text" placeholder="노선명" class="search-dispatch-path">
@@ -164,10 +43,14 @@
                             <input type="radio" name="work-time">
                             <label for="leave_work" class="work-time-label">퇴근</label>
                         </div>
+                        <div class="work-time">
+                            <input type="radio" name="work-time">
+                            <label for="leave_work" class="work-time-label">일반</label>
+                        </div>
                     </td>
                 </tr>
                 <tr> <!-- 급여 및 급여 형태 -->
-                    <td class="salary-td">급어</td>
+                    <td class="salary-td">급여</td>
                     <td class="salary-input-td-background">
                         <input type="text" class="salary-input-td">
                     </td>
@@ -203,7 +86,7 @@
                         <td class="table-list_head-tr_td">이름</td>
                         <td class="table-list_head-tr_td">팀</td>
                         <td class="table-list_head-tr_td">급여</td>
-                        <td class="table-list_head-tr_td">목표운행량</td>
+                        <td class="table-list_head-tr_td">노선운행량</td>
                         <td class="table-list_head-tr_td">매출액</td>
                         <td class="table-list_head-tr_td">운행수</td>
                         <td class="table-list_head-tr_td">KM</td>
@@ -272,4 +155,126 @@
 <script src="{% static 'js/hr/authority.js' %}"></script>
 <script src="{% static 'js/hr/member_efficiency.js' %}"></script>
 
-{% endblock %}
+{% endblock %} 
+
+
+
+<!-- 
+    <div class="run-container efficiency-div">
+        <div class="total-run-box efficiency-div">
+            <div class="total-run-title-box efficiency-div">
+                <p class="total-run-title-label">총 운행량 달성 비율</p>
+            </div>
+
+            <div class="total-run-content-box efficiency-div">
+                <div class="total-run-chart-box">
+                    <div class="total-run-pie-chart efficiency-div">
+                        <span class="total-run-pie-chart-center">
+                            76%
+                        </span>
+                    </div>
+                
+                    <div class="total-run-chart-description-box efficiency-div">
+                        <div class="total-run-chart-description-input-box">
+                            <input class="total-run-chart-filter-button" type="button" value="일별">
+                        </div>
+                        <div class="total-run-chart-description-span-box">
+                            <div class="total-run-chart-description-span-box-child" id="total-target-driving-amount">
+                                <span>목표 운행량: 5000KM</span>
+                            </div>
+                            <div class="total-run-chart-description-span-box-child">
+                                <img class="total-run-description-image" src="/static/images/blueCircle.png" alt="">
+                                <span>달성: 목표 운행량 이상</span>
+                            </div>
+                            <div class="total-run-chart-description-span-box-child">
+                                <img class="total-run-description-image" src="/static/images/redCircle.png" alt="">
+                                <span>미달성: 목표 운행량 미만</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="total-run-average-figure-box efficiency-div">
+                    <div class="total-run-average-figure-title-box efficiency-div">
+                        <p class="total-run-average-figure-title-label">평균 운행량</p>
+                    </div>
+                    <table class="run-table">
+                        <thead class="run-table-head">
+                            <tr class="run-table-head-tr">
+                                <td class="run-table-head-tr-td">운행수</td>
+                                <td class="run-table-head-tr-td">거리</td>
+                                <td class="run-table-head-tr-td">기름 사용량</td>
+                            </tr>
+                        </thead>
+                        <tbody class="run-table-body">
+                            <tr class="run-table-body-tr">
+                                <td class="run-table-body-tr-td">120</td>
+                                <td class="run-table-body-tr-td">5280KM</td>
+                                <td class="run-table-body-tr-td">800L</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+    
+        <div class="personal-run-box efficiency-div">
+            <div class="personal-run-title-box efficiency-div">
+                <p class="personal-run-title-label">개인 운행량 달성 비율</p>
+            </div>
+
+            <div class="personal-run-content-box efficiency-div">
+                <div class="personal-run-chart-box efficiency-div">
+                    <div class="personal-run-pie-chart efficiency-div">
+                        <span class="personal-run-pie-chart-center">
+                            76%
+                        </span>
+                    </div>
+                
+                    <div class="personal-run-chart-description-box efficiency-div">
+                        <div class="personal-run-chart-description-span-box">
+                            <div class="personal-run-chart-description-span-box-child" id="personal-target-driving-amount">
+                                <span>목표 운행량: 6400KM</span>
+                            </div>
+                            <div class="personal-run-chart-description-span-box-child">
+                                <img class="personal-run-description-image" src="/static/images/blueCircle.png" alt="">
+                                <span>달성: 현재 달성한 운행량</span>
+                            </div>
+                            <div class="personal-run-chart-description-span-box-child">
+                                <img class="personal-run-description-image" src="/static/images/yellowCircle.png" alt="">
+                                <span>미달성: 앞으로 달성해야 할 운행량</span>
+                            </div>
+                        </div>
+                        <div class="personal-run-chart-description-name-box">
+                            <span class="personal-run-chart-description-name">김원탁 - 승무원</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="personal-run-average-figure-box efficiency-div">
+                    <div class="personal-run-average-figure-title-box efficiency-div">
+                        <p class="personal-run-average-figure-title-label">평균 운행량</p>
+                    </div>
+                    <table class="run-table">
+                        <thead class="run-table-head">
+                            <tr class="run-table-head-tr">
+                                <td class="run-table-head-tr-td">운행수</td>
+                                <td class="run-table-head-tr-td">거리</td>
+                                <td class="run-table-head-tr-td">유류비</td>
+                            </tr>
+                        </thead>
+                        <tbody class="run-table-body">
+                            <tr class="run-table-body-tr">
+                                <td class="run-table-body-tr-td">120</td>
+                                <td class="run-table-body-tr-td">5280KM</td>
+                                <td class="run-table-body-tr-td">800L</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            
+        </div>
+
+    </div> -->
