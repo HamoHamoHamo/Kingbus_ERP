@@ -1,4 +1,5 @@
 import json
+import math
 import re
 from config.settings import MEDIA_ROOT
 from django.shortcuts import render
@@ -12,6 +13,7 @@ from django.views import generic
 from .forms import AssignmentDataForm, AssignmentForm
 from .models import Assignment, AssignmentData, AssignmentConnect, Group
 from dispatch.models import DispatchRegularlyData, DispatchRegularlyWaypoint, DispatchOrderConnect, DispatchOrder, DispatchRegularly, RegularlyGroup, DispatchRegularlyConnect
+from dispatch.commons import get_date_connect_list, get_multi_date_connect_list
 from accounting.models import Collect, TotalPrice
 from humanresource.models import Member, Salary, Team
 from humanresource.views import send_message
@@ -19,6 +21,9 @@ from vehicle.models import Vehicle
 from datetime import datetime, timedelta, date
 
 TODAY = str(datetime.now())[:10]
+FORMAT = "%Y-%m-%d"
+WEEK = ['(월)', '(화)', '(수)', '(목)', '(금)', '(토)', '(일)', ]
+WEEK2 = ['월', '화', '수', '목', '금', '토', '일', ]
 
 class AssignmentDataList(generic.ListView):
     template_name = 'assignment/assignment_data.html'
@@ -77,15 +82,17 @@ class AssignmentList(generic.ListView):
         search = self.request.GET.get('search', '')
         date = self.request.GET.get('date', TODAY)
         group_id = self.request.GET.get('group', '')
+
+        weekday = WEEK2[datetime.strptime(date, FORMAT).weekday()]
         
         if search:
-            data_list = AssignmentData.objects.filter(route__contains=search).order_by('num1', 'number1', 'num2', 'number2')
+            data_list = AssignmentData.objects.filter(assignment__contains=search).filter(week__contains=weekday).order_by('num1', 'number1', 'num2', 'number2')
         else:
             if group_id:
                 group = Group.objects.get(id=group_id)
-                data_list = AssignmentData.objects.filter(group=group).order_by('num1', 'number1', 'num2', 'number2')
+                data_list = AssignmentData.objects.filter(group=group).filter(week__contains=weekday).order_by('num1', 'number1', 'num2', 'number2')
             else:
-                data_list = AssignmentData.objects.all().order_by('num1', 'number1', 'num2', 'number2')
+                data_list = AssignmentData.objects.filter(week__contains=weekday).order_by('num1', 'number1', 'num2', 'number2')
         assignment_list = []
         for data in data_list:
             # first 확인필요
@@ -160,59 +167,14 @@ class AssignmentList(generic.ListView):
             context['group'] = Group.objects.order_by('number','name').first()
         context['date'] = date
 
-        driver_list = Member.objects.filter(Q(role='운전원')|Q(role='팀장')).filter(use='사용').values_list('id', 'name')
+        driver_list = Member.objects.filter(Q(role='운전원')|Q(role='팀장')|Q(role='관리자')).filter(use='사용').values_list('id', 'name')
         context['driver_dict'] = {}
         for driver in driver_list:
             context['driver_dict'][driver[0]] = driver[1]
 
-        r_connect_list = list(DispatchRegularlyConnect.objects.select_related('regularly_id').exclude(departure_date__gt=f'{date} 24:00').exclude(arrival_date__lt=f'{date} 00:00').values('departure_date', 'arrival_date', 'bus_id__id', 'bus_id__vehicle_num', 'driver_id__id', 'driver_id__name', 'outsourcing', 'regularly_id__work_type', 'regularly_id__departure', 'regularly_id__arrival'))
-        dispatch_list = []
-        for rc in r_connect_list:
-            data = {
-                'work_type': rc['regularly_id__work_type'],
-                'departure_date': rc['departure_date'],
-                'arrival_date': rc['arrival_date'],
-                'departure': rc['regularly_id__departure'],
-                'arrival': rc['regularly_id__arrival'],
-                'bus_id': rc['bus_id__id'],
-                'bus_num': rc['bus_id__vehicle_num'],
-                'driver_id': rc['driver_id__id'],
-                'driver_name': rc['driver_id__name'],
-                'outsourcing': rc['outsourcing'],
-            }
-            dispatch_list.append(data)
-        connect_list = list(DispatchOrderConnect.objects.select_related('order_id').exclude(departure_date__gt=f'{date} 24:00').exclude(arrival_date__lt=f'{date} 00:00').values('departure_date', 'arrival_date', 'bus_id__id', 'bus_id__vehicle_num', 'driver_id__id', 'driver_id__name', 'outsourcing', 'order_id__departure', 'order_id__arrival'))
-        for cc in connect_list:
-            data = {
-                'work_type': '일반',
-                'departure_date': cc['departure_date'],
-                'arrival_date': cc['arrival_date'],
-                'departure': cc['order_id__departure'],
-                'arrival': cc['order_id__arrival'],
-                'bus_id': cc['bus_id__id'],
-                'bus_num': cc['bus_id__vehicle_num'],
-                'driver_id': cc['driver_id__id'],
-                'driver_name': cc['driver_id__name'],
-                'outsourcing': cc['outsourcing'],
-            }
-            dispatch_list.append(data)
+        
 
-        a_connect_list = list(AssignmentConnect.objects.select_related('assignment_id', 'member_id', 'bus_id').exclude(start_date__gt=f'{date} 24:00').exclude(end_date__lt=f'{date} 00:00').values('start_date', 'end_date', 'bus_id__id', 'bus_id__vehicle_num', 'member_id__id', 'member_id__name', 'assignment_id__assignment'))
-        for cc in a_connect_list:
-            data = {
-                'work_type': '업무',
-                'departure_date': cc['start_date'],
-                'arrival_date': cc['end_date'],
-                'bus_id': cc['bus_id__id'] if cc['bus_id__id'] else "",
-                'bus_num': cc['bus_id__vehicle_num'] if cc['bus_id__vehicle_num'] else "",
-                'driver_id': cc['member_id__id'],
-                'driver_name': cc['member_id__name'],
-                'outsourcing': 'n',
-                'assignment': cc['assignment_id__assignment']
-            }
-            dispatch_list.append(data)
-
-        context['dispatch_list'] = dispatch_list
+        context['dispatch_list'] = get_date_connect_list(date)
         context['vehicles'] = Vehicle.objects.filter(use='사용').order_by('vehicle_num', 'driver_name')
         context['members'] = Member.objects.exclude(role='최고관리자').filter(use='사용').order_by('name')
         context['group_list'] = Group.objects.all().order_by('number')
@@ -251,6 +213,7 @@ def assignment_create(request):
             start_time2 = request.POST.get('start_time2')
             end_time1 = request.POST.get('end_time1')
             end_time2 = request.POST.get('end_time2')
+            week = ' '.join(request.POST.getlist('week', None))
 
             post_group = request.POST.get('group', None)
             try:
@@ -287,6 +250,7 @@ def assignment_create(request):
             if num2 == '': num2 = 0
             assignment_data.num1 = num1
             assignment_data.num2 = num2
+            assignment_data.week = week
             assignment_data.group = group
             assignment_data.price = price
             assignment_data.allowance = allowance
@@ -303,12 +267,13 @@ def assignment_create(request):
             assignment.group = group
             assignment.assignment_id = assignment_data
             assignment.edit_date = TODAY
-            assignment.num1 = assignment_data.num1
-            assignment.num2 = assignment_data.num2
-            assignment.price = assignment_data.price
-            assignment.allowance = assignment_data.allowance
-            assignment.start_time = assignment_data.start_time
-            assignment.end_time = assignment_data.end_time
+            assignment.num1 = num1
+            assignment.num2 = num2
+            assignment.price = price
+            assignment.allowance = allowance
+            assignment.start_time = f'{start_time1}:{start_time2}'
+            assignment.end_time = f'{end_time1}:{end_time2}'
+            assignment.week = week
             assignment.creator = creator
             assignment.save()
 
@@ -330,6 +295,7 @@ def assignment_edit(request):
             start_time2 = request.POST.get('start_time2')
             end_time1 = request.POST.get('end_time1')
             end_time2 = request.POST.get('end_time2')
+            week = ' '.join(request.POST.getlist('week', None))
 
             post_group = request.POST.get('group', None)
             try:
@@ -365,7 +331,7 @@ def assignment_edit(request):
                 raise BadRequest('출발시간이 도착시간보다 늦습니다.')
                 # raise Http404
 
-            assignment_data.group = group
+            assignment_data.week = week
             assignment_data.assignment = assignment_form.cleaned_data['assignment']
             assignment_data.references = assignment_form.cleaned_data['references']
             assignment_data.price = price
@@ -376,6 +342,7 @@ def assignment_edit(request):
             assignment_data.num2 = re.sub(r'[^0-9]', '', assignment_form.cleaned_data['number2'])
             assignment_data.location = assignment_form.cleaned_data['location']
             assignment_data.use_vehicle = assignment_form.cleaned_data['use_vehicle']
+            assignment_data.group = group
             assignment_data.use = assignment_form.cleaned_data['use']
             assignment_data.creator = creator
             assignment_data.save()
@@ -396,6 +363,7 @@ def assignment_edit(request):
                 assignment.num2 = assignment_data.num2
                 assignment.location = assignment_data.location
                 assignment.use_vehicle = assignment_data.use_vehicle
+                assignment.week = assignment_data.week
                 assignment.use = assignment_data.use
                 assignment.creator = assignment_data.creator
             except Assignment.DoesNotExist:
@@ -415,6 +383,8 @@ def assignment_edit(request):
                     num2 = assignment_data.num2,
                     location = assignment_data.location,
                     use_vehicle = assignment_data.use_vehicle,
+                    week = assignment_data.week,
+                    type = assignment_data.type,
                     use = assignment_data.use,
                     creator = assignment_data.creator
                 )
@@ -473,39 +443,52 @@ def assignment_edit_check(request):
     if request.session.get('authority') > 1:
         return render(request, 'authority.html')
     
-    pk = request.POST.get('id')
-    assignment_data = get_object_or_404(AssignmentData, pk=pk)
-
     post_start_time = request.POST.get('departure_time', None)
     post_end_time = request.POST.get('arrival_time', None)
-
-    assignment = assignment_data.assignment_id.order_by('-edit_date').first()
-    connect_list = assignment.assignment_connect.filter(start_date__gte=TODAY)
+    
+    current_page = request.POST.get('current_page')
+    pk = request.POST.get('id')
+    # 일반업무
+    if current_page == 'assignment_data':
+        assignment_data = get_object_or_404(AssignmentData, pk=pk)
+        assignment = assignment_data.assignment_id.order_by('-edit_date').first()
+        connect_list = assignment.assignment_connect.filter(start_date__gte=TODAY)
+    # 고정업무
+    else:
+        assignment = Assignment.objects.get(id=pk)
+        connect_list = assignment.assignment_connect.all()
 
     for connect in connect_list:
         member = connect.member_id
         bus = connect.bus_id
-        date = connect.start_date[:10]
-        
+
+        if current_page == 'assignment_data':
+            start_date = f'{connect.start_date[:10]} {post_start_time}'
+            end_date = f'{connect.end_date[:10]} {post_end_time}'
+        else:
+            start_date = post_start_time
+            end_date = post_end_time
+
         if bus:
-            connect_bus = AssignmentConnect.objects.filter(bus_id=bus).exclude(end_date__lt=f'{date} {post_start_time}').exclude(start_date__gt=f'{date} {post_end_time}').exclude(id__in=connect_list)
+            connect_bus = AssignmentConnect.objects.filter(bus_id=bus).exclude(end_date__lt=start_date).exclude(start_date__gt=end_date).exclude(id__in=connect_list)
             if connect_bus:
                 return JsonResponse({
                     "status": "fail",
                     'route': connect_bus[0].assignment_id.assignment,
-                    'member': connect_bus[0].member_id.name,
+                    'driver': connect_bus[0].member_id.name,
                     'bus': connect_bus[0].bus_id.vehicle_num,
                     'departure_date': connect_bus[0].start_date,
                     'arrival_date': connect_bus[0].end_date,
                 })
             
-        connect_member = AssignmentConnect.objects.filter(member_id=member).exclude(end_date__lt=f'{date} {post_start_time}').exclude(start_date__gt=f'{date} {post_end_time}').exclude(id__in=connect_list)
+        connect_member = AssignmentConnect.objects.filter(member_id=member).exclude(end_date__lt=start_date).exclude(start_date__gt=end_date).exclude(id__in=connect_list)
         if connect_member:
+            vehicle_num = connect_member[0].bus_id.vehicle_num if connect_member[0].assignment_id.use_vehicle == '사용' else ''
             return JsonResponse({
                 "status": "fail",
                 'route': connect_member[0].assignment_id.assignment,
-                'member': connect_member[0].member_id.name,
-                'bus': connect_member[0].bus_id.vehicle_num,
+                'driver': connect_member[0].member_id.name,
+                'bus': vehicle_num,
                 'departure_date': connect_member[0].start_date,
                 'arrival_date': connect_member[0].end_date,
             })
@@ -513,7 +496,7 @@ def assignment_edit_check(request):
 
         driver = connect.member_id
         
-        r_connect_bus = DispatchRegularlyConnect.objects.filter(bus_id=bus).exclude(arrival_date__lt=f'{date} {post_start_time}').exclude(departure_date__gt=f'{date} {post_end_time}').exclude(id__in=connect_list)
+        r_connect_bus = DispatchRegularlyConnect.objects.filter(bus_id=bus).exclude(arrival_date__lt=start_date).exclude(departure_date__gt=end_date)
         if r_connect_bus:
             return JsonResponse({
                 "status": "fail",
@@ -523,7 +506,7 @@ def assignment_edit_check(request):
                 'arrival_date': r_connect_bus[0].arrival_date,
                 'departure_date': r_connect_bus[0].departure_date,
             })
-        r_connect_driver = DispatchRegularlyConnect.objects.filter(driver_id=driver).exclude(arrival_date__lt=f'{date} {post_start_time}').exclude(departure_date__gt=f'{date} {post_end_time}').exclude(id__in=connect_list)
+        r_connect_driver = DispatchRegularlyConnect.objects.filter(driver_id=driver).exclude(arrival_date__lt=start_date).exclude(departure_date__gt=end_date)
         if r_connect_driver:
             return JsonResponse({
                 "status": "fail",
@@ -534,7 +517,7 @@ def assignment_edit_check(request):
                 'departure_date': r_connect_driver[0].departure_date,
             })
         
-        o_connect_bus = DispatchOrderConnect.objects.filter(bus_id=bus).exclude(arrival_date__lt=f'{date} {post_start_time}').exclude(departure_date__gt=f'{date} {post_end_time}').exclude(id__in=connect_list)
+        o_connect_bus = DispatchOrderConnect.objects.filter(bus_id=bus).exclude(arrival_date__lt=start_date).exclude(departure_date__gt=end_date)
         if o_connect_bus:
             return JsonResponse({
                 "status": "fail",
@@ -544,7 +527,7 @@ def assignment_edit_check(request):
                 'arrival_date': o_connect_bus[0].arrival_date,
                 'departure_date': o_connect_bus[0].departure_date,
             })
-        o_connect_driver = DispatchOrderConnect.objects.filter(driver_id=driver).exclude(arrival_date__lt=f'{date} {post_start_time}').exclude(departure_date__gt=f'{date} {post_end_time}').exclude(id__in=connect_list)
+        o_connect_driver = DispatchOrderConnect.objects.filter(driver_id=driver).exclude(arrival_date__lt=start_date).exclude(departure_date__gt=end_date)
         if o_connect_driver:
             return JsonResponse({
                 "status": "fail",
@@ -586,6 +569,7 @@ def assignment_delete(request):
                 assignment.num2 = assignment_data.num2
                 assignment.location = assignment_data.location
                 assignment.use_vehicle = assignment_data.use_vehicle
+                assignment.week = assignment_data.week
                 assignment.use = assignment_data.use
                 assignment.creator = assignment_data.creator
             except Assignment.DoesNotExist:
@@ -605,6 +589,8 @@ def assignment_delete(request):
                     num2 = assignment_data.num2,
                     location = assignment_data.location,
                     use_vehicle = assignment_data.use_vehicle,
+                    week = assignment_data.week,
+                    type = assignment_data.type,
                     use = assignment_data.use,
                     creator = assignment_data.creator
                 )
@@ -623,6 +609,7 @@ def connect_create(request):
     if request.session.get('authority') > 3:
         return render(request, 'authority.html')
     if request.method == "POST":
+        assignment_type = request.POST.get('type', '고정업무')
         creator = get_object_or_404(Member, id=request.session.get('user'))
         pk = request.POST.get('id', None)
         assignment = get_object_or_404(Assignment, id=pk)
@@ -648,14 +635,18 @@ def connect_create(request):
         except:
             same_accounting = False
 
+        start_date = f'{date} {assignment.start_time}' if assignment_type == '고정업무' else assignment.start_time
+        end_date = f'{date} {assignment.end_time}' if assignment_type == '고정업무' else assignment.end_time
+
         connect = AssignmentConnect(
             assignment_id = assignment,
             member_id = member,
             bus_id = vehicle,
-            start_date = f'{date} {assignment.start_time}',
-            end_date = f'{date} {assignment.end_time}',
+            start_date = start_date,
+            end_date = end_date,
             price = assignment.price,
             allowance = allowance,
+            type = assignment_type,
             creator = creator,
         )
         connect.same_accounting = same_accounting
@@ -693,7 +684,21 @@ def connect_delete(request):
     else:
         return HttpResponseNotAllowed(['post'])
 
+def temporary_connect_delete(request):
+    if request.session.get('authority') > 3:
+        return render(request, 'authority.html')
 
+    if request.method == "POST":
+        id = request.POST.get('id')
+        date = request.POST.get('date')
+
+        assignment = Assignment.objects.prefetch_related('assignment_connect').get(id=id)
+        connects = AssignmentConnect.objects.filter(assignment_id=assignment).filter(start_date__startswith=date)
+        connects.delete()
+
+        return redirect(request.META.get('HTTP_REFERER', 'redirect_if_referer_not_found'))
+    else:
+        return HttpResponseNotAllowed(['post'])
 
 def group_create(request):
     if request.session.get('authority') > 1:
@@ -773,3 +778,293 @@ def group_fix(request):
             return JsonResponse({'status': 'fail'})
     else:
         return HttpResponseNotAllowed(['POST'])
+
+class TemporaryAssignmentList(generic.ListView):
+    template_name = 'assignment/temporary_assignment.html'
+    context_object_name = 'assignment_list'
+    model = DispatchOrder
+
+    def get(self, request, *args, **kwargs):
+        if request.session.get('authority') > 3:
+            return render(request, 'authority.html')
+        return super().get(request, *args, **kwargs)
+
+    def get_queryset(self):
+        start_date = self.request.GET.get('date1', TODAY)
+        end_date = self.request.GET.get('date2', TODAY)
+        search = self.request.GET.get('search')
+        search_type = self.request.GET.get('type')
+
+        if start_date or end_date or search:
+            assignment_list = Assignment.objects.prefetch_related('assignment_connect').filter(type='일반업무').exclude(end_time__lt=f'{start_date} 00:00').exclude(start_time__gt=f'{end_date} 24:00').order_by('start_time')
+            if search_type == 'assignment' and search:
+                assignment_list = assignment_list.filter(assignment__contains=search).order_by('start_time')
+
+            elif search_type == 'vehicle' and search:
+                assignment_list = assignment_list.filter(assignment_connect__bus_id__vehicle_num__contains=search).order_by('start_time')
+
+        else:            
+            assignment_list = Assignment.objects.prefetch_related('assignment_connect').filter(type='일반업무').exclude(end_time__lt=f'{TODAY} 00:00').exclude(start_time__gt=f'{TODAY} 24:00').order_by('start_time')
+        
+        return assignment_list
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        context['date1'] = self.request.GET.get('date1')
+        context['date2'] = self.request.GET.get('date2')
+
+        context['search'] = self.request.GET.get('search', '')
+        context['search_type'] = self.request.GET.get('type', '')
+        date = self.request.GET.get('date1', TODAY)
+        
+        # date2 = self.request.GET.get('date2', TODAY)
+        # weekday = WEEK2[datetime.strptime(date, FORMAT).weekday()]
+        detail_id = self.request.GET.get('id')
+        if detail_id:
+            context['detail'] = get_object_or_404(Assignment, id=detail_id)
+            date = context['detail'].start_time[:10]
+            date2 = context['detail'].end_time[:10]
+            context['detail_connect_list'] = context['detail'].assignment_connect.all()
+
+        driver_list = Member.objects.filter(Q(role='운전원')|Q(role='팀장')|Q(role='관리자')).filter(use='사용').values_list('id', 'name')
+        context['driver_dict'] = {}
+        for driver in driver_list:
+            context['driver_dict'][driver[0]] = driver[1]
+
+        outsourcing_list = Member.objects.filter(Q(role='용역')|Q(role='임시')).filter(use='사용').values_list('id', 'name')
+        context['outsourcing_dict'] = {}
+        for outsourcing in outsourcing_list:
+            context['outsourcing_dict'][outsourcing[0]] = outsourcing[1]
+        #
+        #출발일 ~ 도착일 범위로 한번만 돌면서 for문 안에서 현재 connect date 따라서 list에 appned
+        filter_date1 = date
+        if detail_id:
+            filter_date2 = date2
+        else:
+            filter_date2 = date
+        
+        detail = context['detail'] if detail_id else ''
+        connect_dict = get_multi_date_connect_list(filter_date1, filter_date2, detail)
+        
+        context['dispatch_list'] = connect_dict['dispatch_list']
+        context['dispatch_list2'] = connect_dict['dispatch_list2']
+        context['dispatch_data_list'] = connect_dict['dispatch_data_list']
+        #
+        collect_list = []
+        outstanding_list = []
+
+        total = {}
+        total['c_bus_cnt'] = 0
+        total['bus_cnt'] = 0
+        total['driver_allowance'] = 0
+        total['price'] = 0
+        total['collection_amount'] = 0
+        total['outstanding_amount'] = 0
+        
+        # for order in context['assignment_list']:
+        #     total['driver_allowance'] += int(order.allowance)
+        #     total['c_bus_cnt'] += int(order.info_order.count())
+        #     total['bus_cnt'] += int(order.bus_cnt)
+        #     try:
+        #         tp = TotalPrice.objects.get(order_id=order)
+        #         total_price = int(tp.total_price)
+        #         if order.contract_status != '취소':
+        #             total['price'] += total_price
+        #     # #################### total price 없으면 만들어주기 나중에 주석처리
+        #     except TotalPrice.DoesNotExist:
+        #         if order.VAT == 'y':
+        #             total_price = int(order.price)
+        #         else:
+        #             total_price = int(order.price) + math.floor(int(order.price) * 0.1 + 0.5)
+        #         total = TotalPrice(
+        #             order_id = order,
+        #             total_price = total_price,
+        #             month = order.departure_date[:7],
+        #             creator = order.creator
+        #         )
+        #         total.save()
+        #         if order.contract_status != '취소':
+        #             total['price'] += total_price
+        #     ####################################
+        #     collect_amount = Collect.objects.filter(order_id=order).aggregate(Sum('price'))['price__sum']
+        #     if collect_amount:
+        #         total['collection_amount'] += int(collect_amount)
+        #         total['outstanding_amount'] += total_price - int(collect_amount)
+        #         collect_list.append(int(collect_amount))
+        #         outstanding_list.append(total_price - int(collect_amount))
+        #     else:
+        #         outstanding_list.append(0)
+        #         collect_list.append(0)
+    
+        group_bus_list = []
+        group_member_list = []
+
+        for assignment in context['assignment_list']:
+            connect = assignment.assignment_connect.first()
+            if connect:
+                c_bus = connect.bus_id
+                c_member = connect.member_id
+                
+                group_bus_list.append(c_bus)
+                group_member_list.append(c_member)
+            else:
+                group_bus_list.append('')
+                group_member_list.append('')
+        
+        context['group_bus_list'] = group_bus_list
+        context['group_member_list'] = group_member_list
+        
+        context['vehicles'] = Vehicle.objects.filter(use='사용').order_by('vehicle_num', 'driver_name')
+        context['members'] = Member.objects.exclude(role='최고관리자').filter(use='사용').order_by('name')
+        context['selected_date1'] = self.request.GET.get('date1')
+        context['selected_date2'] = self.request.GET.get('date2')
+        return context
+
+def temporary_assignment_create(request):
+    if request.session.get('authority') > 1:
+        return render(request, 'authority.html')
+    
+    if request.method == "POST":
+        creator = get_object_or_404(Member, pk=request.session.get('user'))
+        assignment_form = AssignmentForm(request.POST)
+
+        if assignment_form.is_valid():
+            start_date = request.POST.get('start_date')
+            start_time1 = request.POST.get('start_time1')
+            start_time2 = request.POST.get('start_time2')
+            end_date = request.POST.get('end_date')
+            end_time1 = request.POST.get('end_time1')
+            end_time2 = request.POST.get('end_time2')
+
+            if len(start_time1) < 2:
+                start_time1 = f'0{start_time1}'
+            if len(start_time2) < 2:
+                start_time2 = f'0{start_time2}'
+            if len(end_time1) < 2:
+                end_time1 = f'0{end_time1}'
+            if len(end_time2) < 2:
+                end_time2 = f'0{end_time2}'
+
+            post_price = request.POST.get('price')
+            if post_price:
+                price = int(post_price.replace(',',''))
+            else:
+                price = 0
+            
+            post_allowance = request.POST.get('allowance')
+            if post_allowance:
+                allowance = int(post_allowance.replace(',',''))
+            else:
+                allowance = 0
+
+            assignment = assignment_form.save(commit=False)
+
+            num1 = re.sub(r'[^0-9]', '', assignment.number1)
+            num2 = re.sub(r'[^0-9]', '', assignment.number2)
+            if num1 == '': num1 = 0
+            if num2 == '': num2 = 0
+
+            assignment.edit_date = TODAY
+            assignment.num1 = num1
+            assignment.num2 = num2
+            assignment.price = price
+            assignment.allowance = allowance
+            assignment.start_time = f'{start_date} {start_time1}:{start_time2}'
+            assignment.end_time = f'{end_date} {end_time1}:{end_time2}'
+            assignment.creator = creator
+            assignment.save()
+
+            return redirect(request.META.get('HTTP_REFERER', 'redirect_if_referer_not_found'))
+        raise Http404
+    else:
+        return HttpResponseNotAllowed(['post'])
+
+def temporary_assignment_edit(request):
+    if request.session.get('authority') > 1:
+        return render(request, 'authority.html')
+    
+    if request.method == "POST":
+        creator = get_object_or_404(Member, pk=request.session.get('user'))
+        post_assignment = get_object_or_404(Assignment, id=request.POST.get('id'))
+        assignment_form = AssignmentForm(request.POST, instance=post_assignment)
+
+        if assignment_form.is_valid():
+            start_date = request.POST.get('start_date')
+            start_time1 = request.POST.get('start_time1')
+            start_time2 = request.POST.get('start_time2')
+            end_date = request.POST.get('end_date')
+            end_time1 = request.POST.get('end_time1')
+            end_time2 = request.POST.get('end_time2')
+
+            if len(start_time1) < 2:
+                start_time1 = f'0{start_time1}'
+            if len(start_time2) < 2:
+                start_time2 = f'0{start_time2}'
+            if len(end_time1) < 2:
+                end_time1 = f'0{end_time1}'
+            if len(end_time2) < 2:
+                end_time2 = f'0{end_time2}'
+
+            post_price = request.POST.get('price')
+            if post_price:
+                price = int(post_price.replace(',',''))
+            else:
+                price = 0
+            
+            post_allowance = request.POST.get('allowance')
+            if post_allowance:
+                allowance = int(post_allowance.replace(',',''))
+            else:
+                allowance = 0
+
+            assignment = assignment_form.save(commit=False)
+            print(assignment.id)
+
+            num1 = re.sub(r'[^0-9]', '', assignment.number1)
+            num2 = re.sub(r'[^0-9]', '', assignment.number2)
+            if num1 == '': num1 = 0
+            if num2 == '': num2 = 0
+
+            start_date = f'{start_date} {start_time1}:{start_time2}'
+            end_date = f'{end_date} {end_time1}:{end_time2}'
+
+            assignment.edit_date = TODAY
+            assignment.num1 = num1
+            assignment.num2 = num2
+            assignment.price = price
+            assignment.allowance = allowance
+            assignment.start_time = start_date
+            assignment.end_time = end_date
+            assignment.creator = creator
+            assignment.save()
+
+            connects = assignment.assignment_connect.all()
+            for connect in connects:
+                connect.start_date = start_date
+                connect.end_date = end_date
+                connect.price = price
+                connect.allowance = allowance
+                connect.save()
+
+            return redirect(request.META.get('HTTP_REFERER', 'redirect_if_referer_not_found'))
+        raise Http404
+    else:
+        return HttpResponseNotAllowed(['post'])
+
+def temporary_assignment_delete(request):
+    if request.session.get('authority') > 3:
+        return render(request, 'authority.html')
+        
+    if request.method == "POST":
+        id_list = request.POST.getlist('id', None)
+        date1 = request.POST.get('date1')
+        date2 = request.POST.get('date2')
+
+        for id in id_list:
+            order = get_object_or_404(Assignment, id=id)
+            order.delete()
+
+        return redirect(reverse('assignment:temporary_assignment') + f'?date1={date1}&date2={date2}')
+    else:
+        return HttpResponseNotAllowed(['post'])

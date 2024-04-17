@@ -1,6 +1,22 @@
 const checkbox = document.querySelectorAll(".RouteListBody input[type=checkbox]")
 const allCheckbox = document.querySelector(".RouteListHeader input[type=checkbox]")
 
+const dayCheck = document.querySelectorAll(".driveDateBox input")
+
+dayCheck[0].addEventListener("change", dayCheckAll)
+
+function dayCheckAll(){
+    if(dayCheck[0].checked){
+        for(i=1; i<dayCheck.length; i++){
+            dayCheck[i].checked = true
+        }
+    }else{
+        for(i=1; i<dayCheck.length; i++){
+            dayCheck[i].checked = false
+        }
+    }
+}
+
 for (i = 0; i < checkbox.length; i++){
     checkbox[i].addEventListener('change', deletecheck)
 };

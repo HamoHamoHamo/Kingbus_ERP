@@ -29,7 +29,7 @@ function saveCheck(){
         return alert("그룹을 선택해 주세요")
     }
 
-    if (detailExist) {
+    if (DETAIL_EXIST) {
         $.ajax({
             url: editCheckUrl,
             method: "POST",
@@ -37,7 +37,8 @@ function saveCheck(){
                 "departure_time": `${inputTime1.value}:${inputTime2.value}`,
                 "arrival_time": `${inputTime3.value}:${inputTime4.value}`,
                 "id": inputHidden.value,
-                'csrfmiddlewaretoken': csrftoken
+                'csrfmiddlewaretoken': csrftoken,
+                'current_page' : CURRENT_PAGE
             },
             datatype: 'json',
             success: function (data) {

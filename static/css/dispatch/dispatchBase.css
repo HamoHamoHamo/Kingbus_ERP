@@ -154,8 +154,6 @@
 .regularlyLineStart {
     position: absolute;
     top: 50%;
-    left: 10rem;
-    width: 4rem;
     height: 2.2rem;
     background-color: #399DDF;
     transform: translate(0, -50%);
@@ -164,7 +162,6 @@
 .regularlyLineEnd {
     position: absolute;
     top: 50%;
-    left: 10rem;
     height: 2.2rem;
     background-color: #399DDF;
     transform: translate(0, -50%);
@@ -175,6 +172,22 @@
     top: 50%;
     height: 2.2rem;
     background-color: #FEBE01;
+    transform: translate(0, -50%);
+}
+
+.assignmentLine {
+    position: absolute;
+    top: 50%;
+    height: 2.2rem;
+    background-color: #1C1A4E;
+    transform: translate(0, -50%);
+}
+
+.temporaryAssignmentLine {
+    position: absolute;
+    top: 50%;
+    height: 2.2rem;
+    background-color: #FF9900;
     transform: translate(0, -50%);
 }
 

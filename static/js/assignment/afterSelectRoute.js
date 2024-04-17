@@ -13,8 +13,8 @@ function afterSelectRoute() {
 
     function addDriverOption() {
         const connectTime = this.parentNode.parentNode.querySelector('.connectTime')
-        const departureDate = `${urlDate} ${connectTime.innerText.split(" ~ ")[0]}`
-        const arrivalDate = `${urlDate} ${connectTime.innerText.split(" ~ ")[1]}`
+        const departureDate = `${URL_DATE} ${connectTime.innerText.split(" ~ ")[0]}`
+        const arrivalDate = `${URL_DATE} ${connectTime.innerText.split(" ~ ")[1]}`
 
         if (useSelect == true || useSelect !== this) {
 

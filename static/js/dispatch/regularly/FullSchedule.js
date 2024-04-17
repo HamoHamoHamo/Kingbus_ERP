@@ -25,29 +25,22 @@ function drawSchdule() {
 
                 const startWork = document.createElement('div');
 
+                // 타입구분
+                if (data[i].work_type == "출근") {
+                    startWork.setAttribute("class", "regularlyLineStart scheduleBar");
+                } else if (data[i].work_type == "퇴근") {
+                    startWork.setAttribute("class", "regularlyLineEnd scheduleBar");
+                } else if (data[i].work_type == "일반") {
+                    startWork.setAttribute("class", "orderLine scheduleBar");
+                } else if (data[i].work_type == "고정업무") {
+                    startWork.setAttribute("class", "assignmentLine scheduleBar");
+                } else if (data[i].work_type == "일반업무") {
+                    startWork.setAttribute("class", "temporaryAssignmentLine scheduleBar");
+                }
+
                 // 기사 동일여부
                 if (data[i].driver_id !== parseInt(driverTd[j].classList[2].split("d")[1])) {
-
-                    // 타입구분
-                    if (data[i].work_type == "출근") {
-                        startWork.setAttribute("class", "regularlyLineStart scheduleBar otherDriver");
-                    } else if (data[i].work_type == "퇴근") {
-                        startWork.setAttribute("class", "regularlyLineEnd scheduleBar otherDriver");
-                    } else {
-                        startWork.setAttribute("class", "orderLine scheduleBar otherDriver");
-                    }
-
-                } else {
-
-                    // 타입구분
-                    if (data[i].work_type == "출근") {
-                        startWork.setAttribute("class", "regularlyLineStart scheduleBar");
-                    } else if (data[i].work_type == "퇴근") {
-                        startWork.setAttribute("class", "regularlyLineEnd scheduleBar");
-                    } else {
-                        startWork.setAttribute("class", "orderLine scheduleBar");
-                    }
-
+                    startWork.className += ' otherDriver'
                 }
 
                 dataStartDate = data[i].departure_date.split(" ")[0]
@@ -71,10 +64,16 @@ function drawSchdule() {
 
                 // title 부여
 
-                if (data[i].work_type == '업무') {
-                    startWork.setAttribute("title", `${data[i].driver_name} || ${data[i].departure_date.split(" ")[1]}~${data[i].arrival_date.split(" ")[1]} || ${data[i].assignment}`);
+                if (data[i].work_type == '고정업무' || data[i].work_type == '일반업무') {
+                    if (dataStartDate == dataEndDate) {
+                        startWork.setAttribute("title", `${data[i].driver_name} || ${data[i].departure_date.split(" ")[1]}~${data[i].arrival_date.split(" ")[1]} || ${data[i].assignment}`);
+                    } else {
+                        startWork.setAttribute("title", `${data[i].driver_name} || ${data[i].departure_date.split(" ")[0]} [${data[i].departure_date.split(" ")[1]}]~${data[i].arrival_date.split(" ")[0]} [${data[i].arrival_date.split(" ")[1]}] || ${data[i].assignment}`);
+                    }
+                } else if (dataStartDate == dataEndDate) {
+                    startWork.setAttribute("title", `${data[i].driver_name} || ${data[i].departure_date.split(" ")[1]}~${data[i].arrival_date.split(" ")[1]} || ${data[i].departure.split("@")[0]}▶${data[i].arrival.split("@")[0]}`);
                 } else {
-                    startWork.setAttribute("title", `${data[i].driver_name} || ${data[i].departure_date.split(" ")[1]}~${data[i].arrival_date.split(" ")[1]} || ${data[i].departure}▶${data[i].arrival}`);
+                    startWork.setAttribute("title", `${data[i].driver_name} || ${data[i].departure_date.split(" ")[0]} [${data[i].departure_date.split(" ")[1]}]~${data[i].arrival_date.split(" ")[0]} [${data[i].arrival_date.split(" ")[1]}] || ${data[i].departure.split("@")[0]}▶${data[i].arrival.split("@")[0]}`);
                 }
 
                 //// 배차확인 값 따라 backgroundColor 변경

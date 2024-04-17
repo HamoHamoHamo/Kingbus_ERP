@@ -65,7 +65,7 @@ function regularlyDispatch() {
         if (rangeCounter == rangeBeforeArr.length + rangeAfterArr.length) {
             const driverSelect = document.querySelector(".driverSelect")
             let makeSelect = true
-            if (useVehicle) {
+            if (USE_VEHICLE) {
                 const businput = document.querySelector(".selectRoute input[type=text]")
                 const busIdHidden = document.querySelector(".RouteList input[name=bus]")
     
@@ -91,11 +91,11 @@ function regularlyDispatch() {
                 let arrivalDate = ""
                 let departureDate = ""
     
-                for (i = 0; i < data.length; i++) {
-                    departureDate = data[i].departure_date.split(" ")[1].replace(/\:/g, "")
-                    arrivalDate = data[i].arrival_date.split(" ")[1].replace(/\:/g, "")
+                for (i = 0; i < dataList.length; i++) {
+                    departureDate = dataList[i].departure_date.split(" ")[1].replace(/\:/g, "")
+                    arrivalDate = dataList[i].arrival_date.split(" ")[1].replace(/\:/g, "")
                     if(this.innerText.length > 4){
-                        if (this.innerText.split("(")[1].replace(/\)/g, "") == data[i].driver_name) {
+                        if (this.innerText.split("(")[1].replace(/\)/g, "") == dataList[i].driver_name) {
                             if (arrivalInput >= departureDate && departureInput <= arrivalDate) {
                                 return makeSelect = false
                             }
@@ -107,9 +107,7 @@ function regularlyDispatch() {
                 DriverName = this.innerText
                 DriverId = this.classList[1]
             }
-            console.log("TESTTTT")
             if (makeSelect) {
-                console.log("TESTTTT222", driverSelect)
                 driverSelect.innerText = ""
                 const driverOption = document.createElement('option');
                 driverOption.setAttribute("value", `${DriverId}`);
@@ -120,3 +118,58 @@ function regularlyDispatch() {
     }
 }
 
+const assignmentConnectSaveBtn = document.querySelector(".assignmentConnectSaveBtn")
+
+assignmentConnectSaveBtn.addEventListener("click", assignmentConnectSave)
+
+function assignmentConnectSave() {
+    let bus = ""
+    let driver = ""
+    for (i = 0; i < RouteListHBodyTr.length; i++) {
+        if (RouteListHBodyTr[i].children[0].children[0].checked) {
+            bus = USE_VEHICLE ? RouteListHBodyTr[i].children[4].children[1].value : ""
+            driver = RouteListHBodyTr[i].children[5].children[0].value
+        }
+    };
+    if (driver == "") {
+        alert("직원을 선택해 주세요")
+    } else if (bus == "" && USE_VEHICLE) {
+        alert("차량을 선택해 주세요")
+    } else {
+        RouteList.submit();
+    }
+}
+
+// connect delete
+const RouteList = document.querySelector(".RouteList")
+const dispatchDeletBtn = document.querySelector(".dispatchDeletBtn")
+const allChecker = document.querySelector(".allChecker")
+
+dispatchDeletBtn.addEventListener("click", deleteConnect)
+
+function deleteConnect() {
+    RouteList.action = connectDeleteUrl
+    // let deleteArr = []
+    // let deleteCounter = 0
+    // let parms = new URLSearchParams(location.search)
+    // for (i = 0; i < RouteListHBodyTr.length; i++) {
+    //     if (RouteListHBodyTr[i].children[0].children[0].checked) {
+    //         if (RouteListHBodyTr[i].classList[1] === parms.get("id")) {
+    //             deleteArr.push(RouteListHBodyTr[i].children[4].children[0].value !== "" ? true : false)
+    //         } else {
+    //             deleteArr.push(RouteListHBodyTr[i].children[4].innerText !== "" ? true : false)
+    //         }
+    //     }
+    // };
+    // for (i = 0; i < deleteArr.length; i++) {
+    //     if (!deleteArr[i]) {
+    //         deleteCounter++
+    //     }
+    // };
+    // if (deleteCounter === deleteArr.length) {
+    //     return alert("삭제할 배차가 없습니다.")
+    // } else {
+    //     RouteList.submit();
+    // }
+    RouteList.submit();
+}

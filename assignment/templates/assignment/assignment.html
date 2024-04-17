@@ -11,7 +11,7 @@
 
 {% block content-header %}
 <div class="HeaderTitle">
-  업무배정
+  고정업무배정
 </div>
 {% endblock %}
 
@@ -223,6 +223,7 @@
       <div class="routeDataAreaCover"></div>
       {% csrf_token %}
       <input value="{{detail_data_id}}" name="id" type="hidden">
+      <input value="고정업무" name="type" type="hidden">
       <table class="dispatcTable">
         <colgroup>
           <col style="width: 7%;">
@@ -299,16 +300,37 @@
         </tr>
         <tr>
           <td class="tdTypeA">참조사항</td>
-          <td colspan="3" class="tdTypeB">
+          <td class="tdTypeC">
             <input autocomplete="off" value="{{detail.references}}" name="references" type="text" class="inputText">
           </td>
           <td class="tdTypeA">*차량사용</td>
-          <td colspan="3" class="tdTypeB">
+          <td class="tdTypeC">
             <input {% if detail.use_vehicle == '사용' %} checked {% elif not detail %} checked {% endif %} value="사용" type="radio" id="useVehicle" name="use_vehicle">
             <label for="useVehicle">사용</label>
             <input {% if detail.use_vehicle == '미사용' %} checked {% endif %} value="미사용" type="radio" id="unuseVehicle" name="use_vehicle">
             <label for="unuseVehicle">미사용</label>
           </td>
+          <td class="tdTypeA">*운행요일</td>
+            <td colspan="3" class="tdTypeB">
+              <div class="routeWeek driveDateBox">
+                <input autocomplete="off" id="all" type="checkbox" tabindex="14">
+                <label for="all">모두</label>
+                <input autocomplete="off" {% if detail.week and detail.week|in_check:'월' %} checked {% endif %} name="week" value="월" id="mon" type="checkbox" class="driveDateCheck">
+                <label for="mon">월</label>
+                <input autocomplete="off" {% if detail.week and detail.week|in_check:'화' %} checked {% endif %} name="week" value="화" id="tue" type="checkbox" class="driveDateCheck">
+                <label for="tue">화</label>
+                <input autocomplete="off" {% if detail.week and detail.week|in_check:'수' %} checked {% endif %} name="week" value="수" id="wed" type="checkbox" class="driveDateCheck">
+                <label for="wed">수</label>
+                <input autocomplete="off" {% if detail.week and detail.week|in_check:'목' %} checked {% endif %} name="week" value="목" id="thu" type="checkbox" class="driveDateCheck">
+                <label for="thu">목</label>
+                <input autocomplete="off" {% if detail.week and detail.week|in_check:'금' %} checked {% endif %} name="week" value="금" id="fri" type="checkbox" class="driveDateCheck">
+                <label for="fri">금</label>
+                <input autocomplete="off" {% if detail.week and detail.week|in_check:'토' %} checked {% endif %} name="week" value="토" id="sat" type="checkbox" class="driveDateCheck">
+                <label for="sat">토</label>
+                <input autocomplete="off" {% if detail.week and detail.week|in_check:'일' %} checked {% endif %} name="week" value="일" id="sun" type="checkbox" class="driveDateCheck">
+                <label for="sun">일</label>
+              </div>
+            </td>
         </tr>
       </table>
     </form>
@@ -358,12 +380,12 @@
               <td>
                 <input autocomplete="off" value="{{assignment.id}}" name="check" type="checkbox">
               </td>
-              <td onclick="moveToDetail(this)">{{assignment.number1}}{% if assignment.number2 %} - {{assignment.number2}}{% endif %}</td>
-              <td onclick="moveToDetail(this)">{{assignment.assignment}}</td>
-              <td onclick="moveToDetail(this)" class="connectTime">
+              <td onclick="moveToDetail(this, {{assignment.group.id}})">{{assignment.number1}}{% if assignment.number2 %} - {{assignment.number2}}{% endif %}</td>
+              <td onclick="moveToDetail(this, {{assignment.group.id}})">{{assignment.assignment}}</td>
+              <td onclick="moveToDetail(this, {{assignment.group.id}})" class="connectTime">
                 {{assignment.start_time}} ~ {{assignment.end_time}}
               </td>
-              <td {% if detail.id != assignment.id %}onclick="moveToDetail(this)"{% endif %}>
+              <td {% if detail.id != assignment.id %}onclick="moveToDetail(this, {{assignment.group.id}})"{% endif %}>
                 {% if detail.id == assignment.id and detail.use_vehicle == '사용' %}
                   <input autocomplete="off" value="{{bus.vehicle_num}}" type="text" readonly>
                   <input autocomplete="off" value="{{bus.id}}" name="bus" type="hidden">
@@ -371,7 +393,7 @@
                   {{bus.vehicle_num}}
                 {% endif %}
               </td>
-              <td {% if detail.id != assignment.id %}onclick="moveToDetail(this)"{% endif %}>
+              <td {% if detail.id != assignment.id %}onclick="moveToDetail(this, {{assignment.group.id}})"{% endif %}>
                 {% if detail.id == assignment.id %} 
                   <select name="member" class="driverSelect">
                     <option value="{{member.id}}">{{member.name}}</option>
@@ -380,9 +402,9 @@
                   {{member.name}}
                 {% endif %}
               </td>
-              <td onclick="moveToDetail(this)">{{assignment.price}}</td>
-              <td onclick="moveToDetail(this)">{{assignment.allowance}}</td>
-              <td onclick="moveToDetail(this)">{{assignment.location}}</td>
+              <td onclick="moveToDetail(this, {{assignment.group.id}})">{{assignment.price}}</td>
+              <td onclick="moveToDetail(this, {{assignment.group.id}})">{{assignment.allowance}}</td>
+              <td onclick="moveToDetail(this, {{assignment.group.id}})">{{assignment.location}}</td>
             </tr>
             {% endwith %}
             {% endwith %}
@@ -413,21 +435,24 @@
 {% block script %}
 <script>
   {% autoescape off %}
-  const data = {{ dispatch_list }}
+  const dataList = {{ dispatch_list }}
   const driverObj = {{ driver_dict }}
-  console.log("DATA", data)
+  console.log("DATA", dataList)
   console.log("driverObj", driverObj)
-  const useVehicle = {% if detail.use_vehicle == '사용' %}true{% else %}false{% endif %}
-  {% endautoescape %}
-  const connectDeleteUrl = "{% url 'assignment:connect_delete' %}"
 
+  const CURRENT_PAGE = 'assignment'
+  const USE_VEHICLE = {% if detail.use_vehicle == '사용' %}true{% else %}false{% endif %}
+  const URL_DATE = "{{date}}"
+  const connectDeleteUrl = "{% url 'assignment:connect_delete' %}"
+  
+  {% endautoescape %}
 </script>
 
 <script>
 
   let parms = new URLSearchParams(location.search)
   let targetLink = ""
-  let urlDate = "{{date}}"
+  
   let urlGroup = ""
   if(parms.has("group")){
     urlGroup = window.location.search.split("group=")[1].split("&")[0]
@@ -442,11 +467,11 @@
     }
   }
 
-  function moveToDetail(e) {
+  function moveToDetail(e, group) {
     console.log(e.parentNode.classList[1])
     let id = e.parentNode.classList[1]
     let loopCounter = e.parentNode.classList[2]
-    location.href=`{% url "assignment:assignment" %}?id=${id}&height=${loopCounter}&group={{group.id}}&date={{date}}`
+    location.href=`{% url "assignment:assignment" %}?id=${id}&height=${loopCounter}&group=${group}&date={{date}}`
   }
 
  </script>
@@ -470,5 +495,4 @@
 <script src="{% static 'js/assignment/fullSchedule.js' %}"></script>
 <script src="{% static 'js/assignment/assignmentConnect.js' %}"></script>
 <script src="{% static 'js/assignment/afterSelectRoute.js' %}"></script>
-<script src="{% static 'js/assignment/assignment.js' %}"></script>
 {% endblock %}

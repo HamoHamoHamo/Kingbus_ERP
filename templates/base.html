@@ -40,13 +40,13 @@
         <ul class="sideMenuNav1">
           <div class="nav1Box">
             <li class="nav1BoxMenu">
-              <img src="{% static 'images/calendar.png' %}" alt="일정 아이콘">
+              <img class="nav1BoxMenuImg" src="{% static 'images/calendar.png' %}" alt="일정 아이콘">
               <a href="{% url 'home' %}" class="nonDepth2Menu">일정</a>
             </li>
           </div>
           <div class="nav1Box">
             <li class="nav1BoxMenu nav1BoxMenuHaveDepth2">
-              <img src="{% static 'images/notice.png' %}" alt="공지사항 아이콘">
+              <img class="nav1BoxMenuImg" src="{% static 'images/notice.png' %}" alt="공지사항 아이콘">
               <div>공지사항</div>
               <svg class="sideMenuArrow" xmlns="http://www.w3.org/2000/svg" width="18.228" height="11.84" viewBox="0 0 18.228 11.84">
                 <path id="패스_256" data-name="패스 256" d="M0,0,6.753,8.223,14,0" transform="translate(2.111 2.117)" fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="3"/>
@@ -65,7 +65,7 @@
           </div>
           <div class="nav1Box">
             <li class="nav1BoxMenu nav1BoxMenuHaveDepth2">
-              <img src="{% static 'images/dispatchSystem.png' %}" alt="배차시스템 아이콘">
+              <img class="nav1BoxMenuImg" src="{% static 'images/dispatchSystem.png' %}" alt="배차시스템 아이콘">
               <div>배차관리</div>
               <svg class="sideMenuArrow" xmlns="http://www.w3.org/2000/svg" width="18.228" height="11.84" viewBox="0 0 18.228 11.84">
                 <path id="패스_256" data-name="패스 256" d="M0,0,6.753,8.223,14,0" transform="translate(2.111 2.117)" fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="3"/>
@@ -102,7 +102,7 @@
           </div>
           <div class="nav1Box">
             <li class="nav1BoxMenu nav1BoxMenuHaveDepth2">
-              <svg
+              <svg class="nav1BoxMenuImg"
                 xmlns="http://www.w3.org/2000/svg"
                 width="15"
                 height="15"
@@ -125,18 +125,21 @@
             </li>
             <div class="sideMenuNav2Box">
               <ul class="sideMenuNav2">
-                <a href="{% url 'assignment:assignment_data' %}" class="sideMenuNav2Link">
-                  <li class="sideMenuNav2Menu">업무관리</li>
+                <a href="{% url 'assignment:temporary_assignment' %}" class="sideMenuNav2Link">
+                  <li class="sideMenuNav2Menu">일반업무관리</li>
                 </a>
                 <a href="{% url 'assignment:assignment' %}" class="sideMenuNav2Link">
-                  <li class="sideMenuNav2Menu">업무배정</li>
+                  <li class="sideMenuNav2Menu">고정업무배정</li>
+                </a>
+                <a href="{% url 'assignment:assignment_data' %}" class="sideMenuNav2Link">
+                  <li class="sideMenuNav2Menu">고정업무관리</li>
                 </a>
               </ul>
             </div>
           </div>
           <div class="nav1Box">
             <li class="nav1BoxMenu nav1BoxMenuHaveDepth2">
-              <img src="{% static 'images/HRManagement.png' %}" alt="인사관리 아이콘">
+              <img class="nav1BoxMenuImg" src="{% static 'images/HRManagement.png' %}" alt="인사관리 아이콘">
               <div>인사관리</div>
               <svg class="sideMenuArrow" xmlns="http://www.w3.org/2000/svg" width="18.228" height="11.84" viewBox="0 0 18.228 11.84">
                 <path id="패스_256" data-name="패스 256" d="M0,0,6.753,8.223,14,0" transform="translate(2.111 2.117)" fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="3"/>
@@ -167,7 +170,7 @@
           </div>
           <div class="nav1Box">
             <li class="nav1BoxMenu nav1BoxMenuHaveDepth2">
-              <img src="{% static 'images/accountingSystem.png' %}" alt="경리시스템 아이콘">
+              <img class="nav1BoxMenuImg" src="{% static 'images/accountingSystem.png' %}" alt="경리시스템 아이콘">
               <div>매출관리</div>
               <svg class="sideMenuArrow" xmlns="http://www.w3.org/2000/svg" width="18.228" height="11.84" viewBox="0 0 18.228 11.84">
                 <path id="패스_256" data-name="패스 256" d="M0,0,6.753,8.223,14,0" transform="translate(2.111 2.117)" fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="3"/>
@@ -192,7 +195,7 @@
           </div>
           <div class="nav1Box">
             <li class="nav1BoxMenu nav1BoxMenuHaveDepth2">
-              <img src="{% static 'images/vehicleManagement.png' %}" alt="차량관리 아이콘">
+              <img class="nav1BoxMenuImg" src="{% static 'images/vehicleManagement.png' %}" alt="차량관리 아이콘">
               <div>차량관리</div>
               <svg class="sideMenuArrow" xmlns="http://www.w3.org/2000/svg" width="18.228" height="11.84" viewBox="0 0 18.228 11.84">
                 <path id="패스_256" data-name="패스 256" d="M0,0,6.753,8.223,14,0" transform="translate(2.111 2.117)" fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="3"/>
@@ -220,7 +223,7 @@
           </div>
           <div class="nav1Box">
             <li class="nav1BoxMenu nav1BoxMenuHaveDepth2">
-              <img src="{% static 'images/document.png' %}" alt="공지사항 아이콘">
+              <img class="nav1BoxMenuImg" src="{% static 'images/document.png' %}" alt="공지사항 아이콘">
               <div>서류관리</div>
               <svg class="sideMenuArrow" xmlns="http://www.w3.org/2000/svg" width="18.228" height="11.84" viewBox="0 0 18.228 11.84">
                 <path id="패스_256" data-name="패스 256" d="M0,0,6.753,8.223,14,0" transform="translate(2.111 2.117)" fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="3"/>
@@ -239,7 +242,7 @@
           </div>
           <div class="nav1Box">
             <li class="nav1BoxMenu nav1BoxMenuHaveDepth2">
-              <img src="{% static 'images/document.png' %}" alt="공지사항 아이콘">
+              <img class="nav1BoxMenuImg" src="{% static 'images/document.png' %}" alt="공지사항 아이콘">
               <div>민원관리</div>
               <svg class="sideMenuArrow" xmlns="http://www.w3.org/2000/svg" width="18.228" height="11.84" viewBox="0 0 18.228 11.84">
                 <path id="패스_256" data-name="패스 256" d="M0,0,6.753,8.223,14,0" transform="translate(2.111 2.117)" fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="3"/>
@@ -258,13 +261,13 @@
           </div>
           <div class="nav1Box">
             <li class="nav1BoxMenu">
-              <img src="{% static 'images/calendar.png' %}" alt="일정 아이콘">
+              <img class="nav1BoxMenuImg" src="{% static 'images/calendar.png' %}" alt="일정 아이콘">
               <a href="{% url 'crudmember:setting_client' %}" class="nonDepth2Menu">거래처 관리</a>
             </li>
           </div>
           <div class="nav1Box">
             <li class="nav1BoxMenu">
-              <img src="{% static 'images/calendar.png' %}" alt="일정 아이콘">
+              <img class="nav1BoxMenuImg" src="{% static 'images/calendar.png' %}" alt="일정 아이콘">
               <a href="{% url 'crudmember:setting' %}" class="nonDepth2Menu">항목 관리</a>
             </li>
           </div>
@@ -273,19 +276,19 @@
         <ul class="sideMenuNav1">
           <div class="nav1Box">
             <li class="nav1BoxMenu">
-              <img src="{% static 'images/calendar.png' %}" alt="일정 아이콘">
+              <img class="nav1BoxMenuImg" src="{% static 'images/calendar.png' %}" alt="일정 아이콘">
               <a href="{% url 'home' %}" class="nonDepth2Menu">일정</a>
             </li>
           </div>
           <div class="nav1Box">
             <li class="nav1BoxMenu">
-              <img src="{% static 'images/notice.png' %}" alt="공지사항 아이콘">
+              <img class="nav1BoxMenuImg" src="{% static 'images/notice.png' %}" alt="공지사항 아이콘">
               <a href="{% url 'notice:kinds' 'driver' %}" class="nonDepth2Menu">공지사항</a>
             </li>
           </div>
           <div class="nav1Box">
             <li class="nav1BoxMenu nav1BoxMenuHaveDepth2">
-              <img src="{% static 'images/dispatchSystem.png' %}" alt="배차시스템 아이콘">
+              <img class="nav1BoxMenuImg" src="{% static 'images/dispatchSystem.png' %}" alt="배차시스템 아이콘">
               <div>배차시스템</div>
               <svg class="sideMenuArrow" xmlns="http://www.w3.org/2000/svg" width="18.228" height="11.84" viewBox="0 0 18.228 11.84">
                 <path id="패스_256" data-name="패스 256" d="M0,0,6.753,8.223,14,0" transform="translate(2.111 2.117)" fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="3"/>
@@ -310,13 +313,13 @@
           </div>
           <div class="nav1Box">
             <li class="nav1BoxMenu">
-              <img src="{% static 'images/HRManagement.png' %}" alt="인사관리 아이콘">
+              <img class="nav1BoxMenuImg" src="{% static 'images/HRManagement.png' %}" alt="인사관리 아이콘">
               <a href="{% url 'HR:salary' %}" class="nonDepth2Menu">급여관리</a>
             </li>
           </div>
           <div class="nav1Box">
             <li class="nav1BoxMenu">
-              <img src="{% static 'images/calendar.png' %}" alt="일정 아이콘">
+              <img class="nav1BoxMenuImg" src="{% static 'images/calendar.png' %}" alt="일정 아이콘">
               <a href="{% url 'crudmember:setting_client' %}" class="nonDepth2Menu">거래처 관리</a>
             </li>
           </div>
@@ -325,19 +328,19 @@
         <ul class="sideMenuNav1">
           <div class="nav1Box">
             <li class="nav1BoxMenu">
-              <img src="{% static 'images/calendar.png' %}" alt="일정 아이콘">
+              <img class="nav1BoxMenuImg" src="{% static 'images/calendar.png' %}" alt="일정 아이콘">
               <a href="{% url 'home' %}" class="nonDepth2Menu">일정</a>
             </li>
           </div>
           <div class="nav1Box">
             <li class="nav1BoxMenu">
-              <img src="{% static 'images/notice.png' %}" alt="공지사항 아이콘">
+              <img class="nav1BoxMenuImg" src="{% static 'images/notice.png' %}" alt="공지사항 아이콘">
               <a href="{% url 'notice:kinds' 'driver' %}" class="nonDepth2Menu">공지사항</a>
             </li>
           </div>
           <div class="nav1Box">
             <li class="nav1BoxMenu">
-              <img src="{% static 'images/HRManagement.png' %}" alt="인사관리 아이콘">
+              <img class="nav1BoxMenuImg" src="{% static 'images/HRManagement.png' %}" alt="인사관리 아이콘">
               <a href="{% url 'HR:salary' %}" class="nonDepth2Menu">급여관리</a>
             </li>
           </div>
