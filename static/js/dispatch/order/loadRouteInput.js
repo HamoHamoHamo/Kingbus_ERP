@@ -43,8 +43,8 @@ function ListOut() {
 function selectList() {
     let parms = new URLSearchParams(location.search)
     if (parms.has("search")) {
-        location.href = `/dispatch/order?type=${parms.get("type")}&search=${parms.get("search")}&id=${this.classList[2]}&date1=${searchDate[0].value}&date2=${searchDate[1].value}`
+        location.href = `${THIS_URL}?type=${parms.get("type")}&search=${parms.get("search")}&id=${this.classList[2]}&date1=${searchDate[0].value}&date2=${searchDate[1].value}`
     } else {
-        location.href = `/dispatch/order?id=${this.classList[2]}&date1=${searchDate[0].value}&date2=${searchDate[1].value}`
+        location.href = `${THIS_URL}?id=${this.classList[2]}&date1=${searchDate[0].value}&date2=${searchDate[1].value}`
     }
 }

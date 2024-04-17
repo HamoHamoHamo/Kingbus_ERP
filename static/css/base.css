@@ -135,8 +135,8 @@ html::-webkit-scrollbar-track {
   cursor: pointer;
 }
 
-.nav1BoxMenu img:nth-child(1) {
-  margin-right: auto;
+.nav1BoxMenuImg {
+  margin-right: 1rem;
 }
 
 .nav1BoxMenu img:nth-last-child(1) {

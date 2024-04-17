@@ -18,46 +18,41 @@ let scheduleBus = []
 
 // 스케줄 그리기
 function drawSchdule() {
+    const thisData = params.has("id") ? data : dataList
 
-    for (i = 0; i < dataList.length; i++) {
+    for (i = 0; i < thisData.length; i++) {
 
         for (j = 0; j < driverTd.length; j++) {
 
-            if (dataList[i].bus_id == driverTd[j].classList[1]) {
+            if (thisData[i].bus_id == driverTd[j].classList[1]) {
 
                 const startWork = document.createElement('div');
 
+                
+                // 타입구분
+                if (thisData[i].work_type == "출근") {
+                    startWork.setAttribute("class", "regularlyLineStart scheduleBar");
+                } else if (thisData[i].work_type == "퇴근") {
+                    startWork.setAttribute("class", "regularlyLineEnd scheduleBar");
+                } else if (thisData[i].work_type == "일반") {
+                    startWork.setAttribute("class", "orderLine scheduleBar");
+                } else if (thisData[i].work_type == "고정업무") {
+                    startWork.setAttribute("class", "assignmentLine scheduleBar");
+                } else if (thisData[i].work_type == "일반업무") {
+                    startWork.setAttribute("class", "temporaryAssignmentLine scheduleBar");
+                }
+                
                 // 기사 동일여부
-                if (dataList[i].driver_id !== parseInt(driverTd[j].classList[2].split("d")[1])) {
-
-                    // 타입구분
-                    if (dataList[i].work_type == "출근") {
-                        startWork.setAttribute("class", "regularlyLineStart scheduleBar otherDriver");
-                    } else if (dataList[i].work_type == "퇴근") {
-                        startWork.setAttribute("class", "regularlyLineEnd scheduleBar otherDriver");
-                    } else {
-                        startWork.setAttribute("class", "orderLine scheduleBar otherDriver");
-                    }
-
-                } else {
-
-                    // 타입구분
-                    if (dataList[i].work_type == "출근") {
-                        startWork.setAttribute("class", "regularlyLineStart scheduleBar");
-                    } else if (dataList[i].work_type == "퇴근") {
-                        startWork.setAttribute("class", "regularlyLineEnd scheduleBar");
-                    } else {
-                        startWork.setAttribute("class", "orderLine scheduleBar");
-                    }
-
+                if (thisData[i].driver_id !== parseInt(driverTd[j].classList[2].split("d")[1])) {
+                    startWork.className += ' otherDriver'
                 }
 
-                dataStartDate = dataList[i].departure_date.split(" ")[0]
-                dataEndDate = dataList[i].arrival_date.split(" ")[0]
+                dataStartDate = thisData[i].departure_date.split(" ")[0]
+                dataEndDate = thisData[i].arrival_date.split(" ")[0]
 
                 // 스타일 부여
-                dataTimeStart = parseInt(dataList[i].departure_date.substr(11, 5).split(":")[0] * 60) + parseInt(dataList[i].departure_date.substr(11, 5).split(":")[1])
-                dataTimeEnd = parseInt(dataList[i].arrival_date.substr(11, 5).split(":")[0] * 60) + parseInt(dataList[i].arrival_date.substr(11, 5).split(":")[1])
+                dataTimeStart = parseInt(thisData[i].departure_date.substr(11, 5).split(":")[0] * 60) + parseInt(thisData[i].departure_date.substr(11, 5).split(":")[1])
+                dataTimeEnd = parseInt(thisData[i].arrival_date.substr(11, 5).split(":")[0] * 60) + parseInt(thisData[i].arrival_date.substr(11, 5).split(":")[1])
 
                 // data기간 필터링
                 if (params.has("id")) {
@@ -79,21 +74,25 @@ function drawSchdule() {
                 }
 
                 // title 부여
-                if (dataList[i].work_type == '업무') {
-                    startWork.setAttribute("title", `${dataList[i].driver_name} || ${dataList[i].departure_date.split(" ")[1]}~${dataList[i].arrival_date.split(" ")[1]} || ${dataList[i].assignment}`);
+                if (thisData[i].work_type == '고정업무' || thisData[i].work_type == '일반업무') {
+                    if (dataStartDate == dataEndDate) {
+                        startWork.setAttribute("title", `${thisData[i].driver_name} || ${thisData[i].departure_date.split(" ")[1]}~${thisData[i].arrival_date.split(" ")[1]} || ${thisData[i].assignment}`);
+                    } else {
+                        startWork.setAttribute("title", `${thisData[i].driver_name} || ${thisData[i].departure_date.split(" ")[0]} [${thisData[i].departure_date.split(" ")[1]}]~${thisData[i].arrival_date.split(" ")[0]} [${thisData[i].arrival_date.split(" ")[1]}] || ${thisData[i].assignment}`);
+                    }
                 } else if (dataStartDate == dataEndDate) {
-                    startWork.setAttribute("title", `${dataList[i].driver_name} || ${dataList[i].departure_date.split(" ")[1]}~${dataList[i].arrival_date.split(" ")[1]} || ${dataList[i].departure.split("@")[0]}▶${dataList[i].arrival.split("@")[0]}`);
+                    startWork.setAttribute("title", `${thisData[i].driver_name} || ${thisData[i].departure_date.split(" ")[1]}~${thisData[i].arrival_date.split(" ")[1]} || ${thisData[i].departure.split("@")[0]}▶${thisData[i].arrival.split("@")[0]}`);
                 } else {
-                    startWork.setAttribute("title", `${dataList[i].driver_name} || ${dataList[i].departure_date.split(" ")[0]} [${dataList[i].departure_date.split(" ")[1]}]~${dataList[i].arrival_date.split(" ")[0]} [${dataList[i].arrival_date.split(" ")[1]}] || ${dataList[i].departure.split("@")[0]}▶${dataList[i].arrival.split("@")[0]}`);
+                    startWork.setAttribute("title", `${thisData[i].driver_name} || ${thisData[i].departure_date.split(" ")[0]} [${thisData[i].departure_date.split(" ")[1]}]~${thisData[i].arrival_date.split(" ")[0]} [${thisData[i].arrival_date.split(" ")[1]}] || ${thisData[i].departure.split("@")[0]}▶${thisData[i].arrival.split("@")[0]}`);
                 }
                 
                 // // 배차확인 값 따라 backgroundColor 변경
-                // if (dataList[i].connect_check == '')
+                // if (thisData[i].connect_check == '')
                 // {
                 //     startWork.style.border = '1px solid black';
                 //     startWork.style.backgroundColor = 'gray';
                 // }
-                // else if (dataList[i].connect_check == '0')
+                // else if (thisData[i].connect_check == '0')
                 // {
                 //     startWork.style.border = '1px solid black';
                 //     startWork.style.backgroundColor = 'red';

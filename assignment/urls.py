@@ -5,6 +5,12 @@ app_name = 'assignment'
 
 urlpatterns = [
     path('', views.AssignmentList.as_view(), name="assignment"),
+    path('temporary', views.TemporaryAssignmentList.as_view(), name="temporary_assignment"),
+    path('temporary/create', views.temporary_assignment_create, name="temporary_assignment_create"),
+    path('temporary/edit', views.temporary_assignment_edit, name="temporary_assignment_edit"),
+    # path('temporary/edit/check', views.assignment_edit_check, name="temporary_assignment_edit_check"),
+    path('temporary/connect/delete', views.temporary_connect_delete, name="temporary_connect_delete"),
+    path('temporary/delete', views.temporary_assignment_delete, name="temporary_assignment_delete"),
     path('data', views.AssignmentDataList.as_view(), name="assignment_data"),
     path('create', views.assignment_create, name="assignment_create"),
     path('edit', views.assignment_edit, name="assignment_edit"),

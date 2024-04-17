@@ -1,0 +1,89 @@
+.routeNumber {
+    display: flex;
+}
+
+.inputTableBox {
+    height: 9.2rem;
+}
+
+.orderListBox {
+    height: calc(100% - 18.4rem);
+}
+
+.orderListMain {
+    width: 150%;
+    overflow-x: scroll;
+}
+
+.orderListTableHead {
+    width: inherit;
+}
+
+.orderListSubScroll {
+    width: inherit;
+}
+
+.orderListTotal {
+    width: inherit;
+}
+
+.orderListItem {
+    height: 3.6rem;
+    min-height: auto;
+    cursor: pointer
+}
+
+.orderListBtnBox {
+    width: 14rem;
+}
+
+.connectDeleteBtn {
+    background-color: #444;
+}
+
+.orderListBody .assignmentTable .orderListMainTd:nth-child(1) {
+    width: 8%;
+}
+.orderListBody .assignmentTable .orderListMainTd:nth-child(2) {
+    width: 15%;
+}
+.orderListBody .assignmentTable .orderListMainTd:nth-child(3) {
+    width: 30%;
+}
+.orderListBody .assignmentTable .orderListMainTd:nth-child(4) {
+    width: 10%;
+}
+.orderListBody .assignmentTable .orderListMainTd:nth-child(5) {
+    width: 10%;
+}
+.orderListBody .assignmentTable .orderListMainTd:nth-child(6) {
+    width: 10%;
+}
+.orderListBody .assignmentTable .orderListMainTd:nth-child(7) {
+    width: 10%;
+}
+.orderListBody .assignmentTable .orderListMainTd:nth-child(8) {
+    width: 10%;
+}
+.orderListBody .assignmentTable .orderListMainTd:nth-child(9) {
+    width: 10%;
+}
+.orderListBody .assignmentTable .orderListMainTd:nth-child(10) {
+    width: 10%;
+}
+
+.connectBusInput {
+    width: 90%;
+    height: 60%;
+    text-align: center;
+    outline: none;
+    cursor: pointer;
+}
+
+.connectMemberInput {
+    width: 90%;
+    height: 74%;
+    text-align: center;
+    outline: none;
+    cursor: pointer;
+}

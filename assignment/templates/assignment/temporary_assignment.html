@@ -1,0 +1,486 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load dispatch_custom_tags %}
+
+{% block head %}
+<meta http-equiv="Cache-Control" content="private, no-cache, no-store, max-age=0, must-revalidate">
+<link rel="stylesheet" href="{% static 'css/dispatch/dispatchBase.css' %}" type="text/css" />
+<link rel="stylesheet" href="{% static 'css/dispatch/order.css' %}" type="text/css" />
+<link rel="stylesheet" href="{% static 'css/assignment/temporary_assignment.css' %}" type="text/css" />
+{% endblock %}
+
+{% block content-header %}
+<div class="HeaderTitle">
+    일반업무
+</div>
+{% endblock %}
+
+
+{% block content %}
+
+<div class="orderLayout">
+
+
+    <!-- 스케줄 -->
+    <div class="schedule">
+
+        <!-- 스케줄-헤더 -->
+        <div class="scheduleHeaderArea">
+            <div class="scheduleHeader"></div>
+            <div class="scheduleCloseBtn">
+                <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 26 26">
+                    <g id="그룹_1650" data-name="그룹 1650" transform="translate(-21005 -13821)">
+                      <rect id="사각형_11727" data-name="사각형 11727" width="26" height="26" rx="6" transform="translate(21005 13821)" fill="#fff"/>
+                      <g id="그룹_1648" data-name="그룹 1648" transform="translate(12.639 64.5)">
+                        <path id="패스_331" data-name="패스 331" d="M-4.053,0l-7.086,5.457,7.086,5.358" transform="translate(21008.5 13764.5)" fill="none" stroke="#444" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+                        <path id="패스_332" data-name="패스 332" d="M0,0V10.814" transform="translate(21009.307 13764.5)" fill="none" stroke="#444" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+                        <path id="패스_333" data-name="패스 333" d="M0,0V10.814" transform="translate(21013.123 13764.5)" fill="none" stroke="#444" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+                      </g>
+                    </g>
+                  </svg>                  
+            </div>
+        </div>
+
+        <!-- 스케줄-바디 -->
+        <div class="scheduleBodyArea">
+            <div class="hourMarker">
+                <div>0</div>
+                <div>4</div>
+                <div>8</div>
+                <div>12</div>
+                <div>16</div>
+                <div>20</div>
+                <div>24</div>
+            </div>
+            <div class="scheduleTableScroll">
+                <div class="scheduleTable">
+                    {% if detail and detail.use_vehicle == '사용' %}
+                    {% for v in vehicles %}
+                    <div class="scheduleTableTr">
+                        <div class="hourTd"></div>
+                        <div class="hourTd"></div>
+                        <div class="hourTd"></div>
+                        <div class="hourTd"></div>
+                        <div class="hourTd"></div>
+                        <div class="hourTd"></div>
+                        <div class="driverTd {{v.id}} d{{v.driver.id}}" title="{{v.vehicle_num0}} {{v.vehicle_num}} ({{v.model_year}})">{{v.vehicle_num}} {% if v.driver_name %}({{v.driver_name}}){% endif %}</div>
+                        <!-- 기사 없으면 괄호 없애기 -->
+                    </div>
+                    {% endfor %}
+                    {% else %}
+                    {% for m in members %}
+                    <div class="scheduleTableTr">
+                        <div class="hourTd"></div>
+                        <div class="hourTd"></div>
+                        <div class="hourTd"></div>
+                        <div class="hourTd"></div>
+                        <div class="hourTd"></div>
+                        <div class="hourTd"></div>
+                        <div class="driverTd {{m.id}}" title="{{m.role}}">
+                            {{m.name}}
+                        </div>
+                    </div>
+                    {% endfor %}
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        <div class="scheduleOpenBtn">
+            <svg xmlns="http://www.w3.org/2000/svg" width="8.6" height="13" viewBox="0 0 8.6 13">
+                <path id="Icon_ionic-ios-arrow-back" data-name="Icon ionic-ios-arrow-back"
+                    d="M17.258,12.692,11.566,7.777a.839.839,0,0,1,0-1.312,1.2,1.2,0,0,1,1.523,0l6.448,5.569a.839.839,0,0,1,.031,1.281l-6.475,5.608a1.205,1.205,0,0,1-1.523,0,.839.839,0,0,1,0-1.312Z"
+                    transform="translate(-11.25 -6.194)" fill="#fff" />
+            </svg>
+        </div>
+    </div>
+
+
+    <div class="MainLayout">
+
+
+        <!-- 검색창 -->
+        <div class="search">
+
+            <div class="searchTitle">검색</div>
+
+            <form action="" class="searchForm">
+
+                <!-- 변경영역 -->
+                <div class="search_inputArea">
+                    <select name="type" id="" class="orderSearchSelect">
+                        <option {% if search_type == 'assignment' %} selected {% endif %} value="route">업무</option>
+                        <option {% if search_type == 'vehicle' %} selected {% endif %} value="vehicle">차량번호</option>
+                    </select>
+                    <input autocomplete="off" name="search" type="text" value="{{search}}">
+                    <label for="">날짜</label>
+                    <input autocomplete="off" value="{{date1}}" type="date" name="date1" class="searchDate" max="9999-12-31">~
+                    <input autocomplete="off" value="{{date2}}" type="date" name="date2" class="searchDate" max="9999-12-31">
+                    <div class="dateControllBtnBox">
+                        <div class="dateToday">오늘</div>
+                        <div class="dateControllBtn">
+                            <svg id="그룹_1846" data-name="그룹 1846" xmlns="http://www.w3.org/2000/svg" width="10" height="14" viewBox="0 0 10 14">
+                                <rect id="사각형_12020" data-name="사각형 12020" width="10" height="14" transform="translate(0)" fill="none"/>
+                                <path id="Icon_ionic-ios-arrow-back" data-name="Icon ionic-ios-arrow-back" d="M13.665,13.19,18.96,7.9a1,1,0,1,0-1.416-1.412l-6,6a1,1,0,0,0-.029,1.379L17.54,19.9a1,1,0,1,0,1.416-1.412Z" transform="translate(-11.252 -6.192)" fill="#fff"/>
+                              </svg>        
+                        </div>
+                        <div class="dateControllBtn">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="10" height="14" viewBox="0 0 10 14">
+                                <g id="그룹_1846" data-name="그룹 1846" transform="translate(-613 -66)">
+                                  <rect id="사각형_12020" data-name="사각형 12020" width="10" height="14" transform="translate(613 66)" fill="none"/>
+                                  <path id="Icon_ionic-ios-arrow-back" data-name="Icon ionic-ios-arrow-back" d="M16.839,13.19,11.544,7.9A1,1,0,1,1,12.96,6.486l6,6a1,1,0,0,1,.029,1.379L12.964,19.9a1,1,0,1,1-1.416-1.412Z" transform="translate(603.748 59.808)" fill="#fff"/>
+                                </g>
+                              </svg>                              
+                        </div>
+                    </div>
+                </div>
+
+                <div class="btnModules searchBtn">검색</div>
+
+            </form>
+        </div>
+
+
+
+        <div class="inputTableBox">
+
+            {% if detail %}
+            <form action="{% url 'assignment:temporary_assignment_edit' %}" method="post" class="inputDispatchForm" id="editForm">
+            {% else %}
+            <form action="{% url 'assignment:temporary_assignment_create' %}" method="post" class="inputDispatchForm">
+            {% endif %}
+                {% csrf_token %}
+                <input autocomplete="off" name="id" type="hidden" value="{{detail.id}}" class="inputHidden">
+                <input autocomplete="off" name="type" type="hidden" value="일반업무">
+
+                <div class="inputTableBtnBox">
+                    <div autocomplete="off" class="btnModules inputSave" tabindex="23">저장(F2)</div>
+                    {% if detail %}
+                    <div class="btnModules inputDelete" onclick="deleteUrl()">삭제</div>
+                    <input type="hidden" name="date1" value="{{selected_date1}}">
+                    <input type="hidden" name="date2" value="{{selected_date2}}">
+                    <a href="{% url 'assignment:temporary_assignment' %}?date1={{date1}}&date2={{date2}}" class="newOrderLink">
+                        <div class="btnModules newOrder">신규</div>
+                    </a>
+                    <div class="btnModules routeCopyBtn">복사</div>
+                    {% endif %}
+                </div>
+
+
+                <input autocomplete="off" name="use" type="hidden" value="사용" class="inputHidden">
+            <!-- 입력창 -->
+                <table>
+                    <colgroup>
+                        <col style="width: 7%;">
+                        <col style="width: 18%;">
+                        <col style="width: 7%;">
+                        <col style="width: 18%;">
+                        <col style="width: 7%;">
+                        <col style="width: 18%;">
+                        <col style="width: 7%;">
+                        <col style="width: 18%;">
+                    </colgroup>
+                    <tr>
+                        <td class="tdTypeA">업무</td>
+                        <td colspan="3" class="tdTypeB">
+                            <input name="assignment" value="{{detail.assignment}}" type="text" class="inputText">
+                        </td>
+                        <td class="tdTypeA">위치</td>
+                        <td colspan="3" class="tdTypeB">
+                            <input name="location" value="{{detail.location}}" type="text" class="inputText">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="tdTypeA">*업무시간</td>
+                        <td colspan="3" class="tdTypeB">
+                            <div class="twiceBox">
+                                <div class="quarterBox">
+                                    <input autocomplete="off" name="start_date" type="date" class="inputTextquarter"
+                                        value="{{detail.start_time|slice:':10'}}" max="9999-12-31" tabindex="3">
+                                    <div class="deeperBox">
+                                        <input autocomplete="off" value="{{detail.start_time|slice:'11:13'}}"
+                                            name="start_time1" type="text" class="inputTextTwice essential" maxlength="2" tabindex="4">
+                                        :
+                                        <input autocomplete="off" value="{{detail.start_time|slice:'14:'}}" name="start_time2"
+                                            type="text" class="inputTextTwice essential" maxlength="2" tabindex="5">
+                                    </div>
+                                </div>
+                                ~
+                                <div class="quarterBox">
+                                    <input autocomplete="off" value="{{detail.end_time|slice:':10'}}" name="end_date"
+                                        type="date" class="inputTextquarter" max="9999-12-31" tabindex="6">
+                                    <div class="deeperBox">
+                                        <input autocomplete="off" value="{{detail.end_time|slice:'11:13'}}" name="end_time1"
+                                            type="text" class="inputTextTwice essential" maxlength="2" tabindex="7">
+                                        :
+                                        <input autocomplete="off" value="{{detail.end_time|slice:'14:'}}" name="end_time2"
+                                            type="text" class="inputTextTwice essential" maxlength="2" tabindex="8">
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="tdTypeA">*금액</td>
+                        <td class="tdTypeC">
+                            <input autocomplete="off" value="{{detail.price}}" name="price" type="text" class="inputTextPrice inputText essential">
+                        </td>
+                        <td class="tdTypeA">*수당단가</td>
+                        <td class="tdTypeC">
+                            <input autocomplete="off" value="{{detail.allowance}}" name="allowance" type="text" class="inputTextDriverAllowance inputText essential">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="tdTypeA">*순번</td>
+                        <td class="tdTypeC">
+                            <div class="routeNumber">
+                                <input autocomplete="off" value="{{detail.number1}}" name="number1" type="text" class="inputText essential">-
+                                <input autocomplete="off" value="{{detail.number2}}" name="number2" type="text" class="inputText essential">
+                            </div>
+                        </td>
+                        <td class="tdTypeA">*차량사용</td>
+                        <td class="tdTypeC">
+                            <input {% if detail.use_vehicle == '사용' %} checked {% elif not detail %} checked {% endif %} value="사용" type="radio" id="useVehicle" name="use_vehicle">
+                            <label for="useVehicle">사용</label>
+                            <input {% if detail.use_vehicle == '미사용' %} checked {% endif %} value="미사용" type="radio" id="unuseVehicle" name="use_vehicle">
+                            <label for="unuseVehicle">미사용</label>
+                        </td>
+                        <td class="tdTypeA">참조사항</td>
+                        <td colspan="3" class="tdTypeB">
+                            <input autocomplete="off" value="{{detail.references}}" name="references" type="text" class="inputText">
+                        </td>
+                    </tr>
+                </table>
+            </form>
+
+        </div>
+
+
+
+        <!-- 노선목록 -->
+        <form action="{% url 'assignment:connect_create' %}" method="post"  class="orderListBox connectForm">
+            {% csrf_token %}
+            <input type="hidden" name="date" value="{{detail.start_time|slice:':10'}}">
+            <input type="hidden" name="id" value="{{detail.id}}">
+            <input type="hidden" name="type" value="일반업무">
+            <div class="orderListHeader">
+                <span>0000년 00월 00일 (월) ~ 0000년 00월 00일 (월)</span>
+                <div class="orderExcelList">
+                    <!-- <div id="uploadExcel" class="btnModules excelBtn">엑셀 업로드</div>
+                    <div id="downloadExcel" class="btnModules excelBtn">엑셀 다운로드</div> -->
+                </div>
+                <div class="orderListBtnBox">
+                    <div class="btnModules connectDeleteBtn">배차삭제</div>
+                    <div class="btnModules dispatchBtn assignmentConnectSaveBtn">저장</div>
+                </div>
+            </div>
+            <div class="orderListBody">
+                <div class="orderListMain">
+                    <div class="assignmentTable orderListTableHead">
+                        <div class="orderListMainContents orderListMainTd">순번</div>
+                        <div class="orderListMainContents orderListMainTd">운행시간</div>
+                        <div class="orderListMainContents orderListMainTd">업무</div>
+                        <div class="orderListMainContents orderListMainTd">차량</div>
+                        <div class="orderListMainContents orderListMainTd">직원</div>
+                        <div class="orderListMainContents orderListMainTd">금액</div>
+                        <div class="orderListMainContents orderListMainTd">수당단가</div>
+                        <div class="orderListMainContents orderListMainTd">차량사용</div>
+                        <div class="orderListMainContents orderListMainTd">참조사항</div>
+                        <div class="orderListMainContents orderListMainTd">입력자</div>
+                    </div>
+                    <div class="assignmentTable orderListSubScroll">
+                        <div class="orderListScrollBox">
+                            {% for assignment in assignment_list %}
+                            {% with bus=group_bus_list|index:forloop.counter0 %}
+                            {% with member=group_member_list|index:forloop.counter0 %}
+                            <div class="orderListItem c{{forloop.counter0}} {{assignment.id}} {% if assignment.id == detail.id %}thisRoute{% endif %}">
+                                <div class="orderListMainContents orderListMainTd clickToDetail">{{assignment.number1}}{% if assignment.number2 %} - {{assignment.number2}} {% endif %}</div>
+                                <div class="orderListMainContents orderListMainTd clickToDetail">
+                                    {% if assignment.start_time|slice:':10' == assignment.end_time|slice:':10' %}
+                                    {{assignment.start_time|slice:'2:10'}}<br>
+                                    {{assignment.start_time|slice:'11:'}}~{{assignment.end_time|slice:'11:'}}
+                                    {% else %}
+                                    {{assignment.start_time|slice:'2:'}}<br>
+                                    {{assignment.end_time|slice:'2:'}}
+                                    {% endif %}
+                                </div>
+                                <div class="orderListMainContents orderListMainTd clickToDetail">{{assignment.assignment}}</div>
+                                <div class="orderListMainContents orderListMainTd">
+                                    {% if assignment.id == detail.id and detail.use_vehicle == '사용' %}
+                                    <input value="{{bus.vehicle_num}}" type="text" class="connectBusInput" readonly>
+                                    <input value="{{bus.id}}" type="hidden" name="bus" class="connectBusId">
+                                    {% else %}
+                                    {{bus.vehicle_num}}
+                                    {% endif %}
+
+                                </div>
+                                <div class="orderListMainContents orderListMainTd">
+                                    {% if assignment.id == detail.id %}
+                                    <select name="member" class="connectMemberInput">
+                                        <option value="{{member.id}}">{{member.name}}</option>
+                                    </select>
+                                    {% else %}
+                                    {{member.name}}
+                                    {% endif %}
+                                </div>
+                                <div class="orderListMainContents orderListMainTd clickToDetail needComma">{{assignment.price}}</div>
+                                <div class="orderListMainContents orderListMainTd clickToDetail needComma">{{assignment.allowance}}</div>
+                                <div class="orderListMainContents orderListMainTd clickToDetail">{{assignment.use_vehicle}}</div>
+                                <div class="orderListMainContents orderListMainTd clickToDetail">{{assignment.references}}</div>
+                                <div class="orderListMainContents orderListMainTd clickToDetail">{{assignment.creator.name}}</div>
+                            </div>
+                            {% endwith %}
+                            {% endwith %}
+                            {% endfor %}
+                        </div>
+                    </div>
+                    <div class="orderListTotal">
+                        <div class="orderListMainContents orderListMainTotal"></div>
+                    </div>
+                </div>
+                
+            </div>
+        </form>
+
+
+    </div>
+    
+</div>
+{% endblock %}
+
+
+
+
+{% block popup %}
+    <div class="popupAreaModules" id="excelPopup">
+        <div class="popupBgModules"></div>
+        <form method="post" action="" class="popupContainer excelUploadPopupContainer">
+            {% csrf_token %}
+            <div class="popupHeader">
+                <div class="popupTitle">엑셀 업로드</div>
+            </div>
+            <div class="popupBody">
+                <div class="popupSection excelUploadPopupSection">
+                    <div class="popupArticleFileDouble excelUploadPopupArticleFileDouble">
+                        <label for="excelUploadFile" class="popupArticleLabel">파일선택</label>
+                        <input autocomplete="off" name="" type="file" id="excelUploadFile" class="excelUploadFile"
+                            onchange="readExcel()">
+                        <input autocomplete="off" name="" type="text" class="excelUploadFileText" readonly>
+                        <svg class="fileDeleteBtn" xmlns="http://www.w3.org/2000/svg" width="11.314" height="11.314"
+                            viewBox="0 0 11.314 11.314">
+                            <g id="그룹_1513" data-name="그룹 1513" transform="translate(-442.649 -1001.97) rotate(45)">
+                                <line id="선_691" data-name="선 691" y2="12" transform="translate(1029.5 389.5)" fill="none"
+                                    stroke="#000" stroke-linecap="round" stroke-width="2" />
+                                <line id="선_692" data-name="선 692" y2="12" transform="translate(1035.5 395.5) rotate(90)"
+                                    fill="none" stroke="#000" stroke-linecap="round" stroke-width="2" />
+                            </g>
+                        </svg>
+                    </div>
+                </div>
+                <div class="popupFooter excelUploadPopupFooter">
+                    <div class="popupFooterMinibox">
+                        <a href="{% static 'form/일반배차 엑셀 업로드 양식.xlsx' %}" download>
+                            <div class="btnModules backgroundBlack">양식다운</div>
+                        </a>
+                        <div class="visibleLoadingBox">
+                            <div class="visibleLoading">
+                                <span>파일이 업로드 중입니다</span>
+                                <iframe src="https://giphy.com/embed/sSgvbe1m3n93G" width="18" height="18" frameBorder="0"
+                                    class="giphy-embed" allowFullScreen></iframe>
+                            </div>
+                        </div>
+                    </div>
+                    <input autocomplete="off" type="submit" class="btnModules uploadCrateBtn backgroundBlue" value="등록">
+                    <div class="btnModules popupCloseBtn closeBtn">닫기</div>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="popupAreaModules" id="excelPopup">
+        <div class="popupBgModules"></div>
+        <form id="excelDownloadForm" method="get" action="{% url 'dispatch:order_download' %}" class="popupContainer excelUploadPopupContainer">
+            {% csrf_token %}
+            <div class="popupHeader">
+                <div class="popupTitle">엑셀 다운로드</div>
+            </div>
+            <div class="popupBody">
+                <div class="popupSection excelUploadPopupSection">
+                    <div class="popupArticleFileDouble excelUploadPopupArticleFileDouble">
+                        <input name="date1" class="excelDownloadDateInput" type="date"/>
+                        <span>~</span>
+                        <input name="date2" class="excelDownloadDateInput" type="date"/>
+                    </div>
+                </div>
+                <div class="popupFooter excelUploadPopupFooter">
+                    <div class="popupFooterMinibox">
+                    </div>
+                    <input autocomplete="off" type="submit" class="btnModules uploadCrateBtn backgroundBlue" value="다운로드">
+                    <div class="btnModules popupCloseBtn closeBtn">닫기</div>
+                </div>
+            </div>
+        </form>
+    </div>
+  {% endblock %}
+  
+  
+  
+  
+  
+
+
+
+{% block script %}
+<script>
+    {%  autoescape off %}
+    const data = {% if dispatch_list %} {{ dispatch_list }} {% else %} '' {% endif %}
+    const data2 = {% if dispatch_list2 %} {{ dispatch_list2 }} {% else %} '' {% endif %}
+    const dataList = {% if dispatch_data_list %} {{ dispatch_data_list }} {% else %} '' {% endif %}
+    const driverObj = {{ driver_dict }}
+    const outsourcingObj = {{ outsourcing_dict }}
+    
+    const CURRENT_PAGE = 'temporary_assignment'
+    const THIS_URL = '{% url "assignment:temporary_assignment" %}'
+    const COPY_URL = '{% url "assignment:temporary_assignment_create" %}'
+    const EDIT_URL = '{% url "assignment:temporary_assignment_edit" %}'
+    const EDIT_CHECK_URL = '{% url "assignment:assignment_edit_check" %}'
+    const CONNECT_DELETE_URL = '{% url "assignment:temporary_connect_delete" %}'
+    const USE_VEHICLE = {% if detail.use_vehicle == '사용' %}true{% else %}false{% endif %}
+    const URL_DATE = "{{date}}"
+    const DETAIL_EXIST = {% if detail %}true{% else %}false{% endif %}
+
+
+    console.log("DATA", data)
+    console.log("DATA2", data2)
+    console.log("driverObj", driverObj);
+    console.log("outsourcingObj", outsourcingObj);
+    console.log('dataList', dataList);
+    {% endautoescape %}
+</script>
+<script>
+    
+    let targetLink = ""
+
+    function openOrderPrint(url){
+        targetLink = `${url}?date1=${searchDate[0].value}&date2=${searchDate[1].value}`
+        window.open(targetLink, `${searchDate[0].value}배차지지서`, "width=1100, height=640")
+    }
+
+    const changeForm = document.querySelector(".inputDispatchForm")
+    
+    function deleteUrl(){
+        if(confirm("정말로 삭제하시겠습니까?")){
+            changeForm.action = '{% url "assignment:temporary_assignment_delete" %}'
+            changeForm.submit()
+        }
+    }
+
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.15.5/xlsx.full.min.js"></script>
+<script src="{% static 'js/lodash.js' %}"></script>
+<script src="{% static 'js/assignment/temporaryAssignmentConnect.js' %}"></script>
+<script src="{% static 'js/assignment/orderAll.js' %}"></script>
+<script src="{% static 'js/dispatch/order/layoutChanger.js' %}"></script>
+<script src="{% static 'js/dispatch/order/orderDateControll.js' %}"></script>
+<script src="{% static 'js/assignment/fullSchedule.js' %}"></script>
+<script src="{% static 'js/dispatch/order/dateFollow.js' %}"></script>
+<script src="{% static 'js/dispatch/order/routeCopy.js' %}"></script>
+<script src="{% static 'js/assignment/temporaryAssignment.js' %}"></script>
+
+{% endblock %}

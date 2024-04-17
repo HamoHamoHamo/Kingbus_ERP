@@ -11,7 +11,7 @@
 
 {% block content-header %}
 <div class="HeaderTitle">
-    업무관리
+    고정업무관리
 </div>
 {% endblock %}
 
@@ -149,6 +149,7 @@
         {% endif %}
             {% csrf_token %}
             <input autocomplete="off" type="hidden" name="id" value="{{detail.id}}" class="inputHidden">
+            <input type="hidden" name="type" value="고정업무">
             <div class="routeInputHead">
                 <span>업무등록</span>
                 <div class="routeInputBtnBox">
@@ -199,10 +200,10 @@
                     <td class="tdTypeA">*업무시간</td>
                     <td colspan="3" class="tdTypeB">
                         <div class="routeTime">
-                            <input id="start_time1" autocomplete="off" value="{{detail.start_time|slice:':2'}}" name="start_time1" type="text" class="essential inputText">:
-                            <input id="start_time2" autocomplete="off" value="{{detail.start_time|slice:'3:'}}" name="start_time2" type="text" class="essential inputText">~
-                            <input id="end_time1" autocomplete="off" value="{{detail.end_time|slice:':2'}}" name="end_time1" type="text" class="essential inputText">:
-                            <input id="end_time2" autocomplete="off" value="{{detail.end_time|slice:'3:'}}" name="end_time2" type="text" class="essential inputText">
+                            <input maxlength="2" id="start_time1" autocomplete="off" value="{{detail.start_time|slice:':2'}}" name="start_time1" type="text" class="essential inputText">:
+                            <input maxlength="2" id="start_time2" autocomplete="off" value="{{detail.start_time|slice:'3:'}}" name="start_time2" type="text" class="essential inputText">~
+                            <input maxlength="2" id="end_time1" autocomplete="off" value="{{detail.end_time|slice:':2'}}" name="end_time1" type="text" class="essential inputText">:
+                            <input maxlength="2" id="end_time2" autocomplete="off" value="{{detail.end_time|slice:'3:'}}" name="end_time2" type="text" class="essential inputText">
                         </div>
                     </td>
                     <td class="tdTypeA">*위치</td>
@@ -212,11 +213,18 @@
                 </tr>
                 <tr>
                     <td class="tdTypeA">*순번</td>
-                    <td colspan="3" class="tdTypeB">
+                    <td class="tdTypeC">
                         <div class="routeNumber">
                             <input autocomplete="off" value="{{detail.number1}}" name="number1" type="text" class="inputText essential">-
                             <input autocomplete="off" value="{{detail.number2}}" name="number2" type="text" class="inputText essential">
                         </div>
+                    </td>
+                    <td class="tdTypeA">*차량사용</td>
+                    <td class="tdTypeC">
+                        <input {% if detail.use_vehicle == '사용' %} checked {% elif not detail %} checked {% endif %} value="사용" type="radio" id="useVehicle" name="use_vehicle">
+                        <label for="useVehicle">사용</label>
+                        <input {% if detail.use_vehicle == '미사용' %} checked {% endif %} value="미사용" type="radio" id="unuseVehicle" name="use_vehicle">
+                        <label for="unuseVehicle">미사용</label>
                     </td>
                     <td class="tdTypeA">*금액</td>
                     <td class="tdTypeC">
@@ -240,12 +248,26 @@
                     <td colspan="3" class="tdTypeB">
                         <input autocomplete="off" value="{{detail.references}}" name="references" type="text" class="inputText">
                     </td>
-                    <td class="tdTypeA">*차량사용</td>
+                    <td class="tdTypeA">*운행요일</td>
                     <td colspan="3" class="tdTypeB">
-                        <input {% if detail.use_vehicle == '사용' %} checked {% elif not detail %} checked {% endif %} value="사용" type="radio" id="useVehicle" name="use_vehicle">
-                        <label for="useVehicle">사용</label>
-                        <input {% if detail.use_vehicle == '미사용' %} checked {% endif %} value="미사용" type="radio" id="unuseVehicle" name="use_vehicle">
-                        <label for="unuseVehicle">미사용</label>
+                        <div class="routeWeek driveDateBox">
+                            <input autocomplete="off" id="all" type="checkbox" tabindex="14">
+                            <label for="all">모두</label>
+                            <input autocomplete="off" {% if detail.week and detail.week|in_check:'월' %} checked {% endif %} name="week" value="월" id="mon" type="checkbox" class="driveDateCheck">
+                            <label for="mon">월</label>
+                            <input autocomplete="off" {% if detail.week and detail.week|in_check:'화' %} checked {% endif %} name="week" value="화" id="tue" type="checkbox" class="driveDateCheck">
+                            <label for="tue">화</label>
+                            <input autocomplete="off" {% if detail.week and detail.week|in_check:'수' %} checked {% endif %} name="week" value="수" id="wed" type="checkbox" class="driveDateCheck">
+                            <label for="wed">수</label>
+                            <input autocomplete="off" {% if detail.week and detail.week|in_check:'목' %} checked {% endif %} name="week" value="목" id="thu" type="checkbox" class="driveDateCheck">
+                            <label for="thu">목</label>
+                            <input autocomplete="off" {% if detail.week and detail.week|in_check:'금' %} checked {% endif %} name="week" value="금" id="fri" type="checkbox" class="driveDateCheck">
+                            <label for="fri">금</label>
+                            <input autocomplete="off" {% if detail.week and detail.week|in_check:'토' %} checked {% endif %} name="week" value="토" id="sat" type="checkbox" class="driveDateCheck">
+                            <label for="sat">토</label>
+                            <input autocomplete="off" {% if detail.week and detail.week|in_check:'일' %} checked {% endif %} name="week" value="일" id="sun" type="checkbox" class="driveDateCheck">
+                            <label for="sun">일</label>
+                        </div>
                     </td>
                 </tr>
             </table>
@@ -488,6 +510,8 @@
     const editCheckUrl = "{% url 'assignment:assignment_edit_check' %}"
 
     const groupCreateChangeForm = document.querySelector(".groupCreate")
+    const DETAIL_EXIST = {% if detail %}true{% else %}false{% endif %}
+    const CURRENT_PAGE = 'assignment_data'
 
     function groupCreateDeleteUrl() {
         {% autoescape off %}

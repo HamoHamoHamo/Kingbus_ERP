@@ -10,6 +10,6 @@ function copyRoute(){
     this.style.display = "none"
     inputDelete.style.display = "none"
     newOrderLink.style.display = "none"
-    inputDispatchForm.action = "/dispatch/order/route/create"
+    inputDispatchForm.action = COPY_URL
     alert("노선 정보를 불러왔습니다.")
 }

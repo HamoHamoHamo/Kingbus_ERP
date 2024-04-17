@@ -14,6 +14,7 @@ class AssignmentDataForm(forms.ModelForm):
             'number1',
             'number2',
             'use_vehicle',
+            'type',
             'use',
         ]
         
@@ -27,5 +28,6 @@ class AssignmentForm(forms.ModelForm):
             'number1',
             'number2',
             'use_vehicle',
+            'type',
             'use',
         ]
