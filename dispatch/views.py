@@ -14,6 +14,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
 from django.views import generic
 
+from .commons import get_date_connect_list, get_multi_date_connect_list
 from .forms import OrderForm, ConnectForm, RegularlyDataForm
 from .models import DispatchRegularlyRouteKnow, DispatchCheck, DispatchRegularlyData, DispatchRegularlyWaypoint, Schedule, DispatchOrderConnect, DispatchOrder, DispatchRegularly, RegularlyGroup, DispatchRegularlyConnect, DispatchOrderWaypoint, ConnectRefusal, MorningChecklist, EveningChecklist, DrivingHistory, BusinessEntity
 from assignment.models import AssignmentConnect
@@ -26,13 +27,7 @@ from vehicle.models import Vehicle
 
 from datetime import datetime, timedelta, date
 # from utill.decorator import option_year_deco
-
-
-
-TODAY = str(datetime.now())[:10]
-FORMAT = "%Y-%m-%d"
-WEEK = ['(월)', '(화)', '(수)', '(목)', '(금)', '(토)', '(일)', ]
-WEEK2 = ['월', '화', '수', '목', '금', '토', '일', ]
+from common.constant import TODAY, FORMAT, WEEK, WEEK2
 
 class RegularlyPrintList(generic.ListView):
     template_name = 'dispatch/regularly_print.html'
@@ -665,55 +660,7 @@ class RegularlyDispatchList(generic.ListView):
         for outsourcing in outsourcing_list:
             context['outsourcing_dict'][outsourcing[0]] = outsourcing[1]
 
-        r_connect_list = list(DispatchRegularlyConnect.objects.select_related('regularly_id').exclude(departure_date__gt=f'{date} 24:00').exclude(arrival_date__lt=f'{date} 00:00').values('departure_date', 'arrival_date', 'bus_id__id', 'bus_id__vehicle_num', 'driver_id__id', 'driver_id__name', 'outsourcing', 'regularly_id__work_type', 'regularly_id__departure', 'regularly_id__arrival'))
-        # r_connect_list = DispatchRegularlyConnect.objects.select_related('regularly_id').exclude(departure_date__gt=f'{date} 24:00').exclude(arrival_date__lt=f'{date} 00:00')
-        dispatch_list = []
-        for rc in r_connect_list:
-            data = {
-                'work_type': rc['regularly_id__work_type'],
-                'departure_date': rc['departure_date'],
-                'arrival_date': rc['arrival_date'],
-                'departure': rc['regularly_id__departure'],
-                'arrival': rc['regularly_id__arrival'],
-                'bus_id': rc['bus_id__id'],
-                'bus_num': rc['bus_id__vehicle_num'],
-                'driver_id': rc['driver_id__id'],
-                'driver_name': rc['driver_id__name'],
-                'outsourcing': rc['outsourcing'],
-            }
-            dispatch_list.append(data)
-        connect_list = list(DispatchOrderConnect.objects.select_related('order_id').exclude(departure_date__gt=f'{date} 24:00').exclude(arrival_date__lt=f'{date} 00:00').values('departure_date', 'arrival_date', 'bus_id__id', 'bus_id__vehicle_num', 'driver_id__id', 'driver_id__name', 'outsourcing', 'order_id__departure', 'order_id__arrival'))
-        for cc in connect_list:
-            data = {
-                'work_type': '일반',
-                'departure_date': cc['departure_date'],
-                'arrival_date': cc['arrival_date'],
-                'departure': cc['order_id__departure'],
-                'arrival': cc['order_id__arrival'],
-                'bus_id': cc['bus_id__id'],
-                'bus_num': cc['bus_id__vehicle_num'],
-                'driver_id': cc['driver_id__id'],
-                'driver_name': cc['driver_id__name'],
-                'outsourcing': cc['outsourcing'],
-            }
-            dispatch_list.append(data)
-
-        a_connect_list = list(AssignmentConnect.objects.select_related('assignment_id', 'member_id', 'bus_id').exclude(start_date__gt=f'{date} 24:00').exclude(end_date__lt=f'{date} 00:00').values('start_date', 'end_date', 'bus_id__id', 'bus_id__vehicle_num', 'member_id__id', 'member_id__name', 'assignment_id__assignment'))
-        for cc in a_connect_list:
-            data = {
-                'work_type': '업무',
-                'departure_date': cc['start_date'],
-                'arrival_date': cc['end_date'],
-                'bus_id': cc['bus_id__id'] if cc['bus_id__id'] else "",
-                'bus_num': cc['bus_id__vehicle_num'] if cc['bus_id__vehicle_num'] else "",
-                'driver_id': cc['member_id__id'],
-                'driver_name': cc['member_id__name'],
-                'outsourcing': 'n',
-                'assignment': cc['assignment_id__assignment']
-            }
-            dispatch_list.append(data)
-
-        context['dispatch_list'] = dispatch_list
+        context['dispatch_list'] = get_date_connect_list(date)
         #
 
         context['vehicles'] = Vehicle.objects.filter(use='사용').order_by('vehicle_num', 'driver_name')
@@ -1124,13 +1071,15 @@ def regularly_order_edit_check(request):
 
     regularly = order.monthly.order_by('-edit_date').first()
     connect_list = regularly.info_regularly.filter(departure_date__gte=TODAY)
-
+    
     for connect in connect_list:
         driver = connect.driver_id
         bus = connect.bus_id
         date = connect.departure_date[:10]
+        departure_date = f'{date} {post_departure_date}'
+        arrival_date = f'{date} {post_arrival_date}'
         
-        r_connect_bus = DispatchRegularlyConnect.objects.filter(bus_id=bus).exclude(arrival_date__lt=f'{date} {post_departure_date}').exclude(departure_date__gt=f'{date} {post_arrival_date}').exclude(id__in=connect_list)
+        r_connect_bus = DispatchRegularlyConnect.objects.filter(bus_id=bus).exclude(arrival_date__lt=departure_date).exclude(departure_date__gt=arrival_date).exclude(id__in=connect_list)
         if r_connect_bus:
             return JsonResponse({
                 "status": "fail",
@@ -1140,7 +1089,7 @@ def regularly_order_edit_check(request):
                 'arrival_date': r_connect_bus[0].arrival_date,
                 'departure_date': r_connect_bus[0].departure_date,
             })
-        r_connect_driver = DispatchRegularlyConnect.objects.filter(driver_id=driver).exclude(arrival_date__lt=f'{date} {post_departure_date}').exclude(departure_date__gt=f'{date} {post_arrival_date}').exclude(id__in=connect_list)
+        r_connect_driver = DispatchRegularlyConnect.objects.filter(driver_id=driver).exclude(arrival_date__lt=departure_date).exclude(departure_date__gt=arrival_date).exclude(id__in=connect_list)
         if r_connect_driver:
             return JsonResponse({
                 "status": "fail",
@@ -1151,7 +1100,7 @@ def regularly_order_edit_check(request):
                 'departure_date': r_connect_driver[0].departure_date,
             })
         
-        connect_bus = DispatchOrderConnect.objects.filter(bus_id=bus).exclude(arrival_date__lt=f'{date} {post_departure_date}').exclude(departure_date__gt=f'{date} {post_arrival_date}').exclude(id__in=connect_list)
+        connect_bus = DispatchOrderConnect.objects.filter(bus_id=bus).exclude(arrival_date__lt=departure_date).exclude(departure_date__gt=arrival_date)
         if connect_bus:
             return JsonResponse({
                 "status": "fail",
@@ -1161,7 +1110,7 @@ def regularly_order_edit_check(request):
                 'arrival_date': connect_bus[0].arrival_date,
                 'departure_date': connect_bus[0].departure_date,
             })
-        connect_driver = DispatchOrderConnect.objects.filter(driver_id=driver).exclude(arrival_date__lt=f'{date} {post_departure_date}').exclude(departure_date__gt=f'{date} {post_arrival_date}').exclude(id__in=connect_list)
+        connect_driver = DispatchOrderConnect.objects.filter(driver_id=driver).exclude(arrival_date__lt=departure_date).exclude(departure_date__gt=arrival_date)
         if connect_driver:
             return JsonResponse({
                 "status": "fail",
@@ -1170,6 +1119,28 @@ def regularly_order_edit_check(request):
                 'bus': connect_driver[0].bus_id.vehicle_num,
                 'arrival_date': connect_driver[0].arrival_date,
                 'departure_date': connect_driver[0].departure_date,
+            })
+        
+        a_connect = AssignmentConnect.objects.filter(assignment_id__use_vehicle='사용').filter(bus_id=bus).exclude(end_date__lt=departure_date).exclude(start_date__gt=arrival_date)
+        if a_connect:
+            return JsonResponse({
+                "status": "fail",
+                'route': a_connect[0].assignment_id.assignment,
+                'driver': a_connect[0].member_id.name,
+                'bus': a_connect[0].bus_id.vehicle_num,
+                'departure_date': a_connect[0].start_date,
+                'arrival_date': a_connect[0].end_date,
+            })
+        a_connect_driver = AssignmentConnect.objects.filter(member_id=driver).exclude(end_date__lt=departure_date).exclude(start_date__gt=arrival_date)
+        if a_connect_driver:
+            vehicle_num = a_connect_driver[0].bus_id.vehicle_num if a_connect_driver[0].assignment_id.use_vehicle == '사용' else ''
+            return JsonResponse({
+                "status": "fail",
+                'route': a_connect_driver[0].assignment_id.assignment,
+                'driver': a_connect_driver[0].member_id.name,
+                'bus': vehicle_num,
+                'departure_date': a_connect_driver[0].start_date,
+                'arrival_date': a_connect_driver[0].end_date,
             })
         
     
@@ -2145,78 +2116,12 @@ class OrderList(generic.ListView):
         else:
             filter_date2 = date
 
-        r_connect_list = list(DispatchRegularlyConnect.objects.select_related('regularly_id').exclude(departure_date__gt=f'{filter_date2} 24:00').exclude(arrival_date__lt=f'{filter_date1} 00:00').values('departure_date', 'arrival_date', 'bus_id__id', 'bus_id__vehicle_num', 'driver_id__id', 'driver_id__name', 'outsourcing', 'regularly_id__work_type', 'regularly_id__departure', 'regularly_id__arrival'))
-        dispatch_list = []
-        dispatch_list2 = []
-        dispatch_data_list = []
-        for rc in r_connect_list:
-            data = {
-                'work_type': rc['regularly_id__work_type'],
-                'departure_date': rc['departure_date'],
-                'arrival_date': rc['arrival_date'],
-                'departure': rc['regularly_id__departure'],
-                'arrival': rc['regularly_id__arrival'],
-                'bus_id': rc['bus_id__id'],
-                'bus_num': rc['bus_id__vehicle_num'],
-                'driver_id': rc['driver_id__id'],
-                'driver_name': rc['driver_id__name'],
-                'outsourcing': rc['outsourcing'],
-            }
-            if detail_id:
-                if context['detail'].departure_date[:10] in data['arrival_date'][:10]:
-                    dispatch_list.append(data)
-                elif context['detail'].arrival_date[:10] in data['departure_date'][:10]:
-                    dispatch_list2.append(data)
-                
-            dispatch_data_list.append(data)
-                
-        
-        connect_list = list(DispatchOrderConnect.objects.select_related('order_id').exclude(departure_date__gt=f'{filter_date2} 24:00').exclude(arrival_date__lt=f'{filter_date1} 00:00').values('departure_date', 'arrival_date', 'bus_id__id', 'bus_id__vehicle_num', 'driver_id__id', 'driver_id__name', 'outsourcing', 'order_id__departure', 'order_id__arrival'))
-        for cc in connect_list:
-            data = {
-                'work_type': '일반',
-                'departure_date': cc['departure_date'],
-                'arrival_date': cc['arrival_date'],
-                'departure': cc['order_id__departure'],
-                'arrival': cc['order_id__arrival'],
-                'bus_id': cc['bus_id__id'],
-                'bus_num': cc['bus_id__vehicle_num'],
-                'driver_id': cc['driver_id__id'],
-                'driver_name': cc['driver_id__name'],
-                'outsourcing': cc['outsourcing'],
-            }
-            if detail_id:
-                if context['detail'].departure_date[:10] in data['arrival_date'][:10]:
-                    dispatch_list.append(data)
-                elif context['detail'].arrival_date[:10] in data['departure_date'][:10]:
-                    dispatch_list2.append(data)
-            
-            dispatch_data_list.append(data)
+        detail = context['detail'] if detail_id else ''
+        connect_dict = get_multi_date_connect_list(filter_date1, filter_date2, detail)
 
-        a_connect_list = list(AssignmentConnect.objects.select_related('assignment_id', 'member_id', 'bus_id').exclude(start_date__gt=f'{filter_date2} 24:00').exclude(end_date__lt=f'{filter_date1} 00:00').values('start_date', 'end_date', 'bus_id__id', 'bus_id__vehicle_num', 'member_id__id', 'member_id__name', 'assignment_id__assignment'))
-        for cc in a_connect_list:
-            data = {
-                'work_type': '업무',
-                'departure_date': cc['start_date'],
-                'arrival_date': cc['end_date'],
-                'bus_id': cc['bus_id__id'] if cc['bus_id__id'] else "",
-                'bus_num': cc['bus_id__vehicle_num'] if cc['bus_id__vehicle_num'] else "",
-                'driver_id': cc['member_id__id'],
-                'driver_name': cc['member_id__name'],
-                'outsourcing': 'n',
-                'assignment': cc['assignment_id__assignment']
-            }
-            if detail_id:
-                if context['detail'].departure_date[:10] in data['arrival_date'][:10]:
-                    dispatch_list.append(data)
-                elif context['detail'].arrival_date[:10] in data['departure_date'][:10]:
-                    dispatch_list2.append(data)
-            
-            dispatch_data_list.append(data)
-
-        context['dispatch_list'] = dispatch_list
-        context['dispatch_list2'] = dispatch_list2
-        context['dispatch_data_list'] = dispatch_data_list
+        context['dispatch_list'] = connect_dict['dispatch_list']
+        context['dispatch_list2'] = connect_dict['dispatch_list2']
+        context['dispatch_data_list'] = connect_dict['dispatch_data_list']
         #
         collect_list = []
         outstanding_list = []
@@ -2464,7 +2369,7 @@ def order_edit_check(request):
         format = '%Y-%m-%d %H:%M'
         if datetime.strptime(post_departure_date, format) > datetime.strptime(post_arrival_date, format):
             raise Http404
-        o_connect = bus.info_bus_id.exclude(arrival_date__lt=post_departure_date).exclude(departure_date__gt=post_arrival_date).exclude(id__in=connects)
+        o_connect = DispatchOrderConnect.objects.filter(bus_id=bus).exclude(arrival_date__lt=post_departure_date).exclude(departure_date__gt=post_arrival_date).exclude(id__in=connects)
         if o_connect:
             return JsonResponse({
                 "status": "fail",
@@ -2484,7 +2389,7 @@ def order_edit_check(request):
                 'arrival_date': o_connect_driver[0].arrival_date,
                 'departure_date': o_connect_driver[0].departure_date,
             })
-        r_connect = bus.info_regularly_bus_id.exclude(arrival_date__lt=post_departure_date).exclude(departure_date__gt=post_arrival_date)
+        r_connect = DispatchRegularlyConnect.objects.filter(bus_id=bus).exclude(arrival_date__lt=post_departure_date).exclude(departure_date__gt=post_arrival_date)
         if r_connect:
             return JsonResponse({
                 "status": "fail",
@@ -2503,6 +2408,28 @@ def order_edit_check(request):
                 'bus': r_connect_driver[0].bus_id.vehicle_num,
                 'arrival_date': r_connect_driver[0].arrival_date,
                 'departure_date': r_connect_driver[0].departure_date,
+            })
+
+        a_connect = AssignmentConnect.filter(assignment_id__use_vehicle='사용').objects.filter(bus_id=bus).exclude(end_date__lt=post_departure_date).exclude(start_date__gt=post_arrival_date)
+        if a_connect:
+            return JsonResponse({
+                "status": "fail",
+                'route': a_connect[0].assignment_id.assignment,
+                'driver': a_connect[0].member_id.name,
+                'bus': a_connect[0].bus_id.vehicle_num,
+                'departure_date': a_connect[0].start_date,
+                'arrival_date': a_connect[0].end_date,
+            })
+        a_connect_driver = AssignmentConnect.objects.filter(member_id=driver).exclude(end_date__lt=post_departure_date).exclude(start_date__gt=post_arrival_date)
+        vehicle_num = a_connect_driver[0].bus_id.vehicle_num if a_connect_driver[0].assignment_id.use_vehicle == '사용' else ''
+        if a_connect_driver:
+            return JsonResponse({
+                "status": "fail",
+                'route': a_connect_driver[0].assignment_id.assignment,
+                'driver': a_connect_driver[0].member_id.name,
+                'bus': vehicle_num,
+                'departure_date': a_connect_driver[0].start_date,
+                'arrival_date': a_connect_driver[0].end_date,
             })
     
     return JsonResponse({'status': 'success', 'departure_date': post_departure_date, 'arrival_date': post_arrival_date})
@@ -3016,7 +2943,7 @@ def daily_driving_list(request):
         member_list = Member.objects.filter(id=request.session.get('user'))
     else:
         # member_list = Member.objects.filter(use='사용').filter(authority__gte=3)
-        member_list = Member.objects.filter(authority__gte=3)
+        member_list = Member.objects.filter(authority__gte=1)
     
     connect_object = {}
     e_connect_object = {}
