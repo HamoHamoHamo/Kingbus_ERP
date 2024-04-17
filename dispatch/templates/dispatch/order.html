@@ -6,7 +6,6 @@
 <meta http-equiv="Cache-Control" content="private, no-cache, no-store, max-age=0, must-revalidate">
 <link rel="stylesheet" href="{% static 'css/dispatch/dispatchBase.css' %}" type="text/css" />
 <link rel="stylesheet" href="{% static 'css/dispatch/order.css' %}" type="text/css" />
-<link rel="stylesheet" href="{% static 'css/dispatch/order.css' %}" type="text/css" />
 {% endblock %}
 
 {% block content-header %}
@@ -872,6 +871,8 @@
     const outsourcingObj = {{ outsourcing_dict }}
     const client = {{ client }}
     const contractStatus = "{{ detail.contract_status }}"
+    const THIS_URL = '{% url "dispatch:order" %}'
+    const COPY_URL = "{% url 'dispatch:order_create' %}"
     console.log("DATA", data)
     console.log("DATA2", data2)
     console.log("driverObj", driverObj);

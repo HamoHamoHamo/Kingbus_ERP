@@ -2410,7 +2410,7 @@ def order_edit_check(request):
                 'departure_date': r_connect_driver[0].departure_date,
             })
 
-        a_connect = AssignmentConnect.filter(assignment_id__use_vehicle='사용').objects.filter(bus_id=bus).exclude(end_date__lt=post_departure_date).exclude(start_date__gt=post_arrival_date)
+        a_connect = AssignmentConnect.objects.filter(assignment_id__use_vehicle='사용').filter(bus_id=bus).exclude(end_date__lt=post_departure_date).exclude(start_date__gt=post_arrival_date)
         if a_connect:
             return JsonResponse({
                 "status": "fail",
@@ -2421,8 +2421,8 @@ def order_edit_check(request):
                 'arrival_date': a_connect[0].end_date,
             })
         a_connect_driver = AssignmentConnect.objects.filter(member_id=driver).exclude(end_date__lt=post_departure_date).exclude(start_date__gt=post_arrival_date)
-        vehicle_num = a_connect_driver[0].bus_id.vehicle_num if a_connect_driver[0].assignment_id.use_vehicle == '사용' else ''
         if a_connect_driver:
+            vehicle_num = a_connect_driver[0].bus_id.vehicle_num if a_connect_driver[0].assignment_id.use_vehicle == '사용' else ''
             return JsonResponse({
                 "status": "fail",
                 'route': a_connect_driver[0].assignment_id.assignment,
