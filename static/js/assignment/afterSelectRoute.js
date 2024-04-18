@@ -42,12 +42,12 @@ function afterSelectRoute() {
 
             let periodFilter = []
 
-            for (i = 0; i < data.length; i++) {
-                let dataStartTime = data[i].departure_date
-                let dataEndTime = data[i].arrival_date
+            for (i = 0; i < dataList.length; i++) {
+                let dataStartTime = dataList[i].departure_date
+                let dataEndTime = dataList[i].arrival_date
                 
                 if (dataEndTime >= departureDate && dataStartTime <= arrivalDate) {
-                    periodFilter.push(`${data[i].driver_id}`)
+                    periodFilter.push(`${dataList[i].driver_id}`)
                 }
             }
             
