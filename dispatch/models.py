@@ -2,6 +2,8 @@ from django.db import models
 from crudmember.models import Category
 from humanresource.models import Member
 from vehicle.models import Vehicle
+from datetime import datetime
+from uuid import uuid4
 
 class BusinessEntity(models.Model):
     name = models.CharField(verbose_name='사업장 이름', max_length=50, null=False, unique=True)
@@ -219,6 +221,11 @@ class DriverCheck(models.Model):
     creator = models.ForeignKey(Member, on_delete=models.SET_NULL, related_name="driver_check_creator", db_column="creator_id", null=True)
 
 class ConnectRefusal(models.Model):
+    def get_file_path():
+        ymd_path = datetime.now().strftime('%Y/%m/%d')
+        uuid_name = uuid4().hex
+        return '/'.join(['dispatch/refusal', ymd_path, uuid_name])
+
     regularly_id = models.OneToOneField(DispatchRegularlyConnect, on_delete=models.SET_NULL, related_name="refusal_regularly_connect", null=True)
     order_id = models.OneToOneField(DispatchOrderConnect, on_delete=models.SET_NULL, related_name="refusal_order_connect", null=True)
     driver_id = models.ForeignKey(Member, on_delete=models.CASCADE, related_name="refusal_driver_id", null=False)
@@ -227,6 +234,7 @@ class ConnectRefusal(models.Model):
     route = models.CharField(verbose_name='노선이름', max_length=500, null=False, blank=True)
     check_date = models.CharField(verbose_name='확인날짜', max_length=16, null=False, blank=True)
     refusal = models.CharField(verbose_name='배차거부사유', max_length=500, null=False, blank=True)
+    files = models.TextField(verbose_name='증빙서류', null=False, blank=True)
     pub_date = models.DateTimeField(auto_now_add=True, verbose_name='작성시간')
     updated_at = models.DateTimeField(auto_now=True, verbose_name='수정시간')
     creator = models.ForeignKey(Member, on_delete=models.SET_NULL, related_name="connect_refusal_creator", db_column="creator_id", null=True)
