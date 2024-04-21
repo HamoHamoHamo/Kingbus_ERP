@@ -831,6 +831,7 @@ def salary_detail(request):
         regularly_assignment_cnt = 0
         
         total_list = [0] * int(last_date)
+        assignment_total_list = [0] * int(last_date)
         work_cnt = 0
         
 
@@ -893,7 +894,7 @@ def salary_detail(request):
 
             assignment_price_list[c_date] += int(assignment['allowance'])
         # if assignments:
-            total_list[c_date] += int(assignment['allowance'])
+            assignment_total_list[c_date] += int(assignment['allowance'])
         
         regularly_assignments = AssignmentConnect.objects.filter(start_date__range=(f'{month}-01 00:00', f'{month}-{last_date} 24:00')).filter(type='고정업무').filter(member_id=member)
         regularly_assignment_cnt = regularly_assignments.count()
@@ -905,7 +906,7 @@ def salary_detail(request):
 
             regularly_assignment_price_list[c_date] += int(regularly_assignment['allowance'])
         # if regularly_assignments:
-            total_list[c_date] += int(regularly_assignment['allowance'])
+            assignment_total_list[c_date] += int(regularly_assignment['allowance'])
 
 
         for i in range(int(last_date)):
@@ -921,7 +922,8 @@ def salary_detail(request):
             if check == 1:
                 work_cnt += 1
 
-        total_cnt = leave_cnt + attendance_cnt + order_cnt + assignment_cnt + regularly_assignment_cnt
+        total_cnt = leave_cnt + attendance_cnt + order_cnt
+        assignment_total_cnt = assignment_cnt + regularly_assignment_cnt
         member_list.append({
             'order_list': order_list,
             'attendance_list': attendance_list,
@@ -930,6 +932,7 @@ def salary_detail(request):
             'regularly_assignment_list': regularly_assignment_list,
             'order_cnt': order_cnt,
             'total_cnt': total_cnt,
+            'assignment_total_cnt': assignment_total_cnt,
             'attendance_cnt': attendance_cnt,
             'leave_cnt': leave_cnt,
             'assignment_cnt': assignment_cnt,
@@ -943,6 +946,7 @@ def salary_detail(request):
             'member': member,
             'week_list': week_list,
             'total_list': total_list,
+            'assignment_total_list': assignment_total_list,
             'work_cnt': work_cnt,
             'additional': additional,
             'deduction': deduction,
