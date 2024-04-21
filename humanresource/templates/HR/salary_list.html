@@ -103,7 +103,7 @@
                     <td class="checkTd table-list_body-tr_td salaryAttendance addComma">{{salary.attendance}}</td>
                     <td class="checkTd table-list_body-tr_td salaryLeave addComma">{{salary.leave}}</td>
                     <td class="checkTd table-list_body-tr_td salaryOrder addComma">{{salary.order}}</td>
-                    <td class="checkTd table-list_body-tr_td salaryAssignment addComma">{{salary.assignment}}</td>
+                    <td class="checkTd table-list_body-tr_td salaryAssignment addComma">{{salary.assignment|add:salary.regularly_assignment}}</td>
                     <td class="table-list_body-tr_td salaryAdditional addComma additionalTd">{{salary.additional}}</td>
                     <td class="table-list_body-tr_td salaryDeduction addComma deductionTd">{{salary.deduction}}</td>
                     <td class="checkTd table-list_body-tr_td salaryTotal addComma">{{salary.total}}</td>
