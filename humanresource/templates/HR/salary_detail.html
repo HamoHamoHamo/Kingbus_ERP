@@ -222,8 +222,8 @@
                         {% endif %}
                     </td>
                     <td class="printComma">
-                        {% if data.regularly_assignment_list|index:forloop.counter0 or data.attendance_list|index:forloop.counter0 or data.assignment_list|index:forloop.counter0 %}
-                            {{data.total_list|index:forloop.counter0}}
+                        {% if data.regularly_assignment_list|index:forloop.counter0 or data.assignment_list|index:forloop.counter0 or data.assignment_list|index:forloop.counter0 %}
+                            {{data.assignment_total_list|index:forloop.counter0}}
                         {% endif %}
                     </td>
                 </tr>
@@ -232,7 +232,7 @@
                     <td>소계</td>
                     <td colspan="2">{{data.assignment_cnt}}</td>
                     <td colspan="2">{{data.regularly_assignment_cnt}}</td>
-                    <td>{{data.total_cnt}}</td>
+                    <td>{{data.assignment_total_cnt}}</td>
                 </tr>
             </tbody>
         </table>
