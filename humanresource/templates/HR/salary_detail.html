@@ -213,7 +213,7 @@
                     </td> -->
                     <td title="{{data.regularly_assignment_list|index:forloop.counter0}}">
                         {% for d in data.regularly_assignment_list|index:forloop.counter0 %}
-                            {{d|slice:':8'}}
+                            {{d|slice:':8'}},
                         {% endfor %}
                     </td>
                     <td class="printComma">
