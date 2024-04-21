@@ -92,7 +92,7 @@
                         {{salary.order}} <!-- 일반수당 -->
                     </td>
                     <td class="checkTd table-list_body-tr_td addComma textAlignRight salaryAssignment">
-                        {{salary.assignment}} <!-- 업무수당 -->
+                        {{salary.assignment|add:salary.regularly_assignment}} <!-- 업무수당 -->
                     </td>
                     <td class="table-list_body-tr_td addComma textAlignRight salaryAdditional backgroundYellow additionalTd">
                         {{salary.additional}} <!-- 추가수당 -->

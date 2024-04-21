@@ -188,8 +188,12 @@ body {
     border-spacing: 0;
 }
 
-.allMountTable tr {
+.allMountTableTr {
     height: 8mm;
+}
+
+.allMountTable12Line {
+    height: 7mm;
 }
 
 .allMountTable td {

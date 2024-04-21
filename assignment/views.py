@@ -167,7 +167,7 @@ class AssignmentList(generic.ListView):
             context['group'] = Group.objects.order_by('number','name').first()
         context['date'] = date
 
-        driver_list = Member.objects.filter(Q(role='운전원')|Q(role='팀장')|Q(role='관리자')).filter(use='사용').values_list('id', 'name')
+        driver_list = Member.objects.filter(Q(role='운전원')|Q(role='팀장')|Q(role='관리자')|Q(role='용역')).filter(use='사용').values_list('id', 'name')
         context['driver_dict'] = {}
         for driver in driver_list:
             context['driver_dict'][driver[0]] = driver[1]
@@ -827,7 +827,7 @@ class TemporaryAssignmentList(generic.ListView):
             date2 = context['detail'].end_time[:10]
             context['detail_connect_list'] = context['detail'].assignment_connect.all()
 
-        driver_list = Member.objects.filter(Q(role='운전원')|Q(role='팀장')|Q(role='관리자')).filter(use='사용').values_list('id', 'name')
+        driver_list = Member.objects.filter(Q(role='운전원')|Q(role='팀장')|Q(role='관리자')|Q(role='용역')).filter(use='사용').values_list('id', 'name')
         context['driver_dict'] = {}
         for driver in driver_list:
             context['driver_dict'][driver[0]] = driver[1]

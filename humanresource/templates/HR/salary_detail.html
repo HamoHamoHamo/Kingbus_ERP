@@ -82,7 +82,7 @@
                     <td>{{forloop.counter}}{{data.week_list|index:forloop.counter0}}</td>
                     <td title="{{data.attendance_list|index:forloop.counter0}}">
                         {% for d in data.attendance_list|index:forloop.counter0 %}
-                            {{d}},
+                            {{d|slice:':8'}},
                         {% endfor %}
                     </td>
                     <td class="printComma">
@@ -93,7 +93,7 @@
                     <!-- <td>기흥기숙.마북동 /</td> -->
                     <td title="{{data.leave_list|index:forloop.counter0}}">
                         {% for d in data.leave_list|index:forloop.counter0 %}
-                            {{d}},
+                            {{d|slice:':8'}},
                         {% endfor %}
                     </td>
                     <td class="printComma">
@@ -127,6 +127,111 @@
                     <td colspan="2">{{data.attendance_cnt}}</td>
                     <td colspan="2">{{data.leave_cnt}}</td>
                     <td colspan="2">{{data.order_cnt}}</td>
+                    <td>{{data.total_cnt}}</td>
+                </tr>
+            </tbody>
+        </table>
+
+    </div>
+    <div class="salaryStatus">
+        <div class="salaryStatusTitle">{{month|slice:':4'}}년 {{month|slice:'5:7'}}월 급여현황</div>
+
+        <div class="signBox">
+            <span>{{data.member.name}}</span>
+            <span>(서명)</span>
+        </div>
+
+        <table class="personalInformationTable">
+            <colgroup>
+                <col style="width: 7%">
+                <col style="width: 8%">
+                <col style="width: 23%">
+                <col style="width: 8%">
+                <col style="width: 23%">
+                <col style="width: 8%">
+                <col style="width: 23%">
+            </colgroup>
+            <tr>
+                <td rowspan="2" class="titleTd">
+                    인적<br>
+                    사항
+                </td>
+                <td class="titleTd">회사명</td>
+                <td>성화투어</td>
+                <td class="titleTd">성명</td>
+                <td>{{data.member.name}}</td>
+                <td class="titleTd">생년월일</td>
+                <td>{{data.member.birthdate}}</td>
+            </tr>
+            <tr>
+                <td class="titleTd">직급</td>
+                <td>{{data.member.role}}</td>
+                <td class="titleTd">입사일</td>
+                <td>{{data.member.entering_date}}</td>
+                <td class="titleTd">지급일</td>
+                <td>{{data.salary_date}}</td>
+            </tr>
+        </table>
+
+        <table class="dateListTable">
+            <colgroup>
+                <col style="width: 5%">
+                <col style="width: 35.5%">
+                <col style="width: 8%">
+                <col style="width: 35.5%">
+                <col style="width: 8%">
+                <col style="width: 8%">
+            </colgroup>
+            <thead>
+                <tr>
+                    <td>일자</td>
+                    <td>고정업무</td>
+                    <td>고정업무수당</td>
+                    <td>일반업무</td>
+                    <td>일반업무수당</td>
+                    <td>일일합계</td>
+                </tr>
+            </thead>
+            <tbody>
+                {% for i in data.assignment_list %}
+                <tr>
+                    <td>{{forloop.counter}}{{data.week_list|index:forloop.counter0}}</td>
+                    <!-- <td>기흥기숙.마북동 /</td> -->
+                    <td title="{{data.assignment_list|index:forloop.counter0}}">
+                        {% for d in data.assignment_list|index:forloop.counter0 %}
+                            {{d|slice:':8'}},
+                        {% endfor %}
+                    </td>
+                    <td class="printComma">
+                        {% if data.assignment_list|index:forloop.counter0 %}
+                            {{data.assignment_price_list|index:forloop.counter0}}
+                        {% endif %}
+                    </td>
+                    <!-- <td>
+                        화성금곡.국립중앙/     화성금곡.국립중앙/<br>
+                        화성금곡.국립중앙/
+                    </td> -->
+                    <td title="{{data.regularly_assignment_list|index:forloop.counter0}}">
+                        {% for d in data.regularly_assignment_list|index:forloop.counter0 %}
+                            {{d|slice:':8'}}
+                        {% endfor %}
+                    </td>
+                    <td class="printComma">
+                        {% if data.regularly_assignment_list|index:forloop.counter0 %}
+                            {{data.regularly_assignment_price_list|index:forloop.counter0}}
+                        {% endif %}
+                    </td>
+                    <td class="printComma">
+                        {% if data.regularly_assignment_list|index:forloop.counter0 or data.attendance_list|index:forloop.counter0 or data.assignment_list|index:forloop.counter0 %}
+                            {{data.total_list|index:forloop.counter0}}
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+                <tr class="workTotal">
+                    <td>소계</td>
+                    <td colspan="2">{{data.assignment_cnt}}</td>
+                    <td colspan="2">{{data.regularly_assignment_cnt}}</td>
                     <td>{{data.total_cnt}}</td>
                 </tr>
             </tbody>
@@ -181,36 +286,101 @@
                         <col style="width: 20%">
                         <col style="width: 30%">
                     </colgroup>
-                    <tr>
+                    {% if data.member.role == '용역' or data.member.role == '관리자' %}
+                    <tr class="allMountTableTr">
                         <td class="titleTd">출근수당</td>
                         <td class="printComma">{{data.salary.attendance}}</td>
-                        <td class="titleTd">기본수당</td>
+                        <td class="titleTd">고정업무수당</td>
+                        <td class="printComma">{{data.salary.regularly_assignment}}</td>
+                    </tr>
+                    <tr class="allMountTableTr">
+                        <td class="titleTd">퇴근수당</td>
+                        <td class="printComma">{{data.salary.leave}}</td>
+                        <td class="titleTd">일반업무수당</td>
+                        <td class="printComma">{{data.salary.assignment}}</td>
+                    </tr>
+                    <tr class="allMountTableTr">
+                        <td class="titleTd">일반운행수당</td>
+                        <td class="printComma">{{data.salary.order}}</td>
+                        <td class="titleTd">성과급</td>
+                        <td class="printComma">{{data.salary.performance_allowance}}</td>
+                    </tr>
+                    <tr class="allMountTableTr">
+                        <td class="titleTd">추가수당</td>
+                        <td class="printComma">{{data.salary.additional}}</td>
+                        <td class="titleTd">공제</td>
+                        <td class="printComma">{{data.salary.deduction}}</td>
+                    </tr>
+                    {% elif data.member.allowance_type == '기사수당(현재)' %}
+                    <tr class="allMountTable12Line">
+                        <td class="titleTd">출근수당</td>
+                        <td class="printComma">{{data.salary.attendance}}</td>
+                        <td class="titleTd">기본급</td>
                         <td class="printComma">{{data.salary.base}}</td>
                     </tr>
-                    <tr>
+                    <tr class="allMountTable12Line">
                         <td class="titleTd">퇴근수당</td>
                         <td class="printComma">{{data.salary.leave}}</td>
                         <td class="titleTd">근속수당</td>
                         <td class="printComma">{{data.salary.service_allowance}}</td>
                     </tr>
-                    <tr>
-                        <td class="titleTd">일반수당</td>
+                    <tr class="allMountTable12Line">
+                        <td class="titleTd">일반운행수당</td>
+                        <td class="printComma">{{data.salary.order}}</td>
+                        <td class="titleTd">연차수당</td>
+                        <td class="printComma">{{data.salary.annual_allowance}}</td>
+                    </tr>
+                    <tr class="allMountTable12Line">
+                        <td class="titleTd">고정업무수당</td>
+                        <td class="printComma">{{data.salary.regularly_assignment}}</td>
+                        <td class="titleTd">성과급</td>
+                        <td class="printComma">{{data.salary.performance_allowance}}</td>
+                        
+                    </tr>
+                    <tr class="allMountTable12Line">
+                        <td class="titleTd">일반업무수당</td>
+                        <td class="printComma">{{data.salary.assignment}}</td>
+                        <td class="titleTd">식대</td>
+                        <td class="printComma">{{data.meal}}</td>
+                    </tr>
+                    <tr class="allMountTable12Line">
+                        <td class="titleTd">추가수당</td>
+                        <td class="printComma">{{data.salary.additional}}</td>
+                        <td class="titleTd">공제</td>
+                        <td class="printComma">{{data.salary.deduction}}</td>
+                    </tr>
+                    {% elif data.member.allowance_type == '기사수당(변경)' %}
+                    <tr class="allMountTableTr">
+                        <td class="titleTd">출근수당</td>
+                        <td class="printComma">{{data.salary.attendance}}</td>
+                        <td class="titleTd">고정업무수당</td>
+                        <td class="printComma">{{data.salary.regularly_assignment}}</td>
+                    </tr>
+                    <tr class="allMountTableTr">
+                        <td class="titleTd">퇴근수당</td>
+                        <td class="printComma">{{data.salary.leave}}</td>
+                        <td class="titleTd">일반업무수당</td>
+                        <td class="printComma">{{data.salary.assignment}}</td>
+                    </tr>
+                    <tr class="allMountTableTr">
+                        <td class="titleTd">일반운행수당</td>
                         <td class="printComma">{{data.salary.order}}</td>
                         <td class="titleTd">성과급</td>
                         <td class="printComma">{{data.salary.performance_allowance}}</td>
                     </tr>
-                    <tr>
-                        <td class="titleTd">추가수당</td>
-                        <td class="printComma">{{data.salary.additional}}</td>
-                        <td class="titleTd">식대</td>
-                        <td class="printComma">{{data.meal}}</td>
-                    </tr>
-                    <tr>
-                        <td class="titleTd">연차수당</td>
-                        <td class="printComma">{{data.salary.annual_allowance}}</td>
+                    <tr class="allMountTableTr">
+                        <td class="titleTd">근로추가수당</td>
+                        <td class="printComma">{{data.salary.overtime_allowance}}</td>
                         <td class="titleTd">공제</td>
                         <td class="printComma">{{data.salary.deduction}}</td>
                     </tr>
+                    <tr class="allMountTableTr">
+                        <td class="titleTd">추가수당</td>
+                        <td class="printComma">{{data.salary.additional}}</td>
+                        <td class="titleTd"></td>
+                        <td class="printComma"></td>
+                    </tr>
+                    {% endif %}
                 </table>
 
                 <!-- <table class="totalAmountTable">

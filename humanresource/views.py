@@ -720,10 +720,11 @@ def new_salary(creator, month, member):
     # leave = DispatchRegularlyConnect.objects.filter(work_type='퇴근').filter(driver_id=member).filter(departure_date__range=(month+'-01 00:00', last_date+' 24:00')).aggregate(Sum('driver_allowance'))
     # order = DispatchOrderConnect.objects.filter(driver_id=member).filter(departure_date__range=(month+'-01 00:00', last_date+' 24:00')).aggregate(Sum('driver_allowance'))
 
-    attendance_price = 0
-    leave_price = 0
-    order_price = 0
-    assignment_price = 0
+    # attendance_price = 0
+    # leave_price = 0
+    # order_price = 0
+    # assignment_price = 0
+    # regularly_assignment_price = 0
 
     base = 0
     service_allowance = 0
@@ -737,6 +738,7 @@ def new_salary(creator, month, member):
         service_allowance = int(member.service_allowance)
         performance_allowance = int(member.performance_allowance)
         annual_allowance = int(member.annual_allowance)
+        overtime_allowance = int(member.overtime_allowance)
         meal = int(member.meal)
 
     # if salary:
@@ -764,17 +766,25 @@ def new_salary(creator, month, member):
         service_allowance = service_allowance,
         performance_allowance = performance_allowance,
         annual_allowance = annual_allowance,
+        overtime_allowance = overtime_allowance,
         meal = meal,
-        attendance = attendance_price,
-        leave = leave_price,
-        order = order_price,
-        assignment = assignment_price,
-        total = attendance_price + leave_price + order_price + base + service_allowance + performance_allowance + annual_allowance + int(meal) + assignment_price,
+        # attendance = attendance_price,
+        # leave = leave_price,
+        # order = order_price,
+        # assignment = assignment_price,
+        # regularly_assignment = regularly_assignment_price,
+        attendance = 0,
+        leave = 0,
+        order = 0,
+        assignment = 0,
+        regularly_assignment = 0,
+        total = 0,
         month = month,
         payment_date = payment_date,
         creator = creator
     )
     salary.save()
+    salary.total = salary.calculate_total()
     return salary
 
 def salary_detail(request):
@@ -803,14 +813,22 @@ def salary_detail(request):
         attendance_list = [''] * int(last_date)
         leave_list = [''] * int(last_date)
         order_list = [''] * int(last_date)
+        assignment_list = [''] * int(last_date)
+        regularly_assignment_list = [''] * int(last_date)
+
         order_price_list = [0] * int(last_date)
         attendance_price_list = [0] * int(last_date)
         leave_price_list = [0] * int(last_date)
+        assignment_price_list = [0] * int(last_date)
+        regularly_assignment_price_list = [0] * int(last_date)
+
         week_list = []
 
         order_cnt = 0
         attendance_cnt = 0
         leave_cnt = 0
+        assignment_cnt = 0
+        regularly_assignment_cnt = 0
         
         total_list = [0] * int(last_date)
         work_cnt = 0
@@ -864,6 +882,31 @@ def salary_detail(request):
         # if leaves:
             total_list[c_date] += int(leave['driver_allowance'])
 
+        # 업무 급여 데이터
+        assignments = AssignmentConnect.objects.filter(start_date__range=(f'{month}-01 00:00', f'{month}-{last_date} 24:00')).filter(type='일반업무').filter(member_id=member)
+        assignment_cnt = assignments.count()
+        for assignment in list(assignments.values('assignment_id__assignment', 'start_date', 'allowance')):
+            c_date = int(assignment['start_date'][8:10]) - 1
+            if not assignment_list[c_date]:
+                assignment_list[c_date] = []
+            assignment_list[c_date].append(assignment['assignment_id__assignment'])
+
+            assignment_price_list[c_date] += int(assignment['allowance'])
+        # if assignments:
+            total_list[c_date] += int(assignment['allowance'])
+        
+        regularly_assignments = AssignmentConnect.objects.filter(start_date__range=(f'{month}-01 00:00', f'{month}-{last_date} 24:00')).filter(type='고정업무').filter(member_id=member)
+        regularly_assignment_cnt = regularly_assignments.count()
+        for regularly_assignment in list(regularly_assignments.values('assignment_id__assignment', 'start_date', 'allowance')):
+            c_date = int(regularly_assignment['start_date'][8:10]) - 1
+            if not regularly_assignment_list[c_date]:
+                regularly_assignment_list[c_date] = []
+            regularly_assignment_list[c_date].append(regularly_assignment['assignment_id__assignment'])
+
+            regularly_assignment_price_list[c_date] += int(regularly_assignment['allowance'])
+        # if regularly_assignments:
+            total_list[c_date] += int(regularly_assignment['allowance'])
+
 
         for i in range(int(last_date)):
             check = 0
@@ -878,18 +921,24 @@ def salary_detail(request):
             if check == 1:
                 work_cnt += 1
 
-        total_cnt = leave_cnt + attendance_cnt + order_cnt
+        total_cnt = leave_cnt + attendance_cnt + order_cnt + assignment_cnt + regularly_assignment_cnt
         member_list.append({
             'order_list': order_list,
             'attendance_list': attendance_list,
             'leave_list': leave_list,
+            'assignment_list': assignment_list,
+            'regularly_assignment_list': regularly_assignment_list,
             'order_cnt': order_cnt,
             'total_cnt': total_cnt,
             'attendance_cnt': attendance_cnt,
             'leave_cnt': leave_cnt,
+            'assignment_cnt': assignment_cnt,
+            'regularly_assignment_cnt': regularly_assignment_cnt,
             'order_price_list': order_price_list,
             'attendance_price_list': attendance_price_list,
             'leave_price_list': leave_price_list,
+            'assignment_price_list': assignment_price_list,
+            'regularly_assignment_price_list': regularly_assignment_price_list,
             'salary': salary,
             'member': member,
             'week_list': week_list,

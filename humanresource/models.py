@@ -103,11 +103,11 @@ class Salary(models.Model):
     def calculate_total(self):
         member = self.member_id
         if member.role == '용역' or member.role == '관리자':
-            return int(self.performance_allowance) + int(self.attendance) + int(self.leave) + int(self.order) + int(self.assignment) + int(self.additional) - int(self.deduction)
+            return int(self.performance_allowance) + int(self.attendance) + int(self.leave) + int(self.order) + int(self.assignment) + int(self.regularly_assignment) + int(self.additional) - int(self.deduction)
         elif (member.role == '팀장' or member.role == '운전원') and member.allowance_type == '기사수당(현재)':
-            return int(self.base) + int(self.service_allowance) + int(self.performance_allowance) + int(self.annual_allowance) + int(self.meal) + int(self.attendance) + int(self.leave) + int(self.order) + int(self.assignment) + int(self.additional) - int(self.deduction)
+            return int(self.base) + int(self.service_allowance) + int(self.performance_allowance) + int(self.annual_allowance) + int(self.meal) + int(self.attendance) + int(self.leave) + int(self.order) + int(self.assignment) + int(self.regularly_assignment) + int(self.additional) - int(self.deduction)
         elif (member.role == '팀장' or member.role == '운전원') and member.allowance_type == '기사수당(변경)':
-            return int(self.overtime_allowance) + int(self.performance_allowance) + int(self.attendance) + int(self.leave) + int(self.order) + int(self.assignment) + int(self.additional) - int(self.deduction)
+            return int(self.overtime_allowance) + int(self.performance_allowance) + int(self.attendance) + int(self.leave) + int(self.order) + int(self.assignment) + int(self.regularly_assignment) + int(self.additional) - int(self.deduction)
         else:
             return "error"
 
@@ -123,7 +123,8 @@ class Salary(models.Model):
     order = models.CharField(verbose_name='일반주문요금', max_length=20, null=False)
     additional = models.CharField(verbose_name='추가요금', max_length=20, null=False, default=0)
     deduction = models.CharField(verbose_name='공제', max_length=20, null=False, default=0)
-    assignment = models.CharField(verbose_name='업무', max_length=20, null=False, default=0)
+    assignment = models.CharField(verbose_name='일반업무', max_length=20, null=False, default=0)
+    regularly_assignment = models.CharField(verbose_name='고정업무', max_length=20, null=False, default=0)
     total = models.CharField(verbose_name='총금액', max_length=20, null=False)
     month = models.CharField(verbose_name='지급월', null=False, max_length=7)
     payment_date = models.CharField(verbose_name='급여지급일', null=False, max_length=10, blank=True)
