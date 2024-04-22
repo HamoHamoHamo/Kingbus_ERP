@@ -28,6 +28,10 @@ def document_image(request, file_id):
     }
     return render(request, 'vehicle/document_img.html', context)
 
+def efficiency(request):
+    
+    return render(request, 'vehicle/efficiency.html')
+
 class MaintenanceList(generic.ListView):
     template_name = 'vehicle/maintenance.html'
     context_object_name = 'vehicle_list'

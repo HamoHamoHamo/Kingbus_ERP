@@ -32,6 +32,14 @@ from media_firebase import upload_to_firebase, get_download_url, delete_firebase
 TODAY = str(datetime.now())[:10]
 WEEK = ['(월)', '(화)', '(수)', '(목)', '(금)', '(토)', '(일)', ]
 
+def member_efficiency(request):
+    
+    return render(request, 'HR/member_efficiency.html')
+
+def member_route(request):
+
+    return render(request, 'HR/member_route.html')
+
 def send_message(title, body, token, topic):
     cred_path = os.path.join(BASE_DIR, CRED_PATH)
     cred = credentials.Certificate(cred_path)

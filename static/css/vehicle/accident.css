@@ -1,0 +1,326 @@
+/* contents 전체 Div Box */
+.all-container {
+    display: flex;
+    flex-direction: row;
+    /* justify-content: space-between; */
+}
+
+.efficiency-div {
+    box-sizing: border-box;
+}
+
+/* 검색 관련 CSS: search- */
+.search-container {
+    width: 100%;
+    height: 72.5rem;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+}
+
+/* 노선명 검색: dispatch-path  */
+.search-dispatch-path-box {
+    width: 100%;
+    height: 5rem;
+    background-color: white;
+    border-radius: 17px;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.search-dispatch-path {
+    width: 30rem;
+    height: 3rem;
+
+    margin-left: 1.5rem;
+    padding-left: 1.5rem;
+    background-color: rgb(197,197,197,0.25);
+    border: none;
+    border-radius: 5px;
+}
+
+.search-dispatch-path-date {
+    width: 15rem;
+    height: 3rem;
+
+    margin-left: 1rem;
+}
+
+.dispatch-path-today-button {
+    border: none;
+    border-radius: 8px;
+
+    width: 5rem;
+    height: 3rem;
+    background-color: #444444;
+
+    text-align: center;
+    font-size: 1.2rem;
+    font-weight: 500;
+    color: white;
+
+    margin-left: 1rem;
+}
+
+.dispatch-path-today-button:active {
+    color: gray;
+}
+
+.day-before-button {
+    border: none;
+    background: url("/static/images/dayBeforeButton.png") no-repeat;
+    width: 35px;
+    height: 35px;
+
+    margin-left: 1.5rem;
+}
+
+.day-after-button {
+    border: none;
+    background: url("/static/images/dayAfterButton.png") no-repeat;
+    width: 35px;
+    height: 35px;
+
+    margin-left: 1rem;
+}
+
+.dispatch-path-search-button {
+    border: none;
+    border-radius: 8px;
+
+    width: 5rem;
+    height: 3rem;
+    background-color: #444444;
+
+    text-align: center;
+    font-size: 1.2rem;
+    font-weight: 500;
+    color: white;
+
+    margin-left: 1.5rem;
+}
+
+.dispatch-path-search-button:active {
+    color: gray;
+}
+
+/* 필터: filter  */
+.search-filter-box {
+    width: 100%;
+    height: 4rem;
+
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.search-filter-button {
+    border: none;
+    border-radius: 8px;
+
+    width: 5rem;
+    height: 3rem;
+    background-color: #444444;
+
+    text-align: center;
+    font-size: 1.2rem;
+    font-weight: 500;
+    color: white;
+}
+
+.search-filter-button:active {
+    color: gray;
+}
+
+#estimate-button {
+    width: 12.5rem;
+    height: 3rem;
+    background-color: #0069D9;
+    
+    margin-left: 3rem;
+}
+
+#delete-button {
+    margin-left: 1.8rem;
+}
+
+#edit-button {
+    background-color: #1C1A4E;
+    margin-left: 0.5rem;
+}
+
+/* 표: table */
+.search-table-box {
+    width: 100%;
+    height: 65rem;
+    background-color: white;
+    border-radius: 17px;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+}
+
+.table-list_head-tr {
+    border-radius: 17px;
+}
+
+/* 팝업: pop-up */
+.pop-up-bg-container {
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+
+    position: absolute;
+    top:0;
+    left: 0;
+    display: none;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+.pop-up-container {
+    width: 90%;
+    height: 90%;
+    background-color: white;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.pop-up-container .title-container {
+    width: 95%;
+    height: 8%;
+    background-color: white;
+    
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+
+    border-bottom: 1px solid #838383;
+}
+
+.title-div #title-first-child {
+    font-weight: 400;
+    font-size: 1.8rem;
+}
+
+.title-div #title-second-child {
+    font-weight: 500;
+    font-size: 2.5rem;
+    margin-left: 0.5rem;
+}
+
+.pop-up-container .content-container {
+    width: 95%;
+    height: 85%;
+    background-color: antiquewhite;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.title-span {
+    font-size: 2rem;
+    font-weight: 500;
+}
+
+.content-first-container {
+    width: 100%;
+    height: 80%;
+    background-color: aquamarine;
+
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.accident-detail-info-div {
+    width: 32%;
+    height: 100%;
+    background-color: green;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.accident-detail-info-content-div {
+    width: 100%;
+    height: 100%;
+    background-color: #838383;
+}
+
+.accident-photo-div {
+    width: 30%;
+    height: 100%;
+    background-color: green;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.accident-photo-content-div {
+    width: 100%;
+    height: 100%;
+    background-color: #838383;
+}
+
+.accident-file-div {
+    width: 32%;
+    height: 100%;
+    background-color: green;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.accident-file-content-div {
+    width: 100%;
+    height: 100%;
+    background-color: #838383;
+}
+
+.content-second-container {
+    width: 100%;
+    height: 20%;
+    background-color: red;
+
+    display: flex;
+    flex-direction: column;
+}
+
+.report-div {
+    width: 100%;
+    height: 90%;
+    background-color: #0069D9;
+
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.accident-report-div {
+    width: 49%;
+    height: 100%;
+    background-color: #F1F1F1;
+
+    border-radius: 5px;
+}
+
+.driver-report-div {
+    width: 49%;
+    height: 100%;
+    background-color: white;
+}

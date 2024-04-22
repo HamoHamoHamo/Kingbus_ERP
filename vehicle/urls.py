@@ -13,6 +13,7 @@ urlpatterns = [
 	path('list/upload', views.vehicle_upload, name='vehicle_upload'),
     path('list/image/<str:file_id>', views.document_image, name='vehicle_document_img'),
     path('list/image/<str:file_id>', views.document_image, name='vehicle_document_img'),
+    path('efficiency', views.efficiency, name='efficiency'),
     path('refueling', views.RefuelingList.as_view(), name='refueling'),
     path('refueling/delete', views.refueling_delete, name='refueling_delete'),
     path('maintenance', views.MaintenanceList.as_view(), name='maintenance'),
