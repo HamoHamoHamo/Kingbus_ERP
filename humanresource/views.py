@@ -7,7 +7,7 @@ from config.settings import MEDIA_ROOT
 from dateutil.relativedelta import relativedelta
 from dispatch.models import DispatchRegularlyConnect, DispatchOrderConnect
 from django.contrib.auth.hashers import make_password, check_password
-from django.db.models import Sum, Q
+from django.db.models import Sum, Q, F
 from django.http import Http404, HttpResponse, HttpResponseNotAllowed, HttpResponseBadRequest
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import resolve
@@ -24,21 +24,13 @@ from accounting.models import TotalPrice
 from assignment.models import AssignmentConnect
 import math
 from my_settings import CRED_PATH, CLOUD_MEDIA_PATH
+from common.constant import TODAY, WEEK
+from common.datetime import calculate_time_difference
 import firebase_admin
 from firebase_admin import credentials
 from firebase_admin import messaging
 from media_firebase import upload_to_firebase, get_download_url, delete_firebase_file
 
-TODAY = str(datetime.now())[:10]
-WEEK = ['(월)', '(화)', '(수)', '(목)', '(금)', '(토)', '(일)', ]
-
-def member_efficiency(request):
-    
-    return render(request, 'HR/member_efficiency.html')
-
-def member_route(request):
-
-    return render(request, 'HR/member_route.html')
 
 def send_message(title, body, token, topic):
     cred_path = os.path.join(BASE_DIR, CRED_PATH)
@@ -510,6 +502,81 @@ def member_download(request):
         #return JsonResponse({'status': 'fail', 'e': e})
         raise Http404
 
+class MemberEfficiencyList(generic.ListView):
+    template_name = 'HR/member_efficiency.html'
+    context_object_name = 'member_list'
+    model = Member
+
+    def get(self, request, **kwargs):
+        if request.session.get('authority') >= 3:
+            return render(request, 'authority.html')
+        else:
+            return super().get(request, **kwargs)
+
+    def get_queryset(self):
+        # route = self.request.GET.get('route', '')
+
+        member_list = Member.objects.filter(use='사용').order_by('name')
+        return member_list
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        date1 = self.request.GET.get('date1', TODAY)
+        date2 = self.request.GET.get('date2', TODAY)
+        datetime1 = f'{date1} 00:00'
+        datetime2 = f'{date2} 24:00'
+
+        
+        month = date1[:7] #  급여날짜 어떻게 할 지 확인 필요
+        
+
+        data_list = []
+        for member in context['member_list']:
+            data = {}
+            # 급여
+            try:
+                salary = Salary.objects.filter(member_id=member).get(month=month)
+            except Salary.DoesNotExist:
+                creator = Member.objects.get(pk=self.request.session.get('user'))
+                salary = new_salary(creator, month, member)
+            
+
+            # 노선운행량
+            order_connect_list = member.info_driver_id.exclude(arrival_date__lt=datetime1).exclude(departure_date__gt=datetime2)
+            regularly_connect_list = member.info_regularly_driver_id.exclude(arrival_date__lt=datetime1).exclude(departure_date__gt=datetime2)
+            driving_history_list = member.driving_history_member.exclude(date__lt=date1).exclude(date__gt=date2).annotate(driving_distance=F('arrival_km') - F('departure_km'))
+            
+            price = 0
+            minutes = 0
+            distance = 0
+
+            for connect in order_connect_list:
+                price += int(connect.price)
+                # distance += connect.order_id.distance
+                minutes += calculate_time_difference(connect.departure_date, connect.arrival_date)
+
+            for connect in regularly_connect_list:
+                price += int(connect.price)
+                distance += int(connect.regularly_id.distance) if connect.regularly_id.distance else 0
+                minutes += calculate_time_difference(connect.departure_date, connect.arrival_date)
+
+            data['price'] = price
+            data['salary'] = salary.total
+            data['distance'] = distance
+            data['driving_distance'] = driving_history_list.aggregate(total_driving_distance=Sum('driving_distance'))['total_driving_distance']
+            data['minutes'] = minutes
+            
+            data_list.append(data)
+
+            context['data_list'] = data_list
+        return context
+
+def member_route(request):
+
+    return render(request, 'HR/member_route.html')
+
+
 class TeamList(generic.ListView):
     template_name = 'HR/team.html'
     context_object_name = 'member_list'
@@ -738,6 +805,7 @@ def new_salary(creator, month, member):
     service_allowance = 0
     performance_allowance = 0
     annual_allowance = 0
+    overtime_allowance = 0
     meal = 0
     
 
