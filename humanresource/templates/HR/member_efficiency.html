@@ -17,50 +17,52 @@
 {% block content %} 
 <div class="all-container efficiency-div"> 
     <div class="search-container efficiency-div"> <!-- 검색 box-->
-        <div class="search-dispatch-path-box efficiency-div">
-            <input type="text" placeholder="노선명" class="search-dispatch-path">
-            <input type="date" class="search-dispatch-path-date">
-            <input type="button" value="오늘" class="dispatch-path-today-button">
-            <input type="button" value="" class="day-before-button">
-            <input type="button" value="" class="day-after-button">
-            <input type="button" value="검색" class="dispatch-path-search-button">
-        </div>
-
-        <div class="search-detail-box efficiency-div">
-            <table class="search-detail-table">
-                <tr> <!-- 이름 및 출퇴근 -->
-                    <td class="name-td">이름</td>
-                    <td class="name-input-td-background">
-                        <input type="text" class="name-input-td">
-                    </td>
-                    <td class="work-time-td">출/퇴근</td>
-                    <td class="work-time-input-td">
-                        <div class="work-time">
-                            <input type="radio" name="work-time" checked>
-                            <label for="attendance" class="work-time-label">출근</label>
-                        </div>
-                        <div class="work-time">
-                            <input type="radio" name="work-time">
-                            <label for="leave_work" class="work-time-label">퇴근</label>
-                        </div>
-                        <div class="work-time">
-                            <input type="radio" name="work-time">
-                            <label for="leave_work" class="work-time-label">일반</label>
-                        </div>
-                    </td>
-                </tr>
-                <tr> <!-- 급여 및 급여 형태 -->
-                    <td class="salary-td">급여</td>
-                    <td class="salary-input-td-background">
-                        <input type="text" class="salary-input-td">
-                    </td>
-                    <td class="salary-form-td">급여형태</td>
-                    <td class="salary-form-input-td-background">
-                        <input type="text" class="salary-form-input-td">
-                    </td>
-                </tr>
-            </table>
-        </div>
+        <form action="" class="search-form efficiency-div">
+            <div class="search-dispatch-path-box efficiency-div">
+                <input type="text" name="pathName" placeholder="노선명" class="search-dispatch-path">
+                <input type="date" name="date" class="search-dispatch-path-date">
+                <input type="submit" value="오늘" class="dispatch-path-today-button">
+                <input type="submit" value="" class="day-before-button">
+                <input type="submit" value="" class="day-after-button">
+                <input type="submit" value="검색" class="dispatch-path-search-button">
+            </div>
+            
+            <div class="search-detail-box efficiency-div">
+                <table class="search-detail-table">
+                    <tr> <!-- 이름 및 출퇴근 -->
+                        <td class="name-td">이름</td>
+                        <td class="name-input-td-background">
+                            <input type="text" class="name-input-td" name="name">
+                        </td>
+                        <td class="work-time-td">출/퇴근</td>
+                        <td class="work-time-input-td">
+                            <div class="work-time">
+                                <input type="radio" name="dispatchKind" id="attendance" value="출근">
+                                <label for="attendance" class="work-time-label">출근</label>
+                            </div>
+                            <div class="work-time">
+                                <input type="radio" name="dispatchKind" id="leave-work" value="퇴근">
+                                <label for="leave-work" class="work-time-label">퇴근</label>
+                            </div>
+                            <div class="work-time">
+                                <input type="radio" name="dispatchKind" id="normal" value="일반">
+                                <label for="normal" class="work-time-label">일반</label>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr> <!-- 급여 및 급여 형태 -->
+                        <td class="salary-td">급여</td>
+                        <td class="salary-input-td-background">
+                            <input type="text" name="salary" class="salary-input-td">
+                        </td>
+                        <td class="salary-form-td">급여형태</td>
+                        <td class="salary-form-input-td-background">
+                            <input type="text" name="contractType" class="salary-form-input-td">
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </form>
 
         <div class="search-filter-box efficiency-div">
             <div class="search-filter-buttons-box">
