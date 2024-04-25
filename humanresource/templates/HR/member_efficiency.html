@@ -101,21 +101,22 @@
                 </thead>
 
                 <tbody class="scrolling_table-list_body">
+                    {% for member in member_list %}
+                    {% with data=data_list|index:forloop.counter0 %}
                     <tr class="table-list_body-tr salaryList cursor">
                         <td class="table-list_body-tr_td">
                             <input tabindex="100" type="checkbox" class="amountCheck" name="member_id" value="{{member.id}}">
                         </td>
-                        <td class="table-list_body-tr_td">1</td> <!-- 번호 -->
-                        <td class="table-list_body-tr_td">
-                            A</td> <!-- 등급 -->
-                        <td class="table-list_body-tr_td">이주성</td> <!-- 이름 -->
-                        <td class="table-list_body-tr_td">개발팀</td> <!-- 팀 -->
-                        <td class="table-list_body-tr_td">396만원</td> <!-- 급여 -->
+                        <td class="table-list_body-tr_td">{{forloop.counter}}</td> <!-- 번호 -->
+                        <td class="table-list_body-tr_td"></td> <!-- 등급 -->
+                        <td class="table-list_body-tr_td">{{member.name}}</td> <!-- 이름 -->
+                        <td class="table-list_body-tr_td">{{member.team.name}}</td> <!-- 팀 -->
+                        <td class="table-list_body-tr_td">{{data.salary}}</td> <!-- 급여 -->
                         <td class="table-list_body-tr_td">
                             7000KM <!-- 목표운행량 -->
                         </td>
                         <td class="table-list_body-tr_td">
-                            1500만원 <!-- 매출액 -->
+                            {{data.price}} <!-- 매출액 -->
                         </td>
                         <td class="table-list_body-tr_td">
                             52 <!-- 운행수 -->
@@ -133,51 +134,14 @@
                             0 <!-- 공차 -->
                         </td>
                         <td class="table-list_body-tr_td">
-                            2021. 11. 22 <!-- 최초 고용일 -->
+                            {{member.entering_date}} <!-- 최초 고용일 -->
                         </td>
                         <td class="table-list_body-tr_td">
-                            프리랜서 <!-- 근무형태 -->
-                        </td>
-                    </tr>
-                    <tr class="table-list_body-tr salaryList cursor">
-                        <td class="table-list_body-tr_td">
-                            <input tabindex="100" type="checkbox" class="amountCheck" name="member_id" value="{{member.id}}">
-                        </td>
-                        <td class="table-list_body-tr_td">2</td> <!-- 번호 -->
-                        <td class="table-list_body-tr_td">
-                            A</td> <!-- 등급 -->
-                        <td class="table-list_body-tr_td">이주성</td> <!-- 이름 -->
-                        <td class="table-list_body-tr_td">개발팀</td> <!-- 팀 -->
-                        <td class="table-list_body-tr_td">396만원</td> <!-- 급여 -->
-                        <td class="table-list_body-tr_td">
-                            7000KM <!-- 목표운행량 -->
-                        </td>
-                        <td class="table-list_body-tr_td">
-                            1500만원 <!-- 매출액 -->
-                        </td>
-                        <td class="table-list_body-tr_td">
-                            52 <!-- 운행수 -->
-                        </td>
-                        <td class="table-list_body-tr_td">
-                            7600KM <!-- KM -->
-                        </td>
-                        <td class="table-list_body-tr_td">
-                            628시간 <!-- 시간 -->
-                        </td>
-                        <td class="table-list_body-tr_td">
-                            8000 <!-- 유류비 -->
-                        </td>
-                        <td class="table-list_body-tr_td">
-                            0 <!-- 공차 -->
-                        </td>
-                        <td class="table-list_body-tr_td">
-                            2021. 11. 22 <!-- 최초 고용일 -->
-                        </td>
-                        <td class="table-list_body-tr_td">
-                            프리랜서 <!-- 근무형태 -->
+                            {{member.role}} <!-- 근무형태 -->
                         </td>
                     </tr>
-                    
+                    {% endwith %}
+                    {% endfor %}
                 </tbody>
             </table>
         </div>
