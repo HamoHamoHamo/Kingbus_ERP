@@ -1,0 +1,629 @@
+/* contents 전체 Div Box */
+.all-container {
+    display: flex;
+    flex-direction: row;
+    /* justify-content: space-between; */
+}
+
+.efficiency-div {
+    box-sizing: border-box;
+}
+
+/* 운행량 관련 CSS: run-*/
+.run-container {
+    width: 23%;
+    height: 75rem;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+/* 총 운행량 CSS: total- */
+.total-run-box {
+    width: 100%;
+    height: 55%;
+    background-color: white;
+    border-radius: 17px;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+}
+
+.total-run-title-box {
+    width: 100%;
+    height: 4rem;
+    background-color: #444444;
+    border-radius: 17px 17px 0% 0%;
+
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+.total-run-title-label {
+    color: white;
+    font-weight: 400;
+    font-size: 16px;
+}
+
+.total-run-content-box {
+    width: 100%;
+    height: calc(100% - 4rem);
+    background-color: white;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.total-run-chart-box {
+    width: 100%;
+    height: 20rem;
+
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.total-run-pie-chart {
+    width: 16rem;
+    height: 16rem;
+    /* background: conic-gradient(#3D36FF 25% 76%, #FF8585 0% 24%); */
+    border-radius: 50%;
+
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+.total-run-pie-chart-center {
+    width: 8rem;
+    height: 8rem;
+    line-height: 8rem;
+    background-color: white;
+    border-radius: 50%;
+    text-align: center;
+    font-size: 20px;
+
+    display: block;
+}
+
+.total-run-chart-description-box {
+    width: 50%;
+    height: 100%;
+    background-color: white;
+}
+
+.total-run-chart-description-input-box {
+    width: 100%;
+    height: 20%;
+
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+}
+
+.total-run-chart-filter-button {
+    border: none;
+    border-radius: 8px;
+
+    width: 5rem;
+    height: 3rem;
+    background-color: #1C1A4E;
+
+    text-align: center;
+    font-size: 1.2rem;
+    font-weight: 500;
+    color: white;
+}
+
+.total-run-chart-description-span-box {
+    width: 100%;
+    height: 60%;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+}
+
+.total-run-chart-description-span-box-child {
+    font-size: 12px;
+    font-weight: 500;
+}
+
+#total-target-driving-amount {
+    font-weight: 600;
+    font-size: 16px;
+}
+
+.total-run-description-image {
+    margin-right: 1rem;
+}
+
+.total-run-average-figure-box {
+    width: 90%;
+    height: calc(100% - 22rem);
+    background-color: white;
+    border-radius: 17px;
+}
+
+.total-run-average-figure-title-box {
+    width: 100%;
+    height: 4rem;
+    background-color: #444444;
+    border-radius: 17px 17px 0% 0%;
+
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.total-run-average-figure-title-label {
+    color: white;
+    font-weight: 400;
+    font-size: 16px;
+    margin-left: 2rem;
+}
+
+/* 개인 운행량 CSS: personal- */
+.personal-run-box {
+    width: 100%;
+    height: 44%;
+    background-color: white;
+    border-radius: 17px;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+}
+
+.personal-run-title-box {
+    width: 100%;
+    height: 4rem;
+    background-color: #444444;
+    border-radius: 17px 17px 0% 0%;
+
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+.personal-run-title-label {
+    color: white;
+    font-weight: 400;
+    font-size: 16px;
+}
+
+.personal-run-content-box {
+    width: 100%;
+    height: calc(100% - 4rem);
+    background-color: white;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.personal-run-chart-box {
+    width: 100%;
+    height: 15rem;
+
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.personal-run-pie-chart {
+    width: 12rem;
+    height: 12rem;
+    /* background: conic-gradient(#3D36FF 25% 76%, #EFFF8D 0% 24%); */
+    border-radius: 50%;
+
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+.personal-run-pie-chart-center {
+    width: 6rem;
+    height: 6rem;
+    line-height: 6rem;
+    text-align: center;
+    background-color: white;
+    border-radius: 50%;
+    font-size: 20px;
+
+    display: block;
+}
+
+.personal-run-chart-description-box {
+    width: 50%;
+    height: 100%;
+    background-color: white;
+}
+
+.personal-run-chart-description-span-box {
+    width: 100%;
+    height: 90%;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+}
+
+.personal-run-chart-description-span-box-child {
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.personal-run-chart-description-name-box {
+    box-sizing: border-box;
+
+    width: 100%;
+    height: 10%;
+    padding-right: 1rem;
+
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+}
+
+.personal-run-chart-description-name {
+    font-weight: 600;
+    font-size: 16px;
+}
+
+#personal-target-driving-amount {
+    font-weight: 600;
+    font-size: 16px;
+}
+
+.personal-run-description-image {
+    margin-right: 1rem;
+}
+
+.personal-run-average-figure-box {
+    width: 90%;
+    height: calc(100% - 16rem);
+    background-color: white;
+    border-radius: 17px;
+}
+
+.personal-run-average-figure-title-box {
+    width: 100%;
+    height: 4rem;
+    background-color: #444444;
+    border-radius: 17px 17px 0% 0%;
+
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.personal-run-average-figure-title-label {
+    color: white;
+    font-weight: 400;
+    font-size: 16px;
+    margin-left: 2rem;
+}
+
+.run-table {
+    width: 100%;
+    height: calc(100% - 5rem);
+    background-color: #EDEDED;
+    text-align: center;
+    border: 1px solid white;
+    border-collapse: collapse;
+    border-radius: 0% 0% 17px 17px;
+}
+
+.run-table-head-tr {
+    border: 1px solid white;
+    border-collapse: collapse;
+}
+
+.run-table-head-tr-td {
+    width: 30%;
+    border: 1px solid white;
+    border-collapse: collapse;
+    font-weight: 600;
+    font-size: 12px;
+}
+
+.run-table-body-tr {
+    border: 1px solid white;
+    border-collapse: collapse;
+}
+
+.run-table-body-tr-td {
+    width: 30%;
+    border: 1px solid white;
+    border-collapse: collapse;
+    color: red;
+    font-weight: 500;
+    font-size: 16px;
+}
+
+/* 검색 관련 CSS: search- */
+.search-container {
+    width: 100%;
+    height: 75rem;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.search-form {
+    width: 100%;
+    height: 16rem;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+/* 노선명 검색: dispatch-path  */
+.search-dispatch-path-box {
+    width: 100%;
+    height: 5rem;
+    background-color: white;
+    border-radius: 17px;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.search-dispatch-path {
+    width: 23rem;
+    height: 3rem;
+    
+    margin-left: 1.5rem;
+}
+
+.search-dispatch-path-date {
+    width: 15rem;
+    height: 3rem;
+    
+    margin-left: 1rem;
+}
+
+.dispatch-path-today-button {
+    border: none;
+    border-radius: 8px;
+
+    width: 5rem;
+    height: 3rem;
+    background-color: #1C1A4E;
+
+    text-align: center;
+    font-size: 1.2rem;
+    font-weight: 500;
+    color: white;
+    
+    margin-left: 1rem;
+}
+
+.dispatch-path-today-button:active {
+    color: gray;
+}
+
+.day-before-button {
+    border: none;
+    background: url("/static/images/dayBeforeButton.png") no-repeat;
+    width: 35px;
+    height: 35px;
+
+    margin-left: 1.5rem;
+}
+
+.day-after-button {
+    border: none;
+    background: url("/static/images/dayAfterButton.png") no-repeat;
+    width: 35px;
+    height: 35px;
+
+    margin-left: 1rem;
+}
+
+.dispatch-path-search-button {
+    border: none;
+    border-radius: 8px;
+
+    width: 5rem;
+    height: 3rem;
+    background-color: #1C1A4E;
+
+    text-align: center;
+    font-size: 1.2rem;
+    font-weight: 500;
+    color: white;
+    
+    margin-left: 1.5rem;
+}
+
+.dispatch-path-search-button:active {
+    color: gray;
+}
+
+/* 상세 검색: detail  */
+.search-detail-box {
+    width: 100%;
+    height: 10rem;
+    background-color: white;
+    border-radius: 17px;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+}
+
+.search-detail-table {
+    width: 100%;
+    height: 100%;
+}
+
+.name-td {
+    width: 15rem;
+    height: 50%;
+    background-color: #444444;
+    border-top-left-radius: 17px;
+
+    color: white;
+    font-size: 16px;
+    font-weight: 500;
+    text-align: center;
+}
+
+.name-input-td-background {
+    width: calc(100% - 15rem);
+    text-align: center;
+}
+
+.name-input-td {
+    width: 90%;
+    height: 60%;
+    border-color: #444444;
+    border-width: 1px;
+    border-radius: 6px;
+}
+
+.work-time-td {
+    width: 15rem;
+    height: 50%;
+    background-color: #444444;
+
+    color: white;
+    font-size: 16px;
+    font-weight: 500;
+    text-align: center;
+}
+
+.work-time-input-td {
+    width: 90%;
+    height:100%;
+    background-color: white;
+
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.work-time {
+    margin: 1rem;
+}
+
+.work-time-label {
+    font-size: 16px;
+    font-weight: 500;
+    color: #a4a4a4;
+}
+
+.salary-td {
+    width: 15rem;
+    height: 50%;
+    background-color: #444444;
+    border-bottom-left-radius: 17px;
+
+    color: white;
+    font-size: 16px;
+    font-weight: 500;
+    text-align: center;
+}
+
+.salary-input-td-background {
+    width: calc(100% - 15rem);
+    text-align: center;
+}
+
+.salary-input-td {
+    width: 90%;
+    height: 60%;
+    border-color: #444444;
+    border-width: 1px;
+    border-radius: 6px;
+}
+
+.salary-form-td {
+    width: 15rem;
+    height: 50%;
+    background-color: #444444;
+
+    color: white;
+    font-size: 16px;
+    font-weight: 500;
+    text-align: center;
+}
+
+.salary-form-input-td-background {
+    width: calc(100% - 15rem);
+    text-align: center;
+}
+
+.salary-form-input-td {
+    width: 90%;
+    height: 60%;
+    border-color: #444444;
+    border-width: 1px;
+    border-radius: 6px;
+}
+
+/* 필터: filter  */
+.search-filter-box {
+    width: 100%;
+    height: 4rem;
+    
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.search-filter-button {
+    border: none;
+    border-radius: 8px;
+
+    width: 5rem;
+    height: 3rem;
+    background-color: #444444;
+
+    text-align: center;
+    font-size: 1.2rem;
+    font-weight: 500;
+    color: white;
+}
+
+.search-filter-button:active {
+    color: gray;
+}
+
+.sales-filter {
+    width: 10rem;
+    height: 3rem;
+
+    margin-left: 3rem;
+}
+
+/* 표: table */
+.search-table-box {
+    width: 100%;
+    height: 52.5rem;
+    background-color: white;
+    border-radius: 17px;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+}
+
+.table-list_head-tr {
+    border-radius: 17px;
+}
+
+/* 번호, 등급, 이름, 팀, 급여, 목표운행량, 매출액, KM, 시간, 유류비, 공차, 최초 고용일, 근무형태 */

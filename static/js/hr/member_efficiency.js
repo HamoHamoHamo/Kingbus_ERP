@@ -21,6 +21,9 @@
 // setPersonalChart(86);
 
 // MARK: Module화 해줄 Function
+
+import { addCommaToInnerText } from "../common/addComma.js"
+
 const updateURL = (search) => {
     let url = `${location.origin}${location.pathname}`
     
@@ -186,6 +189,7 @@ window.onload = () => {
         initializeData();
 
     }
+    addCommaToInnerText()
 
 }
 
