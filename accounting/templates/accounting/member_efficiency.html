@@ -4,7 +4,7 @@
 {% block head %}
 <meta http-equiv="Cache-Control" content="private, no-cache, no-store, max-age=0, must-revalidate">
 
-<link rel="stylesheet" href="{% static 'css/humanresource/member_efficiency.css' %}" type="text/css" />
+<link rel="stylesheet" href="{% static 'css/accounting/member_efficiency.css' %}" type="text/css" />
 {% endblock %}
 
 {% block content-header %}
@@ -20,7 +20,8 @@
         <form action="" class="search-form efficiency-div">
             <div class="search-dispatch-path-box efficiency-div">
                 <input type="text" name="pathName" placeholder="노선명" class="search-dispatch-path">
-                <input type="date" name="date" class="search-dispatch-path-date">
+                <input type="date" name="date1" value="{{date1}}" class="search-dispatch-path-date">
+                <input type="date" name="date2" value="{{date2}}" class="search-dispatch-path-date">
                 <input type="submit" value="오늘" class="dispatch-path-today-button">
                 <input type="submit" value="" class="day-before-button">
                 <input type="submit" value="" class="day-after-button">
@@ -165,7 +166,7 @@
 
 <!-- Script Block -->
 {% block script %}
-<script type="module" src="{% static 'js/hr/member_efficiency.js' %}"></script>
+<script type="module" src="{% static 'js/accounting/member_efficiency.js' %}"></script>
 
 {% endblock %} 
 

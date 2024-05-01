@@ -521,6 +521,8 @@ class MemberEfficiencyList(generic.ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        FUEL = 1500         #기름값
+        EFFICIENCY = 2.5    # 연비
 
         date1 = self.request.GET.get('date1', TODAY)
         date2 = self.request.GET.get('date2', TODAY)
@@ -561,11 +563,15 @@ class MemberEfficiencyList(generic.ListView):
                 distance += int(connect.regularly_id.distance) if connect.regularly_id.distance else 0
                 minutes += calculate_time_difference(connect.departure_date, connect.arrival_date)
 
+            data['driving_cnt'] = order_connect_list.count() + regularly_connect_list.count()
             data['price'] = price
             data['salary'] = salary.total
             data['distance'] = distance
-            data['driving_distance'] = driving_history_list.aggregate(total_driving_distance=Sum('driving_distance'))['total_driving_distance']
-            data['minutes'] = minutes
+            driving_distance = driving_history_list.aggregate(total_driving_distance=Sum('driving_distance'))['total_driving_distance']
+            data['driving_distance'] = driving_distance if driving_distance else 0
+            data['minute'] = minutes % 60
+            data['hour'] = minutes // 60
+            data['fuel_cost'] = data['driving_distance'] // EFFICIENCY * FUEL
             
             data_list.append(data)
 

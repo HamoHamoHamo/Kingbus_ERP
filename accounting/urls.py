@@ -25,4 +25,6 @@ urlpatterns = [
     path('deposit/edit', views.deposit_edit, name='deposit_edit'),
     path('deposit/hide', views.deposit_hide, name='deposit_hide'),
     path('deposit/delete', views.deposit_delete, name='deposit_delete'),
+
+    path('efficiency/member', views.MemberEfficiencyList.as_view(), name='member_efficiency'),
 ]
