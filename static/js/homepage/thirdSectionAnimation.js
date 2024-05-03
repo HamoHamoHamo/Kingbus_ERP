@@ -34,16 +34,6 @@ const visibleSixth = document.querySelector(".visibleSixth")
 const visibleSixthTitle = document.querySelector(".visibleSixthTitle")
 const visibleSixthContents = document.querySelector(".visibleSixthContents")
 
-const body = document.querySelector("body")
-
-window.onload = function size() {
-    if (window.innerWidth < 768) {
-        body.style.height  = "100%"
-        body.style.overflow = "hidden"
-        body.style.touchAction  = "none"
-    }
-    console.log();
-}
 
 window.addEventListener("wheel", function (e) {
     e.preventDefault();
