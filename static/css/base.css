@@ -27,13 +27,13 @@ textarea {
 }
 
 /* 스크롤바 설정*/
-html::-webkit-scrollbar {
+.scrollDiv::-webkit-scrollbar {
   position: absolute;
   width: 1rem;
 }
 
 /* 스크롤바 막대 설정*/
-html::-webkit-scrollbar-thumb {
+.scrollDiv::-webkit-scrollbar-thumb {
   height: 17%;
   background-color: #828282;
   /* 스크롤바 둥글게 설정    */
@@ -41,7 +41,7 @@ html::-webkit-scrollbar-thumb {
 }
 
 /* 스크롤바 뒷 배경 설정*/
-html::-webkit-scrollbar-track {
+.scrollDiv::-webkit-scrollbar-track {
   background-color: #F5F5F5;
 }
 
