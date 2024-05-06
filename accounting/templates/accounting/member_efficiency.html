@@ -79,9 +79,9 @@
 
         <div class="search-filter-box efficiency-div">
             <div class="search-filter-buttons-box">
-                <input type="button" value="일별" class="search-filter-button btnModules">
-                <input type="button" value="주별" class="search-filter-button btnModules">
-                <input type="button" value="월별" class="search-filter-button btnModules">
+                <input type="button" value="일별" class="search-filter-button btnModules dailyButton">
+                <input type="button" value="주별" class="search-filter-button btnModules weeklyButton">
+                <input type="button" value="월별" class="search-filter-button btnModules monthlyButton">
                 <input type="button" value="매출 높은 순" class="search-filter-button sales-filter btnModules">
             </div>
             <div class="search-filter-print-box">
@@ -99,42 +99,45 @@
                         <th class="table-list_head-tr_th">번호</th>
                         <th class="table-list_head-tr_th">등급</th>
                         <th class="table-list_head-tr_th">이름</th>
+                        <th class="table-list_head-tr_th">근무형태</th>
                         <th class="table-list_head-tr_th">팀</th>
                         <th class="table-list_head-tr_th">급여</th>
-                        <th class="table-list_head-tr_th">노선운행량</th>
                         <th class="table-list_head-tr_th">매출액</th>
                         <th class="table-list_head-tr_th">운행수</th>
-                        <th class="table-list_head-tr_th">KM</th>
-                        <th class="table-list_head-tr_th">시간</th>
-                        <th class="table-list_head-tr_th">유류비</th>
-                        <th class="table-list_head-tr_th">공차</th>
-                        <th class="table-list_head-tr_th">최초 고용일</th>
-                        <th class="table-list_head-tr_th">근무형태</th>
+                        <th class="table-list_head-tr_th">운행km(사용자)</th>
+                        <th class="table-list_head-tr_th">운행km(근로자)</th>
+                        <th class="table-list_head-tr_th">근로시간(사용자)</th>
+                        <th class="table-list_head-tr_th">근로시간(근로자)</th>
+                        <th class="table-list_head-tr_th">유류비(사용자)</th>
+                        <th class="table-list_head-tr_th">유류비(근로자)</th>
+                        <th class="table-list_head-tr_th">공차(km)</th>
+                        <th class="table-list_head-tr_th">공차(시간)</th>
                     </tr>
                 </thead>
 
                 <tbody class="scrolling_table-list_body">
-                    {% for member in member_list %}
-                    {% with data=data_list|index:forloop.counter0 %}
+                    {% for data in data_list %}
                     <tr class="table-list_body-tr salaryList cursor">
                         <td class="table-list_body-tr_td">
-                            <input tabindex="100" type="checkbox" class="amountCheck" name="member_id" value="{{member.id}}">
+                            <input tabindex="100" type="checkbox" class="amountCheck" name="member_id" value="{{data.member.id}}">
                         </td>
                         <td class="table-list_body-tr_td">
-                            {{forloop.counter}}
-                        </td> <!-- 번호 -->
-                        <td class="table-list_body-tr_td"></td> <!-- 등급 -->
+                            {{forloop.counter}} <!-- 번호 -->
+                        </td>
                         <td class="table-list_body-tr_td">
-                            {{member.name}}
-                        </td> <!-- 이름 -->
+                            {{data.grade}}  <!-- 등급 -->
+                        </td>
                         <td class="table-list_body-tr_td">
-                            {{member.team.name}}
-                        </td> <!-- 팀 -->
+                            {{data.member.name}} <!-- 이름 -->
+                        </td>
+                        <td class="table-list_body-tr_td">
+                            {{data.member.role}} <!-- 근무형태 -->
+                        </td>
+                        <td class="table-list_body-tr_td">
+                            {{data.member.team.name}} <!-- 팀 -->
+                        </td>
                         <td class="table-list_body-tr_td addCommaToInnerText">
-                            {{data.salary}}
-                        </td> <!-- 급여 -->
-                        <td class="table-list_body-tr_td">
-                            {{data.distance}} <!-- 목표운행량 -->
+                            {{data.salary}} <!-- 급여 -->
                         </td>
                         <td class="table-list_body-tr_td addCommaToInnerText">
                             {{data.price}} <!-- 매출액 -->
@@ -142,32 +145,82 @@
                         <td class="table-list_body-tr_td">
                             {{data.driving_cnt}} <!-- 운행수 -->
                         </td>
+                        <td class="table-list_body-tr_td">
+                            {{data.distance}} <!-- 노선운행량(사용자) -->
+                        </td>
                         <td class="table-list_body-tr_td addCommaToInnerText">
-                            {{data.driving_distance}} <!-- KM -->
+                            {{data.driving_distance}} <!-- 노선운행량(근로자) -->
                         </td>
                         <td class="table-list_body-tr_td">
-                            {% if data.hour >= 1 %}{{data.hour}}시간 {{data.minute}}분 {% else %} {{data.minute}}분 {% endif %}  <!-- 시간 -->
+                            {% if data.hour >= 1 %}{{data.hour}}시간 {{data.minute}}분 {% else %} {{data.minute}}분 {% endif %}  <!-- 시간(사용자) -->
+                        </td>
+                        <td class="table-list_body-tr_td">
+                            {% if data.driving_hour >= 1 %}{{data.driving_hour}}시간 {{data.driving_minute}}분 {% else %} {{data.driving_minute}}분 {% endif %}  <!-- 시간(근로자) -->
                         </td>
                         <td class="table-list_body-tr_td addCommaToInnerText">
                             {{data.fuel_cost}} <!-- 유류비 -->
                         </td>
-                        <td class="table-list_body-tr_td">
-                            <!-- 공차 -->
+                        <td class="table-list_body-tr_td addCommaToInnerText">
+                            {{data.driving_fuel_cost}} <!-- 유류비 -->
                         </td>
                         <td class="table-list_body-tr_td">
-                            {{member.entering_date}} <!-- 최초 고용일 -->
+                            {{data.tolerance_distance}} <!-- 공차 -->
                         </td>
                         <td class="table-list_body-tr_td">
-                            {{member.role}} <!-- 근무형태 -->
+                            {{data.tolerance_time}} <!-- 공차 시간 -->
                         </td>
                     </tr>
-                    {% endwith %}
                     {% endfor %}
                 </tbody>
+                <tfoot>
+                    {% if date_type == 'monthly' %}
+                    <tr class="table-list_body-tr_last">
+                        <td class="table-list_body-tr-td_last" colspan="6">일별평균</td>
+                        <td class="table-list_body-tr-td_last addCommaToInnerText">{{date_avg_data.salary}}</td>
+                        <td class="table-list_body-tr-td_last addCommaToInnerText">{{date_avg_data.price}}</td>
+                        <td class="table-list_body-tr-td_last addCommaToInnerText">{{date_avg_data.driving_cnt}}</td>
+                        <td class="table-list_body-tr-td_last addCommaToInnerText">{{date_avg_data.distance}}</td>
+                        <td class="table-list_body-tr-td_last addCommaToInnerText">{{date_avg_data.driving_distance}}</td>
+                        <td class="table-list_body-tr-td_last">{{date_avg_data.time}}</td>
+                        <td class="table-list_body-tr-td_last">{{date_avg_data.driving_time}}</td>
+                        <td class="table-list_body-tr-td_last addCommaToInnerText">{{date_avg_data.fuel_cost}}</td>
+                        <td class="table-list_body-tr-td_last addCommaToInnerText">{{date_avg_data.driving_fuel_cost}}</td>
+                        <td class="table-list_body-tr-td_last addCommaToInnerText">{{date_avg_data.tolerance_distance}}</td>
+                        <td class="table-list_body-tr-td_last">{{date_avg_data.tolerance_time}}</td>
+                    </tr>
+                    {% endif %}
+                    <tr class="table-list_body-tr_last">
+                        <td class="table-list_body-tr-td_last last2" colspan="6">인당평균</td>
+                        <td class="table-list_body-tr-td_last last2 addCommaToInnerText">{{person_avg_data.salary}}</td>
+                        <td class="table-list_body-tr-td_last last2 addCommaToInnerText">{{person_avg_data.price}}</td>
+                        <td class="table-list_body-tr-td_last last2 addCommaToInnerText">{{person_avg_data.driving_cnt}}</td>
+                        <td class="table-list_body-tr-td_last last2 addCommaToInnerText">{{person_avg_data.distance}}</td>
+                        <td class="table-list_body-tr-td_last last2 addCommaToInnerText">{{person_avg_data.driving_distance}}</td>
+                        <td class="table-list_body-tr-td_last last2">{{person_avg_data.time}}</td>
+                        <td class="table-list_body-tr-td_last last2">{{person_avg_data.driving_time}}</td>
+                        <td class="table-list_body-tr-td_last last2 addCommaToInnerText">{{person_avg_data.fuel_cost}}</td>
+                        <td class="table-list_body-tr-td_last last2 addCommaToInnerText">{{person_avg_data.driving_fuel_cost}}</td>
+                        <td class="table-list_body-tr-td_last last2 addCommaToInnerText">{{person_avg_data.tolerance_distance}}</td>
+                        <td class="table-list_body-tr-td_last last2">{{person_avg_data.tolerance_time}}</td>
+                    </tr>
+                    <tr class="table-list_body-tr_last">
+                        <td class="table-list_body-tr-td_last last3" colspan="6">합계</td>
+                        <td class="table-list_body-tr-td_last last3 addCommaToInnerText">{{total_data.salary}}</td>
+                        <td class="table-list_body-tr-td_last last3 addCommaToInnerText">{{total_data.price}}</td>
+                        <td class="table-list_body-tr-td_last last3 addCommaToInnerText">{{total_data.driving_cnt}}</td>
+                        <td class="table-list_body-tr-td_last last3 addCommaToInnerText">{{total_data.distance}}</td>
+                        <td class="table-list_body-tr-td_last last3 addCommaToInnerText">{{total_data.driving_distance}}</td>
+                        <td class="table-list_body-tr-td_last last3">{{total_data.time}}</td>
+                        <td class="table-list_body-tr-td_last last3">{{total_data.driving_time}}</td>
+                        <td class="table-list_body-tr-td_last last3 addCommaToInnerText">{{total_data.fuel_cost}}</td>
+                        <td class="table-list_body-tr-td_last last3 addCommaToInnerText">{{total_data.driving_fuel_cost}}</td>
+                        <td class="table-list_body-tr-td_last last3 addCommaToInnerText">{{total_data.tolerance_distance}}</td>
+                        <td class="table-list_body-tr-td_last last3">{{total_data.tolerance_time}}</td>
+                    </tr>
+                </tfoot>
             </table>
         </div>
     </div>
-
 </div>
 
 {% endblock %}

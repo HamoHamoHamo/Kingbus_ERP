@@ -190,6 +190,17 @@ class Salary(models.Model):
         else:
             return "error"
 
+    def calculate_fixed(self):
+        member = self.member_id
+        if member.role == '용역' or member.role == '관리자':
+            return int(self.performance_allowance)
+        elif (member.role == '팀장' or member.role == '운전원') and member.allowance_type == '기사수당(현재)':
+            return int(self.base) + int(self.service_allowance) + int(self.performance_allowance) + int(self.annual_allowance) + int(self.meal)
+        elif (member.role == '팀장' or member.role == '운전원') and member.allowance_type == '기사수당(변경)':
+            return int(self.overtime_allowance) + int(self.performance_allowance)
+        else:
+            return 0
+
     member_id = models.ForeignKey(Member, on_delete=models.CASCADE, related_name="salary", null=True)
     base = models.CharField(verbose_name='기본급', max_length=20, null=False, default=0)
     service_allowance = models.CharField(verbose_name='근속수당', max_length=20, null=False, default=0)

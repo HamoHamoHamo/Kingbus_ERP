@@ -14,7 +14,7 @@ import math
 import time
 
 from common.constant import TODAY, WEEK
-from common.datetime import calculate_time_difference
+from common.datetime import *
 
 from .models import Income, LastIncome, AdditionalCollect, Collect, TotalPrice
 from .forms import IncomeForm, AdditionalCollectForm
@@ -1035,66 +1035,209 @@ class MemberEfficiencyList(generic.ListView):
     def get_queryset(self):
         # route = self.request.GET.get('route', '')
 
-        member_list = Member.objects.filter(use='사용').order_by('name')
+        member_list = Member.objects.filter(use='사용').order_by('-authority', 'name')
         return member_list
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        FUEL = 1500         #기름값
+        creator = Member.objects.get(pk=self.request.session.get('user'))
+        FUEL = 1600         #기름값
         EFFICIENCY = 2.5    # 연비
 
         date1 = self.request.GET.get('date1', TODAY)
         date2 = self.request.GET.get('date2', TODAY)
-        context['date1'] = date1
-        context['date2'] = date2
-        datetime1 = f'{date1} 00:00'
-        datetime2 = f'{date2} 24:00'
-
         
         month = date1[:7] #  급여날짜 어떻게 할 지 확인 필요
+
+        last_day = last_day_of_month(date1)
+        date_period = calculate_date_difference(date1, date2)
+        date_period = date_period if date_period > 0 else 1
+
+        date_type = self.request.GET.get('dateType', '')
+        # if date_type == 'monthly':
+        #     date1 = f'{month}-01'
+        #     date2 = f'{month}-{last_day}'
+        # elif date_type == 'weekly':
+        #     date2 = add_days_to_date(date1, 7)
+        # elif date_type == 'daily':
+        #     date2 = date1
+
+        context['date1'] = date1
+        context['date2'] = date2
+        context['date_type'] = date_type
+        datetime1 = f'{date1} 00:00'
+        datetime2 = f'{date2} 24:00'
         
 
         data_list = []
+        total_data = {
+            'salary' : 0,
+            'price' : 0,
+            'driving_cnt' : 0,
+            'distance' : 0,
+            'driving_distance' : 0,
+            'minutes' : 0,
+            'driving_minutes' : 0,
+            'fuel_cost' : 0,
+            'driving_fuel_cost' : 0,
+            'tolerance_distance' : 0,
+            'tolerance_time' : 0,
+        }
         for member in context['member_list']:
             data = {}
+
+            # 노선운행량
+            order_connect_list = member.info_driver_id.exclude(arrival_date__lt=datetime1).exclude(departure_date__gt=datetime2).values('price', 'driver_allowance', 'departure_date', 'arrival_date')
+            regularly_connect_list = member.info_regularly_driver_id.exclude(arrival_date__lt=datetime1).exclude(departure_date__gt=datetime2).values('price', 'regularly_id__distance', 'driver_allowance', 'departure_date', 'arrival_date')
+            if not order_connect_list and not regularly_connect_list:
+                continue
+            
+            driving_history_list = member.driving_history_member.exclude(date__lt=date1).exclude(date__gt=date2).values('departure_date', 'arrival_date', 'departure_km', 'arrival_km')
+
+            data['member'] = member
+
             # 급여
             try:
                 salary = Salary.objects.filter(member_id=member).get(month=month)
             except Salary.DoesNotExist:
-                creator = Member.objects.get(pk=self.request.session.get('user'))
+                creator = creator
                 salary = Salary.new_salary(creator, month, member)
-            
 
-            # 노선운행량
-            order_connect_list = member.info_driver_id.exclude(arrival_date__lt=datetime1).exclude(departure_date__gt=datetime2)
-            regularly_connect_list = member.info_regularly_driver_id.exclude(arrival_date__lt=datetime1).exclude(departure_date__gt=datetime2)
-            driving_history_list = member.driving_history_member.exclude(date__lt=date1).exclude(date__gt=date2).annotate(driving_distance=F('arrival_km') - F('departure_km'))
+            driving_minutes = 0
+            driving_distance = 0
+
+            for history in driving_history_list:
+                if history['departure_date'] and history['arrival_date']:
+                    driving_minutes += calculate_time_difference(history['departure_date'], history['arrival_date'])
+                if history['arrival_km'] and history['departure_km']:
+                    driving_distance += int(history['arrival_km']) - int(history['departure_km'])
             
+            data['driving_distance'] = driving_distance
+            data['driving_minute'] = driving_minutes % 60
+            data['driving_hour'] = driving_minutes // 60
+
             price = 0
+            allowance = 0
             minutes = 0
             distance = 0
 
             for connect in order_connect_list:
-                price += int(connect.price)
-                # distance += connect.order_id.distance
-                minutes += calculate_time_difference(connect.departure_date, connect.arrival_date)
+                price += int(connect['price'])
+                allowance += int(connect['driver_allowance'])
+                # distance += connect['order_id__distance']
+                minutes += calculate_time_difference(connect['departure_date'], connect['arrival_date'])
 
             for connect in regularly_connect_list:
-                price += int(connect.price)
-                distance += int(connect.regularly_id.distance) if connect.regularly_id.distance else 0
-                minutes += calculate_time_difference(connect.departure_date, connect.arrival_date)
+                price += int(connect['price'])
+                allowance += int(connect['driver_allowance'])
+                distance += float(connect['regularly_id__distance']) if connect['regularly_id__distance'] else 0
+                minutes += calculate_time_difference(connect['departure_date'], connect['arrival_date'])
 
+            data['distance'] = round(distance, 1)
+            data['minute'] = minutes % 60
+            data['hour'] = math.floor(minutes / 60)
+            
             data['driving_cnt'] = order_connect_list.count() + regularly_connect_list.count()
             data['price'] = price
-            data['salary'] = salary.total
-            data['distance'] = distance
-            driving_distance = driving_history_list.aggregate(total_driving_distance=Sum('driving_distance'))['total_driving_distance']
-            data['driving_distance'] = driving_distance if driving_distance else 0
-            data['minute'] = minutes % 60
-            data['hour'] = minutes // 60
-            data['fuel_cost'] = data['driving_distance'] // EFFICIENCY * FUEL
+
+            fixed_personnel_expense = salary.calculate_fixed() * int(date_period) // int(last_day)
+            data['salary'] = fixed_personnel_expense + allowance
+            data['driving_fuel_cost'] = round(data['driving_distance'] / EFFICIENCY * FUEL)
+            data['fuel_cost'] = round(data['distance'] / EFFICIENCY * FUEL)
+            data['tolerance_distance'] = round(data['driving_distance'] - data['distance'], 1)
+            data['tolerance_time'] = get_hour_minute(driving_minutes - minutes)
+
+            # 등급(효율) 매출액에서-유류비-사고-인건비-차량비-부대비용=순이익, 순이익/임금*100=
+            # 100% S,90% A,80%B,70%C,60%D,50%E,40%이하F 
+
+            # 순이익
+            profit = (price - data['fuel_cost'] - allowance)
+
+
             
+            
+            if data['salary'] == 0:
+                data['grade'] = ''
+            else:
+                grade_percent = profit / data['salary'] * 100
+                if grade_percent > 90:
+                    data['grade'] = 'S' + " " + str(round(grade_percent, 1))
+                elif grade_percent > 80:
+                    data['grade'] = 'A' + " " + str(round(grade_percent, 1))
+                elif grade_percent > 70:
+                    data['grade'] = 'B' + " " + str(round(grade_percent, 1))
+                elif grade_percent > 60:
+                    data['grade'] = 'C' + " " + str(round(grade_percent, 1))
+                elif grade_percent > 50:
+                    data['grade'] = 'D' + " " + str(round(grade_percent, 1))
+                elif grade_percent > 40:
+                    data['grade'] = 'E' + " " + str(round(grade_percent, 1))
+                elif grade_percent <= 40:
+                    data['grade'] = 'F' + " " + str(round(grade_percent, 1))
+
             data_list.append(data)
 
             context['data_list'] = data_list
+
+            total_data['salary'] += data['salary']
+            total_data['price'] += data['price']
+            total_data['driving_cnt'] += data['driving_cnt']
+            total_data['distance'] += data['distance']
+            total_data['driving_distance'] += data['driving_distance']
+            total_data['minutes'] += minutes
+            total_data['driving_minutes'] += driving_minutes
+            total_data['fuel_cost'] += data['fuel_cost']
+            total_data['driving_fuel_cost'] += data['driving_fuel_cost']
+            total_data['tolerance_distance'] += data['tolerance_distance']
+
+        total_data['distance'] = round(total_data['distance'], 1)
+        total_data['tolerance_distance'] = round(total_data['tolerance_distance'], 1)
+        total_data['time'] = get_hour_minute(total_data['minutes'])
+        total_data['driving_time'] = get_hour_minute(total_data['driving_minutes'])
+        total_data['tolerance_time'] = get_hour_minute(total_data['driving_minutes'] - total_data['minutes'])
+        context['total_data'] = total_data
+
+        # 인당평균
+        data_list_size = len(data_list) if data_list else 1
+        context['person_avg_data'] = self.calculate_avg_data(total_data, data_list_size)
+
+        # 월별일때만 일별평균 계산
+        if date_type == 'monthly':
+            context['date_avg_data'] = self.calculate_avg_data(total_data, last_day)
+
         return context
+
+    def calculate_avg_data(self, total_data, last_day):
+        avg_data = self.get_avg_data(total_data, last_day)
+        avg_data['time'] = get_hour_minute(avg_data['minutes'])
+        avg_data['driving_time'] = get_hour_minute(avg_data['driving_minutes'])
+        avg_data['tolerance_time'] = get_hour_minute(avg_data['driving_minutes'] - avg_data['minutes'])
+
+        return avg_data
+
+    # def calculate_person_avg_data(self, total_data, data_size):
+    #     person_avg_data = self.get_avg_data(total_data, data_size)
+    #     person_avg_data['time'] = get_hour_minute(person_avg_data['minutes'])
+    #     person_avg_data['driving_time'] = get_hour_minute(person_avg_data['driving_minutes'])
+    #     person_avg_data['tolerance_time'] = get_hour_minute(person_avg_data['driving_minutes'] - person_avg_data['minutes'])
+
+    #     return person_avg_data
+
+    def get_avg_data(self, total_data, divisor):
+        avg_data = {}
+        except_list = [
+            'time',
+            'driving_time',
+            'tolerance_time',
+        ]
+
+        # total_data의 각 필드에 대해 반복하면서 평균값 계산
+        for key, value in total_data.items():
+            if key in except_list:
+                continue
+            # 평균값 계산
+            avg_value = value / divisor
+            # 평균값을 avg_data 딕셔너리에 추가
+            avg_data[key] = round(avg_value)
+
+        return avg_data

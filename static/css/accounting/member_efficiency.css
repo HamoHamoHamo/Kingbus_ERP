@@ -586,4 +586,30 @@
     font-weight: normal;
 }
 
+.table-list_body-tr_last {
+    width: 100%;
+    height: 3.7rem;
+    font-size: 1.4rem;
+}
+
+.table-list_body-tr-td_last {
+    background-color: #CDCDCE;
+    height: 100%;
+    text-align: center;
+    border-right: 0.1rem solid white;
+    border-bottom: 0.1rem solid white;
+    box-sizing: border-box;
+    position: sticky;
+    bottom: 7.4rem;
+}
+
+.last2 {
+    bottom: 3.7rem;
+}
+
+.last3 {
+    bottom: 0;
+    border-bottom: none;
+}
+
 /* 번호, 등급, 이름, 팀, 급여, 목표운행량, 매출액, KM, 시간, 유류비, 공차, 최초 고용일, 근무형태 */
