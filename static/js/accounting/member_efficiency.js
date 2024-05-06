@@ -32,8 +32,9 @@ const setToday = () => {
     dateField2.value = todayString;
 }
 
-const setCalcluatedDay = (days) => {
-    const currentDate = dateField.value;
+const getCalcluatedDate = (days, currentDate=dateField.value) => {
+    console.log(currentDate, days)
+    // const currentDate = dateField.value;
     let date;
     if (currentDate === "") {
         date = new Date();
@@ -43,10 +44,14 @@ const setCalcluatedDay = (days) => {
 
     const calcuatedDate = new Date(date.setDate(date.getDate() + days)).toISOString().substring(0, 10);
 
-    dateField.value = calcuatedDate;
-    dateField2.value = calcuatedDate;
-    searchObject.date1 = calcuatedDate;
-    searchObject.date2 = calcuatedDate;
+    return calcuatedDate;
+}
+
+const getLastDayOfMonth = (date) => {
+    const dateList = date.split('-');
+    const lastDayOfMonth = new Date(dateList[0], parseInt(dateList[1]), 0);
+    console.log(lastDayOfMonth)
+    return lastDayOfMonth.getDate()
 }
 
 
@@ -119,6 +124,10 @@ const nameField = document.querySelector(".name-input-td");
 const dispatchKindField = document.querySelectorAll(".work-time");
 const salaryField = document.querySelector(".salary-input-td");
 const contractTypeField = document.querySelector(".salary-form-input-td");
+const dailyButton = document.querySelector(".dailyButton");
+const weeklyButton = document.querySelector(".weeklyButton");
+const monthlyButton = document.querySelector(".monthlyButton");
+
 
 // Variabels
 const today = new Date();
@@ -151,13 +160,14 @@ window.onload = () => {
     console.log("========[window onload]========")
     
     // 페이지 접속 시, 오늘 날짜 기준으로 검색 진행
-    if (!location.href.includes("?")) {
-        updateURL(searchObject);
+    // if (!location.href.includes("?")) {
+    //     updateURL(searchObject);
 
-    } else {
-        initializeData();
+    // } else {
+    //     initializeData();
 
-    }
+    // }
+    initializeData();
     addCommaToInnerText()
 
 }
@@ -199,23 +209,53 @@ const setData = () => {
     }
 }
 
+const setDateField = (date1, date2) => {
+    dateField.value = date1;
+    dateField2.value = date2;
+    searchObject.date1 = date1;
+    searchObject.date2 = date2;
+}
+
 // MARK: - Today, DayBefore, DayAfter Button
 // eventListener
 todayButton.addEventListener("click", () => {
-    setToday()
+    setToday();
     updateURL(searchObject);
 });
 
 dayBeforeButton.addEventListener("click", () => {
-    setCalcluatedDay(-1);
+    const calculatedDate = getCalcluatedDate(-1);
+    setDateField(calculatedDate, calculatedDate);
     updateURL(searchObject);
 });
 
 dayAfterButton.addEventListener("click", () => {
-    setCalcluatedDay(+1);
+    const calculatedDate = getCalcluatedDate(1);
+    setDateField(calculatedDate, calculatedDate);
     updateURL(searchObject);
 });
 
+dailyButton.addEventListener("click", () => {
+    searchObject.dateType="daily";
+    setDateField(dateField.value, dateField.value);
+    updateURL(searchObject);
+})
+
+weeklyButton.addEventListener("click", () => {
+    searchObject.dateType="weekly";
+    const calculatedDate = getCalcluatedDate(7);
+    setDateField(dateField.value, calculatedDate);
+    updateURL(searchObject);
+})
+
+monthlyButton.addEventListener("click", () => {
+    searchObject.dateType="monthly";
+    const firstDate = dateField.value.substring(0, 8) + "01";
+    const calculatedDate = getCalcluatedDate(getLastDayOfMonth(dateField.value) - 1, firstDate);
+
+    setDateField(firstDate, calculatedDate);
+    updateURL(searchObject);
+})
 
 // MARK: API 통신
 // const getEfficiencyPerMember = () => {
