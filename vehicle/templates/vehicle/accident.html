@@ -17,20 +17,21 @@
 {% block content %}
 <div class="all-container efficiency-div">
     <div class="search-container efficiency-div"> <!-- 검색 box-->
-        <div class="search-dispatch-path-box efficiency-div">
-            <input type="text" placeholder="노선명 및 이름을 입력하세요." class="search-dispatch-path">
-            <input type="date" class="search-dispatch-path-date">
-            <input type="button" value="오늘" onclick="setToday()" class="dispatch-path-today-button">
-            <input type="button" value="" onclick="setDayBefore()" class="day-before-button">
-            <input type="button" value="" onclick="setDayAfter()" class="day-after-button">
-            <input type="button" value="검색" class="dispatch-path-search-button">
-        </div>
+        <form action="" class="search-form efficiency-div">
+            <div class="search-dispatch-path-box efficiency-div">
+                <input type="text" name="name" placeholder="노선명 및 이름을 입력하세요." class="search-dispatch-path">
+                <input type="date" name="date" class="search-dispatch-path-date">
+                <input type="submit" value="오늘" class="dispatch-path-today-button">
+                <input type="submit" value="" class="day-before-button">
+                <input type="submit" value="" class="day-after-button">
+                <input type="submit" value="검색" class="dispatch-path-search-button">
+            </div>
+        </form>
 
         <div class="search-filter-box efficiency-div">
             <div class="search-filter-button-box">
-                <input type="button" value="사고처리 견적서" class="search-filter-button" id="estimate-button">
                 <input type="button" value="삭제" class="search-filter-button" id="delete-button">
-                <input type="button" value="수정" class="search-filter-button" id="edit-button">
+                <input type="button" value="등록" class="search-filter-button" id="register-button">
             </div>
         </div>
 
@@ -115,8 +116,10 @@
                 <span id="title-first-child">상세</span>
                 <span id="title-second-child">사고관리</span>
             </div>
-            <div id="close-button">
-                <img src="/static/images/xmark.png">
+            <div class="button-div">
+                <input type="button" value="사고처리 견적서" class="search-filter-button" id="estimate-button">
+                <input type="button" value="닫기" class="search-filter-button" id="close-button">
+                <input type="button" value="완료" class="search-filter-button" id="complete-button">
             </div>
         </div>
 
@@ -125,16 +128,203 @@
                 <div class="accident-detail-info-div">
                     <span class="title-span">상세 정보</span>
                     <div class="accident-detail-info-content-div">
-                        
+                        <div class="accident-detail-header">
+                            <div class="our-car-number">
+                                <span>차량번호 : </span>
+                                <span>경기70바 7554</span>
+                            </div>
+                            <div class="other-car-number">
+                                <span>피해차량 : </span>
+                                <span>55구 1601</span>
+                            </div>
+                        </div>
+                        <div class="accident-detail-body">
+                            <div class="accident-detail-content first">
+                                <div class="content-div">
+                                    <span>기사이름 : </span>
+                                    <span>유성재</span>
+                                </div>
+                                <div class="content-div">
+                                    <div class="dropdown">
+                                        <span>업체명 : </span>
+                                        <input type="button" value="성화투어">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="accident-detail-content second">
+                                <span>노선명 : </span>
+                                <span>남양출근</span>
+                            </div>
+                            <div class="accident-detail-content third">
+                                <span>사고 발생 지점 : </span>
+                                <span>용인서울고속도로</span>
+                            </div>
+                            <div class="accident-detail-content fourth">
+                                <div class="content-div">
+                                    <span>사고 발생 시간 : </span>
+                                    <span>17시 46분</span>
+                                </div>
+                                <div class="content-div">
+                                    <span>운행 재개 시간 : </span>
+                                    <span>17시 59분</span>
+                                </div>
+                            </div>
+                            <div class="accident-detail-content fifth">
+                                <div class="content-div">
+                                    <span>당시 차량 속도 : </span>
+                                    <span>70km</span>
+                                </div>
+                                <div class="content-div">
+                                    <span>과실유무 : </span>
+                                    <span>유</span>
+                                </div>
+                            </div>
+                            <div class="accident-detail-content sixth">
+                                <span>부상자 : </span>
+                                <span>1/41 (명)</span>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="accident-photo-div">
                     <span class="title-span">사고 사진</span>
-                    <div class="accident-photo-content-div"></div>
+                    <div class="accident-photo-content-div">
+                        <div class="accident-photo-content-header">
+                            <div class="coverage-div"> <!-- 자차 -->
+                                <input type="radio" name="insurance" id="coverage" checked>
+                                <label for="coverage">자차</label>
+                            </div>
+                            <div class="liability-div"> <!-- 대인/대물 -->
+                                <input type="radio" name="insurance" id="liability">
+                                <label for="liability">대인/대물</label>
+                            </div>
+                        </div>
+                        <div class="accident-photo-content-body">
+                            <div class="accident-photo-content">
+                                <div class="accident-photo-title-div">
+                                    <span>내 차량</span>
+                                </div>
+                                <div class="accident-photo-file-div">
+                                    <div class="photo-preview-div"></div>
+                                    <div class="photo-preview-div"></div>
+                                    <div class="photo-preview-div"></div>
+                                </div>
+                            </div>
+                            <div class="accident-photo-content">
+                                <div class="accident-photo-title-div">
+                                    <span>상대 차량</span>
+                                </div>
+                                <div class="accident-photo-file-div">
+                                    <div class="photo-preview-div"></div>
+                                    <div class="photo-preview-div"></div>
+                                    <div class="photo-preview-div"></div>
+                                </div>
+                            </div>
+                            <div class="accident-photo-content">
+                                <div class="accident-photo-title-div">
+                                    <span>접촉 부위</span>
+                                </div>
+                                <div class="accident-photo-file-div">
+                                    <div class="photo-preview-div"></div>
+                                </div>
+                            </div>
+                            <div class="accident-photo-content">
+                                <div class="accident-photo-title-div">
+                                    <span>승객 명단</span>
+                                </div>
+                                <div class="accident-photo-file-div">
+                                    <div class="photo-preview-div"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <div class="accident-file-div">
                     <span class="title-span">사고 파일</span>
-                    <div class="accident-file-content-div"></div>
+                    <div class="accident-file-content-div">
+                        <div class="accident-file-body">
+                            <div class="accident-file-content">
+                                <span>사고보고서</span>
+                                <div class="file-div">
+                                    <input class="upload-name" value="첨부파일" placeholder="첨부파일">
+                                    <div class="file-box">
+                                        <label for="accident-report-file">파일찾기</label>
+                                        <input type="file" name="accident-report-file" id="accident-report-file">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="accident-file-content">
+                                <span>사고사진</span>
+                                <div class="file-div">
+                                    <input class="upload-name" value="첨부파일" placeholder="첨부파일">
+                                    <div class="file-box">
+                                        <label for="accident-photo-file">파일찾기</label>
+                                        <input type="file" name="accident-photo-file" id="accident-photo-file">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="accident-file-content">
+                                <span>자동차 점검 정비 명세서</span>
+                                <div class="file-div">
+                                    <input class="upload-name" value="첨부파일" placeholder="첨부파일">
+                                    <div class="file-box">
+                                        <label for="accident-car-maintenance-file">파일찾기</label>
+                                        <input type="file" name="accident-car-maintenance-file" id="accident-car-maintenance-file">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="accident-file-content">
+                                <span>운전면허증</span>
+                                <div class="file-div">
+                                    <input class="upload-name" value="첨부파일" placeholder="첨부파일">
+                                    <div class="file-box">
+                                        <label for="accident-driver-id-file">파일찾기</label>
+                                        <input type="file" name="accident-driver-id-file" id="accident-driver-id-file">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="accident-file-content">
+                                <span>자동차 공제 사고 접수서</span>
+                                <div class="file-div">
+                                    <input class="upload-name" value="첨부파일" placeholder="첨부파일">
+                                    <div class="file-box">
+                                        <label for="accident-car-deduction-file">파일찾기</label>
+                                        <input type="file" name="accident-car-deduction-file" id="accident-car-deduction-file">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="accident-file-content">
+                                <span>공제금 지급청구소</span>
+                                <div class="file-div">
+                                    <input class="upload-name" value="첨부파일" placeholder="첨부파일">
+                                    <div class="file-box">
+                                        <label for="accident-deduction-request-file">파일찾기</label>
+                                        <input type="file" name="accident-deduction-request-file" id="accident-deduction-request-file">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="accident-file-content">
+                                <span>이행확약서</span>
+                                <div class="file-div">
+                                    <input class="upload-name" value="첨부파일" placeholder="첨부파일">
+                                    <div class="file-box">
+                                        <label for="accident-commitment-file">파일찾기</label>
+                                        <input type="file" name="accident-commitment-file" id="accident-commitment-file">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="accident-file-content no-border">
+                                <span>합의서</span>
+                                <div class="file-div">
+                                    <input class="upload-name" value="첨부파일" placeholder="첨부파일">
+                                    <div class="file-box">
+                                        <label for="accident-agreement-file">파일찾기</label>
+                                        <input type="file" name="accident-agreement-file" id="accident-agreement-file">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="content-second-container">
@@ -142,8 +332,32 @@
                     <span class="title-span">과실 - 상세</span>
                 </div>
                 <div class="report-div">
-                    <div class="accident-report-div"></div>
-                    <div class="driver-report-div"></div>
+                    <div class="accident-report-div">
+                        <table class="negligence-percentage-table">
+                            <tr>
+                                <th>성화투어</th>
+                                <th>상대차량</th>
+                            </tr>
+                            <tr>
+                                <td>20%</td>
+                                <td>80%</td>
+                            </tr>
+                        </table>
+                        <div class="accident-details-div">
+                            <div class="accident-details-title-div">
+                                <span>사고상황</span>
+                            </div>
+                            <div class="accident-details-text-div"></div>
+                        </div>
+                    </div>
+                    <div class="driver-report-div">
+                        <div class="driver-report-title-div">
+                            <span class="driver-report-title">사고 개요</span>
+                            <br>
+                            <span class="driver-report-subtitle">(운전자 경위서)</span>
+                        </div>
+                        <div class="driver-report-text-div"></div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -153,7 +367,6 @@
 
 <!-- Script Block -->
 {% block script %}
-<script src="{% static 'js/hr/member_efficiency.js' %}"></script>
 <script src="{% static 'js/vehicle/accident.js' %}"></script>
 
 {% endblock %}

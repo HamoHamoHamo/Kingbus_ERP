@@ -43,6 +43,34 @@ const keyCodeCheck = (event, callBack) => {
     }
 }
 
+const onPopUp = () => {
+    document.querySelector(".pop-up-bg-container").style.display = "flex";
+}
+
+const closePopUp = () => {
+    document.querySelector(".pop-up-bg-container").style.display = "none";
+}
+
+const printCertainParts = () => {
+    // var initBody = document.body.innerHTML; //body영역 저장
+	// window.onbeforeprint = function () { //프린터 출력 전 이벤트
+	// 	document.body.innerHTML = document.querySelector(".report-container").innerHTML; //원하는 영역 지정 'div_print'
+	// }
+	// window.onafterprint = function () { //프린터 출력 후 이벤트
+	// 	document.body.innerHTML = initBody;
+	// }
+	// window.print();
+
+    var prtCtnt = document.querySelector(".report-container");
+    var prtOption = 'left=0,top=0,width=800,height=900,toolbar=0,scrollbars=0,status=0';
+    var WinPrint = window.open('', '', prtOption);
+    WinPrint.document.write(prtCtnt.innerHTML);
+    WinPrint.document.close();
+    WinPrint.focus();
+    WinPrint.print();
+    WinPrint.close();
+}
+
 // MARK: - Today, DayBefore, DayAfter Function
 const setToday = () => {
     const today = new Date();
@@ -134,7 +162,7 @@ for (const checkbox of selectCheckBox) {
     })
 }
 
-// document
+// MARK: Document
 // 날짜
 const dateField = document.querySelector(".search-dispatch-path-date");
 const todayButton = document.querySelector(".dispatch-path-today-button");
@@ -148,6 +176,11 @@ const nameField = document.querySelector(".name-input-td");
 const dispatchKindField = document.querySelectorAll(".work-time");
 const salaryField = document.querySelector(".salary-input-td");
 const contractTypeField = document.querySelector(".salary-form-input-td");
+
+// 인쇄
+const reportButton = document.querySelector("#report-button");
+const closeButton = document.querySelector("#close-button");
+const printButton = document.querySelector("#print-button");
 
 // Variabels
 const today = new Date();
@@ -271,3 +304,16 @@ searchButton.addEventListener("click", () => {
 });
 
 document.addEventListener("keypress", event => keyCodeCheck(event));
+
+// MARK: 인쇄
+reportButton.addEventListener("click", () => {
+    onPopUp();
+});
+
+closeButton.addEventListener("click", () => {
+    closePopUp();
+});
+
+printButton.addEventListener("click", () => {
+    printCertainParts();
+});

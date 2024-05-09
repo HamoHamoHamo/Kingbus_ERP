@@ -72,7 +72,7 @@
                 <input type="button" value="매출 높은 순" class="search-filter-button sales-filter">
             </div>
             <div class="search-filter-print-box">
-                <input type="button" value="인쇄" class="search-filter-button">
+                <input type="button" value="인쇄" id="report-button" class="search-filter-button">
             </div>
         </div>
 
@@ -189,6 +189,30 @@
 
 <!-- Popup Block -->
 {% block popup %}
+<div class="pop-up-bg-container">
+    <div class="pop-up-container">
+        <div class="title-container">
+            <div class="title-div">
+                <span id="title-first-child">인쇄</span>
+                <span id="title-second-child">인당효율</span>
+            </div>
+            <div id="close-button">
+                <img src="/static/images/xmark.png">
+            </div>
+        </div>
+
+        <div class="content-container">
+            <div class="report-container">
+                <div class="title-div">
+                    <h3>인당효율</h3>
+                </div>
+            </div>
+            <div class="button-container">
+                <input type="button" value="인쇄" id="print-button">
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}
 
 <!-- Script Block -->
