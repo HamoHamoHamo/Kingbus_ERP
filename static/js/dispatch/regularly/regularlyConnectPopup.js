@@ -1,4 +1,4 @@
-import { addClosePopupEvent, closePopup } from "/static/js/popupCommon.js"
+import { addEventClosePopup, closePopup } from "/static/js/common/popupCommon.js"
 
 const popupAreaModules = document.querySelectorAll('.popupAreaModules')
 const groupAddBtn = document.querySelector('.groupAddBtn')
@@ -13,7 +13,7 @@ for(i=0; i<businessGroupEditBtn.length; i++) {
     businessGroupEditBtn[i].addEventListener("click", openBusinessEditPopup)
 }
 
-addClosePopupEvent()
+addEventClosePopup()
 
 function initPopupInput() {
     popupInputId.value = ''

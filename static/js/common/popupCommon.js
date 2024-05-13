@@ -2,11 +2,12 @@
 
 let commonPopupAreaModules = document.querySelectorAll('.popupAreaModules')
 
-const addClosePopupEvent = () => {
+// popupBgModules, Sidemenu, popupCloseBtn 클릭 시 팝업 닫힘
+const addEventClosePopup = () => {
     const commonPopupBgModules = document.querySelectorAll(".popupBgModules")
     const commonSidemenuUseClose = document.querySelector(".Sidemenu")
     const popupCloseBtn = document.querySelectorAll(".popupCloseBtn")
-
+    console.log("GGG", popupCloseBtn)
     if (popupCloseBtn) {
         Array.from(popupCloseBtn).map(btn => {
             btn.addEventListener('click', closePopup)
@@ -25,6 +26,5 @@ const closePopup = () => {
     })
 }
 
-addClosePopupEvent()
 
-// export { addClosePopupEvent, closePopup }
+export { addEventClosePopup, closePopup }

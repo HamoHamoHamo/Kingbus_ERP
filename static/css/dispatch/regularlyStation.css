@@ -1,0 +1,326 @@
+.searchName {
+    margin-right: 1rem;
+}
+
+.searchAreaBox .btnModules {
+    background-color: #444444;
+    margin-left: 2rem;
+}
+
+.headerBtn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 10rem;
+    height: 3.8rem;
+    border-radius: 0.2rem;
+    background-color: #444444;
+    font-size: 1.4rem;
+    color: white;
+    cursor: pointer;
+    margin-left: 1rem;
+}
+
+.addPeople {
+    background-color: #0069D9;
+}
+
+.inputModules[name=use],
+.inputModules[name=age],
+.inputModules[name=role] {
+    margin-left: 2rem;
+}
+
+
+
+/*tableHead*/
+thead {
+    width: 100%;
+    height: 4.8rem;
+    border-spacing: 0;
+    box-sizing: border-box;
+}
+
+thead tr {
+    width: 100%;
+    height: 100%;
+    font-size: 1.4rem;
+    color: white;
+}
+
+thead td {
+    text-align: center;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.tableBody {
+    width: 100%;
+    height: 64em;
+    border-spacing: 0;
+    box-sizing: border-box;
+}
+
+table tbody tr {
+    width: 100%;
+    height: 6.4rem;
+    font-size: 1.4rem;
+    color: #191919;
+}
+
+table tbody tr:nth-child(odd) {
+    background-color: white;
+}
+
+table tbody tr:nth-child(even) {
+    background-color: #EFEFEF;
+}
+
+.tableBody tbody td:nth-child(1) {
+    border-left: 0.1rem solid #D4D4D4;
+}
+
+.tableBody tbody td {
+    border-right: 0.1rem solid #D4D4D4;
+    border-bottom: 0.1rem solid #D4D4D4;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+
+.headerOrderBy {
+    cursor: pointer;
+    font-weight: bold;
+}
+
+td:nth-child(1),
+td:nth-child(2),
+td:nth-child(3),
+td:nth-child(4),
+td:nth-child(5),
+td:nth-child(6),
+td:nth-child(7),
+td:nth-child(8),
+td:nth-child(10),
+td:nth-child(12),
+td:nth-child(13) {
+    text-align: center;
+}
+
+.tableBody td:nth-child(9),
+.tableBody td:nth-child(11) {
+    text-align: left;
+    padding-left: 1rem;
+}
+
+.tableBody td:nth-child(12),
+.tableBody td:nth-child(13) {
+    color: #0069D9;
+    cursor: pointer;
+}
+
+.btnBox div {
+    background-color: #444444;
+}
+
+.btnBox input {
+    background-color: #444444;
+    outline: none;
+    box-sizing: border-box;
+    text-align: center;
+    margin-right: 1rem;
+}
+
+
+
+
+
+
+/*popup*/
+
+.popupContainer {
+    max-height: 80rem;
+}
+
+.popupBodyMember {
+    height: 100%;
+    overflow: scroll;
+    display: block;
+}
+
+.popupContainerDouble {
+    width: 84rem;
+}
+
+.popupArticleLabel,
+.popupArticleDouble .popupArticleLabel {
+    width: 10rem;
+}
+
+.popupArticleFileDouble {
+    width: 26rem;
+}
+
+.popupArticleinputShort {
+    width: 12rem !important; 
+}
+
+.popupArticleDouble .popupArticleinput{
+    width: 28rem;
+}
+
+.popupArticleCategori {
+    width: 100%;
+    padding-bottom: 0.4rem;
+    margin-top: 2rem;
+    font-size: 1.4rem;
+    font-weight: bold;
+    border-bottom: 0.1rem solid black;
+}
+
+.popupArticleUseEdit,
+.popupArticleUse {
+    justify-content: flex-start;
+}
+
+.popupArticleUseEdit label,
+.popupArticleUse label {
+    font-size: 1.4rem;
+    margin-right: 2rem;
+    cursor: pointer;
+}
+
+.popupArticleUseEdit label:nth-child(1),
+.popupArticleUse label:nth-child(1) {
+    margin-right: 0;
+}
+
+.popupArticleCategori:nth-child(1) {
+    margin-top: 0;
+}
+
+.popupIdBox {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 28rem;
+    height: 2.6rem;
+}
+
+.popupIdBox .idchecker {
+    width: 9rem;
+    margin-left: 2rem;
+    height: 2.4rem;
+    margin-top: 0;
+}
+
+.popupArticleDoubleLicense {
+    visibility: hidden;
+}
+
+.popupArticleBoxDoubleHeight {
+    height: 5.6rem;
+}
+
+.popupArticleBoxTextarea {
+    width: 100%;
+    height: 100%;
+}
+
+.hrEditPW {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 18rem;
+    height: 3rem;
+    margin: 0 auto;
+    font-size: 1.4rem;
+    color: white;
+    background-color: #444444;
+    border-radius: 0.2rem;
+    box-sizing: border-box;
+    cursor: pointer;
+}
+
+.hrEditPW svg {
+    margin-right: 1rem;
+}
+
+.PopupDataCellPw {
+    width: 16rem;
+}
+
+.popupCloseBtn {
+    background-color: #444444;
+}
+
+.blanckTr {
+    width: 100%;
+    height: 100%;
+}
+
+.popupArticleInputDouble {
+    width: 70rem;
+}
+
+.btnModulesCreate{
+    background-color: #0069D9;
+    margin-right: 1rem;
+}
+
+.headerFlex {
+    display: flex;
+}
+
+.popupArticleFileDoubleExcel {
+    width: 100%;
+}
+
+.popupArticleBoxAllowanceType {
+    display: none;
+}
+
+
+
+@media all and (min-width:1460px) and (max-width: 1600px) {
+    .popupArticleDouble .popupIdBox .popupArticleinput {
+        width: 18.4rem;
+    }
+}
+
+table tbody tr {
+    height: 3.6rem;
+}
+
+.contentsAreaBox {
+    height: 81rem;
+    overflow-y: auto;
+    width: 100%;
+    padding: 0;
+}
+
+.backgroundBlue {
+    background-color: #0069D9;
+}
+
+.btnAreaBox {
+    /* width: calc(100% - 2rem);
+    height: auto;
+    padding: 1rem 1rem 0 1rem; */
+    background-color: white;
+    border: 0.1rem solid #CDCDCE;
+    border-top: none;
+    border-radius: 0.3rem;
+    box-shadow: 0 0.2rem 0.4rem rgba(0, 0, 0, 0.16);
+    height: 4.4rem;
+}
+
+.headerLine td {
+    position: sticky;
+    top: 0;
+    background-color: #444444;
+}
+
+.closeBtn {
+    margin-left: 1rem;
+}

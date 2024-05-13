@@ -627,7 +627,6 @@
     }
 </script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.15.5/xlsx.full.min.js"></script>
-<script src="{% static 'js/popupCommon.js' %}"></script>
 <script src="{% static 'js/dispatch/regularly_route/uploadExcel.js' %}"></script>
 <script src="{% static 'js/dispatch/regularly_route/targetRoute.js' %}"></script>
 <script src="{% static 'js/dispatch/regularly_route/createRoute.js' %}"></script>
@@ -639,5 +638,5 @@
 <script src="{% static 'js/dispatch/regularly_route/lengthBreak.js' %}"></script>
 <script src="{% static 'js/dispatch/regularly_route/createAddComma.js' %}"></script>
 <script src="{% static 'js/dispatch/regularly_route/allowancePopup.js' %}"></script>
-<script src="{% static 'js/dispatch/regularly_route/detailMap.js' %}"></script>
+<script type="module" src="{% static 'js/dispatch/regularly_route/detailMap.js' %}"></script>
 {% endblock %}

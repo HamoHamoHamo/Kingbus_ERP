@@ -15,8 +15,8 @@ from django.urls import reverse
 from django.views import generic
 
 from .commons import get_date_connect_list, get_multi_date_connect_list
-from .forms import OrderForm, ConnectForm, RegularlyDataForm
-from .models import DispatchRegularlyRouteKnow, DispatchCheck, DispatchRegularlyData, DispatchRegularlyWaypoint, Schedule, DispatchOrderConnect, DispatchOrder, DispatchRegularly, RegularlyGroup, DispatchRegularlyConnect, DispatchOrderWaypoint, ConnectRefusal, MorningChecklist, EveningChecklist, DrivingHistory, BusinessEntity
+from .forms import OrderForm, ConnectForm, RegularlyDataForm, StationForm
+from .models import DispatchRegularlyRouteKnow, DispatchCheck, DispatchRegularlyData, DispatchRegularlyWaypoint, Schedule, DispatchOrderConnect, DispatchOrder, DispatchRegularly, RegularlyGroup, DispatchRegularlyConnect, DispatchOrderWaypoint, ConnectRefusal, MorningChecklist, EveningChecklist, DrivingHistory, BusinessEntity, Station
 from assignment.models import AssignmentConnect
 from accounting.models import Collect, TotalPrice
 from crudmember.models import Category, Client
@@ -3020,5 +3020,178 @@ def daily_driving_print(request):
 
     return render(request, 'dispatch/daily_driving_print.html', context)
     
+class RegularlyStationList(generic.ListView):
+    template_name = 'dispatch/regularly_station.html'
+    context_object_name = 'station_list'
+    model = Station
 
-# @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+    def get(self, request, *args, **kwargs):
+        if request.session.get('authority') > 1:
+            return render(request, 'authority.html')
+        return super().get(request, *args, **kwargs)
+        
+    def get_queryset(self):
+        name = self.request.GET.get('name', '')
+
+        if name:
+            station_list = Station.objects.filter(name__contains=name)
+        else:
+            station_list = Station.objects.all()
+        return station_list
+        
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['name'] = self.request.GET.get('name', '')
+
+        
+        return context
+
+def regularly_station_create(request):
+    if request.session.get('authority') > 1:
+        return render(request, 'authority.html')
+
+    if request.method == "POST":
+        station_form = StationForm(request.POST)
+        if station_form.is_valid():
+            creator = get_object_or_404(Member, id=request.session.get('user'))
+            station = station_form.save(commit=False)
+            station.creator = creator
+            station.save()
+            return redirect(request.META.get('HTTP_REFERER', 'redirect_if_referer_not_found'))
+        else:
+            raise Http404
+    else:
+        return HttpResponseNotAllowed(['POST'])
+
+def regularly_station_edit(request):
+    if request.session.get('authority') > 1:
+        return render(request, 'authority.html')
+
+    if request.method == "POST":
+        id = request.POST.get('id', None)
+        station = Station.objects.get(id=id)
+        station_form = StationForm(request.POST, instance=station)
+        if station_form.is_valid():
+            station_form.save()
+        return redirect(request.META.get('HTTP_REFERER', 'redirect_if_referer_not_found'))
+    else:
+        return HttpResponseNotAllowed(['POST'])
+
+def regularly_station_delete(request):
+    if request.session.get('authority') > 1:
+        return render(request, 'authority.html')
+
+    if request.method == "POST":
+        id_list = request.POST.getlist('id', None)
+        for id in id_list:
+            station = Station.objects.get(id=id)
+            station.delete()
+            
+        return redirect('dispatch:regularly_station')
+    else:
+        return HttpResponseNotAllowed(['POST'])
+
+def regularly_station(request, id):
+    if request.session.get('authority') > 1:
+        return render(request, 'authority.html')
+
+    if request.method == "GET":
+        station = Station.objects.get(id=id)
+        data = {
+            'name' : station.name,
+            'address' : station.address,
+            'latitude' : station.latitude,
+            'longitude' : station.longitude,
+            'references' : station.references,
+        }
+
+        return JsonResponse(data)
+    else:
+        return HttpResponseNotAllowed(['GET'])
+
+def regularly_station_upload(request):
+    if request.session.get('authority') > 1:
+        return render(request, 'authority.html')
+    creator = get_object_or_404(Member, pk=request.session['user'])
+    post_data = json.loads(request.body)
+
+    count = 1
+    for data in post_data:
+        # 딕셔너리에 없는 키 넣으면 에러나서 try 씀
+        try:
+            if data['name'] and data['address'] and data['latitude'] and data['longitude']:
+                pass
+        except:
+            return JsonResponse({'error': 'required', 'line': count})
+    
+        if data['id']:
+            try:
+                Station.objects.get(id=data['id'])
+            except Station.DoesNotExist:
+                return JsonResponse({'error': 'id', 'line': count})
+        count += 1
+
+    count = 1
+    for data in post_data:
+        if data['id']:
+            try:
+                station = Station.objects.get(id=data['id'])
+            except Station.DoesNotExist:
+                return JsonResponse({'error': 'id', 'line': count})
+            
+            station.name = data['name']
+            station.address = data['address']
+            station.latitude = data['latitude']
+            station.longitude = data['longitude']
+            station.references = data['references']
+            
+            
+        else:
+            station = Station(
+                name = data['name'],
+                address = data['address'],
+                latitude = data['latitude'],
+                longitude = data['longitude'],
+                references = data['references'],
+            )
+        station.save()
+        count = count + 1
+    return JsonResponse({'status': 'success', 'count': count - 1})
+
+
+def regularly_station_download(request):
+    if request.session.get('authority') > 1:
+        return render(request, 'authority.html')
+    datalist = list(Station.objects.values_list(
+        'id',
+        'name',
+        'address',
+        'latitude',
+        'longitude',
+        'references',
+    ))
+    i = 0
+    try:
+        df = pd.DataFrame(datalist, columns=[
+            'id',
+            '정류장명',
+            '주소',
+            '위도',
+            '경도',
+            '참조사항',
+        ])
+        url = f'{MEDIA_ROOT}/dispatch/regularlyStationList.xlsx'
+        df.to_excel(url, index=False)
+
+        if os.path.exists(url):
+            with open(url, 'rb') as fh:
+                quote_file_url = urllib.parse.quote('정류장.xlsx'.encode('utf-8'))
+                response = HttpResponse(fh.read(), content_type=mimetypes.guess_type(url)[0])
+                response['Content-Disposition'] = 'attachment;filename*=UTF-8\'\'%s' % quote_file_url
+                return response
+    except Exception as e:
+        print(e)
+        #return JsonResponse({'status': 'fail', 'e': e})
+        raise Http404
+    

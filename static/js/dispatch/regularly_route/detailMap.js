@@ -1,3 +1,7 @@
+import { addEventClosePopup } from "/static/js/common/popupCommon.js"
+
+addEventClosePopup()
+
 const detailMapBtn = document.querySelector("#detailMapBtn")
 const detailMapPopup = document.querySelector("#detailMapPopup")
 const addDetailMapBtn = document.querySelector(".addDetailMapBtn")
