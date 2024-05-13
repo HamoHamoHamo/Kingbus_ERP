@@ -31,6 +31,7 @@ class RegularlyGroup(models.Model):
 
 class DispatchRegularlyData(models.Model):   
     group = models.ForeignKey(RegularlyGroup, verbose_name='그룹', related_name="regularly", on_delete=models.SET_NULL, null=True)
+    station = models.ManyToManyField("Station", related_name="regularly_data")
     references = models.CharField(verbose_name='참조사항', max_length=100, null=False, blank=True)
     departure = models.CharField(verbose_name='출발지', max_length=200, null=False)
     arrival = models.CharField(verbose_name='도착지', max_length=200, null=False)
@@ -63,6 +64,7 @@ class DispatchRegularly(models.Model):
     regularly_id = models.ForeignKey(DispatchRegularlyData, verbose_name='정기배차 데이터', related_name="monthly", on_delete=models.SET_NULL, null=True)
     edit_date = models.CharField(verbose_name='수정기준일', max_length=50, null=False, blank=True)
     group = models.ForeignKey(RegularlyGroup, verbose_name='그룹', related_name="regularly_monthly", on_delete=models.SET_NULL, null=True)
+    station = models.ManyToManyField("Station", related_name="regularly")
     references = models.CharField(verbose_name='참조사항', max_length=100, null=False, blank=True)
     departure = models.CharField(verbose_name='출발지', max_length=200, null=False)
     arrival = models.CharField(verbose_name='도착지', max_length=200, null=False)
@@ -324,3 +326,14 @@ class DrivingHistory(models.Model):
     pub_date = models.DateTimeField(auto_now_add=True, verbose_name='작성시간')
     updated_at = models.DateTimeField(auto_now=True, verbose_name='수정시간')
     creator = models.ForeignKey(Member, on_delete=models.SET_NULL, related_name="driving_history_creator", db_column="creator_id", null=True)
+
+class Station(models.Model):
+    name = models.CharField(verbose_name="정류장명", max_length=100, null=False)
+    address = models.CharField(verbose_name="주소", max_length=100, null=False)
+    latitude = models.CharField(verbose_name="위도", max_length=100, null=False)
+    longitude = models.CharField(verbose_name="경도", max_length=100, null=False)
+    references = models.CharField(verbose_name="참조사항", max_length=100, null=False, blank=True)
+    
+    pub_date = models.DateTimeField(auto_now_add=True, verbose_name='작성시간')
+    updated_at = models.DateTimeField(auto_now=True, verbose_name='수정시간')
+    creator = models.ForeignKey(Member, on_delete=models.SET_NULL, related_name="station_creator", db_column="creator_id", null=True)

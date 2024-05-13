@@ -1,7 +1,7 @@
 from django import forms 
 from django.db import models
 
-from .models import DispatchOrder, DispatchOrderConnect, DispatchRegularlyData
+from .models import DispatchOrder, DispatchOrderConnect, DispatchRegularlyData, Station
 
 class RegularlyDataForm(forms.ModelForm):
     class Meta:
@@ -67,4 +67,15 @@ class ConnectForm(forms.ModelForm):
             'driver_id',
             'departure_date',
             'arrival_date',
+        ]
+
+class StationForm(forms.ModelForm):
+    class Meta:
+        model = Station
+        fields = [
+            'name',
+            'address',
+            'latitude',
+            'longitude',
+            'references',
         ]

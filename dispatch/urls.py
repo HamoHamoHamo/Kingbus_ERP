@@ -25,6 +25,14 @@ urlpatterns = [
     path('regularly/group/fix', views.regularly_group_fix, name="regularly_group_fix"),
     path('regularly/connect', views.RegularlyConnectList.as_view(), name="regularly_connect"),
     path('regularly/business/edit', views.business_edit, name="business_edit"),
+    
+    path('regularly/station', views.RegularlyStationList.as_view(), name="regularly_station"),
+    path('regularly/station/create', views.regularly_station_create, name="regularly_station_create"),
+    path('regularly/station/edit', views.regularly_station_edit, name="regularly_station_edit"),
+    path('regularly/station/delete', views.regularly_station_delete, name="regularly_station_delete"),
+    path('regularly/station/<int:id>', views.regularly_station, name="regularly_station"),
+    path('regularly/station/upload', views.regularly_station_upload, name="regularly_station_upload"),
+    path('regularly/station/download', views.regularly_station_download, name="regularly_station_download"),
 
     path('order', views.OrderList.as_view(), name="order"),
     path('order/create', views.order_connect_create, name="order_connect_create"),
