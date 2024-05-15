@@ -42,7 +42,7 @@ class AccidentList(generic.ListView):
     template_name = 'vehicle/accident.html'
     context_object_name = 'vehicle_list'
     model = Vehicle
-    paginate_by = 10
+    paginate_by = 20
 
 class VehicleList(generic.ListView):
     template_name = 'vehicle/list.html'

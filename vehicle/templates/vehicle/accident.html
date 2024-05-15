@@ -58,48 +58,65 @@
                         <td class="table-list_head-tr_td">나이</td>
                     </tr>
                 </thead>
-
-                <tbody class="scrolling_table-list_body">
-                    <tr class="table-list_body-tr salaryList cursor">
-                        <td class="table-list_body-tr_td">
-                            <input tabindex="100" type="checkbox" class="amountCheck" name="member_id"
-                                value="{{member.id}}">
-                        </td>
-                        <td class="table-list_body-tr_td">0</td> <!-- 번호 -->
-                        <td class="table-list_body-tr_td">이주성</td> <!-- 이름 -->
-                        <td class="table-list_body-tr_td">0/4</td> <!-- 결재 -->
-                        <td class="table-list_body-tr_td">0/15</td> <!-- 사고서류 -->
-                        <td class="table-list_body-tr_td">유/60%</td> <!-- 과실유무 -->
-                        <td class="table-list_body-tr_td">
-                            남양출근 <!-- 노선명 -->
-                        </td>
-                        <td class="table-list_body-tr_td">
-                            경기 70바 7554 <!-- 차량번호 -->
-                        </td>
-                        <td class="table-list_body-tr_td">
-                            41명 <!-- 탑승인원 -->
-                        </td>
-                        <td class="table-list_body-tr_td">
-                            1명 <!-- 부상자 -->
-                        </td>
-                        <td class="table-list_body-tr_td">
-                            용인서울고속도로 <!-- 발생지점 -->
-                        </td>
-                        <td class="table-list_body-tr_td">
-                            24.02.12 <!-- 사고날짜 -->
-                        </td>
-                        <td class="table-list_body-tr_td">
-                            소울메이트 <!-- 업체명 -->
-                        </td>
-                        <td class="table-list_body-tr_td">
-                            승무원 <!-- 담당업무 -->
-                        </td>
-                        <td class="table-list_body-tr_td">
-                            42 <!-- 나이 -->
-                        </td>
-                    </tr>
-                </tbody>
+                {% for vehicle in vehicle_list %}
+                    <tbody class="scrolling_table-list_body">
+                        <tr class="table-list_body-tr salaryList cursor">
+                            <td class="table-list_body-tr_td">
+                                <input tabindex="100" type="checkbox" class="amountCheck" name="member_id"
+                                    value="{{ vehicle.member.id }}">
+                            </td>
+                            <td class="table-list_body-tr_td">0</td> <!-- 번호 -->
+                            <td class="table-list_body-tr_td">{{ vehicle.driver_name }}</td> <!-- 이름 -->
+                            <td class="table-list_body-tr_td">0/4</td> <!-- 결재 -->
+                            <td class="table-list_body-tr_td">0/15</td> <!-- 사고서류 -->
+                            <td class="table-list_body-tr_td">유/60%</td> <!-- 과실유무 -->
+                            <td class="table-list_body-tr_td">
+                                남양출근 <!-- 노선명 -->
+                            </td>
+                            <td class="table-list_body-tr_td">
+                               {{ vehicle.vehicle_num0 }} {{ vehicle.vehicle_num }} <!-- 차량번호 -->
+                            </td>
+                            <td class="table-list_body-tr_td">
+                                {{ vehicle.passenger_num }}명 <!-- 탑승인원 -->
+                            </td>
+                            <td class="table-list_body-tr_td">
+                                1명 <!-- 부상자 -->
+                            </td>
+                            <td class="table-list_body-tr_td">
+                                용인서울고속도로 <!-- 발생지점 -->
+                            </td>
+                            <td class="table-list_body-tr_td">
+                                24.02.12 <!-- 사고날짜 -->
+                            </td>
+                            <td class="table-list_body-tr_td">
+                                {{ vehicle.company }} <!-- 업체명 -->
+                            </td>
+                            <td class="table-list_body-tr_td">
+                                {{ vehicle.role }} <!-- 담당업무 -->
+                            </td>
+                            <td class="table-list_body-tr_td">
+                                42 <!-- 나이 -->
+                            </td>
+                        </tr>
+                    </tbody>
+                {% endfor %}
             </table>
+            
+        </div>
+        <div class="paging">
+            {% if page_obj.has_previous %}
+                <a href="?page=1" class="first">처음</a>
+                <a href="?page={{ page_obj.previous_page_number }}" class="prev">이전</a>
+            {% endif %}
+
+            <span>
+                <p>{{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</p>
+            </span>
+
+            {% if page_obj.has_next %}
+                <a href="?page={{ page_obj.next_page_number }}" class="next">다음</a>
+                <a href="?page={{ page_obj.paginator.num_pages }}" class="last">마지막</a>
+            {% endif %}
         </div>
     </div>
 
