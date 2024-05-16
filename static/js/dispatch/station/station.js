@@ -52,14 +52,23 @@ const getDetailData = (id, setData) => {
 }
 
 function openDetailPopup() {
+  deleteSelectedTypes()
+
   const id = this.parentNode.className
   console.log("id", id)
+  // api에서 상세 데이터 받아서 input 만들기
   const data = getDetailData(this.parentNode.className, data => {
     popupName.value = data.name
     popupAddress.value = data.address
     popupLatitude.value = data.latitude
     popupLongitude.value = data.longitude
     popupReferences.value = data.references
+
+
+    data.types?.map(type => {
+      console.log("TYPE", type)
+      makeSelectedTypes(type, type)
+    })
   })
 
   console.log("TEST", data)
@@ -81,6 +90,8 @@ const createPopupInputs = document.querySelectorAll(".createPopup .popupArticlei
 openPopup.addEventListener('click', openCreatePopup);
 
 function openCreatePopup() {
+  deleteSelectedTypes()
+
   popupAreaModules[0].style.display = 'block'
   popupName.value = ''
   popupAddress.value = ''
@@ -124,4 +135,55 @@ function deleteData(e) {
 window.onload = function () {
   addEventClosePopup()
   addEventSelectAllCheck()
+}
+
+const multipleSelect = document.querySelector("#multipleSelect")
+const selectedTextDiv = document.querySelector(".selectedTextDiv")
+
+multipleSelect.addEventListener('change', () => {
+  const selectedItemInputs = document.querySelectorAll(".selectedItemInput")
+  for (let i = 0; i < selectedItemInputs.length; i++) {
+    if (selectedItemInputs[i].value == multipleSelect.options[multipleSelect.selectedIndex].value) {
+      console.log("return")
+      multipleSelect.selectedIndex = 0
+      return;
+    }
+  }
+
+  makeSelectedTypes(multipleSelect.options[multipleSelect.selectedIndex].textContent, multipleSelect.value)
+  multipleSelect.selectedIndex = 0
+})
+
+const makeSelectedTypes = (text, value) => {
+  const selectedItemDiv = document.createElement('div');
+  selectedItemDiv.setAttribute("class", 'selectedItemDiv')
+
+  const selectedItem = document.createElement('div');
+  selectedItem.textContent = text
+  selectedItemDiv.appendChild(selectedItem)
+
+  const selectedItemInput = document.createElement('input');
+  selectedItemInput.setAttribute("name", 'types')
+  selectedItemInput.setAttribute("type", 'hidden')
+  selectedItemInput.setAttribute("class", 'selectedItemInput')
+  selectedItemInput.value = value
+  selectedItemDiv.appendChild(selectedItemInput)
+
+  const selectedItemDeleteBtn = document.createElement('div');
+  selectedItemDeleteBtn.textContent = '삭제'
+  selectedItemDeleteBtn.setAttribute('class', 'selectedItemDeleteBtn')
+
+  selectedItemDeleteBtn.addEventListener("click", (e) => {
+    e.target.parentNode.remove()
+  })
+
+  selectedItemDiv.appendChild(selectedItemDeleteBtn)
+  selectedTextDiv.appendChild(selectedItemDiv)
+}
+
+const deleteSelectedTypes = () => {
+  const typesLength = selectedTextDiv.childNodes.length
+  for (let i = 0; i < typesLength; i++) {
+    selectedTextDiv.childNodes[0].remove()
+  }
 }

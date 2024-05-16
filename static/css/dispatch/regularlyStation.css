@@ -324,3 +324,36 @@ table tbody tr {
 .closeBtn {
     margin-left: 1rem;
 }
+
+/* 팝업 다중 select */
+.popupArticleBoxLast {
+    height: auto;
+}
+
+.popupArticleDoubleDiv {
+    width: calc(50% - 2rem);
+    display: flex;
+    flex-direction: column;
+}
+
+.popupArticleDoubleSelectDiv {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 2.8rem;
+}
+
+.selectedTextDiv {
+    margin-left: 10rem;
+    font-size: 1.4rem;
+}
+
+.selectedItemDiv {
+    display: flex;
+    justify-content: space-between;
+}
+
+.selectedItemDeleteBtn {
+    cursor: pointer;
+}

@@ -4,6 +4,7 @@ from humanresource.models import Member
 from vehicle.models import Vehicle
 from datetime import datetime
 from uuid import uuid4
+from django.core.exceptions import BadRequest
 
 class BusinessEntity(models.Model):
     name = models.CharField(verbose_name='사업장 이름', max_length=50, null=False, unique=True)
@@ -328,12 +329,30 @@ class DrivingHistory(models.Model):
     creator = models.ForeignKey(Member, on_delete=models.SET_NULL, related_name="driving_history_creator", db_column="creator_id", null=True)
 
 class Station(models.Model):
+    TYPES_CHOICES = [
+        '1',
+        '2',
+        '3',
+        'A',
+        'B',
+        'C'
+    ]
+
+    def set_types(self, type_list):
+        for type in type_list:
+            if not type in self.TYPES_CHOICES:
+                raise BadRequest('정류장 종류의 값이 올바르지 않습니다.')
+        self.types = ', '.join(type_list)
+
+    def get_types(self):
+        return self.types.split(', ') if self.types else None
+
     name = models.CharField(verbose_name="정류장명", max_length=100, null=False)
     address = models.CharField(verbose_name="주소", max_length=100, null=False)
     latitude = models.CharField(verbose_name="위도", max_length=100, null=False)
     longitude = models.CharField(verbose_name="경도", max_length=100, null=False)
     references = models.CharField(verbose_name="참조사항", max_length=100, null=False, blank=True)
-    
+    types = models.CharField(verbose_name="종류", max_length=100, null=False, blank=True)
     pub_date = models.DateTimeField(auto_now_add=True, verbose_name='작성시간')
     updated_at = models.DateTimeField(auto_now=True, verbose_name='수정시간')
     creator = models.ForeignKey(Member, on_delete=models.SET_NULL, related_name="station_creator", db_column="creator_id", null=True)

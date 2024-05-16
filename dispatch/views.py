@@ -3043,7 +3043,6 @@ class RegularlyStationList(generic.ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['name'] = self.request.GET.get('name', '')
-
         
         return context
 
@@ -3053,10 +3052,12 @@ def regularly_station_create(request):
 
     if request.method == "POST":
         station_form = StationForm(request.POST)
+        types_list = request.POST.getlist('types', [])
         if station_form.is_valid():
             creator = get_object_or_404(Member, id=request.session.get('user'))
             station = station_form.save(commit=False)
             station.creator = creator
+            station.set_types(types_list)
             station.save()
             return redirect(request.META.get('HTTP_REFERER', 'redirect_if_referer_not_found'))
         else:
@@ -3071,9 +3072,12 @@ def regularly_station_edit(request):
     if request.method == "POST":
         id = request.POST.get('id', None)
         station = Station.objects.get(id=id)
-        station_form = StationForm(request.POST, instance=station)
+        types_list = request.POST.getlist('types', [])
+        station_form = StationForm(request.POST, initial={'types': types_list}, instance=station)
         if station_form.is_valid():
-            station_form.save()
+            station = station_form.save(commit=False)
+            station.set_types(types_list)
+            station.save()
         return redirect(request.META.get('HTTP_REFERER', 'redirect_if_referer_not_found'))
     else:
         return HttpResponseNotAllowed(['POST'])
@@ -3104,6 +3108,7 @@ def regularly_station(request, id):
             'latitude' : station.latitude,
             'longitude' : station.longitude,
             'references' : station.references,
+            'types' : station.get_types(),
         }
 
         return JsonResponse(data)
@@ -3145,6 +3150,7 @@ def regularly_station_upload(request):
             station.latitude = data['latitude']
             station.longitude = data['longitude']
             station.references = data['references']
+            station.types = data['types']
             
             
         else:
@@ -3154,6 +3160,7 @@ def regularly_station_upload(request):
                 latitude = data['latitude'],
                 longitude = data['longitude'],
                 references = data['references'],
+                types = data['types'],
             )
         station.save()
         count = count + 1
@@ -3170,6 +3177,7 @@ def regularly_station_download(request):
         'latitude',
         'longitude',
         'references',
+        'types',
     ))
     i = 0
     try:
@@ -3180,6 +3188,7 @@ def regularly_station_download(request):
             '위도',
             '경도',
             '참조사항',
+            '종류',
         ])
         url = f'{MEDIA_ROOT}/dispatch/regularlyStationList.xlsx'
         df.to_excel(url, index=False)
