@@ -29,7 +29,7 @@ textarea {
 /* 스크롤바 설정*/
 .scrollDiv::-webkit-scrollbar {
   position: absolute;
-  width: 1rem;
+  width: 0.6rem;
 }
 
 /* 스크롤바 막대 설정*/

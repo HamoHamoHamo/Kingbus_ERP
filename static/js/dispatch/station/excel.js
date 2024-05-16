@@ -19,7 +19,7 @@ downloadExcelBtn.addEventListener('click', downloadExcel);
 
 function downloadExcel() {
     if (confirm('정류장 목록을 다운로드 하시겠습니까?')) {
-        window.location.href=DOWNLOAD_URL;
+        window.location.href = DOWNLOAD_URL;
     }
 }
 
@@ -38,7 +38,7 @@ function readExcel() {
             let rows = XLSX.utils.sheet_to_json(workBook.Sheets[sheetName]);
             excelData = JSON.stringify(rows);
             excelData = JSON.parse(excelData);
-			console.log("excelData = ", excelData);
+            console.log("excelData = ", excelData);
         })
     };
     reader.readAsBinaryString(input.files[0]);
@@ -47,6 +47,14 @@ function readExcel() {
 uploadCreateBtn.addEventListener("click", dataParsing)
 
 let uploadState = true
+
+const dataParsingError = (error) => {
+    excelUploadFile.value = ""
+    excelUploadFileText.value = ""
+    uploadState = true;
+    alert(error)
+}
+
 
 function dataParsing(e) {
     e.preventDefault()
@@ -57,29 +65,31 @@ function dataParsing(e) {
         // 유효성검사
         //console.log("TEST", excelData);
 
-        
-		const regex = RegExp(/^\d{4}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])$/);
-
-        let column;
-
         for (i = 0; i < excelData.length; i++) {
             if (excelData[i]["정류장명"] == undefined ||
                 excelData[i]["주소"] == undefined ||
                 excelData[i]["위도"] == undefined ||
-                excelData[i]["경도"] == undefined)
-            {
-				excelUploadFile.value = ""
-                excelUploadFileText.value = ""
-                uploadState = true;
-                return alert(`${i + 1}번째 데이터의 필수 입력 사항이 입력되지 않았습니다.`)
+                excelData[i]["경도"] == undefined) {
+                return dataParsingError(`${i + 1}번째 데이터의 필수 입력 사항이 입력되지 않았습니다.`)
             }
-            
+
             let id = excelData[i]['id'];
             if ((id && !(Number.isInteger(parseInt(id))))) {
-                excelUploadFile.value = ""
-                excelUploadFileText.value = ""
-                uploadState = true;
-                return alert(`${i + 1}번째 데이터의 id 항목이 형식에 맞지 않습니다.`)
+                
+                return dataParsingError(`${i + 1}번째 데이터의 id 항목이 형식에 맞지 않습니다.`)
+            }
+            if (excelData[i]['종류']) {
+                const types = excelData[i]['종류'].split(", ")
+                types.forEach(type => {
+                    if (type != '1' &&
+                        type != '2' &&
+                        type != '3' &&
+                        type != 'A' &&
+                        type != 'B' &&
+                        type != 'C') {
+                        return dataParsingError(`${i + 1}번째 데이터의 종류 항목이 형식에 맞지 않습니다.`)
+                    }
+                })
             }
         };
 
@@ -94,6 +104,7 @@ function dataParsing(e) {
                 latitude: excelData[i]["위도"] == undefined ? "" : excelData[i]["위도"],
                 longitude: excelData[i]["경도"] == undefined ? "" : excelData[i]["경도"],
                 references: excelData[i]["참조사항"] == undefined ? "" : excelData[i]["참조사항"],
+                types: excelData[i]["종류"] == undefined ? "" : excelData[i]["종류"],
             }
             formatingData.push(formatingObj)
         };
@@ -113,13 +124,13 @@ function dataParsing(e) {
                 } else if (data['error'] == 'driver_name') {
                     alert(`${data['count']}번째 데이터의 담당기사 이름이 맞지 않습니다.`)
                 } else if (data['error'] == 'vehicle_id') {
-                    alert(`${data['count']}번째 데이터의 차량id 항목이 맞지 않습니다.`) 
+                    alert(`${data['count']}번째 데이터의 차량id 항목이 맞지 않습니다.`)
                 } else if (data['error'] == 'driver_id') {
-                    alert(`${data['count']}번째 데이터의 담당기사id 항목이 맞지 않습니다.`) 
+                    alert(`${data['count']}번째 데이터의 담당기사id 항목이 맞지 않습니다.`)
                 } else if (data['error'] == 'vehicle_num') {
-                    alert(`${data['count']}번째 데이터의 차량번호 항목이 입력되지 않았습니다.`) 
+                    alert(`${data['count']}번째 데이터의 차량번호 항목이 입력되지 않았습니다.`)
                 } else if (data['error'] == 'driver_overlap') {
-                    alert(`${data['count']}번째 데이터의 담당기사에게 이미 배정된 차량이 있습니다.`) 
+                    alert(`${data['count']}번째 데이터의 담당기사에게 이미 배정된 차량이 있습니다.`)
                 } else {
                     alert('에러 발생\n' + data['error']);
                 }
