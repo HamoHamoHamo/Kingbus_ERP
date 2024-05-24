@@ -155,6 +155,19 @@
         <form action="{% url 'dispatch:regularly_route_create' %}" method="post" class="routeinput">
         {% endif %}
             {% csrf_token %}
+            <div class="popupDatasDiv">
+                {% for station in station_list %}
+                <div>
+                    <input type="hidden" value="{{station.index}}" name="station_index">
+                    <input type="hidden" value="{{station.station_type}}" name="station_type">
+                    <input type="hidden" value="{{station.station__name}}" name="station_name">
+                    <input type="hidden" value="{{station.time}}" name="station_time">
+                    <input type="hidden" value="{{station.station__references}}" name="station_references">
+                    <input type="hidden" value="{{station.station__id}}" name="station_id">
+                </div>
+                {% endfor %}
+            </div>
+            <input type="hidden" id="waypointNumber" value="{{waypoint_number}}">
             <input autocomplete="off" type="hidden" name="id" value="{{detail.id}}" class="inputHidden">
             <div class="routeInputHead">
                 <span>노선등록</span>
@@ -262,7 +275,7 @@
                         <div class="waypointBox">
                             <input autocomplete="off" value="{{detail.detailed_route}}" name="detailed_route"
                                 type="text" class="inputText inputWidthCalc" tabindex="15">
-                            <div class="btnModules backgroundBlue" id="detailMapBtn">경유지</div>
+                            <div class="btnModules backgroundBlue" id="detailMapBtn">정류장</div>
                         </div>
                     </td>
                 </tr>
@@ -515,63 +528,87 @@
 
 <div class="popupAreaModules" id="detailMapPopup">
     <div class="popupBgModules" id="detailMapPopupBg"></div>
-    <form method="post" action="" class="popupContainer popupContainerMap">
-        {% csrf_token %}
+    <div class="popupContainer popupContainerMap">
         <div class="popupHeader">
-            <div class="popupTitle">경유지 추가</div>
+            <div class="popupTitle">정류장</div>
         </div>
         <div class="popupBody popupBodyMap">
-            <div class="popupSection">
-                <div class="popupArticleInput">
-                    <div class="popupArticletitle">지도</div>
-                    <input autocomplete="off" id="popupMaplink" type="text" class="detailMapLinkInput" value="{{detail.maplink}}">
+            <div class="popupSection popupSectionFirst">
+                <div class="popupArticleCategory">정류장 검색</div>
+                <div class="popupArticle popupArticleSearch">
+                    <div class="stationSearchInputText">정류장명</div>
+                    <input class="inputModules stationSearchInput" type="text" name="name">
+                    <div class="stationSearchInputText">종류</div>
+                    <select class="inputModules stationSearchSelect" name="type">
+                        <option></option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="A">A</option>
+                        <option value="B">B</option>
+                        <option value="C">C</option>
+                    </select>
+                    <div class="btnModules stationSearchBtn">검색</div>
                 </div>
-                <div class="popupArticleInput">
-                    <div class="popupArticletitle">경유지명</div>
-                    <input id="waypointInput" autocomplete="off" name="" type="text" class="detailMapLinkInput">
-                    <svg class="fileDeleteBtn addDetailMapBtn" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 14 14">
-                        <g id="그룹_1511" data-name="그룹 1511" transform="translate(-1022.5 -388.5)">
-                            <line id="선_691" data-name="선 691" y2="12" transform="translate(1029.5 389.5)"
-                                fill="none" stroke="#000" stroke-linecap="round" stroke-width="2" />
-                            <line id="선_692" data-name="선 692" y2="12"
-                                transform="translate(1035.5 395.5) rotate(90)" fill="none" stroke="#000"
-                                stroke-linecap="round" stroke-width="2" />
-                        </g>
-                    </svg>
-                </div>
-                <div class="popupArticle popupArticleCollectiong">
-                    <table class="detailMapPopupHeader">
-                        <tr>
-                            <td><input type="checkbox"></td>
-                            <td>번호</td>
-                            <td>경유지명</td>
-                        </tr>
+                <div class="popupArticle popupArticleStation detailMapPopupScrollBox">
+                    <table>
+                        <thead class="detailMapPopupHeader">
+                            <tr>
+                                <td>번호</td>
+                                <td>종류</td>
+                                <td>정류장명</td>
+                                <td>위도</td>
+                                <td>경도</td>
+                                <td>주소</td>
+                                <td>참조사항</td>
+                            </tr>
+                        </thead>
+                        <tbody class="detailMapPopupScrollBoxTbody">
+                        </tbody>
+
                     </table>
-                    <div class="detailMapPopupScrollBox">
-                        <table>
-                            <tbody id="detailMapTable">
-                                {% for waypoint in waypoint_list %}
-                                <tr>
-                                    <td><input type="checkbox"></td>
-                                    <td>{{forloop.counter}}</td>
-                                    <td>{{waypoint.waypoint}}</td>
-                                </tr>
-                                {% endfor %}
-                            </tbody>
-                        </table>
-                    </div>
                 </div>
-                <!--<div class="detailMapList">
-                    <input autocomplete="off" type="text" class="detailMapListInput" readonly>
-                </div>-->
+
+            </div>
+            <div class="popupSection">
+                <div class="popupArticleCategory">정류장 관리</div>
+                <div class="popupArticle popupArticleSearch">
+                    <input class="workRadio" name="workTypePopup" autocomplete="off" value="출근"
+                        id="workStartPopup" type="radio" checked>
+                    <label for="workStartPopup">출근</label>
+                    <input class="workRadio" name="workTypePopup" autocomplete="off" value="퇴근"
+                        id="workEndPopup" type="radio">
+                    <label for="workEndPopup">퇴근</label>
+                    <div class="stationSearchInputText stationNumberInputText">정류장개수</div>
+                    <input class="inputModules waypointNumberInput" type="number" min="0" value="1">
+                </div>
+                <div class="popupArticle popupArticleStation detailMapPopupScrollBox">
+                    <table>
+                        <thead class="detailMapPopupHeader">
+                            <tr>
+                                <td>
+                                    <input type="checkbox">
+                                </td>
+                                <td>번호</td>
+                                <td>종류</td>
+                                <td>정류장명</td>
+                                <td>시각</td>
+                                <td>참조사항</td>
+                            </tr>
+                        </thead>
+                        <tbody class=".detailMapPopupScrollBox detailRoutePopupScrollBoxTbody">
+                        </tbody>
+
+                    </table>
+                </div>
             </div>
             <div class="popupFooter">
                 <div id="deleteWaypoint" class="btnModules popupDeleteBtn">삭제</div>
-                <div id="saveWaypoint" class="btnModules backgroundBlue">저장</div>
+                <div id="saveStation" class="btnModules backgroundBlue">확인</div>
                 <div class="btnModules popupCloseBtn" id="detailPopupCloseBtn">닫기</div>
             </div>
         </div>
-    </form>
+    </div>
 </div>
 {% endblock %}
 
@@ -585,7 +622,19 @@
     let priceValue = "{{detail.price}}".replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
     const detailExist = '{{detail}}' ? true : false
 
+    const STATION_LIST_URL = '{% url "dispatch:regularly_station_list" %}'
+    
+    const STATION_TYPES = {
+        '출근' : ['차고지', '첫 정류장 대기장소', '정류장', '사업장', '대기장소'],
+        '퇴근' : ['대기장소', '사업장', '정류장', '마지막 정류장', '차고지'],
+    }
     const groupCreateChangeForm = document.querySelector(".groupCreate")
+    
+    {% if station_list %}
+    {% autoescape off %}
+    const DISPATCH_REGULARLY_STATIONS = {{station_list}}
+    {% endautoescape %}
+    {% endif %}
 
     function groupCreateDeleteUrl() {
         {% autoescape off %}

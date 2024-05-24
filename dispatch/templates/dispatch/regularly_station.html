@@ -130,14 +130,14 @@
                     <div class="popupArticleDoubleDiv">
                         <div class="popupArticleDouble popupArticleDoubleSelectDiv">
                             <label for="" class="popupArticleLabel">종류</label>
-                            <select id="multipleSelect" name="references" class="popupArticleinput length100 popupReferences">
+                            <select id="multipleSelect" class="popupArticleinput length100 popupReferences">
                                 <option value=""></option>
-                                <option value="1">1</option>
-                                <option value="2">2</option>
-                                <option value="3">3</option>
-                                <option value="A">A</option>
-                                <option value="B">B</option>
-                                <option value="C">C</option>
+                                <option value='차고지'>차고지</option>
+                                <option value='첫 정류장 대기장소'>첫 정류장 대기장소</option>
+                                <option value='정류장'>정류장</option>
+                                <option value='사업장'>사업장</option>
+                                <option value='대기장소'>대기장소</option>
+                                <option value='마지막 정류장'>마지막 정류장</option>
                             </select>
                         </div>
                         <div class="selectedTextDiv">
@@ -183,7 +183,7 @@
             </div>
             <div class="popupFooter excelUploadPopupFooter">
                 <div class="popupFooterMinibox">
-                    <a href="{% static 'form/정류장관리 엑셀 업로드 양식.xlsx' %}" download>
+                    <a href="{% static 'form/정류장관리 엑셀 업로드 양식.xlsx' %}" download>
                         <div class="btnModules backgroundBlack">양식다운</div>
                     </a>
                     <div class="visibleLoadingBox">

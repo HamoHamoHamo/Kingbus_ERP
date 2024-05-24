@@ -70,26 +70,29 @@ function dataParsing(e) {
                 excelData[i]["주소"] == undefined ||
                 excelData[i]["위도"] == undefined ||
                 excelData[i]["경도"] == undefined) {
-                return dataParsingError(`${i + 1}번째 데이터의 필수 입력 사항이 입력되지 않았습니다.`)
+                dataParsingError(`${i + 1}번째 데이터의 필수 입력 사항이 입력되지 않았습니다.`)
+                return;
             }
 
             let id = excelData[i]['id'];
             if ((id && !(Number.isInteger(parseInt(id))))) {
-                
-                return dataParsingError(`${i + 1}번째 데이터의 id 항목이 형식에 맞지 않습니다.`)
+                dataParsingError(`${i + 1}번째 데이터의 id 항목이 형식에 맞지 않습니다.`)
+                return;
             }
             if (excelData[i]['종류']) {
                 const types = excelData[i]['종류'].split(", ")
-                types.forEach(type => {
-                    if (type != '1' &&
-                        type != '2' &&
-                        type != '3' &&
-                        type != 'A' &&
-                        type != 'B' &&
-                        type != 'C') {
-                        return dataParsingError(`${i + 1}번째 데이터의 종류 항목이 형식에 맞지 않습니다.`)
+                for (let j = 0; j < types.length; j++) {
+                    const type = types[j];
+                    if (type !== '차고지' &&
+                        type !== '첫 정류장 대기장소' &&
+                        type !== '정류장' &&
+                        type !== '사업장' &&
+                        type !== '대기장소' &&
+                        type !== '마지막 정류장') {
+                        dataParsingError(`${i + 1}번째 데이터의 종류 항목이 형식에 맞지 않습니다.`);
+                        return;
                     }
-                })
+                }
             }
         };
 

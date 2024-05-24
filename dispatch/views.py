@@ -15,8 +15,8 @@ from django.urls import reverse
 from django.views import generic
 
 from .commons import get_date_connect_list, get_multi_date_connect_list
-from .forms import OrderForm, ConnectForm, RegularlyDataForm, StationForm
-from .models import DispatchRegularlyRouteKnow, DispatchCheck, DispatchRegularlyData, DispatchRegularlyWaypoint, Schedule, DispatchOrderConnect, DispatchOrder, DispatchRegularly, RegularlyGroup, DispatchRegularlyConnect, DispatchOrderWaypoint, ConnectRefusal, MorningChecklist, EveningChecklist, DrivingHistory, BusinessEntity, Station
+from .forms import OrderForm, ConnectForm, RegularlyDataForm, StationForm, RegularlyForm
+from .models import DispatchRegularlyRouteKnow, DispatchCheck, DispatchRegularlyData, DispatchRegularlyWaypoint, Schedule, DispatchOrderConnect, DispatchOrder, DispatchRegularly, RegularlyGroup, DispatchRegularlyConnect, DispatchOrderWaypoint, ConnectRefusal, MorningChecklist, EveningChecklist, DrivingHistory, BusinessEntity, Station, DispatchRegularlyDataStation, DispatchRegularlyStation
 from assignment.models import AssignmentConnect
 from accounting.models import Collect, TotalPrice
 from crudmember.models import Category, Client
@@ -929,6 +929,8 @@ class RegularlyRouteList(generic.ListView):
         if id:
             context['detail'] = get_object_or_404(DispatchRegularlyData, id=id)
             context['waypoint_list'] = DispatchRegularlyWaypoint.objects.filter(regularly_id=context['detail'])
+            context['station_list'] = list(DispatchRegularlyDataStation.objects.filter(regularly_data=context['detail']).values('index', 'station__name', 'station_type', 'time', 'station__references', 'station__id').order_by('index'))
+            context['waypoint_number'] = DispatchRegularlyDataStation.objects.filter(regularly_data=context['detail']).filter(station_type='정류장').count()
         context['group_list'] = RegularlyGroup.objects.all().order_by('number', 'name')
         group_id = self.request.GET.get('group', '')
         if group_id:
@@ -938,124 +940,70 @@ class RegularlyRouteList(generic.ListView):
         
         return context
 
+def create_dispatch_regularly_stations(request, regularly_data, regularly, creator):
+    # 정류장 등록
+    stationIndex_list = request.POST.getlist('station_index', '')
+    stationType_list = request.POST.getlist('station_type', '')
+    stationTime_list = request.POST.getlist('station_time', '')
+    stationId_list = request.POST.getlist('station_id', '')
+
+    for index, type, time, id in zip(stationIndex_list, stationType_list, stationTime_list, stationId_list):
+        station = get_object_or_404(Station, id=id)
+        DispatchRegularlyDataStation.objects.create(
+            regularly_data = regularly_data,
+            station = station,
+            index = index,
+            station_type = type,
+            time = time,
+            creator = creator
+        )
+        DispatchRegularlyStation.objects.create(
+            regularly = regularly,
+            station = station,
+            index = index,
+            station_type = type,
+            time = time,
+            creator = creator
+        )
+
 def regularly_order_create(request):
     if request.session.get('authority') > 1:
         return render(request, 'authority.html')
     
     if request.method == "POST":
         creator = get_object_or_404(Member, pk=request.session.get('user'))
-        order_form = RegularlyDataForm(request.POST)
-        if order_form.is_valid():
-            # if datetime.strptime(request.POST.get('contract_start_date'), FORMAT) > datetime.strptime(request.POST.get('contract_end_date'), FORMAT):
-            #     context = {}
-            #     # context['order_list'] = DispatchOrder.objects.exclude(regularly=None).order_by('-pk')
-            #     context['group_list'] = RegularlyGroup.objects.all()
-            #     # context['error'] = "출발일이 도착일보다 늦습니다"
-            #     #raise BadRequest('출발일이 도착일보다 늦습니다.')
-            #     #return render(request, 'dispatch/regularly_order_create.html', context)
-            #     raise Http404
+        regularly_data_form = RegularlyDataForm(request.POST)
+        if regularly_data_form.is_valid():
             post_group = request.POST.get('group', None)
             try:
                 regularly_group = RegularlyGroup.objects.get(pk=post_group)
-            except Exception as e:
+            except RegularlyGroup.DoesNotExist:
                 regularly_group = None
 
-            week = ' '.join(request.POST.getlist('week', None))
-            departure_time1 = request.POST.get('departure_time1')
-            departure_time2 = request.POST.get('departure_time2')
-            arrival_time1 = request.POST.get('arrival_time1')
-            arrival_time2 = request.POST.get('arrival_time2')
+            regularly_data = regularly_data_form.save(commit=False)
+            regularly_data.creator = creator
+            regularly_data.group = regularly_group
+            regularly_data.save()
 
-            if len(departure_time1) < 2:
-                departure_time1 = f'0{departure_time1}'
-            if len(departure_time2) < 2:
-                departure_time2 = f'0{departure_time2}'
-            if len(arrival_time1) < 2:
-                arrival_time1 = f'0{arrival_time1}'
-            if len(arrival_time2) < 2:
-                arrival_time2 = f'0{arrival_time2}'
-
-            post_price = request.POST.get('price')
-            if post_price:
-                price = int(post_price.replace(',',''))
+            regularly_form = RegularlyForm(request.POST)
+            if regularly_form.is_valid():
+                post_group = request.POST.get('group', None)
+                
+                regularly = regularly_form.save(commit=False)
+                regularly.creator = creator
+                regularly.group = regularly_group
+                regularly.regularly_id = regularly_data
+                regularly.edit_date = TODAY
+                regularly.save()
             else:
-                price = 0
-            
-            post_driver_allowance = request.POST.get('driver_allowance')
-            if post_driver_allowance:
-                driver_allowance = int(post_driver_allowance.replace(',',''))
-            else:
-                driver_allowance = 0
+                raise BadRequest("valid error ", f'{regularly_form.errors}')
 
-            post_driver_allowance2 = request.POST.get('driver_allowance2')
-            if post_driver_allowance2:
-                driver_allowance2 = int(post_driver_allowance2.replace(',',''))
-            else:
-                driver_allowance2 = 0
+            # 정류장 등록
+            create_dispatch_regularly_stations(request, regularly_data, regularly, creator)
 
-            post_outsourcing_allowance = request.POST.get('outsourcing_allowance')
-            if post_outsourcing_allowance:
-                outsourcing_allowance = int(post_outsourcing_allowance.replace(',',''))
-            else:
-                outsourcing_allowance = 0
-
-            order = order_form.save(commit=False)
-            
-            order.num1 = re.sub(r'[^0-9]', '', order.number1)
-            order.num2 = re.sub(r'[^0-9]', '', order.number2)
-            order.price = price
-            order.driver_allowance = driver_allowance
-            order.driver_allowance2 = driver_allowance2
-            order.outsourcing_allowance = outsourcing_allowance
-            order.departure_time = f'{departure_time1}:{departure_time2}'
-            order.arrival_time = f'{arrival_time1}:{arrival_time2}'
-            if order.arrival_time < order.departure_time:
-                raise BadRequest('출발시간이 도착시간보다 늦습니다.')
-            order.week = week
-            order.creator = creator
-            order.group = regularly_group
-            order.save()
-            
-            regularly = DispatchRegularly(
-                regularly_id = order,
-                edit_date = TODAY,
-                group = order.group,
-                references = order.references,
-                departure = order.departure,
-                arrival = order.arrival,
-                departure_time = order.departure_time,
-                arrival_time = order.arrival_time,
-                price = order.price,
-                driver_allowance = order.driver_allowance,
-                driver_allowance2 = order.driver_allowance2,
-                outsourcing_allowance = order.outsourcing_allowance,
-                number1 = order.number1,
-                number2 = order.number2,
-                num1 = order.num1,
-                num2 = order.num2,
-                week = order.week,
-                work_type = order.work_type,
-                route = order.route,
-                location = order.location,
-                detailed_route = order.detailed_route,
-                maplink = order.maplink,
-                use = order.use,
-                distance = order.distance,
-                creator = order.creator
-            )
-            regularly.save()
-
-            waypoint_list = request.POST.getlist('waypoint')
-            for waypoint in waypoint_list:
-                regularly_waypoint = DispatchRegularlyWaypoint(
-                    regularly_id = order,
-                    waypoint = waypoint,
-                    creator = order.creator
-                )
-                regularly_waypoint.save()
             return redirect(request.META.get('HTTP_REFERER', 'redirect_if_referer_not_found'))
         else:
-            raise Http404
+            raise BadRequest("valid error ", f'{regularly_data_form.errors}')
     else:
         return HttpResponseNotAllowed(['post'])
 
@@ -1151,156 +1099,50 @@ def regularly_order_edit(request):
         return render(request, 'authority.html')
     if request.method == 'POST':
         id = request.POST.get('id', None)
-        order = get_object_or_404(DispatchRegularlyData, pk=id)
+        regularly_data = get_object_or_404(DispatchRegularlyData, pk=id)
         creator = get_object_or_404(Member, pk=request.session.get('user'))
-        order_form = RegularlyDataForm(request.POST)
-        if order_form.is_valid():
+        regularly_data_form = RegularlyDataForm(request.POST, instance=regularly_data)
+        if regularly_data_form.is_valid():
             group = get_object_or_404(RegularlyGroup, pk=request.POST.get('group'))
-            week = ' '.join(request.POST.getlist('week', None))
-            
-            departure_time1 = request.POST.get('departure_time1')
-            departure_time2 = request.POST.get('departure_time2')
-            arrival_time1 = request.POST.get('arrival_time1')
-            arrival_time2 = request.POST.get('arrival_time2')
-
-            if len(departure_time1) < 2:
-                departure_time1 = f'0{departure_time1}'
-            if len(departure_time2) < 2:
-                departure_time2 = f'0{departure_time2}'
-            if len(arrival_time1) < 2:
-                arrival_time1 = f'0{arrival_time1}'
-            if len(arrival_time2) < 2:
-                arrival_time2 = f'0{arrival_time2}'
-
-            post_price = request.POST.get('price')
-            if post_price:
-                price = int(post_price.replace(',',''))
-            else:
-                price = 0
-            
-            post_driver_allowance = request.POST.get('driver_allowance')
-            if post_driver_allowance:
-                driver_allowance = int(post_driver_allowance.replace(',',''))
-            else:
-                driver_allowance = 0
-
-            post_driver_allowance2 = request.POST.get('driver_allowance2')
-            if post_driver_allowance2:
-                driver_allowance2 = int(post_driver_allowance2.replace(',',''))
-            else:
-                driver_allowance2 = 0
-
-            post_outsourcing_allowance = request.POST.get('outsourcing_allowance')
-            if post_outsourcing_allowance:
-                outsourcing_allowance = int(post_outsourcing_allowance.replace(',',''))
-            else:
-                outsourcing_allowance = 0
-
-            order.references = order_form.cleaned_data['references']
-            order.departure = order_form.cleaned_data['departure']
-            order.arrival = order_form.cleaned_data['arrival']
-            order.departure_time = f'{departure_time1}:{departure_time2}'
-            order.arrival_time = f'{arrival_time1}:{arrival_time2}'
-            if order.arrival_time < order.departure_time:
-                raise BadRequest('출발시간이 도착시간보다 늦습니다.')
-                # raise Http404
-
-            order.price = price
-            order.driver_allowance = driver_allowance
-            order.driver_allowance2 = driver_allowance2
-            order.outsourcing_allowance = outsourcing_allowance
-            order.number1 = order_form.cleaned_data['number1']
-            order.number2 = order_form.cleaned_data['number2']
-            order.num1 = re.sub(r'[^0-9]', '', order_form.cleaned_data['number1'])
-            order.num2 = re.sub(r'[^0-9]', '', order_form.cleaned_data['number2'])
-            
-            order.work_type = order_form.cleaned_data['work_type']
-            order.route = order_form.cleaned_data['route']
-            order.location = order_form.cleaned_data['location']
-            order.detailed_route = order_form.cleaned_data['detailed_route']
-            order.maplink = order_form.cleaned_data['maplink']
-            order.use = order_form.cleaned_data['use']
-            order.distance = order_form.cleaned_data['distance']
-            
-            order.week = week
-            order.group = group
-            order.creator = creator
-            order.save()
+            regularly_data = regularly_data_form.save(commit=False)
+            regularly_data.group = group
+            regularly_data.creator = creator
+            regularly_data.save()
 
             try:
-                regularly = DispatchRegularly.objects.filter(regularly_id=order).get(edit_date=TODAY)
-
-                regularly.regularly_id = order
-                regularly.edit_date = TODAY
-                regularly.group = order.group
-                regularly.references = order.references
-                regularly.departure = order.departure
-                regularly.arrival = order.arrival
-                regularly.departure_time = order.departure_time
-                regularly.arrival_time = order.arrival_time
-                regularly.price = order.price
-                regularly.driver_allowance = order.driver_allowance
-                regularly.driver_allowance2 = order.driver_allowance2
-                regularly.outsourcing_allowance = order.outsourcing_allowance
-                regularly.number1 = order.number1
-                regularly.number2 = order.number2
-                regularly.num1 = order.num1
-                regularly.num2 = order.num2
-                regularly.week = order.week
-                regularly.work_type = order.work_type
-                regularly.route = order.route
-                regularly.location = order.location
-                regularly.detailed_route = order.detailed_route
-                regularly.maplink = order.maplink
-                regularly.use = order.use
-                regularly.distance = order.distance
-                regularly.creator = order.creator
+                regularly = DispatchRegularly.objects.filter(regularly_id=regularly_data).get(edit_date=TODAY)
+                regularly_form = RegularlyForm(request.POST, instance=regularly)
+                
             except DispatchRegularly.DoesNotExist:
-                regularly = DispatchRegularly(
-                    regularly_id = order,
-                    edit_date = TODAY,
-                    group = order.group,
-                    references = order.references,
-                    departure = order.departure,
-                    arrival = order.arrival,
-                    departure_time = order.departure_time,
-                    arrival_time = order.arrival_time,
-                    price = order.price,
-                    driver_allowance = order.driver_allowance,
-                    driver_allowance2 = order.driver_allowance2,
-                    outsourcing_allowance = order.outsourcing_allowance,
-                    number1 = order.number1,
-                    number2 = order.number2,
-                    num1 = order.num1,
-                    num2 = order.num2,
-                    week = order.week,
-                    work_type = order.work_type,
-                    route = order.route,
-                    location = order.location,
-                    detailed_route = order.detailed_route,
-                    maplink = order.maplink,
-                    use = order.use,
-                    distance = order.distance,
-                    creator = order.creator
-                )
-            regularly.save()
-            DispatchRegularlyWaypoint.objects.filter(regularly_id=order).delete()
-            waypoint_list = request.POST.getlist('waypoint')
-            for waypoint in waypoint_list:
-                regularly_waypoint = DispatchRegularlyWaypoint(
-                    regularly_id = order,
-                    waypoint = waypoint,
-                    creator = order.creator
-                )
-                regularly_waypoint.save()
+                regularly_form = RegularlyForm(request.POST)
+
+            if regularly_form.is_valid():
+                regularly = regularly_form.save(commit=False)
+                regularly.regularly_id = regularly_data
+                regularly.edit_date = TODAY
+                regularly.group = group
+                regularly.creator = creator
+                regularly.save()
+            else:
+                raise BadRequest("valid error ", f'{regularly_form.errors}')
             
+            # 등록된 정류장 삭제
+            DispatchRegularlyDataStation.objects.filter(regularly_data=regularly_data).delete()
+            DispatchRegularlyStation.objects.filter(regularly=regularly).delete()
+            # 정류장 등록
+            create_dispatch_regularly_stations(request, regularly_data, regularly, creator)
 
             #### 금액, 기사수당 수정 시 입력한 월 이후 배차들 금액, 기사수당 수정
+            price = regularly_data.price
+            driver_allowance = regularly_data.driver_allowance
+            driver_allowance2 = regularly_data.driver_allowance2
+            outsourcing_allowance = regularly_data.outsourcing_allowance
+
             post_month = request.POST.get('month')
             if post_month:
-                day = order.group.settlement_date
+                day = regularly_data.group.settlement_date
                 day = day if int(day) > 9 else f'0{day}'
-                connect_list = DispatchRegularlyConnect.objects.filter(regularly_id__regularly_id=order).filter(departure_date__gte=f'{post_month}-{day} 00:00').order_by('departure_date')
+                connect_list = DispatchRegularlyConnect.objects.filter(regularly_id__regularly_id=regularly_data).filter(departure_date__gte=f'{post_month}-{day} 00:00').order_by('departure_date')
                 for connect in connect_list:
                     month = connect.departure_date[:7]
                     member = connect.driver_id
@@ -1341,7 +1183,7 @@ def regularly_order_edit(request):
                     #     c_regularly = connect.regularly_id
                     
                 # post_month 기간의 DispatchRegularly 수정
-                old_regularly_list = DispatchRegularly.objects.filter(regularly_id=order).filter(edit_date__gte=f'{post_month}-{day} 00:00')
+                old_regularly_list = DispatchRegularly.objects.filter(regularly_id=regularly_data).filter(edit_date__gte=f'{post_month}-{day} 00:00')
                 for old_regularly in old_regularly_list:
                     old_regularly.price = price
                     old_regularly.driver_allowance = driver_allowance
@@ -1350,7 +1192,7 @@ def regularly_order_edit(request):
                     old_regularly.save()
                 
                     
-            connects = DispatchRegularlyConnect.objects.filter(regularly_id__regularly_id=order).filter(departure_date__gte=f'{TODAY} 00:00')
+            connects = DispatchRegularlyConnect.objects.filter(regularly_id__regularly_id=regularly_data).filter(departure_date__gte=f'{TODAY} 00:00')
             for connect in connects:
                 connect.regularly_id = regularly
                 connect.departure_date = f'{connect.departure_date[:10]} {regularly.departure_time}'
@@ -1368,7 +1210,7 @@ def regularly_order_edit(request):
 
             return redirect(request.META.get('HTTP_REFERER', 'redirect_if_referer_not_found'))
         else: 
-            raise Http404
+            raise BadRequest("valid error ", f'{regularly_data_form.errors}')
     else:
         return HttpResponseNotAllowed(['post'])
 
@@ -3115,6 +2957,39 @@ def regularly_station(request, id):
     else:
         return HttpResponseNotAllowed(['GET'])
 
+
+def regularly_station_list(request):
+    if request.session.get('authority') > 1:
+        return render(request, 'authority.html')
+
+    if request.method == "GET":
+        type = request.GET.get('type', '')
+        name = request.GET.get('name', '')
+
+        queryset = Station.objects.all()
+
+        if type:
+            queryset = queryset.filter(types__contains=type)
+        if name:
+            queryset = queryset.filter(name__contains=name)
+
+        station_list = queryset.values()
+        data = []
+        for station in station_list:
+            data.append({
+                'id' : station['id'],
+                'types' : station['types'],
+                'name' : station['name'],
+                'latitude' : station['latitude'],
+                'longitude' : station['longitude'],
+                'address' : station['address'],
+                'references' : station['references'],
+            })
+
+        return JsonResponse({'data' : data})
+    else:
+        return HttpResponseNotAllowed(['GET'])
+    
 def regularly_station_upload(request):
     if request.session.get('authority') > 1:
         return render(request, 'authority.html')
@@ -3161,6 +3036,7 @@ def regularly_station_upload(request):
                 longitude = data['longitude'],
                 references = data['references'],
                 types = data['types'],
+                creator = creator
             )
         station.save()
         count = count + 1

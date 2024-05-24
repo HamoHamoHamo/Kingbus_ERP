@@ -26,5 +26,42 @@ const closePopup = () => {
     })
 }
 
+class ClosePopup {
+    areaModules = document.querySelectorAll('.popupAreaModules')
+    bgModules = document.querySelectorAll(".popupBgModules")
+    sideMenu = document.querySelector(".Sidemenu")
+    closeBtn = document.querySelectorAll(".popupCloseBtn")
 
-export { addEventClosePopup, closePopup }
+    addClosePopupEvent(closePopup=closePopup) {
+        if (this.closeBtn) {
+            Array.from(this.closeBtn).forEach(btn => btn.addEventListener('click', closePopup));
+        }
+        if (this.bgModules) {
+            Array.from(this.bgModules).forEach(bg => bg.addEventListener('click', closePopup));
+        }
+        // this.sideMenu?.addEventListener('click', closePopup);
+        console.log("add close popup event");
+    }
+
+    closePopup() {
+        Array.from(this.areaModules).forEach(areaModule => areaModule.style.display = "none");
+    }
+
+    set areaModules(areaModules) {
+        this.areaModules = areaModules;
+    }
+    
+    set bgModules(bgModules) {
+        this.bgModules = bgModules;
+    }
+    
+    set sideMenu(sideMenu) {
+        this.sideMenu = sideMenu;
+    }
+
+    set closeBtn(closeBtn) {
+        this.closeBtn = closeBtn;
+    }
+}
+
+export { addEventClosePopup, closePopup, ClosePopup }
