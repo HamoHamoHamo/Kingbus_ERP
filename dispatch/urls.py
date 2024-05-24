@@ -27,6 +27,7 @@ urlpatterns = [
     path('regularly/business/edit', views.business_edit, name="business_edit"),
     
     path('regularly/station', views.RegularlyStationList.as_view(), name="regularly_station"),
+    path('regularly/station/list', views.regularly_station_list, name="regularly_station_list"),
     path('regularly/station/create', views.regularly_station_create, name="regularly_station_create"),
     path('regularly/station/edit', views.regularly_station_edit, name="regularly_station_edit"),
     path('regularly/station/delete', views.regularly_station_delete, name="regularly_station_delete"),

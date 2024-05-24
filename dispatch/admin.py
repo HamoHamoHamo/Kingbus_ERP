@@ -2,7 +2,7 @@ from django.contrib import admin
 from .models import Schedule, DispatchOrder, DispatchOrderConnect, RegularlyGroup, \
     DispatchRegularly, DispatchRegularlyData, DispatchRegularlyConnect, DispatchCheck, \
     DispatchOrderWaypoint, DriverCheck, ConnectRefusal, DispatchRegularlyWaypoint, DispatchRegularlyRouteKnow, \
-    MorningChecklist, EveningChecklist, DrivingHistory, BusinessEntity, Station
+    MorningChecklist, EveningChecklist, DrivingHistory, BusinessEntity, Station, DispatchRegularlyDataStation, DispatchRegularlyStation
 
 # class DispatchInfoInline(admin.TabularInline):
 #     model = DispatchOrderConnect
@@ -41,3 +41,5 @@ admin.site.register(EveningChecklist)
 admin.site.register(DrivingHistory)
 admin.site.register(BusinessEntity)
 admin.site.register(Station)
+admin.site.register(DispatchRegularlyDataStation)
+admin.site.register(DispatchRegularlyStation)

@@ -711,8 +711,8 @@ select[name=use]{
 }
 
 .popupContainerMap {
-  width: 50rem;
-  height: 40rem;
+  width: 80rem;
+  height: auto;
 }
 
 .popupArticleFileDouble {
@@ -757,7 +757,13 @@ select[name=use]{
   margin-right: 0.6rem;
 }
 
-
+.popupArticleCategory {
+  width: 100%;
+  padding-bottom: 0.4rem;
+  font-size: 1.4rem;
+  font-weight: bold;
+  border-bottom: 0.1rem solid black;
+}
 
 
 /* 기준날짜 선택 */
@@ -810,38 +816,37 @@ select[name=use]{
   outline: none;
 }
 
-.popupArticleCollectiong {
-  flex-direction: column;
-  justify-content: flex-start;
-  align-items: flex-start;
-  height: auto;
-}
-
 .detailMapPopupHeader {
   width: calc(100% - 0.6rem);
 }
-.detailMapPopupHeader tr {
-  width: 100%;
-  height: 3rem;
+
+
+.detailMapPopupHeader td {
   background-color: #444;
   color: white;
   text-align: center;
-  font-size: 1.4rem;
+  position: sticky;
+  top: 0;
 }
 
-.popupArticleCollectiong td:nth-child(1),
-.popupArticleCollectiong td:nth-child(2) {
-  width: 10%;
+.popupArticleStation td:nth-child(1),
+.popupArticleStation td:nth-child(2) {
+  width: 5%;
 }
 
 .detailMapPopupScrollBox {
   width: 100%;
-  overflow-y: scroll;
-  height: 12.4rem;
+  overflow: scroll;
+  height: 19.4rem;
+
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
 }
 
 .detailMapPopupScrollBox::-webkit-scrollbar {
   width: 0.6rem;
+  height: 1rem;
 }
 
 .detailMapPopupScrollBox::-webkit-scrollbar-thumb {
@@ -855,7 +860,7 @@ select[name=use]{
 }
 
 .detailMapPopupScrollBox table {
-  width: 100%;
+  min-width: 100%;
 }
 
 .detailMapPopupScrollBox tr {
@@ -863,9 +868,57 @@ select[name=use]{
   height: 3rem;
 }
 
+.detailMapPopupHeader tr {
+  width: 100%;
+  height: 3rem;
+  text-align: center;
+  font-size: 1.4rem;
+}
+
 .detailMapPopupScrollBox td {
   text-align: center;
   font-size: 1.4rem;
   border-left: 0.1rem solid #D4D4D4;
   border-bottom: 0.1rem solid #D4D4D4;
+  white-space: nowrap;
+  padding: 0 2rem;
+}
+
+.popupArticleSearch {
+  justify-content: flex-start;
+}
+
+.stationSearchInput {
+  margin-right: 2rem;
+}
+
+.stationSearchBtn {
+  background-color: #444;
+  margin-left: 3rem;
+}
+
+.stationSearchInputText {
+  margin-right: 1rem;
+}
+
+.popupSectionFirst {
+  padding-bottom: 0rem;
+}
+
+
+.detailMapPopupScrollBoxTr:hover {
+  cursor: pointer;
+  background-color: #EFEFEF;
+}
+
+.stationNumberInputText {
+  margin-left: 2rem;
+}
+
+.waypointNumberInput {
+  width: 8rem;
+}
+
+.routeStationTime {
+  font-size: 1.2rem;
 }

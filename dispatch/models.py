@@ -32,7 +32,7 @@ class RegularlyGroup(models.Model):
 
 class DispatchRegularlyData(models.Model):   
     group = models.ForeignKey(RegularlyGroup, verbose_name='그룹', related_name="regularly", on_delete=models.SET_NULL, null=True)
-    station = models.ManyToManyField("Station", related_name="regularly_data")
+    station = models.ManyToManyField("Station", related_name="regularly_data", through="DispatchRegularlyDataStation")
     references = models.CharField(verbose_name='참조사항', max_length=100, null=False, blank=True)
     departure = models.CharField(verbose_name='출발지', max_length=200, null=False)
     arrival = models.CharField(verbose_name='도착지', max_length=200, null=False)
@@ -65,7 +65,7 @@ class DispatchRegularly(models.Model):
     regularly_id = models.ForeignKey(DispatchRegularlyData, verbose_name='정기배차 데이터', related_name="monthly", on_delete=models.SET_NULL, null=True)
     edit_date = models.CharField(verbose_name='수정기준일', max_length=50, null=False, blank=True)
     group = models.ForeignKey(RegularlyGroup, verbose_name='그룹', related_name="regularly_monthly", on_delete=models.SET_NULL, null=True)
-    station = models.ManyToManyField("Station", related_name="regularly")
+    station = models.ManyToManyField("Station", related_name="regularly", through="DispatchRegularlyStation")
     references = models.CharField(verbose_name='참조사항', max_length=100, null=False, blank=True)
     departure = models.CharField(verbose_name='출발지', max_length=200, null=False)
     arrival = models.CharField(verbose_name='도착지', max_length=200, null=False)
@@ -330,12 +330,12 @@ class DrivingHistory(models.Model):
 
 class Station(models.Model):
     TYPES_CHOICES = [
-        '1',
-        '2',
-        '3',
-        'A',
-        'B',
-        'C'
+        '차고지',
+        '첫 정류장 대기장소',
+        '정류장',
+        '사업장',
+        '대기장소',
+        '마지막 정류장',
     ]
 
     def set_types(self, type_list):
@@ -356,3 +356,30 @@ class Station(models.Model):
     pub_date = models.DateTimeField(auto_now_add=True, verbose_name='작성시간')
     updated_at = models.DateTimeField(auto_now=True, verbose_name='수정시간')
     creator = models.ForeignKey(Member, on_delete=models.SET_NULL, related_name="station_creator", db_column="creator_id", null=True)
+
+class DispatchRegularlyDataStation(models.Model):
+    regularly_data = models.ForeignKey(DispatchRegularlyData, on_delete=models.CASCADE, related_name="regularly_data_station", null=False)
+    station = models.ForeignKey(Station, on_delete=models.CASCADE, related_name="station_regularly_data", null=False)
+    index = models.IntegerField(verbose_name='순번')
+    station_type = models.CharField(verbose_name="종류", max_length=100, null=False)
+    time = models.CharField(verbose_name="시각", max_length=100, null=False)
+
+    pub_date = models.DateTimeField(auto_now_add=True, verbose_name='작성시간')
+    updated_at = models.DateTimeField(auto_now=True, verbose_name='수정시간')
+    creator = models.ForeignKey(Member, on_delete=models.SET_NULL, related_name="regularly_data_station_creator", db_column="creator_id", null=True)
+
+    def __str__(self):
+        return f'{self.regularly_data.route} {self.station.name} {self.index} {self.station_type} {self.time}'
+    
+class DispatchRegularlyStation(models.Model):
+    regularly = models.ForeignKey(DispatchRegularly, on_delete=models.CASCADE, related_name="regularly_station", null=False)
+    station = models.ForeignKey(Station, on_delete=models.CASCADE, related_name="station_regularly", null=False)
+    index = models.IntegerField(verbose_name='순번')
+    station_type = models.CharField(verbose_name="종류", max_length=100, null=False)
+    time = models.CharField(verbose_name="시각", max_length=100, null=False)
+
+    pub_date = models.DateTimeField(auto_now_add=True, verbose_name='작성시간')
+    updated_at = models.DateTimeField(auto_now=True, verbose_name='수정시간')
+    creator = models.ForeignKey(Member, on_delete=models.SET_NULL, related_name="regularly_station_creator", db_column="creator_id", null=True)
+    def __str__(self):
+        return f'{self.regularly.route} {self.station.name} {self.index} {self.station_type} {self.time}'
