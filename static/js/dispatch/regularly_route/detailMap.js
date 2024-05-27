@@ -1,13 +1,14 @@
 import { ClosePopup } from "/static/js/common/popupCommon.js"
 import { StationDatas, Station } from "/static/js/dispatch/regularly_route/detailMapStationClass.js"
 
-const closePopup = new ClosePopup();
-closePopup.addClosePopupEvent(() => {
-    console.log("TEST", stationDatas.hasStations())
-    if (window.confirm("이 창을 닫으면 입력한 데이터가 손실됩니다. 계속하시겠습니까?")) {
-        closePopup.closePopup();
-    }
-});
+ClosePopup.addClosePopupEvent();
+
+// closePopup.addClosePopupEvent(() => {
+//     console.log("TEST", stationDatas.hasStations())
+//     if (window.confirm("이 창을 닫으면 입력한 데이터가 손실됩니다. 계속하시겠습니까?")) {
+//         closePopup.closePopup();
+//     }
+// });
 
 
 const workStart = document.querySelector("#workStart")
