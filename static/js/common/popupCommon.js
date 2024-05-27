@@ -27,24 +27,24 @@ const closePopup = () => {
 }
 
 class ClosePopup {
-    areaModules = document.querySelectorAll('.popupAreaModules')
-    bgModules = document.querySelectorAll(".popupBgModules")
-    sideMenu = document.querySelector(".Sidemenu")
-    closeBtn = document.querySelectorAll(".popupCloseBtn")
+    static areaModules = document.querySelectorAll('.popupAreaModules')
+    static bgModules = document.querySelectorAll(".popupBgModules")
+    static sideMenu = document.querySelector(".Sidemenu")
+    static closeBtn = document.querySelectorAll(".popupCloseBtn")
 
-    addClosePopupEvent(closePopup=closePopup) {
+    static closePopup() {
+        Array.from(this.areaModules).forEach(areaModule => areaModule.style.display = "none");
+    }
+
+    static addClosePopupEvent() {
         if (this.closeBtn) {
             Array.from(this.closeBtn).forEach(btn => btn.addEventListener('click', closePopup));
         }
         if (this.bgModules) {
             Array.from(this.bgModules).forEach(bg => bg.addEventListener('click', closePopup));
         }
-        // this.sideMenu?.addEventListener('click', closePopup);
+        this.sideMenu?.addEventListener('click', closePopup);
         console.log("add close popup event");
-    }
-
-    closePopup() {
-        Array.from(this.areaModules).forEach(areaModule => areaModule.style.display = "none");
     }
 
     set areaModules(areaModules) {
