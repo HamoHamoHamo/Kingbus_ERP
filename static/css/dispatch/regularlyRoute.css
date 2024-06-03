@@ -321,7 +321,7 @@
   display: flex;
   flex-direction: column;
   width: 100%;
-  height: 19rem;
+  height: 24rem;
   box-sizing: border-box;
   background-color: white;
   border-radius: 0.2rem;
@@ -360,7 +360,7 @@
 
 .dispatcTable {
   width: 100%;
-  height: 12.3rem;
+  height: 15.4rem;
   table-layout: fixed;
 }
 
@@ -534,12 +534,12 @@ select[name=use]{
 .RouteListForm {
   position: relative;
   width: 100%;
-  height: calc(100% - 25.6rem);
+  height: calc(100% - 27.6rem);
 }
 
 .routeInputDelete {
   position: absolute;
-  top: -4.5rem;
+  top: -3.1rem;
   right: 24.8rem;
   background-color: #444;
 }
@@ -769,7 +769,7 @@ select[name=use]{
 /* 기준날짜 선택 */
 .pricePopupArea {
   text-align: right;
-  width: calc(100% - 2.4rem);
+  width: calc(100% - 1.4rem);
   height: 2.2rem;
   margin: 0 0.8rem;
   padding: 0 0.6rem;

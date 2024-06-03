@@ -5,6 +5,7 @@ import re
 import urllib
 import os
 import mimetypes
+import requests
 
 from config.settings import MEDIA_ROOT
 from django.db.models import Q, Sum
@@ -28,6 +29,9 @@ from vehicle.models import Vehicle
 from datetime import datetime, timedelta, date
 # from utill.decorator import option_year_deco
 from common.constant import TODAY, FORMAT, WEEK, WEEK2
+from common.datetime import get_hour_minute
+from my_settings import KAKAO_KEY
+from config.custom_logging import logger
 
 class RegularlyPrintList(generic.ListView):
     template_name = 'dispatch/regularly_print.html'
@@ -929,8 +933,28 @@ class RegularlyRouteList(generic.ListView):
         if id:
             context['detail'] = get_object_or_404(DispatchRegularlyData, id=id)
             context['waypoint_list'] = DispatchRegularlyWaypoint.objects.filter(regularly_id=context['detail'])
-            context['station_list'] = list(DispatchRegularlyDataStation.objects.filter(regularly_data=context['detail']).values('index', 'station__name', 'station_type', 'time', 'station__references', 'station__id').order_by('index'))
+            context['station_list'] = list(DispatchRegularlyDataStation.objects.filter(regularly_data=context['detail']).values('index', 'station__name', 'station_type', 'time', 'station__references', 'station__id', 'regularly_data__distance_list', 'regularly_data__time_list').order_by('index'))
             context['waypoint_number'] = DispatchRegularlyDataStation.objects.filter(regularly_data=context['detail']).filter(station_type='정류장').count()
+            
+            context['station_distance_time_list'] = []
+            for i in range(len(context['station_list']) - 1):
+                station_data = context['station_list'][i]
+                next_station_data = context['station_list'][i + 1]
+
+                try:
+                    distance = round(int(station_data['regularly_data__distance_list'].split(",")[i]) / 1000, 2)
+                    duration = get_hour_minute(int(station_data['regularly_data__time_list'].split(",")[i]))
+                except:
+                    distance = '에러'
+                    duration = '에러'
+                context['station_distance_time_list'].append({
+                    'station_type': f"{station_data['station_type']} ▶ \n{next_station_data['station_type']}",
+                    'station_name': f"{station_data['station__name']} ▶ \n{next_station_data['station__name']}",
+                    'station_time': f"{station_data['time']} ▶ \n{next_station_data['time']}",
+                    'distance': distance,
+                    'duration': duration,
+                })
+
         context['group_list'] = RegularlyGroup.objects.all().order_by('number', 'name')
         group_id = self.request.GET.get('group', '')
         if group_id:
@@ -966,6 +990,63 @@ def create_dispatch_regularly_stations(request, regularly_data, regularly, creat
             creator = creator
         )
 
+def get_kakao_directions(regularly_data, regularly):
+    api_url = 'https://apis-navi.kakaomobility.com/v1/directions'
+    headers = {
+        'Authorization': f"KakaoAK {KAKAO_KEY}"
+    }
+    
+    data_list = list(regularly_data.regularly_data_station.values('index', 'station__longitude', 'station__latitude', 'station__address'))
+    distance_list = []
+    time_list = []
+    total_distance = 0
+    total_time = 0
+    for i in range(len(data_list) - 1):
+        current_data = data_list[i]
+        next_data = data_list[i + 1]
+        params = {
+            'origin': f"{current_data['station__longitude']},{current_data['station__latitude']}",
+            'destination': f"{next_data['station__longitude']},{next_data['station__latitude']}",
+        }
+        # API 호출
+        response = requests.get(api_url, params=params, headers=headers)
+        if response.status_code == 200:
+            data = response.json()
+            try:
+                distance = data['routes'][0]['summary']['distance']
+                duration = data['routes'][0]['summary']['duration']
+                logger.info("kakao api success")
+                logger.info(f"{current_data['station__address']} > {next_data['station__address']} distance : {distance} duration {duration}")
+            except Exception as e:
+                logger.error(f"ERROR {current_data['station__address']} > {next_data['station__address']} {e}")
+                # API 호출 에러
+                distance_list.append("")
+                time_list.append("")
+                raise BadRequest(f"kakao api request error {current_data['station__address']} > {next_data['station__address']}\n{data}")
+            
+            distance_list.append(str(distance))
+            total_distance += distance
+            time_list.append(str(round(duration / 60)))
+            total_time += duration
+        else:
+            logger.error(f"ERROR {current_data['station__address']} > {next_data['station__address']}")
+            # API 호출 실패 처리
+            raise BadRequest(f"kakao api error {current_data['station__address']} > {next_data['station__address']}\n{data}")
+    
+    regularly_data.time = round(total_time / 60)
+    regularly_data.time_list = ','.join(time_list)
+    regularly_data.distance = round(total_distance / 1000, 2)
+    regularly_data.distance_list = ','.join(distance_list)
+    regularly_data.save()
+
+    regularly.time = round(total_time / 60)
+    regularly.time_list = ','.join(time_list)
+    regularly.distance = round(total_distance / 1000, 2)
+    regularly.distance_list = ','.join(distance_list)
+    regularly.save()
+
+    return
+
 def regularly_order_create(request):
     if request.session.get('authority') > 1:
         return render(request, 'authority.html')
@@ -1000,6 +1081,8 @@ def regularly_order_create(request):
 
             # 정류장 등록
             create_dispatch_regularly_stations(request, regularly_data, regularly, creator)
+            
+            get_kakao_directions(regularly_data, regularly)
 
             return redirect(request.META.get('HTTP_REFERER', 'redirect_if_referer_not_found'))
         else:
@@ -1208,6 +1291,7 @@ def regularly_order_edit(request):
                         connect.driver_allowance = regularly.driver_allowance
                 connect.save()
 
+            get_kakao_directions(regularly_data, regularly)
             return redirect(request.META.get('HTTP_REFERER', 'redirect_if_referer_not_found'))
         else: 
             raise BadRequest("valid error ", f'{regularly_data_form.errors}')
@@ -2914,8 +2998,8 @@ def regularly_station_edit(request):
     if request.method == "POST":
         id = request.POST.get('id', None)
         station = Station.objects.get(id=id)
-        types_list = request.POST.getlist('types', [])
-        station_form = StationForm(request.POST, initial={'types': types_list}, instance=station)
+        types_list = request.POST.getlist('station_type', [])
+        station_form = StationForm(request.POST, initial={'station_type': types_list}, instance=station)
         if station_form.is_valid():
             station = station_form.save(commit=False)
             station.set_types(types_list)
@@ -2950,7 +3034,7 @@ def regularly_station(request, id):
             'latitude' : station.latitude,
             'longitude' : station.longitude,
             'references' : station.references,
-            'types' : station.get_types(),
+            'station_type' : station.get_types(),
         }
 
         return JsonResponse(data)
@@ -2969,7 +3053,7 @@ def regularly_station_list(request):
         queryset = Station.objects.all()
 
         if type:
-            queryset = queryset.filter(types__contains=type)
+            queryset = queryset.filter(station_type__contains=type)
         if name:
             queryset = queryset.filter(name__contains=name)
 
@@ -2978,7 +3062,7 @@ def regularly_station_list(request):
         for station in station_list:
             data.append({
                 'id' : station['id'],
-                'types' : station['types'],
+                'station_type' : station['station_type'],
                 'name' : station['name'],
                 'latitude' : station['latitude'],
                 'longitude' : station['longitude'],
@@ -3025,7 +3109,7 @@ def regularly_station_upload(request):
             station.latitude = data['latitude']
             station.longitude = data['longitude']
             station.references = data['references']
-            station.types = data['types']
+            station.station_type = data['station_type']
             
             
         else:
@@ -3035,7 +3119,7 @@ def regularly_station_upload(request):
                 latitude = data['latitude'],
                 longitude = data['longitude'],
                 references = data['references'],
-                types = data['types'],
+                station_type = data['station_type'],
                 creator = creator
             )
         station.save()
@@ -3053,7 +3137,7 @@ def regularly_station_download(request):
         'latitude',
         'longitude',
         'references',
-        'types',
+        'station_type',
     ))
     i = 0
     try:
