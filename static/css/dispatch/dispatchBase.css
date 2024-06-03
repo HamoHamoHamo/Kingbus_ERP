@@ -414,6 +414,7 @@
 
 .inputText {
     width: calc(100% - 2.4rem);
+    min-width: 1.5rem;
     height: 1.8rem;
     margin: 0 0.8rem;
 }

@@ -388,3 +388,14 @@ function deleteWaypointTr() {
     popupAllCheckbox.checkd = false;
     // stationDatas.setStationsIndex();
 }
+
+// 각 정류장 시간, 거리 계산
+const detailMapCalculatePopup = document.querySelector("#detailMapCalculatePopup");
+const detailMapCalculatePopupOpenButton = document.querySelectorAll(".detailMapCalculatePopupOpenButton");
+
+Array.from(detailMapCalculatePopupOpenButton)
+    .forEach(button => button.addEventListener('click', () => {
+        detailMapCalculatePopup.style.display = "block"
+        console.log("TEST")
+    })
+)

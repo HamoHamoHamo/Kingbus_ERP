@@ -65,7 +65,7 @@ function openDetailPopup() {
     popupReferences.value = data.references
 
 
-    data.types?.map(type => {
+    data.station_type?.map(type => {
       console.log("TYPE", type)
       makeSelectedTypes(type, type)
     })
@@ -163,7 +163,7 @@ const makeSelectedTypes = (text, value) => {
   selectedItemDiv.appendChild(selectedItem)
 
   const selectedItemInput = document.createElement('input');
-  selectedItemInput.setAttribute("name", 'types')
+  selectedItemInput.setAttribute("name", 'station_type')
   selectedItemInput.setAttribute("type", 'hidden')
   selectedItemInput.setAttribute("class", 'selectedItemInput')
   selectedItemInput.value = value

@@ -206,7 +206,7 @@
                     <td class="tdTypeA">*사용/미사용</td>
                     <td class="tdTypeC">
                         <input {% if detail.use == '사용' %} checked {% endif %} value="사용" type="radio" id="useRoute"
-                            name="use">
+                            name="use" checked>
                         <label for="useRoute">사용</label>
                         <input {% if detail.use == '미사용' %} checked {% endif %} value="미사용" type="radio"
                             id="unuseRoute" name="use">
@@ -237,10 +237,14 @@
                         <input autocomplete="off" value="{{detail.route}}" name="route" type="text"
                             class="inputText essential length15" tabindex="2">
                     </td>
-                    <td class="tdTypeA">거리km</td>
+                    <td class="tdTypeA">*순번</td>
                     <td class="tdTypeC">
-                        <input autocomplete="off" value="{{detail.distance}}" name="distance" type="number"
-                            class="inputText length15" tabindex="2">
+                        <div class="routeNumber">
+                            <input autocomplete="off" value="{{detail.number1}}" name="number1" type="text"
+                                class="inputText essential length100" tabindex="2">-
+                            <input autocomplete="off" value="{{detail.number2}}" name="number2" type="text"
+                                class="inputText essential length100" tabindex="2">
+                        </div>
                     </td>
                     <td class="tdTypeA">*운행요일</td>
                     <td colspan="3" class="tdTypeB">
@@ -301,14 +305,9 @@
                     </td>
                 </tr>
                 <tr>
-                    <td class="tdTypeA">*순번</td>
+                    <td class="tdTypeA">카카오맵</td>
                     <td class="tdTypeC">
-                        <div class="routeNumber">
-                            <input autocomplete="off" value="{{detail.number1}}" name="number1" type="text"
-                                class="inputText essential length100" tabindex="5">-
-                            <input autocomplete="off" value="{{detail.number2}}" name="number2" type="text"
-                                class="inputText essential length100" tabindex="6">
-                        </div>
+                        <input autocomplete="off" name="maplink" value="{{detail.maplink}}" class="inputText" tabindex="5">
                     </td>
                     <td class="tdTypeA">*운행시간</td>
                     <td class="tdTypeC">
@@ -326,6 +325,30 @@
                                 name="arrival_time2" id="arrival_time2" type="text" class="inputText essential"
                                 maxlength="2" tabindex="10">
                         </div>
+                    </td>
+                    <td class="tdTypeA">*기사수당(변경)</td>
+                    <td class="tdTypeC">
+                        <div class="pricePopupArea amountComma">
+                            {{detail.driver_allowance2}}
+                        </div>
+                        <!--<input autocomplete="off" name="price" type="text"
+                            class="inputText amountComma essential inputPrice length100" tabindex="16">-->
+                    </td>
+                    <td class="tdTypeA">*용역수당</td>
+                    <td class="tdTypeC">
+                        <div class="pricePopupArea amountComma">{{detail.outsourcing_allowance}}</div>
+                        <!--<input autocomplete="off" name="driver_allowance" type="text"
+                            class="inputText essential inputDriverAllowance amountComma length100" tabindex="17">-->
+                    </td>
+                </tr>
+                <tr>
+                    <td class="tdTypeA">거리</td>
+                    <td class="tdTypeC">
+                        <div class="pricePopupArea detailMapCalculatePopupOpenButton" tabindex="10">{{detail.distance}}km</div>
+                    </td>
+                    <td class="tdTypeA">시간</td>
+                    <td class="tdTypeC">
+                        <div class="pricePopupArea detailMapCalculatePopupOpenButton" tabindex="10">{{detail.get_hour_minute}}</div>
                     </td>
                     <td class="tdTypeA">참조사항</td>
                     <td colspan="3" class="tdTypeB">
@@ -596,7 +619,7 @@
                                 <td>참조사항</td>
                             </tr>
                         </thead>
-                        <tbody class=".detailMapPopupScrollBox detailRoutePopupScrollBoxTbody">
+                        <tbody class="detailRoutePopupScrollBoxTbody">
                         </tbody>
 
                     </table>
@@ -605,6 +628,54 @@
             <div class="popupFooter">
                 <div id="deleteWaypoint" class="btnModules popupDeleteBtn">삭제</div>
                 <div id="saveStation" class="btnModules backgroundBlue">확인</div>
+                <div class="btnModules popupCloseBtn" id="detailPopupCloseBtn">취소</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="popupAreaModules" id="detailMapCalculatePopup">
+    <div class="popupBgModules" id="detailMapCalculatePopupBg"></div>
+    <div class="popupContainer popupContainerMap">
+        <div class="popupHeader">
+            <div class="popupTitle">정류장 운행 예측</div>
+        </div>
+        <div class="popupBody popupBodyMap">
+            <div class="popupSection">
+                <div class="popupArticle popupArticleSearch">
+                    <div>출근</div>
+                    <div class="stationSearchInputText stationNumberInputText">정류장개수</div>
+                    <div>{{waypoint_number}}</div>
+                </div>
+                <div class="popupArticle popupArticleStation detailMapPopupScrollBox">
+                    <table>
+                        <thead class="detailMapPopupHeader">
+                            <tr>
+                                <td>번호</td>
+                                <td>종류</td>
+                                <td>정류장명</td>
+                                <td>시각</td>
+                                <td>거리</td>
+                                <td>시간</td>
+                            </tr>
+                        </thead>
+                        <tbody class="detailRoutePopupScrollBoxTbody">
+                            {% for station in station_distance_time_list %}
+                            <tr>
+                                <td>{{forloop.counter}}</td>
+                                <td>{{station.station_type}}</td>
+                                <td>{{station.station_name}}</td>
+                                <td>{{station.station_time}}</td>
+                                <td>{{station.distance}}</td>
+                                <td>{{station.duration}}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+
+                    </table>
+                </div>
+            </div>
+            <div class="popupFooter">
                 <div class="btnModules popupCloseBtn" id="detailPopupCloseBtn">닫기</div>
             </div>
         </div>

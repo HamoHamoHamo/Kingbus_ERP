@@ -24,7 +24,6 @@ class RegularlyDataForm(forms.ModelForm):
             'detailed_route',
             'maplink',
             'use',
-            'distance',
 
             # clean에서 따로 처리
             'price',
