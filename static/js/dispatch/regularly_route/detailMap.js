@@ -98,7 +98,7 @@ function opendetailMapPopup() {
 const tbody = document.querySelector(".detailMapPopupScrollBoxTbody");
 const createDatas = (datas) => {
     const headers = [
-        'types',
+        'station_type',
         'name',
         'latitude',
         'longitude',
