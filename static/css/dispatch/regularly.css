@@ -356,7 +356,7 @@
   display: flex;
   flex-direction: column;
   width: 100%;
-  height: 15.5rem;
+  height: 19.4rem;
   box-sizing: border-box;
   background-color: white;
   border-radius: 0.2rem;
@@ -447,7 +447,7 @@
   display: flex;
   flex-direction: column;
   width: 100%;
-  height: calc(100% - 23.1rem);
+  height: calc(100% - 26.1rem);
   box-sizing: border-box;
   background-color: white;
   border-radius: 0.2rem;
