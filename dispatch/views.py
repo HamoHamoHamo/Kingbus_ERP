@@ -990,13 +990,31 @@ def create_dispatch_regularly_stations(request, regularly_data, regularly, creat
             creator = creator
         )
 
+def kakao_api_exception(current_address, next_address, data, regularly_data, regularly):
+    logger.error(f"ERROR {current_address} > {next_address}")
+    # API 호출 실패 처리
+
+    regularly_data.time = 0
+    regularly_data.time_list = ''
+    regularly_data.distance = 0
+    regularly_data.distance_list = ''
+    regularly_data.save()
+
+    regularly.time = 0
+    regularly.time_list = ''
+    regularly.distance = 0
+    regularly.distance_list = ''
+    regularly.save()
+    raise BadRequest(f"kakao api error {current_address} > {next_address}\n{data}")
+    
+
 def get_kakao_directions(regularly_data, regularly):
     api_url = 'https://apis-navi.kakaomobility.com/v1/directions'
     headers = {
         'Authorization': f"KakaoAK {KAKAO_KEY}"
     }
     
-    data_list = list(regularly_data.regularly_data_station.values('index', 'station__longitude', 'station__latitude', 'station__address'))
+    data_list = list(regularly_data.regularly_data_station.order_by('index').values('index', 'station__longitude', 'station__latitude', 'station__address'))
     distance_list = []
     time_list = []
     total_distance = 0
@@ -1007,32 +1025,41 @@ def get_kakao_directions(regularly_data, regularly):
         params = {
             'origin': f"{current_data['station__longitude']},{current_data['station__latitude']}",
             'destination': f"{next_data['station__longitude']},{next_data['station__latitude']}",
+            'car_type': 3 # 대형차량
         }
         # API 호출
         response = requests.get(api_url, params=params, headers=headers)
+        data = response.json()
         if response.status_code == 200:
-            data = response.json()
-            try:
-                distance = data['routes'][0]['summary']['distance']
-                duration = data['routes'][0]['summary']['duration']
-                logger.info("kakao api success")
-                logger.info(f"{current_data['station__address']} > {next_data['station__address']} distance : {distance} duration {duration}")
-            except Exception as e:
-                logger.error(f"ERROR {current_data['station__address']} > {next_data['station__address']} {e}")
-                # API 호출 에러
-                distance_list.append("")
-                time_list.append("")
-                raise BadRequest(f"kakao api request error {current_data['station__address']} > {next_data['station__address']}\n{data}")
+            distance = 0
+            duration = 0
+
+            if data['routes'][0]['result_code'] == 104:
+                logger.info(f"i={i} 출발지와 도착지가 5 m 이내로 설정된 경우 경로를 탐색할 수 없음 {current_data['station__address']} > {next_data['station__address']} distance 0 duration 0")
+                distance_list.append('0')
+                time_list.append('0')
+            else:
+                try:
+                    distance = data['routes'][0]['summary']['distance']
+                    duration = data['routes'][0]['summary']['duration']
+                    logger.info("kakao api success")
+                    logger.info(f"i={i} {current_data['station__address']} > {next_data['station__address']} distance : {distance} duration {duration}")
+                except Exception as e:
+                    # API 호출 에러
+                    distance_list.append("에러")
+                    time_list.append("에러")
+                    logger.info(f"kakao api fail exception : {e}")
+                    return kakao_api_exception(current_data['station__address'], next_data['station__address'], data, regularly_data, regularly)
             
-            distance_list.append(str(distance))
+                distance_list.append(str(distance))
+                time_list.append(str(round(duration / 60)))
             total_distance += distance
-            time_list.append(str(round(duration / 60)))
             total_time += duration
+        # 104	출발지와 도착지가 5 m 이내로 설정된 경우 경로를 탐색할 수 없음
         else:
-            logger.error(f"ERROR {current_data['station__address']} > {next_data['station__address']}")
-            # API 호출 실패 처리
-            raise BadRequest(f"kakao api error {current_data['station__address']} > {next_data['station__address']}\n{data}")
-    
+            logger.info(f"response error {response.status_code}")
+            return kakao_api_exception(current_data['station__address'], next_data['station__address'], data, regularly_data, regularly)
+
     regularly_data.time = round(total_time / 60)
     regularly_data.time_list = ','.join(time_list)
     regularly_data.distance = round(total_distance / 1000, 2)

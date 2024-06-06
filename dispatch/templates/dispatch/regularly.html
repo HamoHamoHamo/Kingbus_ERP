@@ -304,12 +304,9 @@
           </td>
         </tr>
         <tr>
-          <td class="tdTypeA">순번</td>
+          <td class="tdTypeA">카카오맵</td>
           <td class="tdTypeC">
-            <div class="routeNumber">
-              <input autocomplete="off" value="{{detail.number1}}" name="number1" type="text" class="inputText">-
-              <input autocomplete="off" value="{{detail.number2}}" name="number2" type="text" class="inputText">
-            </div>
+            <input autocomplete="off" value="{{detail.maplink}}" name="maplink" type="text" class="inputText">
           </td>
           <td class="tdTypeA">운행시간</td>
           <td class="tdTypeC">
@@ -318,6 +315,28 @@
               <input autocomplete="off" value="{{detail.departure_time|slice:'3:'}}" name="departure_time2" type="text" class="inputText">~
               <input autocomplete="off" value="{{detail.arrival_time|slice:':2'}}" name="arrival_time1" type="text" class="inputText">:
               <input autocomplete="off" value="{{detail.arrival_time|slice:'3:'}}" name="arrival_time2" type="text" class="inputText">
+            </div>
+          </td>
+          <td class="tdTypeA">기사수당 (변경)</td>
+          <td class="tdTypeC">
+            <input autocomplete="off" value="{{detail.driver_allowance2}}" name="driver_allowance2" type="text" class="inputText">
+          </td>
+          <td class="tdTypeA">용역수당</td>
+          <td class="tdTypeC">
+            <input autocomplete="off" value="{{detail.outsourcing_allowance}}" name="outsourcing_allowance" type="text" class="inputText">
+          </td>
+        </tr>
+        <tr>
+          <td class="tdTypeA">거리</td>
+          <td class="tdTypeC">
+            <div class="routeNumber">
+              <input autocomplete="off" value="{{detail.distance}}km" name="" type="text" class="inputText">
+            </div>
+          </td>
+          <td class="tdTypeA">시간</td>
+          <td class="tdTypeC">
+            <div class="routeTime">
+              <input autocomplete="off" value="{{detail.get_hour_minute}}" name="" type="text" class="inputText">:
             </div>
           </td>
           <td class="tdTypeA">참조사항</td>
