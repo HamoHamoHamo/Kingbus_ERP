@@ -80,9 +80,9 @@ function dataParsing(e) {
                 return;
             }
             if (excelData[i]['종류']) {
-                const types = excelData[i]['종류'].split(", ")
-                for (let j = 0; j < types.length; j++) {
-                    const type = types[j];
+                const station_type = excelData[i]['종류'].split(", ")
+                for (let j = 0; j < station_type.length; j++) {
+                    const type = station_type[j];
                     if (type !== '차고지' &&
                         type !== '첫 정류장 대기장소' &&
                         type !== '정류장' &&
@@ -107,7 +107,7 @@ function dataParsing(e) {
                 latitude: excelData[i]["위도"] == undefined ? "" : excelData[i]["위도"],
                 longitude: excelData[i]["경도"] == undefined ? "" : excelData[i]["경도"],
                 references: excelData[i]["참조사항"] == undefined ? "" : excelData[i]["참조사항"],
-                types: excelData[i]["종류"] == undefined ? "" : excelData[i]["종류"],
+                station_type: excelData[i]["종류"] == undefined ? "" : excelData[i]["종류"],
             }
             formatingData.push(formatingObj)
         };
