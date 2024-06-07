@@ -1814,7 +1814,7 @@ def regularly_group_delete(request):
         #     regulalry.use = '삭제'
         #     regulalry.save()
 
-        if not group.regularly.exists():
+        if not group.regularly.exclude(use='삭제').exists():
             group.delete()
             
         return redirect('dispatch:regularly_route')
