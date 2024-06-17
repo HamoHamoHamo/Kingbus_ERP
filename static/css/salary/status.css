@@ -1,0 +1,640 @@
+.search-Form_input-Month {
+    width: 13rem;
+    margin-right: 2rem;
+}
+
+.inputSearchName {
+    width: 10rem;
+}
+
+
+.searchAreaBox .btnModules {
+    background-color: #444444;
+    margin-left: 2rem;
+}
+
+.headerBtn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 10rem;
+    height: 3.8rem;
+    border-radius: 0.2rem;
+    background-color: #444444;
+    font-size: 1.4rem;
+    color: white;
+    cursor: pointer;
+    margin-left: 1rem;
+}
+
+.addPeople {
+    background-color: #0069D9;
+}
+
+.inputModules[name=use],
+.inputModules[name=age],
+.inputModules[name=role] {
+    margin-left: 2rem;
+}
+
+
+
+/*tableHead*/
+
+.thead {
+    display: flex;
+    width: 100%;
+    height: 9rem;
+    border-spacing: 0;
+    box-sizing: border-box;
+    position: sticky;
+    top: 0;
+}
+
+.thead .td {
+    text-align: center;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.tableBody {
+    width: 220%;
+    border-spacing: 0;
+    box-sizing: border-box;
+    table-layout: fixed;
+}
+
+.tbodyDiv {
+    height: 18rem;
+}
+
+.table .tbody .tr {
+    width: 100%;
+    height: 3rem;
+    font-size: 1.4rem;
+    color: #191919;
+    display: flex;
+}
+
+.table .tbody .tbodyDiv:nth-child(odd),
+.orderListItem:nth-child(odd) {
+    background-color: white;
+}
+
+.table .tbody .tbodyDiv:nth-child(even),
+.orderListItem:nth-child(even) {
+    background-color: #EFEFEF;
+}
+
+
+.td {
+    border-right: 0.1rem solid #CDCDCE;
+    border-bottom: 0.1rem solid #CDCDCE;
+    padding: 0;
+    box-sizing: border-box;
+    text-align: center;
+}
+
+
+.headerOrderBy {
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.btnBox div {
+    background-color: #444444;
+}
+
+.btnBox input {
+    background-color: #444444;
+    outline: none;
+    box-sizing: border-box;
+    text-align: center;
+    margin-right: 1rem;
+}
+
+.headLeft {
+    width: calc(2.7% * 31);
+    text-align: center;
+    height: 100%;
+}
+
+.tableDate {
+    width: 100%;
+    display: flex;
+}
+
+.dateColumn {
+    width: calc(100% / 31);
+}
+
+
+.tableDate .dateColumn  {
+    top: 3rem;
+}
+
+.tableWeek .dateColumn  {
+    top: 6rem;
+}
+
+.th {
+    font-size: 1.4rem;
+    color: white;
+    text-align: center;
+    height: 3rem;
+    line-height: 3rem;
+}
+
+.headLeft .dateColumn,
+.tableBody .tbody .td {
+    line-height: 3rem;
+}
+
+.tableAttendance {
+    width: 16.3%;
+}
+
+.headRight {
+    line-height: 9rem;
+    height: 9rem;
+}
+
+.tdAttendance1 {
+    width: 3%;
+}
+
+.tdAttendance2 {
+    width: 5.15%;
+}
+
+.tdAttendance3 {
+    width: 8%;
+    text-align: left;
+    padding-left: 0.5rem;
+}
+
+.tdCheck {
+    width: 5.3%;
+}
+
+.tdDateData {
+    width: calc((100% - 16.3%) / 31);
+}
+
+/*popup*/
+
+.popupContainer {
+    max-height: 80rem;
+}
+
+.popupBodyMember {
+    height: 100%;
+    overflow: scroll;
+    display: block;
+}
+
+.popupContainerDouble {
+    width: 84rem;
+}
+
+.popupArticleLabel,
+.popupArticleDouble .popupArticleLabel {
+    width: 10rem;
+}
+
+.popupArticleFileDouble {
+    width: 26rem;
+}
+
+.popupArticleinputShort {
+    width: 12rem !important;
+}
+
+.popupArticleDouble .popupArticleinput {
+    width: 28rem;
+}
+
+.popupArticleCategori {
+    width: 100%;
+    padding-bottom: 0.4rem;
+    margin-top: 2rem;
+    font-size: 1.4rem;
+    font-weight: bold;
+    border-bottom: 0.1rem solid black;
+}
+
+.popupArticleUseEdit,
+.popupArticleUse {
+    justify-content: flex-start;
+}
+
+.popupArticleUseEdit label,
+.popupArticleUse label {
+    font-size: 1.4rem;
+    margin-right: 2rem;
+    cursor: pointer;
+}
+
+.popupArticleUseEdit label:nth-child(1),
+.popupArticleUse label:nth-child(1) {
+    margin-right: 0;
+}
+
+.popupArticleCategori:nth-child(1) {
+    margin-top: 0;
+}
+
+.popupIdBox {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 28rem;
+    height: 2.6rem;
+}
+
+.popupIdBox .idchecker {
+    width: 9rem;
+    margin-left: 2rem;
+    height: 2.4rem;
+    margin-top: 0;
+}
+
+.popupArticleDoubleLicense {
+    visibility: hidden;
+}
+
+.popupArticleBoxDoubleHeight {
+    height: 5.6rem;
+}
+
+.popupArticleBoxTextarea {
+    width: 100%;
+    height: 100%;
+}
+
+.hrEditPW {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 18rem;
+    height: 3rem;
+    margin: 0 auto;
+    font-size: 1.4rem;
+    color: white;
+    background-color: #444444;
+    border-radius: 0.2rem;
+    box-sizing: border-box;
+    cursor: pointer;
+}
+
+.hrEditPW svg {
+    margin-right: 1rem;
+}
+
+.PopupDataCellPw {
+    width: 16rem;
+}
+
+.popupCloseBtn {
+    background-color: #444444;
+}
+
+.blanckTr {
+    width: 100%;
+    height: 100%;
+}
+
+.popupArticleInputDouble {
+    width: 70rem;
+}
+
+.btnModulesCreate {
+    background-color: #0069D9;
+    margin-right: 1rem;
+}
+
+.headerFlex {
+    display: flex;
+}
+
+.popupArticleFileDoubleExcel {
+    width: 100%;
+}
+
+.popupArticleBoxAllowanceType {
+    display: none;
+}
+
+
+
+@media all and (min-width:1460px) and (max-width: 1600px) {
+    .popupArticleDouble .popupIdBox .popupArticleinput {
+        width: 18.4rem;
+    }
+}
+
+table tbody tr {
+    height: 3.6rem;
+}
+
+.contentsAreaBox {
+    width: 100%;
+    height: 81rem;
+    padding: 0;
+    position: relative;
+    display: flex;
+    align-items: flex-start;
+    padding: 0 0 1rem 0;
+    box-sizing: border-box;
+}
+
+.backgroundBlue {
+    background-color: #0069D9;
+}
+
+.closeBtn {
+    margin-left: 1rem;
+}
+
+.tableBody .th {
+    background-color: #444444;
+    border-right: 0.1rem solid #CDCDCE;
+    border-bottom: 0.1rem solid #CDCDCE;
+    padding: 0;
+    box-sizing: border-box;
+    
+}
+
+
+/*  */
+
+
+.orderListBody {
+    position: relative;
+    display: flex;
+    align-items: flex-start;
+    width: 100%;
+    height: 100%;
+    padding: 0 1rem 1rem 0;
+    box-sizing: border-box;
+}
+
+.orderListMain {
+    display: flex;
+    flex-direction: column;
+    width: 20rem;
+    height: 100%;
+    border-right: 0.1rem solid #CDCDCE;
+    box-sizing: border-box;
+}
+
+.orderListSub {
+    display: flex;
+    flex-direction: column;
+    width: calc(100% - 20rem);
+    height: calc(100% + 1rem);
+    overflow-x: scroll;
+}
+
+.orderListSubScrollX {
+    display: flex;
+    flex-direction: column;
+    width: 290rem;
+    height: 100%;
+}
+
+.orderListSubScroll {
+    width: 100%;
+    height: 100%;
+    overflow-y: scroll;
+}
+
+
+.orderListTableHead {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    height: 10.1rem;
+    background-color: #444;
+}
+
+.orderListScrollBox {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    width: 100%;
+    height: auto;
+}
+
+.orderListItem {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    height: 18rem;
+    border-bottom: 0.1rem solid #CDCDCE;
+    box-sizing: border-box;
+}
+
+.orderListTotal .orderListMainContents,
+.orderListTotal .orderListSubContents {
+    border-right: 0.1rem solid #707070;
+}
+
+
+/* 스크롤바 설정*/
+.orderListScrollYBox::-webkit-scrollbar {
+    width: 1rem;
+}
+
+/* 스크롤바 막대 설정*/
+.orderListScrollYBox::-webkit-scrollbar-thumb {
+    height: 17%;
+    background-color: #444444;
+    border-radius: 1rem;
+}
+
+/* 스크롤바 뒷 배경 설정*/
+.orderListScrollYBox::-webkit-scrollbar-track {
+    background-color: #D2D2D2;
+}
+
+.orderListTableHead .orderListMainContents,
+.orderListTableHead .orderListSubContents {
+    color: white;
+}
+
+.orderListMainContents {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    font-size: 1.4rem;
+    border-right: 0.1rem solid #CDCDCE;
+    box-sizing: border-box;
+}
+
+.orderListMain1 {
+    justify-content: center;
+    width: 20%;
+}
+
+.orderListMain2 {
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 40%;
+    box-sizing: border-box;
+}
+
+.orderListMain3 {
+    border-right: none;
+}
+
+.orderListMain2Td {
+    width: 100%;
+    border-bottom: 0.1rem solid #CDCDCE;
+    height: 3rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+}
+
+.orderListMain2Td:last-child {
+    border-bottom: none;
+}
+
+.orderListMainTotal {
+    width: 100%;
+}
+
+
+
+.orderListTableHead .orderListMain2 {
+    justify-content: center;
+}
+
+.orderListSubContents:nth-child(1) {
+    width: 38rem;
+}
+
+.orderListItem .orderListSubContents:nth-child(1) {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    padding: 0.6rem 1rem;
+    box-sizing: border-box;
+}
+
+.orderListSubContents:nth-child(3),
+.orderListSubContents:nth-child(5) {
+    width: 8rem;
+}
+
+.orderListSubContents:nth-child(5) {
+    text-align: center;
+    word-break: keep-all;
+}
+
+.orderListSubContents:nth-child(2),
+.orderListSubContents:nth-child(16),
+.orderListSubContents:nth-child(17),
+.orderListSubContents:nth-child(18) {
+    width: 10rem;
+}
+
+.orderListSubContents:nth-child(4) {
+    text-align: center;
+    word-break: keep-all;
+}
+
+.orderListSubContents:nth-child(4),
+.orderListSubContents:nth-child(6),
+.orderListSubContents:nth-child(7),
+.orderListSubContents:nth-child(12),
+.orderListSubContents:nth-child(14),
+.orderListSubContents:nth-child(15) {
+    width: 12rem;
+}
+
+.orderListSubContents:nth-child(8) {
+    width: 10rem;
+}
+
+.orderListSubContents:nth-child(9) {
+    width: 16rem;
+}
+
+.orderListSubContents:nth-child(10) {
+    width: 36rem;
+}
+
+.orderListSubContents:nth-child(13) {
+    width: 34rem;
+}
+
+.orderListSubContents:nth-child(11) {
+    width: 28rem;
+}
+
+
+.orderListItem .orderListSubContents:nth-child(10),
+.orderListItem .orderListSubContents:nth-child(10),
+.orderListItem .orderListSubContents:nth-child(11),
+.orderListItem .orderListSubContents:nth-child(13) {
+    justify-content: flex-start;
+    padding-left: 1rem;
+    box-sizing: border-box;
+}
+
+.orderListItem .orderListSubContents:nth-child(9) {
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    padding-left: 1rem;
+    box-sizing: border-box;
+}
+
+.thisRoute {
+    background-color: rgb(255, 242, 204);
+}
+
+/* 스크롤바 설정*/
+.orderListSubScroll::-webkit-scrollbar {
+    width: 0rem;
+}
+
+/* 스크롤바 설정*/
+.orderListSub::-webkit-scrollbar {
+    height: 1rem;
+}
+
+/* 스크롤바 막대 설정*/
+.orderListSub::-webkit-scrollbar-thumb {
+    height: 17%;
+    background-color: #444444;
+    border-radius: 1rem;
+}
+
+/* 스크롤바 뒷 배경 설정*/
+.orderListSub::-webkit-scrollbar-track {
+    background-color: #D2D2D2;
+}
+
+
+/* 스크롤바 설정*/
+.orderListScrollYBox::-webkit-scrollbar {
+    width: 1rem;
+}
+
+/* 스크롤바 막대 설정*/
+.orderListScrollYBox::-webkit-scrollbar-thumb {
+    height: 17%;
+    background-color: #444444;
+    border-radius: 1rem;
+}
+
+/* 스크롤바 뒷 배경 설정*/
+.orderListScrollYBox::-webkit-scrollbar-track {
+    background-color: #D2D2D2;
+}
+

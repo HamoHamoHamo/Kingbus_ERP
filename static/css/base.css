@@ -30,6 +30,7 @@ textarea {
 .scrollDiv::-webkit-scrollbar {
   position: absolute;
   width: 0.6rem;
+  height: 1rem;
 }
 
 /* 스크롤바 막대 설정*/
@@ -135,15 +136,17 @@ textarea {
   cursor: pointer;
 }
 
-.nav1BoxMenuImg {
-  margin-right: 1rem;
-}
 
 .nav1BoxMenu img:nth-last-child(1) {
   cursor: pointer;
 }
 
-.nav1BoxMenu div {
+.nav1BoxMenuImgDiv {
+  width: 1.7rem;
+  margin-right: 2rem;
+}
+
+.nav1BoxMenuHaveDepth2Text {
   display: flex;
   align-items: center;
   width: calc(100% - 4.4rem);

@@ -42,10 +42,14 @@ function openSideNav() {
         sideMenuNav2[idx].style.height = "12.6rem";
         break;
       case 3:
-        sideMenuNav2Box[idx].style.height = "26.4rem";
-        sideMenuNav2[idx].style.height = "24.4rem";
+        sideMenuNav2Box[idx].style.height = "10.4rem";
+        sideMenuNav2[idx].style.height = "8.4rem";
         break;
       case 4:
+        sideMenuNav2Box[idx].style.height = "23rem";
+        sideMenuNav2[idx].style.height = "21rem";
+        break;
+      case 5:
         sideMenuNav2Box[idx].style.height = "23rem";
         sideMenuNav2[idx].style.height = "21rem";
         break;
@@ -57,15 +61,15 @@ function openSideNav() {
       //   sideMenuNav2Box[idx].style.height = "10.4rem";
       //   sideMenuNav2[idx].style.height = "8.4rem";
       //   break;
-      case 5:
+      case 6:
         sideMenuNav2Box[idx].style.height = "23rem";
         sideMenuNav2[idx].style.height = "21rem";
         break;
-      case 6:
+      case 7:
         sideMenuNav2Box[idx].style.height = "10.4rem";
         sideMenuNav2[idx].style.height = "8.4rem";
         break;
-      case 7:
+      case 8:
         sideMenuNav2Box[idx].style.height = "10.4rem";
         sideMenuNav2[idx].style.height = "8.4rem";
         break;

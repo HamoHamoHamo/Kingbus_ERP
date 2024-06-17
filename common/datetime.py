@@ -52,6 +52,24 @@ def get_hour_minute(minutes):
     
     return f'-{convert_hours}시간 {convert_minutes}분' if minutes < 0 else f'{convert_hours}시간 {convert_minutes}분'
 
+
+def get_hour_minute_with_colon(minutes):
+    hour = abs(minutes) // 60
+    hour = f"0{hour}" if hour < 10 else str(hour)
+    
+    minute = abs(minutes) % 60
+    minute = f"0{minute}" if minute < 10 else str(minute)
+    
+    return f"{hour}:{minute}"
+
+def get_minute_from_colon_time(time: str):
+    if len(time) != 5:
+        return "Invalid time format"
+    return int(time[:2]) * 60 + int(time[3:])
+
+    
+    
+
 def add_days_to_date(date_string, days_to_add):
     try:
         # 문자열 형식의 날짜를 datetime 객체로 변환
