@@ -172,6 +172,7 @@ class MemberList(generic.ListView):
                 'end_date' : member.end_date,
                 'leave_date' : member.leave_date,
                 'allowance_type' : member.allowance_type,
+                'license' : member.license,
             })
             data_count = 0
             for key, value in data_list[-1].items():
@@ -320,6 +321,7 @@ def member_edit(request):
             member.position = member_form.cleaned_data['position']
             member.apprenticeship_note = member_form.cleaned_data['apprenticeship_note']
             member.leave_reason = member_form.cleaned_data['leave_reason']
+            member.license = member_form.cleaned_data['license']
             member.emergency = request.POST.get('emergency1', '') + ' ' + request.POST.get('emergency2', '')
             member.use = request.POST.get('use')
             member.authority = req_auth
@@ -339,6 +341,7 @@ def member_edit(request):
             member.leave_date = request.POST.get('leave_date')
             member.birthdate = calculate_birthdate_by_resident_number(member.resident_number1)
             member.allowance_type = request.POST.get('allowance_type', '기사수당(현재)')
+            
             member.save()
 
             #### 금액, 기사수당 수정 시 입력한 월 이후 배차들 금액, 기사수당 수정
@@ -484,10 +487,10 @@ def member_file_download(request, file_id):
 def member_download(request):
     if request.session.get('authority') > 1:
         return render(request, 'authority.html')
-    datalist = list(Member.objects.exclude(use='삭제').order_by('name').values_list('id', 'user_id', 'name', 'role', 'birthdate', 'phone_num', 'emergency', 'address', 'entering_date', 'note', 'use'))
+    datalist = list(Member.objects.exclude(use='삭제').order_by('name').values_list('id', 'user_id', 'name', 'role', 'birthdate', 'phone_num', 'emergency', 'address', 'entering_date', 'note', 'use', 'license'))
     
     try:
-        df = pd.DataFrame(datalist, columns=['id', '사용자id', '이름', '업무', '생년월일', '전화번호', '비상연락망', '주소', '입사일', '비고', '사용여부'])
+        df = pd.DataFrame(datalist, columns=['id', '사용자id', '이름', '업무', '생년월일', '전화번호', '비상연락망', '주소', '입사일', '비고', '사용여부', '버스기사자격증번호'])
         url = f'{MEDIA_ROOT}/humanresource/memberDataList.xlsx'
         df.to_excel(url, index=False)
 

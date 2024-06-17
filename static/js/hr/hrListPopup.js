@@ -76,6 +76,7 @@ const end_date = document.querySelector("#end_date")
 const leave_date = document.querySelector("#leave_date")
 const resident_number1 = document.querySelector("#resident_number1")
 const resident_number2 = document.querySelector("#resident_number2")
+const license = document.querySelector("#license")
 
 let memberPopupStatus = ''
 let thisMemberId = ''
@@ -183,6 +184,7 @@ function openDetailPopup() {
   leave_date.value = data.leave_date
   resident_number1.value = data.resident_number1
   resident_number2.value = data.resident_number2
+  license.value = data.license
 }
 
 
