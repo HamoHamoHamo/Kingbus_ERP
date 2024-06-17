@@ -49,6 +49,7 @@ class Member(models.Model):
     end_date = models.CharField(verbose_name='종료일', max_length=100, null=False, blank=True)
     leave_date = models.CharField(verbose_name='퇴사일', max_length=100, null=False, blank=True)
     allowance_type = models.CharField(verbose_name='수당지급기준', max_length=100, null=False, blank=True, default="기사수당(현재)")
+    license = models.CharField(verbose_name='버스기사자격증', max_length=100, null=False, blank=True)
 
     base = models.CharField(verbose_name='기본급', max_length=20, null=False, default=0)
     service_allowance = models.CharField(verbose_name='근속수당', max_length=20, null=False, default=0)

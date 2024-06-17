@@ -192,7 +192,7 @@ td:nth-child(13) {
 
 .popupArticleLabel,
 .popupArticleDouble .popupArticleLabel {
-    width: 10rem;
+    width: 12rem;
 }
 
 .popupArticleFileDouble {
@@ -200,11 +200,11 @@ td:nth-child(13) {
 }
 
 .popupArticleinputShort {
-    width: 12rem !important; 
+    width: 10rem !important; 
 }
 
 .popupArticleDouble .popupArticleinput{
-    width: 28rem;
+    width: 24rem;
 }
 
 .popupArticleCategori {
@@ -241,7 +241,7 @@ td:nth-child(13) {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    width: 28rem;
+    width: 24rem;
     height: 2.6rem;
 }
 

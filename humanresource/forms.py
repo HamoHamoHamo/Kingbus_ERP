@@ -33,6 +33,7 @@ class MemberForm(forms.ModelForm):
             'end_date',
             'leave_date',
             'allowance_type',
+            'license',
         ]
 
 # class HRForm(forms.ModelForm):
