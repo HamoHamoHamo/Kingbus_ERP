@@ -298,8 +298,8 @@ def member_edit(request):
                 req_auth = 0
 
             cur_auth = member.authority
-            if (cur_auth <= 2 or req_auth <= 2) and user_auth != 0:
-                return HttpResponseBadRequest()
+            if user_auth != 0 and (req_auth == 0 or cur_auth == 0):
+                return HttpResponseBadRequest('수정 권한이 없습니다')
 
             if member_form.cleaned_data['role'] == '운전원' and member.name != member_form.cleaned_data['name']:
                 for vehicle in Vehicle.objects.filter(driver=member):
