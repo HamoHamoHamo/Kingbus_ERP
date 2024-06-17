@@ -1,10 +1,11 @@
 from datetime import datetime, timedelta
+from common.constant import WEEK2, DATE_FORMAT, DATE_TIME_FORMAT
 
 def calculate_time_difference(start_time_str, end_time_str):
     # 입력된 시간 문자열을 datetime 객체로 변환
     try:
-        start_time = datetime.strptime(start_time_str, "%Y-%m-%d %H:%M")
-        end_time = datetime.strptime(end_time_str, "%Y-%m-%d %H:%M")
+        start_time = datetime.strptime(start_time_str, DATE_TIME_FORMAT)
+        end_time = datetime.strptime(end_time_str, DATE_TIME_FORMAT)
     
     except:
         return 0
@@ -22,8 +23,8 @@ def calculate_time_difference(start_time_str, end_time_str):
 
 def calculate_date_difference(start_date_str, end_date_str):
     # 입력된 시간 문자열을 datetime 객체로 변환
-    start_date = datetime.strptime(start_date_str, "%Y-%m-%d")
-    end_date = datetime.strptime(end_date_str, "%Y-%m-%d")
+    start_date = datetime.strptime(start_date_str, DATE_FORMAT)
+    end_date = datetime.strptime(end_date_str, DATE_FORMAT)
 
     # 두 datetime 객체의 차이 계산
     date_difference = end_date - start_date
@@ -34,7 +35,7 @@ def calculate_date_difference(start_date_str, end_date_str):
 def last_day_of_month(date_str):
     try:
         # 입력된 날짜 문자열을 datetime 객체로 변환
-        date_obj = datetime.strptime(date_str, '%Y-%m-%d')
+        date_obj = datetime.strptime(date_str, DATE_FORMAT)
         
         # 다음 달의 첫 날을 구하기 위해 입력된 날짜에 +1 한 후 해당 월의 1일로 설정
         first_day_of_next_month = datetime(date_obj.year, date_obj.month, 1) + timedelta(days=32)
@@ -67,17 +68,21 @@ def get_minute_from_colon_time(time: str):
         return "Invalid time format"
     return int(time[:2]) * 60 + int(time[3:])
 
-    
-    
-
 def add_days_to_date(date_string, days_to_add):
     try:
         # 문자열 형식의 날짜를 datetime 객체로 변환
-        date_obj = datetime.strptime(date_string, '%Y-%m-%d')
+        date_obj = datetime.strptime(date_string, DATE_FORMAT)
         # 주어진 일수를 더한 후의 날짜를 계산
         new_date = date_obj + timedelta(days=days_to_add)
         # 새로운 날짜를 문자열 형식으로 반환
-        return new_date.strftime('%Y-%m-%d')
+        return new_date.strftime(DATE_FORMAT)
     except ValueError:
         # 날짜 형식이 잘못된 경우 예외 처리
         return "Invalid date format"
+
+def get_weekday_from_date(date):
+    try:
+        date_type = datetime.strptime(date, DATE_FORMAT)
+    except Exception:
+        return ''
+    return WEEK2[date_type.weekday()]
