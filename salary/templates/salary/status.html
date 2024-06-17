@@ -1,0 +1,242 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load dispatch_custom_tags %}
+{% block head %}
+<meta http-equiv="Cache-Control" content="private, no-cache, no-store, max-age=0, must-revalidate">
+
+<link rel="stylesheet" href="{% static 'css/pagination.css' %}" type="text/css" />
+<link rel="stylesheet" href="{% static 'css/salary/status.css' %}" type="text/css" />
+{% endblock %}
+
+{% block content-header %}
+<div class="HeaderTitle">
+    근무현황
+</div>
+{% endblock %}
+
+{% block content %}
+
+<div class="search-Container">
+    <form class="search-Form">
+        <label for="" class="search-Form_label">날짜 </label>
+        <input autocomplete="off" name='month' value="{{month}}" type="month"
+            class="search-Form_input search-Form_input-Month">
+        <label for="" class="search-Form_label">이름 </label>
+        <input autocomplete="off" name="name" value="{{name}}" type="text" class="search-Form_input inputSearchName">
+        <input type="submit" class="search-Form_search-btn" value="검색">
+    </form>
+</div>
+
+
+
+
+<div class="contentsAreaBox scrollDiv">
+    <div class="orderListMain">
+        <div class="orderListTableHead">
+            <div class="orderListMainContents orderListMain1">번호</div>
+            <div class="orderListMainContents orderListMain2">이름</div>
+            <div class="orderListMainContents orderListMain2 orderListMain3">구분</div>
+        </div>
+        <div class="orderListSubScroll">
+            <div class="orderListScrollBox">
+                {% for member in member_list %}
+                <div class="orderListItem">
+                    <div class="orderListMainContents orderListMain1">
+                        {{forloop.counter}} 
+                    </div>
+                    <div class="orderListMainContents orderListMain2">
+                        <div class="orderListMain2Td">{{member.name}}</div>
+                        <div class="orderListMain2Td"></div>
+                        <div class="orderListMain2Td">{{member.role}}</div>
+                        <div class="orderListMain2Td"></div>
+                        <div class="orderListMain2Td">{{member.team}}</div>
+                        <div class="orderListMain2Td"></div>
+                    </div>
+                    <div class="orderListMainContents orderListMain2 orderListMain3">
+                        <div class="orderListMain2Td">근무시간</div>
+                        <div class="orderListMain2Td">출근</div>
+                        <div class="orderListMain2Td">퇴근</div>
+                        <div class="orderListMain2Td">대기</div>
+                        <div class="orderListMain2Td">야근</div>
+                        <div class="orderListMain2Td">구분</div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    <div class="orderListSub orderListScrollYBox">
+        <div class="tableBody table">
+            <div class="thead">
+                <div class="headLeft">
+                    <div class="th">날짜</div>
+                    <div class="tableDate">
+                        <div class="th dateColumn">1</div>
+                        <div class="th dateColumn">2</div>
+                        <div class="th dateColumn">3</div>
+                        <div class="th dateColumn">4</div>
+                        <div class="th dateColumn">5</div>
+                        <div class="th dateColumn">6</div>
+                        <div class="th dateColumn">7</div>
+                        <div class="th dateColumn">8</div>
+                        <div class="th dateColumn">9</div>
+                        <div class="th dateColumn">10</div>
+                        <div class="th dateColumn">11</div>
+                        <div class="th dateColumn">12</div>
+                        <div class="th dateColumn">13</div>
+                        <div class="th dateColumn">14</div>
+                        <div class="th dateColumn">15</div>
+                        <div class="th dateColumn">16</div>
+                        <div class="th dateColumn">17</div>
+                        <div class="th dateColumn">18</div>
+                        <div class="th dateColumn">19</div>
+                        <div class="th dateColumn">20</div>
+                        <div class="th dateColumn">21</div>
+                        <div class="th dateColumn">22</div>
+                        <div class="th dateColumn">23</div>
+                        <div class="th dateColumn">24</div>
+                        <div class="th dateColumn">25</div>
+                        <div class="th dateColumn">26</div>
+                        <div class="th dateColumn">27</div>
+                        <div class="th dateColumn">28</div>
+                        <div class="th dateColumn">29</div>
+                        <div class="th dateColumn">30</div>
+                        <div class="th dateColumn">31</div>
+                    </div>
+                    <div class="tableDate tableWeek">
+                        <div class="th dateColumn">월</div>
+                        <div class="th dateColumn">화</div>
+                        <div class="th dateColumn">수</div>
+                        <div class="th dateColumn">목</div>
+                        <div class="th dateColumn">금</div>
+                        <div class="th dateColumn">토</div>
+                        <div class="th dateColumn">일</div>
+                        <div class="th dateColumn">월</div>
+                        <div class="th dateColumn">화</div>
+                        <div class="th dateColumn">수</div>
+                        <div class="th dateColumn">목</div>
+                        <div class="th dateColumn">금</div>
+                        <div class="th dateColumn">토</div>
+                        <div class="th dateColumn">일</div>
+                        <div class="th dateColumn">월</div>
+                        <div class="th dateColumn">화</div>
+                        <div class="th dateColumn">수</div>
+                        <div class="th dateColumn">목</div>
+                        <div class="th dateColumn">금</div>
+                        <div class="th dateColumn">토</div>
+                        <div class="th dateColumn">일</div>
+                        <div class="th dateColumn">월</div>
+                        <div class="th dateColumn">화</div>
+                        <div class="th dateColumn">수</div>
+                        <div class="th dateColumn">목</div>
+                        <div class="th dateColumn">금</div>
+                        <div class="th dateColumn">토</div>
+                        <div class="th dateColumn">일</div>
+                        <div class="th dateColumn">월</div>
+                        <div class="th dateColumn">화</div>
+                        <div class="th dateColumn">수</div>
+                    </div>
+                    
+                </div>
+                <div class="th headRight tableAttendance">근태</div>
+                
+                
+            </div class="thead">
+            <div class="tbody">
+                {% for member in member_list %}
+                {% with member_id=member.id %}
+                {% with data=datas|obj:member.id %}
+                <div class="tbodyDiv">
+                    <!-- 근무시간 -->
+                    <div class="tr">
+                        {% for time in data.work_time_list %}
+                        <div class="td tdDateData">{{time}}</div>
+                        {% endfor %}
+                        <div class="td tdAttendance1">근무시간</div>
+                        <div class="td tdAttendance2">{{data.work_total_minute}}</div>
+                        <div class="td tdAttendance1"></div>
+                        <div class="td tdAttendance2"></div>
+                    </div>
+                    <!-- 출근 -->
+                    <div class="tr">
+                        {% for time in data.morning_time_list %}
+                        <div class="td tdDateData">{{time}}</div>
+                        {% endfor %}
+                        <div class="td tdAttendance1">근무</div>
+                        <div class="td tdAttendance2">{{data.work_count}}</div>
+                        <div class="td tdAttendance1">연차</div>
+                        <div class="td tdAttendance2"></div>
+                    </div>
+                    <!-- 퇴근 -->
+                    <div class="tr">
+                        {% for time in data.evening_time_list %}
+                        <div class="td tdDateData">{{time}}</div>
+                        {% endfor %}
+                        <div class="td tdAttendance1">결근</div>
+                        <div class="td tdAttendance2"></div>
+                        <div class="td tdAttendance1">경조</div>
+                        <div class="td tdAttendance2"></div>
+                    </div>
+                    <!-- 대기 -->
+                    <div class="tr">
+                        {% for time in data.wait_time_list %}
+                        <div class="td tdDateData">{{time}}</div>
+                        {% endfor %}
+                        <div class="td tdAttendance1">주휴</div>
+                        <div class="td tdAttendance2"></div>
+                        <div class="td tdAttendance1">병가</div>
+                        <div class="td tdAttendance2"></div>
+                    </div>
+                    <!-- 야근 -->
+                    <div class="tr">
+                        {% for morning in data.morning_time_list %}
+                        <div class="td tdDateData"></div>
+                        {% endfor %}
+                        <div class="td tdAttendance1">비번</div>
+                        <div class="td tdAttendance2"></div>
+                        <div class="td tdAttendance1">공휴</div>
+                        <div class="td tdAttendance2"></div>
+                    </div>
+                    <!-- 구분 -->
+                    <div class="tr">
+                        {% for work in data.work_list %}
+                        <div class="td tdDateData">{{work}}</div>
+                        {% endfor %}
+                        <div class="td tdAttendance1">무휴</div>
+                        <div class="td tdAttendance2"></div>
+                        <div class="td tdAttendance1">합계</div>
+                        <div class="td tdAttendance2"></div>
+                    </div>
+                </div>
+                {% endwith %}
+                {% endwith %}
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}
+
+
+
+{% block popup %}
+
+{% endblock %}
+
+
+
+
+
+{% block script %}
+<script>
+    {% autoescape off %}
+    console.log("test", {{datas}})
+    {% endautoescape %}
+</script>
+<script type="module" src="{% static 'js/salary/status.js' %}"></script>
+<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.15.5/xlsx.full.min.js"></script>
+<script type="module" src="{% static 'js/dispatch/station/station.js' %}"></script>
+<script type="module" src="{% static 'js/dispatch/station/excel.js' %}"></script> -->
+{% endblock %}
