@@ -86,3 +86,35 @@ def get_weekday_from_date(date):
     except Exception:
         return ''
     return WEEK2[date_type.weekday()]
+
+def get_next_monday(date_str):
+    # 입력된 문자열을 datetime 객체로 변환
+    date = datetime.strptime(date_str, DATE_FORMAT)
+    
+    # 현재 요일 (월요일 = 0, 일요일 = 6)
+    current_weekday = date.weekday()
+    
+    # 다음 주 월요일까지 남은 일수 계산
+    days_until_next_monday = 7 - current_weekday
+    
+    # 다음 주 월요일의 날짜 계산
+    next_monday = date + timedelta(days=days_until_next_monday)
+    
+    # 날짜를 문자열 형식으로 변환하여 반환
+    return next_monday.strftime("%Y%m%d")
+
+def get_mid_time(time1, time2):
+    # 시간을 datetime 객체로 변환
+    time_format = "%H:%M"
+    t1 = datetime.strptime(time1, time_format)
+    t2 = datetime.strptime(time2, time_format)
+    
+    # 두 시간 사이의 차이를 계산
+    if t1 > t2:
+        t1, t2 = t2, t1  # t1이 항상 t2보다 먼저 오도록 스왑
+    
+    # 두 시간 사이의 중간값 계산
+    mid_time = t1 + (t2 - t1) / 2
+    
+    # 중간값을 "HHMM" 형식으로 변환하여 반환
+    return mid_time.strftime("%H%M")

@@ -129,6 +129,9 @@ class DispatchRegularlyRouteKnow(models.Model):
         return f'{self.regularly_id.route} {self.driver_id.name}'
 
 class DispatchOrder(models.Model):
+    def get_hour_minute(self):
+        return get_hour_minute(int(self.time)) if self.time else ""
+    
     departure = models.CharField(verbose_name='출발지', max_length=200, null=False)
     arrival = models.CharField(verbose_name='도착지', max_length=200, null=False)
     departure_date = models.CharField(verbose_name='출발날짜', max_length=20, null=False)
@@ -156,6 +159,10 @@ class DispatchOrder(models.Model):
     driver_lease = models.CharField(verbose_name='인력임대차', max_length=100, null=False, blank=True)
     vehicle_lease = models.CharField(verbose_name='차량임대차', max_length=100, null=False, blank=True)
     route = models.CharField(verbose_name='노선이름', max_length=500, null=False)
+    distance = models.CharField(verbose_name='거리', max_length=50, null=False, blank=True)
+    time = models.CharField(verbose_name='운행시간(분)', max_length=50, null=False, blank=True)
+    distance_list = models.CharField(verbose_name="정류장별 거리", max_length=500, null=False, blank=True)
+    time_list = models.CharField(verbose_name="정류장별 시간", max_length=500, null=False, blank=True)
     
     pub_date = models.DateTimeField(auto_now_add=True, verbose_name='작성시간')
     updated_at = models.DateTimeField(auto_now=True, verbose_name='수정시간')
@@ -163,16 +170,20 @@ class DispatchOrder(models.Model):
     def __str__(self):
         return self.route
         
-class DispatchOrderWaypoint(models.Model):
-    order_id = models.ForeignKey(DispatchOrder, on_delete=models.CASCADE, related_name="waypoint", db_column="order_id", null=False)
-    waypoint = models.CharField(verbose_name='경유지', max_length=100, null=False)
+class DispatchOrderStation(models.Model):
+    order_id = models.ForeignKey(DispatchOrder, on_delete=models.CASCADE, related_name="station", db_column="order_id", null=False)
+    station_name = models.CharField(verbose_name='경유지명', max_length=100, null=False)
+    place_name = models.CharField(verbose_name='장소이름', max_length=100, null=False, blank=True)
+    address = models.CharField(verbose_name='경유지 주소', max_length=100, null=False, blank=True)
+    longitude = models.CharField(verbose_name='경도 x', max_length=100, null=False, blank=True)
+    latitude = models.CharField(verbose_name='위도 y', max_length=100, null=False, blank=True)
     time = models.CharField(verbose_name='시간', max_length=5, null=False, blank=True)
     delegate = models.CharField(verbose_name='인솔자', max_length=100, null=False, blank=True)
     delegate_phone = models.CharField(verbose_name='인솔자 전화번호', max_length=100, null=False, blank=True)
     
     pub_date = models.DateTimeField(auto_now_add=True, verbose_name='작성시간')
     updated_at = models.DateTimeField(auto_now=True, verbose_name='수정시간')
-    creator = models.ForeignKey(Member, on_delete=models.SET_NULL, related_name="waypoint_creator", db_column="creator_id", null=True)
+    creator = models.ForeignKey(Member, on_delete=models.SET_NULL, related_name="order_station_creator", db_column="creator_id", null=True)
 
 class DispatchOrderConnect(models.Model):
     order_id = models.ForeignKey(DispatchOrder, on_delete=models.CASCADE, related_name="info_order", db_column="order_id", null=False)

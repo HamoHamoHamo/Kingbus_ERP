@@ -43,6 +43,8 @@ urlpatterns = [
     path('order/route/delete', views.order_delete, name="order_delete"),
     path('order/route/upload', views.order_upload, name="order_upload"),
     path('order/route/download', views.order_download, name="order_download"),
+    path('order/station', views.order_station_search, name="order_station_search"),
+    
     #운행확인
     path('schedule', views.ScheduleList.as_view(), name="schedule"),
     #배차거부

@@ -711,7 +711,7 @@ select[name=use]{
 }
 
 .popupContainerMap {
-  width: 80rem;
+  width: 90rem;
   height: auto;
 }
 
@@ -836,7 +836,7 @@ select[name=use]{
 
 .detailMapPopupScrollBox {
   width: 100%;
-  overflow: scroll;
+  overflow: auto;
   height: 19.4rem;
 
   flex-direction: column;
