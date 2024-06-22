@@ -1,5 +1,9 @@
 let params = new URLSearchParams(document.location.search)
 
+const popupBgModules = document.querySelectorAll(".popupBgModules")
+const SidemenuUseClose = document.querySelector(".Sidemenu")
+const popupAreaModules = document.querySelectorAll('.popupAreaModules');
+
 const searchRoute = document.querySelector("input[name=route]")
 const orderSearchSelect = document.querySelector(".orderSearchSelect")
 const inputTextPrice = document.querySelector(".inputTextPrice")

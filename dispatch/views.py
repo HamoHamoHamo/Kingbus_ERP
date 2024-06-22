@@ -17,7 +17,7 @@ from django.views import generic
 
 from .commons import get_date_connect_list, get_multi_date_connect_list
 from .forms import OrderForm, ConnectForm, RegularlyDataForm, StationForm, RegularlyForm
-from .models import DispatchRegularlyRouteKnow, DispatchCheck, DispatchRegularlyData, DispatchRegularlyWaypoint, Schedule, DispatchOrderConnect, DispatchOrder, DispatchRegularly, RegularlyGroup, DispatchRegularlyConnect, DispatchOrderWaypoint, ConnectRefusal, MorningChecklist, EveningChecklist, DrivingHistory, BusinessEntity, Station, DispatchRegularlyDataStation, DispatchRegularlyStation
+from .models import DispatchRegularlyRouteKnow, DispatchCheck, DispatchRegularlyData, DispatchRegularlyWaypoint, Schedule, DispatchOrderConnect, DispatchOrder, DispatchRegularly, RegularlyGroup, DispatchRegularlyConnect, DispatchOrderStation, ConnectRefusal, MorningChecklist, EveningChecklist, DrivingHistory, BusinessEntity, Station, DispatchRegularlyDataStation, DispatchRegularlyStation
 from assignment.models import AssignmentConnect
 from accounting.models import Collect, TotalPrice
 from crudmember.models import Category, Client
@@ -29,7 +29,7 @@ from vehicle.models import Vehicle
 from datetime import datetime, timedelta, date
 # from utill.decorator import option_year_deco
 from common.constant import TODAY, FORMAT, WEEK, WEEK2
-from common.datetime import get_hour_minute
+from common.datetime import get_hour_minute, get_next_monday, get_mid_time
 from my_settings import KAKAO_KEY
 from config.custom_logging import logger
 
@@ -1008,72 +1008,106 @@ def kakao_api_exception(current_address, next_address, data, regularly_data, reg
     raise BadRequest(f"kakao api error {current_address} > {next_address}\n{data}")
     
 
-def get_kakao_directions(regularly_data, regularly):
-    api_url = 'https://apis-navi.kakaomobility.com/v1/directions'
+def get_distance_and_time_from_kakao(origin, destination, departure_time):
+    api_url = 'https://apis-navi.kakaomobility.com/v1/future/directions'
     headers = {
         'Authorization': f"KakaoAK {KAKAO_KEY}"
     }
+
+    # departure time = 202406181530
+    try:
+        datetime.strptime(departure_time, "%Y%m%d%H%M")
+    except:
+        raise BadRequest("api departure_time 양식에 안 맞음")
     
+    params = {
+        'departure_time': departure_time,
+        'origin': origin,
+        'destination': destination,
+        'car_type': 3  # 대형차량
+    }
+    
+    response = requests.get(api_url, params=params, headers=headers)
+    data = response.json()
+    
+    if response.status_code == 200:
+        if data['routes'][0]['result_code'] == 104:
+            logger.info(f"출발지와 도착지가 5 m 이내로 설정된 경우 경로를 탐색할 수 없음 {origin} > {destination}")
+            return 0, 0, data
+        else:
+            try:
+                distance = data['routes'][0]['summary']['distance']
+                duration = data['routes'][0]['summary']['duration']
+                logger.info(f"kakao 길찾기 api success {origin} > {destination} departure_time : {departure_time}")
+                return distance, duration, data
+            except Exception as e:
+                logger.error(f"kakao api fail exception: {e}")
+                return None, None, data
+    else:
+        logger.error(f"response error {response.status_code}")
+        return None, None, data
+
+
+def get_regularly_distance_and_time(regularly_data, regularly):
     data_list = list(regularly_data.regularly_data_station.order_by('index').values('index', 'station__longitude', 'station__latitude', 'station__address'))
     distance_list = []
     time_list = []
     total_distance = 0
     total_time = 0
+    
     for i in range(len(data_list) - 1):
         current_data = data_list[i]
         next_data = data_list[i + 1]
-        params = {
-            'origin': f"{current_data['station__longitude']},{current_data['station__latitude']}",
-            'destination': f"{next_data['station__longitude']},{next_data['station__latitude']}",
-            'car_type': 3 # 대형차량
-        }
-        # API 호출
-        response = requests.get(api_url, params=params, headers=headers)
-        data = response.json()
-        if response.status_code == 200:
-            distance = 0
-            duration = 0
+        
+        origin = f"{current_data['station__longitude']},{current_data['station__latitude']}"
+        destination = f"{next_data['station__longitude']},{next_data['station__latitude']}"
+        
+        next_monday = get_next_monday(TODAY)
+        departure_time = next_monday + get_mid_time(regularly_data.departure_time, regularly_data.arrival_time)
 
-            if data['routes'][0]['result_code'] == 104:
-                logger.info(f"i={i} 출발지와 도착지가 5 m 이내로 설정된 경우 경로를 탐색할 수 없음 {current_data['station__address']} > {next_data['station__address']} distance 0 duration 0")
-                distance_list.append('0')
-                time_list.append('0')
-            else:
-                try:
-                    distance = data['routes'][0]['summary']['distance']
-                    duration = data['routes'][0]['summary']['duration']
-                    logger.info("kakao api success")
-                    logger.info(f"i={i} {current_data['station__address']} > {next_data['station__address']} distance : {distance} duration {duration}")
-                except Exception as e:
-                    # API 호출 에러
-                    distance_list.append("에러")
-                    time_list.append("에러")
-                    logger.info(f"kakao api fail exception : {e}")
-                    return kakao_api_exception(current_data['station__address'], next_data['station__address'], data, regularly_data, regularly)
-            
-                distance_list.append(str(distance))
-                time_list.append(str(round(duration / 60)))
-            total_distance += distance
-            total_time += duration
-        # 104	출발지와 도착지가 5 m 이내로 설정된 경우 경로를 탐색할 수 없음
+        distance, duration, api_data = get_distance_and_time_from_kakao(origin, destination, departure_time)
+        
+        if distance is None or duration is None:
+            logger.error(f"ERROR {current_data['station__address']} > {next_data['station__address']}")
+            # API 호출 실패 처리
+
+            regularly_data.time = 0
+            regularly_data.time_list = ''
+            regularly_data.distance = 0
+            regularly_data.distance_list = ''
+            regularly_data.save()
+
+            regularly.time = 0
+            regularly.time_list = ''
+            regularly.distance = 0
+            regularly.distance_list = ''
+            regularly.save()
+            raise BadRequest(f"kakao api error {current_data['station__address']} > {next_data['station__address']}\n{api_data}")
+        
+        if distance == 0 and duration == 0:
+            distance_list.append('0')
+            time_list.append('0')
         else:
-            logger.info(f"response error {response.status_code}")
-            return kakao_api_exception(current_data['station__address'], next_data['station__address'], data, regularly_data, regularly)
-
+            distance_list.append(str(distance))
+            time_list.append(str(round(duration / 60)))
+        
+        total_distance += distance
+        total_time += duration
+    
     regularly_data.time = round(total_time / 60)
     regularly_data.time_list = ','.join(time_list)
     regularly_data.distance = round(total_distance / 1000, 2)
     regularly_data.distance_list = ','.join(distance_list)
     regularly_data.save()
-
+    
     regularly.time = round(total_time / 60)
     regularly.time_list = ','.join(time_list)
     regularly.distance = round(total_distance / 1000, 2)
     regularly.distance_list = ','.join(distance_list)
     regularly.save()
-
+    
     return
-
+    
 def regularly_order_create(request):
     if request.session.get('authority') > 1:
         return render(request, 'authority.html')
@@ -1109,7 +1143,7 @@ def regularly_order_create(request):
             # 정류장 등록
             create_dispatch_regularly_stations(request, regularly_data, regularly, creator)
             
-            get_kakao_directions(regularly_data, regularly)
+            get_regularly_distance_and_time(regularly_data, regularly)
 
             return redirect(request.META.get('HTTP_REFERER', 'redirect_if_referer_not_found'))
         else:
@@ -1318,7 +1352,7 @@ def regularly_order_edit(request):
                         connect.driver_allowance = regularly.driver_allowance
                 connect.save()
 
-            get_kakao_directions(regularly_data, regularly)
+            get_regularly_distance_and_time(regularly_data, regularly)
             return redirect(request.META.get('HTTP_REFERER', 'redirect_if_referer_not_found'))
         else: 
             raise BadRequest("valid error ", f'{regularly_data_form.errors}')
@@ -2044,6 +2078,7 @@ class OrderList(generic.ListView):
         
         # date2 = self.request.GET.get('date2', TODAY)
         # weekday = WEEK2[datetime.strptime(date, FORMAT).weekday()]
+        
         detail_id = self.request.GET.get('id')
         if detail_id:
             context['detail'] = get_object_or_404(DispatchOrder, id=detail_id)
@@ -2051,6 +2086,27 @@ class OrderList(generic.ListView):
             date2 = context['detail'].arrival_date[:10]
             context['detail_connect_list'] = context['detail'].info_order.all()
             context['detail_connect_cnt'] = int(context['detail'].bus_cnt) - int(context['detail_connect_list'].count())
+
+            # 정류장
+            context['station_list'] = list(DispatchOrderStation.objects.filter(order_id=context['detail']).values('station_name', 'time', 'order_id__distance_list', 'order_id__time_list'))
+            
+            context['station_distance_time_list'] = []
+            for i in range(len(context['station_list']) - 1):
+                station_data = context['station_list'][i]
+                next_station_data = context['station_list'][i + 1]
+
+                try:
+                    distance = round(int(station_data['order_id__distance_list'].split(",")[i]) / 1000, 2)
+                    duration = get_hour_minute(int(station_data['order_id__time_list'].split(",")[i]))
+                except:
+                    distance = '에러'
+                    duration = '에러'
+                context['station_distance_time_list'].append({
+                    'station_name': f"{station_data['station_name']} ▶ \n{next_station_data['station_name']}",
+                    'station_time': f"{station_data['time']} ▶ \n{next_station_data['time']}",
+                    'distance': distance,
+                    'duration': duration,
+                })
 
         driver_list = Member.objects.filter(Q(role='운전원')|Q(role='팀장')).filter(use='사용').values_list('id', 'name')
         context['driver_dict'] = {}
@@ -2145,6 +2201,7 @@ class OrderList(generic.ListView):
         context['reservations'] = Category.objects.filter(type='예약회사')
         context['operatings'] = Category.objects.filter(type='운행회사')
         
+        
         return context
 
 def order_connect_create(request):
@@ -2214,6 +2271,53 @@ def order_connect_create(request):
     else:
         return HttpResponseNotAllowed(['post'])
 
+def get_order_distance_and_time(order):
+    data_list = list(order.station.order_by('pub_date').values('longitude', 'latitude', 'address'))
+    distance_list = []
+    time_list = []
+    total_distance = 0
+    total_time = 0
+    
+    for i in range(len(data_list) - 1):
+        current_data = data_list[i]
+        next_data = data_list[i + 1]
+        
+        origin = f"{current_data['longitude']},{current_data['latitude']}"
+        destination = f"{next_data['longitude']},{next_data['latitude']}"
+        
+        next_monday = get_next_monday(TODAY)
+        departure_time = next_monday + get_mid_time(order.departure_date[11:], order.arrival_date[11:])
+
+        distance, duration, api_data = get_distance_and_time_from_kakao(origin, destination, departure_time)
+        
+        if distance is None or duration is None:
+            logger.error(f"ERROR 일반 {current_data['address']} > {next_data['address']}")
+            # API 호출 실패 처리
+
+            order.time = 0
+            order.time_list = ''
+            order.distance = 0
+            order.distance_list = ''
+            order.save()
+
+            raise BadRequest(f"kakao api error {current_data['address']} > {next_data['address']}\n{api_data}")
+        
+        if distance == 0 and duration == 0:
+            distance_list.append('0')
+            time_list.append('0')
+        else:
+            distance_list.append(str(distance))
+            time_list.append(str(round(duration / 60)))
+        
+        total_distance += distance
+        total_time += duration
+    
+    order.time = round(total_time / 60)
+    order.time_list = ','.join(time_list)
+    order.distance = round(total_distance / 1000, 2)
+    order.distance_list = ','.join(distance_list)
+    order.save()
+    return
 
 def order_create(request):
     if request.session.get('authority') > 3:
@@ -2222,12 +2326,8 @@ def order_create(request):
     if request.method == "POST":
         creator = get_object_or_404(Member, pk=request.session.get('user'))
         order_form = OrderForm(request.POST)
-        waypoint_list = request.POST.getlist('waypoint')
-        waypoint_time_list = request.POST.getlist('waypoint_time')
-        delegate_list = request.POST.getlist('delegate')
-        delegate_phone_list = request.POST.getlist('delegate_phone')
 
-        if order_form.is_valid() and len(waypoint_list) == len(waypoint_time_list):
+        if order_form.is_valid():
             departure_time1 = request.POST.get('departure_time1')
             departure_time2 = request.POST.get('departure_time2')
             arrival_time1 = request.POST.get('arrival_time1')
@@ -2283,17 +2383,14 @@ def order_create(request):
             order.arrival_date = f"{request.POST.get('arrival_date')} {arrival_time1}:{arrival_time2}"
             order.route = request.POST.get('departure') + " ▶ " + request.POST.get('arrival')
             order.save()
+            
+            try:
+                create_order_stations(request, order, creator)
+            except Exception as e:
+                raise BadRequest("정류장 정보를 잘못 입력하셨습니다.", e)
 
-            for i in range(len(waypoint_list)):
-                waypoint = DispatchOrderWaypoint(
-                    order_id=order,
-                    waypoint=waypoint_list[i],
-                    time=waypoint_time_list[i],
-                    delegate=delegate_list[i] if delegate_list[i] != " " else '',
-                    delegate_phone=delegate_phone_list[i] if delegate_phone_list[i] != " " else '',
-                    creator=creator,
-                )
-                waypoint.save()
+            # 노선의 정류장에서 정류장 사이의 거리, 시간 측정해서 저장
+            get_order_distance_and_time(order)
 
             return redirect(reverse('dispatch:order') + f'?date1={request.POST.get("departure_date")}&date2={request.POST.get("arrival_date")}')
         else:
@@ -2399,12 +2496,6 @@ def order_edit(request):
         creator = get_object_or_404(Member, pk=request.session.get('user'))
         order_form = OrderForm(request.POST)
 
-        waypoint_list = request.POST.getlist('waypoint')
-        waypoint_time_list = request.POST.getlist('waypoint_time')
-        delegate_list = request.POST.getlist('delegate')
-        delegate_phone_list = request.POST.getlist('delegate_phone')
-
-
         if order_form.is_valid():
             post_departure_date = request.POST.get('departure_date', None)
             post_arrival_date = request.POST.get('arrival_date', None)
@@ -2506,24 +2597,63 @@ def order_edit(request):
             order.save()
 
             # 경유지 처리
-            order.waypoint.all().delete()
-
-            for i in range(len(waypoint_list)):
-                waypoint = DispatchOrderWaypoint(
-                    order_id=order,
-                    waypoint=waypoint_list[i],
-                    time=waypoint_time_list[i],
-                    delegate=delegate_list[i] if delegate_list[i] != " " else '',
-                    delegate_phone=delegate_phone_list[i] if delegate_phone_list[i] != " " else '',
-                    creator=creator,
-                )
-                waypoint.save()
+            old_stations = order.station.all()
+            old_stations.delete()
+            try:
+                create_order_stations(request, order, creator)
+            except Exception as e:
+                raise BadRequest("정류장 정보를 잘못 입력하셨습니다.", e)
+            
+            # 노선의 정류장에서 정류장 사이의 거리, 시간 측정해서 저장
+            get_order_distance_and_time(order)
 
             return redirect(request.META.get('HTTP_REFERER', 'redirect_if_referer_not_found'))
         else:
             raise Http404
     else:
         return HttpResponseNotAllowed(['post'])
+
+def create_order_stations(request, order, creator):
+    station_list = request.POST.getlist('station_name')
+    station_time_list = request.POST.getlist('station_time')
+    delegate_list = request.POST.getlist('delegate')
+    delegate_phone_list = request.POST.getlist('delegate_phone')
+    place_name_list = request.POST.getlist('place_name')
+    address_list = request.POST.getlist('address')
+    longitude_list = request.POST.getlist('longitude')
+    latitude_list = request.POST.getlist('latitude')
+
+    if (len(station_time_list) == len(station_list) and
+    len(delegate_list) == len(station_list) and
+    len(delegate_phone_list) == len(station_list) and
+    len(place_name_list) == len(station_list) and
+    len(address_list) == len(station_list) and
+    len(longitude_list) == len(station_list) and
+    len(latitude_list) == len(station_list)):
+        for i in range(len(station_list)):
+            station = DispatchOrderStation(
+                order_id=order,
+                station_name=station_list[i],
+                place_name=place_name_list[i],
+                address=address_list[i],
+                longitude=longitude_list[i],
+                latitude=latitude_list[i],
+                time=station_time_list[i],
+                delegate=delegate_list[i],
+                delegate_phone=delegate_phone_list[i],
+                creator=creator,
+            )
+            station.save()
+    else:
+        raise Exception("정류장 데이터 개수 다름", 
+            len(station_time_list),
+            len(delegate_list),
+            len(delegate_phone_list),
+            len(place_name_list),
+            len(address_list),
+            len(longitude_list),
+            len(latitude_list), len(station_list)
+        )
 
 def order_delete(request):
     if request.session.get('authority') > 3:
@@ -2558,13 +2688,13 @@ def order_upload(request):
             return JsonResponse({'error': 'required', 'line': count})
     
 
-        data_str = data['waypoints'].strip("[]")
-        waypoint_list = re.findall(r"\('(.*?)', '(.*?)', '(.*?)', '(.*?)'\)", data_str)
+        data_str = data['stations'].strip("[]")
+        station_list = re.findall(r"\('(.*?)', '(.*?)', '(.*?)', '(.*?)'\)", data_str)
 
-        if data['waypoints'] and not waypoint_list:
-            return JsonResponse({'error': 'waypoints', 'line': count})
-        for i in range(len(waypoint_list)):
-            if not waypoint_list[i][0]:
+        if data['stations'] and not station_list:
+            return JsonResponse({'error': 'stations', 'line': count})
+        for i in range(len(station_list)):
+            if not station_list[i][0]:
                 return JsonResponse({'error': 'required', 'line': count})
         if not(data['bus_cnt'].isdigit() and data['price'].isdigit() and data['driver_allowance'].isdigit()):
             return JsonResponse({'error': 'digit', 'line': count, 'data' : [data['bus_cnt'], data['price'], data['driver_allowance']]})
@@ -2685,21 +2815,21 @@ def order_upload(request):
             )
 
         order.save()
-        order.waypoint.all().delete()
+        order.station.all().delete()
 
-        data_str = data['waypoints'].strip("[]")
-        waypoint_list = re.findall(r"\('(.*?)', '(.*?)', '(.*?)', '(.*?)'\)", data_str)
+        data_str = data['stations'].strip("[]")
+        station_list = re.findall(r"\('(.*?)', '(.*?)', '(.*?)', '(.*?)'\)", data_str)
 
-        for i in range(len(waypoint_list)):
-            waypoint = DispatchOrderWaypoint(
+        for i in range(len(station_list)):
+            station = DispatchOrderStation(
                 order_id=order,
-                waypoint=waypoint_list[i][0],
-                time=waypoint_list[i][1],
-                delegate=waypoint_list[i][2],
-                delegate_phone=waypoint_list[i][3],
+                station=station_list[i][0],
+                time=station_list[i][1],
+                delegate=station_list[i][2],
+                delegate_phone=station_list[i][3],
                 creator=creator,
             )
-            waypoint.save()
+            station.save()
         
         count = count + 1
     return JsonResponse({'status': 'success', 'count': count - 1})
@@ -2741,9 +2871,9 @@ def order_download(request):
     i = 0
     for data in datalist:
         data = list(data)
-        waypoints = list(DispatchOrderWaypoint.objects.filter(order_id__id=data[0]).values_list('waypoint', 'time', 'delegate', 'delegate_phone'))
-        if waypoints:
-            data.insert(9, waypoints)
+        stations = list(DispatchOrderStation.objects.filter(order_id__id=data[0]).values_list('station', 'time', 'delegate', 'delegate_phone'))
+        if stations:
+            data.insert(9, stations)
         else:
             data.insert(9, '')
         datalist[i] = data
@@ -2792,6 +2922,47 @@ def order_download(request):
         #return JsonResponse({'status': 'fail', 'e': e})
         raise Http404
     
+def get_place_info_from_kakao(query, page):
+    api_url = 'https://dapi.kakao.com/v2/local/search/keyword.json'
+    headers = {
+        'Authorization': f"KakaoAK {KAKAO_KEY}"
+    }
+
+    params = {
+        'query': query,
+        'page': page,
+    }
+    
+    response = requests.get(api_url, params=params, headers=headers)
+    data = response.json()
+    
+    if response.status_code == 200:
+        try:
+            address = data['documents'][0]['address_name']
+            place_name = data['documents'][0]['place_name']
+            latitude = data['documents'][0]['y']
+            longitude = data['documents'][0]['x']
+            pageable_count = data['meta']['pageable_count']
+            return data, 'true'
+        except Exception as e:
+            logger.error(f"kakao 장소 검색 api fail exception: {e} response : {data}")
+            return data, 'false'
+    else:
+        logger.error(f"kakao 장소 검색 api response code error {response.status_code} response : {data}")
+        return data, 'false'
+
+def order_station_search(request):
+    if request.session.get('authority') > 2:
+        return render(request, 'authority.html')
+    
+    if request.method == "POST":
+        post_data = json.loads(request.body)
+        query = post_data.get('query', '')
+        page = post_data.get('page', 1)
+        data, result = get_place_info_from_kakao(query, page)
+        return JsonResponse({'data': data, 'result': result, 'page': page})
+    else:
+        return HttpResponseNotAllowed(['POST'])
 
 def line_print(request):
     if request.session.get('authority') > 3:

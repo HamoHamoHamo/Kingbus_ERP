@@ -36,7 +36,7 @@ saveStation.addEventListener("click", createStationInput)
 
 // addDetailMapBtn.addEventListener("click", addWaypoint)
 
-detailMapBtn.addEventListener("click", opendetailMapPopup)
+detailMapBtn.addEventListener("click", openDetailMapPopup)
 
 // 확인 클릭 시 데이터 input 생성
 function createStationInput() {
@@ -58,7 +58,7 @@ function createStationInput() {
 }
 
 // 정류장 팝업 열기
-function opendetailMapPopup() {
+function openDetailMapPopup() {
     detailMapPopup.style.display = "block";
     getStationListData();
     // STATION_TYPES는 regularly_route.html에서 선언
