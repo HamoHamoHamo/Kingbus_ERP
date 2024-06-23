@@ -56,7 +56,17 @@ class StationDatas {
 
     hasStations = () => this.#stations.length > 0 ? true : false;
 
-    validateDatas = () => this.validateTime() && this.validateWaypointNumber();
+    validateDatas = () => {
+        return this.validateTime() && this.validateWaypointNumber() && this.validateLength();
+    }
+
+    validateLength = () => {
+        if (this.#stations.length + this.#waypointNumber < 4 + this.#waypointNumber) {
+            window.alert('정류장을 모두 입력해 주세요.');
+            return false;
+        }
+        return true;
+    }
 
     validateTime() {
         return this.#stations.every(station => {
