@@ -184,7 +184,7 @@ function changeWaypointNumber(waypointNumber) {
 
     let lastWaypointIndex = getLastWaypointIndex(type);
     // 정류장 추가
-    console.log("counter", number, stationDatas.waypointNumber, typeof number, typeof stationDatas.waypointNumber)
+    console.log("counter", number, stationDatas.waypointNumber, stationDatas.getStationsLength())
     if (number > stationDatas.waypointNumber) {
         const counter = number - Number(stationDatas.waypointNumber);
         console.log("COUNTER", counter)
