@@ -291,8 +291,8 @@ class SalaryTableDataCollector(DataCollector):
         annual_allowance = int(self.member_salary['annual_allowance']) # 연차수당
         statutory_allowance = math.ceil(weekly_holiday_allowance + additional_wage + night_shift_wage + holiday_work_wage + additional_holiday_work_wage + annual_allowance)
 
-        additional_salary = int(self.member_salary['additional_salary__price'])
-        deduction_salary = int(self.member_salary['deduction_salary__price'])
+        # additional_salary = int(self.member_salary['additional_salary__price'])
+        # deduction_salary = int(self.member_salary['deduction_salary__price'])
         return {
             'work_time_list': work_time_list,
             'night_shift_time_list': night_shift_time_list,
