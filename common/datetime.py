@@ -1,5 +1,9 @@
+import requests
+import xml.etree.ElementTree as ET
 from datetime import datetime, timedelta
 from common.constant import WEEK2, DATE_FORMAT, DATE_TIME_FORMAT
+from my_settings import OPEN_API_KEY
+from django.core.exceptions import BadRequest
 
 def calculate_time_difference(start_time_str, end_time_str):
     # 입력된 시간 문자열을 datetime 객체로 변환
@@ -118,3 +122,77 @@ def get_mid_time(time1, time2):
     
     # 중간값을 "HHMM" 형식으로 변환하여 반환
     return mid_time.strftime("%H%M")
+
+def get_mondays_from_last_week_of_previous_month(month):
+    # 주어진 month의 첫 날을 구합니다.
+    first_day_of_month = datetime.strptime(month, "%Y-%m")
+
+    # 첫 날이 월요일인 경우 전달을 포함하지 않습니다.
+    if first_day_of_month.weekday() == 0:
+        # 주어진 month의 첫 월요일부터 해당 월의 모든 월요일을 구합니다.
+        mondays = []
+        current_day = first_day_of_month
+        while current_day.month == first_day_of_month.month:
+            mondays.append(datetime.strftime(current_day, DATE_FORMAT))
+            current_day += timedelta(weeks=1)
+        return mondays
+
+    # 첫 날이 월요일이 아닌 경우 전달의 마지막 날을 구합니다.
+    last_day_of_previous_month = first_day_of_month - timedelta(days=1)
+
+    # 전달의 마지막 주의 월요일을 구합니다.
+    last_week_start = last_day_of_previous_month - timedelta(days=last_day_of_previous_month.weekday())
+
+    # 전달의 마지막 주의 월요일부터 시작하여 모든 월요일을 구합니다.
+    mondays = []
+    current_day = last_week_start
+    while current_day < first_day_of_month or current_day.month == first_day_of_month.month:
+        mondays.append(datetime.strftime(current_day, DATE_FORMAT))
+        current_day += timedelta(weeks=1)
+    
+    return mondays
+
+def get_holiday_list_from_open_api(year_month):
+    api_url = 'http://apis.data.go.kr/B090041/openapi/service/SpcdeInfoService/getRestDeInfo'
+
+    try:
+        year = year_month[:4]
+        month = year_month[5:7]
+        datetime.strptime(year, "%Y")
+        datetime.strptime(month, "%m")
+    except:
+        raise BadRequest("year, month 양식에 안 맞음")
+    
+    params = {
+        'serviceKey': OPEN_API_KEY,
+        'solYear': year,
+        'solMonth': month,
+    }
+    
+    response = requests.get(api_url, params=params)
+
+    return [item['locdate'] for item in parse_xml_data(response.content)]
+
+def parse_xml_data(xml_data):
+    # XML 데이터를 문자열로 변환
+    xml_data_str = xml_data.decode('utf-8')
+    
+    # XML 데이터 파싱
+    root = ET.fromstring(xml_data_str)
+
+    # items 요소 찾기
+    items = root.find('.//items')
+    
+    # item 요소 파싱
+    item_list = []
+    for item in items.findall('item'):
+        item_data = {
+            'dateKind': item.find('dateKind').text,
+            'dateName': item.find('dateName').text,
+            'isHoliday': item.find('isHoliday').text,
+            'locdate': item.find('locdate').text,
+            'seq': item.find('seq').text
+        }
+        item_list.append(item_data)
+    
+    return item_list
