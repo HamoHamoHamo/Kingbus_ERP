@@ -22,7 +22,7 @@
 
 // MARK: Module화 해줄 Function
 
-import { addCommaToInnerText } from "../common/addComma.js"
+import { Comma } from "/static/js/common/addComma.js"
 
 const updateURL = (search) => {
     let url = `${location.origin}${location.pathname}`
@@ -180,7 +180,7 @@ let searchObject = {
 
 window.onload = () => {
     console.log("========[window onload]========")
-    
+    Comma.addCommaToInnerText()
     // 페이지 접속 시, 오늘 날짜 기준으로 검색 진행
     if (!location.href.includes("?")) {
         updateURL(searchObject);
@@ -189,7 +189,7 @@ window.onload = () => {
         initializeData();
 
     }
-    addCommaToInnerText()
+    
 
 }
 

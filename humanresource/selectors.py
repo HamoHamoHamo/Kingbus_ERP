@@ -1,6 +1,6 @@
 from django.db.models import Q
 
-from .models import Member
+from .models import Member, Salary
 
 class MemberSelector:
     def get_using_driver_list(self, name):
@@ -8,3 +8,28 @@ class MemberSelector:
         if name:
             member = member.filter(name__startswith=name)
         return member
+
+    def get_monthly_salary_list(self, month):
+        return list(Salary.objects.filter(month=month, member_id__use='사용').values(
+            'member_id',
+            'base',
+            'service_allowance',
+            'performance_allowance',
+            'annual_allowance',
+            'overtime_allowance',
+            'meal',
+            'attendance',
+            'leave',
+            'order',
+            'additional',
+            'deduction',
+            'assignment',
+            'regularly_assignment',
+            'total',
+            'month',
+            'payment_date',
+            'additional_salary__price',
+            'additional_salary__remark',
+            'deduction_salary__price',
+            'deduction_salary__remark',
+        ))
