@@ -310,10 +310,10 @@ class SalaryTableDataCollector(DataCollector):
         # 법정수당
         weekly_holiday_allowance = ordinary_hourly_wage * 6 * weekly_holiday_count # 주휴수당
         legal_holiday_allowance = ordinary_hourly_wage * 6 * legal_holiday_count # 법정휴일
-        additional_wage = math.ceil(hourly_wage * 0.5 * (total_work_hour - 173.6)) if total_work_hour - 173.6 > 0 else 0 # 가산임금
-        night_shift_wage = math.ceil(round(total_night_shift_minute / 60, 1) * hourly_wage * 0.5) # 야간근로 가산임금
+        additional_wage = math.ceil(ordinary_hourly_wage * 0.5 * (total_work_hour - 173.6)) if total_work_hour - 173.6 > 0 else 0 # 가산임금
+        night_shift_wage = math.ceil(round(total_night_shift_minute / 60, 1) * ordinary_hourly_wage * 0.5) # 야간근로 가산임금
         holiday_work_wage = math.ceil(holiday_hour * hourly_wage * 0.5)
-        additional_holiday_work_wage = math.ceil(additional_holiday_hour * hourly_wage * 0.5)
+        additional_holiday_work_wage = math.ceil(additional_holiday_hour * ordinary_hourly_wage * 0.5) # 휴일 가산임금
         annual_allowance = int(self.member_salary['annual_allowance']) # 연차수당
         statutory_allowance = math.ceil(weekly_holiday_allowance + additional_wage + night_shift_wage + holiday_work_wage + additional_holiday_work_wage + annual_allowance)
 
