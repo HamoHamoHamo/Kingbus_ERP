@@ -9,10 +9,10 @@ from django.views import generic
 from config.custom_logging import logger
 from dispatch.models import DispatchRegularlyData, MorningChecklist, EveningChecklist
 from dispatch.selectors import DispatchSelector
-from humanresource.models import Member
+from humanresource.models import Member, Salary
 from humanresource.selectors import MemberSelector
 from common.constant import TODAY
-from common.datetime import calculate_time_difference, get_hour_minute_with_colon, get_hour_minute, get_minute_from_colon_time, last_day_of_month, get_weekday_from_date, calculate_date_difference, add_days_to_date, get_holiday_list_from_open_api
+from common.datetime import calculate_time_difference, get_hour_minute_with_colon, get_hour_minute, get_minute_from_colon_time, last_day_of_month, get_weekday_from_date, calculate_date_difference, add_days_to_date
 from datetime import datetime, timedelta
 import math
 
@@ -48,6 +48,13 @@ class DataCollector:
             )
         return ''
     
+    def is_holiday(self, holiday_data, date_str):
+        # 입력된 날짜 문자열을 datetime 객체로 변환
+        date = datetime.strptime(date_str, "%Y-%m-%d").strftime("%Y%m%d")
+    
+        # holiday_list를 돌면서 date와 일치하는지 확인
+        return date in holiday_data['locdate_list']
+
     # 첫번째 월요일이 지난달일 경우 weekly_minute 계산하기
     def get_work_minutes_from_last_month_monday(self):
         last_month_day = calculate_date_difference(self.mondays[0], f'{self.month}-01')
@@ -213,20 +220,38 @@ class SalaryStatusDataCollector(DataCollector):
 
 
 class SalaryTableDataCollector(DataCollector):
-    def __init__(self, member, month, mondays, hourly_wage_data, holiday_list):
+    def __init__(self, member, month, mondays, hourly_wage_data, holiday_data):
         super().__init__(member, month, mondays)
         self.hourly_wage_data = hourly_wage_data
-        self.holiday_list = holiday_list
+        self.holiday_data = holiday_data
     
     def set_salary(self, salary_list):
         self.member_salary = next((item for item in salary_list if item['member_id'] == self.member.id), None)
 
-    def is_holiday(self, holiday_list, date_str):
-        # 입력된 날짜 문자열을 datetime 객체로 변환
-        date = datetime.strptime(date_str, "%Y-%m-%d").strftime("%Y%m%d")
+        if not self.member_salary:
+            salary = Salary.new_salary(self.member, self.month, self.member)
+            self.member_salary = {
+                'member_id' : salary.member_id,
+                'base' : salary.base,
+                'service_allowance' : salary.service_allowance,
+                'performance_allowance' : salary.performance_allowance,
+                'annual_allowance' : salary.annual_allowance,
+                'overtime_allowance' : salary.overtime_allowance,
+                'meal' : salary.meal,
+                'attendance' : salary.attendance,
+                'leave' : salary.leave,
+                'order' : salary.order,
+                'additional' : salary.additional,
+                'deduction' : salary.deduction,
+                'assignment' : salary.assignment,
+                'regularly_assignment' : salary.regularly_assignment,
+                'total' : salary.total,
+                'month' : salary.month,
+                'payment_date' : salary.payment_date,
+                # additional이랑 reduction은 나중에 사용할 때 추가
+            }
+
     
-        # holiday_list를 돌면서 date와 일치하는지 확인
-        return date in holiday_list
 
     def get_collected_data(self):
         work_time_list = ['' for i in range(31)]
@@ -246,7 +271,6 @@ class SalaryTableDataCollector(DataCollector):
                 mondays_counter += 1
                 weekly_minute = 0
 
-        
             weekday = get_weekday_from_date(date)
             daily_connects = self.get_daily_connects(date)
             work_time, minutes = self.get_work_time(daily_connects)
@@ -254,7 +278,7 @@ class SalaryTableDataCollector(DataCollector):
             work_type = self.get_work_type(minutes, weekday, weekly_minute)
             night_shift_time = self.get_night_shift_time(daily_connects)
 
-            if self.is_holiday(self.holiday_list, date):
+            if self.is_holiday(self.holiday_data, date):
                 if minutes / 60 <= 8:
                     holiday_hour = round(minutes / 60, 1)
                     additional_holiday_hour = 0
@@ -271,6 +295,8 @@ class SalaryTableDataCollector(DataCollector):
         total_work_hour = round(total_work_minute / 60, 1)
         hourly_wage = int(self.hourly_wage_data.get_wage(total_work_minute / 21.7))
         weekly_holiday_count = work_list.count('주휴')
+        # 5월이면 5월1일 1개 추가
+        legal_holiday_count = weekly_holiday_count + self.holiday_data['count'] + 1 if self.month[5:7] == '05' else weekly_holiday_count + self.holiday_data['count']
 
         # 소수점 다 반올림
         # 통상급여
@@ -282,8 +308,8 @@ class SalaryTableDataCollector(DataCollector):
         ordinary_hourly_wage = math.ceil(ordinary_salary * 12 / 1560) # 통상시급 반올림은?
         
         # 법정수당
-        weekly_holiday_allowance = math.ceil(ordinary_hourly_wage * (52 * (total_work_hour / 21.7)) / 12 * weekly_holiday_count) # 주휴수당
-        # legal_holiday =  # 법정휴일
+        weekly_holiday_allowance = ordinary_hourly_wage * 6 * weekly_holiday_count # 주휴수당
+        legal_holiday_allowance = ordinary_hourly_wage * 6 * legal_holiday_count # 법정휴일
         additional_wage = math.ceil(hourly_wage * 0.5 * (total_work_hour - 173.6)) if total_work_hour - 173.6 > 0 else 0 # 가산임금
         night_shift_wage = math.ceil(round(total_night_shift_minute / 60, 1) * hourly_wage * 0.5) # 야간근로 가산임금
         holiday_work_wage = math.ceil(holiday_hour * hourly_wage * 0.5)
@@ -317,7 +343,7 @@ class SalaryTableDataCollector(DataCollector):
             
             # 법정수당
             'weekly_holiday_allowance': weekly_holiday_allowance,
-            # 법정휴일 추가
+            'legal_holiday_allowance': legal_holiday_allowance,
             'additional_wage': additional_wage,
             'night_shift_wage': night_shift_wage,
             'holiday_work_wage': holiday_work_wage,
