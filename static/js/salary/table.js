@@ -69,6 +69,7 @@ function setTotal() {
     const service_allowance = document.querySelector('.service_allowance')
     const ordinary_salary = document.querySelector('.ordinary_salary')
     const weekly_holiday_allowance = document.querySelector('.weekly_holiday_allowance')
+    const legal_holiday_allowance = document.querySelector('.legal_holiday_allowance')
     const additional_wage = document.querySelector('.additional_wage')
     const night_shift_wage = document.querySelector('.night_shift_wage')
     const holiday_work_wage = document.querySelector('.holiday_work_wage')
@@ -87,6 +88,7 @@ function setTotal() {
     let total_service_allowance = 0
     let total_ordinary_salary = 0
     let total_weekly_holiday_allowance = 0
+    let total_legal_holiday_allowance = 0
     let total_additional_wage = 0
     let total_night_shift_wage = 0
     let total_holiday_work_wage = 0
@@ -106,6 +108,7 @@ function setTotal() {
         total_service_allowance += Number(value['service_allowance'])
         total_ordinary_salary += Number(value['ordinary_salary'])
         total_weekly_holiday_allowance += Number(value['weekly_holiday_allowance'])
+        total_legal_holiday_allowance += Number(value['legal_holiday_allowance'])
         total_additional_wage += Number(value['additional_wage'])
         total_night_shift_wage += Number(value['night_shift_wage'])
         total_holiday_work_wage += Number(value['holiday_work_wage'])
@@ -123,7 +126,8 @@ function setTotal() {
     meal.innerText = addComma(total_meal.toString())
     service_allowance.innerText = addComma(total_service_allowance.toString())
     ordinary_salary.innerText = addComma(total_ordinary_salary.toString())
-    weekly_holiday_allowance.innerText = addComma(total_weekly_holiday_allowance.toString())
+    // weekly_holiday_allowance.innerText = addComma(total_weekly_holiday_allowance.toString())
+    legal_holiday_allowance.innerText = addComma(total_legal_holiday_allowance.toString())
     additional_wage.innerText = addComma(total_additional_wage.toString())
     night_shift_wage.innerText = addComma(total_night_shift_wage.toString())
     holiday_work_wage.innerText = addComma(total_holiday_work_wage.toString())

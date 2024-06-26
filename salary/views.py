@@ -105,10 +105,11 @@ class SalaryTable(AuthorityCheckView, generic.ListView):
 
         member_selector = MemberSelector()
         salary_list = member_selector.get_monthly_salary_list(context['month'])
-        
+        print(salary_list)
         salary_selector = SalarySelector()
 
-        holiday_list = get_holiday_list_from_open_api(context['month'])
+        holiday_data = get_holiday_list_from_open_api(context['month'])
+        print("TEST", holiday_data)
         datas = {}
         context['date_list'] = ['' for i in range(31)]
 
@@ -116,7 +117,7 @@ class SalaryTable(AuthorityCheckView, generic.ListView):
             context['date_list'][i] = i + 1
 
         for member in context['member_list']:
-            data_collector = SalaryTableDataCollector(member, context['month'], mondays, context['hourly_wage'], holiday_list)
+            data_collector = SalaryTableDataCollector(member, context['month'], mondays, context['hourly_wage'], holiday_data)
             data_collector.collect_connects(connect_time_list)
             data_collector.set_salary(salary_list)
             datas[member.id] = data_collector.get_collected_data()

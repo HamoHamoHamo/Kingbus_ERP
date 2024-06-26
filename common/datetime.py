@@ -170,8 +170,13 @@ def get_holiday_list_from_open_api(year_month):
     }
     
     response = requests.get(api_url, params=params)
+    holiday_data = parse_xml_data(response.content)
 
-    return [item['locdate'] for item in parse_xml_data(response.content)]
+    # return [item['locdate'] for item in parse_xml_data(response.content)]
+    filtered_list = [item for item in holiday_data['date_name_list'] if '대체' not in item]
+
+    holiday_data['count'] = len(filtered_list)
+    return holiday_data
 
 def parse_xml_data(xml_data):
     # XML 데이터를 문자열로 변환
@@ -185,6 +190,8 @@ def parse_xml_data(xml_data):
     
     # item 요소 파싱
     item_list = []
+    locdate_list = []
+    date_name_list = []
     for item in items.findall('item'):
         item_data = {
             'dateKind': item.find('dateKind').text,
@@ -193,6 +200,12 @@ def parse_xml_data(xml_data):
             'locdate': item.find('locdate').text,
             'seq': item.find('seq').text
         }
-        item_list.append(item_data)
+        if len(locdate_list) == 0 or locdate_list[len(locdate_list) - 1] != item_data['locdate']:
+            locdate_list.append(item_data['locdate'])
+            date_name_list.append(item_data['dateName'])
+        # item_list.append(item_data)
     
-    return item_list
+    return {
+        'date_name_list': date_name_list, 
+        'locdate_list': locdate_list,
+    }
