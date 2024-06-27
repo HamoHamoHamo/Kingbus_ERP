@@ -19,12 +19,16 @@
 <div class="searchAreaBox">
     <form action="">
         <div class="searchTool">
-            <span class="searchName">정류장검색</span>
+            <span class="searchName">검색</span>
             <div class="routeFilterBox">
-                <input autocomplete="off" value="{{name}}" name="name" type="text" class="inputModules" list="hrFilter"
-                    placeholder="정류장명" autocomplete="off">
+                <select class="inputModules searchType" name="search_type">
+                    <option {% if search_type == '정류장명' %} selected {% endif %} value="정류장명">정류장명</option>
+                    <option {% if search_type == '주소' %} selected {% endif %} value="주소">주소</option>
+                    <option {% if search_type == '참조사항' %} selected {% endif %} value="참조사항">참조사항</option>
+                </select>
+                <input value="{{value}}" name="value" type="text" class="inputModules">
             </div>
-            <input autocomplete="off" type="submit" value="검색" class="btnModules">
+            <input type="submit" value="검색" class="btnModules">
         </div>
     </form>
     <div class="headerFlex">
