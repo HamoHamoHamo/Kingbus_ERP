@@ -3155,18 +3155,25 @@ class RegularlyStationList(generic.ListView):
         return super().get(request, *args, **kwargs)
         
     def get_queryset(self):
-        name = self.request.GET.get('name', '')
+        search_type = self.request.GET.get('search_type', '')
+        value = self.request.GET.get('value', '')
 
-        if name:
-            station_list = Station.objects.filter(name__contains=name)
+
+        if search_type == '정류장명' and value:
+            station_list = Station.objects.filter(name__contains=value).order_by('address')
+        elif search_type == '주소' and value:
+            station_list = Station.objects.filter(address__contains=value).order_by('address')
+        elif search_type == '참조사항' and value:
+            station_list = Station.objects.filter(references__contains=value).order_by('address')
         else:
-            station_list = Station.objects.all()
+            station_list = Station.objects.all().order_by('address')
         return station_list
         
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['name'] = self.request.GET.get('name', '')
+        context['value'] = self.request.GET.get('value', '')
+        context['search_type'] = self.request.GET.get('search_type', '')
         
         return context
 

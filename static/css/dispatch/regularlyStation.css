@@ -1,5 +1,6 @@
 .searchName {
     margin-right: 1rem;
+    font-size: 1.6rem;
 }
 
 .searchAreaBox .btnModules {
@@ -356,4 +357,8 @@ table tbody tr {
 
 .selectedItemDeleteBtn {
     cursor: pointer;
+}
+
+.searchType {
+    margin-right: 1rem;
 }
