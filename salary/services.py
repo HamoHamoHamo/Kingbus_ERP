@@ -262,7 +262,10 @@ class SalaryTableDataCollector(DataCollector):
 
         weekly_minute = self.get_work_minutes_from_last_month_monday()
         mondays_counter = 1 if self.mondays[0][:7] < self.month else 0
-
+        
+        holiday_hour = 0
+        additional_holiday_hour = 0
+        
         for i in range(self.last_day):
             date = f"{self.month}-{i + 1:02d}"
 
@@ -280,11 +283,11 @@ class SalaryTableDataCollector(DataCollector):
 
             if self.is_holiday(self.holiday_data, date):
                 if minutes / 60 <= 8:
-                    holiday_hour = round(minutes / 60, 1)
-                    additional_holiday_hour = 0
+                    holiday_hour += round(minutes / 60, 1)
+                    additional_holiday_hour += 0
                 else:
-                    holiday_hour = 0
-                    additional_holiday_hour = round((minutes - 60 * 8) / 60, 1)
+                    holiday_hour += 0
+                    additional_holiday_hour += round((minutes - 60 * 8) / 60, 1)
 
             work_time_list[i] = work_time
             work_list[i] = work_type
