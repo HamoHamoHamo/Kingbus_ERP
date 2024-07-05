@@ -70,7 +70,7 @@ class Member(models.Model):
 class MemberFile(models.Model):
     def get_file_path(instance, filename):
     
-        ymd_path = datetime.datetime.now().strftime('%Y/%m/%d')
+        ymd_path = datetime.now().strftime('%Y/%m/%d')
         uuid_name = uuid4().hex
         return '/'.join(['humanresource/', ymd_path, uuid_name])
 
