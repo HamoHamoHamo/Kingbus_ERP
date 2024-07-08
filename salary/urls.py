@@ -6,5 +6,6 @@ app_name = 'salary'
 urlpatterns = [
     path('status', views.SalaryStatus.as_view(), name="status"),
     path('table', views.SalaryTable.as_view(), name="table"),
+    path('table2', views.SalaryTable2.as_view(), name="table2"),
     path('hourlywage/save', views.HourlyWageSaveView.as_view(), name="hourly_wage_save")
 ]

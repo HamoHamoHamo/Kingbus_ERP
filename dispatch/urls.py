@@ -47,6 +47,7 @@ urlpatterns = [
     
     #운행확인
     path('schedule', views.ScheduleList.as_view(), name="schedule"),
+    path('schedule2', views.ScheduleList2.as_view(), name="schedule2"),
     #배차거부
     path('refusal', views.RefusalList.as_view(), name="refusal"),
     path('refusal/delete', views.refusal_delete, name="refusal_delete"),

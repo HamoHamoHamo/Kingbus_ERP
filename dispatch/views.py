@@ -18,6 +18,7 @@ from django.views import generic
 from .commons import get_date_connect_list, get_multi_date_connect_list
 from .forms import OrderForm, ConnectForm, RegularlyDataForm, StationForm, RegularlyForm
 from .models import DispatchRegularlyRouteKnow, DispatchCheck, DispatchRegularlyData, DispatchRegularlyWaypoint, Schedule, DispatchOrderConnect, DispatchOrder, DispatchRegularly, RegularlyGroup, DispatchRegularlyConnect, DispatchOrderStation, ConnectRefusal, MorningChecklist, EveningChecklist, DrivingHistory, BusinessEntity, Station, DispatchRegularlyDataStation, DispatchRegularlyStation
+from .selectors import DispatchSelector
 from assignment.models import AssignmentConnect
 from accounting.models import Collect, TotalPrice
 from crudmember.models import Category, Client
@@ -337,92 +338,114 @@ class ScheduleList(generic.ListView):
         timeline = datetime.strftime(datetime.now(), "%H:%M")
         if date == TODAY:
             context['timeline'] = (int(timeline[:2]) * 60 + int(timeline[3:])) * 0.058
+
+        dispatch_selector = DispatchSelector()
+        daily_connect_list = dispatch_selector.get_daily_connect_list(date)
         schedule_list = []
 
         for driver in context['driver_list']:
-            temp = []
-            order_list = driver.info_driver_id.exclude(arrival_date__lte=f'{date} 00:00').exclude(departure_date__gte=f'{date} 24:00')
-            regulary_list = driver.info_regularly_driver_id.exclude(arrival_date__lte=f'{date} 00:00').exclude(departure_date__gte=f'{date} 24:00')
+            connect_list = list(filter(lambda item: item['driver'] == driver.name, daily_connect_list))
+            try:
+                vehicle = driver.vehicle.vehicle_num
+            except Vehicle.DoesNotExist:
+                vehicle = ''
+
+            for connect in connect_list:
+                connect['driver_vehicle'] = vehicle
+
+                departure_time = datetime.strptime(connect['departure_date'], "%Y-%m-%d %H:%M")
+                check_time1 = datetime.strftime(departure_time - timedelta(hours=1.5), "%H:%M")
+                check_time2 = datetime.strftime(departure_time - timedelta(hours=1), "%H:%M")
+                check_time3 = datetime.strftime(departure_time - timedelta(minutes=20), "%H:%M")
+
+                if date == TODAY:
+                    if timeline > check_time1 and not connect['wake_t']:
+                        connect['check'] = 'x'
+                    elif timeline > check_time2 and not connect['drive_t']:
+                        connect['check'] = 'x'
+                    elif timeline > check_time3 and not connect['departure_t']:
+                        connect['check'] = 'x'
+            if len(connect_list) != 0:
+                schedule_list.append(connect_list)
+
+        context['schedule_list'] = schedule_list
+        context['select'] = self.request.GET.get('select', '')
+        context['search'] = self.request.GET.get('search', '')
+        context['date'] = date
+        return context
+
+class ScheduleList2(generic.ListView):
+    template_name = 'dispatch/schedule2.html'
+    context_object_name = 'driver_list'
+    model = Member
+
+    def get_queryset(self):
+        select = self.request.GET.get('select', None)
+        search = self.request.GET.get('search', None)
+
+        if select == 'driver' and search:
+            driver_list = Member.objects.prefetch_related('info_driver_id', 'info_regularly_driver_id').filter(Q(role='팀장')|Q(role='운전원')|Q(role='용역')|Q(role='임시')).filter(name__contains=search).filter(use='사용').order_by('name')
+        elif select == 'vehicle' and search:
+            driver_list = Member.objects.prefetch_related('info_driver_id', 'info_regularly_driver_id').filter(Q(role='팀장')|Q(role='운전원')|Q(role='용역')|Q(role='임시')).filter(vehicle__vehicle_num__contains=search).filter(vehicle__use='사용').order_by('name')
+        else:
+            driver_list = Member.objects.prefetch_related('info_driver_id', 'info_regularly_driver_id').filter(Q(role='팀장')|Q(role='운전원')|Q(role='용역')|Q(role='임시')).filter(use='사용').order_by('name')
+        return driver_list
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        date = self.request.GET.get('date', TODAY)
+        timeline = datetime.strftime(datetime.now(), "%H:%M")
+        if date == TODAY:
+            context['timeline'] = (int(timeline[:2]) * 60 + int(timeline[3:])) * 0.058
+
+        dispatch_selector = DispatchSelector()
+        daily_connect_list = dispatch_selector.get_daily_connect_list(date)
+        schedule_list = []
+
+        for driver in context['driver_list']:
+            connect_list = list(filter(lambda item: item['driver'] == driver.name, daily_connect_list))
+            try:
+                vehicle = driver.vehicle.vehicle_num
+            except Vehicle.DoesNotExist:
+                vehicle = ''
+
+            for connect in connect_list:
+                connect['driver_vehicle'] = vehicle
+
+                departure_time = datetime.strptime(connect['departure_date'], "%Y-%m-%d %H:%M")
+                check_time1 = datetime.strftime(departure_time - timedelta(hours=1.5), "%H:%M")
+                check_time2 = datetime.strftime(departure_time - timedelta(hours=1), "%H:%M")
+                check_time3 = datetime.strftime(departure_time - timedelta(minutes=20), "%H:%M")
+
+                if date == TODAY:
+                    if timeline > check_time1 and not connect['wake_t']:
+                        connect['check'] = 'x'
+                    elif timeline > check_time2 and not connect['drive_t']:
+                        connect['check'] = 'x'
+                    elif timeline > check_time3 and not connect['departure_t']:
+                        connect['check'] = 'x'
+
+                # 노선에 있는 order_time, time_list로 공차시간 계산
+                if connect['time_list']:
+                    time_list = connect['time_list'].split(",")
+                    connect['departure_time'] = int(connect['departure_date'][11:13]) * 60 + int(connect['departure_date'][14:16])
+                    connect['empty_start_time'] = connect['departure_time'] - int(time_list[0])
+                    connect['arrival_time'] = connect['departure_time'] + int(connect['order_time']) - int(time_list[0]) - int(time_list[len(time_list) - 1])
+                    connect['empty_end_time'] = connect['arrival_time'] + int(time_list[len(time_list) - 1])
+                else:
+                    connect['departure_time'] = ''
+                    connect['empty_start_time'] = ''
+                    connect['arrival_time'] = ''
+                    connect['empty_end_time'] = ''
+
+            connect_list.sort(key = lambda x:x['departure_date'])
+            if len(connect_list) != 0:
+                schedule_list.append(connect_list)
+
             
-            for o in order_list:
-                driver_check = o.check_order_connect
-                try:
-                    vehicle = o.driver_id.vehicle.vehicle_num
-                except Vehicle.DoesNotExist:
-                    vehicle = ''
-                temp_dict = {
-                    'driver': o.driver_id.name,
-                    'driver_vehicle': vehicle,
-                    'driver_phone_num': o.driver_id.phone_num,
-                    'work_type': '일반',
-                    'bus': o.bus_id.vehicle_num,
-                    'departure_date': o.departure_date,
-                    'arrival_date': o.arrival_date,
-                    'departure': o.order_id.departure,
-                    'arrival': o.order_id.arrival,
-                    'wake_t': driver_check.wake_time,
-                    'drive_t': driver_check.drive_time,
-                    'departure_t': driver_check.departure_time,
-                    'check': '',
-                    'connect_check': driver_check.connect_check,
-                }
-                departure_time = datetime.strptime(o.departure_date, "%Y-%m-%d %H:%M")
-                check_time1 = datetime.strftime(departure_time - timedelta(hours=1.5), "%H:%M")
-                check_time2 = datetime.strftime(departure_time - timedelta(hours=1), "%H:%M")
-                check_time3 = datetime.strftime(departure_time - timedelta(minutes=20), "%H:%M")
 
-                if date == TODAY:
-                    if timeline > check_time1 and not driver_check.wake_time:
-                        temp_dict['check'] = 'x'
-                    elif timeline > check_time2 and not driver_check.drive_time:
-                        temp_dict['check'] = 'x'
-                    elif timeline > check_time3 and not driver_check.departure_time:
-                        temp_dict['check'] = 'x'
 
-                temp.append(temp_dict)
-            for regularly in regulary_list:
-                driver_check = regularly.check_regularly_connect
-                try:
-                    vehicle = regularly.driver_id.vehicle.vehicle_num
-                except ObjectDoesNotExist:
-                    vehicle = ''
-                temp_dict = {
-                    'driver': regularly.driver_id.name,
-                    'driver_vehicle': vehicle,
-                    'driver_phone_num': regularly.driver_id.phone_num,
-                    'departure_date': regularly.departure_date,
-                    'bus': regularly.bus_id.vehicle_num,
-                    'arrival_date': regularly.arrival_date,
-                    'departure': regularly.regularly_id.departure,
-                    'arrival': regularly.regularly_id.arrival,
-                    'wake_t': driver_check.wake_time,
-                    'drive_t': driver_check.drive_time,
-                    'departure_t': driver_check.departure_time,
-                    'check': '',
-                    'connect_check': driver_check.connect_check,
-                }
-                temp_dict['work_type'] = regularly.work_type
-
-                departure_time = datetime.strptime(regularly.departure_date, "%Y-%m-%d %H:%M")
-                check_time1 = datetime.strftime(departure_time - timedelta(hours=1.5), "%H:%M")
-                check_time2 = datetime.strftime(departure_time - timedelta(hours=1), "%H:%M")
-                check_time3 = datetime.strftime(departure_time - timedelta(minutes=20), "%H:%M")
-
-                if date == TODAY:
-                    if timeline > check_time1 and not driver_check.wake_time:
-                        temp_dict['check'] = 'x'
-                    elif timeline > check_time2 and not driver_check.drive_time:
-                        temp_dict['check'] = 'x'
-                    elif timeline > check_time3 and not driver_check.departure_time:
-                        temp_dict['check'] = 'x'
-
-                temp.append(temp_dict)
-            temp.sort(key = lambda x:x['departure_date']) # departure_date를 기준으로 정렬
-            if len(temp) != 0:
-                schedule_list.append(temp)
-        
-        sorted_data = sorted(schedule_list, key=lambda x: any(item["connect_check"] == "0" for item in x), reverse=True)
-        context['schedule_list'] = sorted_data
+        context['schedule_list'] = schedule_list
         context['select'] = self.request.GET.get('select', '')
         context['search'] = self.request.GET.get('search', '')
         context['date'] = date

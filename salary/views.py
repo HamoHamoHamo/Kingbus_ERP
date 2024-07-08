@@ -9,7 +9,7 @@ from datetime import datetime, timedelta
 
 from .forms import HourlyWageForm
 from .selectors import SalarySelector
-from .services import SalaryStatusDataCollector, SalaryTableDataCollector
+from .services import SalaryStatusDataCollector, SalaryTableDataCollector, SalaryTableDataCollector2
 from .models import HourlyWage
 from config.custom_logging import logger
 from dispatch.models import DispatchRegularlyData, MorningChecklist, EveningChecklist
@@ -118,6 +118,58 @@ class SalaryTable(AuthorityCheckView, generic.ListView):
 
         for member in context['member_list']:
             data_collector = SalaryTableDataCollector(member, context['month'], mondays, context['hourly_wage'], holiday_data)
+            data_collector.collect_connects(connect_time_list)
+            data_collector.set_salary(salary_list)
+            datas[member.id] = data_collector.get_collected_data()
+            
+        context['datas'] = datas
+        return context
+
+class SalaryTable2(AuthorityCheckView, generic.ListView):
+    template_name = 'salary/table2.html'
+    context_object_name = 'member_list'
+    model = Member
+    authority_level = 3
+
+    def get_queryset(self):
+        name = self.request.GET.get('name', '')
+        member_selector = MemberSelector()
+        return member_selector.get_using_driver_list(name)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        
+        context['name'] = self.request.GET.get('name', '')
+        context['month'] = self.request.GET.get('month', TODAY[:7])
+        salary_selector = SalarySelector()
+        context['hourly_wage'] = salary_selector.get_hourly_wage_by_month(context['month'])
+        if context['hourly_wage'] == None:
+            context['hourly_wage'] = HourlyWage.new_wage(context['month'], self.creator)
+
+        first_date = f"{context['month']}-01"
+        # 1일이 월요일이 아닌경우 저번달 마지막주 월요일부터 불러오기
+        mondays = get_mondays_from_last_week_of_previous_month(context['month'])
+        start_date = mondays[0] if mondays[0][:7] != context['month'] else first_date
+
+        # 불러온 월요일부터 배차 데이터 가져오기
+        dispatch_selector = DispatchSelector()
+        connect_time_list = dispatch_selector.get_driving_time_list(start_date, last_day_of_month(first_date))
+
+        member_selector = MemberSelector()
+        salary_list = member_selector.get_monthly_salary_list(context['month'])
+        print(salary_list)
+        salary_selector = SalarySelector()
+
+        holiday_data = get_holiday_list_from_open_api(context['month'])
+        print("TEST", holiday_data)
+        datas = {}
+        context['date_list'] = ['' for i in range(31)]
+
+        for i in range(last_day_of_month(first_date)):
+            context['date_list'][i] = i + 1
+
+        for member in context['member_list']:
+            data_collector = SalaryTableDataCollector2(member, context['month'], mondays, context['hourly_wage'], holiday_data)
             data_collector.collect_connects(connect_time_list)
             data_collector.set_salary(salary_list)
             datas[member.id] = data_collector.get_collected_data()

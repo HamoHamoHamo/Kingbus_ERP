@@ -356,3 +356,14 @@ class SalaryTableDataCollector(DataCollector):
             'sum_ordinary_salary_and_statutory_allowance': ordinary_salary + statutory_allowance,
 
         }
+
+
+class SalaryTableDataCollector2(SalaryTableDataCollector):
+    def get_work_time(self, daily_connects):
+        minutes = 0
+        # for connect in daily_connects:
+        #     if connect['time']:
+        #         minutes += connect['time']
+            
+        minutes = sum(int(connect['route_time']) if connect['route_time'] else calculate_time_difference(connect['departure_date'], connect['arrival_date']) for connect in daily_connects)
+        return get_hour_minute_with_colon(minutes) if minutes != 0 else '', minutes
