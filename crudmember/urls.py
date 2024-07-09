@@ -22,5 +22,6 @@ urlpatterns = [
     path('setting/client/edit', views.setting_client_edit, name="setting_client_edit"),
     path('setting/client/delete', views.setting_client_delete, name="setting_client_delete"),
     path('setting/salary/date', views.salary_date, name="salary_date"),
-    path('sunghwatour/rule/1', views.sunghwatour_rule, name="salary_date"),
+    path('sunghwatour/rule/1', views.sunghwatour_rule, name="sunghwatour_rule"),
+    path('moilsurok/rule/1', views.moilsurok_rule, name="moilsurok_rule"),
 ]

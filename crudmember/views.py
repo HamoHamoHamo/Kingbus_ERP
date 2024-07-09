@@ -28,6 +28,8 @@ from .tokens import account_activation_token
 WEEK = ['월', '화', '수', '목', '금', '토', '일']
 def sunghwatour_rule(request):
     return render(request, 'crudmember/sunghwatour_rule.html')
+def moilsurok_rule(request):
+    return render(request, 'crudmember/moilsurok_rule.html')
 
 
 class CategoryList(generic.ListView):
