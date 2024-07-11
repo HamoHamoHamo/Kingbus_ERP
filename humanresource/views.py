@@ -462,6 +462,8 @@ def member_file_upload(request):
             except Exception as e:
                 print("Firebase upload error", e)
                 logger.warning(f"Firebase upload error {e}")
+                logger.warning(f"file: {file}, file_path: {file_path}")
+                
                 #파이어베이스 업로드 실패 시 파일 삭제
                 os.remove(file.file.path)
                 file.delete()
