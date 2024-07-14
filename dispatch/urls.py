@@ -25,6 +25,8 @@ urlpatterns = [
     path('regularly/group/fix', views.regularly_group_fix, name="regularly_group_fix"),
     path('regularly/connect', views.RegularlyConnectList.as_view(), name="regularly_connect"),
     path('regularly/business/edit', views.business_edit, name="business_edit"),
+
+    path('regularly/route/test', views.time_data, name="time_data"),
     
     path('regularly/station', views.RegularlyStationList.as_view(), name="regularly_station"),
     path('regularly/station/list', views.regularly_station_list, name="regularly_station_list"),

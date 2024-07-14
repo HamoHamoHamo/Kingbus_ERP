@@ -167,6 +167,7 @@
                 </div>
                 {% endfor %}
             </div>
+            <input type="hidden" name="station_edit_date" class="editDateInput">
             <input type="hidden" id="waypointNumber" value="{{waypoint_number}}">
             <input autocomplete="off" type="hidden" name="id" value="{{detail.id}}" class="inputHidden">
             <div class="routeInputHead">
@@ -603,6 +604,10 @@
                     <label for="workEndPopup">퇴근</label>
                     <div class="stationSearchInputText stationNumberInputText">정류장개수</div>
                     <input class="inputModules waypointNumberInput" type="number" min="0" value="1">
+                    {% if detail %}
+                    <div class="stationSearchInputText stationNumberInputText">기준일</div>
+                    <input class="inputModules stationEditDate" type="date">
+                    {% endif %}
                 </div>
                 <div class="popupArticle popupArticleStation detailMapPopupScrollBox">
                     <table>
