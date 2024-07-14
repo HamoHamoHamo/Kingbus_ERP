@@ -9,6 +9,7 @@ import requests
 
 from config.settings import MEDIA_ROOT
 from django.db.models import Q, Sum
+from django.forms.models import model_to_dict
 from django.core.exceptions import ObjectDoesNotExist, MultipleObjectsReturned, BadRequest
 from django.http import Http404, JsonResponse, HttpResponse, HttpResponseNotAllowed
 from django.shortcuts import render, redirect, get_object_or_404
@@ -30,7 +31,7 @@ from vehicle.models import Vehicle
 from datetime import datetime, timedelta, date
 # from utill.decorator import option_year_deco
 from common.constant import TODAY, FORMAT, WEEK, WEEK2
-from common.datetime import get_hour_minute, get_next_monday, get_mid_time
+from common.datetime import get_hour_minute, get_next_monday, get_mid_time, get_minute_from_colon_time, get_hour_minute_with_colon
 from my_settings import KAKAO_KEY
 from config.custom_logging import logger
 
@@ -956,8 +957,10 @@ class RegularlyRouteList(generic.ListView):
         if id:
             context['detail'] = get_object_or_404(DispatchRegularlyData, id=id)
             context['waypoint_list'] = DispatchRegularlyWaypoint.objects.filter(regularly_id=context['detail'])
-            context['station_list'] = list(DispatchRegularlyDataStation.objects.filter(regularly_data=context['detail']).values('index', 'station__name', 'station_type', 'time', 'station__references', 'station__id', 'regularly_data__distance_list', 'regularly_data__time_list').order_by('index'))
-            context['waypoint_number'] = DispatchRegularlyDataStation.objects.filter(regularly_data=context['detail']).filter(station_type='정류장').count()
+            context['station_list'] = list(context['detail'].monthly.order_by('-edit_date').first().regularly_station.values('index', 'station__name', 'station_type', 'time', 'station__references', 'station__id', 'regularly__distance_list', 'regularly__time_list').order_by('index'))
+            context['waypoint_number'] = len(context['station_list']) - 4
+            # context['station_list'] = list(DispatchRegularlyDataStation.objects.filter(regularly_data=context['detail']).values('index', 'station__name', 'station_type', 'time', 'station__references', 'station__id', 'regularly_data__distance_list', 'regularly_data__time_list').order_by('index'))
+            # context['waypoint_number'] = DispatchRegularlyDataStation.objects.filter(regularly_data=context['detail']).filter(station_type='정류장').count()
             
             context['station_distance_time_list'] = []
             for i in range(len(context['station_list']) - 1):
@@ -965,8 +968,8 @@ class RegularlyRouteList(generic.ListView):
                 next_station_data = context['station_list'][i + 1]
 
                 try:
-                    distance = round(int(station_data['regularly_data__distance_list'].split(",")[i]) / 1000, 2)
-                    duration = get_hour_minute(int(station_data['regularly_data__time_list'].split(",")[i]))
+                    distance = round(int(station_data['regularly__distance_list'].split(",")[i]) / 1000, 2)
+                    duration = get_hour_minute(int(station_data['regularly__time_list'].split(",")[i]))
                 except:
                     distance = '에러'
                     duration = '에러'
@@ -987,7 +990,7 @@ class RegularlyRouteList(generic.ListView):
         
         return context
 
-def create_dispatch_regularly_stations(request, regularly_data, regularly, creator):
+def create_dispatch_regularly_stations(request, regularly, creator):
     # 정류장 등록
     stationIndex_list = request.POST.getlist('station_index', '')
     stationType_list = request.POST.getlist('station_type', '')
@@ -996,14 +999,14 @@ def create_dispatch_regularly_stations(request, regularly_data, regularly, creat
 
     for index, type, time, id in zip(stationIndex_list, stationType_list, stationTime_list, stationId_list):
         station = get_object_or_404(Station, id=id)
-        DispatchRegularlyDataStation.objects.create(
-            regularly_data = regularly_data,
-            station = station,
-            index = index,
-            station_type = type,
-            time = time,
-            creator = creator
-        )
+        # DispatchRegularlyDataStation.objects.create(
+        #     regularly_data = regularly_data,
+        #     station = station,
+        #     index = index,
+        #     station_type = type,
+        #     time = time,
+        #     creator = creator
+        # )
         DispatchRegularlyStation.objects.create(
             regularly = regularly,
             station = station,
@@ -1072,6 +1075,67 @@ def get_distance_and_time_from_kakao(origin, destination, departure_time):
 
 
 def get_regularly_distance_and_time(regularly_data, regularly):
+    data_list = list(regularly.regularly_station.order_by('index').values('index', 'station__longitude', 'station__latitude', 'station__address', 'time'))
+    distance_list = []
+    time_list = []
+    total_distance = 0
+    total_time = 0
+    
+    for i in range(len(data_list) - 1):
+        current_data = data_list[i]
+        next_data = data_list[i + 1]
+        
+        origin = f"{current_data['station__longitude']},{current_data['station__latitude']}"
+        destination = f"{next_data['station__longitude']},{next_data['station__latitude']}"
+        
+        next_monday = get_next_monday(TODAY)
+        departure_time = next_monday + get_mid_time(regularly_data.departure_time, regularly_data.arrival_time)
+
+        distance, duration, api_data = get_distance_and_time_from_kakao(origin, destination, departure_time)
+        
+        if distance is None or duration is None:
+            logger.error(f"ERROR {current_data['station__address']} > {next_data['station__address']}")
+            # API 호출 실패 처리
+
+            regularly_data.time = 0
+            regularly_data.time_list = ''
+            regularly_data.distance = 0
+            regularly_data.distance_list = ''
+            regularly_data.save()
+
+            regularly.time = 0
+            regularly.time_list = ''
+            regularly.distance = 0
+            regularly.distance_list = ''
+            regularly.save()
+            raise BadRequest(f"kakao api error {current_data['station__address']} > {next_data['station__address']}\n{api_data}")
+        
+        
+        distance_list.append(str(distance))
+        duration = get_minute_from_colon_time(next_data['time']) - get_minute_from_colon_time(current_data['time'])
+        logger.info(f"DURATION {duration}")
+        time_list.append(str(duration))
+        
+        total_distance += distance
+        total_time += duration
+        logger.info(f"DURATION2 {duration}")
+    
+    regularly_data.time = total_time
+    regularly_data.time_list = ','.join(time_list)
+    regularly_data.distance = round(total_distance / 1000, 2)
+    regularly_data.distance_list = ','.join(distance_list)
+    regularly_data.save()
+    
+    regularly.time = total_time
+    regularly.time_list = ','.join(time_list)
+    regularly.distance = round(total_distance / 1000, 2)
+    regularly.distance_list = ','.join(distance_list)
+    regularly.save()
+    
+    return
+
+
+def get_regularly_distance_and_time_from_kakao(regularly_data, regularly):
     data_list = list(regularly_data.regularly_data_station.order_by('index').values('index', 'station__longitude', 'station__latitude', 'station__address'))
     distance_list = []
     time_list = []
@@ -1164,9 +1228,12 @@ def regularly_order_create(request):
                 raise BadRequest("valid error ", f'{regularly_form.errors}')
 
             # 정류장 등록
-            create_dispatch_regularly_stations(request, regularly_data, regularly, creator)
-            
+            create_dispatch_regularly_stations(request, regularly, creator)
+            # 시간은 DispatchRegularlyStation time으로 계산해서, 거리는 카카오api로 저장하기
             get_regularly_distance_and_time(regularly_data, regularly)
+            # 카카오api로 거리, 시간 저장하기
+            # get_regularly_distance_and_time_from_kakao(regularly_data, regularly)
+            
 
             return redirect(request.META.get('HTTP_REFERER', 'redirect_if_referer_not_found'))
         else:
@@ -1261,6 +1328,89 @@ def regularly_order_edit_check(request):
     
     return JsonResponse({'status': 'success'})
 
+def edit_station_time(recent_regularly, stations):
+    time_list = recent_regularly.time_list.split(",")
+    departure_minute = get_minute_from_colon_time(recent_regularly.departure_time)
+    cnt = 0
+    for station in stations:
+        if station.index == 1:
+            time = departure_minute - int(time_list[0])
+        elif station.index == 2:
+            time = departure_minute
+        else:
+            time = get_minute_from_colon_time(stations[cnt - 1].time) + int(time_list[cnt - 1])
+
+        station.time = get_hour_minute_with_colon(time)
+        station.save()
+        cnt += 1
+
+def time_data(request):
+    creator = get_object_or_404(Member, pk=request.session.get('user'))
+    station_edit_date = '2024-06-01'
+
+
+    all_regularly_data = DispatchRegularlyData.objects.exclude(time='').exclude(time='0')
+    for regularly_data in all_regularly_data:
+        recent_regularly = regularly_data.monthly.order_by("-edit_date").first()
+        stations = recent_regularly.regularly_station.order_by('index')
+        # stations time 수정
+        edit_station_time(recent_regularly, stations)
+        
+        # 기준일에 데이터 없으면 새로 생성
+        try:
+            DispatchRegularly.objects.get(regularly_id=regularly_data, edit_date=station_edit_date)
+        except DispatchRegularly.DoesNotExist:
+            edit_date_regularly = DispatchRegularly.objects.filter(regularly_id=regularly_data, edit_date__lte=station_edit_date).order_by('-edit_date').first()
+            edit_date_regularly_data = model_to_dict(edit_date_regularly)
+            edit_date_regularly_data.pop('id')
+            edit_date_regularly_data.pop('station')
+            
+
+            edit_date_regularly_data['regularly_id'] = regularly_data
+            edit_date_regularly_data['edit_date'] = station_edit_date
+            edit_date_regularly_data['group'] = RegularlyGroup.objects.get(id=edit_date_regularly_data['group'])
+            edit_date_regularly_data['creator'] = creator
+            edit_date_r = DispatchRegularly(**edit_date_regularly_data)
+            edit_date_r.save()
+
+            # 기준일 ~ 기준일 이후 첫번째 데이터 사이의 배차들 불러서 regularly_id 변경
+            recent_regularly_edit_date = DispatchRegularly.objects.filter(regularly_id=regularly_data, edit_date__gt=station_edit_date).order_by('edit_date').first().edit_date
+
+            connects = DispatchRegularlyConnect.objects.filter(regularly_id__regularly_id=regularly_data).filter(departure_date__gte=station_edit_date).filter(departure_date__lt=recent_regularly_edit_date)
+            logger.info(f"기준일 ~ 기준일 이후 첫번째 데이터 사이의 배차들 확인 : 기존 데이터 {connects.values('regularly_id', 'id', 'departure_date')}")
+            for connect in connects:
+                connect.regularly_id = edit_date_r
+                connect.save()
+            logger.info(f"기준일 ~ 기준일 이후 첫번째 데이터 사이의 배차들 확인 : 변경 데이터 {connects.values('regularly_id', 'id', 'departure_date')}")
+
+
+
+        regularly_list = regularly_data.monthly.exclude(time="").exclude(time="0")
+        for regularly in regularly_list:
+            regularly.time_list = recent_regularly.time_list
+            regularly.time = recent_regularly.time
+            regularly.distance_list = recent_regularly.distance_list
+            regularly.distance = recent_regularly.distance
+            regularly.save()
+
+            regularly.regularly_station.all().delete()
+            for station in stations:
+                station_data = model_to_dict(station)
+                station_data.pop('id')
+                station_data['regularly'] = regularly
+                station_data['station'] = station.station
+                station_data['creator'] = station.creator
+                new_station = DispatchRegularlyStation(**station_data)
+                new_station.save()
+
+
+
+
+
+
+
+    return JsonResponse({"result": "aa"})
+
 def regularly_order_edit(request):
     if request.session.get('authority') > 1:
         return render(request, 'authority.html')
@@ -1268,8 +1418,9 @@ def regularly_order_edit(request):
         id = request.POST.get('id', None)
         regularly_data = get_object_or_404(DispatchRegularlyData, pk=id)
         creator = get_object_or_404(Member, pk=request.session.get('user'))
+        station_edit_date = request.POST.get('station_edit_date')
         regularly_data_form = RegularlyDataForm(request.POST, instance=regularly_data)
-        if regularly_data_form.is_valid():
+        if regularly_data_form.is_valid() and station_edit_date:
             group = get_object_or_404(RegularlyGroup, pk=request.POST.get('group'))
             regularly_data = regularly_data_form.save(commit=False)
             regularly_data.group = group
@@ -1294,10 +1445,10 @@ def regularly_order_edit(request):
                 raise BadRequest("valid error ", f'{regularly_form.errors}')
             
             # 등록된 정류장 삭제
-            DispatchRegularlyDataStation.objects.filter(regularly_data=regularly_data).delete()
+            # DispatchRegularlyDataStation.objects.filter(regularly_data=regularly_data).delete()
             DispatchRegularlyStation.objects.filter(regularly=regularly).delete()
             # 정류장 등록
-            create_dispatch_regularly_stations(request, regularly_data, regularly, creator)
+            create_dispatch_regularly_stations(request, regularly, creator)
 
             #### 금액, 기사수당 수정 시 입력한 월 이후 배차들 금액, 기사수당 수정
             price = regularly_data.price
@@ -1375,7 +1526,62 @@ def regularly_order_edit(request):
                         connect.driver_allowance = regularly.driver_allowance
                 connect.save()
 
+            # 시간은 DispatchRegularlyStation time으로 계산해서, 거리는 카카오api로 저장하기
             get_regularly_distance_and_time(regularly_data, regularly)
+            # 카카오api로 거리, 시간 저장하기
+            # get_regularly_distance_and_time_from_kakao(regularly_data, regularly)
+
+            # 기준일에 데이터 없으면 새로 생성
+            try:
+                DispatchRegularly.objects.get(regularly_id=regularly_data, edit_date=station_edit_date)
+            except DispatchRegularly.DoesNotExist:
+                edit_date_regularly = DispatchRegularly.objects.filter(regularly_id=regularly_data, edit_date__lte=station_edit_date).order_by('-edit_date').first()
+                edit_date_regularly_data = model_to_dict(edit_date_regularly)
+                edit_date_regularly_data.pop('id')
+                edit_date_regularly_data.pop('station')
+                
+
+                edit_date_regularly_data['regularly_id'] = regularly_data
+                edit_date_regularly_data['edit_date'] = station_edit_date
+                edit_date_regularly_data['group'] = RegularlyGroup.objects.get(id=edit_date_regularly_data['group'])
+                edit_date_regularly_data['creator'] = creator
+                edit_date_r = DispatchRegularly(**edit_date_regularly_data)
+                edit_date_r.save()
+
+                logger.info(f"기준일에 데이터 없으면 생성하는 부분 확인 : 기존 데이터 {DispatchRegularly.objects.filter(id=edit_date_regularly.id).values()}")
+                logger.info(f"기준일에 데이터 없으면 생성하는 부분 확인 : 생성한 데이터 {DispatchRegularly.objects.filter(id=edit_date_r.id).values()}")
+
+                # 기준일 ~ 기준일 이후 첫번째 데이터 사이의 배차들 불러서 regularly_id 변경
+                recent_regularly_edit_date = DispatchRegularly.objects.filter(regularly_id=regularly_data, edit_date__gt=station_edit_date).order_by('edit_date').first().edit_date
+
+                connects = DispatchRegularlyConnect.objects.filter(regularly_id__regularly_id=regularly_data).filter(departure_date__gte=station_edit_date).filter(departure_date__lt=recent_regularly_edit_date)
+                logger.info(f"기준일 ~ 기준일 이후 첫번째 데이터 사이의 배차들 확인 : 기존 데이터 {connects.values('regularly_id')}")
+                for connect in connects:
+                    connect.regularly_id = edit_date_r
+                    connect.save()
+                logger.info(f"기준일 ~ 기준일 이후 첫번째 데이터 사이의 배차들 확인 : 변경 데이터 {connects.values('regularly_id')}")
+
+            # 기준일 이후 노선들 정류장 새로 등록
+            new_station_list = regularly.regularly_station.all()
+            edit_station_regularly_list = DispatchRegularly.objects.filter(regularly_id=regularly_data, edit_date__gte=station_edit_date)
+            for old_regularly in edit_station_regularly_list:
+                old_regularly.time = regularly.time
+                old_regularly.time_list = regularly.time_list
+                old_regularly.distance = regularly.distance
+                old_regularly.distance_list = regularly.distance_list
+                old_regularly.save()
+
+                old_regularly.regularly_station.all().delete()
+                
+                for station in new_station_list:
+                    station_data = model_to_dict(station)
+                    station_data.pop('id')
+                    station_data['regularly'] = old_regularly
+                    station_data['station'] = station.station
+                    station_data['creator'] = station.creator
+                    new_station = DispatchRegularlyStation(**station_data)
+                    new_station.save()
+                
             return redirect(request.META.get('HTTP_REFERER', 'redirect_if_referer_not_found'))
         else: 
             raise BadRequest("valid error ", f'{regularly_data_form.errors}')

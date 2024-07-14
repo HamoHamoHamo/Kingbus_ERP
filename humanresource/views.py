@@ -12,7 +12,6 @@ from django.http import Http404, HttpResponse, HttpResponseNotAllowed, HttpRespo
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import resolve
 from django.views import generic
-from django.core.exceptions import BadRequest
 from enum import Enum
 from config.settings import FORMAT
 from datetime import datetime, timedelta
@@ -31,7 +30,7 @@ import firebase_admin
 from firebase_admin import credentials
 from firebase_admin import messaging
 from media_firebase import upload_to_firebase, get_download_url, delete_firebase_file
-from config.custom_logging import logger
+
 
 def send_message(title, body, token, topic):
     cred_path = os.path.join(BASE_DIR, CRED_PATH)
@@ -461,13 +460,9 @@ def member_file_upload(request):
                 os.remove(file.file.path)
             except Exception as e:
                 print("Firebase upload error", e)
-                logger.warning(f"Firebase upload error {e}")
-                logger.warning(f"file: {file}, file_path: {file_path}")
-                
                 #파이어베이스 업로드 실패 시 파일 삭제
                 os.remove(file.file.path)
                 file.delete()
-                raise BadRequest("파일 저장 실패")
 
             if old_file:
                 #파이어베이스에서 예전 파일 삭제 / signals에서 삭제

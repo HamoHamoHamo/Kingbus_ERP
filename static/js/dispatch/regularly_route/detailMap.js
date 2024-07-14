@@ -25,6 +25,8 @@ const saveStation = document.querySelector("#saveStation")
 const popupMaplink = document.querySelector("#popupMaplink")
 const deleteWaypoint = document.querySelector("#deleteWaypoint")
 const stationSearchBtn = document.querySelector(".stationSearchBtn")
+const stationEditDate = document.querySelector(".stationEditDate")
+const editDateInput = document.querySelector(".editDateInput")
 
 let popupCheckbox = document.querySelectorAll(".detailRoutePopupScrollBoxTbody input[type=checkbox]")
 let popupAllCheckbox = document.querySelector(".detailMapPopupHeader input[type=checkbox]")
@@ -42,6 +44,9 @@ detailMapBtn.addEventListener("click", openDetailMapPopup)
 function createStationInput() {
     if (stationDatas.validateDatas() == false) {
         return;
+    } else if (detailExist && stationEditDate.value == '') {
+        window.alert("기준일을 입력해 주세요.")
+        return;
     }
     // 기존 데이터 input 삭제
     popupDatasDiv.innerHTML = '';
@@ -49,6 +54,10 @@ function createStationInput() {
     Array.from(stationDatas.getStationElements()).forEach(div => {
         popupDatasDiv.appendChild(div);
     })
+    // 수정일 경우 기준일 값 넣기
+    if (detailExist) {
+        editDateInput.value = stationEditDate.value
+    }
     // 정류장 개수 input 생성
     // popupDatasDiv.appendChild(stationDatas.getWaypointNumberElement());
     waypointNumber.value = stationDatas.waypointNumber;
