@@ -5,6 +5,7 @@
 <meta http-equiv="Cache-Control" content="private, no-cache, no-store, max-age=0, must-revalidate">
 <link rel="stylesheet" href="{% static 'css/salary/table.css' %}" type="text/css" />
 
+
 {% endblock %}
 
 {% block content-header %}
@@ -116,10 +117,10 @@
                     <div class="theadLegalAllowanceContent">
                         <div>주휴수당</div>
                         <div>법정휴일</div>
-                        <div class="theadLegalAllowanceContentDouble">
+                        <div class="theadLegalAllowanceContentDouble theadDouble">
                             <div class="theadLegalAllowanceContentDoubleTitle">주 연장</div>
                             <div class="theadLegalAllowanceContentDoubleContent">
-                                <div class="theadLegalAllowanceContentDoubleContentFirst">기본임금</div>
+                                <div class="theadLegalAllowanceContentDoubleContentFirst theadAnother">기본임금</div>
                                 <div>가산임금</div>
                             </div>
                         </div>
@@ -127,8 +128,9 @@
                         <div class="theadLegalAllowanceContentDouble">
                             <div class="theadLegalAllowanceContentDoubleTitle">휴일근로</div>
                             <div class="theadLegalAllowanceContentDoubleContent">
-                                <div class="theadLegalAllowanceContentDoubleContentFirst">기본임금</div>
-                                <div>가산임금</div>
+                                <div class="theadLegalAllowanceContentDoubleContentFirst">휴일기본임금</div>
+                                <div class="theadLegalAllowanceContentDoubleContentFirst">휴일50%가산임금</div>
+                                <div class="theadLegalAllowanceContentDoubleContentFirst">휴일100%가산임금</div>
                             </div>
                         </div>
                         <div>연차수당</div>
@@ -209,8 +211,10 @@
                         <div class="addCommaToInnerText">{{data.night_shift_wage}}</div>
                         <!-- 휴일 기본임금 -->
                         <div class="addCommaToInnerText">{{data.holiday_work_wage}}</div>
-                        <!-- 휴일 가산임금 -->
+                        <!-- 휴일 50%임금 -->
                         <div class="addCommaToInnerText">{{data.additional_holiday_work_wage}}</div>
+                        <!-- 휴일 100%임금 -->
+                        <div class="addCommaToInnerText"></div>
                         <!-- 연차수당 -->
                         <div class="addCommaToInnerText">{{data.annual_allowance}}</div>
                         <!-- 만근수당 -->
@@ -267,6 +271,7 @@
                 <div class="sumLegalAllowance" style="display: flex;">
                     <div class="weekly_holiday_allowance">주휴수당</div>
                     <div class="legal_holiday_allowance">법정휴일</div>
+                    <div class=""></div>
                     <div class=""></div>
                     <div class="additional_wage"></div>
                     <div class="night_shift_wage"></div>

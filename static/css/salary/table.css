@@ -161,7 +161,7 @@ background-color: #444444;
 }
 
 .tableBody {
-    width: 200%;
+    width: 217%;
     border-spacing: 0;
     box-sizing: border-box;
     table-layout: fixed;
@@ -291,7 +291,7 @@ background-color: #444444;
     display: block;
     justify-content: center;
     align-items: center;
-    width: 22%;
+    width: 40%;
 }
 
 
@@ -304,6 +304,26 @@ background-color: #444444;
 .theadLegalAllowanceContentDoubleContentFirst,
 .theadInsuranceContentFirst{
     border-right: 0.1rem solid #CDCDCE;;
+}
+.theadLegalAllowanceContentDoubleContentFirst{
+    width: 33.3%;
+}
+
+.theadAnother{
+    width: 50%;
+}
+
+
+.theadLegalAllowanceContent > *{
+    width: 9.09%;
+}
+
+.theadLegalAllowanceContentDouble{
+    width: 27.27%;
+}
+
+.theadDouble{
+    width: 18.18%;
 }
 
 /* 데이터헤더끝 */
@@ -359,7 +379,7 @@ background-color: #444444;
 
 .tbodyLegalAllowance > *{
     
-    width: 11%;
+    width: 9.09%;
     border-right: 0.1rem solid #CDCDCE;
 }
 
@@ -427,7 +447,7 @@ background-color: #444444;
 .sumBodyTable{
 
     height: 100%;
-    width: 200%;
+    width: 217%;
     border-spacing: 0;
     box-sizing: border-box;
     table-layout: fixed;
