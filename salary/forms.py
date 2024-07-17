@@ -9,7 +9,5 @@ class HourlyWageForm(forms.ModelForm):
         fields = [
             'wage1',
             'wage2',
-            'wage3',
-            'wage4',
             'month',
         ]

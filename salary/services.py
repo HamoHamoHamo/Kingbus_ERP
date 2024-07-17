@@ -12,6 +12,7 @@ from dispatch.selectors import DispatchSelector
 from humanresource.models import Member, Salary
 from humanresource.selectors import MemberSelector
 from common.constant import TODAY
+from common.formatter import format_number_with_commas
 from common.datetime import calculate_time_difference, get_hour_minute_with_colon, get_hour_minute, get_minute_from_colon_time, last_day_of_month, get_weekday_from_date, calculate_date_difference, add_days_to_date
 from datetime import datetime, timedelta
 import math
@@ -251,17 +252,50 @@ class SalaryTableDataCollector(DataCollector):
                 # additional이랑 reduction은 나중에 사용할 때 추가
             }
 
-    
+    def calculate_work_minutes(self, minutes, weekly_minute, within_law_extension_minute, outside_law_extension_minute):
+        MAX_WEEKLY_MINUTES = 60 * 30
+        MAX_WITHIN_LAW_EXTENSION_MINUTES = 60 * 10
+
+        if weekly_minute < MAX_WEEKLY_MINUTES:
+            if weekly_minute + minutes <= MAX_WEEKLY_MINUTES:
+                weekly_minute += minutes
+            else:
+                excess_minutes = weekly_minute + minutes - MAX_WEEKLY_MINUTES
+                weekly_minute = MAX_WEEKLY_MINUTES
+                within_law_extension_minute += excess_minutes
+        else:
+            within_law_extension_minute += minutes
+
+        if within_law_extension_minute > MAX_WITHIN_LAW_EXTENSION_MINUTES:
+            excess_minutes = within_law_extension_minute - MAX_WITHIN_LAW_EXTENSION_MINUTES
+            within_law_extension_minute = MAX_WITHIN_LAW_EXTENSION_MINUTES
+            outside_law_extension_minute += excess_minutes
+
+        return weekly_minute, within_law_extension_minute, outside_law_extension_minute
+
 
     def get_collected_data(self):
         work_time_list = ['' for i in range(31)]
         night_shift_time_list = ['' for i in range(31)]
         work_list = ['' for i in range(31)]
+        
+        hourly_wage = 0
+        wage = 0
+        weekly_extension_wage = 0
+        
         total_work_minute = 0
         total_night_shift_minute = 0
+        total_weekly_minute = 0 # 주간 근로시간(최대30시간) 한달치
+        total_within_law_extension_minute = 0
+        total_outside_law_extension_minute = 0
 
-        weekly_minute = self.get_work_minutes_from_last_month_monday()
+
+        last_month_weekly_minute = self.get_work_minutes_from_last_month_monday()
         mondays_counter = 1 if self.mondays[0][:7] < self.month else 0
+        weekly_minute = last_month_weekly_minute
+        within_law_extension_minute = 0
+        outside_law_extension_minute = 0
+        
         
         holiday_hour = 0
         additional_holiday_hour = 0
@@ -272,21 +306,41 @@ class SalaryTableDataCollector(DataCollector):
             # 월요일이면 weekly_minute 초기화
             if mondays_counter < len(self.mondays) and self.check_monday(date, mondays_counter):
                 mondays_counter += 1
+
+                # 저번달 시간 빼주기
+                total_weekly_minute += weekly_minute
+                if i < 7:
+                    print("i", i)
+                    only_weekly_minute = weekly_minute - last_month_weekly_minute
+                else:
+                    only_weekly_minute = weekly_minute
+                # 주 근무시간으로 시급 결정해서 계산하기 
+                hourly_wage = int(self.hourly_wage_data.get_wage(weekly_minute))
+                wage += math.ceil(round(only_weekly_minute / 60, 1) * hourly_wage) # 반올림은?
+                print(only_weekly_minute, wage, hourly_wage)
+                weekly_extension_wage += math.ceil(round((within_law_extension_minute + outside_law_extension_minute) / 60, 1) * hourly_wage) # 주 연장 기본임금
+
                 weekly_minute = 0
+                within_law_extension_minute = 0
+                outside_law_extension_minute = 0
 
             weekday = get_weekday_from_date(date)
             daily_connects = self.get_daily_connects(date)
             work_time, minutes = self.get_work_time(daily_connects)
-            weekly_minute += minutes
+            # weekly_minute += minutes
+            weekly_minute, within_law_extension_minute, outside_law_extension_minute = self.calculate_work_minutes(minutes, weekly_minute, within_law_extension_minute, outside_law_extension_minute)
+            total_within_law_extension_minute += within_law_extension_minute
+            total_outside_law_extension_minute += outside_law_extension_minute
+
             work_type = self.get_work_type(minutes, weekday, weekly_minute)
             night_shift_time = self.get_night_shift_time(daily_connects)
 
-            if self.is_holiday(self.holiday_data, date):
+            if self.is_holiday(self.holiday_data, date) or work_type == '주휴':
                 if minutes / 60 <= 8:
                     holiday_hour += round(minutes / 60, 1)
                     additional_holiday_hour += 0
                 else:
-                    holiday_hour += 0
+                    holiday_hour += 8
                     additional_holiday_hour += round((minutes - 60 * 8) / 60, 1)
 
             work_time_list[i] = work_time
@@ -294,31 +348,41 @@ class SalaryTableDataCollector(DataCollector):
             night_shift_time_list[i] = get_hour_minute_with_colon(night_shift_time) if night_shift_time > 0 else ''
             total_work_minute += minutes
             total_night_shift_minute += night_shift_time
-            
+
+
+        # 주 근무시간으로 시급 결정해서 계산하기 
+        total_weekly_minute += weekly_minute
+        hourly_wage = int(self.hourly_wage_data.get_wage(weekly_minute))
+        wage += math.ceil(round(weekly_minute / 60, 1) * hourly_wage) # 반올림은?
+        weekly_extension_wage += math.ceil(round((within_law_extension_minute + outside_law_extension_minute) / 60, 1) * hourly_wage) # 주 연장 기본임금
+
+
         total_work_hour = round(total_work_minute / 60, 1)
-        hourly_wage = int(self.hourly_wage_data.get_wage(total_work_minute / 21.7))
+        # hourly_wage = int(self.hourly_wage_data.get_wage(total_work_minute))
         weekly_holiday_count = work_list.count('주휴')
         # 5월이면 5월1일 1개 추가
-        legal_holiday_count = weekly_holiday_count + self.holiday_data['count'] + 1 if self.month[5:7] == '05' else weekly_holiday_count + self.holiday_data['count']
+        legal_holiday_count = self.holiday_data['count'] + 1 if self.month[5:7] == '05' else weekly_holiday_count + self.holiday_data['count']
 
         # 소수점 다 반올림
         # 통상급여
-        wage = math.ceil(hourly_wage * total_work_hour) # 반올림은?
-        performance_allowance = int(self.member_salary['performance_allowance']) # 성과급
-        meal = int(self.member_salary['meal']) # 식대
+        # wage = math.ceil(round((total_weekly_minute - last_month_weekly_minute) / 60, 1) * hourly_wage) # 반올림은?
+        # performance_allowance = int(self.member_salary['performance_allowance']) # 성과급
+        performance_allowance = 0 # 일단 0으로 고정
         service_allowance = int(self.member_salary['service_allowance']) # 근속수당
-        ordinary_salary = wage + service_allowance + performance_allowance + meal
-        ordinary_hourly_wage = math.ceil(ordinary_salary * 12 / 1560) # 통상시급 반올림은?
-        
+        ordinary_salary = wage + service_allowance + performance_allowance
+        ordinary_hourly_wage = math.ceil(ordinary_salary / round((total_weekly_minute - last_month_weekly_minute) / 60, 1)) if round((total_weekly_minute - last_month_weekly_minute) / 60, 1) != 0 else 0 # 통상시급 반올림은?
+        print("test", total_weekly_minute, round((total_weekly_minute - last_month_weekly_minute) / 60, 1))
         # 법정수당
         weekly_holiday_allowance = ordinary_hourly_wage * 6 * weekly_holiday_count # 주휴수당
         legal_holiday_allowance = ordinary_hourly_wage * 6 * legal_holiday_count # 법정휴일
-        additional_wage = math.ceil(ordinary_hourly_wage * 0.5 * (total_work_hour - 173.6)) if total_work_hour - 173.6 > 0 else 0 # 가산임금
+        # weekly_extension_wage = math.ceil(round((total_within_law_extension_minute + total_outside_law_extension_minute) / 60, 1) * hourly_wage) # 주 연장 기본임금
+        weekly_extension_additional_wage = math.ceil(round(total_outside_law_extension_minute / 60, 1) * ordinary_hourly_wage * 0.5) # 주 연장 가산임금
         night_shift_wage = math.ceil(round(total_night_shift_minute / 60, 1) * ordinary_hourly_wage * 0.5) # 야간근로 가산임금
-        holiday_work_wage = math.ceil(holiday_hour * hourly_wage * 0.5)
+        holiday_work_wage = math.ceil(holiday_hour * ordinary_hourly_wage * 0.5) # 휴일 기본임금
         additional_holiday_work_wage = math.ceil(additional_holiday_hour * ordinary_hourly_wage * 0.5) # 휴일 가산임금
         annual_allowance = int(self.member_salary['annual_allowance']) # 연차수당
-        statutory_allowance = math.ceil(weekly_holiday_allowance + additional_wage + night_shift_wage + holiday_work_wage + additional_holiday_work_wage + annual_allowance)
+        meal = int(self.member_salary['meal']) # 식대 > 만근수당
+        statutory_allowance = math.ceil(weekly_holiday_allowance + weekly_extension_wage + weekly_extension_additional_wage + night_shift_wage + holiday_work_wage + additional_holiday_work_wage + annual_allowance + meal)
 
         # additional_salary = int(self.member_salary['additional_salary__price'])
         # deduction_salary = int(self.member_salary['deduction_salary__price'])
@@ -334,26 +398,27 @@ class SalaryTableDataCollector(DataCollector):
 
             'total_work_minute': total_work_minute,
             'total_work_hour_minute': get_hour_minute(total_work_minute), # 근무시간
-            'hourly_wage': hourly_wage, # 기본시급
-            'ordinary_hourly_wage': ordinary_hourly_wage, # 통상시급
+            'hourly_wage': format_number_with_commas(hourly_wage), # 기본시급
+            'ordinary_hourly_wage': format_number_with_commas(ordinary_hourly_wage), # 통상시급
             
             # 통상급여
-            'wage': wage,
-            'performance_allowance': performance_allowance, # 성과급
-            'meal': meal, # 식대
-            'service_allowance': service_allowance, # 근속수당
-            'ordinary_salary': ordinary_salary,
+            'wage': format_number_with_commas(wage),
+            'performance_allowance': format_number_with_commas(performance_allowance), # 성과급
+            'meal': format_number_with_commas(meal), # 식대
+            'service_allowance': format_number_with_commas(service_allowance), # 근속수당
+            'ordinary_salary': format_number_with_commas(ordinary_salary),
             
             # 법정수당
-            'weekly_holiday_allowance': weekly_holiday_allowance,
-            'legal_holiday_allowance': legal_holiday_allowance,
-            'additional_wage': additional_wage,
-            'night_shift_wage': night_shift_wage,
-            'holiday_work_wage': holiday_work_wage,
-            'additional_holiday_work_wage': additional_holiday_work_wage,
-            'annual_allowance': annual_allowance, # 연차수당
-            'statutory_allowance': statutory_allowance,
-            'sum_ordinary_salary_and_statutory_allowance': ordinary_salary + statutory_allowance,
+            'weekly_holiday_allowance': format_number_with_commas(weekly_holiday_allowance),
+            'legal_holiday_allowance': format_number_with_commas(legal_holiday_allowance),
+            'weekly_extension_wage': format_number_with_commas(weekly_extension_wage),
+            'weekly_extension_additional_wage': format_number_with_commas(weekly_extension_additional_wage),
+            'night_shift_wage': format_number_with_commas(night_shift_wage),
+            'holiday_work_wage': format_number_with_commas(holiday_work_wage),
+            'additional_holiday_work_wage': format_number_with_commas(additional_holiday_work_wage),
+            'annual_allowance': format_number_with_commas(annual_allowance), # 연차수당
+            'statutory_allowance': format_number_with_commas(statutory_allowance),
+            'sum_ordinary_salary_and_statutory_allowance': format_number_with_commas(ordinary_salary + statutory_allowance),
 
         }
 

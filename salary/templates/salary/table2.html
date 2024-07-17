@@ -94,7 +94,8 @@
             <div class="thead">
                 <div class="theadDate">입사일자</div>
                 <div class="theadWorkTime">근무시간</div>
-                <div class="theadBasic">기본시급</div>
+                <div class="theadBasic">기본시급<br>(1)<br>30시간미만</div>
+                <div class="theadBasic">기본시급<br>(2)<br>30시간</div>
                 <div class="theadNormal">통상시급</div>
 
                 <!--통상급여-->
@@ -103,7 +104,6 @@
                     <div class="theadOrdinarySalaryContent">
                         <div>임금</div>
                         <div>직책수당</div>
-                        <div>식 대</div>
                         <div>근속수당</div>
                         <div class="theadOrdinarySalaryContentLast">계</div>
                     </div>
@@ -132,6 +132,7 @@
                             </div>
                         </div>
                         <div>연차수당</div>
+                        <div>만근수당</div>
                         <div class="theadLegalAllowanceContentLast">계</div>
                     </div>
                 </div>
@@ -175,26 +176,46 @@
                 {% with member_id=member.id %}
                 {% with data=datas|obj:member.id %}
                 <div class="tbodyItemTr">
+                    <!-- 입사일자 -->
                     <div class="addCommaToInnerText tbodyDate">{{data.entering_date}}</div>
+                    <!-- 근무시간 -->
                     <div class="addCommaToInnerText tbodyWorkTime">{{data.total_work_hour_minute}}</div>
+                    <!-- 기본시급1 -->
                     <div class="addCommaToInnerText tbodyBasic">{{data.hourly_wage}}</div>
+                    <!-- 기본시급2 -->
+                    <div class="addCommaToInnerText tbodyBasic">{{data.hourly_wage}}</div>
+                    <!-- 통상시급 -->
                     <div class="addCommaToInnerText tbodyNormal">{{data.ordinary_hourly_wage}}</div>
                     <div class="tbodyOrdinarySalary" style="display: flex;">
+                        <!-- 임금 -->
                         <div class="addCommaToInnerText">{{data.wage}}</div>
+                        <!-- 직책수당 -->
                         <div class="addCommaToInnerText">{{data.performance_allowance}}</div>
-                        <div class="addCommaToInnerText">{{data.meal}}</div>
+                        <!-- 근속수당 -->
                         <div class="addCommaToInnerText">{{data.service_allowance}}</div>
+                        <!-- 계 -->
                         <div class="addCommaToInnerText">{{data.ordinary_salary}}</div>
                     </div>
                     <div class="tbodyLegalAllowance" style="display: flex;">
-                        <div class="addCommaToInnerText"></div>
+                        <!-- 주휴수당 -->
+                        <div class="addCommaToInnerText">{{data.weekly_holiday_allowance}}</div>
+                        <!-- 법정휴일 -->
                         <div class="addCommaToInnerText">{{data.legal_holiday_allowance}}</div>
-                        <div class="addCommaToInnerText"></div>
-                        <div class="addCommaToInnerText">{{data.additional_wage}}</div>
+                        <!-- 주연장 기본임금 -->
+                        <div class="addCommaToInnerText">{{data.weekly_extension_wage}}</div>
+                        <!-- 주연장 가산임금 -->
+                        <div class="addCommaToInnerText">{{data.weekly_extension_additional_wage}}</div>
+                        <!-- 야간근로 -->
                         <div class="addCommaToInnerText">{{data.night_shift_wage}}</div>
+                        <!-- 휴일 기본임금 -->
                         <div class="addCommaToInnerText">{{data.holiday_work_wage}}</div>
+                        <!-- 휴일 가산임금 -->
                         <div class="addCommaToInnerText">{{data.additional_holiday_work_wage}}</div>
+                        <!-- 연차수당 -->
                         <div class="addCommaToInnerText">{{data.annual_allowance}}</div>
+                        <!-- 만근수당 -->
+                        <div class="addCommaToInnerText">{{data.meal}}</div>
+                        <!-- 계 -->
                         <div class="addCommaToInnerText">{{data.statutory_allowance}}</div>
                     </div>
                     <div class="tbodySum addCommaToInnerText">{{data.sum_ordinary_salary_and_statutory_allowance}}</div>
@@ -235,11 +256,11 @@
                 <div class="sumDate"></div>
                 <div class="total_work_minute sumWorkTime"></div>
                 <div class="hourly_wage sumBasic"></div>
+                <div class="hourly_wage sumBasic"></div>
                 <div class="ordinary_hourly_wage sumNormal"></div>
                 <div class="sumOrdinarySalary" style="display: flex;">
                     <div class="wage">임금</div>
                     <div class="performance_allowance">직책수당</div>
-                    <div class="meal">식대</div>
                     <div class="service_allowance">근속수당</div>
                     <div class="ordinary_salary">계</div>
                 </div>
@@ -252,6 +273,7 @@
                     <div class="holiday_work_wage"></div>
                     <div class="additional_holiday_work_wage"></div>
                     <div class="annual_allowance"></div>
+                    <div class="meal">만근수당</div>
                     <div class="statutory_allowance"></div>
                     
                 </div>
@@ -298,7 +320,7 @@
                 <div class="popupArticle">
                     <label for="" class="popupArticleLabel">
                         <span class="importantStar">*</span>
-                        4시간 이하
+                        기본시급1 (주 30시간 미만)
                     </label>
                     <input required autocomplete="off" name="wage1" type="text"
                         class="popupPrice inputText inputComma essential length100"
@@ -307,29 +329,11 @@
                 <div class="popupArticle">
                     <label for="" class="popupArticleLabel">
                         <span class="importantStar">*</span>
-                        4시간 초과 6시간 이하
+                        기본시급2 (주 30시간 이상)
                     </label>
                     <input required autocomplete="off" name="wage2" type="text"
                         class="popupPrice inputText essential inputComma length100"
                         value="{{hourly_wage.wage2}}">
-                </div>
-                <div class="popupArticle">
-                    <label for="" class="popupArticleLabel">
-                        <span class="importantStar">*</span>
-                        6시간 초과 8시간 이하
-                    </label>
-                    <input required autocomplete="off" name="wage3" type="text"
-                        class="popupPrice inputText essential inputComma length100"
-                        value="{{hourly_wage.wage3}}">
-                </div>
-                <div class="popupArticle">
-                    <label for="" class="popupArticleLabel">
-                        <span class="importantStar">*</span>
-                        8시간 초과
-                    </label>
-                    <input required autocomplete="off" name="wage4" type="text"
-                        class="popupPrice inputText essential inputComma length100"
-                        value="{{hourly_wage.wage4}}">
                 </div>
             </div>
             <div class="popupFooter">
