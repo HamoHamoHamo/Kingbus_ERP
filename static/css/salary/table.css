@@ -1,3 +1,8 @@
+.contentsAreaBox * {
+    vertical-align: middle;
+    text-align: center;
+}
+
 .orderListSubScroll {
     width: 100%;
     height: calc(100% - 10.1rem);
@@ -57,7 +62,7 @@
 }
 
 
-.MainContentsContainer{
+.mainContentsCentainer{
     font-size: 1.4rem;
 }
 
@@ -188,15 +193,15 @@ background-color: #444444;
 }
 
 .theadDate{
-    width: 9.8182%;
+    width: 10%;
 }
 
 .theadWorkTime, .theadBasic, .theadNormal, .theadSum, .theadAdditionalAllowance{
-    width: 5.6727%;
+    width: 6%;
 }
 
 .theadOrdinarySalary{
-    width: 28.3635%;
+    width: 20%;
     display: block;
 }
 
@@ -225,17 +230,17 @@ background-color: #444444;
 }
 
 .theadLegalAllowance{
-    width: 51.0543%;
+    width: 51%;
     display: block;
 }
 
 .theadInsurance{
-    width: 11.3454%;
+    width: 10%;
     display: block;
 }
 
 .theadDeductionDetails{
-    width: 45.3816%;
+    width: 45%;
     display: block;
 }
 
@@ -244,7 +249,7 @@ background-color: #444444;
     justify-content: center;
     align-items: center;
     border-right: 0.1rem solid #CDCDCE;
-    width: 20%;
+    width: 25%;
     height: 100%;
 }
 
@@ -253,13 +258,13 @@ background-color: #444444;
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 11.1111%;
+    width: 11%;
     height: 100%;
     border-right: 0.1rem solid #CDCDCE;
 }
 
 .theadDeductionDetailsContent > *{
-    width: 12.5%;
+    width: 12%;
 }
 
 .theadLegalAllowanceContentDoubleContent > *,
@@ -286,7 +291,7 @@ background-color: #444444;
     display: block;
     justify-content: center;
     align-items: center;
-    width: 22.2222%;
+    width: 22%;
 }
 
 
@@ -318,7 +323,7 @@ background-color: #444444;
 
 .tbodyItemTrTd{
     height: 100%;
-    width: 5.6727%;
+    width: 5%;
     border-right: 0.1rem solid #CDCDCE;
 }
 
@@ -327,39 +332,39 @@ background-color: #444444;
 }
 
 .tbodyDate{
-    width: 9.8182%;
+    width: 10%;
     border-right: 0.1rem solid #CDCDCE;
 }
 
 .tbodyWorkTime, .tbodyBasic, .tbodyNormal, .tbodySum, .tbodyAdditionalAllowance{
-    width: 5.6727%;
+    width: 6%;
     border-right: 0.1rem solid #CDCDCE;
 }
 
 .tbodyOrdinarySalary{
-    width: 28.3635%;
+    width: 20.2%;
     display: block;
 
 }
 
 .tbodyOrdinarySalary > *{
-    width: 20%;
+    width: 25%;
     border-right: 0.1rem solid #CDCDCE;
 }
 
 .tbodyLegalAllowance{
-    width: 51.0543%;
+    width: 51.3%;
     display: block;
 }
 
 .tbodyLegalAllowance > *{
     
-    width: 11.11111111111111%;
+    width: 11%;
     border-right: 0.1rem solid #CDCDCE;
 }
 
 .tbodyInsurance{
-    width: 11.3454%;
+    width: 10%;
     display: block;
 }
 
@@ -439,7 +444,7 @@ background-color: #444444;
 
 .sumItemTrTd{
     height: 100%;
-    width: 5.6727%;
+    width: 5%;
     border-right: 0.1rem solid #CDCDCE;
 }
 
@@ -448,39 +453,39 @@ background-color: #444444;
 }
 
 .sumDate{
-    width: 9.8182%;
+    width: 10%;
     border-right: 0.1rem solid #CDCDCE;
 }
 
 .sumWorkTime, .sumBasic, .sumNormal, .sumSum, .sumAdditionalAllowance{
-    width: 5.6727%;
+    width: 6%;
     border-right: 0.1rem solid #CDCDCE;
 }
 
 .sumOrdinarySalary{
-    width: 28.3635%;
+    width: 20%;
     display: block;
 
 }
 
 .sumOrdinarySalary > *{
-    width: 20%;
+    width: 25%;
     border-right: 0.1rem solid #CDCDCE;
 }
 
 .sumLegalAllowance{
-    width: 51.0543%;
+    width: 51%;
     display: block;
 }
 
 .sumLegalAllowance > *{
     
-    width: 11.11111111111111%;
+    width: 10%;
     border-right: 0.1rem solid #CDCDCE;
 }
 
 .sumInsurance{
-    width: 11.3454%;
+    width: 10%;
     display: block;
 }
 
@@ -490,7 +495,7 @@ background-color: #444444;
 }
 
 .sumDeductionDetails{
-    width: 45.3816%;
+    width: 45%;
     display: block;
     border-right: 0.1rem solid #CDCDCE;
 }

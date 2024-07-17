@@ -99,23 +99,23 @@ function setTotal() {
 
 
     Object.entries(DATAS).map(([key, value]) => {
-        total_total_work_minute += Number(value['total_work_minute'])
-        total_hourly_wage += Number(value['hourly_wage'])
-        total_ordinary_hourly_wage += Number(value['ordinary_hourly_wage'])
-        total_wage += Number(value['wage'])
-        total_performance_allowance += Number(value['performance_allowance'])
-        total_meal += Number(value['meal'])
-        total_service_allowance += Number(value['service_allowance'])
-        total_ordinary_salary += Number(value['ordinary_salary'])
-        total_weekly_holiday_allowance += Number(value['weekly_holiday_allowance'])
-        total_legal_holiday_allowance += Number(value['legal_holiday_allowance'])
-        total_additional_wage += Number(value['additional_wage'])
-        total_night_shift_wage += Number(value['night_shift_wage'])
-        total_holiday_work_wage += Number(value['holiday_work_wage'])
-        total_additional_holiday_work_wage += Number(value['additional_holiday_work_wage'])
-        total_annual_allowance += Number(value['annual_allowance'])
-        total_statutory_allowance += Number(value['statutory_allowance'])
-        total_sum_ordinary_salary_and_statutory_allowance += Number(value['sum_ordinary_salary_and_statutory_allowance'])
+        total_total_work_minute += Number(removeComma(value['total_work_minute']))
+        total_hourly_wage += Number(removeComma(value['hourly_wage']))
+        total_ordinary_hourly_wage += Number(removeComma(value['ordinary_hourly_wage']))
+        total_wage += Number(removeComma(value['wage']))
+        total_performance_allowance += Number(removeComma(value['performance_allowance']))
+        total_meal += Number(removeComma(value['meal']))
+        total_service_allowance += Number(removeComma(value['service_allowance']))
+        total_ordinary_salary += Number(removeComma(value['ordinary_salary']))
+        total_weekly_holiday_allowance += Number(removeComma(value['weekly_holiday_allowance']))
+        total_legal_holiday_allowance += Number(removeComma(value['legal_holiday_allowance']))
+        total_additional_wage += Number(removeComma(value['additional_wage']))
+        total_night_shift_wage += Number(removeComma(value['night_shift_wage']))
+        total_holiday_work_wage += Number(removeComma(value['holiday_work_wage']))
+        total_additional_holiday_work_wage += Number(removeComma(value['additional_holiday_work_wage']))
+        total_annual_allowance += Number(removeComma(value['annual_allowance']))
+        total_statutory_allowance += Number(removeComma(value['statutory_allowance']))
+        total_sum_ordinary_salary_and_statutory_allowance += Number(removeComma(value['sum_ordinary_salary_and_statutory_allowance']))
     })
 
     total_work_minute.innerText = `${parseInt(total_total_work_minute / 60)}시간 ${total_total_work_minute % 60}분`
@@ -139,4 +139,13 @@ function setTotal() {
 
 function addComma(value) {
     return value?.replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",")
+}
+
+function removeComma(str) {
+    // str이 문자열인지 확인
+    if (typeof str === 'string') {
+        return str.replace(/,/g, '');
+    }
+    // str이 null이거나 undefined일 경우 빈 문자열 반환
+    return 0;
 }
