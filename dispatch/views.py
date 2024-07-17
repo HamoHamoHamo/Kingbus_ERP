@@ -1420,7 +1420,7 @@ def regularly_order_edit(request):
         creator = get_object_or_404(Member, pk=request.session.get('user'))
         station_edit_date = request.POST.get('station_edit_date')
         regularly_data_form = RegularlyDataForm(request.POST, instance=regularly_data)
-        if regularly_data_form.is_valid() and station_edit_date:
+        if regularly_data_form.is_valid():
             group = get_object_or_404(RegularlyGroup, pk=request.POST.get('group'))
             regularly_data = regularly_data_form.save(commit=False)
             regularly_data.group = group
