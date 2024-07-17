@@ -4,6 +4,7 @@ from datetime import datetime, timedelta
 from common.constant import WEEK2, DATE_FORMAT, DATE_TIME_FORMAT
 from my_settings import OPEN_API_KEY
 from django.core.exceptions import BadRequest
+import calendar
 
 def calculate_time_difference(start_time_str, end_time_str):
     # 입력된 시간 문자열을 datetime 객체로 변환
@@ -48,6 +49,21 @@ def last_day_of_month(date_str):
         last_day_of_month = first_day_of_next_month - timedelta(days=first_day_of_next_month.day)
         
         return last_day_of_month.day  # 해당 월의 마지막 날짜 반환
+    except ValueError:
+        return None  # 유효하지 않은 날짜 형식이면 None 반환
+
+def last_date_of_month(date_str):
+    try:
+        # 입력된 날짜 문자열을 datetime 객체로 변환
+        date_obj = datetime.strptime(date_str, DATE_FORMAT)
+        
+        # 다음 달의 첫 날을 구하기 위해 입력된 날짜에 +1 한 후 해당 월의 1일로 설정
+        first_day_of_next_month = datetime(date_obj.year, date_obj.month, 1) + timedelta(days=32)
+        
+        # 해당 월의 1일에서 1일을 빼서 이전 월의 마지막 날을 구함
+        last_day_of_month = first_day_of_next_month - timedelta(days=first_day_of_next_month.day)
+        
+        return last_day_of_month.strftime('%Y-%m-%d')  # 해당 월의 마지막 날짜 반환
     except ValueError:
         return None  # 유효하지 않은 날짜 형식이면 None 반환
 
@@ -209,3 +225,26 @@ def parse_xml_data(xml_data):
         'date_name_list': date_name_list, 
         'locdate_list': locdate_list,
     }
+
+def get_next_sunday_after_last_day(month_str):
+    """
+    주어진 'YYYY-MM' 형식의 문자열을 입력받아
+    해당 월의 마지막 날이 일요일이면 그대로 반환하고,
+    아니라면 다음 일요일 날짜를 반환합니다.
+    반환값은 문자열 형식의 날짜입니다.
+    """
+    # 문자열에서 연도와 월 추출
+    year, month = map(int, month_str.split('-'))
+    
+    # 주어진 달의 마지막 날 구하기
+    _, last_day = calendar.monthrange(year, month)
+    last_day_date = datetime(year, month, last_day)
+    
+    # 마지막 날이 일요일인지 확인
+    if last_day_date.weekday() == 6:  # 6은 일요일
+        return last_day_date.strftime('%Y-%m-%d')
+    else:
+        # 다음 일요일 계산
+        days_until_sunday = 6 - last_day_date.weekday()
+        next_sunday = last_day_date + timedelta(days=days_until_sunday)
+        return next_sunday.strftime('%Y-%m-%d')
