@@ -75,6 +75,7 @@ function setTotal() {
     const night_shift_wage = document.querySelector('.night_shift_wage')
     const holiday_work_wage = document.querySelector('.holiday_work_wage')
     const additional_holiday_work_wage = document.querySelector('.additional_holiday_work_wage')
+    const additional_holiday_work_wage_half = document.querySelector('.additional_holiday_work_wage_half')
     const annual_allowance = document.querySelector('.annual_allowance')
     const statutory_allowance = document.querySelector('.statutory_allowance')
     const sum_ordinary_salary_and_statutory_allowance = document.querySelector('.sum_ordinary_salary_and_statutory_allowance')
@@ -95,6 +96,7 @@ function setTotal() {
     let total_night_shift_wage = 0
     let total_holiday_work_wage = 0
     let total_additional_holiday_work_wage = 0
+    let total_additional_holiday_work_wage_half = 0
     let total_annual_allowance = 0
     let total_statutory_allowance = 0
     let total_sum_ordinary_salary_and_statutory_allowance = 0
@@ -116,6 +118,7 @@ function setTotal() {
         total_night_shift_wage += Number(removeComma(value['night_shift_wage']))
         total_holiday_work_wage += Number(removeComma(value['holiday_work_wage']))
         total_additional_holiday_work_wage += Number(removeComma(value['additional_holiday_work_wage']))
+        total_additional_holiday_work_wage_half += Number(removeComma(value['additional_holiday_work_wage_half']))
         total_annual_allowance += Number(removeComma(value['annual_allowance']))
         total_statutory_allowance += Number(removeComma(value['statutory_allowance']))
         total_sum_ordinary_salary_and_statutory_allowance += Number(removeComma(value['sum_ordinary_salary_and_statutory_allowance']))
@@ -136,6 +139,7 @@ function setTotal() {
     night_shift_wage.innerText = addComma(total_night_shift_wage.toString())
     holiday_work_wage.innerText = addComma(total_holiday_work_wage.toString())
     additional_holiday_work_wage.innerText = addComma(total_additional_holiday_work_wage.toString())
+    additional_holiday_work_wage_half.innerText = addComma(total_additional_holiday_work_wage_half.toString())
     annual_allowance.innerText = addComma(total_annual_allowance.toString())
     statutory_allowance.innerText = addComma(total_statutory_allowance.toString())
     sum_ordinary_salary_and_statutory_allowance.innerText = addComma(total_sum_ordinary_salary_and_statutory_allowance.toString())
