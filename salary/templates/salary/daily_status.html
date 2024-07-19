@@ -1,0 +1,737 @@
+{% comment %} {% extends 'base.html' %} {% endcomment %}
+{% load static %}
+{% load dispatch_custom_tags %}
+
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link rel="stylesheet" href="{% static 'css/salary/daily_status.css' %}" type="text/css" />
+
+    <link rel="stylesheet" href="{% static 'css/salary/global.css' %}" type="text/css" />
+
+    <!-- <link rel="stylesheet" href="css/main-container.css"> -->
+    <title>DEV</title>
+  </head>
+  <body>
+    <div class="trp">
+
+    <!--sidemenu-->
+    <div class="Sidemenu">
+      <!--sidemenuLogo-->
+      <div class="logoBox">
+        <a href="/service" style="color: white; font-size: 5rem">
+          DEV
+          <!--<img src="/static/images/TRPlogo.png?v=0.1236" alt="">-->
+        </a>
+      </div>
+      <!--sideMenuNav-->
+      <div class="sideMenuNav">
+        <ul class="sideMenuNav1">
+          <div class="nav1Box" style="background-color: rgb(28, 26, 78)">
+            <li class="nav1BoxMenu">
+              <img
+                class="nav1BoxMenuImg"
+                src="/kingbus/salary/images/calendar.png?v=0.1236"
+                alt="일정 아이콘"
+              />
+              <a href="/service" class="nonDepth2Menu">일정</a>
+            </li>
+          </div>
+          <div class="nav1Box" style="background-color: rgb(28, 26, 78)">
+            <li class="nav1BoxMenu nav1BoxMenuHaveDepth2">
+              <img
+                class="nav1BoxMenuImg"
+                src="/kingbus/salary/images/notice.png?v=0.1236"
+                alt="공지사항 아이콘"
+              />
+              <div>공지사항</div>
+              <svg
+                class="sideMenuArrow"
+                xmlns="http://www.w3.org/2000/svg"
+                width="18.228"
+                height="11.84"
+                viewBox="0 0 18.228 11.84"
+              >
+                <path
+                  id="패스_256"
+                  data-name="패스 256"
+                  d="M0,0,6.753,8.223,14,0"
+                  transform="translate(2.111 2.117)"
+                  fill="none"
+                  stroke="#fff"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="3"
+                ></path>
+              </svg>
+            </li>
+            <div class="sideMenuNav2Box">
+              <ul class="sideMenuNav2">
+                <a href="/notice/driver" class="sideMenuNav2Link">
+                  <li class="sideMenuNav2Menu">기사님 공지사항</li>
+                </a>
+                <a href="/notice/office" class="sideMenuNav2Link">
+                  <li class="sideMenuNav2Menu">사무실 공지사항</li>
+                </a>
+              </ul>
+            </div>
+          </div>
+          <div class="nav1Box" style="background-color: rgb(28, 26, 78)">
+            <li class="nav1BoxMenu nav1BoxMenuHaveDepth2">
+              <img
+                class="nav1BoxMenuImg"
+                src="/kingbus/salary/images/dispatchSystem.png?v=0.1236"
+                alt="배차시스템 아이콘"
+              />
+              <div>배차관리</div>
+              <svg
+                class="sideMenuArrow"
+                xmlns="http://www.w3.org/2000/svg"
+                width="18.228"
+                height="11.84"
+                viewBox="0 0 18.228 11.84"
+              >
+                <path
+                  id="패스_256"
+                  data-name="패스 256"
+                  d="M0,0,6.753,8.223,14,0"
+                  transform="translate(2.111 2.117)"
+                  fill="none"
+                  stroke="#fff"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="3"
+                ></path>
+              </svg>
+            </li>
+            <div class="sideMenuNav2Box">
+              <ul class="sideMenuNav2">
+                <a href="/dispatch/order" class="sideMenuNav2Link">
+                  <li class="sideMenuNav2Menu">일반배차</li>
+                </a>
+                <a href="/dispatch/regularly" class="sideMenuNav2Link">
+                  <li class="sideMenuNav2Menu">출/퇴근배차</li>
+                </a>
+                <a href="/dispatch/regularly/route" class="sideMenuNav2Link">
+                  <li class="sideMenuNav2Menu">출/퇴근 노선관리</li>
+                </a>
+                <a
+                  href="/dispatch/regularly/route/know"
+                  class="sideMenuNav2Link"
+                >
+                  <li class="sideMenuNav2Menu">출/퇴근 노선숙지</li>
+                </a>
+                <a href="/dispatch/schedule" class="sideMenuNav2Link">
+                  <li class="sideMenuNav2Menu">운행/배차확인</li>
+                </a>
+                <a href="/dispatch/refusal" class="sideMenuNav2Link">
+                  <li class="sideMenuNav2Menu">배차거부관리</li>
+                </a>
+                <a href="/dispatch/driving" class="sideMenuNav2Link">
+                  <li class="sideMenuNav2Menu">운행일보</li>
+                </a>
+                <a href="/dispatch/regularly/connect" class="sideMenuNav2Link">
+                  <li class="sideMenuNav2Menu">출/퇴근 배차표</li>
+                </a>
+              </ul>
+            </div>
+          </div>
+          <div class="nav1Box" style="background-color: rgb(28, 26, 78)">
+            <li class="nav1BoxMenu nav1BoxMenuHaveDepth2">
+              <svg
+                class="nav1BoxMenuImg"
+                xmlns="http://www.w3.org/2000/svg"
+                width="15"
+                height="15"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                <line x1="16" y1="2" x2="16" y2="6"></line>
+                <line x1="8" y1="2" x2="8" y2="6"></line>
+                <line x1="3" y1="10" x2="21" y2="10"></line>
+              </svg>
+              <div>업무관리</div>
+              <svg
+                class="sideMenuArrow"
+                xmlns="http://www.w3.org/2000/svg"
+                width="18.228"
+                height="11.84"
+                viewBox="0 0 18.228 11.84"
+              >
+                <path
+                  id="패스_256"
+                  data-name="패스 256"
+                  d="M0,0,6.753,8.223,14,0"
+                  transform="translate(2.111 2.117)"
+                  fill="none"
+                  stroke="#fff"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="3"
+                ></path>
+              </svg>
+            </li>
+            <div class="sideMenuNav2Box">
+              <ul class="sideMenuNav2">
+                <a href="/assignment/temporary" class="sideMenuNav2Link">
+                  <li class="sideMenuNav2Menu">일반업무관리</li>
+                </a>
+                <a href="/assignment/" class="sideMenuNav2Link">
+                  <li class="sideMenuNav2Menu">고정업무배정</li>
+                </a>
+                <a href="/assignment/data" class="sideMenuNav2Link">
+                  <li class="sideMenuNav2Menu">고정업무관리</li>
+                </a>
+              </ul>
+            </div>
+          </div>
+          <div class="nav1Box" style="background-color: rgb(28, 26, 78)">
+            <li class="nav1BoxMenu nav1BoxMenuHaveDepth2">
+              <img
+                class="nav1BoxMenuImg"
+                src="/kingbus/salary/images/HRManagement.png?v=0.1236"
+                alt="인사관리 아이콘"
+              />
+              <div>인사관리</div>
+              <svg
+                class="sideMenuArrow"
+                xmlns="http://www.w3.org/2000/svg"
+                width="18.228"
+                height="11.84"
+                viewBox="0 0 18.228 11.84"
+              >
+                <path
+                  id="패스_256"
+                  data-name="패스 256"
+                  d="M0,0,6.753,8.223,14,0"
+                  transform="translate(2.111 2.117)"
+                  fill="none"
+                  stroke="#fff"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="3"
+                ></path>
+              </svg>
+            </li>
+            <div class="sideMenuNav2Box">
+              <ul class="sideMenuNav2">
+                <a href="/HR/member" class="sideMenuNav2Link">
+                  <li class="sideMenuNav2Menu">직원관리</li>
+                </a>
+                <a href="/HR/salary" class="sideMenuNav2Link">
+                  <li class="sideMenuNav2Menu">인사위원회</li>
+                </a>
+                <a href="/HR/salary/change" class="sideMenuNav2Link">
+                  <li class="sideMenuNav2Menu">팀원관리</li>
+                </a>
+                <a href="/HR/salary/outsourcing" class="sideMenuNav2Link">
+                  <li class="sideMenuNav2Menu">인당효율</li>
+                </a>
+                <a href="/HR/team" class="sideMenuNav2Link">
+                  <li class="sideMenuNav2Menu">팀관리</li>
+                </a>
+              </ul>
+            </div>
+          </div>
+          <div class="nav1Box" style="background-color: rgb(28, 26, 78)">
+            <li class="nav1BoxMenu nav1BoxMenuHaveDepth2">
+              <img
+                class="nav1BoxMenuImg"
+                src="/kingbus/salary/images/HRManagement.png?v=0.1236"
+                alt="인사관리 아이콘"
+              />
+              <div>급여관리</div>
+              <svg
+                class="sideMenuArrow"
+                xmlns="http://www.w3.org/2000/svg"
+                width="18.228"
+                height="11.84"
+                viewBox="0 0 18.228 11.84"
+              >
+                <path
+                  id="패스_256"
+                  data-name="패스 256"
+                  d="M0,0,6.753,8.223,14,0"
+                  transform="translate(2.111 2.117)"
+                  fill="none"
+                  stroke="#fff"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="3"
+                ></path>
+              </svg>
+            </li>
+            <div class="sideMenuNav2Box">
+              <ul class="sideMenuNav2">
+                
+                <!-- <a href="/salary/salary_name.html" class="sideMenuNav2Link">
+                  <li class="sideMenuNav2Menu">사원명부</li>
+                </a> -->
+                <a href="/salary/work_status.html" class="sideMenuNav2Link">
+                  <li class="sideMenuNav2Menu">근무현황</li>
+                </a>
+                <a href="/salary/salary_table.html" class="sideMenuNav2Link">
+                  <li class="sideMenuNav2Menu">급여관리(현재)</li>
+                </a>
+                <a href="/HR/salary/outsourcing" class="sideMenuNav2Link">
+                  <li class="sideMenuNav2Menu">급여관리(변경)</li> <!--전이사, 최고관리자만-->
+                </a>
+                <a href="/HR/team" class="sideMenuNav2Link">
+                  <li class="sideMenuNav2Menu">급여관리(용역)</li>
+                </a>
+                <a href="/HR/team" class="sideMenuNav2Link">
+                  <li class="sideMenuNav2Menu">급여관리(관리자)</li>
+                </a>
+                
+              </ul>
+            </div>
+          </div>
+          <div class="nav1Box">
+            <li class="nav1BoxMenu nav1BoxMenuHaveDepth2">
+              <img
+                class="nav1BoxMenuImg"
+                src="/kingbus/salary/images/accountingSystem.png?v=0.1236"
+                alt="경리시스템 아이콘"
+              />
+              <div>매출관리</div>
+              <svg
+                class="sideMenuArrow"
+                xmlns="http://www.w3.org/2000/svg"
+                width="18.228"
+                height="11.84"
+                viewBox="0 0 18.228 11.84"
+              >
+                <path
+                  id="패스_256"
+                  data-name="패스 256"
+                  d="M0,0,6.753,8.223,14,0"
+                  transform="translate(2.111 2.117)"
+                  fill="none"
+                  stroke="#fff"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="3"
+                ></path>
+              </svg>
+            </li>
+            <div class="sideMenuNav2Box">
+              <ul class="sideMenuNav2">
+                <a href="/accounting/sales" class="sideMenuNav2Link">
+                  <li class="sideMenuNav2Menu">매출현황</li>
+                </a>
+                <a href="/accounting/deposit" class="sideMenuNav2Link">
+                  <li class="sideMenuNav2Menu">입금관리</li>
+                </a>
+                <a href="/accounting/collect" class="sideMenuNav2Link">
+                  <li class="sideMenuNav2Menu">일반 수금관리</li>
+                </a>
+                <a
+                  href="/accounting/regularly/collect"
+                  class="sideMenuNav2Link"
+                >
+                  <li class="sideMenuNav2Menu">출/퇴근 수금관리</li>
+                </a>
+              </ul>
+            </div>
+          </div>
+          <div class="nav1Box">
+            <li class="nav1BoxMenu nav1BoxMenuHaveDepth2">
+              <img
+                class="nav1BoxMenuImg"
+                src="/kingbus/salary/images/vehicleManagement.png?v=0.1236"
+                alt="차량관리 아이콘"
+              />
+              <div>차량관리</div>
+              <svg
+                class="sideMenuArrow"
+                xmlns="http://www.w3.org/2000/svg"
+                width="18.228"
+                height="11.84"
+                viewBox="0 0 18.228 11.84"
+              >
+                <path
+                  id="패스_256"
+                  data-name="패스 256"
+                  d="M0,0,6.753,8.223,14,0"
+                  transform="translate(2.111 2.117)"
+                  fill="none"
+                  stroke="#fff"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="3"
+                ></path>
+              </svg>
+            </li>
+            <div class="sideMenuNav2Box">
+              <ul class="sideMenuNav2">
+                <a href="/vehicle/list" class="sideMenuNav2Link">
+                  <li class="sideMenuNav2Menu">차량관리</li>
+                </a>
+                <a href="/vehicle/refueling" class="sideMenuNav2Link">
+                  <li class="sideMenuNav2Menu">주유관리</li>
+                </a>
+                <a href="/vehicle/dailychecklist" class="sideMenuNav2Link">
+                  <li class="sideMenuNav2Menu">일일점검</li>
+                </a>
+                <a href="/vehicle/weeklychecklist" class="sideMenuNav2Link">
+                  <li class="sideMenuNav2Menu">주간점검</li>
+                </a>
+                <a href="/vehicle/equipmentchecklist" class="sideMenuNav2Link">
+                  <li class="sideMenuNav2Menu">비품점검</li>
+                </a>
+              </ul>
+            </div>
+          </div>
+          <div class="nav1Box">
+            <li class="nav1BoxMenu nav1BoxMenuHaveDepth2">
+              <img
+                class="nav1BoxMenuImg"
+                src="/kingbus/salary/images/document.png?v=0.1236"
+                alt="공지사항 아이콘"
+              />
+              <div>서류관리</div>
+              <svg
+                class="sideMenuArrow"
+                xmlns="http://www.w3.org/2000/svg"
+                width="18.228"
+                height="11.84"
+                viewBox="0 0 18.228 11.84"
+              >
+                <path
+                  id="패스_256"
+                  data-name="패스 256"
+                  d="M0,0,6.753,8.223,14,0"
+                  transform="translate(2.111 2.117)"
+                  fill="none"
+                  stroke="#fff"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="3"
+                ></path>
+              </svg>
+            </li>
+            <div class="sideMenuNav2Box">
+              <ul class="sideMenuNav2">
+                <a href="/document/company" class="sideMenuNav2Link">
+                  <li class="sideMenuNav2Menu">회사서류</li>
+                </a>
+                <a href="/document/dispatch" class="sideMenuNav2Link">
+                  <li class="sideMenuNav2Menu">운행서류</li>
+                </a>
+              </ul>
+            </div>
+          </div>
+          <div class="nav1Box">
+            <li class="nav1BoxMenu nav1BoxMenuHaveDepth2">
+              <img
+                class="nav1BoxMenuImg"
+                src="/kingbus/salary/images/document.png?v=0.1236"
+                alt="공지사항 아이콘"
+              />
+              <div>민원관리</div>
+              <svg
+                class="sideMenuArrow"
+                xmlns="http://www.w3.org/2000/svg"
+                width="18.228"
+                height="11.84"
+                viewBox="0 0 18.228 11.84"
+              >
+                <path
+                  id="패스_256"
+                  data-name="패스 256"
+                  d="M0,0,6.753,8.223,14,0"
+                  transform="translate(2.111 2.117)"
+                  fill="none"
+                  stroke="#fff"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="3"
+                ></path>
+              </svg>
+            </li>
+            <div class="sideMenuNav2Box">
+              <ul class="sideMenuNav2">
+                <a href="/complaint/consulting" class="sideMenuNav2Link">
+                  <li class="sideMenuNav2Menu">상담신청관리</li>
+                </a>
+                <a href="/complaint/inspection" class="sideMenuNav2Link">
+                  <li class="sideMenuNav2Menu">차량정비신청관리</li>
+                </a>
+              </ul>
+            </div>
+          </div>
+          <div class="nav1Box">
+            <li class="nav1BoxMenu">
+              <img
+                class="nav1BoxMenuImg"
+                src="/kingbus/salary/images/calendar.png?v=0.1236"
+                alt="일정 아이콘"
+              />
+              <a href="/member/setting/client" class="nonDepth2Menu"
+                >거래처 관리</a
+              >
+            </li>
+          </div>
+          <div class="nav1Box">
+            <li class="nav1BoxMenu">
+              <img
+                class="nav1BoxMenuImg"
+                src="/kingbus/salary/images/calendar.png?v=0.1236"
+                alt="일정 아이콘"
+              />
+              <a href="/member/setting" class="nonDepth2Menu">항목 관리</a>
+            </li>
+          </div>
+        </ul>
+      </div>
+      <!-- Manual -->
+      <div class="manualArea">
+        <a href="../templates/test.pdf" download="trpManual.pdf">
+          <div>메뉴얼</div>
+        </a>
+        <a href="http://kingbuserp.link/">
+          <div>FAQ</div>
+        </a>
+      </div>
+    </div>
+    <!--sidemenu done-->
+
+    <!--maincontainer-->
+    <div class="MainContainer">
+
+      <!--header-->
+      <div class="Header">
+        <div class="HeaderTitle">
+          <!-- 페이지별 Title 변경 -->
+          일일근무현황
+        </div>
+        <!--trp HeaderProfile-->
+        <div class="profile">
+          <span class="userName">관리자</span>
+          <div>
+            <span>님</span>
+            <img
+              src="/kingbus/salary/images/profileArrow.png?v=0.1236"
+              alt="아래 화살표 아이콘"
+            />
+          </div>
+        </div>
+
+        <div class="profileBox" style="display: none">
+          <div class="profilesMenuCell">
+            <img
+              src="/kingbus/salary/images/createUserIcon.png?v=0.1236"
+              alt="설정 아이콘"
+            />
+            <span class="profileMenuName">아이디 변경</span>
+          </div>
+          <div class="profileMenuCell">
+            <img
+              src="/kingbus/salary/images/passwordIcon.png?v=0.1236"
+              alt="비밀번호 변경"
+            />
+            <span class="profileMenuName">비밀번호 변경</span>
+          </div>
+          <div class="profileMenuCell">
+            <a href="/member/logout">
+              <img
+                src="/kingbus/salary/images/logoutIcon.png?v=0.1236"
+                alt="로그아웃"
+              />
+              <span class="profileMenuName">로그아웃</span>
+            </a>
+          </div>
+        </div>
+        <!--trp HeaderTitle-->
+      </div>
+      <!--header done-->
+
+      <div class="MainContentsContainer">
+
+        <!-- 검색창 -->
+        <div class="searchContainer">
+            <!-- 검색폼 -->
+            <form action="" class="searchForm">
+                <label for="" class="searchFormLabel">날짜 :</label>
+                <input type="date" name="month" class="searchFormInput searchFormInputDate">
+                <label for="" class="searchFormLabel">이름 :</label>
+                <input name="name" value="" type="text" class="searchFormInput">
+                <input type="submit" class="searchFormSearchBtn" value="검색">
+            </form>
+            <!-- 검색폼 done-->
+        </div>
+        <!-- 검색창 끝-->
+
+        <div class="tableScrollBox">
+
+          <div class="tableContainer table">
+
+            <div class="thead flex">
+              <div class="theadTh th">선택</div>
+              <div class="theadTh th">번호</div>
+              <div class="theadTh th">이름</div>
+              <div class="theadTh th">직책</div>
+              <div class="theadTh theadThTime flex">
+                <div class="theadThTh theadThThImformation th">회차</div>
+                <div class="theadThTh theadThThImformation th">노선명</div>
+                <div class="theadThTh theadThThImformation th">출/퇴근</div>
+                <div class="theadThTh th">출근시간</div>
+                <div class="theadThTh th">준비시간</div>
+                <div class="theadThTh th">차고지</div>
+                <div class="theadThTh th">출발지도착</div>
+                <div class="theadThTh th">운행출발</div>
+                <div class="theadThTh th">목적지도착</div>
+                <div class="theadThTh th">차고지</div>
+                <div class="theadThTh th">마감시간</div>
+                <div class="theadThTh th">퇴근시간</div>
+                <div class="theadThTh th theadThDetails">
+                  <div class="theadThTitle personalFlex">근로내역</div>
+                  <div class="theadThContent personalFlex">
+                    <div class="theadThContents personalFlex">총 시간</div>
+                    <div class="theadThContents personalFlex">휴게 시간</div>
+                    <div class="theadThContents personalFlex">야간근로</div>
+                    <div class="theadThContents personalFlex">휴일(8시간 이하)</div>
+                    <div class="theadThContents personalFlex theadThContentsLast">휴일(8시간 초과)</div>
+                  </div>
+                </div>
+              </div>
+              <div class="theadTh th">확인서명</div>
+            </div>
+
+            <div class="tbody">
+
+              <div class="tbodyDiv personalFlex">
+                
+                <div class="tbodyDivTd  tbodyInformationElement td">
+                  <input type="checkbox" name="" id="">
+                </div>
+                <div class="tbodyDivTd tbodyInformationElement td">1</div>
+                <div class="tbodyDivTd tbodyInformationElement td">김원탁</div>
+                <div class="tbodyDivTd tbodyInformationElement td">팀장</div>
+                <div class="tbodyDivTd tbodyTdTime personalFlex td">
+
+                  <div class="tbodyDivTdTdTime tbodyT personalFlex">
+                    <div class="tbodyDivTdTd tbodyDivTdTdInformation td">1회</div>
+                    <div class="tbodyDivTdTd tbodyDivTdTdInformation td">영통1</div>
+                    <div class="tbodyDivTdTd tbodyDivTdTdInformation td">출근</div>
+                    <div class="tbodyDivTdTd tbodyDivTdTdTimeValue td">05:40</div>
+                    <div class="tbodyDivTdTd tbodyDivTdTdTimeValue td">05:40</div>
+                    <div class="tbodyDivTdTd tbodyDivTdTdTimeValue td">06:23</div>
+                    <div class="tbodyDivTdTd tbodyDivTdTdTimeValue td">06:23</div>
+                    <div class="tbodyDivTdTd tbodyDivTdTdTimeValue td">07:15</div>
+                    <div class="tbodyDivTdTd tbodyDivTdTdTimeValue td">07:15</div>
+                    <div class="tbodyDivTdTd tbodyDivTdTdTimeValue td">07:15</div>
+                    <div class="tbodyDivTdTd tbodyDivTdTdTimeValue td">07:15</div>
+                    <div class="tbodyDivTdTd tbodyDivTdTdTimeValue td"></div>
+                    <div class="tbodyDivTdTd tbodyDivTdTdTimeValue td sumTime">01:35</div>
+                    <div class="tbodyDivTdTd tbodyDivTdTdTimeValue td sumTime">00:20</div>
+                    <div class="tbodyDivTdTd tbodyDivTdTdTimeValue td sumTime">00:20</div>
+                    <div class="tbodyDivTdTd tbodyDivTdTdTimeValue td sumTime">00:00</div>
+                    <div class="tbodyDivTdTd tbodyDivTdTdTimeValue td sumTime">00:00</div>
+                  </div>
+
+                  <div class="tbodyDivTdTdTime tbodyT personalFlex">
+                    <div class="tbodyDivTdTd tbodyDivTdTdInformation td">2회</div>
+                    <div class="tbodyDivTdTd tbodyDivTdTdInformation td">영통1</div>
+                    <div class="tbodyDivTdTd tbodyDivTdTdInformation td">출근</div>
+                    <div class="tbodyDivTdTd tbodyDivTdTdTimeValue td"></div>
+                    <div class="tbodyDivTdTd tbodyDivTdTdTimeValue td">05:40</div>
+                    <div class="tbodyDivTdTd tbodyDivTdTdTimeValue td">06:23</div>
+                    <div class="tbodyDivTdTd tbodyDivTdTdTimeValue td">06:23</div>
+                    <div class="tbodyDivTdTd tbodyDivTdTdTimeValue td">07:15</div>
+                    <div class="tbodyDivTdTd tbodyDivTdTdTimeValue td">07:15</div>
+                    <div class="tbodyDivTdTd tbodyDivTdTdTimeValue td">07:15</div>
+                    <div class="tbodyDivTdTd tbodyDivTdTdTimeValue td">07:15</div>
+                    <div class="tbodyDivTdTd tbodyDivTdTdTimeValue td"></div>
+                    <div class="tbodyDivTdTd tbodyDivTdTdTimeValue td sumTime">01:35</div>
+                    <div class="tbodyDivTdTd tbodyDivTdTdTimeValue td sumTime">00:20</div>
+                    <div class="tbodyDivTdTd tbodyDivTdTdTimeValue td sumTime">00:00</div>
+                    <div class="tbodyDivTdTd tbodyDivTdTdTimeValue td sumTime">00:00</div>
+                    <div class="tbodyDivTdTd tbodyDivTdTdTimeValue td sumTime">00:00</div>
+                  </div>
+
+                  <div class="tbodyDivTdTdTime tbodyT personalFlex">
+                    <div class="tbodyDivTdTd tbodyDivTdTdInformation td">3회</div>
+                    <div class="tbodyDivTdTd tbodyDivTdTdInformation td">영통1</div>
+                    <div class="tbodyDivTdTd tbodyDivTdTdInformation td">퇴근</div>
+                    <div class="tbodyDivTdTd tbodyDivTdTdTimeValue td"></div>
+                    <div class="tbodyDivTdTd tbodyDivTdTdTimeValue td">05:40</div>
+                    <div class="tbodyDivTdTd tbodyDivTdTdTimeValue td">06:23</div>
+                    <div class="tbodyDivTdTd tbodyDivTdTdTimeValue td">06:23</div>
+                    <div class="tbodyDivTdTd tbodyDivTdTdTimeValue td">07:15</div>
+                    <div class="tbodyDivTdTd tbodyDivTdTdTimeValue td">07:15</div>
+                    <div class="tbodyDivTdTd tbodyDivTdTdTimeValue td">07:15</div>
+                    <div class="tbodyDivTdTd tbodyDivTdTdTimeValue td">07:15</div>
+                    <div class="tbodyDivTdTd tbodyDivTdTdTimeValue td">07:15</div>
+                    <div class="tbodyDivTdTd tbodyDivTdTdTimeValue td sumTime">01:35</div>
+                    <div class="tbodyDivTdTd tbodyDivTdTdTimeValue td sumTime">00:20</div>
+                    <div class="tbodyDivTdTd tbodyDivTdTdTimeValue td sumTime">00:00</div>
+                    <div class="tbodyDivTdTd tbodyDivTdTdTimeValue td sumTime">00:00</div>
+                    <div class="tbodyDivTdTd tbodyDivTdTdTimeValue td sumTime">00:00</div>
+                  </div>
+                  
+
+                  
+                  <div class="tbodyDivTdTdSum personalFlex">
+                    <div class="tbodyDivTdTd tbodyDivTdTdInformation td">소계</div>
+                    <div class="tbodyDivTdTd none td">해당없음</div>
+                    <div class="tbodyDivTdTd tbodyDivTdTdTimeValue td sumTime">01:35</div>
+                    <div class="tbodyDivTdTd tbodyDivTdTdTimeValue td sumTime">00:20</div>
+                    <div class="tbodyDivTdTd tbodyDivTdTdTimeValue td sumTime">00:00</div>
+                    <div class="tbodyDivTdTd tbodyDivTdTdTimeValue td sumTime">00:00</div>
+                    <div class="tbodyDivTdTd tbodyDivTdTdTimeValue td sumTime">00:00</div>
+                  </div>
+
+                </div>
+                <div class="tbodyDivTd tbodyInformationElement td">(서명)</div>                
+
+              </div>
+
+                
+              </div>
+
+              </div>
+
+            </div>
+            
+          </div>
+
+        </div>
+      </div>
+    </div>
+    <!--maincontainer done-->
+
+
+
+    </div>
+    <script src="/kingbus/salary/js/global.js"></script>
+    <script src="/kingbus/salary/js/sidebar.js"></script>
+    <script>
+    let tbodyTElements = document.getElementsByClassName("tbodyT");
+    let tbodyTElementCount = tbodyTElements.length;
+
+
+    function calculateHeight(count) {
+        let height = 6 + 3 * (count - 1);
+        return height;
+    }
+
+    let newHeight = calculateHeight(tbodyTElementCount);
+
+
+    // tbodyDiv의 높이를 설정
+    let tbodyDivs = document.getElementsByClassName("tbodyDiv");
+    for (let i = 0; i < tbodyDivs.length; i++) {
+        tbodyDivs[i].style.height = newHeight + "rem";
+
+    }
+    </script>
+  </body>
+</html>

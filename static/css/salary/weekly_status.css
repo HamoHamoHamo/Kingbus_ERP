@@ -1,0 +1,221 @@
+
+
+/* 검색창 */
+
+.searchContainer{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    height: 4rem;
+    margin-bottom: 2rem;
+    padding: 0 1rem;
+    border-radius: 0.2rem;
+    box-shadow: 0rem 0.1rem 0.4rem rgb(0 0 0 / 30%);
+    background-color: white;
+    box-sizing: border-box;
+}
+
+.searchFormLabel{
+    font-size: 1.4rem;
+    margin-right: 2rem;
+}
+
+.searchFormInput{
+    width: 18rem;
+    height: 2.6rem;
+    padding-left: 1rem;
+    box-sizing: border-box;
+    border: 0.1rem solid #D2D2D2;
+    border-radius: 0.2rem;
+    outline: none;
+    font-family: "Noto Sans CJK KR";
+    font-size: 1.4rem;
+}
+
+.searchFormInputWeek{
+    width: 14rem;
+    margin-right: 2rem;
+}
+
+.searchFormSearchBtn{
+    height: 2.6rem;
+    margin-left: 2rem;
+    padding: 0 1.8rem;
+    border: none;
+    border-radius: 0.2rem;
+    font-size: 1.4rem;
+    color: white;
+    background-color: #444444;
+    cursor: pointer;
+}
+
+.searchFormInputSelect{
+    margin-left: 2rem;
+}
+
+/* 검색창 끝 */
+
+/* 테이블 */
+.tableScrollBox{
+    display: flex;
+    flex-direction: column;
+    height: 77.5rem;
+    overflow-y: scroll;
+}
+
+.tableContainer{
+    font-size: 1.4rem;
+    width: 100%;
+    height: auto;
+    background-color: rgb(255, 255, 255);
+    box-shadow: 0rem 0.1rem 0.4rem rgb(0 0 0 / 30%);
+}
+
+
+.thead{
+    display: flex;
+    width: 100%;
+    height: 4.8rem;
+    border-spacing: 0;
+    box-sizing: border-box;
+    position: sticky;
+    top: 0;
+    color: white;
+}
+
+.th, .td {
+    height: 100%;
+    background-color: #444444;
+    border-right: 0.1rem solid #CDCDCE;
+    border-bottom: 0.1rem solid #CDCDCE;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.tr {
+    width: 100%;
+    display: flex;
+    height: 4rem;
+}
+
+.lastTr > .td{
+    border-bottom: none;
+}
+
+.td {
+    background-color: white;
+    width: calc(100% / 7);
+
+}
+
+.tableDate > *,
+.tableWeek > * {
+    border-bottom: none;
+}
+
+.theadTh:nth-child(1) , .tbodyDivTd:nth-child(1) {width: 2%;}
+
+
+.theadTh:nth-child(2), .tbodyDivTd:nth-child(2) {width: 4%;}
+
+.theadTh:nth-child(3), .tbodyDivTd:nth-child(3) {width: 6%;}
+
+.theadTh:nth-child(4), .tbodyDivTd:nth-child(4) {width: 7%;}
+
+.theadTh:nth-child(5), .tbodyDivTd:nth-child(5) {
+    width: 43%;
+    display: block;
+}
+
+.tableDate {
+    width: 100%;
+    height: 50%;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.tableDate > * ,
+.tableWeek > *
+{
+    width: calc(100% / 7);
+    height: 100%;
+}
+
+.tableDate:nth-last-child(1)
+.tableWeek:nth-last-child(1) {
+    border-right: none;
+}
+
+.tableWeek {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    width: 100%;
+    height: 50%;
+}
+
+.theadTh:nth-child(6) , .tbodyDivTd:nth-child(6), .tbodyDivTd:nth-child(6) > tr {width: 7%;}
+
+.theadTh:nth-child(7) , .tbodyDivTd:nth-child(7){width: 31%;}
+
+.tbodyDivTd:nth-child(6){
+    border-bottom: 0.1rem solid #CDCDCE;
+    flex-direction: column;
+}
+
+
+.tbodyDiv{
+    display: flex;
+    border-bottom: 0.1rem solid #CDCDCE;
+}
+
+
+.tbodyInformationElement{
+    border-right: 0.1rem solid #CDCDCE;
+    padding: 0;
+    box-sizing: border-box;
+    border-bottom: 0.1rem solid #CDCDCE;
+} 
+
+.tbodyTableCalender{
+    box-sizing: border-box;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    flex-direction: column;
+    border-bottom: 0.1rem solid #CDCDCE;
+    border-right: 0.1rem solid #CDCDCE;
+}
+
+.tbodyDivTd:nth-child(6) .tr .td {
+    width: 100%;
+}
+
+.tbodyDivTd:nth-child(6) .tr:last-child .td,
+.tbodyDivTd:nth-child(7) .tr:last-child .td,
+.tbodyDivTd:nth-child(4) .tr:last-child .td,
+.tbodyDivTd:nth-child(3) .tr:last-child .td {
+    border-bottom: none;
+}
+
+.tbodyDivTd:nth-child(7) .tr .td {
+    width: 25%;
+    height: 100%;
+}
+
+.tbodyDivTd:nth-child(7){
+    border-bottom: 0.1rem solid #CDCDCE;
+}
+
+.tbodyDivTd:nth-child(4) .tr .td,
+.tbodyDivTd:nth-child(3) .tr .td {
+    width: 100%;
+    height: 100%;
+}
+
+.tbodyDivTd:nth-child(3) .tr .td{
+    border-right: none;
+}
+

@@ -1,0 +1,145 @@
+.personalFlex, .flex {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+/* 검색창 */
+
+.searchContainer{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    height: 4rem;
+    margin-bottom: 2rem;
+    padding: 0 1rem;
+    border-radius: 0.2rem;
+    box-shadow: 0rem 0.1rem 0.4rem rgb(0 0 0 / 30%);
+    background-color: white;
+    box-sizing: border-box;
+}
+
+.searchFormLabel{
+    font-size: 1.4rem;
+    margin-right: 2rem;
+}
+
+.searchFormInput{
+    width: 18rem;
+    height: 2.6rem;
+    padding-left: 1rem;
+    box-sizing: border-box;
+    border: 0.1rem solid #D2D2D2;
+    border-radius: 0.2rem;
+    outline: none;
+    font-family: "Noto Sans CJK KR";
+    font-size: 1.4rem;
+}
+
+.searchFormInputWeek{
+    width: 14rem;
+    margin-right: 2rem;
+}
+
+.searchFormSearchBtn{
+    height: 2.6rem;
+    margin-left: 2rem;
+    padding: 0 1.8rem;
+    border: none;
+    border-radius: 0.2rem;
+    font-size: 1.4rem;
+    color: white;
+    background-color: #444444;
+    cursor: pointer;
+}
+
+.searchFormInputSelect{
+    margin-left: 2rem;
+}
+
+/* 검색창 끝 */
+
+.tableScrollBox{
+    display: flex;
+    flex-direction: column;
+    height: 75.5rem;
+    overflow-y: scroll;
+}
+
+.tableContainer{
+    font-size: 1.4rem;
+    width: 100%;
+    height: auto;
+    background-color: white;
+    box-shadow: 0rem 0.1rem 0.4rem rgb(0 0 0 / 30%);
+}
+
+.thead{
+    display: flex;
+    width: 100%;
+    height: 6rem;
+    border-spacing: 0;
+    box-sizing: border-box;
+    position: sticky;
+    top: 0;
+    color: white;
+}
+
+.th, .td {
+    height: 100%;
+    background-color: #444444;
+    border-right: 0.1rem solid #CDCDCE;
+    border-bottom: 0.1rem solid #CDCDCE;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.td{
+    background-color: white;
+    color: black;
+}
+
+.theadTh:nth-child(1){width: 5%;}
+.theadTh:nth-child(2){width: 5%;}
+.theadTh:nth-child(3){width: 10%;}
+.theadTh:nth-child(4){width: 52.5%;}
+.theadTh:nth-child(5){width: 7.5%;}
+.theadTh:nth-child(6){width: 10%;}
+.theadTh:nth-child(7){width: 10%;}
+
+.tableCalenderTItle,
+.tableCalenderDate,
+.tableWeek{
+    height: 33.3%;
+}
+
+.tableCalenderDate > *,
+.tableWeek > *
+{width: calc(100% / 7);}
+
+.tbody{
+    width: 100%;
+    height: calc(100% - 6rem);
+    background-color: white;
+
+}
+
+.personContainer{
+    box-sizing: border-box;
+    width: 100%;
+    height: 15rem;
+}
+
+.orderContainer{
+    box-sizing: border-box;
+    width: 20%;
+    height: 100%;
+    border-right: 0.1rem solid #CDCDCE;
+}
+
+.ValueContainer{    
+    box-sizing: border-box;
+    width: 80%;
+    height: 100%;
+
+}

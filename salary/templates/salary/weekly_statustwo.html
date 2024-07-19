@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load dispatch_custom_tags %}
+{% block head %}
+<meta http-equiv="Cache-Control" content="private, no-cache, no-store, max-age=0, must-revalidate">
+<link rel="stylesheet" href="{% static 'css/salary/weekly_statustwo.css' %}" type="text/css" />
+{% endblock %}
+
+{% block content-header %}
+<div class="HeaderTitle">
+    주근무현황
+</div>
+{% endblock %}
+
+{% block content %}
+
+        <!-- 검색창 -->
+        <div class="searchContainer">
+            <!-- 검색폼 -->
+            <form action="" class="searchForm">
+                <label for="" class="searchFormLabel">날짜 :</label>
+                <input type="week" name="month" class="searchFormInput searchFormInputWeek">
+                <input type="submit" class="searchFormSearchBtn" value="검색">
+            </form>
+        </div>
+            <!-- 검색폼 done-->
+
+        <div class="tableScrollBox">
+            <div class="tableContainer table">
+                <div class="thead flex">
+                    <div class="theadTh th personalFlex">열번</div>
+                    <div class="theadTh th personalFlex">성명</div>
+                    <div class="theadTh th personalFlex">근무구분</div>
+                    <div class="theadTh tabbleCalender">
+                        <div class="tableCalenderTItle personalFlex th">
+                            일자/요일
+                        </div>
+                        <div class="tableCalenderDate th flex">
+                            <div class="date th">1</div>
+                            <div class="date th">2</div>
+                            <div class="date th">3</div>
+                            <div class="date th">4</div>
+                            <div class="date th">5</div>
+                            <div class="date th">6</div>
+                            <div class="date th">7</div>
+                        </div>
+                        <div class="tableWeek th flex">
+                            <div class="week th">월</div>
+                            <div class="week th">화</div>
+                            <div class="week th">수</div>
+                            <div class="week th">목</div>
+                            <div class="week th">금</div>
+                            <div class="week th">토</div>
+                            <div class="week th">일</div>
+                        </div>
+                    </div>
+                    <div class="theadTh th personalFlex">계</div>
+                    <div class="theadTh th none personalFlex"></div>
+                    <div class="theadTh th none personalFlex"></div>
+                </div>
+
+                <div class="tbody flex">
+                    <div class="personContainer">
+                        <div class="orderContainer"></div>
+                        <div class="ValueContainer"></div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        
+{% endblock %}

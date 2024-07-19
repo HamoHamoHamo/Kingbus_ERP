@@ -1,6 +1,8 @@
 * {
   list-style: none;
   text-decoration: none;
+  text-align: center;
+  vertical-align: middle;
 }
 
 html {
@@ -1194,4 +1196,8 @@ textarea {
   html {
     font-size: 46.8%;
   }
+}
+
+.weeklyStatus {
+  left: 0;
 }

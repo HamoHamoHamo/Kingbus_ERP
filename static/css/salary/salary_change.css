@@ -1,0 +1,49 @@
+.graphSection{
+    width: 22%;
+    height: 100%;
+}
+
+.tableSection{
+    width: 78%;
+    height: 100%;
+}
+.mainContentsCentainer{
+    flex-direction: row;
+}
+
+.totalSalary{
+    width: 100%;
+    height: 44.3rem;
+}
+
+.searchContainer{
+    display: flex;
+    justify-content: flex-start;
+    width: 100%;
+    height: 5.2rem;
+    box-shadow: 0rem 0.1rem 0.4rem rgb(0 0 0 / 30%);
+    background-color: white;
+}
+
+.searchForm{
+    padding-left: 2rem;
+    gap: 2rem;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+}
+
+.searchFormLabel{
+    font-size: 1.4rem;
+}
+
+.searchFormInput{
+    width: 15rem;
+}
+
+.tablecontainer{
+    width: 100%;
+    height
+}

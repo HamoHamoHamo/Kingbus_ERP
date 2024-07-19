@@ -1,0 +1,244 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load dispatch_custom_tags %}
+
+{% block head %}
+<meta http-equiv="Cache-Control" content="private, no-cache, no-store, max-age=0, must-revalidate">
+<link rel="stylesheet" href="{% static 'css/dispatch/dispatchBase.css' %}" type="text/css" />
+<link rel="stylesheet" href="{% static 'css/dispatch/regularlyRoute.css' %}" type="text/css" />
+<link rel="stylesheet" href="{% static 'css/salary/routeTime.css' %}" type="text/css" />
+
+{% endblock %}
+
+{% block content-header %}
+<div class="HeaderTitle">
+    노선시간관리
+</div>
+{% endblock %}
+
+{% block content %}
+
+<div class="routeLayout">
+    <div class="groupLayout">
+        <div class="groupList">
+            <div class="groupListHead">
+                <span class="groupListTitle">그룹목록</span>
+                <div class="groupLock">
+                    <svg class="lockClose" xmlns="http://www.w3.org/2000/svg" width="15.75" height="18"
+                        viewBox="0 0 15.75 18">
+                        <g id="그룹_1866" data-name="그룹 1866" transform="translate(-35 -77)">
+                            <g id="그룹_1865" data-name="그룹 1865">
+                                <g id="그룹_1861" data-name="그룹 1861">
+                                    <path id="Icon_awesome-lock" data-name="Icon awesome-lock"
+                                        d="M14.063,7.875h-.844V5.344a5.344,5.344,0,0,0-10.687,0V7.875H1.688A1.688,1.688,0,0,0,0,9.563v6.75A1.688,1.688,0,0,0,1.688,18H14.063a1.688,1.688,0,0,0,1.688-1.687V9.563A1.688,1.688,0,0,0,14.063,7.875Zm-3.656,0H5.344V5.344a2.531,2.531,0,0,1,5.063,0Z"
+                                        transform="translate(35 77)" fill="#444" />
+                                    <g id="그룹_1862" data-name="그룹 1862">
+                                        <circle id="타원_113" data-name="타원 113" cx="1.2" cy="1.2" r="1.2"
+                                            transform="translate(41.771 88.8)" fill="#fff" />
+                                        <rect id="사각형_12069" data-name="사각형 12069" width="1" height="3" rx="0.5"
+                                            transform="translate(42.471 89.7)" fill="#fff" />
+                                    </g>
+                                </g>
+                            </g>
+                        </g>
+                    </svg>
+                    <svg class="lockOpen" xmlns="http://www.w3.org/2000/svg" width="15.75" height="18"
+                        viewBox="0 0 15.75 18">
+                        <g id="그룹_1864" data-name="그룹 1864" transform="translate(-53 -77)">
+                            <g id="그룹_1860" data-name="그룹 1860" transform="translate(-17)">
+                                <path id="Icon_awesome-unlock" data-name="Icon awesome-unlock"
+                                    d="M14.062,9H5.344V5.375a2.531,2.531,0,1,1,5.062-.032v.562a.842.842,0,0,0,.844.844h1.125a.842.842,0,0,0,.844-.844V5.344A5.344,5.344,0,1,0,2.531,5.4V9H1.687A1.688,1.688,0,0,0,0,10.687v5.625A1.688,1.688,0,0,0,1.687,18H14.062a1.688,1.688,0,0,0,1.687-1.687V10.687A1.688,1.688,0,0,0,14.062,9Z"
+                                    transform="translate(70 77)" fill="#444" />
+                            </g>
+                            <g id="그룹_1863" data-name="그룹 1863" transform="translate(17.904)">
+                                <circle id="타원_113" data-name="타원 113" cx="1.2" cy="1.2" r="1.2"
+                                    transform="translate(41.771 88.8)" fill="#fff" />
+                                <rect id="사각형_12069" data-name="사각형 12069" width="1" height="3" rx="0.5"
+                                    transform="translate(42.471 89.7)" fill="#fff" />
+                            </g>
+                        </g>
+                    </svg>
+                </div>
+                <svg class="layoutBtn" xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 22 22">
+                    <g id="그룹_1628" data-name="그룹 1628" transform="translate(-542 -76)">
+                        <rect id="사각형_11725" data-name="사각형 11725" width="22" height="22" rx="11"
+                            transform="translate(542 76)" fill="#fff" />
+                        <path id="패스_327" data-name="패스 327" d="M0,5.873,4.823,0,10,5.873"
+                            transform="translate(546.063 92) rotate(-90)" fill="none" stroke="#444"
+                            stroke-linecap="round" stroke-linejoin="round" stroke-width="2" />
+                        <path id="패스_329" data-name="패스 329" d="M0,5.873H10"
+                            transform="translate(549.063 92) rotate(-90)" fill="none" stroke="#444"
+                            stroke-linecap="round" stroke-linejoin="round" stroke-width="2" />
+                        <path id="패스_330" data-name="패스 330" d="M0,5.873H10"
+                            transform="translate(552.063 92) rotate(-90)" fill="none" stroke="#444"
+                            stroke-linecap="round" stroke-linejoin="round" stroke-width="2" />
+                    </g>
+                </svg>
+            </div>
+            <div class="groupListBody">
+                {% for group in group_list %}
+                <div class="groupListItem {{group.id}} {% if group.fix == 'y' %}fixedGroup{% endif %}" draggable="true">
+                    <div class="groupNum">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="16.5" viewBox="0 0 22 16.5">
+                            <path id="Icon_awesome-folder" data-name="Icon awesome-folder"
+                                d="M19.938,7.25h-8.25L8.938,4.5H2.063A2.062,2.062,0,0,0,0,6.563V18.938A2.062,2.062,0,0,0,2.063,21H19.938A2.062,2.062,0,0,0,22,18.938V9.313A2.062,2.062,0,0,0,19.938,7.25Z"
+                                transform="translate(0 -4.5)" fill="#444" />
+                        </svg>
+                    </div>
+                    <div class="groupName"
+                        onclick="location.href='{% url 'dispatch:regularly_route' %}?group={{group.id}}'">{{group.name}}
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        {% if group %}
+        <form action="{% url 'dispatch:regularly_group_edit' %}" method="post" class="groupCreate">
+        {% else %}
+        <form action="{% url 'dispatch:regularly_group_create' %}" method="post" class="groupCreate">
+        {% endif %}
+            <input autocomplete="off" type="hidden" name="id" value="{{group.id}}">
+            {% csrf_token %}
+
+            <div class="groupCreateHead">{% if group %}그룹수정{% else %}그룹등록{% endif %}</div>
+            <div class="groupCreateBody">
+                <div class="groupCreateinput">
+                    <input autocomplete="off" value="{{group.name}}" name="name" type="text" placeholder="그룹이름"
+                        class="groupNameCreate length50">
+                </div>
+                <div class="groupCalculateinput">
+                    <span>정산기간 :</span>
+                    <span>이번달</span>
+                    <input type="text" name="settlement_date"
+                        value="{% if group.settlement_date %}{{group.settlement_date}}{% else %}1{% endif %}">
+                    <span>일</span>
+                    <span class="tilde">~</span>
+                    <span>이번달</span>
+                    <div>말일</div>
+                </div>
+                <div class="groupCreateBtnBox">
+                    {% if group %}
+                    <a href="{% url 'dispatch:regularly_route' %}?new=y">
+                        <div class="btnModules groupCreateNew">신규</div>
+                    </a>
+                    {% endif %}
+                    <input autocomplete="off" type="submit" class="btnModules groupCreateSave" value="저장">
+                    <div class="btnModules groupCreateDelete" onclick="groupCreateDeleteUrl()">삭제</div>
+                </div>
+            </div>
+        </form>
+
+        <div class="foldGroup">
+            <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 30 30">
+                <g id="그룹_1629" data-name="그룹 1629" transform="translate(-13664 -4980)">
+                    <rect id="사각형_11725" data-name="사각형 11725" width="30" height="30" rx="15"
+                        transform="translate(13664 4980)" fill="#444" />
+                    <path id="패스_327" data-name="패스 327" d="M0,0,5.788,7.048,12,0"
+                        transform="translate(13681.063 5001) rotate(-90)" fill="none" stroke="#fff"
+                        stroke-linecap="round" stroke-linejoin="round" stroke-width="3" />
+                    <path id="패스_329" data-name="패스 329" d="M0,0H12"
+                        transform="translate(13677.063 5001) rotate(-90)" fill="none" stroke="#fff"
+                        stroke-linecap="round" stroke-linejoin="round" stroke-width="3" />
+                    <path id="패스_330" data-name="패스 330" d="M0,0H12"
+                        transform="translate(13673.063 5001) rotate(-90)" fill="none" stroke="#fff"
+                        stroke-linecap="round" stroke-linejoin="round" stroke-width="3" />
+                </g>
+            </svg>
+        </div>
+    </div>
+
+    <div class="tableLayout">
+        <!--검색폼-->
+        <div class="searchContainer">
+            <form action="" class="searchForm">
+                <select name="use" id="filterUse" class="inputModules">
+                    <option selected="" value="사용">사용</option>
+                    <option value="미사용">미사용</option>
+                </select>
+                <label for="" class="searchFormLabel">노선명</label>
+                <input type="text" class="searchFormInput">
+                <input type="submit" class="searchFormSearchBtn" value="검색">
+            </form>
+        </div>
+        <!--검색폼 done-->
+    </div>
+</div>
+
+{% endblock %}
+
+{% block script %}
+<script>
+    let driverAllowanceValue = "{{detail.driver_allowance}}".replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
+    let driverAllowanceValue2 = "{{detail.driver_allowance2}}".replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
+    let outsourcingAllowanceValue = "{{detail.outsourcing_allowance}}".replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
+    let priceValue = "{{detail.price}}".replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
+    const detailExist = '{{detail}}' ? true : false
+
+    const STATION_LIST_URL = '{% url "dispatch:regularly_station_list" %}'
+    
+    const STATION_TYPES = {
+        '출근' : ['차고지', '첫 정류장 대기장소', '정류장', '사업장', '대기장소'],
+        '퇴근' : ['대기장소', '사업장', '정류장', '마지막 정류장', '차고지'],
+    }
+    const groupCreateChangeForm = document.querySelector(".groupCreate")
+    
+    {% if station_list %}
+    {% autoescape off %}
+    const DISPATCH_REGULARLY_STATIONS = {{station_list}}
+    {% endautoescape %}
+    {% endif %}
+
+    function groupCreateDeleteUrl() {
+        {% autoescape off %}
+        if (confirm("선택한 그룹을 정말로 삭제하시겠습니까?")) {
+            if ('{{order_list.exists}}' == 'False') {
+                groupCreateChangeForm.action = "{% url 'dispatch:regularly_group_delete' %}"
+                groupCreateChangeForm.submit()
+            }
+            else {
+                window.alert('그룹의 노선을 비워주세요')
+            }
+        }
+        {% endautoescape %}
+    }
+
+    const routeTr = document.querySelectorAll(".RouteListBodyTr")
+
+    for (i = 0; i < routeTr.length; i++) {
+        for (j = 1; j < routeTr[i].children.length; j++) {
+            routeTr[i].children[j].addEventListener("click", loadTargetRoute)
+        };
+    };
+
+    function loadTargetRoute() {
+        let parms = new URLSearchParams(location.search)
+        if (parms.has("search")) {
+            if (groupList.style.display == "none") {
+                location.href = `{% url 'dispatch:regularly_route' %}?id=${this.parentNode.classList[1]}&group=${this.parentNode.classList[2]}&use={{search_use}}&search=${parms.get("search")}&height=${this.parentNode.parentNode.parentNode.parentNode.scrollTop}&close=true`
+            } else {
+                location.href = `{% url 'dispatch:regularly_route' %}?id=${this.parentNode.classList[1]}&group=${this.parentNode.classList[2]}&use={{search_use}}&search=${parms.get("search")}&height=${this.parentNode.parentNode.parentNode.parentNode.scrollTop}`
+            }
+        } else {
+            if (groupList.style.display == "none") {
+                location.href = `{% url 'dispatch:regularly_route' %}?id=${this.parentNode.classList[1]}&group=${this.parentNode.classList[2]}&use={{search_use}}&height=${this.parentNode.parentNode.parentNode.parentNode.scrollTop}&close=true`
+            } else {
+                location.href = `{% url 'dispatch:regularly_route' %}?id=${this.parentNode.classList[1]}&group=${this.parentNode.classList[2]}&use={{search_use}}&height=${this.parentNode.parentNode.parentNode.parentNode.scrollTop}`
+            }
+        }
+    }
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.15.5/xlsx.full.min.js"></script>
+<script src="{% static 'js/dispatch/regularly_route/uploadExcel.js' %}"></script>
+<script src="{% static 'js/dispatch/regularly_route/targetRoute.js' %}"></script>
+<script src="{% static 'js/dispatch/regularly_route/createRoute.js' %}"></script>
+<script src="{% static 'js/dispatch/regularly_route/routeLayoutChanger.js' %}"></script>
+<script src="{% static 'js/dispatch/regularly_route/routeScrollLink.js' %}"></script>
+<script src="{% static 'js/dispatch/regularly_route/groupOrderChange.js' %}"></script>
+<script src="{% static 'js/dispatch/regularly_route/checker.js' %}"></script>
+<script src="{% static 'js/dispatch/regularly_route/groupCalculating.js' %}"></script>
+<script src="{% static 'js/dispatch/regularly_route/lengthBreak.js' %}"></script>
+<script src="{% static 'js/dispatch/regularly_route/createAddComma.js' %}"></script>
+<script src="{% static 'js/dispatch/regularly_route/allowancePopup.js' %}"></script>
+<script type="module" src="{% static 'js/dispatch/regularly_route/detailMap.js' %}"></script>
+{% endblock %}

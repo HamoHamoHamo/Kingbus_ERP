@@ -319,7 +319,6 @@ class SalaryTableDataCollector(DataCollector):
                 wage += math.ceil(round(only_weekly_minute / 60, 1) * hourly_wage) # 반올림은?
                 print(only_weekly_minute, wage, hourly_wage)
                 weekly_extension_wage += math.ceil(round((within_law_extension_minute + outside_law_extension_minute) / 60, 1) * hourly_wage) # 주 연장 기본임금
-
                 weekly_minute = 0
                 within_law_extension_minute = 0
                 outside_law_extension_minute = 0

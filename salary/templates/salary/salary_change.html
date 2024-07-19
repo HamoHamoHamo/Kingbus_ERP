@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load dispatch_custom_tags %}
+{% block head %}
+<meta http-equiv="Cache-Control" content="private, no-cache, no-store, max-age=0, must-revalidate">
+<link rel="stylesheet" href="{% static 'css/salary/salary_change.css' %}" type="text/css" />
+
+{% endblock %}
+
+{% block content-header %}
+<div class="HeaderTitle">
+    급여 변동율
+</div>
+{% endblock %}
+
+{% block content %}
+<div class="graphSection">
+    <div class="totalSalary"></div>
+</div>
+<div class="tableSection">
+    <!--검색폼-->
+    <div class="searchContainer">
+        <form action="" class="searchForm">
+            <label for="" class="searchFormLabel">비교 월 :</label>
+            <input type="month" name="month" value="{{month}}" class="searchFormInput searchFormInputMonth">
+            <label for="" class="searchFormLabel">비교 월 :</label>
+            <input type="month" name="month" value="{{month}}" class="searchFormInput searchFormInputMonth">
+            <input type="submit" class="searchFormSearchBtn" value="검색">
+        </form>
+    </div>
+    <!--검색폼 done-->
+
+    <table class="tableContainer">
+        <thead class="tableHeade">
+            <tr>
+                <td>번호</td>
+                <td>이름</td>
+                <td>담당업무</td>
+                <td>비교월</td>
+                <td>기준월</td>
+                <td>차액</td>
+                <td>변동율</td>
+            </tr>
+        </thead class="tableBody">
+        <tbody></tbody>
+    </table>
+</div>
+{% endblock %}

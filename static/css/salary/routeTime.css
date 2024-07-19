@@ -1,0 +1,14 @@
+.tableLayout{
+    height: 100%;
+    background-color: white;
+    width: calc(100% - 38rem);
+    box-shadow: 0rem 0.1rem 0.4rem rgb(0 0 0 / 30%);
+}
+
+.searchContainer{
+    width: 100%;
+    height: 5.2rem;
+    display: flex;
+    justify-content: flex-start;
+    
+}

@@ -20,6 +20,7 @@ from common.constant import TODAY
 from common.datetime import last_day_of_month, get_weekday_from_date, get_mondays_from_last_week_of_previous_month, get_holiday_list_from_open_api
 from common.views import AuthorityCheckView
 
+
 class SalaryStatus(generic.ListView):
     template_name = 'salary/status.html'
     context_object_name = 'member_list'
@@ -67,8 +68,7 @@ class SalaryStatus(generic.ListView):
             data_collector.collect_morning(morning_list)
             data_collector.collect_evening(evening_list)
             datas[member.id] = data_collector.get_collected_status_data()
-            
- 
+
         context['datas'] = datas
         return context
 
@@ -91,11 +91,11 @@ class SalaryTable(AuthorityCheckView, generic.ListView):
         context['month'] = self.request.GET.get('month', TODAY[:7])
         salary_selector = SalarySelector()
         context['hourly_wage'] = salary_selector.get_hourly_wage_by_month(context['month'])
-        if context['hourly_wage'] == None:
+        if context['hourly_wage'] is None:
             context['hourly_wage'] = HourlyWage.new_wage(context['month'], self.creator)
 
         first_date = f"{context['month']}-01"
-        # 1일이 월요일이 아닌경우 저번달 마지막주 월요일부터 불러오기
+        # 1일이 월요일이 아닌 경우 저번달 마지막 주 월요일부터 불러오기
         mondays = get_mondays_from_last_week_of_previous_month(context['month'])
         start_date = mondays[0] if mondays[0][:7] != context['month'] else first_date
 
@@ -143,11 +143,11 @@ class SalaryTable2(AuthorityCheckView, generic.ListView):
         context['month'] = self.request.GET.get('month', TODAY[:7])
         salary_selector = SalarySelector()
         context['hourly_wage'] = salary_selector.get_hourly_wage_by_month(context['month'])
-        if context['hourly_wage'] == None:
+        if context['hourly_wage'] is None:
             context['hourly_wage'] = HourlyWage.new_wage(context['month'], self.creator)
 
         first_date = f"{context['month']}-01"
-        # 1일이 월요일이 아닌경우 저번달 마지막주 월요일부터 불러오기
+        # 1일이 월요일이 아닌 경우 저번달 마지막 주 월요일부터 불러오기
         mondays = get_mondays_from_last_week_of_previous_month(context['month'])
         start_date = mondays[0] if mondays[0][:7] != context['month'] else first_date
 
@@ -199,3 +199,93 @@ class HourlyWageSaveView(AuthorityCheckView):
             return redirect(request.META.get('HTTP_REFERER', 'redirect_if_referer_not_found'))
         raise BadRequest(hourly_wage_form.errors)
 
+class DailyStatusView(AuthorityCheckView):
+    template_name = 'salary/daily_status.html'
+    context_object_name = 'member_list'
+    model = Member
+    authority_level = 3
+
+    def get(self, request, *args, **kwargs):
+        members = self.model.objects.all()
+        context = {
+            self.context_object_name: members
+        }
+        return render(request, self.template_name, context)
+
+class WeeklyStatusView(AuthorityCheckView):
+    template_name = 'salary/weekly_status.html'
+    context_object_name = 'member_list'
+    model = Member
+    authority_level = 3
+
+    def get(self, request, *args, **kwargs):
+        members = self.model.objects.all()
+        context = {
+            self.context_object_name: members
+        }
+        return render(request, self.template_name, context)
+
+class WeeklyStatusTwoView(AuthorityCheckView):
+    template_name = 'salary/weekly_statustwo.html'
+    context_object_name = 'member_list'
+    model = Member
+    authority_level = 3
+
+    def get(self, request, *args, **kwargs):
+        members = self.model.objects.all()
+        context = {
+            self.context_object_name: members
+        }
+        return render(request, self.template_name, context)
+    
+class SalaryDistribution(AuthorityCheckView):
+    template_name = 'salary/Salary_Distribution.html'
+    context_object_name = 'member_list'
+    model = Member
+    authority_level = 3
+
+    def get(self, request, *args, **kwargs):
+        members = self.model.objects.all()
+        context = {
+            self.context_object_name: members
+        }
+        return render(request, self.template_name, context)
+
+class SalaryChange(AuthorityCheckView):
+    template_name = 'salary/salary_change.html'
+    context_object_name = 'member_list'
+    model = Member
+    authority_level = 3
+
+    def get(self, request, *args, **kwargs):
+        members = self.model.objects.all()
+        context = {
+            self.context_object_name: members
+        }
+        return render(request, self.template_name, context)
+
+class GptGraph(AuthorityCheckView):
+    template_name = 'salary/gptgraph.html'
+    context_object_name = 'member_list'
+    model = Member
+    authority_level = 3
+
+    def get(self, request, *args, **kwargs):
+        members = self.model.objects.all()
+        context = {
+            self.context_object_name: members
+        }
+        return render(request, self.template_name, context)
+
+class RouteTime(AuthorityCheckView):
+    template_name = 'salary/routeTime.html'
+    context_object_name = 'member_list'
+    model = Member
+    authority_level = 3
+
+    def get(self, request, *args, **kwargs):
+        members = self.model.objects.all()
+        context = {
+            self.context_object_name: members
+        }
+        return render(request, self.template_name, context)
