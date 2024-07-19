@@ -185,7 +185,7 @@
                     <!-- 기본시급1 -->
                     <div class="addCommaToInnerText tbodyBasic">{{data.hourly_wage}}</div>
                     <!-- 기본시급2 -->
-                    <div class="addCommaToInnerText tbodyBasic">{{data.hourly_wage}}</div>
+                    <div class="addCommaToInnerText tbodyBasic">{{data.hourly_wage2}}</div>
                     <!-- 통상시급 -->
                     <div class="addCommaToInnerText tbodyNormal">{{data.ordinary_hourly_wage}}</div>
                     <div class="tbodyOrdinarySalary" style="display: flex;">
@@ -212,6 +212,8 @@
                         <!-- 휴일 기본임금 -->
                         <div class="addCommaToInnerText">{{data.holiday_work_wage}}</div>
                         <!-- 휴일 50%임금 -->
+                        <div class="addCommaToInnerText">{{data.additional_holiday_work_wage_half}}</div>
+                        <!-- 휴일 100%임금 -->
                         <div class="addCommaToInnerText">{{data.additional_holiday_work_wage}}</div>
                         <!-- 휴일 100%임금 -->
                         <div class="addCommaToInnerText"></div>
@@ -271,11 +273,11 @@
                 <div class="sumLegalAllowance" style="display: flex;">
                     <div class="weekly_holiday_allowance">주휴수당</div>
                     <div class="legal_holiday_allowance">법정휴일</div>
-                    <div class=""></div>
-                    <div class=""></div>
-                    <div class="additional_wage"></div>
+                    <div class="weekly_extension_wage">주연장 기본임금</div>
+                    <div class="weekly_extension_additional_wage"></div>
                     <div class="night_shift_wage"></div>
                     <div class="holiday_work_wage"></div>
+                    <div class="additional_holiday_work_wage_half"></div>
                     <div class="additional_holiday_work_wage"></div>
                     <div class="annual_allowance"></div>
                     <div class="meal">만근수당</div>

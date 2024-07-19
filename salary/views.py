@@ -17,7 +17,7 @@ from dispatch.selectors import DispatchSelector
 from humanresource.models import Member, Salary
 from humanresource.selectors import MemberSelector
 from common.constant import TODAY
-from common.datetime import last_day_of_month, get_weekday_from_date, get_mondays_from_last_week_of_previous_month, get_holiday_list_from_open_api
+from common.datetime import last_day_of_month, get_weekday_from_date, get_mondays_from_last_week_of_previous_month, get_holiday_list_from_open_api, get_next_sunday_after_last_day
 from common.views import AuthorityCheckView
 
 
@@ -101,11 +101,10 @@ class SalaryTable(AuthorityCheckView, generic.ListView):
 
         # 불러온 월요일부터 배차 데이터 가져오기
         dispatch_selector = DispatchSelector()
-        connect_time_list = dispatch_selector.get_driving_time_list(start_date, last_day_of_month(first_date))
+        connect_time_list = dispatch_selector.get_driving_time_list(start_date, get_next_sunday_after_last_day(context['month']))
 
         member_selector = MemberSelector()
         salary_list = member_selector.get_monthly_salary_list(context['month'])
-        print(salary_list)
         salary_selector = SalarySelector()
 
         holiday_data = get_holiday_list_from_open_api(context['month'])
@@ -153,11 +152,10 @@ class SalaryTable2(AuthorityCheckView, generic.ListView):
 
         # 불러온 월요일부터 배차 데이터 가져오기
         dispatch_selector = DispatchSelector()
-        connect_time_list = dispatch_selector.get_driving_time_list(start_date, last_day_of_month(first_date))
+        connect_time_list = dispatch_selector.get_driving_time_list(start_date, get_next_sunday_after_last_day(context['month']))
 
         member_selector = MemberSelector()
         salary_list = member_selector.get_monthly_salary_list(context['month'])
-        print(salary_list)
         salary_selector = SalarySelector()
 
         holiday_data = get_holiday_list_from_open_api(context['month'])
