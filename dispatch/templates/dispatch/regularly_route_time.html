@@ -2,14 +2,14 @@
 {% load static %}
 
 {% block head %}
-<link rel="stylesheet" href="{% static 'css/salary/daily_status.css' %}" type="text/css" />
+<link rel="stylesheet" href="{% static 'css/dispatch/regularly_route_time.css' %}" type="text/css" />
 
 
 {% endblock %}
 
 {% block content-header %}
 <div class="HeaderTitle">
-    일일근무현황
+    노선관리
 </div>
 {% endblock %}
 
@@ -33,23 +33,15 @@
     <div class="tableContainer table">
 
         <div class="thead flex">
-            <div class="theadTh th">선택</div>
-            <div class="theadTh th">번호</div>
-            <div class="theadTh th">이름</div>
-            <div class="theadTh th">직책</div>
+            <div class="theadTh th">연번</div>
+            <div class="theadTh th">노선명</div>
+            <div class="theadTh th">차고지 도착</div>
+            <div class="theadTh th">사전 준비 시간</div>
+            <div class="theadTh th">출발 시간</div>
+            <div class="theadTh th">도착 시간</div>
+            <div class="theadTh th">차량 입고</div>
+            <div class="theadTh th">뒷정리 완료</div>
             <div class="theadTh theadThTime flex">
-                <div class="theadThTh theadThThImformation th">회차</div>
-                <div class="theadThTh theadThThImformation th">노선명</div>
-                <div class="theadThTh theadThThImformation th">출/퇴근</div>
-                <div class="theadThTh th">출근시간</div>
-                <div class="theadThTh th">준비시간</div>
-                <div class="theadThTh th">차고지</div>
-                <div class="theadThTh th">출발지도착</div>
-                <div class="theadThTh th">운행출발</div>
-                <div class="theadThTh th">목적지도착</div>
-                <div class="theadThTh th">차고지</div>
-                <div class="theadThTh th">마감시간</div>
-                <div class="theadThTh th">퇴근시간</div>
                 <div class="theadThTh th theadThDetails">
                     <div class="theadThTitle personalFlex">근로내역</div>
                     <div class="theadThContent personalFlex">
@@ -75,6 +67,26 @@
                 <div class="tbodyDivTd tbodyInformationElement td">김원탁</div>
                 <div class="tbodyDivTd tbodyInformationElement td">팀장</div>
                 <div class="tbodyDivTd tbodyTdTime personalFlex td">
+
+                    <div class="tbodyDivTdTdTime tbodyT personalFlex">
+                        <div class="tbodyDivTdTd tbodyDivTdTdInformation td">1회</div>
+                        <div class="tbodyDivTdTd tbodyDivTdTdInformation td">영통1</div>
+                        <div class="tbodyDivTdTd tbodyDivTdTdInformation td">출근</div>
+                        <div class="tbodyDivTdTd tbodyDivTdTdTimeValue td">05:40</div>
+                        <div class="tbodyDivTdTd tbodyDivTdTdTimeValue td">05:40</div>
+                        <div class="tbodyDivTdTd tbodyDivTdTdTimeValue td">06:23</div>
+                        <div class="tbodyDivTdTd tbodyDivTdTdTimeValue td">06:23</div>
+                        <div class="tbodyDivTdTd tbodyDivTdTdTimeValue td">07:15</div>
+                        <div class="tbodyDivTdTd tbodyDivTdTdTimeValue td">07:15</div>
+                        <div class="tbodyDivTdTd tbodyDivTdTdTimeValue td">07:15</div>
+                        <div class="tbodyDivTdTd tbodyDivTdTdTimeValue td">07:15</div>
+                        <div class="tbodyDivTdTd tbodyDivTdTdTimeValue td"></div>
+                        <div class="tbodyDivTdTd tbodyDivTdTdTimeValue td sumTime">01:35</div>
+                        <div class="tbodyDivTdTd tbodyDivTdTdTimeValue td sumTime">00:20</div>
+                        <div class="tbodyDivTdTd tbodyDivTdTdTimeValue td sumTime">00:20</div>
+                        <div class="tbodyDivTdTd tbodyDivTdTdTimeValue td sumTime">00:00</div>
+                        <div class="tbodyDivTdTd tbodyDivTdTdTimeValue td sumTime">00:00</div>
+                    </div>
 
                     <div class="tbodyDivTdTdTime tbodyT personalFlex">
                         <div class="tbodyDivTdTd tbodyDivTdTdInformation td">1회</div>
@@ -167,24 +179,5 @@
 
 
 {% block script %}
-<script>
-    let tbodyTElements = document.getElementsByClassName("tbodyT");
-    let tbodyTElementCount = tbodyTElements.length;
 
-
-    function calculateHeight(count) {
-        let height = 6 + 3 * (count - 1);
-        return height;
-    }
-
-    let newHeight = calculateHeight(tbodyTElementCount);
-
-
-    // tbodyDiv의 높이를 설정
-    let tbodyDivs = document.getElementsByClassName("tbodyDiv");
-    for (let i = 0; i < tbodyDivs.length; i++) {
-        tbodyDivs[i].style.height = newHeight + "rem";
-
-    }
-</script>
 {% endblock %}

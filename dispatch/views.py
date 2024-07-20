@@ -917,6 +917,17 @@ def regularly_connect_delete(request):
     else:
         return HttpResponseNotAllowed(['post'])
 
+class RegularlyRouteTimeList(generic.ListView):
+    template_name = 'dispatch/regularly_route_time.html'
+    context_object_name = 'order_list'
+    # paginate_by = 10
+    model = DispatchRegularlyData
+
+    def get(self, request, *args, **kwargs):
+        if request.session.get('authority') > 1:
+            return render(request, 'authority.html')
+        return super().get(request, *args, **kwargs)
+        
 
 class RegularlyRouteList(generic.ListView):
     template_name = 'dispatch/regularly_route.html'
