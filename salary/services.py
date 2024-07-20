@@ -378,7 +378,8 @@ class SalaryTableDataCollector(DataCollector):
         print("weekly", weekly_minute)
         # 마지막 날이 일요일이 아니면 다음달 일요일까지 계산해서 시급 정하기
         hourly_wage = int(self.hourly_wage_data.get_wage(weekly_minute + self.get_work_minutes_from_next_month_sunday()))
-        wage += math.ceil(weekly_minute / 60 * hourly_wage) # 반올림은?
+        # wage += math.ceil(weekly_minute / 60 * hourly_wage) # 반올림은?
+        wage = hourly_wage * 1470 / 12
         weekly_extension_wage += math.ceil((within_law_extension_minute + outside_law_extension_minute) / 60 * hourly_wage) # 주 연장 기본임금
         holiday_work_wage += math.ceil(holiday_hour * hourly_wage * 0.5)
 
@@ -394,8 +395,10 @@ class SalaryTableDataCollector(DataCollector):
         # performance_allowance = int(self.member_salary['performance_allowance']) # 성과급
         performance_allowance = 0 # 일단 0으로 고정
         service_allowance = int(self.member_salary['service_allowance']) # 근속수당
+        
         ordinary_salary = wage + service_allowance + performance_allowance
-        ordinary_hourly_wage = math.ceil(ordinary_salary / (total_weekly_minute / 60)) if total_weekly_minute / 60 != 0 else 0 # 통상시급 반올림은?
+        # ordinary_hourly_wage = math.ceil(ordinary_salary / (total_weekly_minute / 60)) if total_weekly_minute / 60 != 0 else 0 # 통상시급 반올림은?
+        ordinary_hourly_wage = math.ceil(hourly_wage + (performance_allowance * 12/ 2349) + (service_allowance * 12/1470))
         print("total_weekly_minute", total_weekly_minute)
         # 법정수당
         weekly_holiday_allowance = ordinary_hourly_wage * 6 * weekly_holiday_count # 주휴수당
