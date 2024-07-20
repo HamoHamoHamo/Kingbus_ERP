@@ -93,3 +93,22 @@
     height: 3rem;
     width: 100%;
 }
+
+.theadThTh:nth-child(1){
+    height: 50%;
+}
+.theadThTh:nth-child(2){
+    height: 50%;
+    border-bottom: none;
+    border-right: none;
+}
+
+.theadThTh, .last {
+    border-right: none;
+}
+
+.theadThTh > *{
+    width: calc(100% / 7);
+    height: 100%;
+    border-bottom: none;
+}

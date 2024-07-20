@@ -289,8 +289,8 @@ class WeeklyStatusTwoView(AuthorityCheckView):
         }
         return render(request, self.template_name, context)
     
-class SalaryDistribution(AuthorityCheckView):
-    template_name = 'salary/Salary_Distribution.html'
+class SalaryDistribution2(AuthorityCheckView):
+    template_name = 'salary/Salary_Distribution2.html'
     context_object_name = 'member_list'
     model = Member
     authority_level = 3
