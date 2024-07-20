@@ -3,6 +3,10 @@
     justify-content: center;
     align-items: center;
 }
+
+.tableScrollBox *{
+    box-sizing: border-box;
+}
 /* 검색창 */
 
 .searchContainer{
@@ -102,7 +106,7 @@
 .theadTh:nth-child(1){width: 5%;}
 .theadTh:nth-child(2){width: 5%;}
 .theadTh:nth-child(3){width: 10%;}
-.theadTh:nth-child(4){width: 52.5%;}
+.theadTh:nth-child(4){width: 52.5%; height: 100%;}
 .theadTh:nth-child(5){width: 7.5%;}
 .theadTh:nth-child(6){width: 10%;}
 .theadTh:nth-child(7){width: 10%;}
@@ -125,9 +129,10 @@
 }
 
 .personContainer{
+    display: flex;
     box-sizing: border-box;
     width: 100%;
-    height: 15rem;
+    height: 18rem;
 }
 
 .orderContainer{
@@ -135,11 +140,119 @@
     width: 20%;
     height: 100%;
     border-right: 0.1rem solid #CDCDCE;
+    border-bottom: 0.1rem solid #CDCDCE;
 }
 
-.ValueContainer{    
+.valueContainer{    
     box-sizing: border-box;
     width: 80%;
     height: 100%;
 
+}
+
+.orderContainer{
+    height: 100%;
+    display: flex;
+}
+
+.orderList:nth-child(1){
+    width: 25%;
+    border-right: 0.1rem solid #CDCDCE;
+}
+.orderList:nth-child(2){
+    width: 25%;
+    border-right: 0.1rem solid #CDCDCE;
+}
+.orderList:nth-child(3){
+    height: 100%;
+    width: 50%;
+}
+
+.orderListList{
+    height: 25%;
+    width: 100%;
+}
+.orderListList{
+    height: 25%;
+    width: 100%;
+}
+.orderListList:nth-child(3){
+    height: 50%;
+    width: 100%
+}
+
+.orderListListTitle{
+    height: 100%;
+    width: 50%;
+}
+
+.orderListListList{
+    height: 50%;
+    width: 100%;
+}
+
+.orderListListContent{
+    width: 50%;
+    height: 100%;
+}
+
+.orderListBorder{
+    border-bottom: 0.1rem solid #CDCDCE;
+}
+
+.orderListBorderRight{
+    border-right: 0.1rem solid #CDCDCE;;
+}
+
+.totalValue, .nightValue, .holidayValue, .holiday8Value{
+    width: 100%;
+    height: 25%;
+}
+
+.totalValueDate:nth-child(1){width: 9.375%;}
+.totalValueDate:nth-child(2){width: 9.375%;}
+.totalValueDate:nth-child(3){width: 9.375%;}
+.totalValueDate:nth-child(4){width: 9.375%;}
+.totalValueDate:nth-child(5){width: 9.375%;}
+.totalValueDate:nth-child(6){width: 9.375%;}
+.totalValueDate:nth-child(7){width: 9.375%;}
+.totalValueDate:nth-child(8){width: 9.375%;}
+.totalValueDate:nth-child(9){width: 12.5%;}
+.totalValueDate:nth-child(10){width: 12.5%;}
+
+.nightValueDate:nth-child(1){width: 9.375%;}
+.nightValueDate:nth-child(2){width: 9.375%;}
+.nightValueDate:nth-child(3){width: 9.375%;}
+.nightValueDate:nth-child(4){width: 9.375%;}
+.nightValueDate:nth-child(5){width: 9.375%;}
+.nightValueDate:nth-child(6){width: 9.375%;}
+.nightValueDate:nth-child(7){width: 9.375%;}
+.nightValueDate:nth-child(8){width: 9.375%;}
+.nightValueDate:nth-child(9){width: 12.5%;}
+.nightValueDate:nth-child(10){width: 12.5%;}
+
+.holidayValueDate:nth-child(1){width: 9.375%;}
+.holidayValueDate:nth-child(2){width: 9.375%;}
+.holidayValueDate:nth-child(3){width: 9.375%;}
+.holidayValueDate:nth-child(4){width: 9.375%;}
+.holidayValueDate:nth-child(5){width: 9.375%;}
+.holidayValueDate:nth-child(6){width: 9.375%;}
+.holidayValueDate:nth-child(7){width: 9.375%;}
+.holidayValueDate:nth-child(8){width: 9.375%;}
+.holidayValueDate:nth-child(9){width: 12.5%;}
+.holidayValueDate:nth-child(10){width: 12.5%;}
+
+.holiday8ValueDate:nth-child(1){width: 9.375%;}
+.holiday8ValueDate:nth-child(2){width: 9.375%;}
+.holiday8ValueDate:nth-child(3){width: 9.375%;}
+.holiday8ValueDate:nth-child(4){width: 9.375%;}
+.holiday8ValueDate:nth-child(5){width: 9.375%;}
+.holiday8ValueDate:nth-child(6){width: 9.375%;}
+.holiday8ValueDate:nth-child(7){width: 9.375%;}
+.holiday8ValueDate:nth-child(8){width: 9.375%;}
+.holiday8ValueDate:nth-child(9){width: 12.5%;}
+.holiday8ValueDate:nth-child(10){width: 12.5%;}
+
+.personContainer{
+    border-bottom: 0.1rem solid #CDCDCE;
 }

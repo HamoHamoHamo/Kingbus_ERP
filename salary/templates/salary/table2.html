@@ -95,8 +95,8 @@
             <div class="thead">
                 <div class="theadDate">입사일자</div>
                 <div class="theadWorkTime">근무시간</div>
-                <div class="theadBasic">기본시급<br>(1)<br>30시간미만</div>
-                <div class="theadBasic">기본시급<br>(2)<br>30시간</div>
+                <div class="theadBasic">기본시급<br>(1)<br>30시간이하</div>
+                <div class="theadBasic">기본시급<br>(2)<br>30시간초과</div>
                 <div class="theadNormal">통상시급</div>
 
                 <!--통상급여-->
@@ -117,6 +117,10 @@
                     <div class="theadLegalAllowanceContent">
                         <div>주휴수당</div>
                         <div>법정휴일</div>
+                        <div class="theadLegalAllowanceContentOne">
+                            <div class="theadLegalAllowanceContentOneTitle">법내연장</div>
+                            <div class="theadLegalAllowanceContentOneContent">기본임금</div>
+                        </div>
                         <div class="theadLegalAllowanceContentDouble theadDouble">
                             <div class="theadLegalAllowanceContentDoubleTitle">주 연장</div>
                             <div class="theadLegalAllowanceContentDoubleContent">
@@ -203,6 +207,7 @@
                         <div class="addCommaToInnerText">{{data.weekly_holiday_allowance}}</div>
                         <!-- 법정휴일 -->
                         <div class="addCommaToInnerText">{{data.legal_holiday_allowance}}</div>
+                        <div></div>
                         <!-- 주연장 기본임금 -->
                         <div class="addCommaToInnerText">{{data.weekly_extension_wage}}</div>
                         <!-- 주연장 가산임금 -->
@@ -215,8 +220,7 @@
                         <div class="addCommaToInnerText">{{data.additional_holiday_work_wage_half}}</div>
                         <!-- 휴일 100%임금 -->
                         <div class="addCommaToInnerText">{{data.additional_holiday_work_wage}}</div>
-                        <!-- 휴일 100%임금 -->
-                        <div class="addCommaToInnerText"></div>
+
                         <!-- 연차수당 -->
                         <div class="addCommaToInnerText">{{data.annual_allowance}}</div>
                         <!-- 만근수당 -->
