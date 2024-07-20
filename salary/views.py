@@ -73,6 +73,59 @@ class SalaryStatus(generic.ListView):
         return context
 
 
+class DailySalaryStatus(generic.ListView):
+    template_name = 'salary/daily_status.html'
+    context_object_name = 'member_list'
+    model = Member
+
+    def get(self, request, *args, **kwargs):
+        if request.session.get('authority') > 3:
+            return render(request, 'authority.html')
+        return super().get(request, *args, **kwargs)
+    
+    def get_queryset(self):
+        name = self.request.GET.get('name', '')
+        member_selector = MemberSelector()
+        return member_selector.get_using_driver_list(name)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        
+        context['name'] = self.request.GET.get('name', '')
+        context['month'] = self.request.GET.get('month', TODAY[:7])
+
+        first_date = f"{context['month']}-01"
+        mondays = get_mondays_from_last_week_of_previous_month(context['month'])
+        start_date = mondays[0] if mondays[0][:7] != context['month'] else first_date
+
+        # 불러온 월요일부터 배차 데이터 가져오기
+        dispatch_selector = DispatchSelector()
+        connect_time_list = dispatch_selector.get_driving_time_list(start_date, last_day_of_month(first_date))
+    
+        morning_list = dispatch_selector.get_monthly_morning_checklist(context['month'])
+        evening_list = dispatch_selector.get_monthly_evening_checklist(context['month'])
+        
+        datas = {}
+        context['weekday_list'] = ['' for i in range(31)]
+        context['date_list'] = ['' for i in range(31)]
+
+        for i in range(last_day_of_month(first_date)):
+            date = f"{context['month']}-{i + 1:02d}"
+            context['weekday_list'][i] = get_weekday_from_date(date)
+            context['date_list'][i] = i + 1
+
+        for member in context['member_list']:
+            data_collector = SalaryStatusDataCollector(member, context['month'], mondays)
+            data_collector.collect_connects(connect_time_list)
+            data_collector.collect_morning(morning_list)
+            data_collector.collect_evening(evening_list)
+            datas[member.id] = data_collector.get_collected_status_data()
+            
+ 
+        context['datas'] = datas
+        return context
+
+
 class SalaryTable(AuthorityCheckView, generic.ListView):
     template_name = 'salary/table.html'
     context_object_name = 'member_list'
