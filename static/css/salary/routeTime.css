@@ -1,14 +1,95 @@
-.tableLayout{
+.personalFlex, .flex {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.excelContainer{
+    height: 2.8rem;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.searchFormSearchBtn{
     height: 100%;
+    margin-left: 2rem;
+    padding: 0 1.8rem;
+    border: none;
+    border-radius: 0.2rem;
+    font-size: 1.4rem;
+    color: white;
+    background-color: #444444;
+    cursor: pointer;
+}
+
+.tableScrollBox{
+    margin-top: 2rem;
+    display: flex;
+    flex-direction: column;
+    height: 75.5rem;
+    overflow-y: scroll;
+}
+
+.tableContainer{
+    font-size: 1.4rem;
+    width: 100%;
+    height: auto;
     background-color: white;
-    width: calc(100% - 38rem);
     box-shadow: 0rem 0.1rem 0.4rem rgb(0 0 0 / 30%);
 }
 
-.searchContainer{
+.th, .td {
+    color: white;
+    height: 100%;
+    background-color: #444444;
+    border-right: 0.1rem solid #CDCDCE;
+    border-bottom: 0.1rem solid #CDCDCE;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.td{
+    background-color: white;
+    color: black;
+}
+
+.thead {
+    height: 7rem;
     width: 100%;
-    height: 5.2rem;
-    display: flex;
-    justify-content: flex-start;
-    
+}
+
+.theadTh:nth-child(1){width: 3.1%;}
+.theadTh:nth-child(2){width: 15.7%;}
+.theadTh:nth-child(3){width: 8.4%;}
+.theadTh:nth-child(4){width: 8.4%;}
+.theadTh:nth-child(5){width: 8.4%;}
+.theadTh:nth-child(6){width: 8.4%;}
+.theadTh:nth-child(7){width: 8.4%;}
+.theadTh:nth-child(8){width: 8.4%;}
+.theadTh:nth-child(9){width: 21%;}
+.theadTh:nth-child(10){width: 4.9%;}
+.theadTh:nth-child(11){width: 4.9%;}
+
+.tbodyTd:nth-child(1){width: 3.1%;}
+.tbodyTd:nth-child(2){width: 15.7%;}
+.tbodyTd:nth-child(3){width: 8.4%;}
+.tbodyTd:nth-child(4){width: 8.4%;}
+.tbodyTd:nth-child(5){width: 8.4%;}
+.tbodyTd:nth-child(6){width: 8.4%;}
+.tbodyTd:nth-child(7){width: 8.4%;}
+.tbodyTd:nth-child(8){width: 8.4%;}
+.tbodyTd:nth-child(9){width: 3%;}
+.tbodyTd:nth-child(10){width: 3%;}
+.tbodyTd:nth-child(11){width: 3%;}
+.tbodyTd:nth-child(12){width: 3%;}
+.tbodyTd:nth-child(13){width: 3%;}
+.tbodyTd:nth-child(14){width: 3%;}
+.tbodyTd:nth-child(15){width: 3%;}
+.tbodyTd:nth-child(16){width: 4.9%;}
+.tbodyTd:nth-child(17){width: 4.9%;}
+
+.route{
+    height: 3rem;
+    width: 100%;
 }
