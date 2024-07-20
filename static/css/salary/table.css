@@ -315,15 +315,32 @@ background-color: #444444;
 
 
 .theadLegalAllowanceContent > *{
-    width: 9.09%;
+    width: 8.33%;
+}
+
+.theadLegalAllowanceContentOne{
+    width: 8.33%;
+}
+
+.theadLegalAllowanceContentOneTitle,
+.theadLegalAllowanceContentOneContent{
+    width: 100%;
+    height: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .theadLegalAllowanceContentDouble{
-    width: 27.27%;
+    width: 24.99%;
 }
 
 .theadDouble{
-    width: 18.18%;
+    width: 16.66%;
+}
+
+.theadWeeklyExtension {
+    height: 50%;
 }
 
 /* 데이터헤더끝 */
@@ -379,7 +396,7 @@ background-color: #444444;
 
 .tbodyLegalAllowance > *{
     
-    width: 9.09%;
+    width: 8.33%;
     border-right: 0.1rem solid #CDCDCE;
 }
 
@@ -678,4 +695,13 @@ background-color: #444444;
 
 .popupPrice {
     text-align: right;
+}
+
+.theadLegalAllowanceContentOne{
+    width: 8.33%;
+    flex-direction: column;
+}
+
+.theadLegalAllowanceContentOneTitle{
+    border-bottom: 0.1rem solid #CDCDCE;;
 }

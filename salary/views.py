@@ -134,13 +134,24 @@ class SalaryTable(AuthorityCheckView, generic.ListView):
 
     def get_queryset(self):
         name = self.request.GET.get('name', '')
+        search_type = self.request.GET.get("type", '전체')
+
         member_selector = MemberSelector()
-        return member_selector.get_using_driver_list(name)
+        
+        if search_type == '전체':
+            member_list = member_selector.get_using_driver_list(name)
+        elif search_type == '정규직':
+            member_list = member_selector.get_using_permanent_driver_list(name)
+        elif search_type == '일당직':
+            member_list = member_selector.get_using_outsourcing_driver_list(name)
+        return member_list
+        
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         
         context['name'] = self.request.GET.get('name', '')
+        context['type'] = self.request.GET.get('type', '전체')
         context['month'] = self.request.GET.get('month', TODAY[:7])
         salary_selector = SalarySelector()
         context['hourly_wage'] = salary_selector.get_hourly_wage_by_month(context['month'])
@@ -185,13 +196,23 @@ class SalaryTable2(AuthorityCheckView, generic.ListView):
 
     def get_queryset(self):
         name = self.request.GET.get('name', '')
+        search_type = self.request.GET.get("type", '전체')
+
         member_selector = MemberSelector()
-        return member_selector.get_using_driver_list(name)
+        
+        if search_type == '전체':
+            member_list = member_selector.get_using_driver_list(name)
+        elif search_type == '정규직':
+            member_list = member_selector.get_using_permanent_driver_list(name)
+        elif search_type == '일당직':
+            member_list = member_selector.get_using_outsourcing_driver_list(name)
+        return member_list
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         
         context['name'] = self.request.GET.get('name', '')
+        context['type'] = self.request.GET.get('type', '전체')
         context['month'] = self.request.GET.get('month', TODAY[:7])
         salary_selector = SalarySelector()
         context['hourly_wage'] = salary_selector.get_hourly_wage_by_month(context['month'])
