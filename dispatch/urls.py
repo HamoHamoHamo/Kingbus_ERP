@@ -8,6 +8,7 @@ urlpatterns = [
     path('regularly/create', views.regularly_connect_create, name="regularly_connect_create"),
     path('regularly/connect/load/<int:day>', views.regularly_connect_load, name="regularly_connect_load"),
     path('regularly/connect/delete', views.regularly_connect_delete, name="regularly_connect_delete"),
+    path('regularly/route/time', views.RegularlyRouteTimeList.as_view(), name="regularly_route_time"),
     path('regularly/route', views.RegularlyRouteList.as_view(), name="regularly_route"),
     # path('regularly/fixed/create', views.regularly_fixed_create, name="regularly_fixed_create"),
     path('regularly/route/create', views.regularly_order_create, name="regularly_route_create"),
@@ -26,7 +27,8 @@ urlpatterns = [
     path('regularly/connect', views.RegularlyConnectList.as_view(), name="regularly_connect"),
     path('regularly/business/edit', views.business_edit, name="business_edit"),
 
-    path('regularly/route/test', views.time_data, name="time_data"),
+    
+    # path('regularly/route/test', views.time_data, name="time_data"),
     
     path('regularly/station', views.RegularlyStationList.as_view(), name="regularly_station"),
     path('regularly/station/list', views.regularly_station_list, name="regularly_station_list"),

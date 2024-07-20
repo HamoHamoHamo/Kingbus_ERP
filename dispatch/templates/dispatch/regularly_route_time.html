@@ -1,0 +1,183 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block head %}
+<link rel="stylesheet" href="{% static 'css/dispatch/regularly_route_time.css' %}" type="text/css" />
+
+
+{% endblock %}
+
+{% block content-header %}
+<div class="HeaderTitle">
+    노선관리
+</div>
+{% endblock %}
+
+{% block content %}
+<!-- 검색창 -->
+<div class="search-Container">
+    <!-- 검색폼 -->
+    <form action="" class="searchForm">
+        <label for="" class="searchFormLabel">날짜 :</label>
+        <input type="date" name="month" class="searchFormInput searchFormInputDate">
+        <label for="" class="searchFormLabel">이름 :</label>
+        <input name="name" value="" type="text" class="searchFormInput">
+        <input type="submit" class="searchFormSearchBtn" value="검색">
+    </form>
+    <!-- 검색폼 done-->
+</div>
+<!-- 검색창 끝-->
+
+<div class="tableScrollBox">
+
+    <div class="tableContainer table">
+
+        <div class="thead flex">
+            <div class="theadTh th">연번</div>
+            <div class="theadTh th">노선명</div>
+            <div class="theadTh th">차고지 도착</div>
+            <div class="theadTh th">사전 준비 시간</div>
+            <div class="theadTh th">출발 시간</div>
+            <div class="theadTh th">도착 시간</div>
+            <div class="theadTh th">차량 입고</div>
+            <div class="theadTh th">뒷정리 완료</div>
+            <div class="theadTh theadThTime flex">
+                <div class="theadThTh th theadThDetails">
+                    <div class="theadThTitle personalFlex">근로내역</div>
+                    <div class="theadThContent personalFlex">
+                        <div class="theadThContents personalFlex">총 시간</div>
+                        <div class="theadThContents personalFlex">휴게 시간</div>
+                        <div class="theadThContents personalFlex">야간근로</div>
+                        <div class="theadThContents personalFlex">휴일(8시간 이하)</div>
+                        <div class="theadThContents personalFlex theadThContentsLast">휴일(8시간 초과)</div>
+                    </div>
+                </div>
+            </div>
+            <div class="theadTh th">확인서명</div>
+        </div>
+
+        <div class="tbody">
+
+            <div class="tbodyDiv personalFlex">
+
+                <div class="tbodyDivTd  tbodyInformationElement td">
+                    <input type="checkbox" name="" id="">
+                </div>
+                <div class="tbodyDivTd tbodyInformationElement td">1</div>
+                <div class="tbodyDivTd tbodyInformationElement td">김원탁</div>
+                <div class="tbodyDivTd tbodyInformationElement td">팀장</div>
+                <div class="tbodyDivTd tbodyTdTime personalFlex td">
+
+                    <div class="tbodyDivTdTdTime tbodyT personalFlex">
+                        <div class="tbodyDivTdTd tbodyDivTdTdInformation td">1회</div>
+                        <div class="tbodyDivTdTd tbodyDivTdTdInformation td">영통1</div>
+                        <div class="tbodyDivTdTd tbodyDivTdTdInformation td">출근</div>
+                        <div class="tbodyDivTdTd tbodyDivTdTdTimeValue td">05:40</div>
+                        <div class="tbodyDivTdTd tbodyDivTdTdTimeValue td">05:40</div>
+                        <div class="tbodyDivTdTd tbodyDivTdTdTimeValue td">06:23</div>
+                        <div class="tbodyDivTdTd tbodyDivTdTdTimeValue td">06:23</div>
+                        <div class="tbodyDivTdTd tbodyDivTdTdTimeValue td">07:15</div>
+                        <div class="tbodyDivTdTd tbodyDivTdTdTimeValue td">07:15</div>
+                        <div class="tbodyDivTdTd tbodyDivTdTdTimeValue td">07:15</div>
+                        <div class="tbodyDivTdTd tbodyDivTdTdTimeValue td">07:15</div>
+                        <div class="tbodyDivTdTd tbodyDivTdTdTimeValue td"></div>
+                        <div class="tbodyDivTdTd tbodyDivTdTdTimeValue td sumTime">01:35</div>
+                        <div class="tbodyDivTdTd tbodyDivTdTdTimeValue td sumTime">00:20</div>
+                        <div class="tbodyDivTdTd tbodyDivTdTdTimeValue td sumTime">00:20</div>
+                        <div class="tbodyDivTdTd tbodyDivTdTdTimeValue td sumTime">00:00</div>
+                        <div class="tbodyDivTdTd tbodyDivTdTdTimeValue td sumTime">00:00</div>
+                    </div>
+
+                    <div class="tbodyDivTdTdTime tbodyT personalFlex">
+                        <div class="tbodyDivTdTd tbodyDivTdTdInformation td">1회</div>
+                        <div class="tbodyDivTdTd tbodyDivTdTdInformation td">영통1</div>
+                        <div class="tbodyDivTdTd tbodyDivTdTdInformation td">출근</div>
+                        <div class="tbodyDivTdTd tbodyDivTdTdTimeValue td">05:40</div>
+                        <div class="tbodyDivTdTd tbodyDivTdTdTimeValue td">05:40</div>
+                        <div class="tbodyDivTdTd tbodyDivTdTdTimeValue td">06:23</div>
+                        <div class="tbodyDivTdTd tbodyDivTdTdTimeValue td">06:23</div>
+                        <div class="tbodyDivTdTd tbodyDivTdTdTimeValue td">07:15</div>
+                        <div class="tbodyDivTdTd tbodyDivTdTdTimeValue td">07:15</div>
+                        <div class="tbodyDivTdTd tbodyDivTdTdTimeValue td">07:15</div>
+                        <div class="tbodyDivTdTd tbodyDivTdTdTimeValue td">07:15</div>
+                        <div class="tbodyDivTdTd tbodyDivTdTdTimeValue td"></div>
+                        <div class="tbodyDivTdTd tbodyDivTdTdTimeValue td sumTime">01:35</div>
+                        <div class="tbodyDivTdTd tbodyDivTdTdTimeValue td sumTime">00:20</div>
+                        <div class="tbodyDivTdTd tbodyDivTdTdTimeValue td sumTime">00:20</div>
+                        <div class="tbodyDivTdTd tbodyDivTdTdTimeValue td sumTime">00:00</div>
+                        <div class="tbodyDivTdTd tbodyDivTdTdTimeValue td sumTime">00:00</div>
+                    </div>
+
+                    <div class="tbodyDivTdTdTime tbodyT personalFlex">
+                        <div class="tbodyDivTdTd tbodyDivTdTdInformation td">2회</div>
+                        <div class="tbodyDivTdTd tbodyDivTdTdInformation td">영통1</div>
+                        <div class="tbodyDivTdTd tbodyDivTdTdInformation td">출근</div>
+                        <div class="tbodyDivTdTd tbodyDivTdTdTimeValue td"></div>
+                        <div class="tbodyDivTdTd tbodyDivTdTdTimeValue td">05:40</div>
+                        <div class="tbodyDivTdTd tbodyDivTdTdTimeValue td">06:23</div>
+                        <div class="tbodyDivTdTd tbodyDivTdTdTimeValue td">06:23</div>
+                        <div class="tbodyDivTdTd tbodyDivTdTdTimeValue td">07:15</div>
+                        <div class="tbodyDivTdTd tbodyDivTdTdTimeValue td">07:15</div>
+                        <div class="tbodyDivTdTd tbodyDivTdTdTimeValue td">07:15</div>
+                        <div class="tbodyDivTdTd tbodyDivTdTdTimeValue td">07:15</div>
+                        <div class="tbodyDivTdTd tbodyDivTdTdTimeValue td"></div>
+                        <div class="tbodyDivTdTd tbodyDivTdTdTimeValue td sumTime">01:35</div>
+                        <div class="tbodyDivTdTd tbodyDivTdTdTimeValue td sumTime">00:20</div>
+                        <div class="tbodyDivTdTd tbodyDivTdTdTimeValue td sumTime">00:00</div>
+                        <div class="tbodyDivTdTd tbodyDivTdTdTimeValue td sumTime">00:00</div>
+                        <div class="tbodyDivTdTd tbodyDivTdTdTimeValue td sumTime">00:00</div>
+                    </div>
+
+                    <div class="tbodyDivTdTdTime tbodyT personalFlex">
+                        <div class="tbodyDivTdTd tbodyDivTdTdInformation td">3회</div>
+                        <div class="tbodyDivTdTd tbodyDivTdTdInformation td">영통1</div>
+                        <div class="tbodyDivTdTd tbodyDivTdTdInformation td">퇴근</div>
+                        <div class="tbodyDivTdTd tbodyDivTdTdTimeValue td"></div>
+                        <div class="tbodyDivTdTd tbodyDivTdTdTimeValue td">05:40</div>
+                        <div class="tbodyDivTdTd tbodyDivTdTdTimeValue td">06:23</div>
+                        <div class="tbodyDivTdTd tbodyDivTdTdTimeValue td">06:23</div>
+                        <div class="tbodyDivTdTd tbodyDivTdTdTimeValue td">07:15</div>
+                        <div class="tbodyDivTdTd tbodyDivTdTdTimeValue td">07:15</div>
+                        <div class="tbodyDivTdTd tbodyDivTdTdTimeValue td">07:15</div>
+                        <div class="tbodyDivTdTd tbodyDivTdTdTimeValue td">07:15</div>
+                        <div class="tbodyDivTdTd tbodyDivTdTdTimeValue td">07:15</div>
+                        <div class="tbodyDivTdTd tbodyDivTdTdTimeValue td sumTime">01:35</div>
+                        <div class="tbodyDivTdTd tbodyDivTdTdTimeValue td sumTime">00:20</div>
+                        <div class="tbodyDivTdTd tbodyDivTdTdTimeValue td sumTime">00:00</div>
+                        <div class="tbodyDivTdTd tbodyDivTdTdTimeValue td sumTime">00:00</div>
+                        <div class="tbodyDivTdTd tbodyDivTdTdTimeValue td sumTime">00:00</div>
+                    </div>
+
+
+
+                    <div class="tbodyDivTdTdSum personalFlex">
+                        <div class="tbodyDivTdTd tbodyDivTdTdInformation td">소계</div>
+                        <div class="tbodyDivTdTd none td">해당없음</div>
+                        <div class="tbodyDivTdTd tbodyDivTdTdTimeValue td sumTime">01:35</div>
+                        <div class="tbodyDivTdTd tbodyDivTdTdTimeValue td sumTime">00:20</div>
+                        <div class="tbodyDivTdTd tbodyDivTdTdTimeValue td sumTime">00:00</div>
+                        <div class="tbodyDivTdTd tbodyDivTdTdTimeValue td sumTime">00:00</div>
+                        <div class="tbodyDivTdTd tbodyDivTdTdTimeValue td sumTime">00:00</div>
+                    </div>
+
+                </div>
+                <div class="tbodyDivTd tbodyInformationElement td">(서명)</div>
+
+            </div>
+
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}
+
+
+
+
+
+{% block script %}
+
+{% endblock %}
