@@ -25,11 +25,9 @@
         <label for="" class="searchFormLabel">이름</label>
         <input name="name" value="{{name}}" type="text" class="searchFormInput">
         <select name="type" id="type" class="searchFormInput searchFormInputSelect">
-            <option value="전체">전체</option>
-            <option value="4시간 이하">4시간 이하</option>
-            <option value="4시간 초과 6시간 이하">4시간 초과 6시간 이하</option>
-            <option value="6시간 초과 8시간 이하">6시간 초과 8시간 이하</option>
-            <option value="8시간 초과">8시간 초과</option>
+            <option {% if type == '전체' %}selected{% endif %} value="전체">전체</option>
+            <option {% if type == '정규직' %}selected{% endif %} value="정규직">정규직</option>
+            <option {% if type == '일당직' %}selected{% endif %} value="일당직">일당직</option>
         </select>
         <input type="submit" class="searchFormSearchBtn" value="검색">
     </form>
@@ -95,8 +93,8 @@
             <div class="thead">
                 <div class="theadDate">입사일자</div>
                 <div class="theadWorkTime">근무시간</div>
-                <div class="theadBasic">기본시급<br>(1)<br>30시간미만</div>
-                <div class="theadBasic">기본시급<br>(2)<br>30시간</div>
+                <div class="theadBasic">기본시급<br>(1)<br>30시간이하</div>
+                <div class="theadBasic">기본시급<br>(2)<br>30시간초과</div>
                 <div class="theadNormal">통상시급</div>
 
                 <!--통상급여-->
@@ -117,9 +115,13 @@
                     <div class="theadLegalAllowanceContent">
                         <div>주휴수당</div>
                         <div>법정휴일</div>
+                        <div class="theadLegalAllowanceContentOne">
+                            <div class="theadLegalAllowanceContentOneTitle">법내연장</div>
+                            <div class="theadLegalAllowanceContentOneContent">기본임금</div>
+                        </div>
                         <div class="theadLegalAllowanceContentDouble theadDouble">
-                            <div class="theadLegalAllowanceContentDoubleTitle">주 연장</div>
-                            <div class="theadLegalAllowanceContentDoubleContent">
+                            <div class="theadLegalAllowanceContentDoubleTitle theadWeeklyExtension">주 연장</div>
+                            <div class="theadLegalAllowanceContentDoubleContent theadWeeklyExtension">
                                 <div class="theadLegalAllowanceContentDoubleContentFirst theadAnother">기본임금</div>
                                 <div>가산임금</div>
                             </div>
@@ -183,7 +185,7 @@
                     <!-- 근무시간 -->
                     <div class="addCommaToInnerText tbodyWorkTime">{{data.total_work_hour_minute}}</div>
                     <!-- 기본시급1 -->
-                    <div class="addCommaToInnerText tbodyBasic">{{data.hourly_wage}}</div>
+                    <div class="addCommaToInnerText tbodyBasic">{{data.hourly_wage1}}</div>
                     <!-- 기본시급2 -->
                     <div class="addCommaToInnerText tbodyBasic">{{data.hourly_wage2}}</div>
                     <!-- 통상시급 -->
@@ -203,8 +205,10 @@
                         <div class="addCommaToInnerText">{{data.weekly_holiday_allowance}}</div>
                         <!-- 법정휴일 -->
                         <div class="addCommaToInnerText">{{data.legal_holiday_allowance}}</div>
+                        <!-- 법내연장 기본임금 -->
+                        <div class="addCommaToInnerText">{{data.weekly_within_law_extension_wage}}</div>
                         <!-- 주연장 기본임금 -->
-                        <div class="addCommaToInnerText">{{data.weekly_extension_wage}}</div>
+                        <div class="addCommaToInnerText">{{data.weekly_outside_law_extension_wage}}</div>
                         <!-- 주연장 가산임금 -->
                         <div class="addCommaToInnerText">{{data.weekly_extension_additional_wage}}</div>
                         <!-- 야간근로 -->
@@ -215,6 +219,7 @@
                         <div class="addCommaToInnerText">{{data.additional_holiday_work_wage_half}}</div>
                         <!-- 휴일 100%임금 -->
                         <div class="addCommaToInnerText">{{data.additional_holiday_work_wage}}</div>
+
                         <!-- 연차수당 -->
                         <div class="addCommaToInnerText">{{data.annual_allowance}}</div>
                         <!-- 만근수당 -->
@@ -271,9 +276,10 @@
                 <div class="sumLegalAllowance" style="display: flex;">
                     <div class="weekly_holiday_allowance">주휴수당</div>
                     <div class="legal_holiday_allowance">법정휴일</div>
-                    <div class="weekly_extension_wage">주연장 기본임금</div>
-                    <div class="weekly_extension_additional_wage"></div>
-                    <div class="night_shift_wage"></div>
+                    <div class="weekly_within_law_extension_wage">주연장 법내 기본임금</div>
+                    <div class="weekly_outside_law_extension_wage">주연장 법외 비곤임금</div>
+                    <div class="weekly_extension_additional_wage">주 연장 가산임금</div>
+                    <div class="night_shift_wage">야간근로 가산임금</div>
                     <div class="holiday_work_wage"></div>
                     <div class="additional_holiday_work_wage_half"></div>
                     <div class="additional_holiday_work_wage"></div>
@@ -288,6 +294,7 @@
                     <div></div>
                 </div>
                 <div class="sumDeductionDetails" style="display: flex;">
+                    <div></div>
                     <div></div>
                     <div></div>
                     <div></div>
@@ -325,7 +332,7 @@
                 <div class="popupArticle">
                     <label for="" class="popupArticleLabel">
                         <span class="importantStar">*</span>
-                        기본시급1 (주 30시간 미만)
+                        기본시급1 (주 30시간 이하)
                     </label>
                     <input required autocomplete="off" name="wage1" type="text"
                         class="popupPrice inputText inputComma essential length100"
@@ -334,7 +341,7 @@
                 <div class="popupArticle">
                     <label for="" class="popupArticleLabel">
                         <span class="importantStar">*</span>
-                        기본시급2 (주 30시간 이상)
+                        기본시급2 (주 30시간 초과)
                     </label>
                     <input required autocomplete="off" name="wage2" type="text"
                         class="popupPrice inputText essential inputComma length100"
