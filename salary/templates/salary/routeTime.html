@@ -16,12 +16,14 @@
 
 {% block content %}
 <div class="excelContainer">
+    <input type="button" value="인쇄" class="print searchFormSearchBtn"></input>
     <input type="button" value="엑셀 업로드" class="upload searchFormSearchBtn"></input>
     <input type="button" value="엑셀 다운로드" class="download searchFormSearchBtn"></input>
 </div>
 <div class="tableScrollBox">
     <div class="tableContainer table">
         <div class="thead flex">
+            <div class="theadTh th personalFlex"><input type="checkbox" class="selectAll"></div>
             <div class="theadTh th personalFlex">연번</div>
             <div class="theadTh th personalFlex">노선명</div>
             <div class="theadTh th personalFlex">차고지 도착</div>
@@ -49,6 +51,7 @@
         </div>
         <div class="tbody">
             <div class="route flex">
+                <div class="tbodyTd td personalFlex"><input type="checkbox"></div>
                 <div class="tbodyTd td personalFlex">1</div>
                 <div class="tbodyTd td personalFlex">수원1</div>
                 <div class="tbodyTd td personalFlex">07:00</div>
