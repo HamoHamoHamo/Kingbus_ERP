@@ -248,3 +248,30 @@ def get_next_sunday_after_last_day(month_str):
         days_until_sunday = 6 - last_day_date.weekday()
         next_sunday = last_day_date + timedelta(days=days_until_sunday)
         return next_sunday.strftime('%Y-%m-%d')
+
+
+def get_date_range_list(start_date_str, end_date_str):
+    # 문자열을 datetime 객체로 변환
+    start_date = datetime.strptime(start_date_str, "%Y-%m-%d")
+    end_date = datetime.strptime(end_date_str, "%Y-%m-%d")
+    
+    # 기간 동안의 날짜를 리스트에 담음
+    date_list = []
+    current_date = start_date
+    while current_date <= end_date:
+        date_list.append(current_date.strftime("%Y-%m-%d"))
+        current_date += timedelta(days=1)
+    
+    return date_list
+
+def calculate_time_with_minutes(time_str, minutes):
+    # 문자열을 datetime 객체로 변환
+    if time_str[:2] == '24':
+        time_str = f'00:{time_str[3:]}'
+    time_obj = datetime.strptime(time_str, "%H:%M")
+    
+    # 분 데이터를 더하거나 빼기
+    new_time_obj = time_obj + timedelta(minutes=minutes)
+
+    # 결과 시간을 "HH:MM" 형식으로 반환
+    return new_time_obj.strftime("%H:%M")

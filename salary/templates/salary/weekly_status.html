@@ -1,0 +1,132 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load dispatch_custom_tags %}
+{% block head %}
+<meta http-equiv="Cache-Control" content="private, no-cache, no-store, max-age=0, must-revalidate">
+<link rel="stylesheet" href="{% static 'css/salary/weekly_statustwo.css' %}" type="text/css" />
+{% endblock %}
+
+{% block content-header %}
+<div class="HeaderTitle">
+    주근무현황
+</div>
+{% endblock %}
+
+{% block content %}
+
+    <!-- 검색창 -->
+    <div class="searchContainer">
+        <!-- 검색폼 -->
+        <form action="" class="searchForm">
+            <label for="" class="searchFormLabel">날짜 :</label>
+            <input type="week" name="week" value="{{week}}" class="searchFormInput searchFormInputWeek">
+            <input type="submit" class="searchFormSearchBtn" value="검색">
+        </form>
+    </div>
+        <!-- 검색폼 done-->
+
+    <div class="tableScrollBox">
+        <div class="tableContainer table">
+            <div class="thead flex">
+                <div class="theadTh th personalFlex">열번</div>
+                <div class="theadTh th personalFlex">성명</div>
+                <div class="theadTh th personalFlex">근무구분</div>
+                <div class="theadTh tabbleCalender">
+                    <div class="tableCalenderTItle personalFlex th">
+                        일자/요일
+                    </div>
+                    <div class="tableCalenderDate th flex">
+                        {% for date in day_list %}
+                        <div class="date th">{{date}}</div>
+                        {% endfor %}
+                    </div>
+                    <div class="tableWeek th flex">
+                        <div class="week th">월</div>
+                        <div class="week th">화</div>
+                        <div class="week th">수</div>
+                        <div class="week th">목</div>
+                        <div class="week th">금</div>
+                        <div class="week th">토</div>
+                        <div class="week th">일</div>
+                    </div>
+                </div>
+                <div class="theadTh th personalFlex">계</div>
+                <div class="theadTh th none personalFlex"></div>
+                <div class="theadTh th none personalFlex"></div>
+            </div>
+
+            <div class="tbody">
+                {% for member in member_list %}
+                {% with member_id=member.id %}
+                {% with data=datas|obj:member.id %}
+                <div class="personContainer">
+                    <div class="orderContainer">
+                        <div class="orderList personalFlex">{{ forloop.counter }}</div>
+                        <div class="orderList personalFlex">{{member.name}}</div>
+                        <div class="orderList ">
+                            <div class="orderListList personalFlex orderListBorder">일전체시간</div>
+                            <div class="orderListList personalFlex orderListBorder">야간근무시간</div>
+                            <div class="orderListList flex">
+                                <div class="orderListListTitle personalFlex orderListBorderRight">휴일</div>
+                                <div class="orderListListContent">
+                                    <div class="orderListListList personalFlex orderListBorder">8시간<br>이하</div>
+                                    <div class="orderListListList personalFlex">8시간<br>초과</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="valueContainer">
+                        <div class="totalValue flex">
+                            {% for time in data.work_time_list %}
+                            <div class="totalValueDate td">{{time}}</div>
+                            {% endfor %}
+                            <div class="totalValueDate td">{{data.total_work_hour_minute}}</div>
+                            <div class="totalValueDate td">법내연장</div>
+                            <div class="totalValueDate td">{{data.total_within_law_extension_hour_minute}}</div>
+                        </div>
+                        <div class="nightValue flex">
+                            {% for time in data.night_shift_time_list %}
+                            <div class=" nightValueDate td">{{time}}</div>
+                            {% endfor %}
+                            <div class=" nightValueDate td">{{data.total_night_shift_hour_minute}}</div>
+                            <div class=" nightValueDate td">법외연장</div>
+                            <div class=" nightValueDate td">{{data.total_outside_law_extension_hour_minute}}</div>
+                        </div>
+                        <div class="holidayValue flex">
+                            {% for time in data.holiday_time_list %}
+                            <div class=" holidayValueDate td">{{time}}</div>
+                            {% endfor %}
+                            <div class=" holidayValueDate td">{{data.holiday_hour_minute}}</div>
+                            <div class=" holidayValueDate td">주휴발생여부</div>
+                            <div class=" holidayValueDate td">{% if data.weekly_holiday_count > 0 %}O{% else %}X{% endif %}</div>
+                        </div>
+                        <div class="holiday8Value flex">
+                            {% for time in data.additional_holiday_time_list %}
+                            <div class=" holidayValueDate td">{{time}}</div>
+                            {% endfor %}
+                            <div class=" holidayValueDate td">{{data.additional_holiday_hour_minute}}</div>
+                            <div class=" holiday8ValueDate td"></div>
+                            <div class=" holiday8ValueDate td"></div>
+                        </div>
+                    </div>
+                </div>
+                {% endwith %}
+                {% endwith %}
+                {% endfor %}
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+        
+{% endblock %}
+
+{% block script %}
+<script>
+    {% autoescape off %}
+    console.log("test", {{datas}})
+    {% endautoescape %}
+</script>
+
+{% endblock %}
