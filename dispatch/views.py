@@ -1600,6 +1600,185 @@ def regularly_order_edit(request):
     else:
         return HttpResponseNotAllowed(['post'])
 
+
+def regularly_order_edit(request):
+    if request.session.get('authority') > 1:
+        return render(request, 'authority.html')
+    if request.method == 'POST':
+        id = request.POST.get('id', None)
+        regularly_data = get_object_or_404(DispatchRegularlyData, pk=id)
+        creator = get_object_or_404(Member, pk=request.session.get('user'))
+        station_edit_date = request.POST.get('station_edit_date')
+        regularly_data_form = RegularlyDataForm(request.POST, instance=regularly_data)
+        if regularly_data_form.is_valid():
+            group = get_object_or_404(RegularlyGroup, pk=request.POST.get('group'))
+            regularly_data = regularly_data_form.save(commit=False)
+            regularly_data.group = group
+            regularly_data.creator = creator
+            regularly_data.save()
+
+            try:
+                regularly = DispatchRegularly.objects.filter(regularly_id=regularly_data).get(edit_date=TODAY)
+                regularly_form = RegularlyForm(request.POST, instance=regularly)
+                
+            except DispatchRegularly.DoesNotExist:
+                regularly_form = RegularlyForm(request.POST)
+
+            if regularly_form.is_valid():
+                regularly = regularly_form.save(commit=False)
+                regularly.regularly_id = regularly_data
+                regularly.edit_date = TODAY
+                regularly.group = group
+                regularly.creator = creator
+                regularly.save()
+            else:
+                raise BadRequest("valid error ", f'{regularly_form.errors}')
+            
+            # 등록된 정류장 삭제
+            # DispatchRegularlyDataStation.objects.filter(regularly_data=regularly_data).delete()
+            DispatchRegularlyStation.objects.filter(regularly=regularly).delete()
+            # 정류장 등록
+            create_dispatch_regularly_stations(request, regularly, creator)
+
+            #### 금액, 기사수당 수정 시 입력한 월 이후 배차들 금액, 기사수당 수정
+            price = regularly_data.price
+            driver_allowance = regularly_data.driver_allowance
+            driver_allowance2 = regularly_data.driver_allowance2
+            outsourcing_allowance = regularly_data.outsourcing_allowance
+
+            post_month = request.POST.get('month')
+            if post_month:
+                day = regularly_data.group.settlement_date
+                day = day if int(day) > 9 else f'0{day}'
+                connect_list = DispatchRegularlyConnect.objects.filter(regularly_id__regularly_id=regularly_data).filter(departure_date__gte=f'{post_month}-{day} 00:00').order_by('departure_date')
+                for connect in connect_list:
+                    month = connect.departure_date[:7]
+                    member = connect.driver_id
+
+                    if connect.outsourcing == 'y':
+                        allowance = outsourcing_allowance
+                    else:
+                        if connect.driver_id.allowance_type == '기사수당(변경)':
+                            allowance = driver_allowance2
+                        else:
+                            allowance = driver_allowance
+
+                    salary = Salary.objects.filter(member_id=member).get(month=month)
+                    if connect.work_type == '출근':
+                        salary.attendance = int(salary.attendance) + int(allowance) - int(connect.driver_allowance)
+                    elif connect.work_type == '퇴근':
+                        salary.leave = int(salary.leave) + int(allowance) - int(connect.driver_allowance)
+                    salary.total = int(salary.total) + int(allowance) - int(connect.driver_allowance)
+                    salary.save()
+
+                    total = TotalPrice.objects.filter(group_id=group).get(month=month)
+                    # connect.price = '' 이면 0으로 넣어주기
+                    if not connect.price:
+                        connect.price = 0
+                    total.total_price = int(total.total_price) + price + math.floor(price * 0.1 + 0.5) - (int(connect.price) + math.floor(int(connect.price) * 0.1 + 0.5))
+
+                    total.save()
+
+                    connect.price = price
+                    connect.driver_allowance = allowance
+                    connect.save()
+
+                    # if c_regularly != connect.regularly_id:
+                    #     connect.regularly_id.price = price
+                    #     connect.regularly_id.driver_allowance = driver_allowance
+                    #     connect.regularly_id.driver_allowance2 = driver_allowance2
+                    #     connect.regularly_id.save()
+                    #     c_regularly = connect.regularly_id
+                    
+                # post_month 기간의 DispatchRegularly 수정
+                old_regularly_list = DispatchRegularly.objects.filter(regularly_id=regularly_data).filter(edit_date__gte=f'{post_month}-{day} 00:00')
+                for old_regularly in old_regularly_list:
+                    old_regularly.price = price
+                    old_regularly.driver_allowance = driver_allowance
+                    old_regularly.driver_allowance2 = driver_allowance2
+                    old_regularly.outsourcing_allowance = outsourcing_allowance
+                    old_regularly.save()
+                
+                    
+            connects = DispatchRegularlyConnect.objects.filter(regularly_id__regularly_id=regularly_data).filter(departure_date__gte=f'{TODAY} 00:00')
+            for connect in connects:
+                connect.regularly_id = regularly
+                connect.departure_date = f'{connect.departure_date[:10]} {regularly.departure_time}'
+                connect.arrival_date = f'{connect.departure_date[:10]} {regularly.arrival_time}'
+                connect.work_type = regularly.work_type
+                connect.price = regularly.price
+                if connect.outsourcing == 'y':
+                    connect.driver_allowance = regularly.outsourcing_allowance
+                else:
+                    if connect.driver_id.allowance_type == '기사수당(변경)':
+                        connect.driver_allowance = regularly.driver_allowance2
+                    else:
+                        connect.driver_allowance = regularly.driver_allowance
+                connect.save()
+
+            # 시간은 DispatchRegularlyStation time으로 계산해서, 거리는 카카오api로 저장하기
+            get_regularly_distance_and_time(regularly_data, regularly)
+            # 카카오api로 거리, 시간 저장하기
+            # get_regularly_distance_and_time_from_kakao(regularly_data, regularly)
+
+            # 기준일에 데이터 없으면 새로 생성
+            if station_edit_date:
+                try:
+                    DispatchRegularly.objects.get(regularly_id=regularly_data, edit_date=station_edit_date)
+                except DispatchRegularly.DoesNotExist:
+                    edit_date_regularly = DispatchRegularly.objects.filter(regularly_id=regularly_data, edit_date__lte=station_edit_date).order_by('-edit_date').first()
+                    edit_date_regularly_data = model_to_dict(edit_date_regularly)
+                    edit_date_regularly_data.pop('id')
+                    edit_date_regularly_data.pop('station')
+                    
+
+                    edit_date_regularly_data['regularly_id'] = regularly_data
+                    edit_date_regularly_data['edit_date'] = station_edit_date
+                    edit_date_regularly_data['group'] = RegularlyGroup.objects.get(id=edit_date_regularly_data['group'])
+                    edit_date_regularly_data['creator'] = creator
+                    edit_date_r = DispatchRegularly(**edit_date_regularly_data)
+                    edit_date_r.save()
+
+                    logger.info(f"기준일에 데이터 없으면 생성하는 부분 확인 : 기존 데이터 {DispatchRegularly.objects.filter(id=edit_date_regularly.id).values()}")
+                    logger.info(f"기준일에 데이터 없으면 생성하는 부분 확인 : 생성한 데이터 {DispatchRegularly.objects.filter(id=edit_date_r.id).values()}")
+
+                    # 기준일 ~ 기준일 이후 첫번째 데이터 사이의 배차들 불러서 regularly_id 변경
+                    recent_regularly_edit_date = DispatchRegularly.objects.filter(regularly_id=regularly_data, edit_date__gt=station_edit_date).order_by('edit_date').first().edit_date
+
+                    connects = DispatchRegularlyConnect.objects.filter(regularly_id__regularly_id=regularly_data).filter(departure_date__gte=station_edit_date).filter(departure_date__lt=recent_regularly_edit_date)
+                    logger.info(f"기준일 ~ 기준일 이후 첫번째 데이터 사이의 배차들 확인 : 기존 데이터 {connects.values('regularly_id')}")
+                    for connect in connects:
+                        connect.regularly_id = edit_date_r
+                        connect.save()
+                    logger.info(f"기준일 ~ 기준일 이후 첫번째 데이터 사이의 배차들 확인 : 변경 데이터 {connects.values('regularly_id')}")
+
+                # 기준일 이후 노선들 정류장 새로 등록
+                new_station_list = regularly.regularly_station.all()
+                edit_station_regularly_list = DispatchRegularly.objects.filter(regularly_id=regularly_data, edit_date__gte=station_edit_date)
+                for old_regularly in edit_station_regularly_list:
+                    old_regularly.time = regularly.time
+                    old_regularly.time_list = regularly.time_list
+                    old_regularly.distance = regularly.distance
+                    old_regularly.distance_list = regularly.distance_list
+                    old_regularly.save()
+
+                    old_regularly.regularly_station.all().delete()
+                    
+                    for station in new_station_list:
+                        station_data = model_to_dict(station)
+                        station_data.pop('id')
+                        station_data['regularly'] = old_regularly
+                        station_data['station'] = station.station
+                        station_data['creator'] = station.creator
+                        new_station = DispatchRegularlyStation(**station_data)
+                        new_station.save()
+                
+            return redirect(request.META.get('HTTP_REFERER', 'redirect_if_referer_not_found'))
+        else: 
+            raise BadRequest("valid error ", f'{regularly_data_form.errors}')
+    else:
+        return HttpResponseNotAllowed(['post'])
+
 def regularly_order_upload(request):
     if request.session.get('authority') > 1:
         return render(request, 'authority.html')

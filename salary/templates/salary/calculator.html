@@ -1,0 +1,251 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block head %}
+<link rel="stylesheet" href="{% static 'css/salary/calculator.css' %}" type="text/css" />
+
+{% endblock %}
+
+{% block content-header %}
+<div class="HeaderTitle">
+    수당 시급 계산기
+</div>
+{% endblock %}
+
+{% block content %}
+    <!-- 검색창 -->
+    <div class="search-Container">
+        <!-- 검색폼 -->
+            <form action="" class="searchForm">
+                <label for="" class="searchFormLabel">분류 :</label>
+                <select name ="classification" class="searchFormInput select">
+                    <option value="전체">전체</option>
+                    <option value="사용자">사용자</option>
+                    <option value="근로자">근로자</option>
+                </select>
+                <label for="" class="searchFormLabel">노선명 :</label>
+                <input name="name" value="" type="text" class="searchFormInput">
+                <input type="submit" class="searchFormSearchBtn" value="검색">
+            </form>
+        <!-- 검색폼 done-->
+    </div>
+    <!-- 검색창 끝-->
+
+    
+    <div class="excelContainer flex">
+        <input type="button" onclick="OpenPopup()" value="수당 식 수정" class="update searchFormSearchBtn"></input>
+        <input type="button" value="인쇄" class="print searchFormSearchBtn"></input>
+        <input type="button" value="엑셀 업로드" class="upload searchFormSearchBtn"></input>
+        <input type="button" value="엑셀 다운로드" class="download searchFormSearchBtn"></input>
+    </div>
+
+    <div class="tableScrollBox">
+        <div class="tableContainer table">
+
+            <div class="thead flex">
+                <div class="theadTh th personalFlex"><input type="checkbox" class="selectAll"></div>
+                <div class="theadTh th personalFlex">순번</div>
+                <div class="theadTh th personalFlex">분류</div>
+                <div class="theadTh th personalFlex">그룹</div>
+                <div class="theadTh th personalFlex">노선명</div>
+                <div class="theadTh th personalFlex">기사수당</div>
+                <div class="theadTh th personalFlex">근로시간(분)</div>
+                <div class="theadTh th personalFlex">거리(km)</div>
+                <div class="theadTh th personalFlex">분당 기사수당(원)</div>
+                <div class="theadTh th personalFlex">km당 기사수당(원)</div>
+                <div class="theadTh th personalFlex">(분당 기사수당 + km당 기사수당)/2</div>
+                <div class="theadTh th personalFlex">(분당 기사수당+km당 기사수당/2)<br> * 걸리는 시간(원)</div>
+                <div class="theadTh th personalFlex">시급</div>
+            </div>
+
+            <div class="tbody">
+
+                <div class="tr">
+
+                    <div class="userTr flex">
+                        <div class="tbodyTd td personalFlex"><input type="checkbox"></div>
+                        <div class="tbodyTd td personalFlex">1-1</div>
+                        <div class="tbodyTd td personalFlex">사용자</div>
+                        <div class="tbodyTd td personalFlex">남양연구소 출근</div>
+                        <div class="tbodyTd td personalFlex">영통7</div>
+                        <div class="tbodyTd td personalFlex">13,330</div>
+                        <div class="tbodyTd td personalFlex">95</div>
+                        <div class="tbodyTd td personalFlex">38.04</div>
+                        <div class="tbodyTd td personalFlex">400</div>
+                        <div class="tbodyTd td personalFlex">378</div>
+                        <div class="tbodyTd td personalFlex">389</div>
+                        <div class="tbodyTd td personalFlex">25847.5498</div>
+                        <div class="tbodyTd td personalFlex">24878.3598</div>
+                    </div>
+
+                    <div class="employeeTr flex">
+                        <div class="tbodyTd td personalFlex"><input type="checkbox"></div>
+                        <div class="tbodyTd td personalFlex">1-2</div>
+                        <div class="tbodyTd td personalFlex">근로자</div>
+                        <div class="tbodyTd td personalFlex">남양연구소 출근</div>
+                        <div class="tbodyTd td personalFlex">영통7</div>
+                        <div class="tbodyTd td personalFlex">13,330</div>
+                        <div class="tbodyTd td personalFlex">95</div>
+                        <div class="tbodyTd td personalFlex">38.04</div>
+                        <div class="tbodyTd td personalFlex">400</div>
+                        <div class="tbodyTd td personalFlex">378</div>
+                        <div class="tbodyTd td personalFlex">389</div>
+                        <div class="tbodyTd td personalFlex">25847.5498</div>
+                        <div class="tbodyTd td personalFlex">24878.3598</div>
+                    </div>
+
+                </div>
+
+                <div class="tr">
+
+                    <div class="userTr flex">
+                        <div class="tbodyTd td personalFlex"><input type="checkbox"></div>
+                        <div class="tbodyTd td personalFlex">2-1</div>
+                        <div class="tbodyTd td personalFlex">사용자</div>
+                        <div class="tbodyTd td personalFlex">삼성반도체 출근</div>
+                        <div class="tbodyTd td personalFlex">로얄스포츠/신정마을/정평중</div>
+                        <div class="tbodyTd td personalFlex">13,330</div>
+                        <div class="tbodyTd td personalFlex">95</div>
+                        <div class="tbodyTd td personalFlex">38.04</div>
+                        <div class="tbodyTd td personalFlex">400</div>
+                        <div class="tbodyTd td personalFlex">378</div>
+                        <div class="tbodyTd td personalFlex">389</div>
+                        <div class="tbodyTd td personalFlex">25847.5498</div>
+                        <div class="tbodyTd td personalFlex">24878.3598</div>
+                    </div>
+
+                    <div class="employeeTr flex">
+                        <div class="tbodyTd td personalFlex"><input type="checkbox"></div>
+                        <div class="tbodyTd td personalFlex">2-2</div>
+                        <div class="tbodyTd td personalFlex">근로자</div>
+                        <div class="tbodyTd td personalFlex">삼성반도체 출근</div>
+                        <div class="tbodyTd td personalFlex">로얄스포츠/신정마을/정평중</div>
+                        <div class="tbodyTd td personalFlex">13,330</div>
+                        <div class="tbodyTd td personalFlex">95</div>
+                        <div class="tbodyTd td personalFlex">38.04</div>
+                        <div class="tbodyTd td personalFlex">400</div>
+                        <div class="tbodyTd td personalFlex">378</div>
+                        <div class="tbodyTd td personalFlex">389</div>
+                        <div class="tbodyTd td personalFlex">25847.5498</div>
+                        <div class="tbodyTd td personalFlex">24878.3598</div>
+                    </div>
+
+                </div>
+
+                <div class="tr">
+
+                    <div class="userTr flex">
+                        <div class="tbodyTd td personalFlex"><input type="checkbox"></div>
+                        <div class="tbodyTd td personalFlex">3-1</div>
+                        <div class="tbodyTd td personalFlex">사용자</div>
+                        <div class="tbodyTd td personalFlex">남양연구소 출근</div>
+                        <div class="tbodyTd td personalFlex">북위례신도시_K1</div>
+                        <div class="tbodyTd td personalFlex">13,330</div>
+                        <div class="tbodyTd td personalFlex">95</div>
+                        <div class="tbodyTd td personalFlex">38.04</div>
+                        <div class="tbodyTd td personalFlex">400</div>
+                        <div class="tbodyTd td personalFlex">378</div>
+                        <div class="tbodyTd td personalFlex">389</div>
+                        <div class="tbodyTd td personalFlex">25847.5498</div>
+                        <div class="tbodyTd td personalFlex">24878.3598</div>
+                    </div>
+
+                    <div class="employeeTr flex">
+                        <div class="tbodyTd td personalFlex"><input type="checkbox"></div>
+                        <div class="tbodyTd td personalFlex">3-2</div>
+                        <div class="tbodyTd td personalFlex">근로자</div>
+                        <div class="tbodyTd td personalFlex">남양연구소 출근</div>
+                        <div class="tbodyTd td personalFlex">북위례신도시_K1</div>
+                        <div class="tbodyTd td personalFlex">13,330</div>
+                        <div class="tbodyTd td personalFlex">95</div>
+                        <div class="tbodyTd td personalFlex">38.04</div>
+                        <div class="tbodyTd td personalFlex">400</div>
+                        <div class="tbodyTd td personalFlex">378</div>
+                        <div class="tbodyTd td personalFlex">389</div>
+                        <div class="tbodyTd td personalFlex">25847.5498</div>
+                        <div class="tbodyTd td personalFlex">24878.3598</div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    
+    <div class="avgContainer">
+        <div class="userTr flex">
+            <div class="avgTd td personalFlex">사용자</div>
+            <div class="avgTd td personalFlex">평균</div>
+            <div class="avgTd td personalFlex">14,991</div>
+            <div class="avgTd td personalFlex">108.1</div>
+            <div class="avgTd td personalFlex">40.873</div>
+            <div class="avgTd td personalFlex">400</div>
+            <div class="avgTd td personalFlex">380</div>
+            <div class="avgTd td personalFlex">390</div>
+            <div class="avgTd td personalFlex">30721.2598</div>
+            <div class="avgTd td personalFlex">30687.5548</div>
+        </div>
+        <div class="employeeTr flex">
+            <div class="avgTd td personalFlex">근로자</div>
+            <div class="avgTd td personalFlex">평균</div>
+            <div class="avgTd td personalFlex">14,991</div>
+            <div class="avgTd td personalFlex">108.1</div>
+            <div class="avgTd td personalFlex">40.873</div>
+            <div class="avgTd td personalFlex">400</div>
+            <div class="avgTd td personalFlex">380</div>
+            <div class="avgTd td personalFlex">390</div>
+            <div class="avgTd td personalFlex">30721.2598</div>
+            <div class="avgTd td personalFlex">30687.5548</div>
+        </div>
+    </div>
+
+    <div class="popupAreaModules" id="CalculatePopup">
+        <div class="popupBgModules" id="CalculatePopupBg"></div>
+        <div class="popupContainer">
+            <div class="popupHeader">
+                <div class="popupTitle">상세 금액별 표</div>
+            </div>
+            <div class="popupBody">
+                <div class="mathmeticTitle personalFlex">기본급에 대한 수당 식</div>
+                <div class="mathmeticContent flex">
+                    <span>1,959,160<span>&nbsp;/&nbsp;<span>6.5</span>&nbsp;/&nbsp;<span>20</span>
+                </div>
+                <div class="updateContainer">
+                    <div class="baseSalary flex">
+                        <div class="baseSalaryTitle">기본급</div>
+                        <input type="text" value="1,959,160" class="baseSalaryContent">
+                    </div>
+                    <div class="TNumber flex">
+                        <div class="TTitle">탕 수</div>
+                        <input type="text" value="6.5" class="TContent">
+                    </div>
+                    <div class="date flex">
+                        <div class="dateTItle">일 수</div>
+                        <input type="text" value="20" class="dateContent">
+                    </div>
+                </div>
+
+                <div class="updateClose flex">
+                    <div class="updateBtn personalFlex">수정</div>
+                    <div class="closeBtn personalFlex" onclick="ClosePopup()">닫기</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+{% endblock %}
+{% block script%}
+<script>
+
+    const OpenPopup = () => {
+        document.getElementById("CalculatePopup").style.display="block";
+    };
+
+    const ClosePopup = () => {
+        document.getElementById("CalculatePopup").style.display="none";
+    };
+
+</script>
+{% endblock %}

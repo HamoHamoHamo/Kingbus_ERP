@@ -1,0 +1,262 @@
+.personalFlex, .flex{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.searchFormLabel{
+    font-size: 1.4rem;
+}
+
+.searchFormInput {
+    width: 14rem;
+    margin-inline: 2rem;
+    margin-right: 1rem;
+}
+
+.searchFormSearchBtn{
+    height: 2.6rem;
+    margin-left: 2rem;
+    padding: 0 1.8rem;
+    border: none;
+    border-radius: 0.2rem;
+    font-size: 1.4rem;
+    color: white;
+    background-color: #444444;
+    cursor: pointer;
+}
+
+
+.select{
+    width: 10rem;
+}
+
+
+.print{
+    background-color: blue;
+    width: 8rem;
+}
+
+.update {
+    cursor: pointer;
+    background-color: blue;
+}
+
+.excelContainer {
+    height: 3rem;
+    justify-content: flex-end;
+}
+
+.tableScrollBox{
+    margin-top: 2rem;
+    display: flex;
+    flex-direction: column;
+    height: 60.5rem;
+    overflow-y: scroll;
+    box-shadow: 0rem 0.1rem 0.4rem rgb(0 0 0 / 30%);
+}
+
+.tableContainer{
+    font-size: 1.4rem;
+    width: 100%;
+    height: 100%;
+    background-color: white;
+
+}
+
+.th, .td {
+    color: white;
+    height: 100%;
+    background-color: #444444;
+    border-right: 0.1rem solid #CDCDCE;
+    border-bottom: 0.1rem solid #CDCDCE;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.td{
+    background-color: white;
+    color: black;
+}
+
+.thead {
+    height: 4rem;
+    width: 100%;
+}
+
+.theadTh:nth-child(1){width: 2.5%;}
+.theadTh:nth-child(2){width: 3.6%;}
+.theadTh:nth-child(3){width: 6.3%;}
+.theadTh:nth-child(4){width: 8.1%;}
+.theadTh:nth-child(5){width: 11.5%;}
+.theadTh:nth-child(6){width: 5.4%;}
+.theadTh:nth-child(7){width: 5.5%;}
+.theadTh:nth-child(8){width: 5.5%;}
+.theadTh:nth-child(9){width: 7.7%;}
+.theadTh:nth-child(10){width: 7.8%;}
+.theadTh:nth-child(11){width: 11.7%;}
+.theadTh:nth-child(12){width: 14.2%;}
+.theadTh:nth-child(13){width: 10.2%;}
+
+.tbodyTd:nth-child(1){width: 2.5%;}
+.tbodyTd:nth-child(2){width: 3.6%;}
+.tbodyTd:nth-child(3){width: 6.3%;}
+.tbodyTd:nth-child(4){width: 8.1%;}
+.tbodyTd:nth-child(5){width: 11.5%;}
+.tbodyTd:nth-child(6){width: 5.4%;}
+.tbodyTd:nth-child(7){width: 5.5%;}
+.tbodyTd:nth-child(8){width: 5.5%;}
+.tbodyTd:nth-child(9){width: 7.7%;}
+.tbodyTd:nth-child(10){width: 7.8%;}
+.tbodyTd:nth-child(11){width: 11.7%;}
+.tbodyTd:nth-child(12){width: 14.2%;}
+.tbodyTd:nth-child(13){width: 10.2%;}
+
+.tr{
+    height: 8rem;
+    width: 100%;
+}
+
+.userTr, .employeeTr{
+    height: 50%;
+    width: 100%;
+}
+
+.avgContainer {
+    width: 100%;
+    box-shadow: 0rem 0.1rem 0.4rem rgb(0 0 0 / 30%);
+    height: 8rem;
+    background-color: white;
+    margin-top: 2rem;
+}
+
+.avgTd:nth-child(1){width: 12.4%;}
+.avgTd:nth-child(2){width: 19.6%;}
+.avgTd:nth-child(3){width: 5.4%;}
+.avgTd:nth-child(4){width: 5.5%;}
+.avgTd:nth-child(5){width: 5.5%;}
+.avgTd:nth-child(6){width: 7.7%;}
+.avgTd:nth-child(7){width: 7.8%;}
+.avgTd:nth-child(8){width: 11.7%;}
+.avgTd:nth-child(9){width: 14.2%;}
+.avgTd:nth-child(10){width: 10.2%;}
+
+.avgContainer * {
+    font-size: 1.4rem;
+}
+
+.popupContainer{
+    width: 100%;
+    height: 100%;
+    background-color: white;
+    box-shadow: 0 0.2rem 0.4rem rgb(0 0 0 / 16%);
+
+}
+
+.popupAreaModules {
+    position: absolute;
+    top: 0;
+    right: 0;
+    z-index: 1000;
+    display: none;
+    width: 100%;
+    height: 100%;
+}
+
+.popupBgModules {
+    position: absolute;
+    top: 0;
+    right: 0;
+    z-index: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.16);
+}
+
+.popupContainer {
+    height: 35rem;
+    position: fixed;
+    top: 50%;
+    left: calc(50% + 11rem);
+    z-index: 100;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    width: 45rem;
+    background-color: white;
+    box-shadow: 0 0.2rem 0.4rem rgb(0 0 0 / 16%);
+    transform: translate(-50%, -50%);
+}
+
+.popupAreaModules *{
+    font-size: 1.4rem;
+}
+
+.popupBody {
+    height: calc(100% - 3.6rem);
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    padding: 4rem;
+    padding-top: 2rem;
+    padding-bottom: 6rem;
+    background-color: white;
+    box-sizing: border-box;
+}
+
+.mathmeticTitle, .mathmeticContent{
+    height: 15%;
+    width: 100%;
+}
+
+.mathmeticContent{
+    border: 0.1rem solid #cdcdce;
+    margin-bottom: 1rem;
+}
+
+.updateContainer{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #f8f8f8;
+    height: 60%;
+    width: 100%;
+}
+
+.updateContainer input{
+    margin-left: 1rem;
+    width: 10rem;
+}
+
+.updateContainer input[type="text" i] {
+    text-align: end;
+}
+
+.baseSalaryTitle, .TTitle, .dateTItle{width: 25%;}
+
+.updateContainer > * {
+    width: 100%;
+    height: 33.3%;
+}
+
+.updateClose{
+    width: 100%;
+    height: 4rem;
+    justify-content: flex-end;
+    margin-top: 4rem;
+}
+
+.updateBtn, .closeBtn{
+    width: 8rem;
+    height: 100%;
+    background-color: blue;
+    font-size: 1.6rem;
+    color: white;
+        cursor: pointer;
+}
+
+.closeBtn{
+    background-color: #444444;
+    margin-left: 2rem;
+}
