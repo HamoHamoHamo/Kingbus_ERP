@@ -16,5 +16,5 @@ urlpatterns = [
     path('salary_change', views.SalaryChange.as_view(), name='salary_change'),
     path('gptgraph', views.GptGraph.as_view(), name='gptgraph'),
     path('routeTime', views.RouteTime.as_view(), name='routeTime'),
-    path('calculator', views.Calculator.as_view(), name='calculator')
+    path('calculator', views.Calculator.as_view(), name='calculator'),
 ]
