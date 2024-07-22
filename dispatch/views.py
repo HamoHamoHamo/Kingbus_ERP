@@ -3788,4 +3788,3 @@ def regularly_station_download(request):
         print(e)
         #return JsonResponse({'status': 'fail', 'e': e})
         raise Http404
-    
