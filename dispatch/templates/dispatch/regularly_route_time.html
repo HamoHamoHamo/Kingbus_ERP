@@ -1,183 +1,88 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load dispatch_custom_tags %}
 
 {% block head %}
-<link rel="stylesheet" href="{% static 'css/dispatch/regularly_route_time.css' %}" type="text/css" />
-
+<meta http-equiv="Cache-Control" content="private, no-cache, no-store, max-age=0, must-revalidate">
+<link rel="stylesheet" href="{% static 'css/dispatch/regularlyRouteTime.css' %}" type="text/css" />
 
 {% endblock %}
 
 {% block content-header %}
 <div class="HeaderTitle">
-    노선관리
+    노선시간관리
 </div>
 {% endblock %}
 
 {% block content %}
-<!-- 검색창 -->
-<div class="search-Container">
-    <!-- 검색폼 -->
-    <form action="" class="searchForm">
-        <label for="" class="searchFormLabel">날짜 :</label>
-        <input type="date" name="month" class="searchFormInput searchFormInputDate">
-        <label for="" class="searchFormLabel">이름 :</label>
-        <input name="name" value="" type="text" class="searchFormInput">
-        <input type="submit" class="searchFormSearchBtn" value="검색">
-    </form>
-    <!-- 검색폼 done-->
+<div class="excelContainer">
+    <input type="button" value="인쇄" class="print searchFormSearchBtn"></input>
+    <input type="button" value="엑셀 업로드" class="upload searchFormSearchBtn"></input>
+    <input type="button" value="엑셀 다운로드" class="download searchFormSearchBtn"></input>
 </div>
-<!-- 검색창 끝-->
-
 <div class="tableScrollBox">
-
     <div class="tableContainer table">
-
         <div class="thead flex">
-            <div class="theadTh th">연번</div>
-            <div class="theadTh th">노선명</div>
-            <div class="theadTh th">차고지 도착</div>
-            <div class="theadTh th">사전 준비 시간</div>
-            <div class="theadTh th">출발 시간</div>
-            <div class="theadTh th">도착 시간</div>
-            <div class="theadTh th">차량 입고</div>
-            <div class="theadTh th">뒷정리 완료</div>
-            <div class="theadTh theadThTime flex">
-                <div class="theadThTh th theadThDetails">
-                    <div class="theadThTitle personalFlex">근로내역</div>
-                    <div class="theadThContent personalFlex">
-                        <div class="theadThContents personalFlex">총 시간</div>
-                        <div class="theadThContents personalFlex">휴게 시간</div>
-                        <div class="theadThContents personalFlex">야간근로</div>
-                        <div class="theadThContents personalFlex">휴일(8시간 이하)</div>
-                        <div class="theadThContents personalFlex theadThContentsLast">휴일(8시간 초과)</div>
-                    </div>
+            <div class="theadTh th personalFlex"><input type="checkbox" class="selectAll"></div>
+            <div class="theadTh th personalFlex">연번</div>         
+            <div class="theadTh th personalFlex">노선명</div>
+            <div class="theadTh th personalFlex">차고지 도착</div>
+            <div class="theadTh th personalFlex">사전 준비 시간</div>
+            <div class="theadTh th personalFlex">출발 시간</div>
+            <div class="theadTh th personalFlex">도착 시간</div>
+            <div class="theadTh th personalFlex">차량 입고</div>
+            <div class="theadTh th personalFlex">뒷정리 완료</div>
+            <div class="theadTh th">
+                <div class="theadThTh th personalFlex">운행 요일</div>
+                <div class="theadThTh th flex">
+                    <div class="theadThThTh th day personalFlex">월</div>
+                    <div class="theadThThTh th day personalFlex">화</div>
+                    <div class="theadThThTh th day personalFlex">수</div>
+                    <div class="theadThThTh th day personalFlex">목</div>
+                    <div class="theadThThTh th day personalFlex">금</div>
+                    <div class="theadThThTh th day personalFlex">토</div>
+                    <div class="theadThThTh th day last personalFlex">일</div>
                 </div>
-            </div>
-            <div class="theadTh th">확인서명</div>
-        </div>
-
-        <div class="tbody">
-
-            <div class="tbodyDiv personalFlex">
-
-                <div class="tbodyDivTd  tbodyInformationElement td">
-                    <input type="checkbox" name="" id="">
-                </div>
-                <div class="tbodyDivTd tbodyInformationElement td">1</div>
-                <div class="tbodyDivTd tbodyInformationElement td">김원탁</div>
-                <div class="tbodyDivTd tbodyInformationElement td">팀장</div>
-                <div class="tbodyDivTd tbodyTdTime personalFlex td">
-
-                    <div class="tbodyDivTdTdTime tbodyT personalFlex">
-                        <div class="tbodyDivTdTd tbodyDivTdTdInformation td">1회</div>
-                        <div class="tbodyDivTdTd tbodyDivTdTdInformation td">영통1</div>
-                        <div class="tbodyDivTdTd tbodyDivTdTdInformation td">출근</div>
-                        <div class="tbodyDivTdTd tbodyDivTdTdTimeValue td">05:40</div>
-                        <div class="tbodyDivTdTd tbodyDivTdTdTimeValue td">05:40</div>
-                        <div class="tbodyDivTdTd tbodyDivTdTdTimeValue td">06:23</div>
-                        <div class="tbodyDivTdTd tbodyDivTdTdTimeValue td">06:23</div>
-                        <div class="tbodyDivTdTd tbodyDivTdTdTimeValue td">07:15</div>
-                        <div class="tbodyDivTdTd tbodyDivTdTdTimeValue td">07:15</div>
-                        <div class="tbodyDivTdTd tbodyDivTdTdTimeValue td">07:15</div>
-                        <div class="tbodyDivTdTd tbodyDivTdTdTimeValue td">07:15</div>
-                        <div class="tbodyDivTdTd tbodyDivTdTdTimeValue td"></div>
-                        <div class="tbodyDivTdTd tbodyDivTdTdTimeValue td sumTime">01:35</div>
-                        <div class="tbodyDivTdTd tbodyDivTdTdTimeValue td sumTime">00:20</div>
-                        <div class="tbodyDivTdTd tbodyDivTdTdTimeValue td sumTime">00:20</div>
-                        <div class="tbodyDivTdTd tbodyDivTdTdTimeValue td sumTime">00:00</div>
-                        <div class="tbodyDivTdTd tbodyDivTdTdTimeValue td sumTime">00:00</div>
-                    </div>
-
-                    <div class="tbodyDivTdTdTime tbodyT personalFlex">
-                        <div class="tbodyDivTdTd tbodyDivTdTdInformation td">1회</div>
-                        <div class="tbodyDivTdTd tbodyDivTdTdInformation td">영통1</div>
-                        <div class="tbodyDivTdTd tbodyDivTdTdInformation td">출근</div>
-                        <div class="tbodyDivTdTd tbodyDivTdTdTimeValue td">05:40</div>
-                        <div class="tbodyDivTdTd tbodyDivTdTdTimeValue td">05:40</div>
-                        <div class="tbodyDivTdTd tbodyDivTdTdTimeValue td">06:23</div>
-                        <div class="tbodyDivTdTd tbodyDivTdTdTimeValue td">06:23</div>
-                        <div class="tbodyDivTdTd tbodyDivTdTdTimeValue td">07:15</div>
-                        <div class="tbodyDivTdTd tbodyDivTdTdTimeValue td">07:15</div>
-                        <div class="tbodyDivTdTd tbodyDivTdTdTimeValue td">07:15</div>
-                        <div class="tbodyDivTdTd tbodyDivTdTdTimeValue td">07:15</div>
-                        <div class="tbodyDivTdTd tbodyDivTdTdTimeValue td"></div>
-                        <div class="tbodyDivTdTd tbodyDivTdTdTimeValue td sumTime">01:35</div>
-                        <div class="tbodyDivTdTd tbodyDivTdTdTimeValue td sumTime">00:20</div>
-                        <div class="tbodyDivTdTd tbodyDivTdTdTimeValue td sumTime">00:20</div>
-                        <div class="tbodyDivTdTd tbodyDivTdTdTimeValue td sumTime">00:00</div>
-                        <div class="tbodyDivTdTd tbodyDivTdTdTimeValue td sumTime">00:00</div>
-                    </div>
-
-                    <div class="tbodyDivTdTdTime tbodyT personalFlex">
-                        <div class="tbodyDivTdTd tbodyDivTdTdInformation td">2회</div>
-                        <div class="tbodyDivTdTd tbodyDivTdTdInformation td">영통1</div>
-                        <div class="tbodyDivTdTd tbodyDivTdTdInformation td">출근</div>
-                        <div class="tbodyDivTdTd tbodyDivTdTdTimeValue td"></div>
-                        <div class="tbodyDivTdTd tbodyDivTdTdTimeValue td">05:40</div>
-                        <div class="tbodyDivTdTd tbodyDivTdTdTimeValue td">06:23</div>
-                        <div class="tbodyDivTdTd tbodyDivTdTdTimeValue td">06:23</div>
-                        <div class="tbodyDivTdTd tbodyDivTdTdTimeValue td">07:15</div>
-                        <div class="tbodyDivTdTd tbodyDivTdTdTimeValue td">07:15</div>
-                        <div class="tbodyDivTdTd tbodyDivTdTdTimeValue td">07:15</div>
-                        <div class="tbodyDivTdTd tbodyDivTdTdTimeValue td">07:15</div>
-                        <div class="tbodyDivTdTd tbodyDivTdTdTimeValue td"></div>
-                        <div class="tbodyDivTdTd tbodyDivTdTdTimeValue td sumTime">01:35</div>
-                        <div class="tbodyDivTdTd tbodyDivTdTdTimeValue td sumTime">00:20</div>
-                        <div class="tbodyDivTdTd tbodyDivTdTdTimeValue td sumTime">00:00</div>
-                        <div class="tbodyDivTdTd tbodyDivTdTdTimeValue td sumTime">00:00</div>
-                        <div class="tbodyDivTdTd tbodyDivTdTdTimeValue td sumTime">00:00</div>
-                    </div>
-
-                    <div class="tbodyDivTdTdTime tbodyT personalFlex">
-                        <div class="tbodyDivTdTd tbodyDivTdTdInformation td">3회</div>
-                        <div class="tbodyDivTdTd tbodyDivTdTdInformation td">영통1</div>
-                        <div class="tbodyDivTdTd tbodyDivTdTdInformation td">퇴근</div>
-                        <div class="tbodyDivTdTd tbodyDivTdTdTimeValue td"></div>
-                        <div class="tbodyDivTdTd tbodyDivTdTdTimeValue td">05:40</div>
-                        <div class="tbodyDivTdTd tbodyDivTdTdTimeValue td">06:23</div>
-                        <div class="tbodyDivTdTd tbodyDivTdTdTimeValue td">06:23</div>
-                        <div class="tbodyDivTdTd tbodyDivTdTdTimeValue td">07:15</div>
-                        <div class="tbodyDivTdTd tbodyDivTdTdTimeValue td">07:15</div>
-                        <div class="tbodyDivTdTd tbodyDivTdTdTimeValue td">07:15</div>
-                        <div class="tbodyDivTdTd tbodyDivTdTdTimeValue td">07:15</div>
-                        <div class="tbodyDivTdTd tbodyDivTdTdTimeValue td">07:15</div>
-                        <div class="tbodyDivTdTd tbodyDivTdTdTimeValue td sumTime">01:35</div>
-                        <div class="tbodyDivTdTd tbodyDivTdTdTimeValue td sumTime">00:20</div>
-                        <div class="tbodyDivTdTd tbodyDivTdTdTimeValue td sumTime">00:00</div>
-                        <div class="tbodyDivTdTd tbodyDivTdTdTimeValue td sumTime">00:00</div>
-                        <div class="tbodyDivTdTd tbodyDivTdTdTimeValue td sumTime">00:00</div>
-                    </div>
-
-
-
-                    <div class="tbodyDivTdTdSum personalFlex">
-                        <div class="tbodyDivTdTd tbodyDivTdTdInformation td">소계</div>
-                        <div class="tbodyDivTdTd none td">해당없음</div>
-                        <div class="tbodyDivTdTd tbodyDivTdTdTimeValue td sumTime">01:35</div>
-                        <div class="tbodyDivTdTd tbodyDivTdTdTimeValue td sumTime">00:20</div>
-                        <div class="tbodyDivTdTd tbodyDivTdTdTimeValue td sumTime">00:00</div>
-                        <div class="tbodyDivTdTd tbodyDivTdTdTimeValue td sumTime">00:00</div>
-                        <div class="tbodyDivTdTd tbodyDivTdTdTimeValue td sumTime">00:00</div>
-                    </div>
-
-                </div>
-                <div class="tbodyDivTd tbodyInformationElement td">(서명)</div>
 
             </div>
-
+            <div class="theadTh th personalFlex">구분</div>
 
         </div>
+        <div class="tbody scrolling_table-list_body">
+            {% for order in order_list %}
+            {% with time=station_list|index:forloop.counter0 %}
+            {% with weekday=weekday_list|index:forloop.counter0 %}
+            <div class="route flex">
+                <div class="tbodyTd td personalFlex"><input type="checkbox"></div>
+                <div class="tbodyTd td personalFlex">{{order.number1}}{% if order.number2 %} - {{order.number2}} {% endif %}</div>
+                <div class="tbodyTd td personalFlex">{{order.route}}</div>
+                <div class="tbodyTd td personalFlex">{{time|index:0}}</div>
+                <div class="tbodyTd td personalFlex">{{time|index:1}}</div>
+                <div class="tbodyTd td personalFlex">{{time|index:2}}</div>
+                <div class="tbodyTd td personalFlex">{{time|index:3}}</div>
+                <div class="tbodyTd td personalFlex">{{time|index:4}}</div>
+                <div class="tbodyTd td personalFlex">{{time|index:5}}</div>
+                <div class="tbodyTd td personalFlex">{{weekday|index:0}}</div>
+                <div class="tbodyTd td personalFlex">{{weekday|index:1}}</div>
+                <div class="tbodyTd td personalFlex">{{weekday|index:2}}</div>
+                <div class="tbodyTd td personalFlex">{{weekday|index:3}}</div>
+                <div class="tbodyTd td personalFlex">{{weekday|index:4}}</div>
+                <div class="tbodyTd td personalFlex">{{weekday|index:5}}</div>
+                <div class="tbodyTd td personalFlex">{{weekday|index:6}}</div>
+                <div class="tbodyTd td personalFlex">{{order.work_type}}</div>
+            </div>
+            {% endwith %}
+            {% endwith %}
+            {% endfor %}
 
+         
+        </div>
     </div>
-
 </div>
-
 {% endblock %}
 
-
-
-
-
 {% block script %}
-
+<script>
+    console.log("{{station_list|index:13|index:0}}")
+</script>
 {% endblock %}
