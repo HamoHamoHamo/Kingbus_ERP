@@ -554,10 +554,10 @@ class SalaryStatusDataCollector(DataCollector):
             length = len(time_list)
             connect_time_list[0] = time_list[0]['time']
             connect_time_list[1] = calculate_time_with_minutes(time_list[1]['time'], -10)
-            connect_time_list[2] = time_list[2]['time']
+            connect_time_list[2] = time_list[1]['time']
 
-            connect_time_list[3] = time_list[length - 3]['time']
-            connect_time_list[4] = calculate_time_with_minutes(time_list[length - 3]['time'], 10)
+            connect_time_list[3] = time_list[length - 2]['time']
+            connect_time_list[4] = calculate_time_with_minutes(time_list[length - 2]['time'], 10)
             connect_time_list[5] = time_list[length - 1]['time']
 
             end_time = time_list[length - 1]['time']

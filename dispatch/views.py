@@ -31,7 +31,7 @@ from vehicle.models import Vehicle
 from datetime import datetime, timedelta, date
 # from utill.decorator import option_year_deco
 from common.constant import TODAY, FORMAT, WEEK, WEEK2
-from common.datetime import get_hour_minute, get_next_monday, get_mid_time, get_minute_from_colon_time, get_hour_minute_with_colon
+from common.datetime import get_hour_minute, get_next_monday, get_mid_time, get_minute_from_colon_time, get_hour_minute_with_colon, calculate_time_with_minutes
 from my_settings import KAKAO_KEY
 from config.custom_logging import logger
 
@@ -927,7 +927,97 @@ class RegularlyRouteTimeList(generic.ListView):
         if request.session.get('authority') > 1:
             return render(request, 'authority.html')
         return super().get(request, *args, **kwargs)
-        
+    
+    def get_queryset(self):
+        order_list = DispatchRegularlyData.objects.filter(use="사용").order_by("departure_time")
+
+        return order_list
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['station_list'] = []
+        context['weekday_list'] = []
+        for order in context['order_list']:
+            stations = ['' for i in range(6)]
+            week = ['X' for i in range(7)]
+            
+            # 요일
+            for weekday in order.week.split(" "):
+                if weekday == "월":
+                    week[0] = "O"
+                if weekday == "화":
+                    week[1] = "O"
+                if weekday == "수":
+                    week[2] = "O"
+                if weekday == "목":
+                    week[3] = "O"
+                if weekday == "금":
+                    week[4] = "O"
+                if weekday == "토":
+                    week[5] = "O"
+                if weekday == "일":
+                    week[6] = "O"
+            context['weekday_list'].append(week)
+            # 정류장시간
+            time_list = list(order.monthly.order_by('-edit_date').first().regularly_station.order_by('index').values('time'))
+            if not time_list:
+                context['station_list'].append([])
+                continue
+            length = len(time_list)
+            stations[0] = time_list[0]['time']
+            stations[1] = calculate_time_with_minutes(time_list[1]['time'], -10)
+            stations[2] = time_list[1]['time']
+
+            stations[3] = time_list[length - 2]['time']
+            stations[4] = calculate_time_with_minutes(time_list[length - 2]['time'], 10)
+            stations[5] = time_list[length - 1]['time']
+
+            context['station_list'].append(stations)
+            if order.id == 332:
+                print(len(context['station_list']), context['station_list'])
+
+        return context
+
+def regularly_route_time_download(request):
+    if request.session.get('authority') > 1:
+        return render(request, 'authority.html')
+    datalist = list(DispatchRegularlyData.objects.exclude(use='삭제').order_by('group__number', 'group__name', 'num1', 'number1', 'num2', 'number2').values_list('id', 'group_id__name', 'route', 'departure', 'arrival', 'number1', 'number2', 'departure_time', 'arrival_time', 'work_type', 'location', 'week', 'distance', 'detailed_route', 'maplink', 'price', 'driver_allowance', 'driver_allowance2', 'outsourcing_allowance', 'references', 'use'))
+    queryset = DispatchRegularlyWaypoint.objects.exclude(regularly_id__use='삭제').order_by('regularly_id__group__number', 'regularly_id__group__name', 'regularly_id__num1', 'regularly_id__number1', 'regularly_id__num2', 'regularly_id__number2').values_list('regularly_id__id', 'waypoint')
+    waypoints = []
+    previous_id = None
+    for regularly_id, waypoint in queryset:
+        if regularly_id != previous_id:
+            waypoints.append((regularly_id, [waypoint]))
+            previous_id = regularly_id
+        else:
+            waypoints[-1][1].append(waypoint)
+    cnt = 0
+    i = 0
+    for data in datalist:
+        data = list(data)
+        if len(waypoints) > cnt and data[0] == waypoints[cnt][0]:
+            data.insert(14, ', '.join(waypoints[cnt][1]))
+            cnt = cnt + 1
+        else:
+            data.insert(14, '')
+        data.insert(17, '')
+        datalist[i] = data
+        i = i+1
+    try:
+        df = pd.DataFrame(datalist, columns=['id', '그룹', '노선명', '출발지', '도착지', '순번1', '순번2', '출발시간', '도착시간', '출/퇴근', '위치', '운행요일', '거리', '상세노선', '카카오맵', '경유지', '금액', '기사수당(현재)', '기사수당(변경)', '용역수당', '기준일', '참조사항', '사용'])
+        url = f'{MEDIA_ROOT}/dispatch/regularlyDataList.xlsx'
+        df.to_excel(url, index=False)
+
+        if os.path.exists(url):
+            with open(url, 'rb') as fh:
+                quote_file_url = urllib.parse.quote('출퇴근노선.xlsx'.encode('utf-8'))
+                response = HttpResponse(fh.read(), content_type=mimetypes.guess_type(url)[0])
+                response['Content-Disposition'] = 'attachment;filename*=UTF-8\'\'%s' % quote_file_url
+                return response
+    except Exception as e:
+
+        return JsonResponse({'status': 'fail', 'e': e})
+        raise Http404
 
 class RegularlyRouteList(generic.ListView):
     template_name = 'dispatch/regularly_route.html'
@@ -1007,6 +1097,8 @@ def create_dispatch_regularly_stations(request, regularly, creator):
     stationType_list = request.POST.getlist('station_type', '')
     stationTime_list = request.POST.getlist('station_time', '')
     stationId_list = request.POST.getlist('station_id', '')
+
+    logger.info(f"{stationIndex_list} {stationType_list} {stationTime_list} {stationId_list}")
 
     for index, type, time, id in zip(stationIndex_list, stationType_list, stationTime_list, stationId_list):
         station = get_object_or_404(Station, id=id)
@@ -1357,7 +1449,7 @@ def edit_station_time(recent_regularly, stations):
 
 def time_data(request):
     creator = get_object_or_404(Member, pk=request.session.get('user'))
-    station_edit_date = '2024-06-01'
+    station_edit_date = '2024-05-01'
 
 
     all_regularly_data = DispatchRegularlyData.objects.exclude(time='').exclude(time='0')
@@ -1396,7 +1488,7 @@ def time_data(request):
 
 
 
-        regularly_list = regularly_data.monthly.exclude(time="").exclude(time="0")
+        regularly_list = regularly_data.monthly.exclude(time="").exclude(time="0").exclude(id=recent_regularly.id)
         for regularly in regularly_list:
             regularly.time_list = recent_regularly.time_list
             regularly.time = recent_regularly.time
@@ -1545,6 +1637,7 @@ def regularly_order_edit(request):
             # 기준일에 데이터 없으면 새로 생성
             if station_edit_date:
                 try:
+                    logger.info(f"regularly_data.id {regularly_data.id} station_edit_date {station_edit_date}")
                     DispatchRegularly.objects.get(regularly_id=regularly_data, edit_date=station_edit_date)
                 except DispatchRegularly.DoesNotExist:
                     edit_date_regularly = DispatchRegularly.objects.filter(regularly_id=regularly_data, edit_date__lte=station_edit_date).order_by('-edit_date').first()
@@ -1575,7 +1668,8 @@ def regularly_order_edit(request):
 
                 # 기준일 이후 노선들 정류장 새로 등록
                 new_station_list = regularly.regularly_station.all()
-                edit_station_regularly_list = DispatchRegularly.objects.filter(regularly_id=regularly_data, edit_date__gte=station_edit_date)
+                edit_station_regularly_list = DispatchRegularly.objects.filter(regularly_id=regularly_data, edit_date__gte=station_edit_date).exclude(id=regularly.id)
+                logger.info(f"edit_station_regularly_list {edit_station_regularly_list}")
                 for old_regularly in edit_station_regularly_list:
                     old_regularly.time = regularly.time
                     old_regularly.time_list = regularly.time_list
@@ -1593,6 +1687,7 @@ def regularly_order_edit(request):
                         station_data['creator'] = station.creator
                         new_station = DispatchRegularlyStation(**station_data)
                         new_station.save()
+                        logger.info(f"old_regularly{old_regularly} new_station {new_station}")
                 
             return redirect(request.META.get('HTTP_REFERER', 'redirect_if_referer_not_found'))
         else: 
