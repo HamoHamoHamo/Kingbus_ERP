@@ -964,13 +964,21 @@ class RegularlyRouteTimeList(generic.ListView):
                 context['station_list'].append([])
                 continue
             length = len(time_list)
-            stations[0] = time_list[0]['time']
-            stations[1] = calculate_time_with_minutes(time_list[1]['time'], -10)
+            # stations[0] = time_list[0]['time']
+            # stations[1] = calculate_time_with_minutes(time_list[1]['time'], -10)
+            # stations[2] = time_list[1]['time']
+
+            # stations[3] = time_list[length - 2]['time']
+            # stations[4] = calculate_time_with_minutes(time_list[length - 2]['time'], 10)
+            # stations[5] = time_list[length - 1]['time']
+
+            stations[0] = calculate_time_with_minutes(time_list[0]['time'], -10)
+            stations[1] = time_list[0]['time']
             stations[2] = time_list[1]['time']
 
             stations[3] = time_list[length - 2]['time']
-            stations[4] = calculate_time_with_minutes(time_list[length - 2]['time'], 10)
-            stations[5] = time_list[length - 1]['time']
+            stations[4] = time_list[length - 1]['time']
+            stations[5] = calculate_time_with_minutes(time_list[length - 1]['time'], 10)
 
             context['station_list'].append(stations)
             if order.id == 332:
