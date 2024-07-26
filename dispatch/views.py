@@ -974,7 +974,7 @@ class RegularlyRouteTimeList(generic.ListView):
 
             stations[0] = time_list[0]['time']
             stations[1] = calculate_time_with_minutes(time_list[1]['time'], -10)
-            stations[2] = time_list[1]['time']
+            stations[2] = time_list[2]['time']
 
             stations[3] = time_list[length - 2]['time']
             stations[4] = time_list[length - 1]['time']
@@ -1223,7 +1223,7 @@ def get_regularly_distance_and_time(regularly_data, regularly):
         
         
         distance_list.append(str(distance))
-        duration = get_minute_from_colon_time(next_data['time']) - get_minute_from_colon_time(current_data['time'])
+        duration = get_minute_from_colon_time(next_data['time']) - get_minute_from_colon_time(current_data['time']) if next_data['time'] >= current_data['time'] else 24 * 60 - get_minute_from_colon_time(next_data['time']) - get_minute_from_colon_time(current_data['time'])
         logger.info(f"DURATION {duration}")
         time_list.append(str(duration))
         
@@ -1637,13 +1637,14 @@ def regularly_order_edit(request):
                         connect.driver_allowance = regularly.driver_allowance
                 connect.save()
 
-            # 시간은 DispatchRegularlyStation time으로 계산해서, 거리는 카카오api로 저장하기
-            get_regularly_distance_and_time(regularly_data, regularly)
-            # 카카오api로 거리, 시간 저장하기
-            # get_regularly_distance_and_time_from_kakao(regularly_data, regularly)
+            
 
             # 기준일에 데이터 없으면 새로 생성
             if station_edit_date:
+                # 시간은 DispatchRegularlyStation time으로 계산해서, 거리는 카카오api로 저장하기
+                get_regularly_distance_and_time(regularly_data, regularly)
+                # 카카오api로 거리, 시간 저장하기
+                # get_regularly_distance_and_time_from_kakao(regularly_data, regularly)
                 try:
                     logger.info(f"regularly_data.id {regularly_data.id} station_edit_date {station_edit_date}")
                     DispatchRegularly.objects.get(regularly_id=regularly_data, edit_date=station_edit_date)
