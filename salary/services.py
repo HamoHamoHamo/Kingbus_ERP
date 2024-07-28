@@ -517,6 +517,7 @@ class DataCollector:
             'total_night_shift_minute': total_night_shift_minute,
             'total_night_shift_hour_minute': get_hour_minute(total_night_shift_minute) if total_night_shift_minute != 0 else "",
             'total_weekly_minute': total_weekly_minute,
+            'total_weekly_hour_minute': get_hour_minute(total_weekly_minute),
             'total_within_law_extension_minute': total_within_law_extension_minute,
             'total_within_law_extension_hour_minute': get_hour_minute(total_within_law_extension_minute) if total_within_law_extension_minute != 0 else "",
             'total_outside_law_extension_minute': total_outside_law_extension_minute,
@@ -574,7 +575,6 @@ class DataCollector:
         # deduction_salary = int(self.member_salary['deduction_salary__price'])
         return {
             'entering_date': self.member.entering_date,
-
             'total_work_minute': times_data['total_work_minute'],
             'total_work_hour_minute': get_hour_minute(times_data['total_work_minute']), # 근무시간
             'hourly_wage1': format_number_with_commas(int(self.hourly_wage_data.wage1)), # 기본시급
@@ -582,6 +582,14 @@ class DataCollector:
             
             'ordinary_hourly_wage': format_number_with_commas(ordinary_hourly_wage), # 통상시급
             
+            # 산정시간
+            'total_weekly_hour_minute': times_data['total_weekly_hour_minute'],
+            'total_within_law_extension_hour_minute': times_data['total_within_law_extension_hour_minute'],
+            'total_outside_law_extension_hour_minute': times_data['total_outside_law_extension_hour_minute'],
+            'total_night_shift_hour_minute': times_data['total_night_shift_hour_minute'],
+            'holiday_hour_minute': times_data['holiday_hour_minute'],
+            'additional_holiday_hour_minute': times_data['additional_holiday_hour_minute'],
+
             # 통상급여
             'wage': format_number_with_commas(wage),
             'performance_allowance': format_number_with_commas(performance_allowance), # 성과급

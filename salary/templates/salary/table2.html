@@ -97,6 +97,30 @@
                 <div class="theadBasic">기본시급<br>(2)<br>30시간초과</div>
                 <div class="theadNormal">통상시급</div>
 
+
+                <div class="theadCountTime">
+                    <div class="theadCountTimeTitle personalFlex">산정시간</div>
+                    <div class="theadCountTimeData">
+                        <div class="theadCountTimeTh personalFlex th">소정근로</div>
+                        <div class="theadCountTimeThDouble th">
+                            <div class="theadCountTimeThTitle personalFlex">연장근로</div>
+                            <div class="theadCountTimeThContent th flex">
+                                <div class="theadCountTimeThTh personalFlex th">법내</div>
+                                <div class="theadCountTimeThTh personalFlex th last">법외</div>
+                            </div>
+                        </div>
+                        <div class="theadCountTimeTh personalFlex">야간</div>
+                        <div class="theadCountTimeThDouble">
+                            <div class="theadCountTimeThTitle personalFlex">휴일근로</div>
+                            <div class="theadCountTimeThContent flex">
+                                <div class="theadCountTimeThTh personalFlex ">8시간이하</div>
+                                <div class="theadCountTimeThTh personalFlex  last">8시간초과</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
                 <!--통상급여-->
                 <div class="theadOrdinarySalary">
                     <div class="theadOrdinarySalaryTitle">통상급여</div>
@@ -190,6 +214,16 @@
                     <div class="addCommaToInnerText tbodyBasic">{{data.hourly_wage2}}</div>
                     <!-- 통상시급 -->
                     <div class="addCommaToInnerText tbodyNormal">{{data.ordinary_hourly_wage}}</div>
+                    <!--산정시간-->
+                    <div class="tbodyCountTime flex">
+                        <div class="tbodyCountTimeTd td personalFlex">{{data.total_weekly_hour_minute}}</div>
+                        <div class="tbodyCountTimeTd td personalFlex">{{data.total_within_law_extension_hour_minute}}</div>
+                        <div class="tbodyCountTimeTd td personalFlex">{{data.total_outside_law_extension_hour_minute}}</div>
+                        <div class="tbodyCountTimeTd td personalFlex">{{data.total_night_shift_hour_minute}}</div>
+                        <div class="tbodyCountTimeTd td personalFlex">{{data.holiday_hour_minute}}</div>
+                        <div class="tbodyCountTimeTd td personalFlex">{{data.additional_holiday_hour_minute}}</div>
+                    </div>
+
                     <div class="tbodyOrdinarySalary" style="display: flex;">
                         <!-- 임금 -->
                         <div class="addCommaToInnerText">{{data.wage}}</div>
@@ -267,6 +301,14 @@
                 <div class="hourly_wage sumBasic"></div>
                 <div class="hourly_wage sumBasic"></div>
                 <div class="ordinary_hourly_wage sumNormal"></div>
+                <div class="countTimeSum">
+                    <div class="countTimeSumTd"></div>
+                    <div class="countTimeSumTd"></div>
+                    <div class="countTimeSumTd"></div>
+                    <div class="countTimeSumTd"></div>
+                    <div class="countTimeSumTd"></div>
+                    <div class="countTimeSumTd"></div>
+                </div>
                 <div class="sumOrdinarySalary" style="display: flex;">
                     <div class="wage">임금</div>
                     <div class="performance_allowance">직책수당</div>
@@ -300,8 +342,8 @@
                     <div></div>
                     <div></div>
                     <div></div>
-                    <div></div>
                     <div class="tableEdit"></div>
+                    <div class="sumSumLast"></div>
                 </div>
                 <div class="sumAdditionalAllowance tableEdit"></div>
                 <div class="sumSum sumSumLast"></div>
