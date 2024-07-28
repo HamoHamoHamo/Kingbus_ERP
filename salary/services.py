@@ -221,7 +221,8 @@ class DataCollector:
             
         return minutes
 
-    def calculate_work_minutes(self, minutes, weekly_minute, within_law_extension_minute, outside_law_extension_minute):
+    def calculate_work_minutes(self, minutes, weekly_minute, within_law_extension_minute, outside_law_extension_minute, holiday_check):
+        # holiday_check로 휴일이면 연장시간에 더하기 안 함
         MAX_WEEKLY_MINUTES = 60 * 30
         MAX_WITHIN_LAW_EXTENSION_MINUTES = 60 * 10
 
@@ -231,9 +232,11 @@ class DataCollector:
             else:
                 excess_minutes = weekly_minute + minutes - MAX_WEEKLY_MINUTES
                 weekly_minute = MAX_WEEKLY_MINUTES
-                within_law_extension_minute += excess_minutes
+                if not holiday_check:
+                    within_law_extension_minute += excess_minutes
         else:
-            within_law_extension_minute += minutes
+            if not holiday_check:
+                within_law_extension_minute += minutes
 
         if within_law_extension_minute > MAX_WITHIN_LAW_EXTENSION_MINUTES:
             excess_minutes = within_law_extension_minute - MAX_WITHIN_LAW_EXTENSION_MINUTES
@@ -439,16 +442,18 @@ class DataCollector:
             minutes = self.get_work_time(date)
             work_time = get_hour_minute_with_colon(minutes) if minutes != 0 else ''
 
+            work_type = self.get_work_type(minutes, weekday, weekly_minute)
+            holiday_check = self.is_holiday(self.holiday_data, date) or work_type == '주휴'
             # weekly_minute += minutes
-            weekly_minute, within_law_extension_minute, outside_law_extension_minute = self.calculate_work_minutes(minutes, weekly_minute, within_law_extension_minute, outside_law_extension_minute)
+            weekly_minute, within_law_extension_minute, outside_law_extension_minute = self.calculate_work_minutes(minutes, weekly_minute, within_law_extension_minute, outside_law_extension_minute, holiday_check)
             # total_within_law_extension_minute += within_law_extension_minute
             # total_outside_law_extension_minute += outside_law_extension_minute
 
             weekly_work_count += 1 if daily_connects else  0
-            work_type = self.get_work_type(minutes, weekday, weekly_minute)
             night_shift_time = self.get_night_shift_time(date)
 
-            if self.is_holiday(self.holiday_data, date) or work_type == '주휴':
+            
+            if holiday_check:
                 if minutes / 60 <= 8:
                     holiday_minute += minutes
                     additional_holiday_minute += 0
@@ -510,19 +515,19 @@ class DataCollector:
             'work_list': work_list,
             'total_work_minute': total_work_minute,
             'total_night_shift_minute': total_night_shift_minute,
-            'total_night_shift_hour_minute': get_hour_minute(total_night_shift_minute),
+            'total_night_shift_hour_minute': get_hour_minute(total_night_shift_minute) if total_night_shift_minute != 0 else "",
             'total_weekly_minute': total_weekly_minute,
             'total_within_law_extension_minute': total_within_law_extension_minute,
-            'total_within_law_extension_hour_minute': get_hour_minute(total_within_law_extension_minute),
+            'total_within_law_extension_hour_minute': get_hour_minute(total_within_law_extension_minute) if total_within_law_extension_minute != 0 else "",
             'total_outside_law_extension_minute': total_outside_law_extension_minute,
-            'total_outside_law_extension_hour_minute': get_hour_minute(total_outside_law_extension_minute),
+            'total_outside_law_extension_hour_minute': get_hour_minute(total_outside_law_extension_minute) if total_outside_law_extension_minute != 0 else "",
             'weekly_holiday_count': weekly_holiday_count,
             'legal_holiday_count': legal_holiday_count,
 
             'holiday_minute': holiday_minute,
             'additional_holiday_minute': additional_holiday_minute,
-            'holiday_hour_minute': get_hour_minute(holiday_minute),
-            'additional_holiday_hour_minute': get_hour_minute(additional_holiday_minute),
+            'holiday_hour_minute': get_hour_minute(holiday_minute) if holiday_minute != 0 else "",
+            'additional_holiday_hour_minute': get_hour_minute(additional_holiday_minute) if additional_holiday_minute != 0 else "",
         }
     
     def set_wage(self, total_weekly_minute, hourly_wage1):
