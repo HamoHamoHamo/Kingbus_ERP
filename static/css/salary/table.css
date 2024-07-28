@@ -1,3 +1,9 @@
+.personalFlex, .flex{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+} 
+
 .contentsAreaBox * {
     vertical-align: middle;
     text-align: center;
@@ -161,7 +167,7 @@ background-color: #444444;
 }
 
 .tableBody {
-    width: 217%;
+    width: 253%;
     border-spacing: 0;
     box-sizing: border-box;
     table-layout: fixed;
@@ -203,6 +209,12 @@ background-color: #444444;
 .theadOrdinarySalary{
     width: 20%;
     display: block;
+}
+
+.theadCountTime{
+    width: 36%;
+    height: 100%;
+    background-color: #444444;
 }
 
 .theadOrdinarySalary > *, .theadLegalAllowance > *{
@@ -389,6 +401,11 @@ background-color: #444444;
     border-right: 0.1rem solid #CDCDCE;
 }
 
+.tbodyCountTime{
+    width: 36.4%;
+    
+}
+
 .tbodyLegalAllowance{
     width: 51.3%;
     display: block;
@@ -464,7 +481,7 @@ background-color: #444444;
 .sumBodyTable{
 
     height: 100%;
-    width: 217%;
+    width: 253%;
     border-spacing: 0;
     box-sizing: border-box;
     table-layout: fixed;
@@ -497,6 +514,18 @@ background-color: #444444;
 .sumWorkTime, .sumBasic, .sumNormal, .sumSum, .sumAdditionalAllowance{
     width: 6%;
     border-right: 0.1rem solid #CDCDCE;
+}
+
+.countTimeSum{
+    width: 36%;
+    border-right: 0.1rem solid #CDCDCE;
+    display: flex;
+}
+
+.countTimeSumTd{
+    width: calc(100% / 6);
+    border-right: 0.1rem solid #CDCDCE;
+    height: 100%;
 }
 
 .sumOrdinarySalary{
@@ -538,7 +567,7 @@ background-color: #444444;
 }
 
 .sumDeductionDetails > *{
-    width: calc(12.5% - 0.1rem);
+    width: 12.5%;
     border-right: 0.1rem solid #CDCDCE;
 }
 
@@ -705,3 +734,55 @@ background-color: #444444;
 .theadLegalAllowanceContentOneTitle{
     border-bottom: 0.1rem solid #CDCDCE;;
 }
+
+
+.theadCountTimeTh{
+    width: 16.67%;
+}
+.theadCountTimeThDouble{
+    width: 33.33%;
+}
+
+.theadCountTime *{
+    border-right: 0.1rem solid #CDCDCE;
+    height: 100%;
+}
+
+.theadCountTimeThDouble > *{height: 50%;}
+
+.theadCountTimeThTh{
+    width: 50%;
+}
+
+.theadCountTimeThTitle{
+    height: 40%;
+    border-bottom: 0.1rem solid #CDCDCE;
+}
+
+.last{
+    border-right: none;
+}
+
+.theadCountTimeThContent {
+    height: 60%;
+}
+
+.tbodyCountTimeTd{
+    width: 16.66%;
+    height: 100%;
+    border-right: 0.1rem solid #CDCDCE;
+}
+
+.theadCountTimeTitle {
+    height: 25%;
+    
+}
+
+.theadCountTimeData {
+    border-top: 0.1rem solid #cdcdce;
+    width: 100%;
+    height: 75%;
+    display: flex;
+}
+
+.theadCountTime{display: block;}
