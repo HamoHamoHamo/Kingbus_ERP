@@ -1,11 +1,3 @@
-from config.settings import MEDIA_ROOT
-from django.db.models import Q, Sum
-from django.core.exceptions import ObjectDoesNotExist, MultipleObjectsReturned, BadRequest
-from django.http import Http404, JsonResponse, HttpResponse, HttpResponseNotAllowed
-from django.shortcuts import render, redirect, get_object_or_404
-from django.urls import reverse
-from django.views import generic
-
 from config.custom_logging import logger
 from dispatch.models import DispatchRegularlyData, MorningChecklist, EveningChecklist, DispatchRegularly
 from dispatch.selectors import DispatchSelector
@@ -90,22 +82,17 @@ class DataCollector:
     #     return get_hour_minute_with_colon(minutes) if minutes != 0 else '', minutes
 
     # 보파보
-    def get_work_time(self, daily_connects):
+    def get_work_time(self, date):
+        # TODO get_connects_time_list로 가져온 데이터로 시간 계산하게 수정해야됨
+        connects_list = self.get_connects_time_list(date)
         minutes = 0
-        # for connect in daily_connects:
-        #     if connect['route_time']:
-        #         route_time = int(connect['route_time'])
-        #         rounded_time = self.round_up_to_nearest_ten(route_time)
-        #     else:
-        #         departure_date = connect['departure_date']
-        #         arrival_date = connect['arrival_date']
-        #         time_difference = calculate_time_difference(departure_date, arrival_date)
-        #         rounded_time = self.round_up_to_nearest_ten(time_difference)
+
+        for connect in connects_list:
+            minutes += connect['total_time']
+
             
-        #     minutes += rounded_time
-            
-        minutes = sum(self.round_up_to_nearest_ten(int(connect['route_time'])) if connect['route_time'] else self.round_up_to_nearest_ten(calculate_time_difference(connect['departure_date'], connect['arrival_date'])) for connect in daily_connects)
-        return get_hour_minute_with_colon(minutes) if minutes != 0 else '', minutes
+        # minutes = sum(self.round_up_to_nearest_ten(int(connect['route_time'])) if connect['route_time'] else self.round_up_to_nearest_ten(calculate_time_difference(connect['departure_date'], connect['arrival_date'])) for connect in daily_connects)
+        return minutes
 
     # 중복 시간 제거
     def calculate_total_drive_time(self, data):
@@ -144,8 +131,7 @@ class DataCollector:
         total_minutes = 0
         for i in range(last_month_day):
             date = add_days_to_date(self.mondays[0], i)
-            daily_connects = self.get_daily_connects(date)
-            work_time, minutes = self.get_work_time(daily_connects)
+            minutes = self.get_work_time(date)
             total_minutes += minutes
         return total_minutes
     
@@ -156,10 +142,8 @@ class DataCollector:
         total_minutes = 0
         for i in range(calculated_day):
             date = add_days_to_date(last_date, i + 1)
-            daily_connects = self.get_daily_connects(date)
-            work_time, minutes = self.get_work_time(daily_connects)
+            minutes = self.get_work_time(date)
             total_minutes += minutes
-            print(date, minutes)
         return total_minutes
 
     def check_monday(self, date, mondays_counter):
@@ -226,12 +210,14 @@ class DataCollector:
 
         return night_shift_minutes
     
-    def get_night_shift_time(self, daily_connects):
+    def get_night_shift_time(self, date):
         minutes = 0
+        daily_connects = self.get_connects_time_list(date)
         for connect in daily_connects:
             # 지금은 일반배차 제외하고 야근시간 계산
-            if connect['work_type'] != '일반' and connect['departure_date'] and connect['arrival_date']:
-                minutes += self.round_up_to_nearest_ten(self.calculate_night_shift_minutes(connect['departure_date'], connect['arrival_date']))
+            if connect['work_type'] != '일반' and connect['start_date'] and connect['end_date']:
+                # minutes += self.round_up_to_nearest_ten(self.calculate_night_shift_minutes(connect['start_date'], connect['end_date']))
+                minutes += self.calculate_night_shift_minutes(connect['start_date'], connect['end_date'])
             
         return minutes
 
@@ -290,6 +276,112 @@ class DataCollector:
             'sum_ordinary_salary_and_statutory_allowance': 0,
 
         }
+    
+    def get_connects_time_list(self, date):
+        daily_connects = self.get_daily_connects(date)
+        connect_list = []
+        i = 0
+        for connect in daily_connects:
+            route_time = int(connect['route_time']) if connect['route_time'] else 0
+            connect_time_list = ['' for i in range(6)]
+            if connect['work_type'] == '일반':
+                connect_list.append({
+                    'total_time': 0,
+                    'work_type': '일반',
+                    'route': connect['order_id__route'],
+                    'connect_time_list': connect_time_list,
+                    'start_date':  '',
+                    'end_date': ''
+                })
+                i += 1
+                continue
+            time_list = connect['stations_list']
+
+            if not time_list:
+                connect_list.append({
+                    'total_time': 0,
+                    'work_type': connect['work_type'],
+                    'route': connect['route'],
+                    'connect_time_list': connect_time_list,
+                    'start_date':  '',
+                    'end_date': ''
+                })
+                i += 1
+                continue
+
+            
+            length = len(time_list)
+
+            connect_time_list[0] = self.get_first_time_list(i, daily_connects)
+            connect_time_list[1], connect_time_list[2] = self.get_pre_ready_time_and_departure_time(connect['work_type'], time_list)
+
+            connect_time_list[3] = time_list[length - 2]
+            connect_time_list[4] = time_list[length - 1]
+            connect_time_list[5] = calculate_time_with_minutes(time_list[length - 1], 10)
+
+            if self.is_time_difference_under_90(i, daily_connects):
+                connect_time_list[4] = time_list[length - 2]
+                connect_time_list[5] = time_list[length - 2]
+            
+            # 운행시간이 자정을 넘겼을 떄 운행시간 계산
+            if get_minute_from_colon_time(connect_time_list[5]) >= get_minute_from_colon_time(connect_time_list[0]):
+                route_time = get_minute_from_colon_time(connect_time_list[5]) - get_minute_from_colon_time(connect_time_list[0])
+            else:
+                route_time = 24 * 60 - get_minute_from_colon_time(connect_time_list[5]) - get_minute_from_colon_time(connect_time_list[0])
+
+            connect_list.append({
+                'total_time': route_time,
+                'work_type': connect['work_type'],
+                'route': connect['route'],
+                'connect_time_list': connect_time_list,
+                'start_date':  f"{date} {connect_time_list[0]}",
+                'end_date': f"{date} {connect_time_list[5]}",
+            })
+            i += 1
+        return connect_list
+
+    def get_first_time_list(self, i, daily_connects):
+        time_list = daily_connects[i]['stations_list']
+        if i <= 0 or daily_connects[i - 1]['work_type'] == '일반':
+            return time_list[0]
+
+        prev_time_list = daily_connects[i - 1]['stations_list']
+        if not prev_time_list:
+            return time_list[0]
+        prev_length = len(prev_time_list)
+        prev_arrival_time = prev_time_list[prev_length - 2]
+        # 현재 사전 준비시간 - 이전 도착시간 < 90 : 현재 차고지도착 = 이전 도착시간
+        pre_ready_time, __ = self.get_pre_ready_time_and_departure_time(daily_connects[i]['work_type'], time_list)
+        time_difference = get_minute_from_colon_time(pre_ready_time) - get_minute_from_colon_time(prev_arrival_time)
+        if time_difference < 90:
+            return prev_arrival_time
+        else:
+            return time_list[0]
+
+    def is_time_difference_under_90(self, i, daily_connects) -> bool:
+        time_list = daily_connects[i]['stations_list']
+        length = len(time_list)
+        if i >= len(daily_connects) - 1 or daily_connects[i + 1]['work_type'] == '일반':
+            return False
+        
+        next_time_list = daily_connects[i + 1]['stations_list']
+        if not next_time_list:
+            return False
+        # 다음 사전 준비시간 - 현재 도착시간 < 90 : 현재 차량입고, 뒷정리완료 = 현재 도착시간
+        arrival_time = time_list[length - 2]
+        next_pre_ready_time, __ = self.get_pre_ready_time_and_departure_time(daily_connects[i + 1]['work_type'], next_time_list)
+        time_difference = get_minute_from_colon_time(next_pre_ready_time) - get_minute_from_colon_time(arrival_time)
+        return time_difference < 90
+
+    def get_pre_ready_time_and_departure_time(self, work_type, time_list):
+        time = ['', '']
+        if work_type == '출근':
+            time[0] = time_list[1]
+            time[1] = time_list[2]
+        else:
+            time[0] = calculate_time_with_minutes(time_list[1], -10)
+            time[1] = time_list[1]
+        return time[0], time[1]
 
 
     # 근무현황
@@ -344,11 +436,8 @@ class DataCollector:
 
             weekday = get_weekday_from_date(date)
             daily_connects = self.get_daily_connects(date)
-            work_time, minutes = self.get_work_time(daily_connects)
-            
-            for a in daily_connects:
-                if a['route_time'] == '':
-                    print(self.member.name, a['departure_date'][:10])
+            minutes = self.get_work_time(date)
+            work_time = get_hour_minute_with_colon(minutes) if minutes != 0 else ''
 
             # weekly_minute += minutes
             weekly_minute, within_law_extension_minute, outside_law_extension_minute = self.calculate_work_minutes(minutes, weekly_minute, within_law_extension_minute, outside_law_extension_minute)
@@ -357,7 +446,7 @@ class DataCollector:
 
             weekly_work_count += 1 if daily_connects else  0
             work_type = self.get_work_type(minutes, weekday, weekly_minute)
-            night_shift_time = self.get_night_shift_time(daily_connects)
+            night_shift_time = self.get_night_shift_time(date)
 
             if self.is_holiday(self.holiday_data, date) or work_type == '주휴':
                 if minutes / 60 <= 8:
@@ -517,432 +606,14 @@ class SalaryStatusDataCollector(DataCollector):
         
         return time_data
 
-    def get_connects_time_list(self, date):
-        daily_connects = self.get_daily_connects(date)
-        connect_list = []
-        count = 0
-
-        start_time = 0
-        end_timte = 0
-
-        for connect in daily_connects:
-            route_time = int(connect['route_time']) if connect['route_time'] else 0
-            connect_time_list = ['' for i in range(6)]
-            if connect['work_type'] == '일반':
-                connect_list.append({
-                    'total_time': route_time,
-                    'work_type': '일반',
-                    'route': connect['order_id__route'],
-                    'connect_time_list': connect_time_list,
-                })
-                continue
-            regularly = DispatchRegularly.objects.get(id=connect['regularly_id'])
-            time_list = regularly.regularly_station.all().order_by('index').values('time')
-            if not time_list:
-                connect_list.append({
-                    'total_time': '',
-                    'work_type': regularly.work_type,
-                    'route': regularly.route,
-                    'connect_time_list': connect_time_list,
-                })
-                continue
-            
-            if count == 0:
-                start_time = time_list[0]['time']
-            count += 1
-
-            length = len(time_list)
-            connect_time_list[0] = time_list[0]['time']
-            connect_time_list[1] = calculate_time_with_minutes(time_list[1]['time'], -10)
-            connect_time_list[2] = time_list[1]['time']
-
-            connect_time_list[3] = time_list[length - 2]['time']
-            connect_time_list[4] = calculate_time_with_minutes(time_list[length - 2]['time'], 10)
-            connect_time_list[5] = time_list[length - 1]['time']
-
-            end_time = time_list[length - 1]['time']
-            
-            connect_list.append({
-                'total_time': route_time,
-                'work_type': regularly.work_type,
-                'route': regularly.route,
-                'connect_time_list': connect_time_list,
-            })
-        return connect_list
-
-    # def get_collected_status_data(self):
-    #     morning_time_list = ['' for i in range(31)]
-    #     evening_time_list = ['' for i in range(31)]
-    #     work_time_list = ['' for i in range(31)]
-    #     wait_time_list = ['' for i in range(31)]
-    #     night_shift_time_list = ['' for i in range(31)]
-    #     work_list = ['' for i in range(31)]
-    #     total_work_minute = 0
-    #     total_night_shift_minute = 0
-
-    #     weekly_minute = self.get_work_minutes_from_last_month_monday()
-    #     mondays_counter = 1 if self.mondays[0][:7] < self.month else 0
-    #     for i in range(self.last_day):
-    #         date = f"{self.month}-{i + 1:02d}"
-    #         # 월요일이면 weekly_minute 초기화
-    #         if mondays_counter < len(self.mondays) and self.check_monday(date, mondays_counter):
-    #             mondays_counter += 1
-    #             weekly_minute = 0
-
-    #         # morning_time, evening_time, work_time, wait_time, work_type, minutes, night_shift_time = self.collect_daily_data(i)
-    #         weekday = get_weekday_from_date(date)
-    #         morning_data = list(filter(lambda item: item['date'] == date, self.morning_list))
-    #         evening_data = list(filter(lambda item: item['date'] == date, self.evening_list))
-    #         daily_connects = self.get_daily_connects(date)
-
-    #         morning_time = self.get_morning_time(date, morning_data)
-    #         evening_time = self.get_evening_time(date, evening_data)
-    #         work_time, minutes = self.get_work_time(daily_connects)
-    #         weekly_minute += minutes
-    #         work_type = self.get_work_type(minutes, weekday, weekly_minute)
-    #         wait_time = self.get_wait_time(morning_time, evening_time, work_time)
-    #         night_shift_time = self.get_night_shift_time(daily_connects)
-
-            
-    #         morning_time_list[i] = morning_time
-    #         evening_time_list[i] = evening_time
-    #         wait_time_list[i] = wait_time
-    #         work_time_list[i] = work_time
-    #         work_list[i] = work_type
-    #         night_shift_time_list[i] = get_hour_minute_with_colon(night_shift_time) if night_shift_time > 0 else ''
-    #         total_work_minute += minutes
-    #         total_night_shift_minute += night_shift_time
-
-    #     return {
-    #         'morning_time_list': morning_time_list,
-    #         'evening_time_list': evening_time_list,
-    #         'work_time_list': work_time_list,
-    #         'wait_time_list': wait_time_list,
-    #         'night_shift_time_list': night_shift_time_list,
-    #         'total_work_minute': get_hour_minute(total_work_minute),
-    #         'total_night_shift_minute': get_hour_minute(total_night_shift_minute),
-    #         'work_list': work_list,
-    #         'work_count': work_list.count('근무'),
-    #         'off_duty_count': work_list.count('비번'),
-    #         'weekly_holiday_count': work_list.count('주휴'),
-    #         'total_count': len(work_list) - work_list.count(''),
-    #     }
-
+    
 
 class SalaryTableDataCollector(DataCollector):
     def get_collected_data(self):
         times_data = self.get_calculate_times()
         return self.get_calculate_wages(times_data)
 
-    # def get_collected_data(self):
-    #     work_time_list = ['' for i in range(31)]
-    #     night_shift_time_list = ['' for i in range(31)]
-    #     work_list = ['' for i in range(31)]
-        
-    #     wage = 0
-    #     holiday_work_wage = 0
-        
-    #     total_work_minute = 0
-    #     total_night_shift_minute = 0
-    #     total_weekly_minute = 0 # 주간 근로시간(최대30시간) 한달치
-    #     total_within_law_extension_minute = 0
-    #     total_outside_law_extension_minute = 0
-
-
-    #     last_month_weekly_minute = self.get_work_minutes_from_last_month_monday()
-    #     mondays_counter = 1 if self.mondays[0][:7] < self.month else 0
-    #     weekly_minute = last_month_weekly_minute
-    #     within_law_extension_minute = 0
-    #     outside_law_extension_minute = 0
-        
-        
-    #     holiday_hour = 0
-    #     additional_holiday_hour = 0
-    #     weekly_work_count = 0
-        
-    #     for i in range(self.last_day):
-    #         date = f"{self.month}-{i + 1:02d}"
-
-    #         # 월요일이면 weekly_minute 초기화
-    #         if mondays_counter < len(self.mondays) and self.check_monday(date, mondays_counter):
-    #             mondays_counter += 1
-
-    #             # 저번달 시간 빼주기
-    #             if i < 7:
-    #                 total_weekly_minute += weekly_minute - last_month_weekly_minute
-    #             else:
-    #                 total_weekly_minute += weekly_minute
-                
-    #             total_within_law_extension_minute += within_law_extension_minute
-    #             total_outside_law_extension_minute += outside_law_extension_minute
-
-    #             weekly_minute = 0
-    #             within_law_extension_minute = 0
-    #             outside_law_extension_minute = 0
-    #             weekly_work_count = 0
-
-    #         weekday = get_weekday_from_date(date)
-    #         daily_connects = self.get_daily_connects(date)
-    #         work_time, minutes = self.get_work_time(daily_connects)
-    #         # weekly_minute += minutes
-    #         weekly_minute, within_law_extension_minute, outside_law_extension_minute = self.calculate_work_minutes(minutes, weekly_minute, within_law_extension_minute, outside_law_extension_minute)
-    #         total_within_law_extension_minute += within_law_extension_minute
-    #         total_outside_law_extension_minute += outside_law_extension_minute
-
-    #         weekly_work_count += 1 if daily_connects else  0
-    #         work_type = self.get_work_type(minutes, weekday, weekly_work_count)
-    #         night_shift_time = self.get_night_shift_time(daily_connects)
-
-    #         if self.is_holiday(self.holiday_data, date) or work_type == '주휴':
-    #             if minutes / 60 <= 8:
-    #                 holiday_hour += minutes / 60
-    #                 additional_holiday_hour += 0
-    #             else:
-    #                 holiday_hour += 8
-    #                 additional_holiday_hour += (minutes - 60 * 8) / 60
-
-    #         work_time_list[i] = work_time
-    #         work_list[i] = work_type
-    #         night_shift_time_list[i] = get_hour_minute_with_colon(night_shift_time) if night_shift_time > 0 else ''
-    #         total_work_minute += minutes
-    #         total_night_shift_minute += night_shift_time
-
-    #     total_weekly_minute += weekly_minute
-    #     total_within_law_extension_minute += within_law_extension_minute
-    #     total_outside_law_extension_minute += outside_law_extension_minute
-        
-    #     weekly_holiday_count = work_list.count('주휴')
-    #     # 5월이면 5월1일 1개 추가
-    #     legal_holiday_count = self.holiday_data['count'] + 1 if self.month[5:7] == '05' else self.holiday_data['count']
-
-
-    #     hourly_wage1 = int(self.hourly_wage_data.wage1)
-    #     hourly_wage2 = int(self.hourly_wage_data.wage2)
-
-    #     # 근무시간 0 이면 모두 0으로 반환
-    #     if total_weekly_minute == 0:
-    #         return self.return_zero_data()
-        
-    #     # 통상급여
-    #     wage = math.ceil(total_weekly_minute / 60 * hourly_wage1) # 반올림은?
-    #     performance_allowance = int(self.member_salary['performance_allowance']) # 성과급
-    #     service_allowance = int(self.member_salary['service_allowance']) # 근속수당
-    #     ordinary_salary = wage + service_allowance + performance_allowance
-    #     ordinary_hourly_wage = math.ceil(hourly_wage1 + (performance_allowance * 12 / 2349) + (service_allowance * 12 / 1470))
-    #     print("total_weekly_minute", total_weekly_minute)
-    #     # 법정수당
-    #     weekly_holiday_allowance = ordinary_hourly_wage * 6 * weekly_holiday_count # 주휴수당
-    #     legal_holiday_allowance = ordinary_hourly_wage * 6 * legal_holiday_count # 법정휴일
-    #     weekly_within_law_extension_wage = math.ceil(total_within_law_extension_minute / 60 * hourly_wage2) # 주 연장 법내 기본임금
-    #     weekly_outside_law_extension_wage = math.ceil(total_outside_law_extension_minute / 60 * hourly_wage2) # 주 연장 법외 기본임금
-    #     weekly_extension_additional_wage = math.ceil(total_outside_law_extension_minute / 60 * ordinary_hourly_wage * 0.5) # 주 연장 가산임금
-    #     night_shift_wage = math.ceil(total_night_shift_minute / 60 * ordinary_hourly_wage * 0.5) # 야간근로 가산임금
-        
-    #     holiday_work_wage = math.ceil(holiday_hour * hourly_wage1) # 휴일 기본임금
-    #     additional_holiday_work_wage_half = math.ceil(holiday_hour * ordinary_hourly_wage * 0.5) #휴일 50%가산임금
-    #     additional_holiday_work_wage = math.ceil(additional_holiday_hour * ordinary_hourly_wage) #휴일 100%가산임금
-    #     annual_allowance = int(self.member_salary['annual_allowance']) # 연차수당
-    #     meal = int(self.member_salary['meal']) # 식대 > 만근수당
-    #     statutory_allowance = math.ceil(weekly_holiday_allowance + legal_holiday_allowance + weekly_within_law_extension_wage + weekly_outside_law_extension_wage + weekly_extension_additional_wage + night_shift_wage + holiday_work_wage + additional_holiday_work_wage + additional_holiday_work_wage_half + annual_allowance + meal)
-
-    #     # additional_salary = int(self.member_salary['additional_salary__price'])
-    #     # deduction_salary = int(self.member_salary['deduction_salary__price'])
-    #     return {
-    #         'work_time_list': work_time_list,
-    #         'night_shift_time_list': night_shift_time_list,
-    #         'total_night_shift_minute': get_hour_minute(total_night_shift_minute),
-    #         'work_list': work_list,
-    #         'work_count': work_list.count('근무'),
-    #         'off_duty_count': work_list.count('비번'),
-    #         'weekly_holiday_count': weekly_holiday_count,
-    #         'entering_date': self.member.entering_date,
-
-    #         'total_work_minute': total_work_minute,
-    #         'total_work_hour_minute': get_hour_minute(total_work_minute), # 근무시간
-    #         'hourly_wage1': format_number_with_commas(int(self.hourly_wage_data.wage1)), # 기본시급
-    #         'hourly_wage2': format_number_with_commas(int(self.hourly_wage_data.wage2)), # 기본시급2
-            
-    #         'ordinary_hourly_wage': format_number_with_commas(ordinary_hourly_wage), # 통상시급
-            
-    #         # 통상급여
-    #         'wage': format_number_with_commas(wage),
-    #         'performance_allowance': format_number_with_commas(performance_allowance), # 성과급
-    #         'meal': format_number_with_commas(meal), # 식대
-    #         'service_allowance': format_number_with_commas(service_allowance), # 근속수당
-    #         'ordinary_salary': format_number_with_commas(ordinary_salary),
-            
-    #         # 법정수당
-    #         'weekly_holiday_allowance': format_number_with_commas(weekly_holiday_allowance),
-    #         'legal_holiday_allowance': format_number_with_commas(legal_holiday_allowance),
-    #         # 'weekly_extension_wage': format_number_with_commas(weekly_extension_wage),
-    #         'weekly_within_law_extension_wage' : format_number_with_commas(weekly_within_law_extension_wage),
-    #         'weekly_outside_law_extension_wage' : format_number_with_commas(weekly_outside_law_extension_wage),
-    #         'weekly_extension_additional_wage': format_number_with_commas(weekly_extension_additional_wage),
-    #         'night_shift_wage': format_number_with_commas(night_shift_wage),
-    #         'holiday_work_wage': format_number_with_commas(holiday_work_wage),
-    #         'additional_holiday_work_wage_half': format_number_with_commas(additional_holiday_work_wage_half),
-    #         'additional_holiday_work_wage': format_number_with_commas(additional_holiday_work_wage),
-    #         'annual_allowance': format_number_with_commas(annual_allowance), # 연차수당
-    #         'statutory_allowance': format_number_with_commas(statutory_allowance),
-    #         'sum_ordinary_salary_and_statutory_allowance': format_number_with_commas(ordinary_salary + statutory_allowance),
-
-    #     }
-
 
 class SalaryTableDataCollector2(SalaryTableDataCollector):
     def set_wage(self, total_weekly_minute, hourly_wage1):
         return math.ceil(hourly_wage1 * 1470 / 12)
-    
-    # def get_collected_data(self):
-    #     work_time_list = ['' for i in range(31)]
-    #     night_shift_time_list = ['' for i in range(31)]
-    #     work_list = ['' for i in range(31)]
-        
-    #     total_work_minute = 0
-    #     total_night_shift_minute = 0
-    #     total_weekly_minute = 0 # 주간 근로시간(최대30시간) 한달치
-    #     total_within_law_extension_minute = 0
-    #     total_outside_law_extension_minute = 0
-
-
-    #     last_month_weekly_minute = self.get_work_minutes_from_last_month_monday()
-    #     mondays_counter = 1 if self.mondays[0][:7] < self.month else 0
-    #     weekly_minute = last_month_weekly_minute
-    #     within_law_extension_minute = 0
-    #     outside_law_extension_minute = 0
-        
-        
-    #     holiday_hour = 0
-    #     additional_holiday_hour = 0
-    #     weekly_work_count = 0
-        
-    #     for i in range(self.last_day):
-    #         date = f"{self.month}-{i + 1:02d}"
-
-    #         # 월요일이면 weekly_minute 초기화
-    #         if mondays_counter < len(self.mondays) and self.check_monday(date, mondays_counter):
-    #             mondays_counter += 1
-
-    #             # 저번달 시간 빼주기
-    #             if i < 7:
-    #                 total_weekly_minute += weekly_minute - last_month_weekly_minute
-    #             else:
-    #                 total_weekly_minute += weekly_minute
-
-    #             total_within_law_extension_minute += within_law_extension_minute
-    #             total_outside_law_extension_minute += outside_law_extension_minute
-    #             weekly_minute = 0
-    #             within_law_extension_minute = 0
-    #             outside_law_extension_minute = 0
-    #             weekly_work_count = 0
-
-    #         weekday = get_weekday_from_date(date)
-    #         daily_connects = self.get_daily_connects(date)
-    #         work_time, minutes = self.get_work_time(daily_connects)
-    #         # weekly_minute += minutes
-    #         weekly_minute, within_law_extension_minute, outside_law_extension_minute = self.calculate_work_minutes(minutes, weekly_minute, within_law_extension_minute, outside_law_extension_minute)
-    #         # total_within_law_extension_minute += within_law_extension_minute
-    #         # total_outside_law_extension_minute += outside_law_extension_minute
-
-    #         weekly_work_count += 1 if daily_connects else  0
-    #         work_type = self.get_work_type(minutes, weekday, weekly_work_count)
-    #         night_shift_time = self.get_night_shift_time(daily_connects)
-
-    #         if self.is_holiday(self.holiday_data, date) or work_type == '주휴':
-    #             if minutes / 60 <= 8:
-    #                 holiday_hour += minutes / 60
-    #                 additional_holiday_hour += 0
-    #             else:
-    #                 holiday_hour += 8
-    #                 additional_holiday_hour += (minutes - 60 * 8) / 60
-
-    #         work_time_list[i] = work_time
-    #         work_list[i] = work_type
-    #         night_shift_time_list[i] = get_hour_minute_with_colon(night_shift_time) if night_shift_time > 0 else ''
-    #         total_work_minute += minutes
-    #         total_night_shift_minute += night_shift_time
-
-    #     # 주 근무시간으로 시급 결정해서 계산하기 
-    #     # total_weekly_minute += weekly_minute
-    #     # print("weekly", weekly_minute)
-    #     # # 마지막 날이 일요일이 아니면 다음달 일요일까지 계산해서 시급 정하기
-    #     # hourly_wage = int(self.hourly_wage_data.get_wage(weekly_minute + self.get_work_minutes_from_next_month_sunday()))
-    #     # wage += math.ceil(weekly_minute / 60 * hourly_wage) # 반올림은?
-    #     # weekly_extension_wage += math.ceil((within_law_extension_minute + outside_law_extension_minute) / 60 * hourly_wage) # 주 연장 기본임금
-    #     # holiday_work_wage += math.ceil(holiday_hour * hourly_wage * 0.5)
-
-    #     total_weekly_minute += weekly_minute
-    #     total_within_law_extension_minute += within_law_extension_minute
-    #     total_outside_law_extension_minute += outside_law_extension_minute
-
-    #     hourly_wage1 = int(self.hourly_wage_data.wage1)
-    #     hourly_wage2 = int(self.hourly_wage_data.wage2)
-    #     weekly_holiday_count = work_list.count('주휴')
-    #     # 5월이면 5월1일 1개 추가
-    #     legal_holiday_count = self.holiday_data['count'] + 1 if self.month[5:7] == '05' else self.holiday_data['count']
-
-
-    #     if total_weekly_minute == 0:
-    #         return self.return_zero_data()
-        
-    #     # 통상급여
-    #     wage = math.ceil(hourly_wage1 * 1470 / 12)
-    #     performance_allowance = int(self.member_salary['performance_allowance']) # 성과급
-    #     # performance_allowance = 0 # 일단 0으로 고정
-    #     service_allowance = int(self.member_salary['service_allowance']) # 근속수당
-    #     ordinary_salary = wage + service_allowance + performance_allowance
-    #     # ordinary_hourly_wage = math.ceil(ordinary_salary / (total_weekly_minute / 60)) if total_weekly_minute / 60 != 0 else 0
-    #     ordinary_hourly_wage = math.ceil(hourly_wage1 + (performance_allowance * 12 / 2349) + (service_allowance * 12 / 1470))
-    #     print("total_weekly_minute", total_weekly_minute)
-    #     # 법정수당
-    #     weekly_holiday_allowance = ordinary_hourly_wage * 6 * weekly_holiday_count # 주휴수당
-    #     legal_holiday_allowance = ordinary_hourly_wage * 6 * legal_holiday_count # 법정휴일
-    #     weekly_within_law_extension_wage = math.ceil(total_within_law_extension_minute / 60 * hourly_wage2) # 주 연장 법내 기본임금
-    #     weekly_outside_law_extension_wage = math.ceil(total_outside_law_extension_minute / 60 * hourly_wage2) # 주 연장 법외 기본임금
-    #     # weekly_extension_wage = math.ceil(round((total_within_law_extension_minute + total_outside_law_extension_minute) / 60, 1) * hourly_wage) # 주 연장 기본임금
-    #     weekly_extension_additional_wage = math.ceil(total_outside_law_extension_minute / 60 * ordinary_hourly_wage * 0.5) # 주 연장 가산임금
-    #     night_shift_wage = math.ceil(total_night_shift_minute / 60 * ordinary_hourly_wage * 0.5) # 야간근로 가산임금
-        
-    #     holiday_work_wage = math.ceil(holiday_hour * hourly_wage1) # 휴일 기본임금
-    #     additional_holiday_work_wage_half = math.ceil(holiday_hour * ordinary_hourly_wage * 0.5) #휴일 50%가산임금
-    #     additional_holiday_work_wage = math.ceil(additional_holiday_hour * ordinary_hourly_wage) #휴일 100%가산임금
-    #     annual_allowance = int(self.member_salary['annual_allowance']) # 연차수당
-    #     meal = int(self.member_salary['meal']) # 식대 > 만근수당
-    #     statutory_allowance = math.ceil(weekly_holiday_allowance + legal_holiday_allowance + weekly_within_law_extension_wage + weekly_outside_law_extension_wage + weekly_extension_additional_wage + night_shift_wage + holiday_work_wage + additional_holiday_work_wage + additional_holiday_work_wage_half + annual_allowance + meal)
-
-    #     # additional_salary = int(self.member_salary['additional_salary__price'])
-    #     # deduction_salary = int(self.member_salary['deduction_salary__price'])
-    #     return {
-    #         'entering_date': self.member.entering_date,
-
-    #         'total_work_minute': total_work_minute,
-    #         'total_work_hour_minute': get_hour_minute(total_work_minute), # 근무시간
-    #         'hourly_wage1': format_number_with_commas(int(self.hourly_wage_data.wage1)), # 기본시급
-    #         'hourly_wage2': format_number_with_commas(int(self.hourly_wage_data.wage2)), # 기본시급2
-            
-    #         'ordinary_hourly_wage': format_number_with_commas(ordinary_hourly_wage), # 통상시급
-            
-    #         # 통상급여
-    #         'wage': format_number_with_commas(wage),
-    #         'performance_allowance': format_number_with_commas(performance_allowance), # 성과급
-    #         'meal': format_number_with_commas(meal), # 식대
-    #         'service_allowance': format_number_with_commas(service_allowance), # 근속수당
-    #         'ordinary_salary': format_number_with_commas(ordinary_salary),
-            
-    #         # 법정수당
-    #         'weekly_holiday_allowance': format_number_with_commas(weekly_holiday_allowance),
-    #         'legal_holiday_allowance': format_number_with_commas(legal_holiday_allowance),
-    #         # 'weekly_extension_wage': format_number_with_commas(weekly_extension_wage),
-    #         'weekly_within_law_extension_wage' : format_number_with_commas(weekly_within_law_extension_wage),
-    #         'weekly_outside_law_extension_wage' : format_number_with_commas(weekly_outside_law_extension_wage),
-    #         'weekly_extension_additional_wage': format_number_with_commas(weekly_extension_additional_wage),
-    #         'night_shift_wage': format_number_with_commas(night_shift_wage),
-    #         'holiday_work_wage': format_number_with_commas(holiday_work_wage),
-    #         'additional_holiday_work_wage_half': format_number_with_commas(additional_holiday_work_wage_half),
-    #         'additional_holiday_work_wage': format_number_with_commas(additional_holiday_work_wage),
-    #         'annual_allowance': format_number_with_commas(annual_allowance), # 연차수당
-    #         'statutory_allowance': format_number_with_commas(statutory_allowance),
-    #         'sum_ordinary_salary_and_statutory_allowance': format_number_with_commas(ordinary_salary + statutory_allowance),
-
-    #     }
-
