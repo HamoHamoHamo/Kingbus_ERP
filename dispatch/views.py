@@ -973,8 +973,12 @@ class RegularlyRouteTimeList(generic.ListView):
             # stations[5] = time_list[length - 1]['time']
 
             stations[0] = time_list[0]['time']
-            stations[1] = calculate_time_with_minutes(time_list[1]['time'], -10)
-            stations[2] = time_list[2]['time']
+            if order.work_type == '출근':
+                stations[1] = time_list[1]['time']
+                stations[2] = time_list[2]['time']
+            else:
+                stations[1] = calculate_time_with_minutes(time_list[1]['time'], -10)
+                stations[2] = time_list[1]['time']
 
             stations[3] = time_list[length - 2]['time']
             stations[4] = time_list[length - 1]['time']

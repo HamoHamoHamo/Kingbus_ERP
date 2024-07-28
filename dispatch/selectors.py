@@ -1,6 +1,6 @@
-from django.db.models import Q, Value, F
+from django.db.models import Q, Value, F, Prefetch
 
-from .models import DispatchOrder, DispatchRegularlyData, DispatchRegularly, DispatchOrderConnect, DispatchRegularlyConnect, MorningChecklist, EveningChecklist
+from .models import DispatchOrder, DispatchRegularlyData, DispatchRegularly, DispatchOrderConnect, DispatchRegularlyConnect, MorningChecklist, EveningChecklist, DispatchRegularlyStation
 
 class DispatchSelector:
 
@@ -39,6 +39,7 @@ class DispatchSelector:
             .annotate(
                 route_time=F("regularly_id__time"),
                 time_list=F("regularly_id__time_list"),
+                route=F("regularly_id__route")
             )
             .order_by('departure_date')
             .values(
@@ -48,17 +49,42 @@ class DispatchSelector:
                 "arrival_date", 
                 "work_type",
                 "route_time",
+                "route",
                 "time",
                 "time_list",
             )
         )
 
+        # 정류장 시간 추가
+        regularly_ids = [item['regularly_id'] for item in regularly]
+    
+        # Fetch DispatchRegularly objects with related DispatchRegularlyStation without using values()
+        regularly_objects = DispatchRegularly.objects.filter(id__in=regularly_ids).prefetch_related(
+            Prefetch(
+                'regularly_station',
+                queryset=DispatchRegularlyStation.objects.order_by('index'),
+                to_attr='stations_list'
+            )
+        )
+        
+        # Create a dictionary to map regularly_id to its stations_list times
+        regularly_map = {}
+        for reg in regularly_objects:
+            stations_times = [station.time for station in reg.stations_list]
+            regularly_map[reg.id] = stations_times
+        
+        # Add the stations_list to the regularly items
+        for item in regularly:
+            item['stations_list'] = regularly_map.get(item['regularly_id'], [])
+        
+        # 일반운행
         order = list(
             DispatchOrderConnect.objects.filter(departure_date__gte=f'{start_date} 00:00', arrival_date__lte=f'{end_date} 23:59')
             .annotate(
                 route_time=F("order_id__time"),
                 time=Value(""),
                 time_list=F("order_id__time_list"),
+                route=F("order_id__route")
             )
             .order_by('departure_date')
             .values(
@@ -68,6 +94,7 @@ class DispatchSelector:
                 "arrival_date", 
                 "work_type",
                 "route_time",
+                "route",
                 'time',
                 'time_list',
             )
