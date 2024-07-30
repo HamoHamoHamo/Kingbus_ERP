@@ -39,7 +39,8 @@ class DispatchSelector:
             .annotate(
                 route_time=F("regularly_id__time"),
                 time_list=F("regularly_id__time_list"),
-                route=F("regularly_id__route")
+                route=F("regularly_id__route"),
+                group=F("regularly_id__group__name")
             )
             .order_by('departure_date')
             .values(
@@ -52,6 +53,7 @@ class DispatchSelector:
                 "route",
                 "time",
                 "time_list",
+                "group",
             )
         )
 

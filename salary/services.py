@@ -320,7 +320,7 @@ class DataCollector:
 
             connect_time_list[3] = time_list[length - 2]
             connect_time_list[4] = time_list[length - 1]
-            connect_time_list[5] = calculate_time_with_minutes(time_list[length - 1], 10)
+            connect_time_list[5] = calculate_time_with_minutes(time_list[length - 1], 5)
 
             if self.is_time_difference_under_90(i, daily_connects):
                 connect_time_list[4] = time_list[length - 2]
@@ -345,7 +345,7 @@ class DataCollector:
 
     def get_first_time_list(self, i, daily_connects):
         time_list = daily_connects[i]['stations_list']
-        if i <= 0 or daily_connects[i - 1]['work_type'] == '일반':
+        if i <= 0 or daily_connects[i - 1]['work_type'] == '일반' or self.is3M(daily_connects, i):
             return time_list[0]
 
         prev_time_list = daily_connects[i - 1]['stations_list']
@@ -364,7 +364,7 @@ class DataCollector:
     def is_time_difference_under_90(self, i, daily_connects) -> bool:
         time_list = daily_connects[i]['stations_list']
         length = len(time_list)
-        if i >= len(daily_connects) - 1 or daily_connects[i + 1]['work_type'] == '일반':
+        if i >= len(daily_connects) - 1 or daily_connects[i + 1]['work_type'] == '일반' or self.is3M(daily_connects, i):
             return False
         
         next_time_list = daily_connects[i + 1]['stations_list']
@@ -385,6 +385,14 @@ class DataCollector:
             time[0] = calculate_time_with_minutes(time_list[1], -10)
             time[1] = time_list[1]
         return time[0], time[1]
+
+    def is3M(self, daily_connects, i) -> bool:
+        try:
+            return "쓰리엠" in daily_connects[i]['group'] or \
+                    (i + 1 < len(daily_connects) and "쓰리엠" in daily_connects[i + 1]['group']) or \
+                    (i > 0 and "쓰리엠" in daily_connects[i - 1]['group'])
+        except Exception as e:
+            return False
 
 
     # 근무현황
