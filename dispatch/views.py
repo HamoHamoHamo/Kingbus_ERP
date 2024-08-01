@@ -3218,15 +3218,16 @@ def order_download(request):
         'vehicle_lease',
     ))
     i = 0
-    for data in datalist:
-        data = list(data)
-        stations = list(DispatchOrderStation.objects.filter(order_id__id=data[0]).values_list('station', 'time', 'delegate', 'delegate_phone'))
-        if stations:
-            data.insert(9, stations)
-        else:
-            data.insert(9, '')
-        datalist[i] = data
-        i = i + 1
+    # 경유지 일단 빼고 함 2024-08-01
+    # for data in datalist:
+    #     data = list(data)
+    #     stations = list(DispatchOrderStation.objects.filter(order_id__id=data[0]).values_list('station', 'time', 'delegate', 'delegate_phone'))
+    #     if stations:
+    #         data.insert(9, stations)
+    #     else:
+    #         data.insert(9, '')
+    #     datalist[i] = data
+    #     i = i + 1
     try:
         df = pd.DataFrame(datalist, columns=[
             'id',
@@ -3238,7 +3239,7 @@ def order_download(request):
             '차량종류',
             '예약자',
             '예약자 전화번호',
-            '경유지 정보',
+            # '경유지 정보',
             '계약현황',
             '운행종류',
             '예약회사',
