@@ -8,7 +8,7 @@ from dispatch.models import DispatchOrder
 from humanresource.models import Member
 from .models import Document, DocumentGroup
 from datetime import datetime, timedelta, date
-from ERP.settings import BASE_DIR
+from config.settings import BASE_DIR
 
 TODAY = str(datetime.now())[:10]
 FORMAT = "%Y-%m-%d"
