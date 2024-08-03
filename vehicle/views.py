@@ -14,7 +14,7 @@ import pandas as pd
 from .models import Vehicle, VehicleDocument, Refueling, DailyChecklist, WeeklyChecklist, EquipmentChecklist
 from .forms import VehicleForm
 from humanresource.models import Member
-from ERP.settings import BASE_DIR
+from config.settings import BASE_DIR
 from dateutil.relativedelta import relativedelta
 
 TODAY = str(datetime.now())[:10]
