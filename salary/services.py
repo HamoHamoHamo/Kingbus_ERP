@@ -364,7 +364,7 @@ class DataCollector:
     def is_time_difference_under_90(self, i, daily_connects) -> bool:
         time_list = daily_connects[i]['stations_list']
         length = len(time_list)
-        if i >= len(daily_connects) - 1 or daily_connects[i + 1]['work_type'] == '일반' or self.is3M(daily_connects, i):
+        if i >= len(daily_connects) - 1 or daily_connects[i + 1]['work_type'] == '일반' or self.is3M(daily_connects, i + 1):
             return False
         
         next_time_list = daily_connects[i + 1]['stations_list']
