@@ -38,15 +38,18 @@ class DispatchSelector:
             DispatchRegularlyConnect.objects.filter(departure_date__gte=f'{start_date} 00:00', arrival_date__lte=f'{end_date} 23:59')
             .annotate(
                 route_time=F("regularly_id__time"),
+                time_list=F("regularly_id__time_list"),
             )
             .order_by('departure_date')
             .values(
+                'regularly_id',
                 "driver_id", 
                 "departure_date", 
                 "arrival_date", 
                 "work_type",
                 "route_time",
                 "time",
+                "time_list",
             )
         )
 
@@ -55,15 +58,18 @@ class DispatchSelector:
             .annotate(
                 route_time=F("order_id__time"),
                 time=Value(""),
+                time_list=F("order_id__time_list"),
             )
             .order_by('departure_date')
             .values(
+                "order_id__route",
                 "driver_id", 
                 "departure_date", 
                 "arrival_date", 
                 "work_type",
                 "route_time",
-                'time'
+                'time',
+                'time_list',
             )
         )
         return regularly + order
@@ -74,6 +80,13 @@ class DispatchSelector:
 
     def get_monthly_evening_checklist(self, month):
         return list(EveningChecklist.objects.filter(submit_check=True).filter(date__startswith=month).values("date", "member", "updated_at"))
+
+    def get_morning_checklist(self, start_date, end_date):
+        return list(MorningChecklist.objects.filter(submit_check=True).filter(date__gte=start_date).filter(date__lte=end_date).values("date", "member", "arrival_time", "updated_at"))
+
+    def get_evening_checklist(self, start_date, end_date):
+        return list(EveningChecklist.objects.filter(submit_check=True).filter(date__gte=start_date).filter(date__lte=end_date).values("date", "member", "updated_at"))
+
 
     def get_daily_connect_list(self, date):
         regularly = list(

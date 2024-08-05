@@ -339,6 +339,10 @@ background-color: #444444;
     width: 16.66%;
 }
 
+.theadWeeklyExtension {
+    height: 50%;
+}
+
 /* 데이터헤더끝 */
 .tbody{
     width: 100%;

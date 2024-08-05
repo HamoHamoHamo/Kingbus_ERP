@@ -9,6 +9,20 @@ class MemberSelector:
             member = member.filter(name__startswith=name)
         return member
 
+    # 정규직
+    def get_using_permanent_driver_list(self, name):
+        member = Member.objects.filter(use='사용').filter(Q(role='팀장')|Q(role='운전원')).order_by('name')
+        if name:
+            member = member.filter(name__startswith=name)
+        return member
+
+    # 용역
+    def get_using_outsourcing_driver_list(self, name):
+        member = Member.objects.filter(use='사용').filter(role='용역').order_by('name')
+        if name:
+            member = member.filter(name__startswith=name)
+        return member
+
     def get_monthly_salary_list(self, month):
         return list(Salary.objects.filter(month=month, member_id__use='사용').values(
             'member_id',
