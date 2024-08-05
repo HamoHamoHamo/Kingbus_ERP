@@ -23,4 +23,6 @@ urlpatterns = [
     path('group/delete', views.group_delete, name="group_delete"),
     path('group/fix', views.group_fix, name="group_fix"),
 
+    path('approval', views.Approval.as_view(), name="approval"),
+    path('approval_process', views.ApprovalProcess.as_view(), name="approval_process")
 ]

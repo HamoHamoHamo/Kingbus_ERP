@@ -1,0 +1,313 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block head %}
+<meta http-equiv="Cache-Control" content="private, no-cache, no-store, max-age=0, must-revalidate">
+
+<link rel="stylesheet" href="{% static 'css/assignment/approval.css' %}" type="text/css" />
+{% endblock %}
+
+{% block content-header %}
+<div class="HeaderTitle">
+    결재 작성
+</div>
+{% endblock %}
+
+{% block content %}
+    <div class="indexContent" id="indexContent">
+        <!-- 검색창 -->
+        <div class="search-Container">
+            <!-- 검색폼 -->
+                <form action="" class="searchForm">
+                    <label for="" class="searchFormLabel">현황</label>
+                    <select name ="classification" class="searchFormInput select">
+                        <option value="전체">전체</option>
+                        <option value="대기">대기</option>
+                        <option value="승인">승인</option>
+                        <option value="반려">반려</option>
+                    </select>
+
+                    <select name = "classification" class="searchFormInput select">
+                        <option value="제목">제목</option>
+                        <option value="결재자">결재자</option>
+                    </select>
+
+                    <input name="name" value="" type="text" class="searchFormInput textInput" placeholder="이름,제목(검색 옵션에 따라)을 입력하세요">
+                    <input name="date" value="" type="date" class="searchFormInput dateInput">
+                    <label for="" class="searchFormLabel">~</label>
+                    <input name="date" value="" type="date" class="searchFormInput dateInput last">
+                    <input type="submit" class="searchFormSearchBtn" value="검색">
+                </form>
+            <!-- 검색폼 done-->
+        </div>
+        <!-- 검색창 끝-->
+
+        <div class="tableContainer table">
+            <div class="thead flex">
+                <div class="theadTh th flex">선택</div>
+                <div class="theadTh th flex">번호</div>
+                <div class="theadTh th flex">결재 종류</div>
+                <div class="theadTh th flex">제목</div>
+                <div class="theadTh th flex">첨부파일</div>
+                <div class="theadTh th flex">등록일</div>
+                <div class="theadTh th flex">현황</div>
+                <div class="theadTh th flex">결재자</div>
+            </div>
+            <div class="tbody">
+                <div class="tbodyTr flex">
+                    <div class="tbodyTrTd td flex"><input type="checkbox"></div>
+                    <div class="tbodyTrTd td flex">1</div>
+                    <div class="tbodyTrTd td flex">지출결의서</div>
+                    <div class="tbodyTrTd td flex blue">지출결의서 제출합니다.</div>
+                    <div class="tbodyTrTd td flex blue">파일명.png</div>
+                    <div class="tbodyTrTd td flex">2024.08.07</div>
+                    <div class="tbodyTrTd td flex">대기</div>
+                    <div class="tbodyTrTd td flex">고영이</div>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="pageTransition">
+                <div class="previousPage">이전</div>
+                <div class="number">
+                    <div class="numberNumber">1</div>
+                </div>
+                <div class="nextPage">다음</div>
+                <input type="button" class="write" value="작성" onclick="writeOpen()">
+
+        </div>
+    </div>
+
+    <div class="writeContent" id="writeContent">
+        <div class="contentBox boxSize">
+            <div class="contentBoxArticle flex">
+                <label class="contentBoxArticleLabel">제목</label>
+                <input type="text" class="contentBoxArticleInput">
+            </div>
+
+            <div class="contentBoxArticle flex">
+                <label class="contentBoxArticleLabel">분류</label>
+                <select class="contentBoxArticleSelect" name="approvalClassfication">
+                    <option value="지출결의서">지출결의서</option>
+                    <option value="휴가계">휴가계</option>
+                    <option value="사고처리">사고처리</option>
+                </select>
+
+                <label class="contentBoxArticleLabel contentBoxArticleLabelLabel">결재자</label>
+                <select class="contentBoxArticleSelect" name="approvalPerson">
+                    <option value="고영이">고영이</option>
+                    <option value="이세명">이세명</option>
+                    <option value="김인숙">김인숙</option>
+                    <option value="김형주">김형주</option>
+                    <option value="엄성환">엄성환</option>
+                    <option value="김성태">김성태</option>
+                </select>
+            </div>
+            
+            <div class="contentBoxArticle contentBoxArticleLong flex">
+                <label class="contentBoxArticleLabel">첨부파일</label>
+                <div class="contentBoxArticleFileArea">
+                    <input type="file" id="fileInput" name="fileInput">
+                </div>
+            </div>
+
+            <div class="contentBoxArticle contentBoxArticleLast">
+                <input type="text" class="contentBoxArticleText"> 
+            </div>
+
+        </div>
+
+        <div class="createDelete flex">
+            <input type="button" class="createBtn Btn" value="등록">
+            <input type="button" class="deleteBtn Btn" value="닫기" onclick="writeClose()">
+        </div>
+
+    </div>
+
+    <div class="waitContent boxSize">
+
+        <div class="contentBox boxSize">
+            <div class="contentBoxContent flex">
+                <div class="contentBoxContentContent">
+                    <div class="contentBoxArticle flex">
+                        <label class="contentBoxArticleLabel">제목</label>
+                        <input type="text" class="contentBoxArticleInput approvalContentBoxArticleInput">
+                    </div>
+
+                    <div class="contentBoxArticle flex">
+                        <label class="contentBoxArticleLabel">분류</label>
+                        <select class="contentBoxArticleSelect" name="approvalClassfication">
+                            <option value="지출결의서">지출결의서</option>
+                            <option value="휴가계">휴가계</option>
+                            <option value="사고처리">사고처리</option>
+                        </select>
+
+                        <label class="contentBoxArticleLabel contentBoxArticleLabelLabel">결재자</label>
+                        <select class="contentBoxArticleSelect" name="approvalPerson">
+                            <option value="고영이">고영이</option>
+                            <option value="이세명">이세명</option>
+                            <option value="김인숙">김인숙</option>
+                            <option value="김형주">김형주</option>
+                            <option value="엄성환">엄성환</option>
+                            <option value="김성태">김성태</option>
+                        </select>
+
+                    </div>
+                    
+                    <div class="contentBoxArticle contentBoxArticleLong flex">
+                        <label class="contentBoxArticleLabel">첨부파일</label>
+                        <div class="contentBoxArticleFileArea">
+                            <input type="file" id="fileInput" name="fileInput">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="contentBoxExamine">
+                    <div class="contentBoxExamineArticle flex">
+                        <label class="contentBoxExamineArticleTitle">등록일</label>
+                        <label class="contentBoxExamineArticleContent">2024-08-02</label>
+                    </div>
+
+                    <div class="contentBoxExamineArticle flex">
+                        <label class="contentBoxExamineArticleTitle">재가여부</label>
+                        <label class="contentBoxExamineArticleContent">대기</label>
+                    </div>
+
+                    <div class="contentBoxExamineArticle flex">
+                        <label class="contentBoxExamineArticleTitle">결재일</label>
+                        <label class="contentBoxExamineArticleContent">2024-08-05</label>
+                    </div>
+                </div>
+
+            </div>
+            
+
+            <div class="contentBoxArticle contentBoxArticleLast">
+                <input type="text" class="contentBoxArticleText"> 
+            </div>
+
+        </div>
+
+        <div class="createDelete flex">
+            <input type="button" class="createBtn Btn" value="등록">
+            <input type="button" class="deleteBtn Btn" value="닫기" onclick="writeClose()">
+        </div>
+
+    </div>
+
+    <div class="rejectedAndApproveContent boxSize">
+
+        <div class="contentBox boxSize">
+            <div class="contentBoxContent flex">
+                <div class="contentBoxContentContent">
+                    <div class="contentBoxArticle flex">
+                        <label class="contentBoxArticleLabel">제목</label>
+                        <input type="text" class="contentBoxArticleInput">
+                    </div>
+
+                    <div class="contentBoxArticle flex">
+                        <label class="contentBoxArticleLabel">분류</label>
+                        <select class="contentBoxArticleSelect" name="approvalClassfication">
+                            <option value="지출결의서">지출결의서</option>
+                            <option value="휴가계">휴가계</option>
+                            <option value="사고처리">사고처리</option>
+                        </select>
+
+                        <label class="contentBoxArticleLabel contentBoxArticleLabelLabel">결재자</label>
+                        <select class="contentBoxArticleSelect" name="approvalPerson">
+                            <option value="고영이">고영이</option>
+                            <option value="이세명">이세명</option>
+                            <option value="김인숙">김인숙</option>
+                            <option value="김형주">김형주</option>
+                            <option value="엄성환">엄성환</option>
+                            <option value="김성태">김성태</option>
+                        </select>
+
+                    </div>
+                    
+                    <div class="contentBoxArticle contentBoxArticleLong flex">
+                        <label class="contentBoxArticleLabel">첨부파일</label>
+                        <div class="contentBoxArticleFileArea">
+                            <input type="file" id="fileInput" name="fileInput">
+                        </div>
+                    </div>
+                    
+                </div>
+
+                <div class="contentBoxExamine">
+                    <div class="contentBoxExamineArticle flex">
+                        <label class="contentBoxExamineArticleTitle">등록일</label>
+                        <label class="contentBoxExamineArticleContent">2024-08-02</label>
+                    </div>
+
+                    <div class="contentBoxExamineArticle flex">
+                        <label class="contentBoxExamineArticleTitle">재가여부</label>
+                        <label class="contentBoxExamineArticleContent">대기</label>
+                    </div>
+
+                    <div class="contentBoxExamineArticle flex">
+                        <label class="contentBoxExamineArticleTitle">결재일</label>
+                        <label class="contentBoxExamineArticleContent">2024-08-05</label>
+                    </div>
+                </div>
+                
+            </div>
+
+            <div class="contentBoxArticle contentBoxArticleNayoung flex">
+                <label class="contentBoxArticleLabel contentInputLabel">내용</label>
+                <input type="text" class="contentBoxArticleInput contentInput">
+            </div>
+
+            <div class="approverSpeak">
+                
+                    <div class="approverSpeakTrTd flex">
+                        <label class="approverSpeakPerson">김인숙</label>
+                        <input class="approverSpeakContent">
+                    </div>
+                
+
+                
+                    <div class="approverSpeakTrTd flex">
+                        <label class="approverSpeakPerson">고영이</label>
+                        <input class="approverSpeakContent">
+                    </div>
+                
+
+                
+                    <div class="approverSpeakTrTd flex">
+                        <label class="approverSpeakPerson">김형주</label>
+                        <input class="approverSpeakContent">
+                    </div>
+                
+                    
+            </div>
+
+        </div>
+
+
+        <div class="createDelete flex">
+            <input type="button" class="createBtn Btn" value="등록">
+            <input type="button" class="deleteBtn Btn" value="닫기" onclick="writeClose()">
+        </div>
+
+    </div>
+
+
+
+    
+{% endblock %}
+
+{% block script %}
+<script>
+    const writeOpen= () => {
+        document.getElementById("writeContent").style.display="block"
+        document.getElementById("indexContent").style.display="none"
+
+    }
+
+    const writeClose= () => {
+        document.getElementById("writeContent").style.display="none"
+        document.getElementById("indexContent").style.display="block"
+    }
+</script>
+{% endblock %}

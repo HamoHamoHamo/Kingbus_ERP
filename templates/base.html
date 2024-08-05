@@ -49,6 +49,36 @@
           <div class="nav1Box">
             <li class="nav1BoxMenu nav1BoxMenuHaveDepth2">
               <div class="nav1BoxMenuImgDiv">
+                <img class="nav1BoxMenuImg" src="{% static 'images/document.png' %}" alt="공지사항 아이콘">
+              </div>
+              <div class="nav1BoxMenuHaveDepth2Text">수칙관리</div>
+              <svg class="sideMenuArrow" xmlns="http://www.w3.org/2000/svg" width="18.228" height="11.84" viewBox="0 0 18.228 11.84">
+                <path id="패스_256" data-name="패스 256" d="M0,0,6.753,8.223,14,0" transform="translate(2.111 2.117)" fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="3"/>
+              </svg>        
+            </li>
+            <div class="sideMenuNav2Box">
+              <ul class="sideMenuNav2">
+                <a href="{% url 'approvalrules' %}" class="sideMenuNav2Link">
+                  <li class="sideMenuNav2Menu">결재수칙</li>
+                </a>
+                <a href="{% url 'rowcallrules' %}" class="sideMenuNav2Link">
+                  <li class="sideMenuNav2Menu">점호수칙</li>
+                </a>
+                <a href="{% url 'driverrules' %}" class="sideMenuNav2Link">
+                  <li class="sideMenuNav2Menu">승무원수칙</li>
+                </a>
+                <a href="{% url 'fieldmanagerrules' %}" class="sideMenuNav2Link">
+                  <li class="sideMenuNav2Menu">현장관리자수칙</li>
+                </a>
+                <a href="{% url 'managerrules' %}" class="sideMenuNav2Link">
+                  <li class="sideMenuNav2Menu">관리자수칙</li>
+                </a>
+              </ul>
+            </div>
+          </div>
+          <div class="nav1Box">
+            <li class="nav1BoxMenu nav1BoxMenuHaveDepth2">
+              <div class="nav1BoxMenuImgDiv">
                 <img class="nav1BoxMenuImg" src="{% static 'images/notice.png' %}" alt="공지사항 아이콘">
               </div>
               <div class="nav1BoxMenuHaveDepth2Text">공지사항</div>
@@ -63,6 +93,160 @@
                 </a>
                 <a href="{% url 'notice:kinds' 'office' %}" class="sideMenuNav2Link">
                   <li class="sideMenuNav2Menu">사무실 공지사항</li>
+                </a>
+              </ul>
+            </div>
+          </div>
+
+          <div class="nav1Box">
+            <li class="nav1BoxMenu nav1BoxMenuHaveDepth2">
+              <div class="nav1BoxMenuImgDiv">
+                <img class="nav1BoxMenuImg" src="{% static 'images/document.png' %}" alt="공지사항 아이콘">
+              </div>
+              <div class="nav1BoxMenuHaveDepth2Text">민원관리</div>
+              <svg class="sideMenuArrow" xmlns="http://www.w3.org/2000/svg" width="18.228" height="11.84" viewBox="0 0 18.228 11.84">
+                <path id="패스_256" data-name="패스 256" d="M0,0,6.753,8.223,14,0" transform="translate(2.111 2.117)" fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="3"/>
+              </svg>        
+            </li>
+            <div class="sideMenuNav2Box">
+              <ul class="sideMenuNav2">
+                <a href="{% url 'complaint:consulting' %}" class="sideMenuNav2Link">
+                  <li class="sideMenuNav2Menu">상담신청관리</li>
+                </a>
+                <a href="{% url 'complaint:inspection' %}" class="sideMenuNav2Link">
+                  <li class="sideMenuNav2Menu">차량정비신청관리</li>
+                </a>
+              </ul>
+            </div>
+          </div>
+
+          <div class="nav1Box">
+            <li class="nav1BoxMenu nav1BoxMenuHaveDepth2">
+              <div class="nav1BoxMenuImgDiv">
+                <img class="nav1BoxMenuImg" src="{% static 'images/document.png' %}" alt="공지사항 아이콘">
+              </div>
+              <div class="nav1BoxMenuHaveDepth2Text">서류관리</div>
+              <svg class="sideMenuArrow" xmlns="http://www.w3.org/2000/svg" width="18.228" height="11.84" viewBox="0 0 18.228 11.84">
+                <path id="패스_256" data-name="패스 256" d="M0,0,6.753,8.223,14,0" transform="translate(2.111 2.117)" fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="3"/>
+              </svg>        
+            </li>
+            <div class="sideMenuNav2Box">
+              <ul class="sideMenuNav2">
+                <a href="{% url 'document:company' %}" class="sideMenuNav2Link">
+                  <li class="sideMenuNav2Menu">회사서류</li>
+                </a>
+                <a href="{% url 'document:dispatch' %}" class="sideMenuNav2Link">
+                  <li class="sideMenuNav2Menu">운행서류</li>
+                </a>
+              </ul>
+            </div>
+          </div>
+
+           <div class="nav1Box">
+            <li class="nav1BoxMenu nav1BoxMenuHaveDepth2">
+              <div class="nav1BoxMenuImgDiv">
+                <img class="nav1BoxMenuImg" src="{% static 'images/document.png' %}" alt="공지사항 아이콘">
+              </div>
+              <div class="nav1BoxMenuHaveDepth2Text">결재관리</div>
+              <svg class="sideMenuArrow" xmlns="http://www.w3.org/2000/svg" width="18.228" height="11.84" viewBox="0 0 18.228 11.84">
+                <path id="패스_256" data-name="패스 256" d="M0,0,6.753,8.223,14,0" transform="translate(2.111 2.117)" fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="3"/>
+              </svg>        
+            </li>
+            <div class="sideMenuNav2Box">
+              <ul class="sideMenuNav2">
+                <a href="{% url 'document:company' %}" class="sideMenuNav2Link">
+                  <li class="sideMenuNav2Menu">회사서류</li>
+                </a>
+                <a href="{% url 'document:dispatch' %}" class="sideMenuNav2Link">
+                  <li class="sideMenuNav2Menu">운행서류</li>
+                </a>
+              </ul>
+            </div>
+          </div>
+          
+          <div class="nav1Box">
+            <li class="nav1BoxMenu nav1BoxMenuHaveDepth2">
+              <div class="nav1BoxMenuImgDiv">
+                <img class="nav1BoxMenuImg" src="{% static 'images/dispatchSystem.png' %}" alt="배차시스템 아이콘">
+              </div>
+              <div class="nav1BoxMenuHaveDepth2Text">노선관리</div>
+              <svg class="sideMenuArrow" xmlns="http://www.w3.org/2000/svg" width="18.228" height="11.84" viewBox="0 0 18.228 11.84">
+                <path id="패스_256" data-name="패스 256" d="M0,0,6.753,8.223,14,0" transform="translate(2.111 2.117)" fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="3"/>
+              </svg>            
+            </li>
+            <div class="sideMenuNav2Box">
+              <ul class="sideMenuNav2">
+                <a href="{% url 'dispatch:regularly_route' %}" class="sideMenuNav2Link">
+                  <li class="sideMenuNav2Menu">출/퇴근 노선관리</li>
+                </a>
+                <a href="{% url 'dispatch:regularly_station' %}" class="sideMenuNav2Link">
+                  <li class="sideMenuNav2Menu">정류장관리</li>
+                </a>
+                <a href="{% url 'dispatch:driving' %}" class="sideMenuNav2Link">
+                  <li class="sideMenuNav2Menu">운행일보</li>
+                </a>
+              </ul>
+            </div>
+          </div>
+          <div class="nav1Box">
+            <li class="nav1BoxMenu nav1BoxMenuHaveDepth2">
+              <div class="nav1BoxMenuImgDiv">
+                <img class="nav1BoxMenuImg" src="{% static 'images/vehicleManagement.png' %}" alt="차량관리 아이콘">
+              </div>
+              <div class="nav1BoxMenuHaveDepth2Text">차량관리</div>
+              <svg class="sideMenuArrow" xmlns="http://www.w3.org/2000/svg" width="18.228" height="11.84" viewBox="0 0 18.228 11.84">
+                <path id="패스_256" data-name="패스 256" d="M0,0,6.753,8.223,14,0" transform="translate(2.111 2.117)" fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="3"/>
+              </svg>        
+            </li>
+            <div class="sideMenuNav2Box">
+              <ul class="sideMenuNav2">
+                <a href="{% url 'vehicle:list' %}" class="sideMenuNav2Link">
+                  <li class="sideMenuNav2Menu">차량관리</li>
+                </a>
+                <a href="{% url 'vehicle:accident' %}" class="sideMenuNav2Link">
+                  <li class="sideMenuNav2Menu">사고관리</li>
+                </a>
+                <a href="{% url 'vehicle:refueling' %}" class="sideMenuNav2Link">
+                  <li class="sideMenuNav2Menu">주유관리</li>
+                </a>
+                <a href="{% url 'vehicle:dailychecklist' %}" class="sideMenuNav2Link">
+                  <li class="sideMenuNav2Menu">일일점검</li>
+                </a>
+                <a href="{% url 'vehicle:weeklychecklist' %}" class="sideMenuNav2Link">
+                  <li class="sideMenuNav2Menu">주간점검</li>
+                </a>
+                <a href="{% url 'vehicle:equipmentchecklist' %}" class="sideMenuNav2Link">
+                  <li class="sideMenuNav2Menu">비품점검</li>
+                </a>
+              </ul>
+            </div>
+          </div>
+          <div class="nav1Box">
+            <li class="nav1BoxMenu nav1BoxMenuHaveDepth2">
+              <div class="nav1BoxMenuImgDiv">
+                <img class="nav1BoxMenuImg" src="{% static 'images/HRManagement.png' %}" alt="인사관리 아이콘">
+              </div>      
+              <div class="nav1BoxMenuHaveDepth2Text">인사관리</div>
+              <svg class="sideMenuArrow" xmlns="http://www.w3.org/2000/svg" width="18.228" height="11.84" viewBox="0 0 18.228 11.84">
+                <path id="패스_256" data-name="패스 256" d="M0,0,6.753,8.223,14,0" transform="translate(2.111 2.117)" fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="3"/>
+              </svg>        
+            </li>
+            <div class="sideMenuNav2Box">
+              <ul class="sideMenuNav2">
+                <a href="{% url 'HR:member' %}" class="sideMenuNav2Link">
+                  <li class="sideMenuNav2Menu">직원관리</li>
+                </a>
+                <a href="{% url 'HR:team' %}" class="sideMenuNav2Link">
+                  <li class="sideMenuNav2Menu">팀관리</li>
+                  </a>
+                <a href="{% url 'HR:teamtwo' %}" class="sideMenuNav2Link">
+                  <li class="sideMenuNav2Menu">팀 노선 관리</li>
+                </a>
+                <a href="{% url 'HR:teamthree' %}" class="sideMenuNav2Link">
+                  <li class="sideMenuNav2Menu">팀 인원 관리</li>
+                </a>
+                <a href="{% url 'HR:teamfour' %}" class="sideMenuNav2Link">
+                  <li class="sideMenuNav2Menu">팀 차량 관리</li>
                 </a>
               </ul>
             </div>
@@ -112,6 +296,30 @@
           <div class="nav1Box">
             <li class="nav1BoxMenu nav1BoxMenuHaveDepth2">
               <div class="nav1BoxMenuImgDiv">
+                <img class="nav1BoxMenuImg" src="{% static 'images/dispatchSystem.png' %}" alt="배차시스템 아이콘">
+              </div>
+              <div class="nav1BoxMenuHaveDepth2Text">점호관리</div>
+              <svg class="sideMenuArrow" xmlns="http://www.w3.org/2000/svg" width="18.228" height="11.84" viewBox="0 0 18.228 11.84">
+                <path id="패스_256" data-name="패스 256" d="M0,0,6.753,8.223,14,0" transform="translate(2.111 2.117)" fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="3"/>
+              </svg>            
+            </li>
+            <div class="sideMenuNav2Box">
+              <ul class="sideMenuNav2">
+                <a href="{% url 'dispatch:regularly_route_know' %}" class="sideMenuNav2Link">
+                  <li class="sideMenuNav2Menu">출/퇴근 노선숙지</li>
+                </a>
+                <a href="{% url 'dispatch:schedule' %}" class="sideMenuNav2Link">
+                  <li class="sideMenuNav2Menu">운행/배차확인</li>
+                </a>
+                <a href="{% url 'dispatch:regularly_connect' %}" class="sideMenuNav2Link">
+                  <li class="sideMenuNav2Menu">출/퇴근 배차표</li>
+                </a>
+              </ul>
+            </div>
+          </div>
+          <div class="nav1Box">
+            <li class="nav1BoxMenu nav1BoxMenuHaveDepth2">
+              <div class="nav1BoxMenuImgDiv">
                 <svg class="nav1BoxMenuImg"
                   xmlns="http://www.w3.org/2000/svg"
                   width="17"
@@ -148,27 +356,60 @@
               </ul>
             </div>
           </div>
+
           <div class="nav1Box">
             <li class="nav1BoxMenu nav1BoxMenuHaveDepth2">
               <div class="nav1BoxMenuImgDiv">
-                <img class="nav1BoxMenuImg" src="{% static 'images/HRManagement.png' %}" alt="인사관리 아이콘">
+                <img class="nav1BoxMenuImg" src="{% static 'images/document.png' %}" alt="공지사항 아이콘">
               </div>
-              <div class="nav1BoxMenuHaveDepth2Text">인사관리</div>
+              <div class="nav1BoxMenuHaveDepth2Text">교육관리</div>
               <svg class="sideMenuArrow" xmlns="http://www.w3.org/2000/svg" width="18.228" height="11.84" viewBox="0 0 18.228 11.84">
                 <path id="패스_256" data-name="패스 256" d="M0,0,6.753,8.223,14,0" transform="translate(2.111 2.117)" fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="3"/>
               </svg>        
             </li>
             <div class="sideMenuNav2Box">
               <ul class="sideMenuNav2">
-                <a href="{% url 'HR:member' %}" class="sideMenuNav2Link">
-                  <li class="sideMenuNav2Menu">직원관리</li>
+                <a href="{% url 'educational' %}" class="sideMenuNav2Link">
+                  <li class="sideMenuNav2Menu">교육 현황</li>
                 </a>
-                <a href="{% url 'HR:team' %}" class="sideMenuNav2Link">
-                  <li class="sideMenuNav2Menu">팀관리</li>
+                <a href="{% url 'educational_manager' %}" class="sideMenuNav2Link">
+                  <li class="sideMenuNav2Menu">교육 자료</li>
                 </a>
               </ul>
             </div>
           </div>
+
+          <div class="nav1Box">
+            <li class="nav1BoxMenu nav1BoxMenuHaveDepth2">
+              <div class="nav1BoxMenuImgDiv">
+                <img class="nav1BoxMenuImg" src="/static/images/accountingSystem.png?v=0.1727" alt="경리시스템 아이콘">
+              </div>
+              <div class="nav1BoxMenuHaveDepth2Text">매출관리</div>
+              <svg class="sideMenuArrow" xmlns="http://www.w3.org/2000/svg" width="18.228" height="11.84" viewBox="0 0 18.228 11.84">
+                <path id="패스_256" data-name="패스 256" d="M0,0,6.753,8.223,14,0" transform="translate(2.111 2.117)" fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="3"/>
+              </svg>        
+            </li>
+            <div class="sideMenuNav2Box">
+              <ul class="sideMenuNav2">
+                <a href="/accounting/sales" class="sideMenuNav2Link">
+                  <li class="sideMenuNav2Menu">매출현황</li>
+                </a>
+                <a href="/accounting/deposit" class="sideMenuNav2Link">
+                  <li class="sideMenuNav2Menu">입금관리</li>
+                </a>
+                <a href="/accounting/collect" class="sideMenuNav2Link">
+                  <li class="sideMenuNav2Menu">일반 수금관리</li>
+                </a>
+                <a href="/accounting/regularly/collect" class="sideMenuNav2Link">
+                  <li class="sideMenuNav2Menu">출/퇴근 수금관리</li>
+                </a>
+                <a href="/accounting/efficiency/member" class="sideMenuNav2Link">
+                  <li class="sideMenuNav2Menu">인당효율</li>
+                </a>
+              </ul>
+            </div>
+          </div>
+
           <div class="nav1Box">
             <li class="nav1BoxMenu nav1BoxMenuHaveDepth2">
               <div class="nav1BoxMenuImgDiv">
@@ -183,6 +424,7 @@
                   <text x="50" y="53" font-family="Arial" font-size="8" fill="#333" text-anchor="middle" alignment-baseline="middle">$</text>
                 </svg>
               </div>
+              
               <div class="nav1BoxMenuHaveDepth2Text">급여관리</div>
               <svg class="sideMenuArrow" xmlns="http://www.w3.org/2000/svg" width="18.228" height="11.84" viewBox="0 0 18.228 11.84">
                 <path id="패스_256" data-name="패스 256" d="M0,0,6.753,8.223,14,0" transform="translate(2.111 2.117)" fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="3"/>
@@ -193,7 +435,7 @@
                 <a href="{% url 'salary:Salary_Distribution2' %}" class="sideMenuNav2Link">
                   <li class="sideMenuNav2Menu">급여 분포도2</li>
                 </a>
-                <a href="{% url 'salary:routeTime' %}" class="sideMenuNav2Link">
+                <a href="{% url 'salary:route_time' %}" class="sideMenuNav2Link">
                   <li class="sideMenuNav2Menu">노선시간표</li>
                 </a>
                 <a href="{% url 'salary:daily_status' %}" class="sideMenuNav2Link">
@@ -229,112 +471,8 @@
               </ul>
             </div>
           </div>
-          <div class="nav1Box">
-            <li class="nav1BoxMenu nav1BoxMenuHaveDepth2">
-              <div class="nav1BoxMenuImgDiv">
-                <img class="nav1BoxMenuImg" src="{% static 'images/accountingSystem.png' %}" alt="경리시스템 아이콘">
-              </div>
-              <div class="nav1BoxMenuHaveDepth2Text">매출관리</div>
-              <svg class="sideMenuArrow" xmlns="http://www.w3.org/2000/svg" width="18.228" height="11.84" viewBox="0 0 18.228 11.84">
-                <path id="패스_256" data-name="패스 256" d="M0,0,6.753,8.223,14,0" transform="translate(2.111 2.117)" fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="3"/>
-              </svg>        
-            </li>
-            <div class="sideMenuNav2Box">
-              <ul class="sideMenuNav2">
-                <a href="{% url 'salary:calculator' %}" class="sideMenuNav2Link">
-                  <li class="sideMenuNav2Menu">수당 시급 계산기</li>
-                </a>
-                <a href="{% url 'accounting:sales' %}" class="sideMenuNav2Link">
-                  <li class="sideMenuNav2Menu">매출현황</li>
-                </a>
-                
-                <a href="{% url 'accounting:deposit' %}" class="sideMenuNav2Link">
-                  <li class="sideMenuNav2Menu">입금관리</li>
-                </a>
-                <a href="{% url 'accounting:collect' %}" class="sideMenuNav2Link">
-                  <li class="sideMenuNav2Menu">일반 수금관리</li>
-                </a>
-                <a href="{% url 'accounting:regularly_collect' %}" class="sideMenuNav2Link">
-                  <li class="sideMenuNav2Menu">출/퇴근 수금관리</li>
-                </a>
-                <a href="{% url 'accounting:member_efficiency' %}" class="sideMenuNav2Link">
-                  <li class="sideMenuNav2Menu">인당효율</li>
-                </a>
-              </ul>
-            </div>
-          </div>
-          <div class="nav1Box">
-            <li class="nav1BoxMenu nav1BoxMenuHaveDepth2">
-              <div class="nav1BoxMenuImgDiv">
-                <img class="nav1BoxMenuImg" src="{% static 'images/vehicleManagement.png' %}" alt="차량관리 아이콘">
-              </div>
-              <div class="nav1BoxMenuHaveDepth2Text">차량관리</div>
-              <svg class="sideMenuArrow" xmlns="http://www.w3.org/2000/svg" width="18.228" height="11.84" viewBox="0 0 18.228 11.84">
-                <path id="패스_256" data-name="패스 256" d="M0,0,6.753,8.223,14,0" transform="translate(2.111 2.117)" fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="3"/>
-              </svg>        
-            </li>
-            <div class="sideMenuNav2Box">
-              <ul class="sideMenuNav2">
-                <a href="{% url 'vehicle:list' %}" class="sideMenuNav2Link">
-                  <li class="sideMenuNav2Menu">차량관리</li>
-                </a>
-                <a href="{% url 'vehicle:refueling' %}" class="sideMenuNav2Link">
-                  <li class="sideMenuNav2Menu">주유관리</li>
-                </a>
-                <a href="{% url 'vehicle:dailychecklist' %}" class="sideMenuNav2Link">
-                  <li class="sideMenuNav2Menu">일일점검</li>
-                </a>
-                <a href="{% url 'vehicle:weeklychecklist' %}" class="sideMenuNav2Link">
-                  <li class="sideMenuNav2Menu">주간점검</li>
-                </a>
-                <a href="{% url 'vehicle:equipmentchecklist' %}" class="sideMenuNav2Link">
-                  <li class="sideMenuNav2Menu">비품점검</li>
-                </a>
-              </ul>
-            </div>
-          </div>
-          <div class="nav1Box">
-            <li class="nav1BoxMenu nav1BoxMenuHaveDepth2">
-              <div class="nav1BoxMenuImgDiv">
-                <img class="nav1BoxMenuImg" src="{% static 'images/document.png' %}" alt="공지사항 아이콘">
-              </div>
-              <div class="nav1BoxMenuHaveDepth2Text">서류관리</div>
-              <svg class="sideMenuArrow" xmlns="http://www.w3.org/2000/svg" width="18.228" height="11.84" viewBox="0 0 18.228 11.84">
-                <path id="패스_256" data-name="패스 256" d="M0,0,6.753,8.223,14,0" transform="translate(2.111 2.117)" fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="3"/>
-              </svg>        
-            </li>
-            <div class="sideMenuNav2Box">
-              <ul class="sideMenuNav2">
-                <a href="{% url 'document:company' %}" class="sideMenuNav2Link">
-                  <li class="sideMenuNav2Menu">회사서류</li>
-                </a>
-                <a href="{% url 'document:dispatch' %}" class="sideMenuNav2Link">
-                  <li class="sideMenuNav2Menu">운행서류</li>
-                </a>
-              </ul>
-            </div>
-          </div>
-          <div class="nav1Box">
-            <li class="nav1BoxMenu nav1BoxMenuHaveDepth2">
-              <div class="nav1BoxMenuImgDiv">
-                <img class="nav1BoxMenuImg" src="{% static 'images/document.png' %}" alt="공지사항 아이콘">
-              </div>
-              <div class="nav1BoxMenuHaveDepth2Text">민원관리</div>
-              <svg class="sideMenuArrow" xmlns="http://www.w3.org/2000/svg" width="18.228" height="11.84" viewBox="0 0 18.228 11.84">
-                <path id="패스_256" data-name="패스 256" d="M0,0,6.753,8.223,14,0" transform="translate(2.111 2.117)" fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="3"/>
-              </svg>        
-            </li>
-            <div class="sideMenuNav2Box">
-              <ul class="sideMenuNav2">
-                <a href="{% url 'complaint:consulting' %}" class="sideMenuNav2Link">
-                  <li class="sideMenuNav2Menu">상담신청관리</li>
-                </a>
-                <a href="{% url 'complaint:inspection' %}" class="sideMenuNav2Link">
-                  <li class="sideMenuNav2Menu">차량정비신청관리</li>
-                </a>
-              </ul>
-            </div>
-          </div>
+          
+
           <div class="nav1Box">
             <li class="nav1BoxMenu">
               <div class="nav1BoxMenuImgDiv">

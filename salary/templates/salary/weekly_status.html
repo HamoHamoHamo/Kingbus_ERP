@@ -30,29 +30,42 @@
             <div class="thead flex">
                 <div class="theadTh th personalFlex">열번</div>
                 <div class="theadTh th personalFlex">성명</div>
-                <div class="theadTh th personalFlex">근무구분</div>
                 <div class="theadTh tabbleCalender">
                     <div class="tableCalenderTItle personalFlex th">
                         일자/요일
                     </div>
                     <div class="tableCalenderDate th flex">
                         {% for date in day_list %}
-                        <div class="date th">{{date}}</div>
+                        <div class="date th personalFlex">{{date}}</div>
                         {% endfor %}
                     </div>
                     <div class="tableWeek th flex">
-                        <div class="week th">월</div>
-                        <div class="week th">화</div>
-                        <div class="week th">수</div>
-                        <div class="week th">목</div>
-                        <div class="week th">금</div>
-                        <div class="week th">토</div>
-                        <div class="week th">일</div>
+                        <div class="week th personalFlex">월</div>
+                        <div class="week th personalFlex">화</div>
+                        <div class="week th personalFlex">수</div>
+                        <div class="week th personalFlex">목</div>
+                        <div class="week th personalFlex">금</div>
+                        <div class="week th personalFlex">토</div>
+                        <div class="week th personalFlex">일</div>
                     </div>
                 </div>
                 <div class="theadTh th personalFlex">계</div>
-                <div class="theadTh th none personalFlex"></div>
-                <div class="theadTh th none personalFlex"></div>
+                <div class="theadTh th">
+                    <div class="theadThTitle personalFlex">연장</div>
+                    <div class="theadThContent flex">
+                        <div class="theadThThContent personalFlex first">법내</div>
+                        <div class="theadThThContent personalFlex">법외</div>
+                    </div>
+                </div>
+                <div class="theadTh th personalFlex">야간근로</div>
+                <div class="theadTh th ">
+                    <div class="theadThTitle personalFlex">휴일</div>
+                    <div class="theadThContent flex">
+                        <div class="theadThThContent personalFlex first">8시간<br>&nbsp이하</div>
+                        <div class="theadThThContent personalFlex">8시간<br>&nbsp초과</div>
+                    </div>
+                </div>
+                <div class="theadTh th personalFlex">주휴발생여부</div>
             </div>
 
             <div class="tbody">
@@ -60,22 +73,26 @@
                 {% with member_id=member.id %}
                 {% with data=datas|obj:member.id %}
                 <div class="personContainer">
-                    <div class="orderContainer">
-                        <div class="orderList personalFlex">{{ forloop.counter }}</div>
-                        <div class="orderList personalFlex">{{member.name}}</div>
-                        <div class="orderList ">
-                            <div class="orderListList personalFlex orderListBorder">일전체시간</div>
-                            <div class="orderListList personalFlex orderListBorder">야간근무시간</div>
-                            <div class="orderListList flex">
-                                <div class="orderListListTitle personalFlex orderListBorderRight">휴일</div>
-                                <div class="orderListListContent">
-                                    <div class="orderListListList personalFlex orderListBorder">8시간<br>이하</div>
-                                    <div class="orderListListList personalFlex">8시간<br>초과</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="valueContainer">
+                        <div class="tbodyTd td personalFlex">{{ forloop.counter }}</div>
+                        <div class="tbodyTd td personalFlex">{{member.name}}</div>
+                        <div class="tbodyTd td"></div>
+                        <div class="tbodyTd td"></div>
+                        <div class="tbodyTd td"></div>
+                        <div class="tbodyTd td"></div>
+                        <div class="tbodyTd td"></div>
+                        <div class="tbodyTd td"></div>
+                        <div class="tbodyTd td"></div>
+                        <div class="tbodyTd td"></div>
+                        <div class="tbodyTd td"></div>
+                        <div class="tbodyTd td"></div>
+                        <div class="tbodyTd td"></div>
+                        <div class="tbodyTd td"></div>
+                        <div class="tbodyTd td"></div>
+                        <div class="tbodyTd td"></div>
+
+                </div>
+
+                    {% comment %} <div class="valueContainer">
                         <div class="totalValue flex">
                             {% for time in data.work_time_list %}
                             <div class="totalValueDate td">{{time}}</div>
@@ -108,8 +125,8 @@
                             <div class=" holiday8ValueDate td"></div>
                             <div class=" holiday8ValueDate td"></div>
                         </div>
-                    </div>
-                </div>
+                    </div> {% endcomment %}
+                {% comment %} </div> {% endcomment %}
                 {% endwith %}
                 {% endwith %}
                 {% endfor %}

@@ -1,0 +1,205 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load custom_tags %}
+{% block head %}
+<meta http-equiv="Cache-Control" content="private, no-cache, no-store, max-age=0, must-revalidate">
+<link rel="stylesheet" href="{% static 'css/dispatch/dispatchBase.css' %}" type="text/css" />
+<link rel="stylesheet" href="{% static 'css/dispatch/regularlyRoute.css' %}" type="text/css" />
+<link rel="stylesheet" href="{% static 'css/humanresource/team2.css' %}" type="text/css" />
+{% endblock %}
+
+{% block content-header %}
+<div class="HeaderTitle">
+    팀 노선 관리
+</div>
+{% endblock %}
+
+{% block content %}
+<div class="routeLayout">
+    <div class="groupLayout">
+        <div class="groupList">
+            <div class="groupListHead">
+                <span class="groupListTitle">팀목록</span>
+            </div>
+            <div class="groupListBody">
+                <div class="groupListItem {% if team == '전체' %}backgroundGray{% endif %}" draggable="true">
+                    <div class="groupNum">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="16.5" viewBox="0 0 22 16.5">
+                            <path id="Icon_awesome-folder" data-name="Icon awesome-folder"
+                                d="M19.938,7.25h-8.25L8.938,4.5H2.063A2.062,2.062,0,0,0,0,6.563V18.938A2.062,2.062,0,0,0,2.063,21H19.938A2.062,2.062,0,0,0,22,18.938V9.313A2.062,2.062,0,0,0,19.938,7.25Z"
+                                transform="translate(0 -4.5)" fill="#444" />
+                        </svg>
+                    </div>
+                    <div class="groupName" onclick="location.href='{{ request.path }}'">전체</div>
+                </div>
+                <div class="groupListItem {% if team == '팀없음' %}backgroundGray{% endif %}" draggable="true">
+                    <div class="groupNum">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="16.5" viewBox="0 0 22 16.5">
+                            <path id="Icon_awesome-folder" data-name="Icon awesome-folder"
+                                d="M19.938,7.25h-8.25L8.938,4.5H2.063A2.062,2.062,0,0,0,0,6.563V18.938A2.062,2.062,0,0,0,2.063,21H19.938A2.062,2.062,0,0,0,22,18.938V9.313A2.062,2.062,0,0,0,19.938,7.25Z"
+                                transform="translate(0 -4.5)" fill="#444" />
+                        </svg>
+                    </div>
+                    <div class="groupName" onclick="location.href='{{ request.path }}?team_none=팀없음'">팀없음
+                    </div>
+                </div>
+                {% for object in team_list %}
+                <div class="groupListItem {% if team == object %}backgroundGray{% endif %}" draggable="true">
+                    <div class="groupNum">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="16.5" viewBox="0 0 22 16.5">
+                            <path id="Icon_awesome-folder" data-name="Icon awesome-folder"
+                                d="M19.938,7.25h-8.25L8.938,4.5H2.063A2.062,2.062,0,0,0,0,6.563V18.938A2.062,2.062,0,0,0,2.063,21H19.938A2.062,2.062,0,0,0,22,18.938V9.313A2.062,2.062,0,0,0,19.938,7.25Z"
+                                transform="translate(0 -4.5)" fill="#444" />
+                        </svg>
+                    </div>
+                    <div class="groupName" onclick="location.href='{{ request.path }}?team={{object.id}}'">{{object.name}}</div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        {% if team and team != "전체" and team != "팀없음" %}
+        <form action="{% url 'HR:team_edit' %}" method="post" class="groupCreates">
+        {% else %}
+        <form action="{% url 'HR:team_create' %}" method="post" class="groupCreates">
+        {% endif %}
+            <input autocomplete="off" type="hidden" name="id" value="{{team.id}}">
+            {% csrf_token %}
+
+            <div class="groupCreateHead">팀 등록</div>
+            <div class="groupCreateBody">
+                <div class="groupCreateinput">
+                    <input autocomplete="off" value="{{team.name}}" name="name" type="text" placeholder="팀이름" class="groupNameCreate length50">
+                </div>
+                <div class="groupCreateBtnBox">
+                    <input autocomplete="off" type="submit" class="btnModules groupCreateSave" value="저장">
+                    <div class="btnModules groupCreateDelete" onclick="groupCreateDeleteUrl()">삭제</div>
+                </div>
+            </div>
+        </form>
+
+        {% if team and team != "전체" and team != "팀없음" %}
+        <form action="{% url 'HR:team_edit' %}" method="post" class="groupCreates">
+        {% else %}
+        <form action="{% url 'HR:team_create' %}" method="post" class="groupCreates">
+        {% endif %}
+            <input autocomplete="off" type="hidden" name="id" value="{{team.id}}">
+            {% csrf_token %}
+
+            <div class="groupCreateHead">팀장 선택</div>
+            <div class="groupCreateBody">
+                <div class="groupCreateinput">
+                    <select name="role" class="inputTeamJang">
+                    <option {% if role == '팀장선택' %} selected {% endif %} value="팀장선택">팀장선택</option>
+                    <option {% if role == '전민철' %} selected {% endif %} value="전민철">전민철</option>
+                    <option {% if role == '유성재' %} selected {% endif %} value="유성재">유성재</option>
+                    <option {% if role == '박우덕' %} selected {% endif %} value="박우덕">박우덕</option>
+                    <option {% if role == '신용민' %} selected {% endif %} value="신용민">신용민</option>
+                    <option {% if role == '홍대수' %} selected {% endif %} value="홍대수">홍대수</option>
+                    <option {% if role == '엄현민' %} selected {% endif %} value="엄현민">엄현민</option>
+                    <option {% if role == '목진국' %} selected {% endif %} value="목진국">목진국</option>
+                    <option {% if role == '추광엽' %} selected {% endif %} value="추광엽">추광엽</option>
+                </select>
+                </div>
+                <div class="groupCreateBtnBox">
+                    <input autocomplete="off" type="submit" class="btnModules groupCreateSave" value="저장">
+                    <div class="btnModules groupCreateDelete" onclick="groupCreateDeleteUrl()">삭제</div>
+                </div>
+            </div>
+        </form>
+
+        
+
+        <div class="foldGroup">
+            <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 30 30">
+                <g id="그룹_1629" data-name="그룹 1629" transform="translate(-13664 -4980)">
+                    <rect id="사각형_11725" data-name="사각형 11725" width="30" height="30" rx="15" transform="translate(13664 4980)" fill="#444" />
+                    <path id="패스_327" data-name="패스 327" d="M0,0,5.788,7.048,12,0" transform="translate(13681.063 5001) rotate(-90)" fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="3" />
+                    <path id="패스_329" data-name="패스 329" d="M0,0H12" transform="translate(13677.063 5001) rotate(-90)" fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="3" />
+                    <path id="패스_330" data-name="패스 330" d="M0,0H12" transform="translate(13673.063 5001) rotate(-90)" fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="3" />
+                </g>
+            </svg>
+        </div>
+    </div>
+
+    <div class="mainTeamroute">
+
+        <div class="searchBox">
+            <form action="{{ request.path }}" class="routListSearch">
+                <span class="searchName">노선 검색</span>
+                <input autocomplete="off" name="name" value="{{name}}" type="text" id="routeListsearch">
+                <select name="role" class="inputModules">
+                    <option {% if role == '출근' %} selected {% endif %} value="출근">출근</option>
+                    <option {% if role == '퇴근' %} selected {% endif %} value="퇴근">퇴근</option>
+                </select>
+                <input type="date" name="date">
+                <span class="searchName">운전원</span>
+                <input autocomplete="off" name="name" value="{{name}}" type="text" id="routeListsearch">
+                <input autocomplete="off" type="submit" class="btnModules routeListSearchBtn" value="검색">
+            </form>
+        </div>
+
+        <div class="btnModule">
+            <input type="submit" value="엑섹 업로드" class="excelUploads">
+            <input type="submit" value="엑셀 다운로드" class="excelDownloads">
+            <input type="submit" value="저장" class="routeInputSaves">
+            <input type="submit" value="인쇄" class="routeScan">
+        </div>
+
+        <div class="mainTeamScroll">
+         <form method="post" action="{{ request.path }}" class="RouteListForm teamSaveForm">
+            {% csrf_token %}
+            <input type="hidden" name="team" value="{{group.id}}">
+            <div class="RouteList">
+                <div class="RouteListHeadScroll">
+                    <table class="RouteListHeader">
+                        <thead>
+                            <tr>
+                                <td><input type="checkbox" class="선택"></td>
+                                <td>순번</td>
+                                <td>노선명</td>
+                                <td>출근</td>
+                                <td>차량</td>
+                                <td>출발지</td>
+                                <td>도착지</td>
+                                <td>사업장</td>
+                                <td>출/퇴근</td>
+                                <td>운행시간</td>    
+                </div> 
+ 
+                <div class="RouteListScroll">
+                    <table class="RouteListBody">
+                        <tbody>
+                            {% for member in member_list %}
+                            <tr class="RouteListBodyTr">
+                                <td><input type="checkbox"></td>
+                                <td>{{forloop.counter}}</td>
+                                <td>{{member.name}}</td>
+                                <td>{{member.role}}</td>
+                                <td>{{member.position}}</td>
+                                <td>{{member.phone_num}}</td>
+                                <td>{{forloop.counter}}</td>
+                                <td>{{forloop.counter}}</td>
+                                <td>{{forloop.counter}}</td>
+                                <td>{{forloop.counter}}</td>
+                                
+                                <td class="{{member.id}}">
+                                    <select class="tableSelect">
+                                        <option value="none"></option>
+                                        {% for team in team_list %}
+                                        <option {% if member.team == team %} selected {% endif %} value="{{team.id}}">{{team.name}}</option>
+                                        {% endfor %}
+                                    </select>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                            <tr class="blanckTr"></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </form>
+     </div>
+    </div>
+</div>
+{% endblock %}

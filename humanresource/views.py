@@ -796,6 +796,7 @@ class SalaryList(generic.ListView):
         context['name'] = name
         context['search_type'] = self.request.GET.get('type')
         return context
+
 ## 확인 필요
 # month의 출근 퇴근 일반 요금 계산해서 Salary 생성
 def new_salary(creator, month, member):
@@ -1347,3 +1348,70 @@ def salary_load(request):
         return redirect(request.META.get('HTTP_REFERER', 'redirect_if_referer_not_found'))
     else:
         return HttpResponseNotAllowed(['post'])
+
+
+
+class TeamListTwo(generic.ListView):
+    template_name = 'HR/teamtwo.html'
+    context_object_name = 'member_list'
+    model = Member
+    authority_level = 3
+
+    def get(self, request, *args, **kwargs):
+        members = self.model.objects.all()
+        context = {
+            self.context_object_name: members
+        }
+        return render(request, self.template_name, context)
+
+class TeamListThree(generic.ListView):
+    template_name = 'HR/teamthree.html'
+    context_object_name = 'member_list'
+    model = Member
+    authority_level = 3
+
+    def get(self, request, *args, **kwargs):
+        members = self.model.objects.all()
+        context = {
+            self.context_object_name: members
+        }
+        return render(request, self.template_name, context)
+
+class TeamListFour(generic.ListView):
+    template_name = 'HR/teamfour.html'
+    context_object_name = 'member_list'
+    model = Member
+    authority_level = 3
+
+    def get(self, request, *args, **kwargs):
+        members = self.model.objects.all()
+        context = {
+            self.context_object_name: members
+        }
+        return render(request, self.template_name, context)
+
+class Educational(generic.ListView):
+    template_name = 'HR/educational.html'
+    context_object_name = 'member_list'
+    model = Member
+    authority_level = 3
+
+    def get(self, request, *args, **kwargs):
+        members = self.model.objects.all()
+        context = {
+            self.context_object_name: members
+        }
+        return render(request, self.template_name, context)
+
+class Educational_Manager(generic.ListView):
+    template_name = 'HR/educational_manager.html'
+    context_object_name = 'member_list'
+    model = Member
+    authority_level = 3
+
+    def get(self, request, *args, **kwargs):
+        members = self.model.objects.all()
+        context = {
+            self.context_object_name: members
+        }
+        return render(request, self.template_name, context)        

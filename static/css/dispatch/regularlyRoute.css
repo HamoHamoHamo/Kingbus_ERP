@@ -3,7 +3,7 @@
   justify-content: space-between;
   align-items: flex-start;
   width: 100%;
-  height: 81rem;
+  height: 78rem;
 }
 
 
@@ -921,4 +921,91 @@ select[name=use]{
 
 .routeStationTime {
   font-size: 1.2rem;
+}
+
+.mainTeamroute{
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 77%;
+  height: 100%;
+  box-sizing: border-box;
+  border-radius: 0.2rem;
+}
+
+.mainTeamScroll{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    height: 90%;
+    overflow-x: hidden;
+    margin-top: 0.8rem;
+}
+
+.btnModule {
+    width: 100%;
+    text-align: right;
+    margin-top: 1.2rem;
+}
+
+.groupCreates{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    box-sizing: border-box;
+    background-color: white;
+    border-radius: 0.2rem;
+    box-shadow: 0.1rem 0.1rem 0.6rem rgba(0, 0, 0, 0.3);
+    height: 15rem;
+}
+
+.inputTeamJang{
+    height: 2.5rem;
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+    background-color: white;
+    border: 0.1rem solid #D2D2D2;
+    border-radius: 0.2rem;
+    box-sizing: border-box;
+    font-size: 1.4rem;
+    color: #191919;
+    width: 80%;
+}
+
+.excelUploads{
+    background-color: #444;
+    color: white;
+    width: 12.8rem;
+    height: 2.5rem;
+    border-radius: 0.2rem;
+}
+
+.excelDownloads{
+    background-color: #444;
+    color: white;
+    width: 12.8rem;
+    height: 2.5rem;
+    border-radius: 0.2rem;
+}
+
+.routeInputSaves{
+    background-color: #444;
+    color: white;
+    width: 6.5rem;
+    height: 2.5rem;
+    border-radius: 0.2rem;
+}
+
+.routeScan{
+  background-color: #0069D9;
+    color: white;
+    width: 6.5rem;
+    height: 2.5rem;
+    border-radius: 0.2rem;
+}
+
+.searchName{
+  margin-left: 1.5rem;
 }

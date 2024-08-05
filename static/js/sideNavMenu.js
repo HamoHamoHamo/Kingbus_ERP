@@ -27,31 +27,35 @@ function openSideNav() {
   } else {
     switch (idx) {
       case 0:
+        sideMenuNav2Box[idx].style.height = "22.6rem";
+        sideMenuNav2[idx].style.height = "20.6rem";
+        break;
+      case 1:
         if (AUTHORITY == 3)
           sideMenuNav2Box[idx].style.height = "18.4rem";
         else
           sideMenuNav2Box[idx].style.height = "10.4rem";
         sideMenuNav2[idx].style.height = "8.4rem";
         break;
-      case 1:
-        sideMenuNav2Box[idx].style.height = "39.8rem";
-        sideMenuNav2[idx].style.height = "37.8rem";
-        break;
       case 2:
-        sideMenuNav2Box[idx].style.height = "14.6rem";
-        sideMenuNav2[idx].style.height = "12.6rem";
+        sideMenuNav2Box[idx].style.height = "10.4rem";
+        sideMenuNav2[idx].style.height = "8.4rem";
         break;
       case 3:
         sideMenuNav2Box[idx].style.height = "10.4rem";
         sideMenuNav2[idx].style.height = "8.4rem";
         break;
       case 4:
-        sideMenuNav2Box[idx].style.height = "53.4rem";
-        sideMenuNav2[idx].style.height = "50.4rem";
+        sideMenuNav2Box[idx].style.height = "14.4rem";
+        sideMenuNav2[idx].style.height = "12.4rem";
         break;
       case 5:
-        sideMenuNav2Box[idx].style.height = "28.2rem";
-        sideMenuNav2[idx].style.height = "25.2rem";
+        sideMenuNav2Box[idx].style.height = "26.4rem";
+        sideMenuNav2[idx].style.height = "24.4rem";
+        break;
+      case 6:
+        sideMenuNav2Box[idx].style.height = "22.4rem";
+        sideMenuNav2[idx].style.height = "20.4rem";
         break;
       // case 4:
       //   sideMenuNav2Box[idx].style.height = "15.2rem";
@@ -61,25 +65,46 @@ function openSideNav() {
       //   sideMenuNav2Box[idx].style.height = "10.4rem";
       //   sideMenuNav2[idx].style.height = "8.4rem";
       //   break;
-      case 6:
-        sideMenuNav2Box[idx].style.height = "23rem";
-        sideMenuNav2[idx].style.height = "21rem";
-        break;
       case 7:
-        sideMenuNav2Box[idx].style.height = "10.4rem";
-        sideMenuNav2[idx].style.height = "8.4rem";
+        sideMenuNav2Box[idx].style.height = "38.4rem";
+        sideMenuNav2[idx].style.height = "36.4rem";
         break;
       case 8:
+        sideMenuNav2Box[idx].style.height = "14.4rem";
+        sideMenuNav2[idx].style.height = "12.4rem";
+        break;
+      case 9:
+        sideMenuNav2Box[idx].style.height = "14.4rem";
+        sideMenuNav2[idx].style.height = "12.4rem";
+        break;
+      case 10:
         sideMenuNav2Box[idx].style.height = "10.4rem";
         sideMenuNav2[idx].style.height = "8.4rem";
         break;
+      case 11:
+        sideMenuNav2Box[idx].style.height = "50.4rem";
+        sideMenuNav2[idx].style.height = "48.4rem";
+        break;
+      case 12:
+        sideMenuNav2Box[idx].style.height = "10.4rem";
+        sideMenuNav2[idx].style.height = "8.4rem";
+        break;
+      case 13:
+        sideMenuNav2Box[idx].style.height = "10.4rem";
+        sideMenuNav2[idx].style.height = "8.4rem";
+        break;
+      case 14:
+        sideMenuNav2Box[idx].style.height = "10.4rem";
+        sideMenuNav2[idx].style.height = "8.4rem";
+        break;
+    }
+    
     }
     sideNavControll[idx].style.transform = "rotate(180deg)"
     this.parentNode.style.backgroundColor = "#19173B";
     overlapCount = idx;
     navOpenCount = true;
   }
-}
 
 
 //hover 색 변화

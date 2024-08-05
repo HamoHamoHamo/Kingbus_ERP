@@ -1068,3 +1068,43 @@ def temporary_assignment_delete(request):
         return redirect(reverse('assignment:temporary_assignment') + f'?date1={date1}&date2={date2}')
     else:
         return HttpResponseNotAllowed(['post'])
+
+
+# class Approval(generic.ListView):
+#     template_name = 'assignment/approval.html'
+#     context_object_name = 'assignment_list'
+#     model = Assignment
+#     authority_level = 3
+
+#     def get(self, request, *args, **kwargs):
+#         members = self.model.objects.all()
+#         context = {
+#             self.context_object_name: members
+#         }
+#         return render(request, self.template_name, context)
+
+class ApprovalProcess(generic.ListView):
+    template_name = 'assignment/approvalProcess.html'
+    context_object_name = 'member_list'
+    model = Member
+    authority_level = 3
+
+    def get(self, request, *args, **kwargs):
+        members = self.model.objects.all()
+        context = {
+            self.context_object_name: members
+        }
+        return render(request, self.template_name, context)
+
+class Approval(generic.ListView):
+    template_name = 'assignment/approval.html'
+    context_object_name = 'member_list'
+    model = Member
+    authority_level = 3
+
+    def get(self, request, *args, **kwargs):
+        members = self.model.objects.all()
+        context = {
+            self.context_object_name: members
+        }
+        return render(request, self.template_name, context)

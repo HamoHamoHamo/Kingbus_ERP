@@ -57,6 +57,8 @@ INSTALLED_APPS = [
     'assignment',
     'salary',
     "debug_toolbar",
+    'educational',
+    'rules',
 ]
 
 MIDDLEWARE = [

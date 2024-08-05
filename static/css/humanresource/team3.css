@@ -1,0 +1,128 @@
+.routeInputDeleted {
+    background-color: #444;
+    color: white;
+    width: 6.5rem;
+    height: 2.5rem;
+}
+
+.routeInputExcelDownload {
+    background-color: #444;
+    color: white;
+    width: 12.8rem;
+    height: 2.5rem;
+}
+
+
+.routeInputExcelUpload {
+    background-color: #444;
+    color: white;
+    width: 12.8rem;
+    height: 2.5rem;
+}
+
+
+.routeInputPrint {
+    background-color: #0069D9;
+    color: white;
+    width: 6.5rem;
+    height: 2.5rem;
+}
+
+
+.RouteListForm {
+    height: 100%;
+}
+
+.RouteListHeader {
+    width: 100%;
+}
+
+.RouteListBody {
+    width: 100%;
+}
+
+#routeListsearch {
+    height: 2.5rem;
+    width: 13rem;
+}
+
+.routListSearch select {
+    height: 2.5rem;
+    margin-right: 2rem;
+}
+
+.searchBox {
+    height: 3.6rem;
+    width: 100%;
+}
+
+.RouteListHeadScroll {
+    overflow-x: hidden;
+}
+
+.RouteListScroll {
+    overflow-x: hidden;
+}
+
+.RouteList table td:nth-child(1) {
+    width: 3%;
+}
+
+.RouteList table td:nth-child(2) {
+    width: 8%;
+}
+
+.RouteList table td:nth-child(3) {
+    width: 4%;
+}
+
+.RouteList table td:nth-child(4) {
+    width: 8%;
+    text-align: center;
+    padding: 0;
+}
+
+.RouteList table td:nth-child(5) {
+    width: 10%;
+}
+
+.RouteList table td:nth-child(6) {
+    width: 16%;
+}
+
+.RouteList table td:nth-child(7) {
+    width: 10%;
+}
+
+.RouteList table td:nth-child(8) {
+    width: 10%;
+}
+
+.RouteList table td:nth-child(9) {
+    width: 10%;
+}
+
+.RouteListBodyTr:hover {
+    background-color: #CDCDCE;
+    cursor: auto;
+}
+
+.tableSelect {
+    width: 60%;
+    text-align: center;
+    outline: none;
+}
+
+.routeInputDelete {
+    background-color: #0069D9;
+}
+
+.backgroundGray {
+    background-color: #CDCDCE;
+}
+
+.btnModule {
+    width: 100%;
+    text-align: right;
+    margin-top: 1.2rem;
+}

@@ -2021,7 +2021,7 @@ def regularly_order_upload(request):
     #except Exception as e:
     #    return JsonResponse({'status': 'fail', 'count': count, 'error': f'{e}'})
 
-def regularly_order_download(request):
+def regularly_order_download(request):  #엑셀다운로드
     if request.session.get('authority') > 1:
         return render(request, 'authority.html')
     datalist = list(DispatchRegularlyData.objects.exclude(use='삭제').order_by('group__number', 'group__name', 'num1', 'number1', 'num2', 'number2').values_list('id', 'group_id__name', 'route', 'departure', 'arrival', 'number1', 'number2', 'departure_time', 'arrival_time', 'work_type', 'location', 'week', 'distance', 'detailed_route', 'maplink', 'price', 'driver_allowance', 'driver_allowance2', 'outsourcing_allowance', 'references', 'use'))
@@ -2036,7 +2036,7 @@ def regularly_order_download(request):
             waypoints[-1][1].append(waypoint)
     cnt = 0
     i = 0
-    for data in datalist:
+    for data in datalist:  ##데이터찍는부분
         data = list(data)
         if len(waypoints) > cnt and data[0] == waypoints[cnt][0]:
             data.insert(14, ', '.join(waypoints[cnt][1]))

@@ -1,0 +1,152 @@
+.flex {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.popupHeader,.popupBody{
+    display: none;
+}
+
+.search-Container{
+    height: 6rem;
+}
+
+
+.searchFormLabel{
+    font-size: 1.4rem;
+}
+
+.searchFormInput{
+    border: 0.1rem solid #d2d2d2;
+    margin-left: 1rem;
+    width: 12.2rem;
+    height: 2.4rem;
+    font-size: 1.4rem;
+}
+
+.textInput{
+    border-radius: 0.3rem;
+    border: 0.1rem solid #d2d2d2;
+    padding-block: 0;
+    width: 20.7rem;
+}
+
+.dateInput{
+    border-radius: 0.3rem;
+    border: 0.1rem solid #d2d2d2;
+    padding-block: 0;
+    vertical-align: bottom;
+}
+
+.last{
+    margin-left: 0;
+}
+
+.searchFormSearchBtn{
+    width: 6.5rem;
+    vertical-align: bottom;
+    padding-block: 0;
+    border-radius: 0.2rem;
+    border: none;
+    height: 2.5rem;
+    background-color: #444444;
+    color: white;
+    margin-left: 1rem;
+}
+
+.tableContainer{
+    font-size: 1.4rem;
+    width: 100%;
+    height: 67.2rem;
+    border-radius: 0.3rem;
+    box-shadow: 0 0.2rem 0.4rem rgba(0, 0, 0, 0.16);
+    background-color: white;
+
+}
+
+.thead{
+    font-size: 1.4rem;
+    width: 100%;
+    height: 3.2rem;
+    box-sizing: border-box;
+}
+
+.tbody{
+    width: 100%;
+    height: calc(100% - 3.2rem);
+    box-sizing: border-box;
+}
+
+.tbodyTr{
+    height: 6.4rem;
+}
+
+.tbodyTrTd{
+    height: 100%;
+}
+
+.th, .td {
+    color: white;
+    height: 100%;
+    background-color: #444444;
+    border-right: 0.1rem solid #CDCDCE;
+    border-bottom: 0.1rem solid #CDCDCE;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.th{
+    border-right: none;
+    border-bottom: none;
+}
+
+.td{
+    background-color: white;
+    color: black;
+}
+
+.theadTh:nth-child(1){width: 3.5%;}
+.theadTh:nth-child(2){width: 5%;}
+.theadTh:nth-child(3){width: 10%;}
+.theadTh:nth-child(4){width: 46%}
+.theadTh:nth-child(5){width: 10%;}
+.theadTh:nth-child(6){width: 10%;}
+.theadTh:nth-child(7){width: 7%}
+.theadTh:nth-child(8){width: 8.5%;}
+
+.tbodyTrTd:nth-child(1){width: 3.5%;}
+.tbodyTrTd:nth-child(2){width: 5%;}
+.tbodyTrTd:nth-child(3){width: 10%;}
+.tbodyTrTd:nth-child(4){width: 46%}
+.tbodyTrTd:nth-child(5){width: 10%;}
+.tbodyTrTd:nth-child(6){width: 10%;}
+.tbodyTrTd:nth-child(7){width: 7%}
+.tbodyTrTd:nth-child(8){width: 8.5%;}
+
+.blue{
+    color: #0069D9;
+}
+
+.pageTransition{
+
+    font-size: 1.4rem;
+    margin-top: 1rem;
+    gap: 2rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.write{
+    width: 6.5rem;
+    height: 2.5rem;
+    color: white;
+    background-color: #0069D9;
+    margin-left: auto;
+    border: none;
+}
+
+.processContent{
+    display: none;
+}

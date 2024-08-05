@@ -1,0 +1,383 @@
+{% extends 'base.html' %}
+{% load static %}   
+{% load dispatch_custom_tags %}
+{% block head %}
+<meta http-equiv="Cache-Control" content="private, no-cache, no-store, max-age=0, must-revalidate">
+<link rel="stylesheet" href="{% static 'css/salary/table.css' %}" type="text/css" />
+
+
+{% endblock %}
+
+{% block content-header %}
+<div class="HeaderTitle">
+    임금테이블
+</div>
+{% endblock %}
+
+{% block content %}
+<!--검색창-->
+<div class="searchContainer">
+
+    <!--검색폼-->
+    <form action="" class="searchForm">
+        <label for="" class="searchFormLabel">날짜</label>
+        <input type="month" name="month" value="{{month}}" class="searchFormInput searchFormInputMonth">
+        <label for="" class="searchFormLabel">이름</label>
+        <input name="name" value="{{name}}" type="text" class="searchFormInput">
+        <select name="type" id="type" class="searchFormInput searchFormInputSelect">
+            <option {% if type == '전체' %}selected{% endif %} value="전체">전체</option>
+            <option {% if type == '정규직' %}selected{% endif %} value="정규직">정규직</option>
+            <option {% if type == '일당직' %}selected{% endif %} value="일당직">일당직</option>
+        </select>
+        <input type="submit" class="searchFormSearchBtn" value="검색">
+    </form>
+    <!--검색폼 done-->
+
+    <!--급여현황-->
+    <div class="popupAreaBox">
+
+        <div class="btnModules popupAreaBoxBtn blue" id="hourlyRateEditPopupBtn">
+            시급수정
+        </div>
+        <div class="btnModules popupAreaBoxBtn">
+            근무현황
+        </div>
+        <div class="btnModules popupAreaBoxBtn">
+            급여명세서
+        </div>
+    </div>
+    <!--급여현황 done-->
+</div>
+<!--검색창 끝-->
+
+<!--임금테이블-->
+<div class="contentsAreaBox scrollDiv">
+
+    <!--왼쪽고정테이블-->
+    <div class="orderListMain">
+        <!--고정헤더-->
+        <div class="orderListTableHead">
+            <div class="orderListMainContents orderListMain0"><input type="checkbox"></div>
+            <div class="orderListMainContents orderListMain1">번호</div>
+            <div class="orderListMainContents orderListMain2">이름</div>
+            <div class="orderListMainContents orderListMain2 orderListMain3">직책</div>
+        </div>
+        <!--고정헤더 done-->
+
+        <div class="orderListSubScroll">
+
+            <div class="orderListScrollBox">
+                <!--고정요소-->
+                {% for member in member_list %}
+                <div class="orderListItem">
+                    <div class="orderListMainContents orderListMain0"><input type="checkbox"></div>
+                    <div class="orderListMainContents orderListMain1">{{forloop.counter}}</div>
+                    <div class="orderListMainContents orderListMain2">{{member.name}}</div>
+                    <div class="orderListMainContents orderListMain2 orderListMain3">{{member.role}}</div>
+                </div>
+                {% endfor %}
+                <!--고정요소 done-->
+            </div>
+        </div>
+
+
+    </div>
+    <!--왼쪽고정테이블 done-->
+
+    <!--데이터테이블-->
+    <div class="orderListSub orderListScrollBox orderListScrollYBox">
+
+        <div class="tableBody table">
+
+            <!--thead-->
+            <div class="thead">
+                <div class="theadDate">입사일자</div>
+                <div class="theadWorkTime">근무시간</div>
+                <div class="theadBasic">기본시급<br>(1)<br>30시간이하</div>
+                <div class="theadBasic">기본시급<br>(2)<br>30시간초과</div>
+                <div class="theadNormal">통상시급</div>
+
+                <!--통상급여-->
+                <div class="theadOrdinarySalary">
+                    <div class="theadOrdinarySalaryTitle">통상급여</div>
+                    <div class="theadOrdinarySalaryContent">
+                        <div>임금</div>
+                        <div>직책수당</div>
+                        <div>근속수당</div>
+                        <div class="theadOrdinarySalaryContentLast">계</div>
+                    </div>
+                </div>
+                <!--통상급여 done-->
+
+                <!--법정수당-->
+                <div class="theadLegalAllowance">
+                    <div class="theadLegalAllowanceTitle">법정수당</div>
+                    <div class="theadLegalAllowanceContent">
+                        <div>주휴수당</div>
+                        <div>법정휴일</div>
+                        <div class="theadLegalAllowanceContentOne">
+                            <div class="theadLegalAllowanceContentOneTitle">법내연장</div>
+                            <div class="theadLegalAllowanceContentOneContent">기본임금</div>
+                        </div>
+                        <div class="theadLegalAllowanceContentDouble theadDouble">
+                            <div class="theadLegalAllowanceContentDoubleTitle theadWeeklyExtension">주 연장</div>
+                            <div class="theadLegalAllowanceContentDoubleContent theadWeeklyExtension">
+                                <div class="theadLegalAllowanceContentDoubleContentFirst theadAnother">기본임금</div>
+                                <div>가산임금</div>
+                            </div>
+                        </div>
+                        <div>야간근로<br>가산임금</div>
+                        <div class="theadLegalAllowanceContentDouble">
+                            <div class="theadLegalAllowanceContentDoubleTitle">휴일근로</div>
+                            <div class="theadLegalAllowanceContentDoubleContent">
+                                <div class="theadLegalAllowanceContentDoubleContentFirst">휴일기본임금</div>
+                                <div class="theadLegalAllowanceContentDoubleContentFirst">휴일50%가산임금</div>
+                                <div class="theadLegalAllowanceContentDoubleContentFirst">휴일100%가산임금</div>
+                            </div>
+                        </div>
+                        <div class="theadLegalAllowanceContentDouble">
+                            <div class="theadLegalAllowanceContentDoubleTitle">휴일근로</div>
+                            <div class="theadLegalAllowanceContentDoubleContent">
+                                <div class="theadLegalAllowanceContentDoubleContentFirst">휴일기본임금</div>
+                                <div class="theadLegalAllowanceContentDoubleContentFirst">휴일50%가산임금</div>
+                                <div class="theadLegalAllowanceContentDoubleContentFirst">휴일100%가산임금</div>
+                            </div>
+                        </div>
+                        <div>연차수당</div>
+                        <div>만근수당</div>
+                        <div class="theadLegalAllowanceContentLast">계</div>
+                    </div>
+                </div>
+                <!--법정수당 done-->
+
+                
+
+                <div class="theadSum">합계</div>
+                <!--보험료산정기준-->
+                <div class="theadInsurance">
+                    <div class="theadInsuranceTitle">보험료산정기준</div>
+                    <div class="theadInsuranceContent">
+                        <div class="theadInsuranceContentFirst">건강보험</div>
+                        <div>국민연금</div>
+                    </div>
+                </div>
+                <!--보험료산정기준 done-->
+
+                <!--공제내역-->
+                <div class="theadDeductionDetails">
+                    <div class="theadDeductionDetailsTitle">공제 내역</div>
+                    <div class="theadDeductionDetailsContent">
+                        <div>갑근세</div>
+                        <div>주민세</div>
+                        <div>고용보험</div>
+                        <div>건강보험</div>
+                        <div>장기요양</div>
+                        <div>국민연금</div>
+                        <div>기타</div>
+                        <div class="theadDeductionDetailsContentLast">공제합계</div>
+                    </div>
+                </div>
+                <!--공제내역 done-->
+
+                <div class="theadAdditionalAllowance">추가수당</div>
+                <div class="theadSum theadThLast">합계</div>
+            </div>
+            <!--thead done-->
+
+            <!--tbody-->
+            <div class="tbody">
+
+                {% for member in member_list %}
+                {% with member_id=member.id %}
+                {% with data=datas|obj:member.id %}
+                <div class="tbodyItemTr">
+                    <!-- 입사일자 -->
+                    <div class="addCommaToInnerText tbodyDate">{{data.entering_date}}</div>
+                    <!-- 근무시간 -->
+                    <div class="addCommaToInnerText tbodyWorkTime">{{data.total_work_hour_minute}}</div>
+                    <!-- 기본시급1 -->
+                    <div class="addCommaToInnerText tbodyBasic">{{data.hourly_wage1}}</div>
+                    <!-- 기본시급2 -->
+                    <div class="addCommaToInnerText tbodyBasic">{{data.hourly_wage2}}</div>
+                    <!-- 통상시급 -->
+                    <div class="addCommaToInnerText tbodyNormal">{{data.ordinary_hourly_wage}}</div>
+                    <div class="tbodyOrdinarySalary" style="display: flex;">
+                        <!-- 임금 -->
+                        <div class="addCommaToInnerText">{{data.wage}}</div>
+                        <!-- 직책수당 -->
+                        <div class="addCommaToInnerText">{{data.performance_allowance}}</div>
+                        <!-- 근속수당 -->
+                        <div class="addCommaToInnerText">{{data.service_allowance}}</div>
+                        <!-- 계 -->
+                        <div class="addCommaToInnerText">{{data.ordinary_salary}}</div>
+                    </div>
+                    <div class="tbodyLegalAllowance" style="display: flex;">
+                        <!-- 주휴수당 -->
+                        <div class="addCommaToInnerText">{{data.weekly_holiday_allowance}}</div>
+                        <!-- 법정휴일 -->
+                        <div class="addCommaToInnerText">{{data.legal_holiday_allowance}}</div>
+                        <!-- 법내연장 기본임금 -->
+                        <div class="addCommaToInnerText">{{data.weekly_within_law_extension_wage}}</div>
+                        <!-- 주연장 기본임금 -->
+                        <div class="addCommaToInnerText">{{data.weekly_outside_law_extension_wage}}</div>
+                        <!-- 주연장 가산임금 -->
+                        <div class="addCommaToInnerText">{{data.weekly_extension_additional_wage}}</div>
+                        <!-- 야간근로 -->
+                        <div class="addCommaToInnerText">{{data.night_shift_wage}}</div>
+                        <!-- 휴일 기본임금 -->
+                        <div class="addCommaToInnerText">{{data.holiday_work_wage}}</div>
+                        <!-- 휴일 50%임금 -->
+                        <div class="addCommaToInnerText">{{data.additional_holiday_work_wage_half}}</div>
+                        <!-- 휴일 100%임금 -->
+                        <div class="addCommaToInnerText">{{data.additional_holiday_work_wage}}</div>
+
+                        <!-- 연차수당 -->
+                        <div class="addCommaToInnerText">{{data.annual_allowance}}</div>
+                        <!-- 만근수당 -->
+                        <div class="addCommaToInnerText">{{data.meal}}</div>
+                        <!-- 계 -->
+                        <div class="addCommaToInnerText">{{data.statutory_allowance}}</div>
+                    </div>
+                    <div class="tbodySum addCommaToInnerText">{{data.sum_ordinary_salary_and_statutory_allowance}}</div>
+                    <div class="tbodyInsurance" style="display: flex;">
+                        <div class="addCommaToInnerText"></div>
+                        <div class="addCommaToInnerText"></div>
+                    </div>
+                    <div class="tbodyDeductionDetails" style="display: flex;">
+                        <div class="addCommaToInnerText"></div>
+                        <div class="addCommaToInnerText"></div>
+                        <div class="addCommaToInnerText"></div>
+                        <div class="addCommaToInnerText"></div>
+                        <div class="addCommaToInnerText"></div>
+                        <div class="addCommaToInnerText"></div>
+                        <div class="tableEdit addCommaToInnerText"></div>
+                    </div>
+                    <div class="tbodyAdditionalAllowance tableEdit addCommaToInnerText"></div>
+                    <div class="tbodySum tbodySumLast addCommaToInnerText"></div>
+                </div>
+                {% endwith %}
+                {% endwith %}
+                {% endfor %}
+
+            </div>
+            <!--tbody done-->
+        </div>
+    </div>
+    <!--데이터테이블 done-->
+</div>
+<!--임금테이블 done-->
+
+<!--합계-->
+<div class="sumAreaBox">
+    <div class="orderSumAreaBox">합계</div>
+    <div class="orderListSub orderListScrollBox subScroll">
+        <div class="sumBodyTable">
+            <div class="sumItemTr">
+                <div class="sumDate"></div>
+                <div class="total_work_minute sumWorkTime"></div>
+                <div class="hourly_wage sumBasic"></div>
+                <div class="hourly_wage sumBasic"></div>
+                <div class="ordinary_hourly_wage sumNormal"></div>
+                <div class="sumOrdinarySalary" style="display: flex;">
+                    <div class="wage">임금</div>
+                    <div class="performance_allowance">직책수당</div>
+                    <div class="service_allowance">근속수당</div>
+                    <div class="ordinary_salary">계</div>
+                </div>
+                <div class="sumLegalAllowance" style="display: flex;">
+                    <div class="weekly_holiday_allowance">주휴수당</div>
+                    <div class="legal_holiday_allowance">법정휴일</div>
+                    <div class="weekly_within_law_extension_wage">주연장 법내 기본임금</div>
+                    <div class="weekly_outside_law_extension_wage">주연장 법외 비곤임금</div>
+                    <div class="weekly_extension_additional_wage">주 연장 가산임금</div>
+                    <div class="night_shift_wage">야간근로 가산임금</div>
+                    <div class="holiday_work_wage"></div>
+                    <div class="additional_holiday_work_wage_half"></div>
+                    <div class="additional_holiday_work_wage"></div>
+                    <div class="annual_allowance"></div>
+                    <div class="meal">만근수당</div>
+                    <div class="statutory_allowance"></div>
+                    
+                </div>
+                <div class="sum_ordinary_salary_and_statutory_allowance sumSum"></div>
+                <div class="sumInsurance" style="display: flex;">
+                    <div></div>
+                    <div></div>
+                </div>
+                <div class="sumDeductionDetails" style="display: flex;">
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div class="tableEdit"></div>
+                </div>
+                <div class="sumAdditionalAllowance tableEdit"></div>
+                <div class="sumSum sumSumLast"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--합계 done-->
+
+
+
+{% endblock %}
+
+
+
+{% block popup %}
+
+<div class="popupAreaModules" id="hourlyRateEditPopup">
+    <div class="popupBgModules"></div>
+    <form method="post" action="{% url 'salary:hourly_wage_save' %}" class="popupContainer hourlyWageForm">
+        {% csrf_token %}
+        <input type="hidden" name="month" value="{{month}}">
+        <div class="popupHeader">
+            <div class="popupTitle">시급 수정</div>
+        </div>
+        <div class="popupBody">
+            <div class="popupSection">
+                <div class="popupArticle">
+                    <label for="" class="popupArticleLabel">
+                        <span class="importantStar">*</span>
+                        기본시급1 (주 30시간 이하)
+                    </label>
+                    <input required autocomplete="off" name="wage1" type="text"
+                        class="popupPrice inputText inputComma essential length100"
+                        value="{{hourly_wage.wage1}}">
+                </div>
+                <div class="popupArticle">
+                    <label for="" class="popupArticleLabel">
+                        <span class="importantStar">*</span>
+                        기본시급2 (주 30시간 초과)
+                    </label>
+                    <input required autocomplete="off" name="wage2" type="text"
+                        class="popupPrice inputText essential inputComma length100"
+                        value="{{hourly_wage.wage2}}">
+                </div>
+            </div>
+            <div class="popupFooter">
+                <input class="btnModules hourlyRateEditBtn blue" type="submit" value="확인">
+                <div class="btnModules popupCloseBtn">취소</div>
+            </div>
+        </div>
+    </form>
+</div>
+{% endblock %}
+
+
+
+
+
+{% block script %}
+<script>
+    {% autoescape off %}
+    console.log("TEST", {{datas}})
+    const DATAS = {{datas}}
+    {% endautoescape %}
+</script>
+<script type="module" src="{% static 'js/salary/table.js' %}"></script>
+{% endblock %}

@@ -71,6 +71,22 @@ textarea {
   width: 22rem;
   height: 100vh;
   background-color: #1C1A4E;
+  overflow: scroll;
+}
+
+::-webkit-scrollbar {
+    width: 2px;
+}
+
+/* 스크롤바 트랙 */
+::-webkit-scrollbar-track {
+    background: transparent; 
+}
+
+/* 스크롤바 핸들 */
+::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 4px;
 }
 
 
@@ -193,7 +209,6 @@ textarea {
 /* Manual */
 .manualArea {
   position: absolute;
-  bottom: 0;
   display: flex;
   flex-direction: column;
   align-items: center;

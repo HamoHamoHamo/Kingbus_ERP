@@ -1,0 +1,79 @@
+.container{
+    display: flex;
+}
+
+.main-content {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2rem;
+
+}
+
+.column {
+    background-color: white;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    width: 53rem;
+    height: 45rem;
+    overflow-y: auto; 
+}
+
+.section-header {
+    font-size: 2rem;
+    font-weight: bold;
+    text-align: center;
+    background-color: #444;
+    color: white;
+    padding: 10px;
+    position: sticky;
+    top: 0;
+    z-index: 1;
+}
+
+.sub-section {
+    margin-bottom: 20px;
+}
+
+.sub-section-header {
+    font-size: 16px;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.educationalUl {
+    list-style-type: none;
+    padding: 0;
+}
+
+.educationalUl li {
+    margin-bottom: 1.8rem;
+    font-size: 1.4rem;
+    margin-left: 2.6rem;
+}
+
+.educationalTable {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: center
+}
+
+.educationalTable td {
+    height: 3.4rem;
+    border: 1px solid #ccc;
+    font-size: 1.4rem;
+}
+
+::-webkit-scrollbar {
+    width: 2px;
+}
+
+/* 스크롤바 트랙 */
+::-webkit-scrollbar-track {
+    background: transparent; 
+}
+
+/* 스크롤바 핸들 */
+::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 4px;
+}

@@ -20,17 +20,17 @@ from common.constant import TODAY
 from common.datetime import *
 from common.views import AuthorityCheckView
 
-class SalaryStatus(generic.ListView):
+class SalaryStatus(AuthorityCheckView, generic.ListView):
     template_name = 'salary/status.html'
     context_object_name = 'member_list'
     model = Member
     authority_level = 3
 
-    def get(self, request, *args, **kwargs):
-        if request.session.get('authority') > 3:
-            return render(request, 'authority.html')
-        return super().get(request, *args, **kwargs)
-    
+    def set_search_duration(self):
+        start_day = 1
+        last_day = last_day_of_month(TODAY)
+        return start_day, last_day
+
     def get_queryset(self):
         name = self.request.GET.get('name', '')
         member_selector = MemberSelector()
@@ -42,33 +42,40 @@ class SalaryStatus(generic.ListView):
         context['name'] = self.request.GET.get('name', '')
         context['month'] = self.request.GET.get('month', TODAY[:7])
 
+        start_day, last_day = self.set_search_duration()
         first_date = f"{context['month']}-01"
         mondays = get_mondays_from_last_week_of_previous_month(context['month'])
         start_date = mondays[0] if mondays[0][:7] != context['month'] else first_date
 
+        last_date = last_date_of_month(first_date)
+        context['date_list'] = get_date_range_list(first_date, last_date)
+
         # 불러온 월요일부터 배차 데이터 가져오기
         dispatch_selector = DispatchSelector()
         connect_time_list = dispatch_selector.get_driving_time_list(start_date, last_day_of_month(first_date))
-    
+        holiday_data = get_holiday_list_from_open_api(context['month'])
+
         morning_list = dispatch_selector.get_monthly_morning_checklist(context['month'])
         evening_list = dispatch_selector.get_monthly_evening_checklist(context['month'])
         
         datas = {}
         context['weekday_list'] = ['' for i in range(31)]
-        context['date_list'] = ['' for i in range(31)]
+        context['day_list'] = ['' for i in range(31)]
 
         for i in range(last_day_of_month(first_date)):
             date = f"{context['month']}-{i + 1:02d}"
             context['weekday_list'][i] = get_weekday_from_date(date)
-            context['date_list'][i] = i + 1
+            context['day_list'][i] = i + 1
 
         for member in context['member_list']:
-            data_collector = SalaryStatusDataCollector(member, context['month'], mondays)
-            data_collector.collect_connects(connect_time_list)
+            data_collector = SalaryStatusDataCollector(member, context['month'], mondays, connect_time_list, holiday_data, context['date_list'])
             data_collector.collect_morning(morning_list)
             data_collector.collect_evening(evening_list)
-            datas[member.id] = data_collector.get_collected_status_data()
 
+            data_collector.set_duration(start_day, last_day)
+            datas[member.id] = data_collector.get_calculate_times()
+            
+ 
         context['datas'] = datas
         return context
 
@@ -432,7 +439,7 @@ class GptGraph(AuthorityCheckView):
         return render(request, self.template_name, context)
 
 class RouteTime(AuthorityCheckView):
-    template_name = 'salary/routeTime.html'
+    template_name = 'salary/route_time.html'
     context_object_name = 'member_list'
     model = Member
     authority_level = 3

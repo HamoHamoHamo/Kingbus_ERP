@@ -1,0 +1,103 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load dispatch_custom_tags %}
+
+{% block head %}
+<meta http-equiv="Cache-Control" content="private, no-cache, no-store, max-age=0, must-revalidate">
+<link rel="stylesheet" href="{% static 'css/dispatch/dispatchBase.css' %}" type="text/css" />
+<link rel="stylesheet" href="{% static 'css/dispatch/regularlyRoute.css' %}" type="text/css" />
+<link rel="stylesheet" href="{% static 'css/education/educational.css' %}" type="text/css" />
+{% endblock %}
+
+{% block content-header %}
+<div class="HeaderTitle">
+    교육 자료
+</div>
+{% endblock %}
+
+{% block content %}
+<div class="search-Container">
+    <form class="search-Form">
+        <label for="" class="search-Form_label">교육제목 : </label>
+        <input type="text" name="pathName" placeholder="교육제목" class="search-dispatch-path">
+        <input type="submit" class="search-Form_search-btn" value="검색">
+    </form>
+</div>
+
+<div class="container">
+    <div class="main-content">
+        <div class="column">
+            <div class="section">
+                <div class="section-header">기본 교육</div>
+                <div class="sub-section">
+                    <table class="educationalTable">
+                        <tr><td>1</td><td class="sectionText">기사식 정기 업무</td></tr>
+                        <tr><td>2</td><td class="sectionText">인사 시 등록 서류</td></tr>
+                        <tr><td>3</td><td class="sectionText">기사 규정</td></tr>
+                        <tr><td>4</td><td class="sectionText">인사 장치</td></tr>
+                        <tr><td>5</td><td class="sectionText">현장 관리자의 수칙</td></tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="column">
+            <div class="section">
+                <div class="section-header">안전 및 사고 대응</div>
+                <div class="sub-section">
+                      <table class="educationalTable">
+                        <tr><td>1</td><td class="sectionText">기사식 정기 업무</td></tr>
+                        <tr><td>2</td><td class="sectionText">인사 시 등록 서류</td></tr>
+                        <tr><td>3</td><td class="sectionText">기사 규정</td></tr>
+                        <tr><td>4</td><td class="sectionText">인사 장치</td></tr>
+                        <tr><td>5</td><td class="sectionText">현장 관리자의 수칙</td></tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="column">
+            <div class="section">
+                <div class="section-header">운행 방법 및 운전 품질</div>
+                <div class="sub-section">
+                    <table class="educationalTable">
+                        <tr><td>1</td><td class="sectionText">기사식 정기 업무</td></tr>
+                        <tr><td>2</td><td class="sectionText">인사 시 등록 서류</td></tr>
+                        <tr><td>3</td><td class="sectionText">기사 규정</td></tr>
+                        <tr><td>4</td><td class="sectionText">인사 장치</td></tr>
+                        <tr><td>5</td><td class="sectionText">현장 관리자의 수칙</td></tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="column">
+            <div class="section">
+                <div class="section-header">운행 및 차량 관리</div>
+                <div class="sub-section">
+                    <table class="educationalTable">
+                        <tr><td>1</td><td class="sectionText">기사식 정기 업무</td></tr>
+                        <tr><td>2</td><td class="sectionText">인사 시 등록 서류</td></tr>
+                        <tr><td>3</td><td class="sectionText">기사 규정</td></tr>
+                        <tr><td>4</td><td class="sectionText">인사 장치</td></tr>
+                        <tr><td>5</td><td class="sectionText">현장 관리자의 수칙</td></tr>
+
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="column">
+            <div class="section">
+                <div class="section-header">회사 소개</div>
+                <div class="sub-section">
+                    <table class="educationalTable">
+                        <tr><td>1</td><td class="sectionText">기사식 정기 업무</td></tr>
+                        <tr><td>2</td><td class="sectionText">인사 시 등록 서류</td></tr>
+                        <tr><td>3</td><td class="sectionText">기사 규정</td></tr>
+                        <tr><td>4</td><td class="sectionText">인사 장치</td></tr>
+                        <tr><td>5</td><td class="sectionText">현장 관리자의 수칙</td></tr>
+
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
