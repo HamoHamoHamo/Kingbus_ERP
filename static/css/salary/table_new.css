@@ -167,7 +167,7 @@ background-color: #444444;
 }
 
 .tableBody {
-    width: 253%;
+    width: 263%;
     border-spacing: 0;
     box-sizing: border-box;
     table-layout: fixed;
@@ -207,7 +207,7 @@ background-color: #444444;
 }
 
 .theadOrdinarySalary{
-    width: 20%;
+    width: 30%;
     display: block;
 }
 
@@ -242,7 +242,7 @@ background-color: #444444;
 }
 
 .theadLegalAllowance{
-    width: 51%;
+    width: 70%;
     display: block;
 }
 
@@ -327,11 +327,11 @@ background-color: #444444;
 
 
 .theadLegalAllowanceContent > *{
-    width: 8.33%;
+    width: 7.1428571428571433%;
 }
 
 .theadLegalAllowanceContentOne{
-    width: 8.33%;
+    width: 7.142857142857143%;
 }
 
 .theadLegalAllowanceContentOneTitle,
@@ -344,11 +344,11 @@ background-color: #444444;
 }
 
 .theadLegalAllowanceContentDouble{
-    width: 24.99%;
+    width: 21.42857142857143%;
 }
 
 .theadDouble{
-    width: 16.66%;
+    width: 14.28571428571429%;
 }
 
 .theadWeeklyExtension {
@@ -391,7 +391,7 @@ background-color: #444444;
 }
 
 .tbodyOrdinarySalary{
-    width: 20.2%;
+    width: 30.2%;
     display: block;
 
 }
@@ -407,13 +407,13 @@ background-color: #444444;
 }
 
 .tbodyLegalAllowance{
-    width: 51.3%;
+    width: 70.3%;
     display: block;
 }
 
 .tbodyLegalAllowance > *{
     
-    width: 8.33%;
+    width: 7.142857142857143%;
     border-right: 0.1rem solid #CDCDCE;
 }
 
@@ -481,7 +481,7 @@ background-color: #444444;
 .sumBodyTable{
 
     height: 100%;
-    width: 253%;
+    width: 263%;
     border-spacing: 0;
     box-sizing: border-box;
     table-layout: fixed;
@@ -529,13 +529,13 @@ background-color: #444444;
 }
 
 .sumOrdinarySalary{
-    width: 20%;
+    width: 30%;
     display: block;
 
 }
 
 .sumOrdinarySalary > *{
-    width: 25%;
+    width: 16.66666666666667%;
     border-right: 0.1rem solid #CDCDCE;
 }
 
@@ -727,7 +727,7 @@ background-color: #444444;
 }
 
 .theadLegalAllowanceContentOne{
-    width: 8.33%;
+
     flex-direction: column;
 }
 

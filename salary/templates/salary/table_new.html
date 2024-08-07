@@ -102,7 +102,9 @@
                     <div class="theadOrdinarySalaryTitle">통상급여</div>
                     <div class="theadOrdinarySalaryContent">
                         <div>임금</div>
-                        <div>직책수당</div>
+                        <div>직책수당<br>(점호관리)</div>
+                        <div>직책수당<br>(차량관리)</div>
+                        <div>직책수당<br>(업무관리)</div>
                         <div>근속수당</div>
                         <div class="theadOrdinarySalaryContentLast">계</div>
                     </div>
@@ -137,6 +139,8 @@
                         </div>
                         <div>연차수당</div>
                         <div>만근수당</div>
+                        <div>성실수당</div>
+                        <div>무사고수당</div>
                         <div class="theadLegalAllowanceContentLast">계</div>
                     </div>
                 </div>
@@ -195,6 +199,8 @@
                         <div class="addCommaToInnerText">{{data.wage}}</div>
                         <!-- 직책수당 -->
                         <div class="addCommaToInnerText">{{data.performance_allowance}}</div>
+                        <div class="addCommaToInnerText">{{data.performance_allowance}}</div>
+                        <div class="addCommaToInnerText">{{data.performance_allowance}}</div>
                         <!-- 근속수당 -->
                         <div class="addCommaToInnerText">{{data.service_allowance}}</div>
                         <!-- 계 -->
@@ -224,12 +230,16 @@
                         <div class="addCommaToInnerText">{{data.annual_allowance}}</div>
                         <!-- 만근수당 -->
                         <div class="addCommaToInnerText">{{data.meal}}</div>
+                        <!--성실수당-->
+                        <div class="addCommaToInnerText">{{data.meal}}</div>
+                        <div class="addCommaToInnerText">{{data.meal}}</div>
+
                         <!-- 계 -->
                         <div class="addCommaToInnerText">{{data.statutory_allowance}}</div>
                     </div>
                     <div class="tbodySum addCommaToInnerText">{{data.sum_ordinary_salary_and_statutory_allowance}}</div>
                     <div class="tbodyInsurance" style="display: flex;">
-                        <div class="addCommaToInnerText"></div>
+                        <div class="addCommaToInnerText"></div> 
                         <div class="addCommaToInnerText"></div>
                     </div>
                     <div class="tbodyDeductionDetails" style="display: flex;">
