@@ -5,11 +5,134 @@
 {% block head %}
 <meta http-equiv="Cache-Control" content="private, no-cache, no-store, max-age=0, must-revalidate">
 <link rel="stylesheet" href="{% static 'css/dispatch/dispatchBase.css' %}" type="text/css" />
-<link rel="stylesheet" href="{% static 'css/dispatch/regularlyRoute.css' %}" type="text/css" />
+<link rel="stylesheet" href="{% static 'css/rules/rules.css' %}" type="text/css" />
 {% endblock %}
 
 {% block content-header %}
 <div class="HeaderTitle">
     점호 수칙
 </div>
+{% endblock %}
+
+{% block content %}
+
+<div class="approvalrulesPrint">
+    <button class="print-button" onclick="printDiv('printableArea')">인쇄</button>
+</div>
+
+<div id="printableArea" class="container">
+   <div class="Mainapproval">
+    <section class="rule-section">
+        <div class="approvalSubSection">제1조 출근 확인</div>
+        <ol>
+            <li>
+                <div class="approvalMain">1. 출근 시간 확인
+                <div class="approvalSub">모든 승무원의 출근 시간을 확인하고, 출근 시간이 지켜졌는지 확인합니다. 회사의 약속된 점호 시간은 오목천동 5시 20분 / 황계동 5시 20분과 5시 40분으로 합니다.</div></div>
+            </li>
+            <li>
+                <div class="approvalMain">2. 출근 체크리스트
+                <div class="approvalSub">출근 시 현장 관리자는 출근 체크리스트에 체크하여 출근 사실을 기록합니다.</div></div>
+            </li>
+        </ol>
+    </section>
+    
+    <section class="rule-section">
+        <div class="approvalSubSection">제2조 복장 및 개인 장비 점검</div>
+        <ol>
+            <li>
+                <div class="approvalMain">1. 복장 점검
+                <div class="approvalSub">승무원의 유니폼 착용 상태를 점검하고, 유니폼 미착용 시 즉시 착용을 권고합니다.</div></div>
+            </li>
+            <li>
+                <div class="approvalMain">2. 개인 장비 점검
+                <div class="approvalSub">승무원이 필요한 장비 미착용 시 즉시 조치하고, 필요한 경우 대체 장비를 제공하여 정상적인 버스 운행을 수행할 수 있도록 조치합니다.</div></div>
+            </li>
+        </ol>
+    </section>
+    
+    <section class="rule-section">
+        <div class="approvalSubSection">제3조 음주 측정</div>
+        <ol>
+            <li>
+                <div class="approvalMain">1. 음주 측정 절차
+                <div class="approvalSub">모든 승무원들은 음주 측정을 받으며, 현장 관리자는 음주 측정 결과를 기록합니다.</div></div>
+            </li>
+        </ol>
+    </section>
+
+    <section class="rule-section">
+        <div class="approvalSubSection">제4조 근태 및 지각 관리</div>
+        <ol>
+            <li>
+                <div class="approvalMain">1. 근태 관리
+                <div class="approvalSub">승무원의 기상, 탑승, 운행 상태를 확인하고, 승무원이 점호를 하지 않았을 경우 조치를 취합니다.</div></div>
+            </li>
+            <li>
+                <div class="approvalMain">2. 지각 기록
+                <div class="approvalSub">지각한 승무원의 시간을 기록하고, 반복되는 경우 추가적인 조치를 취하고, 관리자에게 보고합니다.</div></div>
+            </li>
+            <li>
+                <div class="approvalMain">3. 점호 상태 보고
+                <div class="approvalSub">점호 기록은 일별로 유지하며, 이상이 있을 경우 관리자에게 보고합니다.</div></div>
+            </li>
+        </ol>
+    </section>
+
+    <section class="rule-section">
+        <div class="approvalSubSection">제5조 차량 점검 준비</div>
+        <ol>
+            <li>
+                <div class="approvalMain">1. 차량 배정
+                <div class="approvalSub">각 승무원에게 배정된 차량을 확인하고, 배정표에 따라 점호를 실시합니다.</div></div>
+            </li>
+        </ol>
+    </section>
+
+    <section class="rule-section">
+        <div class="approvalSubSection">제6조 이상 보고</div>
+        <ol>
+            <li>
+                <div class="approvalMain">1. 이상 발견 시 보고
+                <div class="approvalSub">점호 중 차량이나 승무원에게 이상이 발견될 경우, 즉시 관리자에게 보고합니다. 결행 상황이 발생하면 신속히 관리자에게 보고하고 대체 운행 계획을 마련합니다.</div></div>
+            </li>
+        </ol>
+    </section>
+
+    <section class="rule-section">
+        <div class="approvalSubSection">제7조 기타 사항</div>
+        <ol>
+            <li>
+                <div class="approvalMain">1. 점호 시간 준수
+                <div class="approvalSub">점호 시간에 맞춰 모든 절차를 신속하고 정확하게 수행합니다.</div></div>
+            </li>
+            <li>
+                <div class="approvalMain">2. 점호 장소 청결 유지
+                <div class="approvalSub">점호 장소의 청결 상태를 항상 유지하고, 불필요한 물건을 정리합니다.</div></div>
+            </li>
+        </ol>
+    </section>
+
+    <section class="rule-section">
+        <div class="approvalSubSection">제8조 추가 규정</div>
+        <ol>
+            <li>
+                <div class="approvalMain">1. 비상 상황 대응
+                <div class="approvalSub">비상 상황 발생 시 신속하게 대응하고, 필요 시 긴급 조치를 취하여 승객과 승무원의 안전을 확보합니다.</div></div>
+            </li>
+            <li>
+                <div class="approvalMain">2. 점호 절차 교육
+                <div class="approvalSub">모든 승무원에게 점호 절차와 관련된 교육을 정기적으로 실시하여 점호 절차를 숙지하게 합니다.</div></div>
+            </li>
+            <li>
+                <div class="approvalMain">3. 점호 평가 및 개선
+                <div class="approvalSub">점호 절차와 관련된 평가를 정기적으로 실시하고, 개선 사항이 있을 경우 이를 반영하여 점호 절차를 개선합니다.</div></div>
+            </li>
+        </ol>
+    </section>
+</div>
+</div>
+{% endblock %}
+
+{% block script %}
+<script src="{% static 'js/rules/rules.js' %}"></script>
 {% endblock %}

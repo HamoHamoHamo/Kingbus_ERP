@@ -167,7 +167,7 @@ background-color: #444444;
 }
 
 .tableBody {
-    width: 263%;
+    width: 325%;
     border-spacing: 0;
     box-sizing: border-box;
     table-layout: fixed;
@@ -203,16 +203,16 @@ background-color: #444444;
 }
 
 .theadWorkTime, .theadBasic, .theadNormal, .theadSum, .theadAdditionalAllowance{
-    width: 6%;
+    width: 7%;
 }
 
 .theadOrdinarySalary{
-    width: 30%;
+    width: 21%;
     display: block;
 }
 
 .theadCountTime{
-    width: 36%;
+    width: 42%;
     height: 100%;
     background-color: #444444;
 }
@@ -242,17 +242,17 @@ background-color: #444444;
 }
 
 .theadLegalAllowance{
-    width: 70%;
+    width: 119%;
     display: block;
 }
 
 .theadInsurance{
-    width: 10%;
+    width: 14%;
     display: block;
 }
 
 .theadDeductionDetails{
-    width: 45%;
+    width: 56%;
     display: block;
 }
 
@@ -261,7 +261,7 @@ background-color: #444444;
     justify-content: center;
     align-items: center;
     border-right: 0.1rem solid #CDCDCE;
-    width: 25%;
+    width: 33%;
     height: 100%;
 }
 
@@ -327,11 +327,11 @@ background-color: #444444;
 
 
 .theadLegalAllowanceContent > *{
-    width: 7.1428571428571433%;
+    width: 5.882352941176471%;
 }
 
 .theadLegalAllowanceContentOne{
-    width: 7.142857142857143%;
+    width: 5.882352941176471%;
 }
 
 .theadLegalAllowanceContentOneTitle,
@@ -344,11 +344,11 @@ background-color: #444444;
 }
 
 .theadLegalAllowanceContentDouble{
-    width: 21.42857142857143%;
+    width: 17.64705882352941%;
 }
 
 .theadDouble{
-    width: 14.28571428571429%;
+    width: 11.76470588235294%;
 }
 
 .theadWeeklyExtension {
@@ -386,39 +386,39 @@ background-color: #444444;
 }
 
 .tbodyWorkTime, .tbodyBasic, .tbodyNormal, .tbodySum, .tbodyAdditionalAllowance{
-    width: 6%;
+    width: 7%;
     border-right: 0.1rem solid #CDCDCE;
 }
 
 .tbodyOrdinarySalary{
-    width: 30.2%;
+    width: 21%;
     display: block;
 
 }
 
 .tbodyOrdinarySalary > *{
-    width: 25%;
+    width: 33%;
     border-right: 0.1rem solid #CDCDCE;
 }
 
 .tbodyCountTime{
-    width: 36.4%;
+    width: 42%;
     
 }
 
 .tbodyLegalAllowance{
-    width: 70.3%;
+    width: 119%;
     display: block;
 }
 
 .tbodyLegalAllowance > *{
     
-    width: 7.142857142857143%;
+    width: 5.882352941176471%;
     border-right: 0.1rem solid #CDCDCE;
 }
 
 .tbodyInsurance{
-    width: 10%;
+    width: 14%;
     display: block;
 }
 
@@ -428,7 +428,7 @@ background-color: #444444;
 }
 
 .tbodyDeductionDetails{
-    width: 45.3816%;
+    width: 56%;
     display: block;
     border-right: 0.1rem solid #CDCDCE;
 }
@@ -481,7 +481,7 @@ background-color: #444444;
 .sumBodyTable{
 
     height: 100%;
-    width: 263%;
+    width: 325%;
     border-spacing: 0;
     box-sizing: border-box;
     table-layout: fixed;
@@ -496,12 +496,6 @@ background-color: #444444;
     border-bottom: 0.1rem solid #CDCDCE;
 }
 
-.sumItemTrTd{
-    height: 100%;
-    width: 5%;
-    border-right: 0.1rem solid #CDCDCE;
-}
-
 .sumItemTr > * {
     height: 100%;
 }
@@ -512,12 +506,12 @@ background-color: #444444;
 }
 
 .sumWorkTime, .sumBasic, .sumNormal, .sumSum, .sumAdditionalAllowance{
-    width: 6%;
+    width: 7%;
     border-right: 0.1rem solid #CDCDCE;
 }
 
 .countTimeSum{
-    width: 36%;
+    width: 42%;
     border-right: 0.1rem solid #CDCDCE;
     display: flex;
 }
@@ -529,29 +523,29 @@ background-color: #444444;
 }
 
 .sumOrdinarySalary{
-    width: 30%;
+    width: 21%;
     display: block;
 
 }
 
 .sumOrdinarySalary > *{
-    width: 16.66666666666667%;
+    width: 33%;
     border-right: 0.1rem solid #CDCDCE;
 }
 
 .sumLegalAllowance{
-    width: 51%;
+    width: 119%;
     display: block;
 }
 
 .sumLegalAllowance > *{
     
-    width: 10%;
+    width: 5.882352941176471%;
     border-right: 0.1rem solid #CDCDCE;
 }
 
 .sumInsurance{
-    width: 10%;
+    width: 14%;
     display: block;
 }
 
@@ -561,7 +555,7 @@ background-color: #444444;
 }
 
 .sumDeductionDetails{
-    width: 45%;
+    width: 56%;
     display: block;
     border-right: 0.1rem solid #CDCDCE;
 }
@@ -727,7 +721,6 @@ background-color: #444444;
 }
 
 .theadLegalAllowanceContentOne{
-
     flex-direction: column;
 }
 
@@ -737,7 +730,7 @@ background-color: #444444;
 
 
 .theadCountTimeTh{
-    width: 16.67%;
+    width: 16.66666666666667%;
 }
 .theadCountTimeThDouble{
     width: 33.33%;

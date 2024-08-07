@@ -57,7 +57,7 @@
                     <div class="tbodyTrTd td flex"><input type="checkbox"></div>
                     <div class="tbodyTrTd td flex">1</div>
                     <div class="tbodyTrTd td flex">지출결의서</div>
-                    <div class="tbodyTrTd td flex blue">지출결의서 제출합니다.</div>
+                    <div class="tbodyTrTd td flex blue" onclick="rejectedAndApproveContentOpen()">지출결의서 제출합니다.</div>
                     <div class="tbodyTrTd td flex blue">파일명.png</div>
                     <div class="tbodyTrTd td flex">2024.08.07</div>
                     <div class="tbodyTrTd td flex">대기</div>
@@ -124,7 +124,7 @@
 
     </div>
 
-    <div class="waitContent boxSize">
+    <div id="waitContent" class="waitContent boxSize">
 
         <div class="contentBox boxSize">
             <div class="contentBoxContent flex">
@@ -170,7 +170,7 @@
 
                     <div class="contentBoxExamineArticle flex">
                         <label class="contentBoxExamineArticleTitle">재가여부</label>
-                        <label class="contentBoxExamineArticleContent">대기</label>
+                        <label class="contentBoxExamineArticleContent">대기1</label>
                     </div>
 
                     <div class="contentBoxExamineArticle flex">
@@ -189,13 +189,13 @@
         </div>
 
         <div class="createDelete flex">
-            <input type="button" class="createBtn Btn" value="등록">
-            <input type="button" class="deleteBtn Btn" value="닫기" onclick="writeClose()">
+            <input type="button" class="createBtn Btn" value="수정">
+            <input type="button" class="deleteBtn Btn" value="닫기" onclick="waitContentClose()">
         </div>
 
     </div>
 
-    <div class="rejectedAndApproveContent boxSize">
+    <div id="rejectedAndApproveContent" class="rejectedAndApproveContent boxSize">
 
         <div class="contentBox boxSize">
             <div class="contentBoxContent flex">
@@ -242,7 +242,7 @@
 
                     <div class="contentBoxExamineArticle flex">
                         <label class="contentBoxExamineArticleTitle">재가여부</label>
-                        <label class="contentBoxExamineArticleContent">대기</label>
+                        <label class="contentBoxExamineArticleContent">승인 or 반려</label>
                     </div>
 
                     <div class="contentBoxExamineArticle flex">
@@ -286,8 +286,7 @@
 
 
         <div class="createDelete flex">
-            <input type="button" class="createBtn Btn" value="등록">
-            <input type="button" class="deleteBtn Btn" value="닫기" onclick="writeClose()">
+            <input type="button" class="deleteBtn Btn" value="닫기" onclick="rejectedAndApproveContentClose()">
         </div>
 
     </div>
@@ -307,6 +306,28 @@
 
     const writeClose= () => {
         document.getElementById("writeContent").style.display="none"
+        document.getElementById("indexContent").style.display="block"
+    }
+
+    const waitContentOpen= () => {
+        document.getElementById("waitContent").style.display="block"
+        document.getElementById("indexContent").style.display="none"
+
+    }
+
+    const waitContentClose= () => {
+        document.getElementById("waitContent").style.display="none"
+        document.getElementById("indexContent").style.display="block"
+    }
+
+    const rejectedAndApproveContentOpen= () => {
+        document.getElementById("rejectedAndApproveContent").style.display="block"
+        document.getElementById("indexContent").style.display="none"
+
+    }
+
+    const rejectedAndApproveContentClose= () => {
+        document.getElementById("rejectedAndApproveContent").style.display="none"
         document.getElementById("indexContent").style.display="block"
     }
 </script>

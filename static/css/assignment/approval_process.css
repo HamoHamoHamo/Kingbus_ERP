@@ -150,3 +150,8 @@
 .processContent{
     display: none;
 }
+
+.createDelete{
+    margin-top: 0;
+    justify-content: flex-end;
+}

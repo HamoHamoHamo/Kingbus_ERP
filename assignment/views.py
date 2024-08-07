@@ -1084,7 +1084,7 @@ def temporary_assignment_delete(request):
 #         return render(request, self.template_name, context)
 
 class ApprovalProcess(generic.ListView):
-    template_name = 'assignment/approvalProcess.html'
+    template_name = 'assignment/approval_process.html'
     context_object_name = 'member_list'
     model = Member
     authority_level = 3

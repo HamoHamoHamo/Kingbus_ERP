@@ -99,6 +99,8 @@ function openSideNav() {
   }
 }
 
+
+
 // hover 색 변화
 for (let i = 0; i < nav1Box.length; i++) {
   nav1Box[i].addEventListener('mouseover', bgThis);

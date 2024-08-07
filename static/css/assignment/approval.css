@@ -146,17 +146,6 @@
     border: none;
 }
 
-/* .writeContent{
-    display: none;
-}
-
-.waitContent{
-    display: none;
-}
-
-.rejectedContent{
-    display: none;
-} */
 
 .boxSize{
     
@@ -327,4 +316,10 @@ input[type="text" i] {
     height: 100%;
     margin-left: 2rem;
     border: 0.1rem solid #d2d2d2;
+}
+
+.writeContent,
+.waitContent,
+.rejectedAndApproveContent{
+    display: none;
 }

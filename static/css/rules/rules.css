@@ -1,0 +1,97 @@
+
+.container {
+    background-color: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.Mainapproval{
+    margin-left: 5rem;
+}
+
+.approvalSubSection {
+    font-size: 4rem;
+    margin-bottom: 4rem;
+    margin-top: 8rem;
+    margin-left: 2rem;
+}
+
+.rule-section ol {
+    list-style-type: decimal;
+}
+
+.rule-section ol li {
+    margin-top: 5rem;
+    margin-left: 3rem;
+    margin-bottom: 5rem;
+}
+
+.approvalMain{
+    font-size: 3rem;
+}
+
+.approvalSub {
+    margin-top: 2rem;
+    margin-left: 6rem;
+    font-size: 2rem;
+}
+
+.approvalrulesPrint {
+    text-align: right;
+}
+
+.print-button {
+    background-color: #444444;
+    color: #fff;
+    border: none;
+    font-size: 1.4rem;
+    cursor: pointer;
+    width: 8rem;
+    height: 3rem;
+    margin-bottom: 1rem;
+}
+
+table {
+    width: 90%;
+    border-collapse: collapse;
+    margin-bottom: 4rem;
+    font-size: 18px;
+    text-align: left;
+}
+
+table thead tr {
+    background-color: skyblue;
+    color: #ffffff;
+    text-align: left;
+    font-weight: bold;
+}
+
+table th, table td {
+    height: 3rem;
+    border: 1px solid #dddddd;
+}
+
+table tbody tr {
+    border-bottom: 1px solid #dddddd;
+}
+
+table tbody tr:nth-of-type(even) {
+    background-color: #f3f3f3;
+}
+
+table tbody tr:last-of-type {
+    border-bottom: 2px solid #aeb8b6;
+}
+
+.tableNumber{
+    width: 6rem;
+    text-align: center;
+}
+
+.table-note{
+    font-size: 1.5rem;
+}
+
+.approvalTable{
+    margin-bottom: 1rem;
+    font-size: 2rem;
+}

@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% load static %}   
+{% load static %}
 {% load dispatch_custom_tags %}
 {% block head %}
 <meta http-equiv="Cache-Control" content="private, no-cache, no-store, max-age=0, must-revalidate">
@@ -10,7 +10,7 @@
 
 {% block content-header %}
 <div class="HeaderTitle">
-    임금테이블
+    임금테이블2
 </div>
 {% endblock %}
 
@@ -97,14 +97,35 @@
                 <div class="theadBasic">기본시급<br>(2)<br>30시간초과</div>
                 <div class="theadNormal">통상시급</div>
 
+
+                <div class="theadCountTime">
+                    <div class="theadCountTimeTitle personalFlex">산정시간</div>
+                    <div class="theadCountTimeData">
+                        <div class="theadCountTimeTh personalFlex th">소정근로</div>
+                        <div class="theadCountTimeThDouble th">
+                            <div class="theadCountTimeThTitle personalFlex">연장근로</div>
+                            <div class="theadCountTimeThContent th flex">
+                                <div class="theadCountTimeThTh personalFlex th">법내</div>
+                                <div class="theadCountTimeThTh personalFlex th last">법외</div>
+                            </div>
+                        </div>
+                        <div class="theadCountTimeTh personalFlex">야간</div>
+                        <div class="theadCountTimeThDouble">
+                            <div class="theadCountTimeThTitle personalFlex">휴일근로</div>
+                            <div class="theadCountTimeThContent flex">
+                                <div class="theadCountTimeThTh personalFlex ">8시간이하</div>
+                                <div class="theadCountTimeThTh personalFlex  last">8시간초과</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
                 <!--통상급여-->
                 <div class="theadOrdinarySalary">
                     <div class="theadOrdinarySalaryTitle">통상급여</div>
                     <div class="theadOrdinarySalaryContent">
                         <div>임금</div>
-                        <div>직책수당<br>(점호관리)</div>
-                        <div>직책수당<br>(차량관리)</div>
-                        <div>직책수당<br>(업무관리)</div>
                         <div>근속수당</div>
                         <div class="theadOrdinarySalaryContentLast">계</div>
                     </div>
@@ -113,7 +134,7 @@
 
                 <!--법정수당-->
                 <div class="theadLegalAllowance">
-                    <div class="theadLegalAllowanceTitle">법정수당</div>
+                    <div class="theadLegalAllowanceTitle">각종수당</div>
                     <div class="theadLegalAllowanceContent">
                         <div>주휴수당</div>
                         <div>법정휴일</div>
@@ -137,16 +158,32 @@
                                 <div class="theadLegalAllowanceContentDoubleContentFirst">휴일100%가산임금</div>
                             </div>
                         </div>
-                        <div>연차수당</div>
-                        <div>만근수당</div>
+                        
+                        <div class="theadLegalAllowanceContentDouble">
+                            <div class="theadLegalAllowanceContentDoubleTitle">팀장수당</div>
+                            <div class="theadLegalAllowanceContentDoubleContent">
+                                <div class="theadLegalAllowanceContentDoubleContentFirst">점호관리</div>
+                                <div class="theadLegalAllowanceContentDoubleContentFirst">차량관리</div>
+                                <div class="theadLegalAllowanceContentDoubleContentFirst">업무관리</div>
+                            </div>
+                        </div>
                         <div>성실수당</div>
+                        <div>만근수당</div>
                         <div>무사고수당</div>
-                        <div class="theadLegalAllowanceContentLast">계</div>
+                        <div>연차수당</div>
+                        <div class="theadLegalAllowanceContentLast">소계</div>
                     </div>
                 </div>
                 <!--법정수당 done-->
-
+                <div class="theadInsurance">
+                    <div class="theadInsuranceTitle">복리후생</div>
+                    <div class="theadInsuranceContent">
+                        <div class="theadInsuranceContentFirst">식대</div>
+                        <div>유류비</div>
+                    </div>
+                </div>
                 <div class="theadSum">합계</div>
+                <!--복리후생비-->
                 <!--보험료산정기준-->
                 <div class="theadInsurance">
                     <div class="theadInsuranceTitle">보험료산정기준</div>
@@ -194,13 +231,21 @@
                     <div class="addCommaToInnerText tbodyBasic">{{data.hourly_wage2}}</div>
                     <!-- 통상시급 -->
                     <div class="addCommaToInnerText tbodyNormal">{{data.ordinary_hourly_wage}}</div>
+                    <!--산정시간-->
+                    <div class="tbodyCountTime flex">
+                        <div class="tbodyCountTimeTd td personalFlex"></div>
+                        <div class="tbodyCountTimeTd td personalFlex"></div>
+                        <div class="tbodyCountTimeTd td personalFlex"></div>
+                        <div class="tbodyCountTimeTd td personalFlex"></div>
+                        <div class="tbodyCountTimeTd td personalFlex"></div>
+                        <div class="tbodyCountTimeTd td personalFlex"></div>
+                    </div>
+
                     <div class="tbodyOrdinarySalary" style="display: flex;">
                         <!-- 임금 -->
                         <div class="addCommaToInnerText">{{data.wage}}</div>
                         <!-- 직책수당 -->
-                        <div class="addCommaToInnerText">{{data.performance_allowance}}</div>
-                        <div class="addCommaToInnerText">{{data.performance_allowance}}</div>
-                        <div class="addCommaToInnerText">{{data.performance_allowance}}</div>
+                        {% comment %} <div class="addCommaToInnerText">{{data.performance_allowance}}</div> {% endcomment %}
                         <!-- 근속수당 -->
                         <div class="addCommaToInnerText">{{data.service_allowance}}</div>
                         <!-- 계 -->
@@ -225,23 +270,33 @@
                         <div class="addCommaToInnerText">{{data.additional_holiday_work_wage_half}}</div>
                         <!-- 휴일 100%임금 -->
                         <div class="addCommaToInnerText">{{data.additional_holiday_work_wage}}</div>
-
+                        <!--팀장점호관리수당-->
+                        <div class="addCommaToInnerText"></div>
+                        <!--팀장차량관리수당-->
+                        <div class="addCommaToInnerText"></div>
+                        <!--팀장입고관리수당-->
+                        <div class="addCommaToInnerText"></div>
+                        <!--성실수당-->
+                        <div class="addCommaToInnerText"></div>
+                        <!--만근수당-->
+                        <div class="addCommaToInnerText"></div>
+                        <!-- 무사고수당 -->
+                        <div class="addCommaToInnerText">{{data.meal}}</div>
                         <!-- 연차수당 -->
                         <div class="addCommaToInnerText">{{data.annual_allowance}}</div>
-                        <!-- 만근수당 -->
-                        <div class="addCommaToInnerText">{{data.meal}}</div>
-                        <!--성실수당-->
-                        <div class="addCommaToInnerText">{{data.meal}}</div>
-                        <div class="addCommaToInnerText">{{data.meal}}</div>
-
                         <!-- 계 -->
                         <div class="addCommaToInnerText">{{data.statutory_allowance}}</div>
                     </div>
-                    <div class="tbodySum addCommaToInnerText">{{data.sum_ordinary_salary_and_statutory_allowance}}</div>
                     <div class="tbodyInsurance" style="display: flex;">
-                        <div class="addCommaToInnerText"></div> 
+                        <div class="addCommaToInnerText"></div>
                         <div class="addCommaToInnerText"></div>
                     </div>
+                    <div class="tbodySum addCommaToInnerText">{{data.sum_ordinary_salary_and_statutory_allowance}}</div>
+                    <div class="tbodyInsurance" style="display: flex;">
+                        <div class="addCommaToInnerText"></div>
+                        <div class="addCommaToInnerText"></div>
+                    </div>
+                    
                     <div class="tbodyDeductionDetails" style="display: flex;">
                         <div class="addCommaToInnerText"></div>
                         <div class="addCommaToInnerText"></div>
@@ -249,7 +304,10 @@
                         <div class="addCommaToInnerText"></div>
                         <div class="addCommaToInnerText"></div>
                         <div class="addCommaToInnerText"></div>
+                        
                         <div class="tableEdit addCommaToInnerText"></div>
+                        <div class="addCommaToInnerText"></div>
+
                     </div>
                     <div class="tbodyAdditionalAllowance tableEdit addCommaToInnerText"></div>
                     <div class="tbodySum tbodySumLast addCommaToInnerText"></div>
@@ -277,9 +335,16 @@
                 <div class="hourly_wage sumBasic"></div>
                 <div class="hourly_wage sumBasic"></div>
                 <div class="ordinary_hourly_wage sumNormal"></div>
+                <div class="countTimeSum">
+                    <div class="countTimeSumTd"></div>
+                    <div class="countTimeSumTd"></div>
+                    <div class="countTimeSumTd"></div>
+                    <div class="countTimeSumTd"></div>
+                    <div class="countTimeSumTd"></div>
+                    <div class="countTimeSumTd"></div>
+                </div>
                 <div class="sumOrdinarySalary" style="display: flex;">
                     <div class="wage">임금</div>
-                    <div class="performance_allowance">직책수당</div>
                     <div class="service_allowance">근속수당</div>
                     <div class="ordinary_salary">계</div>
                 </div>
@@ -287,16 +352,27 @@
                     <div class="weekly_holiday_allowance">주휴수당</div>
                     <div class="legal_holiday_allowance">법정휴일</div>
                     <div class="weekly_within_law_extension_wage">주연장 법내 기본임금</div>
-                    <div class="weekly_outside_law_extension_wage">주연장 법외 비곤임금</div>
+                    <div class="weekly_outside_law_extension_wage">주연장 법외 기본임금</div>
                     <div class="weekly_extension_additional_wage">주 연장 가산임금</div>
                     <div class="night_shift_wage">야간근로 가산임금</div>
-                    <div class="holiday_work_wage"></div>
-                    <div class="additional_holiday_work_wage_half"></div>
-                    <div class="additional_holiday_work_wage"></div>
-                    <div class="annual_allowance"></div>
+                    
+                    
+                    <div class="holiday_work_wage">휴일기본</div>
+                    <div class="additional_holiday_work_wage_half">휴일50%</div>
+                    <div class="additional_holiday_work_wage">휴일100%</div>
+                    <div class="weekly_within_law_extension_wage">주연장 법내 기본임금</div>
+                    <div class="weekly_outside_law_extension_wage">주연장 법외 기본임금</div>
+                    <div class="weekly_extension_additional_wage">주 연장 가산임금</div>
+                    <div class="meal">성실수당</div>
                     <div class="meal">만근수당</div>
+                    <div class="meal">무사고수당</div>
+                    <div class="meal">연차수당</div>
                     <div class="statutory_allowance"></div>
                     
+                </div>
+                <div class="sumInsurance" style="display: flex;">
+                    <div></div>
+                    <div></div>
                 </div>
                 <div class="sum_ordinary_salary_and_statutory_allowance sumSum"></div>
                 <div class="sumInsurance" style="display: flex;">
@@ -310,8 +386,8 @@
                     <div></div>
                     <div></div>
                     <div></div>
-                    <div></div>
                     <div class="tableEdit"></div>
+                    <div class="sumSumLast"></div>
                 </div>
                 <div class="sumAdditionalAllowance tableEdit"></div>
                 <div class="sumSum sumSumLast"></div>
