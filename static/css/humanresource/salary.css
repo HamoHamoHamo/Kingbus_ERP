@@ -73,11 +73,18 @@
 }
 
 .salaryContainer td:nth-child(17) {
-    width: 7%;
+    width: 5.5%;
 }
 
-.salaryContainer tbody td:nth-child(15),
-.salaryContainer tbody td:nth-child(16) {
+.salaryContainer td:nth-child(18) {
+    width: 5.5%;
+}
+
+.salaryContainer td:nth-child(19) {
+    width: 5%;
+}
+.salaryContainer tbody td:nth-child(17),
+.salaryContainer tbody td:nth-child(18) {
     background-color: rgb(255, 242, 204);
     cursor: pointer;
 }
@@ -105,7 +112,8 @@
 .salaryContainer tbody td:nth-child(14),
 .salaryContainer tbody td:nth-child(15),
 .salaryContainer tbody td:nth-child(16),
-.salaryContainer tbody td:nth-child(17) {
+.salaryContainer tbody td:nth-child(17),
+.salaryContainer tbody td:nth-child(18) {
     text-align: right;
     padding-right: 0.5rem;
 }

@@ -21,6 +21,7 @@ urlpatterns = [
     path('dailychecklist', views.DailyChecklistListView.as_view(), name='dailychecklist'),
     path('weeklychecklist', views.WeeklyChecklistListView.as_view(), name='weeklychecklist'),
     path('equipmentchecklist', views.EquipmentChecklistListView.as_view(), name='equipmentchecklist'),
+    path('vehicleefficiency', views.VehicleEfficiency.as_view(), name='vehicleefficiency'),
 
     # path('mgmt', views.VehicleMgmt.as_view(), name='mgmt'),
     # path('mgmt/insurance/edit', views.insurance_edit, name='insurance_edit'),

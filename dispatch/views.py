@@ -2624,6 +2624,181 @@ class OrderList(generic.ListView):
         
         return context
 
+class OrderNew(generic.ListView):
+    template_name = 'dispatch/order_new.html'
+    context_object_name = 'order_list'
+    model = DispatchOrder
+
+    def get(self, request, *args, **kwargs):
+        if request.session.get('authority') > 3:
+            return render(request, 'authority.html')
+        return super().get(request, *args, **kwargs)
+
+    def get_queryset(self):
+        start_date = self.request.GET.get('date1', TODAY)
+        end_date = self.request.GET.get('date2', TODAY)
+        search = self.request.GET.get('search')
+        search_type = self.request.GET.get('type')
+        # customer = self.request.GET.get('customer')
+        # self.next_week = (datetime.strptime(TODAY, FORMAT) + timedelta(days=7)).strftime(FORMAT)
+
+        if start_date or end_date or search:
+            
+            dispatch_list = DispatchOrder.objects.prefetch_related('info_order').exclude(arrival_date__lt=f'{start_date} 00:00').exclude(departure_date__gt=f'{end_date} 24:00').order_by('departure_date')
+            if search_type == 'customer' and search:
+                dispatch_list = dispatch_list.filter(customer__contains=search).order_by('departure_date')
+                    
+            elif search_type == 'route' and search:
+                dispatch_list = dispatch_list.filter(route__contains=search).order_by('departure_date')
+
+            elif search_type == 'vehicle' and search:
+                dispatch_list = dispatch_list.filter(info_order__bus_id__vehicle_num__contains=search).order_by('departure_date')
+
+        else:            
+            dispatch_list = DispatchOrder.objects.prefetch_related('info_order').exclude(arrival_date__lt=f'{TODAY} 00:00').exclude(departure_date__gt=f'{TODAY} 24:00').order_by('departure_date')
+        
+        return dispatch_list
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        cancle_list = context['order_list'].filter(contract_status='취소')
+        context['order_list'] = list(context['order_list'].exclude(contract_status='취소')) + list(cancle_list)
+
+        context['date1'] = self.request.GET.get('date1')
+        context['date2'] = self.request.GET.get('date2')
+
+        context['search'] = self.request.GET.get('search', '')
+        context['search_type'] = self.request.GET.get('type', '')
+        date = self.request.GET.get('date1', TODAY)
+        
+        # date2 = self.request.GET.get('date2', TODAY)
+        # weekday = WEEK2[datetime.strptime(date, FORMAT).weekday()]
+        
+        detail_id = self.request.GET.get('id')
+        if detail_id:
+            context['detail'] = get_object_or_404(DispatchOrder, id=detail_id)
+            date = context['detail'].departure_date[:10]
+            date2 = context['detail'].arrival_date[:10]
+            context['detail_connect_list'] = context['detail'].info_order.all()
+            context['detail_connect_cnt'] = int(context['detail'].bus_cnt) - int(context['detail_connect_list'].count())
+
+            # 정류장
+            context['station_list'] = list(DispatchOrderStation.objects.filter(order_id=context['detail']).values('station_name', 'time', 'order_id__distance_list', 'order_id__time_list'))
+            
+            context['station_distance_time_list'] = []
+            for i in range(len(context['station_list']) - 1):
+                station_data = context['station_list'][i]
+                next_station_data = context['station_list'][i + 1]
+
+                try:
+                    distance = round(int(station_data['order_id__distance_list'].split(",")[i]) / 1000, 2)
+                    duration = get_hour_minute(int(station_data['order_id__time_list'].split(",")[i]))
+                except:
+                    distance = '에러'
+                    duration = '에러'
+                context['station_distance_time_list'].append({
+                    'station_name': f"{station_data['station_name']} ▶ \n{next_station_data['station_name']}",
+                    'station_time': f"{station_data['time']} ▶ \n{next_station_data['time']}",
+                    'distance': distance,
+                    'duration': duration,
+                })
+
+        driver_list = Member.objects.filter(Q(role='운전원')|Q(role='팀장')).filter(use='사용').values_list('id', 'name')
+        context['driver_dict'] = {}
+        for driver in driver_list:
+            context['driver_dict'][driver[0]] = driver[1]
+
+        outsourcing_list = Member.objects.filter(Q(role='용역')|Q(role='임시')).filter(use='사용').values_list('id', 'name')
+        context['outsourcing_dict'] = {}
+        for outsourcing in outsourcing_list:
+            context['outsourcing_dict'][outsourcing[0]] = outsourcing[1]
+        #
+        #출발일 ~ 도착일 범위로 한번만 돌면서 for문 안에서 현재 connect date 따라서 list에 appned
+        filter_date1 = date
+        if detail_id:
+            filter_date2 = date2
+        else:
+            filter_date2 = date
+
+        detail = context['detail'] if detail_id else ''
+        connect_dict = get_multi_date_connect_list(filter_date1, filter_date2, detail)
+
+        context['dispatch_list'] = connect_dict['dispatch_list']
+        context['dispatch_list2'] = connect_dict['dispatch_list2']
+        context['dispatch_data_list'] = connect_dict['dispatch_data_list']
+        #
+        collect_list = []
+        outstanding_list = []
+
+        total = {}
+        total['c_bus_cnt'] = 0
+        total['bus_cnt'] = 0
+        total['driver_allowance'] = 0
+        total['price'] = 0
+        total['collection_amount'] = 0
+        total['outstanding_amount'] = 0
+        
+        for order in context['order_list']:
+            if order.contract_status != '취소':
+                total['driver_allowance'] += int(order.driver_allowance) * int(order.bus_cnt)
+                total['c_bus_cnt'] += int(order.info_order.count())
+                total['bus_cnt'] += int(order.bus_cnt)
+            try:
+                tp = TotalPrice.objects.get(order_id=order)
+                total_price = int(tp.total_price)
+                if order.contract_status != '취소':
+                    total['price'] += total_price
+            # #################### total price 없으면 만들어주기 나중에 주석처리
+            except TotalPrice.DoesNotExist:
+                if order.VAT == 'y':
+                    total_price = int(order.price) * int(order.bus_cnt)
+                else:
+                    total_price = int(order.price) * int(order.bus_cnt) + math.floor(int(order.price) * int(order.bus_cnt) * 0.1 + 0.5)
+                total = TotalPrice(
+                    order_id = order,
+                    total_price = total_price,
+                    month = order.departure_date[:7],
+                    creator = order.creator
+                )
+                total.save()
+                if order.contract_status != '취소':
+                    total['price'] += total_price
+            ####################################
+            collect_amount = Collect.objects.filter(order_id=order).aggregate(Sum('price'))['price__sum']
+            if collect_amount:
+                total['collection_amount'] += int(collect_amount)
+                total['outstanding_amount'] += total_price - int(collect_amount)
+                collect_list.append(int(collect_amount))
+                outstanding_list.append(total_price - int(collect_amount))
+            else:
+                outstanding_list.append(0)
+                collect_list.append(0)
+            
+            
+        context['total'] = total
+        
+        context['vehicles'] = Vehicle.objects.filter(use='사용').order_by('vehicle_num', 'driver_name')
+        context['selected_date1'] = self.request.GET.get('date1')
+        context['selected_date2'] = self.request.GET.get('date2')
+        context['collect_list'] = collect_list
+        context['outstanding_list'] = outstanding_list
+
+        context['client'] = []
+        for client in Client.objects.all().values('name', 'phone', 'note').order_by('name'):
+            context['client'].append(client)
+
+        
+        
+        context['vehicle_types'] = Category.objects.filter(type='차량종류')
+        context['operation_types'] = Category.objects.filter(type='운행종류')
+        context['order_types'] = Category.objects.filter(type='유형')
+        context['bill_places'] = Category.objects.filter(type='계산서 발행처')
+        context['reservations'] = Category.objects.filter(type='예약회사')
+        context['operatings'] = Category.objects.filter(type='운행회사')
+        
+        
+        return context
+
 def order_connect_create(request):
     if request.session.get('authority') > 3:
         return render(request, 'authority.html')
@@ -3788,3 +3963,29 @@ def regularly_station_download(request):
         print(e)
         #return JsonResponse({'status': 'fail', 'e': e})
         raise Http404
+
+class DispatchStatus(generic.ListView):
+    template_name = 'dispatch/dispatchstatus.html'
+    context_object_name = 'member_list'
+    model = Member
+    authority_level = 3
+
+    def get(self, request, *args, **kwargs):
+        members = self.model.objects.all()
+        context = {
+            self.context_object_name: members
+        }
+        return render(request, self.template_name, context)
+
+class AutomaticDispatch(generic.ListView):
+    template_name = 'dispatch/automaticdispatch.html'
+    context_object_name = 'member_list'
+    model = Member
+    authority_level = 3
+
+    def get(self, request, *args, **kwargs):
+        members = self.model.objects.all()
+        context = {
+            self.context_object_name: members
+        }
+        return render(request, self.template_name, context)

@@ -23,6 +23,7 @@ urlpatterns = [
     path('team/delete', views.team_delete, name='team_delete'),
     path('team/member', views.team_member, name='team_member'),
     path('salary', views.SalaryList.as_view(), name='salary'),
+    path('salary_new', views.SalaryNew.as_view(), name='salary_new'),
     path('salary/change', views.ChangeSalaryList.as_view(), name='salary_change'),
     path('salary/outsourcing', views.OutsourcingSalaryList.as_view(), name='salary_outsourcing'),
     path('salary/manager', views.ManagerSalaryList.as_view(), name='salary_manager'),
@@ -36,6 +37,7 @@ urlpatterns = [
     path('salary/deduction/create', views.salary_deduction_create, name='salary_deduction_create'),
     path('salary/deduction/delete', views.salary_deduction_delete, name='salary_deduction_delete'),
     path('salary/load', views.salary_load, name='salary_load'),
+    path('personnelcommittee', views.PersonnelCommittee.as_view(), name='personnelcommittee'),
     # path('mgmt', views.ManagementList.as_view(), name='mgmt'),
     # path('mgmt/create', views.mgmt_create, name='mgmt_create'),
 

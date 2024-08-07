@@ -631,3 +631,13 @@ class EquipmentChecklistListView(generic.ListView):
         
         return context
 
+class VehicleEfficiency(generic.ListView):
+    template_name = 'vehicle/vehicleefficiency.html'
+    context_object_name = 'VehicleEfficiency'
+    model = Vehicle
+    paginate_by = 10
+
+    def get(self, request, *args, **kwargs):
+        if request.session.get('authority') > 1:
+            return render(request, 'authority.html')
+        return super().get(request, *args, **kwargs)

@@ -22,6 +22,7 @@ urlpatterns = [
     path('accident/', include('accident.urls')),
     path('educational/', include('educational.urls')),
     path('rules/', include('rules.urls')),
+    path('approval/', include('approval.urls')),
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -12,4 +12,5 @@ urlpatterns = [
     path('inspection/edit', views.inspection_edit, name='inspection_edit'),
     path('inspection/delete', views.inspection_delete, name='inspection_delete'),
     path('inspection/img/<int:id>', views.inspection_image, name='inspection_img'),
+    path('grievance', views.Grievance.as_view(), name='grievance'),
 ]

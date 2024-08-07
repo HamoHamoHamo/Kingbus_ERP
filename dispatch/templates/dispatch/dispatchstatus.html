@@ -1,0 +1,136 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load dispatch_custom_tags %}
+{% block head %}
+<meta http-equiv="Cache-Control" content="private, no-cache, no-store, max-age=0, must-revalidate">
+<link rel="stylesheet" href="{% static 'css/dispatch/dispatchstatus.css' %}" type="text/css" />
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+{% endblock %}
+
+{% block content-header %}
+<div class="HeaderTitle">
+  배차 현황
+</div>
+{% endblock %}
+
+{% block content %}
+        <div class="main-container">
+          <!--첫번째 라인 div-->
+          <div class="main-personnel">
+            <div class="dashboardHeader">총 인원</div>
+            <!--총인원 div-->
+            <div class="main-body">
+              <div class="section content">
+                <div class="dashboardHeader">총 인원</div>
+                <!--총 인원 표 div-->
+                <div class="card large">
+                  <!--총 인원-->
+                  총 인원 <br />
+                  00명
+                </div>
+                <!--근무중인 인원 근무가능인원 div-->
+                <div class="double">
+                  <div class="card small">
+                    <!--근무중인 인원-->
+                    근무 출근 인원<br />00명
+                  </div>
+                  <div class="card small">
+                    <!--근무 가능 인원-->
+                    근무 가능한 인원<br />00명
+                  </div>
+                </div>
+                <div class="card small red">
+                  <!--근무 불가 인원-->
+                  근무 불가 인원<br />00명
+                </div>
+              </div>
+
+              <!--A/B조 div-->
+
+              <div class="sub-content">
+                <div class="dashboardHeader">A조/B조</div>
+                <div class="card small">
+                  <!--운전원-->
+                  <div class="dashboardsub">운전원</div>
+                  <div class="sub-content">
+                    <div class="sub-card">A조<br />00명</div>
+                    <div class="sub-card">B조<br />00명</div>
+                  </div>
+                </div>
+                <div class="card small">
+                  <!--일당직-->
+                  <div class="dashboardsub">일당직</div>
+                  <div class="sub-content">
+                    <div class="sub-card">A조<br />00명</div>
+                    <div class="sub-card">B조<br />00명</div>
+                  </div>
+                </div>
+              </div>
+
+              <!--오전/오후 조 div-->
+
+              <div class="sub-content">
+                <div class="dashboardHeader">오전조/오후조</div>
+                <div class="card small">
+                  <div class="dashboardsub">운전원</div>
+                  <div class="sub-content">
+                    <div class="sub-card">오전조<br />00명</div>
+                    <div class="sub-card">오전조<br />00명</div>
+                  </div>
+                </div>
+
+                <div class="card small">
+                  <div class="dashboardsub">일당직</div>
+                  <div class="sub-content">
+                    <div class="sub-card">오후조<br />00명</div>
+                    <div class="sub-card">오후조<br />00명</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="main-vehicles">
+            <!--차량 div-->
+            <div class="dashboardHeader">총 차량</div>
+            <div class="main-body">
+              <div class="section content">
+                <div class="dashboardHeader">총 차량</div>
+                <div class="card large">총 차량<br />100대</div>
+                <div class="double">
+                  <div class="card small">사용중<br />75대</div>
+                  <div class="card small">사용 가능<br />20대</div>
+                </div>
+                <div class="card small red">사용불가능<br />5대</div>
+              </div>
+              <div class="section vehicle-status">
+                <!--차량 현황-->
+                <div class="dashboardHeader">차량 현황</div>
+                <canvas id="vehicleChart"></canvas>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="container">
+          <!--두번째 라인 div-->
+          <div class="distance-status">
+            <!--공차 현황 div-->
+            <div class="dashboardHeader">공차 현황</div>
+            <canvas id="distanceChart"></canvas>
+          </div>
+          <div class="tonnage-distribution">
+            <!--탑수 분포 div-->
+            <div class="dashboardHeader">탕수 분포</div>
+            <canvas id="tonnageChart"></canvas>
+          </div>
+        </div>
+      </div>
+    </div>
+{% endblock %}
+
+{% block script %}
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="{% static 'js/dispatch/dispatchstatus.js' %}"></script>
+
+{% endblock %}

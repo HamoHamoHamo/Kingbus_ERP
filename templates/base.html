@@ -116,6 +116,9 @@
                 <a href="{% url 'complaint:inspection' %}" class="sideMenuNav2Link">
                   <li class="sideMenuNav2Menu">차량정비신청관리</li>
                 </a>
+                <a href="{% url 'complaint:grievance' %}" class="sideMenuNav2Link">
+                  <li class="sideMenuNav2Menu">고충사항</li>
+                </a>
               </ul>
             </div>
           </div>
@@ -154,11 +157,11 @@
             </li>
             <div class="sideMenuNav2Box">
               <ul class="sideMenuNav2">
-                <a href="{% url 'document:company' %}" class="sideMenuNav2Link">
-                  <li class="sideMenuNav2Menu">회사서류</li>
+                <a href="{% url 'approvalwrite' %}" class="sideMenuNav2Link">
+                  <li class="sideMenuNav2Menu">결재작성</li>
                 </a>
-                <a href="{% url 'document:dispatch' %}" class="sideMenuNav2Link">
-                  <li class="sideMenuNav2Menu">운행서류</li>
+                <a href="{% url 'approvaldisposal' %}" class="sideMenuNav2Link">
+                  <li class="sideMenuNav2Menu">결재처리</li>
                 </a>
               </ul>
             </div>
@@ -200,6 +203,9 @@
             </li>
             <div class="sideMenuNav2Box">
               <ul class="sideMenuNav2">
+                <a href="{% url 'vehicle:vehicleefficiency' %}" class="sideMenuNav2Link">
+                  <li class="sideMenuNav2Menu">대당효율</li>
+                </a>
                 <a href="{% url 'vehicle:list' %}" class="sideMenuNav2Link">
                   <li class="sideMenuNav2Menu">차량관리</li>
                 </a>
@@ -233,11 +239,17 @@
             </li>
             <div class="sideMenuNav2Box">
               <ul class="sideMenuNav2">
+                <a href="/accounting/efficiency/member" class="sideMenuNav2Link">
+                  <li class="sideMenuNav2Menu">인당효율</li>
+                </a>
                 <a href="{% url 'HR:member' %}" class="sideMenuNav2Link">
                   <li class="sideMenuNav2Menu">직원관리</li>
                 </a>
                 <a href="{% url 'HR:team' %}" class="sideMenuNav2Link">
                   <li class="sideMenuNav2Menu">팀관리</li>
+                  </a>
+                <a href="{% url 'HR:personnelcommittee' %}" class="sideMenuNav2Link">
+                  <li class="sideMenuNav2Menu">인사위원회</li>
                   </a>
                 <a href="{% url 'HR:teamtwo' %}" class="sideMenuNav2Link">
                   <li class="sideMenuNav2Menu">팀 노선 관리</li>
@@ -263,32 +275,20 @@
             </li>
             <div class="sideMenuNav2Box">
               <ul class="sideMenuNav2">
+                <a href="{% url 'dispatch:dispatchstatus' %}" class="sideMenuNav2Link">
+                  <li class="sideMenuNav2Menu">배차현황</li>
+                </a>
+                <a href="{% url 'dispatch:automaticdispatch' %}" class="sideMenuNav2Link">
+                  <li class="sideMenuNav2Menu">자동배차</li>
+                </a>
                 <a href="{% url 'dispatch:order' %}" class="sideMenuNav2Link">
                   <li class="sideMenuNav2Menu">일반배차</li>
                 </a>
                 <a href="{% url 'dispatch:regularly' %}" class="sideMenuNav2Link">
                   <li class="sideMenuNav2Menu">출/퇴근배차</li>
                 </a>
-                <a href="{% url 'dispatch:regularly_route' %}" class="sideMenuNav2Link">
-                  <li class="sideMenuNav2Menu">출/퇴근 노선관리</li>
-                </a>
-                <a href="{% url 'dispatch:regularly_station' %}" class="sideMenuNav2Link">
-                  <li class="sideMenuNav2Menu">정류장관리</li>
-                </a>
-                <a href="{% url 'dispatch:regularly_route_know' %}" class="sideMenuNav2Link">
-                  <li class="sideMenuNav2Menu">출/퇴근 노선숙지</li>
-                </a>
-                <a href="{% url 'dispatch:schedule' %}" class="sideMenuNav2Link">
-                  <li class="sideMenuNav2Menu">운행/배차확인</li>
-                </a>
                 <a href="{% url 'dispatch:refusal' %}" class="sideMenuNav2Link">
                   <li class="sideMenuNav2Menu">배차거부관리</li>
-                </a>
-                <a href="{% url 'dispatch:driving' %}" class="sideMenuNav2Link">
-                  <li class="sideMenuNav2Menu">운행일보</li>
-                </a>
-                <a href="{% url 'dispatch:regularly_connect' %}" class="sideMenuNav2Link">
-                  <li class="sideMenuNav2Menu">출/퇴근 배차표</li>
                 </a>
               </ul>
             </div>
@@ -370,10 +370,10 @@
             <div class="sideMenuNav2Box">
               <ul class="sideMenuNav2">
                 <a href="{% url 'educational' %}" class="sideMenuNav2Link">
-                  <li class="sideMenuNav2Menu">교육 현황</li>
+                  <li class="sideMenuNav2Menu">교육자료(일반)</li>
                 </a>
                 <a href="{% url 'educational_manager' %}" class="sideMenuNav2Link">
-                  <li class="sideMenuNav2Menu">교육 자료</li>
+                  <li class="sideMenuNav2Menu">교육자료(관리자)</li>
                 </a>
               </ul>
             </div>
@@ -402,9 +402,6 @@
                 </a>
                 <a href="/accounting/regularly/collect" class="sideMenuNav2Link">
                   <li class="sideMenuNav2Menu">출/퇴근 수금관리</li>
-                </a>
-                <a href="/accounting/efficiency/member" class="sideMenuNav2Link">
-                  <li class="sideMenuNav2Menu">인당효율</li>
                 </a>
               </ul>
             </div>

@@ -797,6 +797,93 @@ class SalaryList(generic.ListView):
         context['search_type'] = self.request.GET.get('type')
         return context
 
+class SalaryNew(generic.ListView):
+    template_name = 'HR/salary_new.html'
+    context_object_name = 'member_list'
+    model = Member
+
+    def get_queryset(self):
+        month = self.request.GET.get('month', TODAY[:7])
+        name = self.request.GET.get('name', '')
+
+        authority = self.request.session.get('authority')
+        if authority >= 3:
+            id = self.request.session.get('user')
+            member_list = Member.objects.filter(entering_date__lt=month+'-32').filter(id=id)
+            return member_list
+        else:
+            member_list = Member.objects.filter(entering_date__lt=month+'-32').filter(use='사용').order_by('name')
+            if name:
+                member_list = member_list.filter(name__contains=name)
+        
+        view_name = resolve(self.request.path_info).url_name
+        if view_name == 'salary_new':
+            member_list = member_list.filter(Q(role='팀장')|Q(role='운전원')).filter(allowance_type='기사수당(현재)')
+        elif view_name == 'salary_change':
+            member_list = member_list.filter(Q(role='팀장')|Q(role='운전원')).filter(allowance_type='기사수당(변경)')
+        elif view_name == 'salary_outsourcing':
+            member_list = member_list.filter(Q(role='용역'))
+        elif view_name == 'salary_manager':
+            member_list = member_list.filter(Q(role='관리자'))
+        else:
+            raise HttpResponseBadRequest('url에러')
+        return member_list
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        month = self.request.GET.get('month', TODAY[:7])
+        name = self.request.GET.get('name', '')
+
+        salary_list = []
+        additional_list = []
+        deduction_list = []
+        year_list = []
+        for member in context['member_list']:
+            year = math.floor((datetime.strptime(TODAY[:10], FORMAT) - datetime.strptime(member.entering_date, FORMAT)).days/365)
+            if year == 0:
+                year = f'0{math.floor(((datetime.strptime(TODAY[:10], FORMAT) - datetime.strptime(member.entering_date, FORMAT)).days/30+0.5))}'
+            year_list.append(year)
+
+            try:
+                salary = Salary.objects.filter(member_id=member).get(month=month)
+            except Salary.DoesNotExist:
+                creator = Member.objects.get(pk=self.request.session.get('user'))
+                salary = new_salary(creator, month, member)
+            
+            salary_list.append(salary)
+
+            ###########
+            temp_add = []
+            additionals = AdditionalSalary.objects.filter(member_id=member).filter(salary_id=salary)
+            for additional in additionals:
+                temp_add.append({
+                    'price': additional.price,
+                    'remark': additional.remark,
+                    'id': additional.id,
+                })
+            additional_list.append(temp_add)
+
+            temp_ded = []    
+            deductions = DeductionSalary.objects.filter(member_id=member).filter(salary_id=salary)
+            for deduction in deductions:
+                temp_ded.append({
+                    'price': deduction.price,
+                    'remark': deduction.remark,
+                    'id': deduction.id,
+                })
+            deduction_list.append(temp_ded)
+
+        context['additional_list'] = additional_list
+        context['deduction_list'] = deduction_list
+        context['salary_list'] = salary_list
+        context['year_list'] = year_list
+
+        context['month'] = month
+        context['name'] = name
+        context['search_type'] = self.request.GET.get('type')
+        return context
+    
 ## 확인 필요
 # month의 출근 퇴근 일반 요금 계산해서 Salary 생성
 def new_salary(creator, month, member):
@@ -1414,4 +1501,16 @@ class Educational_Manager(generic.ListView):
         context = {
             self.context_object_name: members
         }
-        return render(request, self.template_name, context)        
+        return render(request, self.template_name, context)
+
+class PersonnelCommittee(generic.ListView):
+    template_name = 'HR/personnelcommittee.html'
+    context_object_name = 'member_list'
+    model = Member
+    paginate_by = 10
+
+    def get(self, request, **kwargs):
+        if request.session.get('authority') >= 3:
+            return render(request, 'authority.html')
+        else:
+            return super().get(request, **kwargs)

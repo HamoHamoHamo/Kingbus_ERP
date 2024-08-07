@@ -1,0 +1,372 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load custom_tags %}
+{% block head %}
+<link rel="stylesheet" href="{% static 'css/listpage.css' %}" type="text/css" />
+<link rel="stylesheet" href="{% static 'css/pagination.css' %}" type="text/css" />
+<link rel="stylesheet" href="{% static 'css/dispatch/automaticdispatch.css' %}" type="text/css" />
+{% endblock %}
+
+{% block content-header %}
+<div class="HeaderTitle">
+    자동배차
+</div>
+{% endblock %}
+
+{% block content %}
+
+    <div class="MainContentsContainer">
+
+        <div class="searchContainer">
+
+            <form action class="searchForm">
+                <label for="startDate" class="searchFormLabel">요일 :</label>
+                <label for="all" class="radioDate"><input type="checkbox" id="all" name="day" checked> 전체</label>
+                <label for="mon" class="radioDate"><input type="checkbox" id="mon" name="day"> 월</label>
+                <label for="tue" class="radioDate"><input type="checkbox" id="tue" name="day"> 화</label>
+                <label for="wed" class="radioDate"><input type="checkbox" id="wed" name="day"> 수</label>
+                <label for="thu" class="radioDate"><input type="checkbox" id="thu" name="day"> 목</label>
+                <label for="fri" class="radioDate"><input type="checkbox" id="fri" name="day"> 금</label>
+                <label for="sat" class="radioDate"><input type="checkbox" id="sat" name="day"> 토</label>
+                <label for="sun" class="radioDate"><input type="checkbox" id="sun" name="day"> 일</label>
+                </form>
+                <div>
+            <div class="popupAreaBox">
+              <button class="popupAreaBoxBtn" onclick="showPopup()">로테이션</button>
+            <button class="popupAreaBoxBtn" onclick="showPopup()">실행</button>
+            <button class="popupAreaBoxBtn blue" onclick="showPopup()">적용</button>
+          </div>
+                </div>
+        </div>
+
+  
+ <div class="buttons">
+        <button onclick="openDetails()">상세사항 열기</button>
+        <button onclick="downloadExcel()">엑셀 다운로드</button>
+    </div>
+    <div class="contentsAreaBox">
+        <div class="orderListSub hidden">
+            <table class="tableHeaddispatch">
+                <thead>
+                    <tr class="headerLine">
+                        <th class="col-checkbox"><input type="checkbox" class="deleteAllChecker"></th>
+                        <th class="col-number">번호</th>
+                        <th class="col-time">출발시간 ▶ 도착시간</th>
+                        <th class="col-route">출발지 ▶ 도착지</th>
+                        <th class="col-people">사람</th>
+                        <th class="col-id">차량</th>
+                        <th class="col-route-name">노선명</th>
+                        <th class="col-empty-time">공차(시간)</th>
+                        <th class="col-empty-km">공차(km)</th>
+                        <th class="col-day">운행요일</th>
+                        <th class="col-group">그룹</th>
+                    </tr>
+                </thead>
+            </table>
+            <div class="tableContainerdispatch">
+                <table class="tablebodydispatch">
+                    <tbody>
+                        <tr class="bodyLine">
+                            <td class="col-checkbox"><input type="checkbox" class="deleteAllChecker"></td>
+                            <td class="col-number">1</td>
+                            <td class="col-time">08:00 ▶ 09:00</td>
+                            <td class="col-route">루엘리안 ▶ 수현초등학교</td>
+                            <td class="col-people">신현재</td>
+                            <td class="col-group">7421</td>
+                            <td class="col-route-name">수현초 4호차 등교 2회</td>
+                            <td class="col-empty-time">5시간</td>
+                            <td class="col-empty-km">120km</td>
+                            <td class="col-day">월화수목금토일</td>
+                            <td class="col-id">월-A-1</td>
+                        </tr>
+                        
+                                                  <tr class="bodyLine">
+                            <td class="col-checkbox"><input type="checkbox" class="deleteAllChecker"></td>
+                            <td class="col-number">1</td>
+                            <td class="col-time">08:00 ▶ 09:00</td>
+                            <td class="col-route">루엘리안 ▶ 수현초등학교</td>
+                            <td class="col-people">신현재</td>
+                            <td class="col-group">7421</td>
+                            <td class="col-route-name">수현초 4호차 등교 2회</td>
+                            <td class="col-empty-time">5시간</td>
+                            <td class="col-empty-km">120km</td>
+                            <td class="col-day">월화수목금토일</td>
+                            <td class="col-id">월-A-1</td>
+                        </tr>
+                        
+                                                <tr class="bodyLine">
+                            <td class="col-checkbox"><input type="checkbox" class="deleteAllChecker"></td>
+                            <td class="col-number">1</td>
+                            <td class="col-time">08:00 ▶ 09:00</td>
+                            <td class="col-route">루엘리안 ▶ 수현초등학교</td>
+                            <td class="col-people">신현재</td>
+                            <td class="col-group">7421</td>
+                            <td class="col-route-name">수현초 4호차 등교 2회</td>
+                            <td class="col-empty-time">5시간</td>
+                            <td class="col-empty-km">120km</td>
+                            <td class="col-day">월화수목금토일</td>
+                            <td class="col-id">월-A-1</td>
+                        </tr>
+
+                                               <tr class="bodyLine">
+                            <td class="col-checkbox"><input type="checkbox" class="deleteAllChecker"></td>
+                            <td class="col-number">1</td>
+                            <td class="col-time">08:00 ▶ 09:00</td>
+                            <td class="col-route">루엘리안 ▶ 수현초등학교</td>
+                            <td class="col-people">신현재</td>
+                            <td class="col-group">7421</td>
+                            <td class="col-route-name">수현초 4호차 등교 2회</td>
+                            <td class="col-empty-time">5시간</td>
+                            <td class="col-empty-km">120km</td>
+                            <td class="col-day">월화수목금토일</td>
+                            <td class="col-id">월-A-1</td>
+                        </tr>
+
+                                                <tr class="bodyLine">
+                            <td class="col-checkbox"><input type="checkbox" class="deleteAllChecker"></td>
+                            <td class="col-number">1</td>
+                            <td class="col-time">08:00 ▶ 09:00</td>
+                            <td class="col-route">루엘리안 ▶ 수현초등학교</td>
+                            <td class="col-people">신현재</td>
+                            <td class="col-group">7421</td>
+                            <td class="col-route-name">수현초 4호차 등교 2회</td>
+                            <td class="col-empty-time">5시간</td>
+                            <td class="col-empty-km">120km</td>
+                            <td class="col-day">월화수목금토일</td>
+                            <td class="col-id">월-A-1</td>
+                        </tr>
+
+                                                <tr class="bodyLine">
+                            <td class="col-checkbox"><input type="checkbox" class="deleteAllChecker"></td>
+                            <td class="col-number">1</td>
+                            <td class="col-time">08:00 ▶ 09:00</td>
+                            <td class="col-route">루엘리안 ▶ 수현초등학교</td>
+                            <td class="col-people">신현재</td>
+                            <td class="col-group">7421</td>
+                            <td class="col-route-name">수현초 4호차 등교 2회</td>
+                            <td class="col-empty-time">5시간</td>
+                            <td class="col-empty-km">120km</td>
+                            <td class="col-day">월화수목금토일</td>
+                            <td class="col-id">월-A-1</td>
+                        </tr>
+
+                                                <tr class="bodyLine">
+                            <td class="col-checkbox"><input type="checkbox" class="deleteAllChecker"></td>
+                            <td class="col-number">1</td>
+                            <td class="col-time">08:00 ▶ 09:00</td>
+                            <td class="col-route">루엘리안 ▶ 수현초등학교</td>
+                            <td class="col-people">신현재</td>
+                            <td class="col-group">7421</td>
+                            <td class="col-route-name">수현초 4호차 등교 2회</td>
+                            <td class="col-empty-time">5시간</td>
+                            <td class="col-empty-km">120km</td>
+                            <td class="col-day">월화수목금토일</td>
+                            <td class="col-id">월-A-1</td>
+                        </tr>
+
+                                                <tr class="bodyLine">
+                            <td class="col-checkbox"><input type="checkbox" class="deleteAllChecker"></td>
+                            <td class="col-number">1</td>
+                            <td class="col-time">08:00 ▶ 09:00</td>
+                            <td class="col-route">루엘리안 ▶ 수현초등학교</td>
+                            <td class="col-people">신현재</td>
+                            <td class="col-group">7421</td>
+                            <td class="col-route-name">수현초 4호차 등교 2회</td>
+                            <td class="col-empty-time">5시간</td>
+                            <td class="col-empty-km">120km</td>
+                            <td class="col-day">월화수목금토일</td>
+                            <td class="col-id">월-A-1</td>
+                        </tr>
+
+                                               <tr class="bodyLine">
+                            <td class="col-checkbox"><input type="checkbox" class="deleteAllChecker"></td>
+                            <td class="col-number">1</td>
+                            <td class="col-time">08:00 ▶ 09:00</td>
+                            <td class="col-route">루엘리안 ▶ 수현초등학교</td>
+                            <td class="col-people">신현재</td>
+                            <td class="col-group">7421</td>
+                            <td class="col-route-name">수현초 4호차 등교 2회</td>
+                            <td class="col-empty-time">5시간</td>
+                            <td class="col-empty-km">120km</td>
+                            <td class="col-day">월화수목금토일</td>
+                            <td class="col-id">월-A-1</td>
+                        </tr>
+
+                                                <tr class="bodyLine">
+                            <td class="col-checkbox"><input type="checkbox" class="deleteAllChecker"></td>
+                            <td class="col-number">1</td>
+                            <td class="col-time">08:00 ▶ 09:00</td>
+                            <td class="col-route">루엘리안 ▶ 수현초등학교</td>
+                            <td class="col-people">신현재</td>
+                            <td class="col-group">7421</td>
+                            <td class="col-route-name">수현초 4호차 등교 2회</td>
+                            <td class="col-empty-time">5시간</td>
+                            <td class="col-empty-km">120km</td>
+                            <td class="col-day">월화수목금토일</td>
+                            <td class="col-id">월-A-1</td>
+                        </tr>
+
+                                                <tr class="bodyLine">
+                            <td class="col-checkbox"><input type="checkbox" class="deleteAllChecker"></td>
+                            <td class="col-number">1</td>
+                            <td class="col-time">08:00 ▶ 09:00</td>
+                            <td class="col-route">루엘리안 ▶ 수현초등학교</td>
+                            <td class="col-people">신현재</td>
+                            <td class="col-group">7421</td>
+                            <td class="col-route-name">수현초 4호차 등교 2회</td>
+                            <td class="col-empty-time">5시간</td>
+                            <td class="col-empty-km">120km</td>
+                            <td class="col-day">월화수목금토일</td>
+                            <td class="col-id">월-A-1</td>
+                        </tr>
+
+                                                <tr class="bodyLine">
+                            <td class="col-checkbox"><input type="checkbox" class="deleteAllChecker"></td>
+                            <td class="col-number">1</td>
+                            <td class="col-time">08:00 ▶ 09:00</td>
+                            <td class="col-route">루엘리안 ▶ 수현초등학교</td>
+                            <td class="col-people">신현재</td>
+                            <td class="col-group">7421</td>
+                            <td class="col-route-name">수현초 4호차 등교 2회</td>
+                            <td class="col-empty-time">5시간</td>
+                            <td class="col-empty-km">120km</td>
+                            <td class="col-day">월화수목금토일</td>
+                            <td class="col-id">월-A-1</td>
+                        </tr>
+
+                                                <tr class="bodyLine">
+                            <td class="col-checkbox"><input type="checkbox" class="deleteAllChecker"></td>
+                            <td class="col-number">1</td>
+                            <td class="col-time">08:00 ▶ 09:00</td>
+                            <td class="col-route">루엘리안 ▶ 수현초등학교</td>
+                            <td class="col-people">신현재</td>
+                            <td class="col-group">7421</td>
+                            <td class="col-route-name">수현초 4호차 등교 2회</td>
+                            <td class="col-empty-time">5시간</td>
+                            <td class="col-empty-km">120km</td>
+                            <td class="col-day">월화수목금토일</td>
+                            <td class="col-id">월-A-1</td>
+                        </tr>
+
+                                                <tr class="bodyLine">
+                            <td class="col-checkbox"><input type="checkbox" class="deleteAllChecker"></td>
+                            <td class="col-number">1</td>
+                            <td class="col-time">08:00 ▶ 09:00</td>
+                            <td class="col-route">루엘리안 ▶ 수현초등학교</td>
+                            <td class="col-people">신현재</td>
+                            <td class="col-group">7421</td>
+                            <td class="col-route-name">수현초 4호차 등교 2회</td>
+                            <td class="col-empty-time">5시간</td>
+                            <td class="col-empty-km">120km</td>
+                            <td class="col-day">월화수목금토일</td>
+                            <td class="col-id">월-A-1</td>
+                        </tr>
+
+                                                <tr class="bodyLine">
+                            <td class="col-checkbox"><input type="checkbox" class="deleteAllChecker"></td>
+                            <td class="col-number">1</td>
+                            <td class="col-time">08:00 ▶ 09:00</td>
+                            <td class="col-route">루엘리안 ▶ 수현초등학교</td>
+                            <td class="col-people">신현재</td>
+                            <td class="col-group">7421</td>
+                            <td class="col-route-name">수현초 4호차 등교 2회</td>
+                            <td class="col-empty-time">5시간</td>
+                            <td class="col-empty-km">120km</td>
+                            <td class="col-day">월화수목금토일</td>
+                            <td class="col-id">월-A-1</td>
+                        </tr>
+
+                                                <tr class="bodyLine">
+                            <td class="col-checkbox"><input type="checkbox" class="deleteAllChecker"></td>
+                            <td class="col-number">1</td>
+                            <td class="col-time">08:00 ▶ 09:00</td>
+                            <td class="col-route">루엘리안 ▶ 수현초등학교</td>
+                            <td class="col-people">신현재</td>
+                            <td class="col-group">7421</td>
+                            <td class="col-route-name">수현초 4호차 등교 2회</td>
+                            <td class="col-empty-time">5시간</td>
+                            <td class="col-empty-km">120km</td>
+                            <td class="col-day">월화수목금토일</td>
+                            <td class="col-id">월-A-1</td>
+                        </tr>
+
+                                                <tr class="bodyLine">
+                            <td class="col-checkbox"><input type="checkbox" class="deleteAllChecker"></td>
+                            <td class="col-number">1</td>
+                            <td class="col-time">08:00 ▶ 09:00</td>
+                            <td class="col-route">루엘리안 ▶ 수현초등학교</td>
+                            <td class="col-people">신현재</td>
+                            <td class="col-group">7421</td>
+                            <td class="col-route-name">수현초 4호차 등교 2회</td>
+                            <td class="col-empty-time">5시간</td>
+                            <td class="col-empty-km">120km</td>
+                            <td class="col-day">월화수목금토일</td>
+                            <td class="col-id">월-A-1</td>
+                        </tr>
+
+                                                <tr class="bodyLine">
+                            <td class="col-checkbox"><input type="checkbox" class="deleteAllChecker"></td>
+                            <td class="col-number">1</td>
+                            <td class="col-time">08:00 ▶ 09:00</td>
+                            <td class="col-route">루엘리안 ▶ 수현초등학교</td>
+                            <td class="col-people">신현재</td>
+                            <td class="col-group">7421</td>
+                            <td class="col-route-name">수현초 4호차 등교 2회</td>
+                            <td class="col-empty-time">5시간</td>
+                            <td class="col-empty-km">120km</td>
+                            <td class="col-day">월화수목금토일</td>
+                            <td class="col-id">월-A-1</td>
+                        </tr>
+
+                                                <tr class="bodyLine">
+                            <td class="col-checkbox"><input type="checkbox" class="deleteAllChecker"></td>
+                            <td class="col-number">1</td>
+                            <td class="col-time">08:00 ▶ 09:00</td>
+                            <td class="col-route">루엘리안 ▶ 수현초등학교</td>
+                            <td class="col-people">신현재</td>
+                            <td class="col-group">7421</td>
+                            <td class="col-route-name">수현초 4호차 등교 2회</td>
+                            <td class="col-empty-time">5시간</td>
+                            <td class="col-empty-km">120km</td>
+                            <td class="col-day">월화수목금토일</td>
+                            <td class="col-id">월-A-1</td>
+                        </tr>
+
+                                                <tr class="bodyLine">
+                            <td class="col-checkbox"><input type="checkbox" class="deleteAllChecker"></td>
+                            <td class="col-number">1</td>
+                            <td class="col-time">08:00 ▶ 09:00</td>
+                            <td class="col-route">루엘리안 ▶ 수현초등학교</td>
+                            <td class="col-people">신현재</td>
+                            <td class="col-group">7421</td>
+                            <td class="col-route-name">수현초 4호차 등교 2회</td>
+                            <td class="col-empty-time">5시간</td>
+                            <td class="col-empty-km">120km</td>
+                            <td class="col-day">월화수목금토일</td>
+                            <td class="col-id">월-A-1</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+      </div>
+
+      <div id="popup" class="popup">
+      <div class="popup-header">배차 적용</div>
+      <div class="popup-body">
+        <label class="popup-font">날짜 선택</label>
+        <input type="date" id="popupStartDate" value="2024-06-01">
+        ~
+        <input type="date" id="popupEndDate" value="2024-07-01">
+      </div>
+      <div class="popup-footer">
+        <button class="close-btn" onclick="closePopup()">닫기</button>
+        <button onclick="saveChanges()">저장</button>
+      </div>
+    </div>
+
+{% endblock %}
+
+{% block script %}
+    <script src="{% static 'js/dispatch/automaticdispatch.js' %}"></script>
+{% endblock %}

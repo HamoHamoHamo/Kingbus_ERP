@@ -40,6 +40,7 @@ urlpatterns = [
     path('regularly/station/download', views.regularly_station_download, name="regularly_station_download"),
 
     path('order', views.OrderList.as_view(), name="order"),
+    path('order_new', views.OrderNew.as_view(), name="order_new"),
     path('order/create', views.order_connect_create, name="order_connect_create"),
     path('order/route/create', views.order_create, name="order_create"),
     path('order/route/edit', views.order_edit, name="order_edit"),
@@ -73,4 +74,6 @@ urlpatterns = [
     path('print/dailylist', views.daily_driving_list, name='daily_driving_list'),
     path('print/daily', views.daily_driving_print, name='daily_driving_print'),
 
+    path('dispatchstatus', views.DispatchStatus.as_view(), name='dispatchstatus'),
+    path('automaticdispatch', views.AutomaticDispatch.as_view(), name='automaticdispatch'),
 ]

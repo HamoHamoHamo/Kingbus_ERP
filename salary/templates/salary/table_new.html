@@ -3,7 +3,7 @@
 {% load dispatch_custom_tags %}
 {% block head %}
 <meta http-equiv="Cache-Control" content="private, no-cache, no-store, max-age=0, must-revalidate">
-<link rel="stylesheet" href="{% static 'css/salary/table.css' %}" type="text/css" />
+<link rel="stylesheet" href="{% static 'css/salary/table_new.css' %}" type="text/css" />
 
 
 {% endblock %}
@@ -135,22 +135,12 @@
                                 <div class="theadLegalAllowanceContentDoubleContentFirst">휴일100%가산임금</div>
                             </div>
                         </div>
-                        <div class="theadLegalAllowanceContentDouble">
-                            <div class="theadLegalAllowanceContentDoubleTitle">휴일근로</div>
-                            <div class="theadLegalAllowanceContentDoubleContent">
-                                <div class="theadLegalAllowanceContentDoubleContentFirst">휴일기본임금</div>
-                                <div class="theadLegalAllowanceContentDoubleContentFirst">휴일50%가산임금</div>
-                                <div class="theadLegalAllowanceContentDoubleContentFirst">휴일100%가산임금</div>
-                            </div>
-                        </div>
                         <div>연차수당</div>
                         <div>만근수당</div>
                         <div class="theadLegalAllowanceContentLast">계</div>
                     </div>
                 </div>
                 <!--법정수당 done-->
-
-                
 
                 <div class="theadSum">합계</div>
                 <!--보험료산정기준-->
@@ -178,7 +168,6 @@
                     </div>
                 </div>
                 <!--공제내역 done-->
-
                 <div class="theadAdditionalAllowance">추가수당</div>
                 <div class="theadSum theadThLast">합계</div>
             </div>

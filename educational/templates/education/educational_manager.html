@@ -1,142 +1,293 @@
 {% extends 'base.html' %}
 {% load static %}
-{% load dispatch_custom_tags %}
+{% load custom_tags %}
 
 {% block head %}
+
 <meta http-equiv="Cache-Control" content="private, no-cache, no-store, max-age=0, must-revalidate">
-<link rel="stylesheet" href="{% static 'css/dispatch/dispatchBase.css' %}" type="text/css" />
-<link rel="stylesheet" href="{% static 'css/dispatch/regularlyRoute.css' %}" type="text/css" />
+
 <link rel="stylesheet" href="{% static 'css/education/educational_manager.css' %}" type="text/css" />
 {% endblock %}
 
 {% block content-header %}
 <div class="HeaderTitle">
-    교육 자료 (관리자)
+    교육자료(관리자)
 </div>
 {% endblock %}
 
 {% block content %}
-<div class="search-Container">
-    <form class="search-Form">
-        <label for="" class="search-Form_label">교육제목 : </label>
-        <input type="text" name="pathName" placeholder="교육제목" class="search-dispatch-path">
-        <input type="submit" class="search-Form_search-btn" value="검색">
-        <input type="submit" class="searchRouteInputDelete" value="삭제">
-        <input type="submit" class="searchRouteInputDeleteblue" value="저장">
+
+
+
+
+<div class="searchAreaBox">
+    <form action="">
+        <div class="searchTool">
+            <!-- <div class="searchTitle">파일검색</div> -->
+            <label for="">제목검색</label>
+            <input autocomplete="off" value="{{search}}" name="filename" type="text">
+            <input autocomplete="off" type="submit" value="검색" class="btnModules">
+        </div>
     </form>
 </div>
 
-<div class="container">
-    <div class="main-content">
-        <div class="column">
-            <div class="section">
-                <div class="section-header">기본 교육 <span class="deleteButton"><button>X</button></span></div>
-                <div class="sub-section">
-                    <table class="educationalTable">
-                        <tr><td><input type="checkbox"></td><td class="sectionText">기사식 정기 업무</td></tr>
-                        <tr><td><input type="checkbox"></td><td class="sectionText">인사 시 등록 서류</td></tr>
-                        <tr><td><input type="checkbox"></td><td class="sectionText">기사 규정</td></tr>
-                        <tr><td><input type="checkbox"></td><td class="sectionText">인사 장치</td></tr>
-                        <tr><td><input type="checkbox"></td><td class="sectionText">현장 관리자의 수칙</td></tr>
-                        <tr><td></td><td class="sectionText"></td></tr>
-                        <tr><td></td><td class="sectionText"></td></tr>
-                        <tr><td></td><td class="sectionText"></td></tr>
-                        <tr><td></td><td class="sectionText"></td></tr>
-                        <tr><td></td><td class="sectionText"></td></tr>
-                        <tr><td></td><td class="sectionText"></td></tr>
-                        <tr><td></td><td class="sectionText"><div class="button"><button>+</button></div></td></tr>
-                    </table>
+
+
+
+
+<form method="post" action="{% url 'document:company_delete' %}" class="contentsAreaBox">
+    {% csrf_token %}
+        <input autocomplete="off" type="submit" class="btnModules contentsAreaBoxRevise" value="수정">
+    <input autocomplete="off" type="submit" class="btnModules contentsAreaBoxDelete" value="삭제">
+    <div class="documentTableBox">
+        <table class="documentTableHeader">
+            <thead>
+                <tr>
+                    <td>
+                        <input autocomplete="off" type="checkbox">
+                    </td>
+                    <td>교육명</td>
+                    <td>작성자</td>
+                    <td>등록일</td>
+                </tr>
+            </thead>
+        </table>
+        <div class="documentTableBodyBox">
+            <table class="documentCoverTable">
+                <tbody>
+                    
+                    {% for group in group_list %}
+                    
+                    <tr>
+                        <td>
+                            <table class="documentContentsTable">
+                                <thead>
+                                    <tr>
+                                        <td>
+                                            <input autocomplete="off" value="{{group.id}}" name="group_check" type="checkbox"
+                                                교육명>
+                                        </td>
+                                        <td colspan="2">
+                                            <div class="folderBox">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="22" height="16.5"
+                                                    viewBox="0 0 22 16.5">
+                                                    <path id="Icon_awesome-folder" data-name="Icon awesome-folder"
+                                                        d="M19.938,7.25h-8.25L8.938,4.5H2.063A2.062,2.062,0,0,0,0,6.563V18.938A2.062,2.062,0,0,0,2.063,21H19.938A2.062,2.062,0,0,0,22,18.938V9.313A2.062,2.062,0,0,0,19.938,7.25Z"
+                                                        transform="translate(0 -4.5)" fill="#444" />
+                                                </svg>
+                                                <div>
+                                                    <input autocomplete="off" name="name" type="text" value="{{group.name}}" class="groupName" tabindex="-1" disabled>
+                                                </div>
+                                                <div class="groupNameEditBtn">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15.12" viewBox="0 0 15 15.12">
+                                                        <g id="그룹_1652" data-name="그룹 1652" transform="translate(-683.5 -772.38)">
+                                                          <g id="Icon_feather-edit" data-name="Icon feather-edit" transform="translate(684 773)">
+                                                            <path id="패스_339" data-name="패스 339" d="M9.262,6H4.392A1.392,1.392,0,0,0,3,7.392v9.741a1.392,1.392,0,0,0,1.392,1.392h9.741a1.392,1.392,0,0,0,1.392-1.392v-4.87" transform="translate(-3 -4.524)" fill="none" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+                                                            <path id="패스_340" data-name="패스 340" d="M19.306,3.25a1.476,1.476,0,0,1,2.087,2.087l-6.61,6.61-2.783.7.7-2.783Z" transform="translate(-7.825 -2.818)" fill="none" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+                                                          </g>
+                                                        </g>
+                                                      </svg>                                                      
+                                                </div>
+                                                <div class="btnModules groupNameSaveBtn">저장</div>
+                                                <div class="groupNameDeleteBtn">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15"
+                                                        viewBox="0 0 15 15">
+                                                        <g id="그룹_1649" data-name="그룹 1649"
+                                                            transform="translate(-438 -432)">
+                                                            <g id="사각형_11733" data-name="사각형 11733"
+                                                                transform="translate(438 432)" fill="none" stroke="#444"
+                                                                stroke-width="1">
+                                                                <rect width="15" height="15" rx="2" stroke="none" />
+                                                                <rect x="0.5" y="0.5" width="14" height="14" rx="1.5"
+                                                                    fill="none" />
+                                                            </g>
+                                                            <path id="패스_337" data-name="패스 337"
+                                                                d="M25.935,13.5,18,21.114"
+                                                                transform="translate(423.533 422.193)" fill="none"
+                                                                stroke="#444" stroke-linecap="round"
+                                                                stroke-linejoin="round" stroke-width="1" />
+                                                            <path id="패스_338" data-name="패스 338"
+                                                                d="M18,13.5l7.935,7.614"
+                                                                transform="translate(423.533 422.193)" fill="none"
+                                                                stroke="#444" stroke-linecap="round"
+                                                                stroke-linejoin="round" stroke-width="1" />
+                                                        </g>
+                                                    </svg>
+                                                </div>
+
+                                            </div>
+                                        </td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                </thead>
+                                <tbody class="documentContentsTableTbody">
+                                    {% if file_list %}
+                                    {% for file in file_list %}
+                                    {% if file.group_id == group %}
+                                    <tr>
+                                        <td>
+                                            <input autocomplete="off" value="{{file.id}}" name="file_check" type="checkbox"
+                                                class="fileCheck group{{group.id}} {% url 'document:company_document_download' file.id %}">
+                                            <!-- 장고로 클래스 부여 -->
+                                        </td>
+                                        <td colspan="2">{{file.filename}}</td>
+                                        <td>관리자</td>
+                                        <td>2022.09.15</td>
+                                    </tr>
+                                    {% endif %}
+                                    {% endfor %}
+                                    {% else %}
+                                    {% for file in group.group_file.all %}
+                                    <tr>
+                                        <td>
+                                            <input autocomplete="off" value="{{file.id}}" name="file_check" type="checkbox"
+                                                class="fileCheck group{{group.id}} {% url 'document:company_document_download' file.id %}">
+                                            <!-- 장고로 클래스 부여 -->
+                                        </td>
+                                        <td colspan="2">{{file.filename}}</td>
+                                        <td>관리자</td>
+                                        <td>2022.09.15</td>
+                                    </tr>
+                                    {% endfor %}
+                                    {% endif %}
+                                    <tr>
+                                        <td colspan="6">
+                                            <div class="uploadFile">
+                                                <div class="uploadFileIcon">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14"
+                                                        viewBox="0 0 14 14">
+                                                        <g id="그룹_1511" data-name="그룹 1511"
+                                                            transform="translate(-1022.5 -388.5)">
+                                                            <line id="선_691" data-name="선 691" y2="12"
+                                                                transform="translate(1029.5 389.5)" fill="none"
+                                                                stroke="#fff" stroke-linecap="round" stroke-width="2" />
+                                                            <line id="선_692" data-name="선 692" y2="12"
+                                                                transform="translate(1035.5 395.5) rotate(90)"
+                                                                fill="none" stroke="#fff" stroke-linecap="round"
+                                                                stroke-width="2" />
+                                                        </g>
+                                                    </svg>
+                                                </div>
+                                                <span>파일 업로드</span>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            <div class="addGroupContainer">
+                <div class="addGroupBox">
+                    <div class="uploadFileIcon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 14 14">
+                            <g id="그룹_1511" data-name="그룹 1511" transform="translate(-1022.5 -388.5)">
+                                <line id="선_691" data-name="선 691" y2="12" transform="translate(1029.5 389.5)"
+                                    fill="none" stroke="#fff" stroke-linecap="round" stroke-width="2" />
+                                <line id="선_692" data-name="선 692" y2="12"
+                                    transform="translate(1035.5 395.5) rotate(90)" fill="none" stroke="#fff"
+                                    stroke-linecap="round" stroke-width="2" />
+                            </g>
+                        </svg>
+                    </div>
+                    <div>그룹추가</div>
                 </div>
             </div>
         </div>
-        <div class="column">
-            <div class="section">
-                <div class="section-header">안전 및 사고 대응 <span class="deleteButton"><button>X</button></span></div>
-                <div class="sub-section">
-                    <table class="educationalTable">
-                        <tr><td><input type="checkbox"></td><td class="sectionText">기사식 정기 업무</td></tr>
-                        <tr><td><input type="checkbox"></td><td class="sectionText">인사 시 등록 서류</td></tr>
-                        <tr><td><input type="checkbox"></td><td class="sectionText">기사 규정</td></tr>
-                        <tr><td><input type="checkbox"></td><td class="sectionText">인사 장치</td></tr>
-                        <tr><td><input type="checkbox"></td><td class="sectionText">현장 관리자의 수칙</td></tr>
-                        <tr><td><input type="checkbox"></td><td class="sectionText"></td></tr>
-                        <tr><td></td><td class="sectionText"></td></tr>
-                        <tr><td></td><td class="sectionText"></td></tr>
-                        <tr><td></td><td class="sectionText"></td></tr>
-                        <tr><td></td><td class="sectionText"></td></tr>
-                        <tr><td></td><td class="sectionText"></td></tr>
-                        <tr><td></td><td class="sectionText"></td></tr>
-                        <tr><td></td><td class="sectionText"><div class="button"><button>+</button></div></td></tr>
-                    </table>
-                </div>
-            </div>
-        </div>
-        <div class="column">
-            <div class="section">
-                <div class="section-header">운행 방법 및 운전 품질 <span class="deleteButton"><div class="button"><button>X</button></div></span></div>
-                <div class="sub-section">
-                    <table class="educationalTable">
-                        <tr><td><input type="checkbox"></td><td class="sectionText">기사식 정기 업무</td></tr>
-                        <tr><td><input type="checkbox"></td><td class="sectionText">인사 시 등록 서류</td></tr>
-                        <tr><td><input type="checkbox"></td><td class="sectionText">기사 규정</td></tr>
-                        <tr><td><input type="checkbox"></td><td class="sectionText">인사 장치</td></tr>
-                        <tr><td><input type="checkbox"></td><td class="sectionText">현장 관리자의 수칙</td></tr>
-                        <tr><td></td><td class="sectionText"></td></tr>
-                        <tr><td></td><td class="sectionText"></td></tr>
-                        <tr><td></td><td class="sectionText"></td></tr>
-                        <tr><td></td><td class="sectionText"></td></tr>
-                        <tr><td></td><td class="sectionText"></td></tr>
-                        <tr><td></td><td class="sectionText"></td></tr>
-                        <tr><td></td><td class="sectionText"><div class="button"><button>+</button></div></td></tr>
-                    </table>
-                </div>
-            </div>
-        </div>
-        <div class="column">
-            <div class="section">
-                <div class="section-header">운행 및 차량 관리 <span class="deleteButton"><button class="button">X</button></span></div>
-                <div class="sub-section">
-                    <table class="educationalTable">
-                        <tr><td><input type="checkbox"></td><td class="sectionText">기사식 정기 업무</td></tr>
-                        <tr><td><input type="checkbox"></td><td class="sectionText">인사 시 등록 서류</td></tr>
-                        <tr><td><input type="checkbox"></td><td class="sectionText">기사 규정</td></tr>
-                        <tr><td><input type="checkbox"></td><td class="sectionText">인사 장치</td></tr>
-                        <tr><td><input type="checkbox"></td><td class="sectionText">현장 관리자의 수칙</td></tr>
-                        <tr><td></td><td class="sectionText"></td></tr>
-                        <tr><td></td><td class="sectionText"></td></tr>
-                        <tr><td></td><td class="sectionText"></td></tr>
-                        <tr><td></td><td class="sectionText"></td></tr>
-                        <tr><td></td><td class="sectionText"></td></tr>
-                        <tr><td></td><td class="sectionText"></td></tr>
-                        <tr><td></td><td class="sectionText"><div class="button"><button>+</button></div></td></tr>
-                    </table>
-                </div>
-            </div>
-        </div>
-        <div class="column">
-            <div class="section">  
-                <div class="section-header">회사 소개 <span class="deleteButton"><button>X</button></span></div>
-                <div class="sub-section">
-                    <table class="educationalTable">
-                        <tr><td><input type="checkbox"></td><td class="sectionText">기사식 정기 업무</td></tr>
-                        <tr><td><input type="checkbox"></td><td class="sectionText">인사 시 등록 서류</td></tr>
-                        <tr><td><input type="checkbox"></td><td class="sectionText">기사 규정</td></tr>
-                        <tr><td><input type="checkbox"></td><td class="sectionText">인사 장치</td></tr>
-                        <tr><td><input type="checkbox"></td><td class="sectionText">현장 관리자의 수칙</td></tr>
-                        <tr><td></td><td class="sectionText"></td></tr>
-                        <tr><td></td><td class="sectionText"></td></tr>
-                        <tr><td></td><td class="sectionText"></td></tr>
-                        <tr><td></td><td class="sectionText"></td></tr>
-                        <tr><td></td><td class="sectionText"></td></tr>
-                        <tr><td></td><td class="sectionText"></td></tr>
-                        <tr><td></td><td class="sectionText"><div class="button"><button>+</button></div></td></tr>
-                    </table>
-                </div>
-            </div>
-        </div>
-        <div class="column empty">
-                <button>+</button>
-            </div>
     </div>
-</div>
+    <input autocomplete="off" type="hidden" name="id" class="hiddenGroupId">
+
+</form>
+
+
 {% endblock %}
+
+
+
+
+
+{% block popup %}
+
+<!--  -->
+<div class="popupAreaModules">
+    <div class="popupBgModules"></div>
+    <form method="post" action="{% url 'document:company_document_create' %}" class="popupContainer uploadFileForm"
+        enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="popupHeader">
+            <div class="popupTitle">파일 업로드</div>
+        </div>
+        <div class="popupBody">
+            <div class="popupSection">
+                <div class="popupArticle">
+                    <label for="" class="popupArticleLabel"><span class="importantStar">*</span>파일명</label>
+                    <input autocomplete="off" name="filename" type="text" class="popupArticleInput length100 essential">
+                </div>
+                <div class="popupArticle">
+                    <label for="" class="popupArticleLabel"><span class="importantStar">*</span>업로드 파일</label>
+                    <div class="popupArticleFile">
+                        <label for="documentFile">파일 선택</label>
+                        <input autocomplete="off" name="file" type="file" id="documentFile" class="documentFileInput">
+                        <input autocomplete="off" type="text" class="documentFileText" readonly>
+                        <svg class="fileDeleteBtn" xmlns="http://www.w3.org/2000/svg" width="11.314" height="11.314"
+                            viewBox="0 0 11.314 11.314">
+                            <g id="그룹_1513" data-name="그룹 1513" transform="translate(-442.649 -1001.97) rotate(45)">
+                                <line id="선_691" data-name="선 691" y2="12" transform="translate(1029.5 389.5)"
+                                    fill="none" stroke="#000" stroke-linecap="round" stroke-width="2" />
+                                <line id="선_692" data-name="선 692" y2="12"
+                                    transform="translate(1035.5 395.5) rotate(90)" fill="none" stroke="#000"
+                                    stroke-linecap="round" stroke-width="2" />
+                            </g>
+                        </svg>
+                    </div>
+                </div>
+                <input autocomplete="off" name="group_id" type="hidden" class="hiddenGroupIdUpload">
+            </div>
+            <div class="popupFooter">
+                <div class="btnModules uploadFileAdd">추가</div>
+                <div class="btnModules popupCloseBtn">취소</div>
+            </div>
+        </div>
+    </form>
+</div>
+
+<div class="popupAreaModules">
+    <div class="popupBgModules"></div>
+    <form method="post" action="{% url 'document:company_group_create' %}" class="popupContainer groupAddpopupForm">
+        {% csrf_token %}
+        <div class="popupHeader">
+            <div class="popupTitle">그룹추가</div>
+        </div>
+        <div class="popupBody">
+            <div class="popupSection">
+                <div class="popupArticle">
+                    <label for="" class="popupArticleLabel"><span class="importantStar">*</span>그룹이름</label>
+                    <input autocomplete="off" name="group_name" type="text" class="popupArticleInput length100 groupEssential">
+                </div>
+            </div>
+            <div class="popupFooter">
+                <div class="btnModules groupAddBtn">추가</div>
+                <div class="btnModules popupCloseBtn">취소</div>
+            </div>
+        </div>
+    </form>
+</div>
+
+{% endblock %}
+
+
+
+
+
+{% block script %}
+<script src="{% static 'js/document/download.js' %}"></script>
+<script src="{% static 'js/document/print.js' %}"></script>
+<script src="{% static 'js/document/uploadPopup.js' %}"></script>
+<script src="{% static 'js/document/gruopChecker.js' %}"></script>
+<script src="{% static 'js/document/openGroup.js' %}"></script>
+<script src="{% static 'js/document/editGroupName.js' %}"></script>
+<script src="{% static 'js/document/essential.js' %}"></script>
+{% endblock %}  

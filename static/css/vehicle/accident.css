@@ -783,7 +783,6 @@
     width: 100%;
     height: 100%;
     background-color: rgba(0, 0, 0, 0.5);
-
     position: absolute;
     top:0;
     left: 0;
@@ -795,6 +794,143 @@
 
 .estimate-pop-up-container {
     width: 80%;
-    height: 70%;
+    height: 80%;
     background-color: white;
+}
+
+.aheHeader {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 3rem;
+  margin-bottom: 1.8rem;
+}
+
+.aheHeaderText {
+  font-size: 2.1rem;
+  margin-left: 3.1rem;
+}
+
+.aheHeaderButton {
+  height: 2.832rem;
+  width: 2.94rem;
+  margin-right: 3rem;
+}
+
+.aheBodyButton {
+  margin-top: 1.7rem;
+}
+
+.HeaderButton {
+  width: 2.94rem;
+  height: 2.832rem;
+  margin-bottom: 1.868rem;
+  margin-right: 1rem;
+  background-color: transparent;
+  border:none;
+  font-size: 3rem;
+}
+
+.BodyButton {
+  width: 11.679rem;
+  height: 4.2rem;
+  font-size: 2.5rem;
+  color: white;
+  background-color: #4000ab;
+  border-radius: 2.477rem;
+}
+
+.aheHeaderTextSub {
+  font-size: 2.723rem;
+}
+
+.aheBodyHeader {
+  font-size: 2.5rem;
+  display: flex;
+  justify-content: space-between;
+  margin-left: 9.6rem;
+  align-items: center;
+}
+
+.aheBodyEstimate {
+  font-size: 2.2rem;
+}
+
+.aheBodyEstimate {
+  width: 114.6rem;
+  height: 37.4rem;
+  margin-top: 1.3rem;
+  margin-left: 6.2rem;
+  border: 5px solid #f1f1f1;
+  padding: 3.3rem;
+  border-radius: 1.7rem;
+}
+
+.aheBodyEstimate hr {
+  width: 50.5rem;
+  margin-right: 9rem;
+}
+
+.menu1,
+.menu2,
+.menu3,
+.menu4,
+.menu5 {
+  display: flex;
+  width: 50.5rem;
+  height: 5.3rem;
+  text-align: center;
+  margin-top: 1.9rem;
+}
+
+.menu1 {
+  margin-top: 0;
+}
+
+.AmountText,
+.AmountLastText {
+  width: 11.043rem;
+  height: 3.713rem;
+  font-size: 1.7rem;
+  color: white;
+  background-color: #575757;
+}
+
+.AmountText {
+    display: flex;
+    align-items: center;
+  border-top-right-radius: 0.5rem; /* 오른쪽 상단 */
+  border-bottom-right-radius: 0.5rem; /* 오른쪽 하단 */
+}
+
+.subText {
+  display: flex;
+  width: 48.363rem;
+  justify-content: space-between;
+}
+
+.amountDiv {
+  display: flex;
+}
+
+.Amount {
+  width: 20rem;
+  height: 3.113rem;
+  border-top-left-radius: 0.5rem; /* 오른쪽 상단 */
+  border-bottom-left-radius: 0.5rem; /* 오른쪽 하단 */
+}
+
+.bottom {
+  margin-left: 8.4rem;
+  margin-top: 2.7rem;
+  font-size: 2.2rem;
+}
+
+.bottomSpan {
+  margin-left: 2.8rem;
+}
+
+.bottomSpanText {
+  height: 5.182rem;
+  width: 25.478rem;
+  border-radius: 0.5rem;
 }

@@ -295,7 +295,72 @@ class SalaryTable(AuthorityCheckView, generic.ListView):
         context['month'] = self.request.GET.get('month', TODAY[:7])
         salary_selector = SalarySelector()
         context['hourly_wage'] = salary_selector.get_hourly_wage_by_month(context['month'])
-        if context['hourly_wage'] is None:
+        if context['hourly_wage'] == None:
+            context['hourly_wage'] = HourlyWage.new_wage(context['month'], self.creator)
+
+        first_date = f"{context['month']}-01"
+        # 1일이 월요일이 아닌경우 저번달 마지막주 월요일부터 불러오기
+        date_list = get_date_range_list(first_date, last_date_of_month(first_date))
+
+        mondays = get_mondays_from_last_week_of_previous_month(context['month'])
+        start_date = mondays[0] if mondays[0][:7] != context['month'] else first_date
+
+        # 불러온 월요일부터 배차 데이터 가져오기
+        dispatch_selector = DispatchSelector()
+        connect_time_list = dispatch_selector.get_driving_time_list(start_date, get_next_sunday_after_last_day(context['month']))
+
+        member_selector = MemberSelector()
+        salary_list = member_selector.get_monthly_salary_list(context['month'])
+        salary_selector = SalarySelector()
+
+        holiday_data = get_holiday_list_from_open_api(context['month'])
+        print("TEST", holiday_data)
+        datas = {}
+        context['date_list'] = ['' for i in range(31)]
+
+        for i in range(last_day_of_month(first_date)):
+            context['date_list'][i] = i + 1
+
+        for member in context['member_list']:
+            data_collector = self.data_collector_class(member, context['month'], mondays, connect_time_list, holiday_data, date_list)
+            data_collector.set_hourly_wage_data(context['hourly_wage'])
+            data_collector.set_member_salary(salary_list)
+            datas[member.id] = data_collector.get_collected_data()
+            
+        context['datas'] = datas
+        return context
+
+class SalaryTableNew(AuthorityCheckView, generic.ListView):
+    template_name = 'salary/table_new.html'
+    context_object_name = 'member_list'
+    model = Member
+    authority_level = 3
+    data_collector_class = SalaryTableDataCollector
+
+    def get_queryset(self):
+        name = self.request.GET.get('name', '')
+        search_type = self.request.GET.get("type", '전체')
+
+        member_selector = MemberSelector()
+        
+        if search_type == '전체':
+            member_list = member_selector.get_using_driver_list(name)
+        elif search_type == '정규직':
+            member_list = member_selector.get_using_permanent_driver_list(name)
+        elif search_type == '일당직':
+            member_list = member_selector.get_using_outsourcing_driver_list(name)
+        return member_list
+        
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        context['name'] = self.request.GET.get('name', '')
+        context['type'] = self.request.GET.get('type', '전체')
+        context['month'] = self.request.GET.get('month', TODAY[:7])
+        salary_selector = SalarySelector()
+        context['hourly_wage'] = salary_selector.get_hourly_wage_by_month(context['month'])
+        if context['hourly_wage'] == None:
             context['hourly_wage'] = HourlyWage.new_wage(context['month'], self.creator)
 
         first_date = f"{context['month']}-01"

@@ -59,6 +59,7 @@ INSTALLED_APPS = [
     "debug_toolbar",
     'educational',
     'rules',
+    'approval',
 ]
 
 MIDDLEWARE = [

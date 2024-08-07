@@ -5,7 +5,7 @@
 {% block head %}
 <meta http-equiv="Cache-Control" content="private, no-cache, no-store, max-age=0, must-revalidate">
 <link rel="stylesheet" href="{% static 'css/dispatch/dispatchBase.css' %}" type="text/css" />
-<link rel="stylesheet" href="{% static 'css/dispatch/order.css' %}" type="text/css" />
+<link rel="stylesheet" href="{% static 'css/dispatch/order_new.css' %}" type="text/css" />
 {% endblock %}
 
 {% block content-header %}
@@ -410,6 +410,18 @@
                                 </select>
                             </div>
                         </td>
+                        
+                    </tr>
+
+                    <tr>
+                        <td class="tdTypeA">*인정시간</td>
+                        <td class="timeTd" >
+                            <input autocomplete="off" type="text" class="inputTime">
+                            <label class="labelTime">시간</label>
+                            <input autocomplete="off" type="text" class="inputTime">
+                            <label class="labelTime">분</label>
+                        </td>
+
                         
                     </tr>
                 </table>
