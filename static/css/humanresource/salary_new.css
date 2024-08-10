@@ -1,0 +1,385 @@
+.salarySaveBtn {
+    position: absolute;
+    top: -5.2rem;
+    right: 19.5rem;
+    background-color: #0069D9;
+}
+
+.salarySaveBtn2 {
+    right: 10rem;
+    background-color: #444444;
+}
+
+.search-Form input[type=month]{
+    width: 12rem;
+    margin-right: 2rem;
+}
+
+
+
+.salaryContainer {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: calc(100% - 6rem);
+    box-sizing: border-box;
+    background-color: white;
+    border-radius: 0.2rem;
+    box-shadow: 0.1rem 0.1rem 0.6rem rgb(0 0 0 / 30%);
+}
+
+.salaryContainer .scrolling_table-list_body {
+    height: 66.4rem;
+}
+
+.salaryContainer td {
+    /* padding: 0; */
+    box-sizing: border-box;
+}
+
+.salaryContainer td:nth-child(1),
+.salaryContainer td:nth-child(2) {
+    width: 3%;
+}
+
+.salaryContainer td:nth-child(3) {
+    width: 5%;
+}
+
+.salaryContainer td:nth-child(4){
+    width: 4%;
+}
+
+.salaryContainer td:nth-child(5){
+    width: 9%;
+}
+
+.salaryContainer td:nth-child(6),
+.salaryContainer td:nth-child(7),
+.salaryContainer td:nth-child(8),
+.salaryContainer td:nth-child(9),
+.salaryContainer td:nth-child(10) {
+    width: 6%;
+}
+
+.salaryContainer td:nth-child(11),
+.salaryContainer td:nth-child(12),
+.salaryContainer td:nth-child(13),
+.salaryContainer td:nth-child(14),
+.salaryContainer td:nth-child(15),
+.salaryContainer td:nth-child(16) {
+    width: 5%;
+}
+
+.salaryContainer td:nth-child(17) {
+    width: 5.5%;
+}
+
+.salaryContainer td:nth-child(18) {
+    width: 5.5%;
+}
+
+.salaryContainer td:nth-child(19) {
+    width: 5%;
+}
+.salaryContainer tbody td:nth-child(17),
+.salaryContainer tbody td:nth-child(18) {
+    background-color: rgb(255, 242, 204);
+    cursor: pointer;
+}
+
+.table-list_body-tr_td input[type=text] {
+    width: 90%;
+    text-align: right;
+    padding-right: 0.6rem;
+    box-sizing: border-box;
+    outline: none;
+    font-family: "Noto Sans CJK KR";
+    color: black;
+}
+
+.cursor .table-list_body-tr_td {
+
+    cursor: pointer;
+}
+
+.salaryContainer tbody td:nth-child(9),
+.salaryContainer tbody td:nth-child(10),
+.salaryContainer tbody td:nth-child(11),
+.salaryContainer tbody td:nth-child(12),
+.salaryContainer tbody td:nth-child(13),
+.salaryContainer tbody td:nth-child(14),
+.salaryContainer tbody td:nth-child(15),
+.salaryContainer tbody td:nth-child(16),
+.salaryContainer tbody td:nth-child(17),
+.salaryContainer tbody td:nth-child(18) {
+    text-align: right;
+    padding-right: 0.5rem;
+}
+
+
+
+/* 추가수당 */
+.popupArticleCategori {
+    width: 100%;
+    padding-bottom: 0.4rem;
+    font-size: 1.4rem;
+    font-weight: bold;
+    border-bottom: 0.1rem solid black;
+}
+
+.addSalaryPriceBox {
+    width: calc(30% - 2rem);
+}
+
+.addSalaryPriceBox .popupArticleinput {
+    width: 16rem;
+}
+
+.addSalaryReasonBox {
+    width: calc(70% - 2rem);
+}
+
+.addSalaryReasonBox .popupArticleinput {
+    width: 46rem;
+}
+
+.addSalaryPriceBox .popupArticleLabel,
+.addSalaryReasonBox .popupArticleLabel{
+    width: 5rem;
+}
+
+.popupArticleBoxTable{
+    margin-top: 2rem;
+}
+
+.addSalaryTableScroll{
+    height: 14.4rem;
+}
+
+.popupArticleBoxTable td:nth-child(1){
+    width: 6%;
+}
+
+.popupArticleBoxTable td:nth-child(2){
+    width: 18%;
+}
+
+.popupArticleBoxTable td:nth-child(3){
+    width: 76%;
+}
+
+.popupArticleBoxTable tbody td:nth-child(2){
+    text-align: left;
+    padding-left: 1rem;
+    box-sizing: border-box;
+}
+
+.popupArticleBoxTable tbody td:nth-child(3){
+    text-align: left;
+    padding-left: 1rem;
+    box-sizing: border-box;
+}
+
+.addSalaryTotalTable{
+    width: calc(100% - 0.6rem);
+    height: 3.6rem;
+    background-color: #CDCDCE;
+    font-size: 1.4rem;
+}
+
+.addSalaryTotalTable td:nth-child(1){
+    width: 6%;
+    text-align: center;
+    border-right: 0.1rem solid white;
+}
+
+.addSalaryTotalTable td:nth-child(2){
+    width: 18%;
+    text-align: right;
+    padding-right: 1rem;
+    box-sizing: border-box;
+}
+
+.addSalaryBtn{
+    margin-left: auto;
+    background-color: #0069D9;
+}
+
+.addSalaryDeleteBtn,
+.addSalaryCloseBtn{
+    background-color: #444;
+}
+
+.addSalaryDeleteBtn{
+    margin-right: 1rem;
+}
+
+
+
+/* 공제 */
+.popupArticleCategori {
+    width: 100%;
+    padding-bottom: 0.4rem;
+    font-size: 1.4rem;
+    font-weight: bold;
+    border-bottom: 0.1rem solid black;
+}
+
+.deductionPriceBox {
+    width: calc(30% - 2rem);
+}
+
+.deductionPriceBox .popupArticleinput {
+    width: 16rem;
+}
+
+.deductionReasonBox {
+    width: calc(70% - 2rem);
+}
+
+.deductionReasonBox .popupArticleinput {
+    width: 46rem;
+}
+
+.deductionPriceBox .popupArticleLabel,
+.deductionReasonBox .popupArticleLabel{
+    width: 5rem;
+}
+
+.popupArticleBoxTable{
+    margin-top: 2rem;
+}
+
+.deductionTableScroll{
+    height: 14.4rem;
+}
+
+.popupArticleBoxTable td:nth-child(1){
+    width: 6%;
+}
+
+.popupArticleBoxTable td:nth-child(2){
+    width: 18%;
+}
+
+.popupArticleBoxTable td:nth-child(3){
+    width: 76%;
+}
+
+.popupArticleBoxTable tbody td:nth-child(2){
+    text-align: left;
+    padding-left: 1rem;
+    box-sizing: border-box;
+}
+
+.popupArticleBoxTable tbody td:nth-child(3){
+    text-align: left;
+    padding-left: 1rem;
+    box-sizing: border-box;
+}
+
+.deductionTotalTable{
+    width: calc(100% - 0.6rem);
+    height: 3.6rem;
+    background-color: #CDCDCE;
+    font-size: 1.4rem;
+}
+
+.deductionTotalTable td:nth-child(1){
+    width: 6%;
+    text-align: center;
+    border-right: 0.1rem solid white;
+}
+
+.deductionTotalTable td:nth-child(2){
+    width: 18%;
+    text-align: right;
+    padding-right: 1rem;
+    box-sizing: border-box;
+}
+
+.deductionBtn{
+    margin-left: auto;
+    background-color: #0069D9;
+}
+
+.deductionDeleteBtn,
+.deductionCloseBtn{
+    background-color: #444;
+}
+
+.deductionDeleteBtn{
+    margin-right: 1rem;
+}
+
+
+
+
+.addList,
+.addChecker,
+.addSalaryListAllCheck,
+.deductionList,
+.deductionChecker,
+.deductionListAllCheck{
+    cursor: pointer;
+}
+
+
+
+.salaryTotalContainer{
+    width: calc(100% - 0.6rem);
+    height: 3.6rem;
+    margin-top: 2rem;
+    background-color: white;
+    border-radius: 0.2rem;
+    box-shadow: 0.1rem 0.1rem 0.6rem rgb(0 0 0 / 30%);
+}
+
+.salaryTotalContainer td{
+    text-align: right;
+    box-sizing: border-box;
+}
+
+.salaryTotalContainer td:nth-child(2),
+.salaryTotalContainer td:nth-child(3),
+.salaryTotalContainer td:nth-child(4),
+.salaryTotalContainer td:nth-child(5),
+.salaryTotalContainer td:nth-child(6) {
+    width: 6%;
+}
+.salaryTotalContainer td:nth-child(7),
+.salaryTotalContainer td:nth-child(8),
+.salaryTotalContainer td:nth-child(9),
+.salaryTotalContainer td:nth-child(10),
+.salaryTotalContainer td:nth-child(11),
+.salaryTotalContainer td:nth-child(12) {
+    width: 5%;
+}
+.salaryTotalContainer td:nth-child(13),
+.salaryTotalContainer td:nth-child(14),
+.salaryTotalContainer td:nth-child(15) {
+    width: 5.5%;
+}
+
+
+.salaryTotalContainer td:nth-child(1){
+    width: 24%;
+    padding: 0;
+    text-align: center;
+}
+
+.popup-area-box_btn {
+    margin-left: 1rem;
+}
+
+.backgroundYellow {
+    background-color: rgb(255, 242, 204);
+    cursor: pointer;
+}
+
+.textAlignRight {
+    text-align: right;
+    padding-right: 0.5rem;
+}

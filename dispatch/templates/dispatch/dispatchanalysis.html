@@ -1,0 +1,447 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load dispatch_custom_tags %}
+
+{% block head %}
+<meta http-equiv="Cache-Control" content="private, no-cache, no-store, max-age=0, must-revalidate">
+<link rel="stylesheet" href="{% static 'css/dispatch/dispatchanalysis.css' %}" type="text/css" />
+<link rel="stylesheet" href="{% static 'css/dispatch/dispatchBase.css' %}" type="text/css" />
+{% endblock %}
+
+{% block content-header %}
+<div class="HeaderTitle">
+  배차 분석
+</div>
+{% endblock %}
+
+{% block content %}
+
+<div class="searchAreaBox">
+    <form action="">
+      <div class="searchTool">
+        <span class="searchName">날짜</span>
+        <div class="FilterBox">
+          <input
+            autocomplete="off"
+            name="month"
+            type="month"
+            value="2024-08"
+            class="inputModules"
+          />
+        </div>
+        <input
+          autocomplete="off"
+          type="submit"
+          value="검색"
+          class="btnModules dateSearchBtn"
+        />
+      </div>
+    </form>
+  </div>
+  
+<div class="dispatch-AllTable">
+    <div class="dispatch-LeftTable">
+        <div class="dispatch-LeftTopTable">
+            <div class="LeftTopTable">
+                <div class="LeftTopHeader">배차 현황</div>
+                <div class="LeftTopBody">
+                    <div class="LeftBodyLeft">
+                        <div class="LeftBodyHeader">기준 배차</div>
+                        <div class="LeftBodyText">
+                            <div class="dispatchText">기사<br>100명</div>
+                            <div class="dispatchSubText">1억원</div>
+                        </div>
+                        <div class="LeftBodyText">
+                            <div class="dispatchText">기사<br>100명</div>
+                            <div class="dispatchSubText">1억원</div>
+                        </div>
+                        <div class="LeftBodyText">
+                            <div class="dispatchText">기사<br>100명</div>
+                            <div class="dispatchSubText">1억원</div>
+                        </div>
+                        <div class="LeftBodyText">
+                            <div class="dispatchText">기사<br>100명</div>
+                            <div class="dispatchSubText">1억원</div>
+                        </div>
+                        <hr>
+                        <div class="bottomText">총: 3억 2,400만원</div>
+                    </div>
+                    <div class="LeftBodyRight">
+                        <div class="LeftBodyHeader">자동 배차</div>
+                        <div class="LeftBodyText">
+                            <div class="dispatchText">기사<br>100명</div>
+                            <div class="dispatchSubText">1억원</div>
+                        </div>
+                        <div class="LeftBodyText">
+                            <div class="dispatchText">기사<br>100명</div>
+                            <div class="dispatchSubText">1억원</div>
+                        </div>
+                        <div class="LeftBodyText">
+                            <div class="dispatchText">기사<br>100명</div>
+                            <div class="dispatchSubText">1억원</div>
+                        </div>
+                        <div class="LeftBodyText">
+                            <div class="dispatchText">기사<br>100명</div>
+                            <div class="dispatchSubText">1억원</div>
+                        </div>
+                        <hr>
+                        <div class="bottomText">총: 3억 2,400만원</div>
+                    </div>
+                </div>
+            </div>
+            <div class="dispatchTotal">
+                <p>자동 배차 시,</p>
+                <p>
+                    총 <span class="highlight">2,680 만원</span>을 절감할 수 있습니다.
+                </p>
+            </div>
+        </div>
+
+        <div class="dispatch-LeftBottomTable">
+            <div class="LeftTopHeader">배차표</div>
+            <table class="LeftBottomTable">
+                <thead>
+                    <tr>
+                        <th>탑수</th>
+                        <th>권역</th>
+                        <th>용인</th>
+                        <th>화성</th>
+                        <th>서울</th>
+                        <th>수원</th>
+                        <th>평촌</th>
+                        <th>과천</th>
+                        <th>합계</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>11T</td>
+                        <td>0</td>
+                        <td>1</td>
+                        <td>0</td>
+                        <td>1</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>2</td>
+                        <td>2</td>
+                    </tr>
+                    <tr>
+                        <td>10T</td>
+                        <td>1</td>
+                        <td>4</td>
+                        <td>1</td>
+                        <td>0</td>
+                        <td>1</td>
+                        <td>0</td>
+                        <td>5</td>
+                        <td>2</td>
+                    </tr>
+                    <tr>
+                        <td>9T</td>
+                        <td>1</td>
+                        <td>1</td>
+                        <td>1</td>
+                        <td>1</td>
+                        <td>4</td>
+                        <td>0</td>
+                        <td>7</td>
+                        <td>2</td>
+                    </tr>
+                    <tr>
+                        <td>8T</td>
+                        <td>1</td>
+                        <td>1</td>
+                        <td>1</td>
+                        <td>1</td>
+                        <td>4</td>
+                        <td>0</td>
+                        <td>7</td>
+                        <td>2</td>
+                    </tr>
+                    <tr>
+                        <td>7T</td>
+                        <td>1</td>
+                        <td>1</td>
+                        <td>1</td>
+                        <td>1</td>
+                        <td>4</td>
+                        <td>0</td>
+                        <td>7</td>
+                        <td>2</td>
+                    </tr>
+                    <tr>
+                        <td>6T</td>
+                        <td>1</td>
+                        <td>1</td>
+                        <td>1</td>
+                        <td>1</td>
+                        <td>4</td>
+                        <td>0</td>
+                        <td>7</td>
+                        <td>2</td>
+                    </tr>
+                    <tr>
+                        <td>5T</td>
+                        <td>1</td>
+                        <td>1</td>
+                        <td>1</td>
+                        <td>1</td>
+                        <td>4</td>
+                        <td>0</td>
+                        <td>7</td>
+                        <td>2</td>
+                    </tr>
+                    <tr>
+                        <td>4T</td>
+                        <td>1</td>
+                        <td>1</td>
+                        <td>1</td>
+                        <td>1</td>
+                        <td>4</td>
+                        <td>0</td>
+                        <td>7</td>
+                        <td>2</td>
+                    </tr>
+                    <tr>
+                        <td>3T</td>
+                        <td>1</td>
+                        <td>1</td>
+                        <td>1</td>
+                        <td>1</td>
+                        <td>4</td>
+                        <td>0</td>
+                        <td>7</td>
+                        <td>2</td>
+                    </tr>
+                    <tr>
+                        <td>2T</td>
+                        <td>1</td>
+                        <td>1</td>
+                        <td>1</td>
+                        <td>1</td>
+                        <td>4</td>
+                        <td>0</td>
+                        <td>7</td>
+                        <td>2</td>
+                    </tr>
+                    <tr>
+                        <td>1T</td>
+                        <td>1</td>
+                        <td>1</td>
+                        <td>1</td>
+                        <td>1</td>
+                        <td>4</td>
+                        <td>0</td>
+                        <td>7</td>
+                        <td>2</td>
+                    </tr>
+                    <tr>
+                        <td>합계</td>
+                        <td>7</td>
+                        <td>12</td>
+                        <td>4</td>
+                        <td>36</td>
+                        <td>8</td>
+                        <td>3</td>
+                        <td>70</td>
+                        <td>2</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="dispatch-RightTable">
+        <div class="dispatch-RightTopTable">
+            <div class="rightTopTableHeader"> < 수원 A > </div>
+            <table class="rightTopTable">
+                <thead>
+                    <tr>
+                        <th>연수</th>
+                        <th>1월</th>
+                        <th>2월</th>
+                        <th>3월</th>
+                        <th>4월</th>
+                        <th>5월</th>
+                        <th>6월</th>
+                        <th>7월</th>
+                        <th>8월</th>
+                        <th>9월</th>
+                        <th>10월</th>
+                        <th>11월</th>
+                        <th>12월</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>수원 10T</td>
+                        <td>신관례</td>
+                        <td>기신</td>
+                        <td>기신</td>
+                        <td>기신</td>
+                        <td>기신</td>
+                        <td>기신</td>
+                        <td>기신</td>
+                        <td>기신</td>
+                        <td>기신</td>
+                        <td>기신</td>
+                        <td>기신</td>
+                        <td>기신</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="dispatch-RightBottomTable">
+            <div class="rightBottomTabelHeader">< 1월 ></div>
+            <table class="rightBottomTable">
+                <thead>
+                    <tr>
+                        <th>연수</th>
+                        <th>1월</th>
+                        <th>2월</th>
+                        <th>3월</th>
+                        <th>4월</th>
+                        <th>5월</th>
+                        <th>6월</th>
+                        <th>7월</th>
+                        <th>8월</th>
+                        <th>9월</th>
+                        <th>10월</th>
+                        <th>11월</th>
+                        <th>12월</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>수원 10T</td>
+                        <td>신관례</td>
+                        <td>기신</td>
+                        <td>기신</td>
+                        <td>기신</td>
+                        <td>기신</td>
+                        <td>기신</td>
+                        <td>기신</td>
+                        <td>기신</td>
+                        <td>기신</td>
+                        <td>기신</td>
+                        <td>기신</td>
+                        <td>기신</td>
+                    </tr>
+                    <tr>
+                        <td>수원 9T-2</td>
+                        <td>기신</td>
+                        <td>하동좌</td>
+                        <td>기신</td>
+                        <td>기신</td>
+                        <td>기신</td>
+                        <td>기신</td>
+                        <td>기신</td>
+                        <td>기신</td>
+                        <td>기신</td>
+                        <td>기신</td>
+                        <td>기신</td>
+                        <td>기신</td>
+                    </tr>
+                    <tr>
+                        <td>수원 8T-2</td>
+                        <td>기신</td>
+                        <td>기신</td>
+                        <td>신관례</td>
+                        <td>신관례</td>
+                        <td>기신</td>
+                        <td>기신</td>
+                        <td>기신</td>
+                        <td>기신</td>
+                        <td>기신</td>
+                        <td>기신</td>
+                        <td>기신</td>
+                        <td>기신</td>
+                    </tr>
+                    <tr>
+                        <td>수원 7T-3</td>
+                        <td>기신</td>
+                        <td>기신</td>
+                        <td>기신</td>
+                        <td>신관례</td>
+                        <td>산천좌</td>
+                        <td>산천좌</td>
+                        <td>기신</td>
+                        <td>기신</td>
+                        <td>기신</td>
+                        <td>기신</td>
+                        <td>기신</td>
+                        <td>기신</td>
+                    </tr>
+                    <tr>
+                        <td>수원 TT-2</td>
+                        <td>신관례</td>
+                        <td>기신</td>
+                        <td>기신</td>
+                        <td>신관례</td>
+                        <td>기신</td>
+                        <td>기신</td>
+                        <td>기신</td>
+                        <td>기신</td>
+                        <td>기신</td>
+                        <td>기신</td>
+                        <td>기신</td>
+                        <td>기신</td>
+                    </tr>
+                    <tr>
+                        <td>수원 TT-3</td>
+                        <td>기신</td>
+                        <td>기신</td>
+                        <td>기신</td>
+                        <td>기신</td>
+                        <td>기신</td>
+                        <td>기신</td>
+                        <td>기신</td>
+                        <td>기신</td>
+                        <td>기신</td>
+                        <td>기신</td>
+                        <td>기신</td>
+                        <td>기신</td>
+                    </tr>
+                    <tr>
+                        <td>수원 6T-2</td>
+                        <td>기신</td>
+                        <td>기신</td>
+                        <td>기신</td>
+                        <td>기신</td>
+                        <td>기신</td>
+                        <td>기신</td>
+                        <td>기신</td>
+                        <td>기신</td>
+                        <td>기신</td>
+                        <td>기신</td>
+                        <td>기신</td>
+                        <td>기신</td>
+                    </tr>
+                    <tr>
+                        <td>수원 5T-1</td>
+                        <td>기신</td>
+                        <td>기신</td>
+                        <td>기신</td>
+                        <td>기신</td>
+                        <td>기신</td>
+                        <td>기신</td>
+                        <td>신관례</td>
+                        <td>기신</td>
+                        <td>기신</td>
+                        <td>기신</td>
+                        <td>기신</td>
+                        <td>기신</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block content-scripts %}
+<script>
+    // Add any required JavaScript here
+</script>
+{% endblock %}

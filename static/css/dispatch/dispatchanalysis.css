@@ -1,0 +1,120 @@
+.dispatch-AllTable {
+  display: flex;
+}
+
+.dispatch-LeftTable {
+  width: 39.7rem;
+  height: 91.325rem;
+}
+
+.dispatch-LeftTopTable {
+  width: 39.7rem;
+  height: 48rem;
+  margin-bottom: 0.9rem; 
+  border: 0.1rem solid black;
+}
+
+.LeftTopHeader {
+  height: 4rem;
+  background-color: gray;
+  text-align: center;
+  line-height: 4rem;
+  color: white;
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+.LeftTopBody{
+  display: flex;
+}
+
+.LeftBodyHeader{
+    width: 18rem;
+    height: 3.5rem;
+    line-height: 3.5rem;
+    background-color: gray;
+    color: white;
+    font-size: 1.5rem;
+    text-align: center;
+}
+
+.LeftBodyLeft{
+    width: 18rem;
+    height: 30.4rem;
+    border: 0.1rem solid black;
+    margin-top: 1.9rem;
+    margin-left: 1.2rem;
+}
+
+.LeftBodyRight{
+    width: 18rem;
+    height: 30.4rem;
+    border: 0.1rem solid black;
+    margin-top: 1.9rem;
+    margin-left: 1.3rem;    
+}
+
+.LeftBodyText {
+  display: flex;
+  margin-top: 2rem;
+}
+
+.dispatchText{
+    font-size: 1.2rem;
+    text-align: center;
+    margin-left: 2.4rem;
+}
+
+.dispatchSubText{
+    font-size: 1.4rem;
+    text-align: center;
+    margin-left: 6.8rem;
+}
+
+.dispatch-LeftBottomTable {
+  width: 39.675rem;
+  height: 42.425rem;
+  border: 0.1rem solid black;
+}
+
+.LeftBottomTable{
+    width: 39.675rem;
+    height: 38.425rem;
+}
+
+.bottomText{
+    font-size: 1.4rem;
+    margin-left: 3rem;
+    margin-top: 1.45rem;
+}
+
+.dispatchTotal{
+    font-size: 1.4rem;
+    margin-left: 3rem;
+    margin-top: 1.35rem;
+}
+
+.highlight {
+    font-size: 1.8rem;
+    color: red;
+    font-weight: bold;
+}
+
+.dispatch-RightTable {
+  width: 122.2rem;
+  height: 45.2rem;
+  margin-left: 1.975rem;
+}
+
+.dispatch-RightTopTable {
+  width: 122.2rem;
+  height: 55rem;
+  border: 0.1rem solid black;
+}
+
+.dispatch-RightBottomTable {
+  width: 122.2rem;
+  height: 35.2rem;
+  border: 0.1rem solid black;
+  margin-top: 1.2rem;
+}
