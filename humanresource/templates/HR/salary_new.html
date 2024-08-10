@@ -90,38 +90,38 @@
                         {% endif %}
                     </td>
                     <td class="checkTd table-list_body-tr_td">
-                        <div>1,344,000
+                        <div class="salaryBase">1,344,000
                         </div>
                     </td>
                     <td class="checkTd table-list_body-tr_td">
-                        <input type="text" class="amountInput length100 salaryBase" value="{{salary.base}}">
+                        <input type="text" class="amountInput length100 salaryServiceAllowance" value="{{salary.base}}">
                     </td>
                     <td class="checkTd table-list_body-tr_td">
-                        <input type="text" class="amountInput length100 salaryBase" value="{{salary.base}}">
+                        <input type="text" class="amountInput length100 salaryAnnualAllowance" value="{{salary.base}}">
                     </td>
                     <td class="checkTd table-list_body-tr_td">
-                        <input type="text" class="amountInput length100 salaryServiceAllowance" value="{{salary.service_allowance}}">
+                        <input type="text" class="amountInput length100 salaryPerformanceAllowanceOne" value="{{salary.service_allowance}}">
                     </td>
                     <td class="checkTd table-list_body-tr_td">
-                        <input type="text" class="amountInput length100 salaryAnnualAllowance" value="{{salary.annual_allowance}}">
+                        <input type="text" class="amountInput length100 salaryPerformanceAllowanceTwo" value="{{salary.annual_allowance}}">
                     </td>
                     <td class="checkTd table-list_body-tr_td">
-                        <input type="text" class="amountInput length100 salaryPerformanceAllowance" value="{{salary.performance_allowance}}">
+                        <input type="text" class="amountInput length100 salaryPerformanceAllowanceThree" value="{{salary.performance_allowance}}">
                     </td>
                     <td class="checkTd table-list_body-tr_td">
-                        <input type="text" class="amountInput length100 salaryMeal" value="{{salary.meal}}">
+                        <input type="text" class="amountInput length100 salaryTotalPerfectAttendance" value="{{salary.meal}}">
                     </td>
                     <td class="checkTd table-list_body-tr_td">
-                        <input type="text" class="amountInput length100 salaryMeal" value="{{salary.meal}}">
+                        <input type="text" class="amountInput length100 salaryDiligence" value="{{salary.meal}}">
                     </td>
                     <td class="checkTd table-list_body-tr_td">
-                        <input type="text" class="amountInput length100 salaryMeal" value="{{salary.meal}}">
-                    </td>
-                    <td class="checkTd table-list_body-tr_td">
-                        <input type="text" class="amountInput length100 salaryMeal" value="{{salary.meal}}">
+                        <input type="text" class="amountInput length100 salaryAccidentFree" value="{{salary.meal}}">
                     </td>
                     <td class="checkTd table-list_body-tr_td">
                         <input type="text" class="amountInput length100 salaryMeal" value="{{salary.meal}}">
+                    </td>
+                    <td class="checkTd table-list_body-tr_td">
+                        <input type="text" class="amountInput length100 salaryFuel" value="{{salary.meal}}">
                     </td>
                     {% comment %} <td class="checkTd table-list_body-tr_td salaryAttendance addComma">{{salary.attendance}}</td>
                     <td class="checkTd table-list_body-tr_td salaryLeave addComma">{{salary.leave}}</td>
@@ -149,17 +149,18 @@
                 <td class="table-list_body-tr_td totalBase"></td>
                 <td class="table-list_body-tr_td totalServiceAllowance"></td>
                 <td class="table-list_body-tr_td totalAnnualAllowance"></td>
-                <td class="table-list_body-tr_td totalPerformanceAllowance"></td>
+                <td class="table-list_body-tr_td totalPerformanceAllowanceOne"></td>
+                <td class="table-list_body-tr_td totalPerformanceAllowanceTwo"></td>
+                <td class="table-list_body-tr_td totalPerformanceAllowanceThree"></td>
+                <td class="table-list_body-tr_td totalPerfectAttendance"></td>
+                <td class="table-list_body-tr_td totalDiligence"></td>
+                <td class="table-list_body-tr_td totalAccidentFree"></td>
                 <td class="table-list_body-tr_td totalMeal"></td>
-                <td class="table-list_body-tr_td totalAttendance"></td>
-                <td class="table-list_body-tr_td totalLeave"></td>
-                <td class="table-list_body-tr_td totalOrder"></td>
-                <td class="table-list_body-tr_td totalAssignment"></td>
+                <td class="table-list_body-tr_td totalFuel"></td>
                 <td class="table-list_body-tr_td totalAdditional"></td>
                 <td class="table-list_body-tr_td totalDeduction"></td>
                 <td class="table-list_body-tr_td totalTotal"></td>
-                <td class="table-list_body-tr_td totalTotal"></td>
-                <td class="table-list_body-tr_td totalTotal"></td>
+
             </tr>
         </tbody>
     </table>
