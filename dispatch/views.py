@@ -1654,6 +1654,7 @@ def regularly_order_edit(request):
                     DispatchRegularly.objects.get(regularly_id=regularly_data, edit_date=station_edit_date)
                 except DispatchRegularly.DoesNotExist:
                     edit_date_regularly = DispatchRegularly.objects.filter(regularly_id=regularly_data, edit_date__lte=station_edit_date).order_by('-edit_date').first()
+                    #FIXME(edit_date_regularly 없으면 에러남 )
                     edit_date_regularly_data = model_to_dict(edit_date_regularly)
                     edit_date_regularly_data.pop('id')
                     edit_date_regularly_data.pop('station')
@@ -3493,7 +3494,18 @@ def daily_driving_print(request):
 
 
     return render(request, 'dispatch/daily_driving_print.html', context)
+
+def print_estimate(request):
+    if request.session.get('authority') > 3:
+        return render(request, 'authority.html')
     
+    order_id = request.GET.get('id')
+
+
+
+
+    return render(request, 'dispatch/estimate_print.html')
+
 class RegularlyStationList(generic.ListView):
     template_name = 'dispatch/regularly_station.html'
     context_object_name = 'station_list'
