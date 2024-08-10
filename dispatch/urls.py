@@ -72,5 +72,6 @@ urlpatterns = [
     path('print/bus', views.bus_print, name='bus_print'),
     path('print/dailylist', views.daily_driving_list, name='daily_driving_list'),
     path('print/daily', views.daily_driving_print, name='daily_driving_print'),
+    path('print/estimate', views.print_estimate, name='estimate_print'),
 
 ]

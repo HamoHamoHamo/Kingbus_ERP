@@ -1,5 +1,5 @@
 from django.db import models
-from crudmember.models import User, Category
+from crudmember.models import Category
 from humanresource.models import Member
 from datetime import datetime
 from uuid import uuid4

@@ -358,6 +358,7 @@
                             <select name="contract_status" id="contract_status" class="inputSelect" tabindex="13">
                                 <option value=""></option>
                                 <option {% if detail.contract_status == '확정' %} selected {% endif %} value="확정">확정</option>
+                                <option {% if detail.contract_status == '예약확정' %} selected {% endif %} value="예약확정">예약확정</option>
                                 <option {% if detail.contract_status == '보류' %} selected {% endif %} value="보류">보류</option>
                                 <option {% if detail.contract_status == '변경' %} selected {% endif %} value="변경">변경</option>
                                 <option {% if detail.contract_status == '취소' %} selected {% endif %} value="취소">취소</option>

@@ -167,6 +167,9 @@ class DispatchOrder(models.Model):
     pub_date = models.DateTimeField(auto_now_add=True, verbose_name='작성시간')
     updated_at = models.DateTimeField(auto_now=True, verbose_name='수정시간')
     creator = models.ForeignKey(Member, on_delete=models.SET_NULL, related_name="dispatch_creator", db_column="creator_id", null=True)
+
+    firebase_uid = models.CharField(verbose_name="파이어베이스 uid", max_length=100, null=True)
+
     def __str__(self):
         return self.route
         
