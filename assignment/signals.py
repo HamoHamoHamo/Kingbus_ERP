@@ -9,7 +9,6 @@ from django.shortcuts import get_object_or_404
 from .models import AssignmentConnect
 from accounting.models import TotalPrice, AdditionalCollect
 from humanresource.models import Salary, Member
-from humanresource.views import new_salary
 
 import re
 import math
@@ -42,7 +41,7 @@ def save_connect(sender, instance, created, **kwargs):
         # salary.total = int(salary.base) + int(salary.service_allowance) + int(salary.performance_allowance) + int(salary.annual_allowance) + int(salary.meal) + int(salary.attendance) + int(salary.leave) + int(salary.order) + int(salary.assignment) + int(salary.additional) - int(salary.deduction)
         salary.save()
     except Salary.DoesNotExist:
-        new_salary(creator, month, member)
+        Salary.new_salary(creator, month, member)
 
     if not hasattr(instance, 'same_accounting') or not instance.same_accounting:
         print('create update accounting')

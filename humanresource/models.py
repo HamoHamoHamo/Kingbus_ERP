@@ -133,14 +133,14 @@ class Salary(models.Model):
         overtime_allowance = 0
         meal = 0
 
-        team_leader_allowance_roll_call = 0
-        team_leader_allowance_vehicle_management = 0
-        team_leader_allowance_task_management = 0
-        full_attendance_allowance = 0
-        diligence_allowance = 0
-        accident_free_allowance = 0
-        welfare_meal_allowance = 0
-        welfare_fuel_allowance = 0
+        team_leader_allowance_roll_call = 100000 if member.role == "팀장" or member.role == "운전원" else 0
+        team_leader_allowance_vehicle_management = 100000 if member.role == "팀장" or member.role == "운전원" else 0
+        team_leader_allowance_task_management = 100000 if member.role == "팀장" or member.role == "운전원" else 0
+        full_attendance_allowance = 200000 if member.role == "팀장" or member.role == "운전원" else 0
+        diligence_allowance = 200000 if member.role == "팀장" or member.role == "운전원" else 0
+        accident_free_allowance = 200000 if member.role == "팀장" or member.role == "운전원" else 0
+        welfare_meal_allowance = 0 if member.role == "팀장" or member.role == "운전원" else 0
+        welfare_fuel_allowance = 0 if member.role == "팀장" or member.role == "운전원" else 0
         
 
         if TODAY[:7] <= month:

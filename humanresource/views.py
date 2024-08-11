@@ -546,7 +546,7 @@ class MemberEfficiencyList(generic.ListView):
                 salary = Salary.objects.filter(member_id=member).get(month=month)
             except Salary.DoesNotExist:
                 creator = Member.objects.get(pk=self.request.session.get('user'))
-                salary = new_salary(creator, month, member)
+                salary = Salary.new_salary(creator, month, member)
             
 
             # 노선운행량
@@ -766,7 +766,7 @@ class SalaryList(generic.ListView):
                 salary = Salary.objects.filter(member_id=member).get(month=month)
             except Salary.DoesNotExist:
                 creator = Member.objects.get(pk=self.request.session.get('user'))
-                salary = new_salary(creator, month, member)
+                salary = Salary.new_salary(creator, month, member)
             
             salary_list.append(salary)
 
@@ -802,79 +802,79 @@ class SalaryList(generic.ListView):
         return context
 ## 확인 필요
 # month의 출근 퇴근 일반 요금 계산해서 Salary 생성
-def new_salary(creator, month, member):
-    last_date = datetime.strftime(datetime.strptime(month+'-01', FORMAT) + relativedelta(months=1) - timedelta(days=1), FORMAT)
-    # attendance = DispatchRegularlyConnect.objects.filter(work_type='출근').filter(driver_id=member).filter(departure_date__range=(month+'-01 00:00', last_date+' 24:00')).aggregate(Sum('driver_allowance'))
-    # leave = DispatchRegularlyConnect.objects.filter(work_type='퇴근').filter(driver_id=member).filter(departure_date__range=(month+'-01 00:00', last_date+' 24:00')).aggregate(Sum('driver_allowance'))
-    # order = DispatchOrderConnect.objects.filter(driver_id=member).filter(departure_date__range=(month+'-01 00:00', last_date+' 24:00')).aggregate(Sum('driver_allowance'))
+#def new_salary(creator, month, member):
+#    last_date = datetime.strftime(datetime.strptime(month+'-01', FORMAT) + relativedelta(months=1) - timedelta(days=1), FORMAT)
+#    # attendance = DispatchRegularlyConnect.objects.filter(work_type='출근').filter(driver_id=member).filter(departure_date__range=(month+'-01 00:00', last_date+' 24:00')).aggregate(Sum('driver_allowance'))
+#    # leave = DispatchRegularlyConnect.objects.filter(work_type='퇴근').filter(driver_id=member).filter(departure_date__range=(month+'-01 00:00', last_date+' 24:00')).aggregate(Sum('driver_allowance'))
+#    # order = DispatchOrderConnect.objects.filter(driver_id=member).filter(departure_date__range=(month+'-01 00:00', last_date+' 24:00')).aggregate(Sum('driver_allowance'))
 
-    # attendance_price = 0
-    # leave_price = 0
-    # order_price = 0
-    # assignment_price = 0
-    # regularly_assignment_price = 0
+#    # attendance_price = 0
+#    # leave_price = 0
+#    # order_price = 0
+#    # assignment_price = 0
+#    # regularly_assignment_price = 0
 
-    base = 0
-    service_allowance = 0
-    performance_allowance = 0
-    annual_allowance = 0
-    overtime_allowance = 0
-    meal = 0
+#    base = 0
+#    service_allowance = 0
+#    performance_allowance = 0
+#    annual_allowance = 0
+#    overtime_allowance = 0
+#    meal = 0
     
 
-    if TODAY[:7] <= month:
-        base = int(member.base)
-        service_allowance = int(member.service_allowance)
-        performance_allowance = int(member.performance_allowance)
-        annual_allowance = int(member.annual_allowance)
-        overtime_allowance = int(member.overtime_allowance)
-        meal = int(member.meal)
+#    if TODAY[:7] <= month:
+#        base = int(member.base)
+#        service_allowance = int(member.service_allowance)
+#        performance_allowance = int(member.performance_allowance)
+#        annual_allowance = int(member.annual_allowance)
+#        overtime_allowance = int(member.overtime_allowance)
+#        meal = int(member.meal)
 
-    # if salary:
-    #     base = salary.base
-    #     service_allowance = salary.service_allowance
-    #     performance_allowance = salary.performance_allowance
+#    # if salary:
+#    #     base = salary.base
+#    #     service_allowance = salary.service_allowance
+#    #     performance_allowance = salary.performance_allowance
 
-    # Salary가 없을 때만 동작하는 함수라서 계산할 필요 없음
-    # if attendance['driver_allowance__sum']:
-    #     attendance_price = int(attendance['driver_allowance__sum'])
-    # if leave['driver_allowance__sum']:
-    #     leave_price = int(leave['driver_allowance__sum'])
-    # if order['driver_allowance__sum']:
-    #     order_price = int(order['driver_allowance__sum'])
+#    # Salary가 없을 때만 동작하는 함수라서 계산할 필요 없음
+#    # if attendance['driver_allowance__sum']:
+#    #     attendance_price = int(attendance['driver_allowance__sum'])
+#    # if leave['driver_allowance__sum']:
+#    #     leave_price = int(leave['driver_allowance__sum'])
+#    # if order['driver_allowance__sum']:
+#    #     order_price = int(order['driver_allowance__sum'])
     
-    try:
-        payment_date = Category.objects.get(type='급여지급일').category
-    except:
-        payment_date = 1
+#    try:
+#        payment_date = Category.objects.get(type='급여지급일').category
+#    except:
+#        payment_date = 1
 
 
-    salary = Salary(
-        member_id = member,
-        base = base,
-        service_allowance = service_allowance,
-        performance_allowance = performance_allowance,
-        annual_allowance = annual_allowance,
-        overtime_allowance = overtime_allowance,
-        meal = meal,
-        # attendance = attendance_price,
-        # leave = leave_price,
-        # order = order_price,
-        # assignment = assignment_price,
-        # regularly_assignment = regularly_assignment_price,
-        attendance = 0,
-        leave = 0,
-        order = 0,
-        assignment = 0,
-        regularly_assignment = 0,
-        total = 0,
-        month = month,
-        payment_date = payment_date,
-        creator = creator
-    )
-    salary.save()
-    salary.total = salary.calculate_total()
-    return salary
+#    salary = Salary(
+#        member_id = member,
+#        base = base,
+#        service_allowance = service_allowance,
+#        performance_allowance = performance_allowance,
+#        annual_allowance = annual_allowance,
+#        overtime_allowance = overtime_allowance,
+#        meal = meal,
+#        # attendance = attendance_price,
+#        # leave = leave_price,
+#        # order = order_price,
+#        # assignment = assignment_price,
+#        # regularly_assignment = regularly_assignment_price,
+#        attendance = 0,
+#        leave = 0,
+#        order = 0,
+#        assignment = 0,
+#        regularly_assignment = 0,
+#        total = 0,
+#        month = month,
+#        payment_date = payment_date,
+#        creator = creator
+#    )
+#    salary.save()
+#    salary.total = salary.calculate_total()
+#    return salary
 
 def salary_detail(request):
     user_auth = request.session.get('authority')
