@@ -81,6 +81,18 @@ function setTotal() {
     const statutory_allowance = document.querySelector('.statutory_allowance')
     const sum_ordinary_salary_and_statutory_allowance = document.querySelector('.sum_ordinary_salary_and_statutory_allowance')
 
+    const team_leader_allowance_roll_call = document.querySelector(".team_leader_allowance_roll_call")
+    const team_leader_allowance_vehicle_management = document.querySelector(".team_leader_allowance_vehicle_management")
+    const team_leader_allowance_task_management = document.querySelector(".team_leader_allowance_task_management")
+    const full_attendance_allowance = document.querySelector(".full_attendance_allowance")
+    const diligence_allowance = document.querySelector(".diligence_allowance")
+    const accident_free_allowance = document.querySelector(".accident_free_allowance")
+    const welfare_meal_allowance = document.querySelector(".welfare_meal_allowance")
+    const welfare_fuel_allowance = document.querySelector(".welfare_fuel_allowance")
+    const additional = document.querySelector(".additional")
+    const deduction = document.querySelector(".deduction")
+
+
     // console.log("SET", DATAS)
     let total_total_work_minute = 0
     let total_hourly_wage = 0
@@ -103,6 +115,16 @@ function setTotal() {
     let total_statutory_allowance = 0
     let total_sum_ordinary_salary_and_statutory_allowance = 0
 
+    let total_team_leader_allowance_roll_call = 0
+    let total_team_leader_allowance_vehicle_management = 0
+    let total_team_leader_allowance_task_management = 0
+    let total_full_attendance_allowance = 0
+    let total_diligence_allowance = 0
+    let total_accident_free_allowance = 0
+    let total_welfare_meal_allowance = 0
+    let total_welfare_fuel_allowance = 0
+    let total_additional = 0
+    let total_deduction = 0
 
     Object.entries(DATAS).map(([key, value]) => {
         total_total_work_minute += Number(value['total_work_minute'])
@@ -125,28 +147,50 @@ function setTotal() {
         total_annual_allowance += Number(removeComma(value['annual_allowance']))
         total_statutory_allowance += Number(removeComma(value['statutory_allowance']))
         total_sum_ordinary_salary_and_statutory_allowance += Number(removeComma(value['sum_ordinary_salary_and_statutory_allowance']))
+
+        total_team_leader_allowance_roll_call += Number(removeComma(value['team_leader_allowance_roll_call']))
+        total_team_leader_allowance_vehicle_management += Number(removeComma(value['team_leader_allowance_vehicle_management']))
+        total_team_leader_allowance_task_management += Number(removeComma(value['team_leader_allowance_task_management']))
+        total_full_attendance_allowance += Number(removeComma(value['full_attendance_allowance']))
+        total_diligence_allowance += Number(removeComma(value['diligence_allowance']))
+        total_accident_free_allowance += Number(removeComma(value['accident_free_allowance']))
+        total_welfare_meal_allowance += Number(removeComma(value['welfare_meal_allowance']))
+        total_welfare_fuel_allowance += Number(removeComma(value['welfare_fuel_allowance']))
+        total_additional += Number(removeComma(value['additional']))
+        total_deduction += Number(removeComma(value['deduction']))
     })
 
-    total_work_minute.innerText = `${parseInt(total_total_work_minute / 60)}시간 ${total_total_work_minute % 60}분`
-    // hourly_wage.innerText = addComma(total_hourly_wage.toString())
-    // ordinary_hourly_wage.innerText = addComma(total_ordinary_hourly_wage.toString())
-    wage.innerText = addComma(total_wage.toString())
-    performance_allowance.innerText = addComma(total_performance_allowance.toString())
-    meal.innerText = addComma(total_meal.toString())
-    service_allowance.innerText = addComma(total_service_allowance.toString())
-    ordinary_salary.innerText = addComma(total_ordinary_salary.toString())
-    weekly_holiday_allowance.innerText = addComma(total_weekly_holiday_allowance.toString())
-    legal_holiday_allowance.innerText = addComma(total_legal_holiday_allowance.toString())
-    weekly_within_law_extension_wage.innerText = addComma(total_weekly_within_law_extension_wage.toString())
-    weekly_outside_law_extension_wage.innerText = addComma(total_weekly_outside_law_extension_wage.toString())
-    weekly_extension_additional_wage.innerText = addComma(total_weekly_extension_additional_wage.toString())
-    night_shift_wage.innerText = addComma(total_night_shift_wage.toString())
-    holiday_work_wage.innerText = addComma(total_holiday_work_wage.toString())
-    additional_holiday_work_wage.innerText = addComma(total_additional_holiday_work_wage.toString())
-    additional_holiday_work_wage_half.innerText = addComma(total_additional_holiday_work_wage_half.toString())
-    annual_allowance.innerText = addComma(total_annual_allowance.toString())
-    statutory_allowance.innerText = addComma(total_statutory_allowance.toString())
-    sum_ordinary_salary_and_statutory_allowance.innerText = addComma(total_sum_ordinary_salary_and_statutory_allowance.toString())
+    total_work_minute ? total_work_minute.innerText = `${parseInt(total_total_work_minute / 60)}시간 ${total_total_work_minute % 60}분` : null
+    //hourly_wage ? total_hourly_wage.innerText = addcomma(total_hourly_wage.toString()) : null
+    //ordinary_hourly_wage ? total_ordinary_hourly_wage.innerText = addcomma(total_ordinary_hourly_wage.toString()) : null
+    wage ? wage.innerText = addComma(total_wage.toString()) : null
+    performance_allowance ? performance_allowance.innerText = addComma(total_performance_allowance.toString()) : null
+    meal ? meal.innerText = addComma(total_meal.toString()) : null
+    service_allowance ? service_allowance.innerText = addComma(total_service_allowance.toString()) : null
+    ordinary_salary ? ordinary_salary.innerText = addComma(total_ordinary_salary.toString()) : null
+    weekly_holiday_allowance ? weekly_holiday_allowance.innerText = addComma(total_weekly_holiday_allowance.toString()) : null
+    legal_holiday_allowance ? legal_holiday_allowance.innerText = addComma(total_legal_holiday_allowance.toString()) : null
+    weekly_within_law_extension_wage ? weekly_within_law_extension_wage.innerText = addComma(total_weekly_within_law_extension_wage.toString()) : null
+    weekly_outside_law_extension_wage ? weekly_outside_law_extension_wage.innerText = addComma(total_weekly_outside_law_extension_wage.toString()) : null
+    weekly_extension_additional_wage ? weekly_extension_additional_wage.innerText = addComma(total_weekly_extension_additional_wage.toString()) : null
+    night_shift_wage ? night_shift_wage.innerText = addComma(total_night_shift_wage.toString()) : null
+    holiday_work_wage ? holiday_work_wage.innerText = addComma(total_holiday_work_wage.toString()) : null
+    additional_holiday_work_wage ? additional_holiday_work_wage.innerText = addComma(total_additional_holiday_work_wage.toString()) : null
+    additional_holiday_work_wage_half ? additional_holiday_work_wage_half.innerText = addComma(total_additional_holiday_work_wage_half.toString()) : null
+    annual_allowance ? annual_allowance.innerText = addComma(total_annual_allowance.toString()) : null
+    statutory_allowance ? statutory_allowance.innerText = addComma(total_statutory_allowance.toString()) : null
+    sum_ordinary_salary_and_statutory_allowance ? sum_ordinary_salary_and_statutory_allowance.innerText = addComma(total_sum_ordinary_salary_and_statutory_allowance.toString()) : null
+    
+    team_leader_allowance_roll_call ? team_leader_allowance_roll_call.innerText = addComma(total_team_leader_allowance_roll_call.toString()) : null
+    team_leader_allowance_vehicle_management ? team_leader_allowance_vehicle_management.innerText = addComma(total_team_leader_allowance_vehicle_management.toString()) : null
+    team_leader_allowance_task_management ? team_leader_allowance_task_management.innerText = addComma(total_team_leader_allowance_task_management.toString()) : null
+    full_attendance_allowance ? full_attendance_allowance.innerText = addComma(total_full_attendance_allowance.toString()) : null
+    diligence_allowance ? diligence_allowance.innerText = addComma(total_diligence_allowance.toString()) : null
+    accident_free_allowance ? accident_free_allowance.innerText = addComma(total_accident_free_allowance.toString()) : null
+    welfare_meal_allowance ? welfare_meal_allowance.innerText = addComma(total_welfare_meal_allowance.toString()) : null
+    welfare_fuel_allowance ? welfare_fuel_allowance.innerText = addComma(total_welfare_fuel_allowance.toString()) : null
+    additional ? additional.innerText = addComma(total_additional.toString()) : null
+    deduction ? deduction.innerText = addComma(total_deduction.toString()) : null
 }
 
 function addComma(value) {

@@ -25,12 +25,14 @@ from assignment.models import AssignmentConnect
 import math
 from my_settings import CRED_PATH, CLOUD_MEDIA_PATH
 from common.constant import TODAY, WEEK
-from common.datetime import calculate_time_difference
+from common.datetime import calculate_time_difference, get_mondays_from_last_week_of_previous_month, get_holiday_list_from_open_api, last_day_of_month, get_next_sunday_after_last_day, get_date_range_list, last_date_of_month
 import firebase_admin
 from firebase_admin import credentials
 from firebase_admin import messaging
 from media_firebase import upload_to_firebase, get_download_url, delete_firebase_file
-
+from salary.views import SalaryDataController
+from salary.services import SalaryTableDataCollector3
+from dispatch.selectors import DispatchSelector
 
 def send_message(title, body, token, topic):
     cred_path = os.path.join(BASE_DIR, CRED_PATH)
@@ -738,6 +740,8 @@ class SalaryList(generic.ListView):
             member_list = member_list.filter(Q(role='용역'))
         elif view_name == 'salary_manager':
             member_list = member_list.filter(Q(role='관리자'))
+        elif view_name == 'salary_new':
+            member_list = member_list.filter(Q(role='용역')|Q(role='팀장')|Q(role='운전원'))
         else:
             raise HttpResponseBadRequest('url에러')
         return member_list
@@ -1060,6 +1064,33 @@ class ManagerSalaryList(SalaryList):
     context_object_name = 'member_list'
     model = Member  
 
+class NewSalaryList(SalaryList):
+    template_name = 'HR/salary_new.html'
+    context_object_name = 'member_list'
+    model = Member
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        data_controller = SalaryDataController()
+        mondays = get_mondays_from_last_week_of_previous_month(context['month'])
+        start_date = mondays[0] if mondays[0][:7] != context['month'] else first_date
+        dispatch_selector = DispatchSelector()
+        connect_time_list = dispatch_selector.get_driving_time_list(start_date, get_next_sunday_after_last_day(context['month']))
+        holiday_data = get_holiday_list_from_open_api(context['month'])
+        context['date_list'] = ['' for i in range(31)]
+        first_date = f"{context['month']}-01"
+        date_list = get_date_range_list(first_date, last_date_of_month(first_date))
+
+        context['datas'] = data_controller.get_datas(context['member_list'], SalaryTableDataCollector3, context['month'], mondays, connect_time_list, holiday_data, date_list)
+
+        context['wage_list'] = []
+        context['total_wage_list'] = []
+        for data_id in context['datas']:
+            context['wage_list'].append(context['datas'][data_id]['wage'])
+            context['total_wage_list'].append(context['datas'][data_id]['total'])
+        return context
+
 def salary_edit(request):
     if request.method == 'POST':
         user_auth = request.session.get('authority')
@@ -1198,6 +1229,59 @@ def salary_manager_edit(request):
         return redirect(request.META.get('HTTP_REFERER', 'redirect_if_referer_not_found'))
     else:
         return HttpResponseNotAllowed(['post'])
+
+def salary_new_edit(request):
+    if request.method == 'POST':
+        user_auth = request.session.get('authority')
+        if user_auth >= 3:
+            return render(request, 'authority.html')
+
+        service_allowance = request.POST.getlist("service")
+        annual_allowance = request.POST.getlist("annual")
+        team_leader_allowance_roll_call = request.POST.getlist('team_leader_allowance_roll_call')
+        team_leader_allowance_vehicle_management = request.POST.getlist('team_leader_allowance_vehicle_management')
+        team_leader_allowance_task_management = request.POST.getlist('team_leader_allowance_task_management')
+        full_attendance_allowance = request.POST.getlist('full_attendance_allowance')
+        diligence_allowance = request.POST.getlist('diligence_allowance')
+        accident_free_allowance = request.POST.getlist('accident_free_allowance')
+        welfare_meal_allowance = request.POST.getlist('welfare_meal_allowance')
+        welfare_fuel_allowance = request.POST.getlist('welfare_fuel_allowance')
+        id_list = request.POST.getlist('id')
+        month = request.POST.get('month')
+
+        for service_allowance, annual_allowance, team_leader_allowance_roll_call, team_leader_allowance_vehicle_management, team_leader_allowance_task_management, full_attendance_allowance, diligence_allowance, accident_free_allowance, welfare_meal_allowance, welfare_fuel_allowance, id in zip(service_allowance, annual_allowance, team_leader_allowance_roll_call, team_leader_allowance_vehicle_management, team_leader_allowance_task_management, full_attendance_allowance, diligence_allowance, accident_free_allowance, welfare_meal_allowance, welfare_fuel_allowance, id_list):
+            member = get_object_or_404(Member, id=id)
+
+            salary = Salary.objects.filter(member_id=member).get(month=month)
+            salary.service_allowance = service_allowance.replace(',','')
+            salary.annual_allowance = annual_allowance.replace(',','')
+            salary.team_leader_allowance_roll_call = team_leader_allowance_roll_call.replace(',','')
+            salary.team_leader_allowance_vehicle_management = team_leader_allowance_vehicle_management.replace(',','')
+            salary.team_leader_allowance_task_management = team_leader_allowance_task_management.replace(',','')
+            salary.full_attendance_allowance = full_attendance_allowance.replace(',','')
+            salary.diligence_allowance = diligence_allowance.replace(',','')
+            salary.accident_free_allowance = accident_free_allowance.replace(',','')
+            salary.welfare_meal_allowance = welfare_meal_allowance.replace(',','')
+            salary.welfare_fuel_allowance = welfare_fuel_allowance.replace(',','')
+            salary.save()
+
+            if TODAY[:7] <= month:
+                member.service_allowance = service_allowance.replace(',','')
+                member.annual_allowance = annual_allowance.replace(',','')
+                member.team_leader_allowance_roll_call = team_leader_allowance_roll_call.replace(',','')
+                member.team_leader_allowance_vehicle_management = team_leader_allowance_vehicle_management.replace(',','')
+                member.team_leader_allowance_task_management = team_leader_allowance_task_management.replace(',','')
+                member.full_attendance_allowance = full_attendance_allowance.replace(',','')
+                member.diligence_allowance = diligence_allowance.replace(',','')
+                member.accident_free_allowance = accident_free_allowance.replace(',','')
+                member.welfare_meal_allowance = welfare_meal_allowance.replace(',','')
+                member.welfare_fuel_allowance = welfare_fuel_allowance.replace(',','')
+                member.save()
+
+        return redirect(request.META.get('HTTP_REFERER', 'redirect_if_referer_not_found'))
+    else:
+        return HttpResponseNotAllowed(['post'])
+
 
 def salary_additional_create(request):
     if request.method == 'POST':
@@ -1340,6 +1424,17 @@ def salary_load(request):
             salary.meal = meal
             salary.total = salary.calculate_total()
             # salary.total = int(salary.meal) + int(salary.attendance) + int(salary.leave) + int(salary.order) + int(salary.base) + int(salary.service_allowance) + int(salary.performance_allowance) + int(salary.annual_allowance) + int(salary.additional) - int(salary.deduction)
+
+            # new_salary
+            salary.team_leader_allowance_roll_call = prev_salary.team_leader_allowance_roll_call
+            salary.team_leader_allowance_vehicle_management = prev_salary.team_leader_allowance_vehicle_management
+            salary.team_leader_allowance_task_management = prev_salary.team_leader_allowance_task_management
+            salary.full_attendance_allowance = prev_salary.full_attendance_allowance
+            salary.diligence_allowance = prev_salary.diligence_allowance
+            salary.accident_free_allowance = prev_salary.accident_free_allowance
+            salary.welfare_meal_allowance = prev_salary.welfare_meal_allowance
+            salary.welfare_fuel_allowance = prev_salary.welfare_fuel_allowance
+
             salary.save()
             
 

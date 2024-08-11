@@ -2,7 +2,7 @@ from django.db import models
 from humanresource.models import Member
 
 class HourlyWage(models.Model):
-    def new_wage(month, creator):
+    def new_wage(month, creator=None):
         horuly_wage = HourlyWage.objects.create(
             wage1 = 0,
             wage2 = 0,

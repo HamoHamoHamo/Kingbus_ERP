@@ -46,4 +46,13 @@ class MemberSelector:
             'additional_salary__remark',
             'deduction_salary__price',
             'deduction_salary__remark',
+
+            'team_leader_allowance_roll_call',
+            'team_leader_allowance_vehicle_management',
+            'team_leader_allowance_task_management',
+            'full_attendance_allowance',
+            'diligence_allowance',
+            'accident_free_allowance',
+            'welfare_meal_allowance',
+            'welfare_fuel_allowance',
         ))

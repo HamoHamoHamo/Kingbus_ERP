@@ -58,6 +58,15 @@ class Member(models.Model):
     overtime_allowance = models.CharField(verbose_name='근로추가수당', max_length=20, null=False, default=0)
     meal = models.CharField(verbose_name='식대', max_length=20, null=False, default=0)
     
+    team_leader_allowance_roll_call = models.CharField(verbose_name="팀장수당(점호관리)", max_length=100, null=False, default=0)
+    team_leader_allowance_vehicle_management = models.CharField(verbose_name="팀장수당(차량관리)", max_length=100, null=False, default=0)
+    team_leader_allowance_task_management = models.CharField(verbose_name="팀장수당(업무관리)", max_length=100, null=False, default=0)
+    full_attendance_allowance = models.CharField(verbose_name="만근수당", max_length=100, null=False, default=0)
+    diligence_allowance = models.CharField(verbose_name="성실수당", max_length=100, null=False, default=0)
+    accident_free_allowance = models.CharField(verbose_name="무사고수당", max_length=100, null=False, default=0)
+    welfare_meal_allowance = models.CharField(verbose_name="복리후생 (식대)", max_length=100, null=False, default=0)
+    welfare_fuel_allowance = models.CharField(verbose_name="복리후생(유류비)", max_length=100, null=False, default=0)
+    
     pub_date = models.DateTimeField(verbose_name="등록날짜", auto_now_add=True, null=False)
     creator = models.CharField(verbose_name='작성자 이름', max_length=100, null=False, blank=True)
     updated_at = models.DateTimeField(auto_now=True, verbose_name='수정시간')
@@ -123,6 +132,15 @@ class Salary(models.Model):
         annual_allowance = 0
         overtime_allowance = 0
         meal = 0
+
+        team_leader_allowance_roll_call = 0
+        team_leader_allowance_vehicle_management = 0
+        team_leader_allowance_task_management = 0
+        full_attendance_allowance = 0
+        diligence_allowance = 0
+        accident_free_allowance = 0
+        welfare_meal_allowance = 0
+        welfare_fuel_allowance = 0
         
 
         if TODAY[:7] <= month:
@@ -132,6 +150,16 @@ class Salary(models.Model):
             annual_allowance = int(member.annual_allowance)
             overtime_allowance = int(member.overtime_allowance)
             meal = int(member.meal)
+
+            team_leader_allowance_roll_call = int(member.team_leader_allowance_roll_call)
+            team_leader_allowance_vehicle_management = int(member.team_leader_allowance_vehicle_management)
+            team_leader_allowance_task_management = int(member.team_leader_allowance_task_management)
+            full_attendance_allowance = int(member.full_attendance_allowance)
+            diligence_allowance = int(member.diligence_allowance)
+            accident_free_allowance = int(member.accident_free_allowance)
+            welfare_meal_allowance = int(member.welfare_meal_allowance)
+            welfare_fuel_allowance = int(member.welfare_fuel_allowance)
+            
 
         # if salary:
         #     base = salary.base
@@ -161,6 +189,14 @@ class Salary(models.Model):
             annual_allowance = annual_allowance,
             overtime_allowance = overtime_allowance,
             meal = meal,
+            team_leader_allowance_roll_call = team_leader_allowance_roll_call,
+            team_leader_allowance_vehicle_management = team_leader_allowance_vehicle_management,
+            team_leader_allowance_task_management = team_leader_allowance_task_management,
+            full_attendance_allowance = full_attendance_allowance,
+            diligence_allowance = diligence_allowance,
+            accident_free_allowance = accident_free_allowance,
+            welfare_meal_allowance = welfare_meal_allowance,
+            welfare_fuel_allowance = welfare_fuel_allowance,
             # attendance = attendance_price,
             # leave = leave_price,
             # order = order_price,
@@ -190,6 +226,8 @@ class Salary(models.Model):
             return int(self.overtime_allowance) + int(self.performance_allowance) + int(self.attendance) + int(self.leave) + int(self.order) + int(self.assignment) + int(self.regularly_assignment) + int(self.additional) - int(self.deduction)
         else:
             return "error"
+    def calculate_new_total(self, wage):
+        return int(wage) + int(self.service_allowance) + int(self.annual_allowance) + int(self.team_leader_allowance_roll_call) + int(self.team_leader_allowance_vehicle_management) + int(self.team_leader_allowance_task_management) + int(self.full_attendance_allowance) + int(self.diligence_allowance) + int(self.accident_free_allowance) + int(self.welfare_meal_allowance) + int(self.welfare_fuel_allowance) + int(self.additional) - int(self.deduction)
 
     def calculate_fixed(self):
         member = self.member_id
@@ -216,6 +254,22 @@ class Salary(models.Model):
     deduction = models.CharField(verbose_name='공제', max_length=20, null=False, default=0)
     assignment = models.CharField(verbose_name='일반업무', max_length=20, null=False, default=0)
     regularly_assignment = models.CharField(verbose_name='고정업무', max_length=20, null=False, default=0)
+    
+    team_leader_allowance_roll_call = models.CharField(verbose_name="팀장수당(점호관리)", max_length=100, null=False, default=0)
+    team_leader_allowance_vehicle_management = models.CharField(verbose_name="팀장수당(차량관리)", max_length=100, null=False, default=0)
+    team_leader_allowance_task_management = models.CharField(verbose_name="팀장수당(업무관리)", max_length=100, null=False, default=0)
+    full_attendance_allowance = models.CharField(verbose_name="만근수당", max_length=100, null=False, default=0)
+    diligence_allowance = models.CharField(verbose_name="성실수당", max_length=100, null=False, default=0)
+    accident_free_allowance = models.CharField(verbose_name="무사고수당", max_length=100, null=False, default=0)
+    welfare_meal_allowance = models.CharField(verbose_name="복리후생 (식대)", max_length=100, null=False, default=0)
+    welfare_fuel_allowance = models.CharField(verbose_name="복리후생(유류비)", max_length=100, null=False, default=0)
+
+    #FIXME 임금총합계 저장 안하고 salary service에서 불러와서 계산하기, 추후 수정
+    #new_total = models.CharField(verbose_name='임금총합계', max_length=20, null=False, default=0)
+
+    #임금	근속수당	연차수당	팀장수당(점호관리)	팀장수당(차량관리)	팀장수당(업무관리)	만근수당	성실수당	무사고수당	복리후생 (식대)	복리후생(유류비)
+    #기본급	근속수당	연차수당	성과급	식대	출근수당	퇴근수당	일반수당	업무수당
+    
     total = models.CharField(verbose_name='총금액', max_length=20, null=False)
     month = models.CharField(verbose_name='지급월', null=False, max_length=7)
     payment_date = models.CharField(verbose_name='급여지급일', null=False, max_length=10, blank=True)

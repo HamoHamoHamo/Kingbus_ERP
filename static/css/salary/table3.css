@@ -1,0 +1,781 @@
+.personalFlex, .flex{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+} 
+
+.contentsAreaBox * {
+    vertical-align: middle;
+    text-align: center;
+}
+
+.orderListSubScroll {
+    width: 100%;
+    height: calc(100% - 10.1rem);
+    overflow-y: scroll;
+}
+
+.orderListSubScroll::-webkit-scrollbar {
+    width: 0rem;
+}
+
+
+.orderListScrollYBox::-webkit-scrollbar {
+    width: 1rem;
+}
+
+.orderListSub::-webkit-scrollbar {
+    width: 1rem;
+    height: 0rem;
+}
+
+.orderListScrollYBox::-webkit-scrollbar {
+    width: 1rem;
+}
+
+.orderListScrollYBox::-webkit-scrollbar-thumb {
+    height: 17%;
+    background-color: #444444;
+    border-radius: 1rem;
+}
+
+.subScroll::-webkit-scrollbar {
+    height: 1rem;
+}
+
+.orderListSub::-webkit-scrollbar-thumb {
+    height: 17%;
+    background-color: #444444;
+    border-radius: 1rem;
+}
+
+.orderListScrollYBox::-webkit-scrollbar-thumb {
+    height: 17%;
+    background-color: #444444;
+    border-radius: 1rem;
+}
+
+.orderListScrollYBox::-webkit-scrollbar-track {
+    background-color: #D2D2D2;
+}
+
+.orderListSub::-webkit-scrollbar-track {
+    background-color: #D2D2D2;
+}
+
+.orderListScrollYBox::-webkit-scrollbar-track {
+    background-color: #D2D2D2;
+}
+
+
+.mainContentsCentainer{
+    font-size: 1.4rem;
+}
+
+
+.scrollingTableListHeader{width: 100%;
+height: 3.6rem;
+background-color: #444444;
+}
+
+
+/* 고정테이블 시작 */
+
+.contentsAreaBox{
+    width: 100%;
+    height: 70rem;
+    position: relative;
+    display: flex;
+    align-items: flex-start;
+    padding: 0;
+    box-sizing: border-box;
+    background-color: white;
+    border: 0.1rem solid #CDCDCE;
+    border-radius: 0.3rem;
+    box-shadow: 0 0.2rem 0.4rem rgba(0, 0, 0, 0.16);
+}
+
+.orderListMain{
+    display: flex;
+    flex-direction: column;
+    width: 21.3rem;
+    height: 100%;
+    border-right: 0.1rem solid #CDCDCE;
+    box-sizing: border-box;
+}
+
+.orderListTableHead {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    height: 10.1rem;
+    background-color: #444;
+}
+
+.orderListTableHead .orderListMainContents, .orderListTableHead .orderListSubContents {
+    color: white;
+}
+
+.orderListMain0{
+    width: 20%;
+}
+
+.orderListMain1 {
+    justify-content: center;
+    width: 20%;
+}
+
+.orderListMain2{
+    width: 30%;
+}
+
+.orderListMain
+.orderListMainContents {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    font-size: 1.4rem;
+    border-right: 0.1rem solid #CDCDCE;
+    box-sizing: border-box;
+}
+
+.orderListMain3{
+    border: none !important;
+}
+
+
+.orderListItem,
+.orderListSubItem{
+    display: flex;
+    width: 100%;
+    height: 3.9rem;
+    background-color: #ffffff;
+    border-bottom: 0.1rem solid #CDCDCE;
+
+}
+
+/* 고정 테이블 done */
+
+/* 데이터 테이블 */
+.orderListSub {
+    display: flex;
+    flex-direction: column;
+    width: calc(100% - 21.3rem);
+    height: 100%;
+    overflow-x: scroll;
+}
+
+.tableBody {
+    width: 325%;
+    border-spacing: 0;
+    box-sizing: border-box;
+    table-layout: fixed;
+}
+
+/* 데이터 헤더 시작 */
+.thead {
+    display: flex;
+    width: 100%;
+    height: 10.1rem;
+    border-spacing: 0;
+    box-sizing: border-box;
+    position: sticky;
+    top: 0;
+    background-color: #444444;
+    color: white;
+}
+
+.thead > *{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-right: 0.1rem solid #CDCDCE;
+}
+
+.theadThLast{
+    border-right: none;
+}
+
+.theadDate{
+    width: 10%;
+}
+
+.theadWorkTime, .theadBasic, .theadNormal, .theadSum, .theadAdditionalAllowance{
+    width: 7%;
+}
+
+.theadOrdinarySalary{
+    width: 21%;
+    display: block;
+}
+
+.theadCountTime{
+    width: 42%;
+    height: 100%;
+    background-color: #444444;
+}
+
+.theadOrdinarySalary > *, .theadLegalAllowance > *{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.theadOrdinarySalaryTitle, 
+.theadLegalAllowanceTitle,
+.theadLegalAllowanceContentDoubleTitle,
+.theadInsuranceTitle,
+.theadDeductionDetailsTitle{
+    height: 40%;
+    border-bottom: 0.1rem solid #CDCDCE;
+}
+
+.theadOrdinarySalaryContent,
+.theadLegalAllowanceContent,
+.theadLegalAllowanceContentDoubleContent,
+.theadInsuranceContent,
+.theadDeductionDetailsContent{
+    display: flex;
+    height: 60%;
+}
+
+.theadLegalAllowance{
+    width: 119%;
+    display: block;
+}
+
+.theadInsurance{
+    width: 14%;
+    display: block;
+}
+
+.theadDeductionDetails{
+    width: 56%;
+    display: block;
+}
+
+.theadOrdinarySalaryContent *{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-right: 0.1rem solid #CDCDCE;
+    width: 33%;
+    height: 100%;
+}
+
+.theadLegalAllowanceContent > *,
+.theadDeductionDetailsContent > * {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 11%;
+    height: 100%;
+    border-right: 0.1rem solid #CDCDCE;
+}
+
+.theadDeductionDetailsContent > *{
+    width: 12%;
+}
+
+.theadLegalAllowanceContentDoubleContent > *,
+.theadLegalAllowanceContentDoubleTitle,
+.theadInsuranceContent > *,
+.theadInsuranceTitle,
+.theadDeductionDetailsContent > *,
+.theadDeductionDetailsTitle
+{
+    width: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+
+.theadLegalAllowanceContentDoubleTitle,
+.theadInsuranceTitle,
+.theadDeductionDetailsTitle{
+    width: 100%;
+}
+
+.theadLegalAllowanceContentDouble{
+    display: block;
+    justify-content: center;
+    align-items: center;
+    width: 40%;
+}
+
+
+.theadOrdinarySalaryContentLast, 
+.theadLegalAllowanceContentLast,
+.theadDeductionDetailsContentLast{
+    border-right: none;
+}
+
+.theadLegalAllowanceContentDoubleContentFirst,
+.theadInsuranceContentFirst{
+    border-right: 0.1rem solid #CDCDCE;;
+}
+.theadLegalAllowanceContentDoubleContentFirst{
+    width: 33.3%;
+}
+
+.theadAnother{
+    width: 50%;
+}
+
+
+.theadLegalAllowanceContent > *{
+    width: 5.882352941176471%;
+}
+
+.theadLegalAllowanceContentOne{
+    width: 5.882352941176471%;
+}
+
+.theadLegalAllowanceContentOneTitle,
+.theadLegalAllowanceContentOneContent{
+    width: 100%;
+    height: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.theadLegalAllowanceContentDouble{
+    width: 17.64705882352941%;
+}
+
+.theadDouble{
+    width: 11.76470588235294%;
+}
+
+.theadWeeklyExtension {
+    height: 50%;
+}
+
+/* 데이터헤더끝 */
+.tbody{
+    width: 100%;
+    height: calc(100% - 10.1rem);
+}
+
+.tbodyItemTr{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 3.9rem;
+    border-bottom: 0.1rem solid #CDCDCE;
+}
+
+.tbodyItemTrTd{
+    height: 100%;
+    width: 5%;
+    border-right: 0.1rem solid #CDCDCE;
+}
+
+.tbodyItemTr > * {
+    height: 100%;
+}
+
+.tbodyDate{
+    width: 10%;
+    border-right: 0.1rem solid #CDCDCE;
+}
+
+.tbodyWorkTime, .tbodyBasic, .tbodyNormal, .tbodySum, .tbodyAdditionalAllowance{
+    width: 7%;
+    border-right: 0.1rem solid #CDCDCE;
+}
+
+.tbodyOrdinarySalary{
+    width: 21%;
+    display: block;
+
+}
+
+.tbodyOrdinarySalary > *{
+    width: 33%;
+    border-right: 0.1rem solid #CDCDCE;
+}
+
+.tbodyCountTime{
+    width: 42%;
+    
+}
+
+.tbodyLegalAllowance{
+    width: 119%;
+    display: block;
+}
+
+.tbodyLegalAllowance > *{
+    
+    width: 5.882352941176471%;
+    border-right: 0.1rem solid #CDCDCE;
+}
+
+.tbodyInsurance{
+    width: 14%;
+    display: block;
+}
+
+.tbodyInsurance > *{
+    width: 50%;
+    border-right: 0.1rem solid #CDCDCE;
+}
+
+.tbodyDeductionDetails{
+    width: 56%;
+    display: block;
+    border-right: 0.1rem solid #CDCDCE;
+}
+
+.tbodyDeductionDetails > *{
+    width: calc(12.5% - 0.1rem);
+    border-right: 0.1rem solid #CDCDCE;
+}
+
+.tbodySumLast{
+    border-right: none;
+}
+
+.tbodyDate,
+.tbodyWorkTime, .tbodyBasic, .tbodyNormal, .tbodySum, .tbodyAdditionalAllowance,
+.tbodyOrdinarySalary > *,
+.tbodyLegalAllowance > *,
+.tbodyInsurance > *,
+.tbodyDeductionDetails > *{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.tableEdit{
+    background-color: #FFF2CC;
+}
+
+.sumAreaBox {
+    display: flex;
+    justify-content: flex-start;
+    font-size: 1.4rem;
+    margin-top: 2rem;
+    width: calc(100% - 1rem);
+    height: 4rem;
+    box-shadow: 0 0.2rem 0.4rem rgba(0, 0, 0, 0.16);
+    box-sizing: border-box;
+    background-color: white;
+}
+.orderSumAreaBox{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    width: 21.3rem;
+    height: 100%;
+    border-right: 0.1rem solid #CDCDCE;
+    box-sizing: border-box;
+}
+.sumBodyTable{
+
+    height: 100%;
+    width: 325%;
+    border-spacing: 0;
+    box-sizing: border-box;
+    table-layout: fixed;
+}
+
+.sumItemTr{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 3.9rem;
+    border-bottom: 0.1rem solid #CDCDCE;
+}
+
+.sumItemTr > * {
+    height: 100%;
+}
+
+.sumDate{
+    width: 10%;
+    border-right: 0.1rem solid #CDCDCE;
+}
+
+.sumWorkTime, .sumBasic, .sumNormal, .sumSum, .sumAdditionalAllowance{
+    width: 7%;
+    border-right: 0.1rem solid #CDCDCE;
+}
+
+.countTimeSum{
+    width: 42%;
+    border-right: 0.1rem solid #CDCDCE;
+    display: flex;
+}
+
+.countTimeSumTd{
+    width: calc(100% / 6);
+    border-right: 0.1rem solid #CDCDCE;
+    height: 100%;
+}
+
+.sumOrdinarySalary{
+    width: 21%;
+    display: block;
+
+}
+
+.sumOrdinarySalary > *{
+    width: 33%;
+    border-right: 0.1rem solid #CDCDCE;
+}
+
+.sumLegalAllowance{
+    width: 119%;
+    display: block;
+}
+
+.sumLegalAllowance > *{
+    
+    width: 5.882352941176471%;
+    border-right: 0.1rem solid #CDCDCE;
+}
+
+.sumInsurance{
+    width: 14%;
+    display: block;
+}
+
+.sumInsurance > *{
+    width: 50%;
+    border-right: 0.1rem solid #CDCDCE;
+}
+
+.sumDeductionDetails{
+    width: 56%;
+    display: block;
+    border-right: 0.1rem solid #CDCDCE;
+}
+
+.sumDeductionDetails > *{
+    width: 12.5%;
+    border-right: 0.1rem solid #CDCDCE;
+}
+
+.sumSumLast{
+    border-right: none;
+}
+
+.sumDate,
+.sumWorkTime, .sumBasic, .sumNormal, .sumSum, .sumAdditionalAllowance,
+.sumOrdinarySalary > *,
+.sumLegalAllowance > *,
+.sumInsurance > *,
+.sumDeductionDetails > *{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.subScroll{
+    overflow-x: auto;
+    overflow-y: hidden;
+}
+
+
+.searchContainer{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    height: 4rem;
+    margin-bottom: 2rem;
+    padding: 0 1rem;
+    border-radius: 0.2rem;
+    box-shadow: 0rem 0.1rem 0.4rem rgb(0 0 0 / 30%);
+    background-color: white;
+    box-sizing: border-box;
+}
+
+.searchFormLabel{
+    font-size: 1.4rem;
+    margin-right: 2rem;
+}
+.searchFormInput{
+    width: 10rem;
+    height: 2.6rem;
+    padding-left: 1rem;
+    box-sizing: border-box;
+    border: 0.1rem solid #D2D2D2;
+    border-radius: 0.2rem;
+    outline: none;
+    font-family: "Noto Sans CJK KR";
+    font-size: 1.4rem;
+}
+.searchFormInputMonth{
+    width: 12rem;
+    margin-right: 2rem;
+}
+.searchFormSearchBtn{
+    height: 2.6rem;
+    margin-left: 2rem;
+    padding: 0 1.8rem;
+    border: none;
+    border-radius: 0.2rem;
+    font-size: 1.4rem;
+    color: white;
+    background-color: #444444;
+    cursor: pointer;
+}
+.searchFormInputSelect{
+    width: 18rem;
+    margin-left: 2rem;
+}
+.popupAreaBox {
+    display: flex;;
+    justify-content: flex-end;
+    align-items: center;
+    height: 100%;
+}
+.popupAreaBoxBtn{
+    background-color: #444;
+    cursor: pointer;
+    margin-left: 1rem;
+}
+.blue{
+    background-color: #0069D9;
+}
+
+
+.hourMondeyEditPopup{
+    font-size: 1.4rem;
+    box-shadow: 0 0.2rem 0.4rem rgb(0 0 0 / 16%);
+    background-color: white;
+    position: absolute;
+    top: 30%;
+    left: 30%;
+    display: none;
+    width: 36rem;
+    height: 38.8rem;
+}
+
+.hourMoneyEditHeader{
+
+    color: white;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    font-size: 1.6rem;
+    width: 100%;
+    height: 5rem;
+    background-color: #444;
+}
+
+.hourMoneyEditHeader span{
+    margin-left: 1rem;
+}
+    
+.hourMoneyEditBody{
+    margin: 3rem;
+    margin-top: 4rem;
+    padding-bottom: 5rem;
+    display: flex;
+    justify-content: space-between;
+    gap: 2rem;
+    flex-direction: column;
+    border-bottom: 0.1rem solid #CDCDCE;
+}
+.hourMoneyEditContentText{
+    text-align: end;
+    width: 12rem;
+}
+.hourMoneyEditContent{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.BtnArea{
+    display: flex;
+    justify-content: flex-end;
+    margin-right: 3rem;
+    margin-top: 5rem;
+}
+.moneyPopupAreaBoxBtn{
+    width: 5rem;
+    font-size: 1.6rem;
+}
+
+.popupContainer {
+    width: 45rem;
+}
+
+.popupArticleLabel {
+    width: auto;
+}
+
+.popupPrice {
+    text-align: right;
+}
+
+.theadLegalAllowanceContentOne{
+    flex-direction: column;
+}
+
+.theadLegalAllowanceContentOneTitle{
+    border-bottom: 0.1rem solid #CDCDCE;;
+}
+
+
+.theadCountTimeTh{
+    width: 16.66666666666667%;
+}
+.theadCountTimeThDouble{
+    width: 33.33%;
+}
+
+.theadCountTime *{
+    border-right: 0.1rem solid #CDCDCE;
+    height: 100%;
+}
+
+.theadCountTimeThDouble > *{height: 50%;}
+
+.theadCountTimeThTh{
+    width: 50%;
+}
+
+.theadCountTimeThTitle{
+    height: 40%;
+    border-bottom: 0.1rem solid #CDCDCE;
+}
+
+.last{
+    border-right: none;
+}
+
+.theadCountTimeThContent {
+    height: 60%;
+}
+
+.tbodyCountTimeTd{
+    width: 16.66%;
+    height: 100%;
+    border-right: 0.1rem solid #CDCDCE;
+}
+
+.theadCountTimeTitle {
+    height: 25%;
+    
+}
+
+.theadCountTimeData {
+    border-top: 0.1rem solid #cdcdce;
+    width: 100%;
+    height: 75%;
+    display: flex;
+}
+
+.theadCountTime{display: block;}
