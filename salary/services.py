@@ -671,7 +671,15 @@ class SalaryTableDataCollector3(SalaryTableDataCollector):
         #datas['annual_allowance'] = int(self.member_salary['annual_allowance'])
         
         #법정수당 합계
-        datas['statutory_allowance'] = format_number_with_commas(int(datas['statutory_allowance'].replace(",","")) - int(datas['meal'].replace(",","")) + int(datas['team_leader_allowance_roll_call']) + int(datas['team_leader_allowance_vehicle_management']) + int(datas['team_leader_allowance_task_management']) + int(datas['full_attendance_allowance']) + int(datas['diligence_allowance']) + int(datas['accident_free_allowance']))
+        datas['statutory_allowance'] = format_number_with_commas(
+            remove_comma_from_number(datas['statutory_allowance'])
+            - remove_comma_from_number(datas['meal'])
+            + remove_comma_from_number(datas['team_leader_allowance_roll_call'])
+            + remove_comma_from_number(datas['team_leader_allowance_vehicle_management'])
+            + remove_comma_from_number(datas['team_leader_allowance_task_management'])
+            + remove_comma_from_number(datas['full_attendance_allowance'])
+            + remove_comma_from_number(datas['diligence_allowance'])
+            + remove_comma_from_number(datas['accident_free_allowance']))
 
         datas['welfare_meal_allowance'] = format_number_with_commas(int(self.member_salary['welfare_meal_allowance']))
         datas['welfare_fuel_allowance'] = format_number_with_commas(int(self.member_salary['welfare_fuel_allowance']))
