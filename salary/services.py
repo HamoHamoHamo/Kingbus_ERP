@@ -4,10 +4,12 @@ from dispatch.selectors import DispatchSelector
 from humanresource.models import Member, Salary
 from humanresource.selectors import MemberSelector
 from common.constant import TODAY
-from common.formatter import format_number_with_commas
+from common.formatter import format_number_with_commas, remove_comma_from_number
 from common.datetime import calculate_time_difference, get_hour_minute_with_colon, get_hour_minute, get_minute_from_colon_time, last_day_of_month, get_weekday_from_date, calculate_date_difference, add_days_to_date, last_date_of_month, get_next_sunday_after_last_day, calculate_time_with_minutes
 from datetime import datetime, timedelta
 import math
+from .selectors import SalarySelector
+from .models import HourlyWage
 
 class DataCollector:
     def __init__(self, member, month, mondays, connect_time_list, holiday_data, date_list):
@@ -18,6 +20,8 @@ class DataCollector:
         self.evening_list = []
         self.date_list = date_list
         
+        self.set_member_salary()
+        self.hourly_wage_data = self.set_hourly_wage_data()
         self.connect_time_list = list(filter(lambda item: item['driver_id'] == self.member.id, connect_time_list))
         self.holiday_data = holiday_data
         # 기본은 1달
@@ -33,10 +37,16 @@ class DataCollector:
         self.start_day = start_day
         self.last_day = last_day
     
-    def set_hourly_wage_data(self, hourly_wage_data):
-        self.hourly_wage_data = hourly_wage_data
+    def set_hourly_wage_data(self):
+        salary_selector = SalarySelector()
+        hourly_wage = salary_selector.get_hourly_wage_by_month(self.month)
+        if hourly_wage == None:
+            hourly_wage = HourlyWage.new_wage(self.month)
+        return hourly_wage
         
-    def set_member_salary(self, salary_list):
+    def set_member_salary(self):
+        member_selector = MemberSelector()
+        salary_list = member_selector.get_monthly_salary_list(self.month)
         self.member_salary = next((item for item in salary_list if item['member_id'] == self.member.id), None)
 
         if not self.member_salary:
@@ -249,34 +259,37 @@ class DataCollector:
         return {
             'entering_date': self.member.entering_date,
 
-            'total_work_minute': 0,
-            'total_work_hour_minute': 0, # 근무시간
-            'hourly_wage1': 0,
-            'hourly_wage2': 0,
+            'total_work_minute': '0',
+            'total_work_hour_minute': '0', # 근무시간
+            'hourly_wage1': '0',
+            'hourly_wage2': '0',
             
-            'ordinary_hourly_wage': 0,
+            'ordinary_hourly_wage': '0',
             
             # 통상급여
-            'wage': 0,
-            'performance_allowance': 0,
-            'meal': 0,
-            'service_allowance': 0,
-            'ordinary_salary': 0,
+            'wage': '0',
+            'performance_allowance': '0',
+            'meal': '0',
+            'service_allowance': '0',
+            'ordinary_salary': '0',
             
             # 법정수당
-            'weekly_holiday_allowance': 0,
-            'legal_holiday_allowance': 0,
-            # 'weekly_extension_wage': 0,
-            'weekly_within_law_extension_wage' : 0,
-            'weekly_outside_law_extension_wage' : 0,
-            'weekly_extension_additional_wage': 0,
-            'night_shift_wage': 0,
-            'holiday_work_wage': 0,
-            'additional_holiday_work_wage_half': 0,
-            'additional_holiday_work_wage': 0,
-            'annual_allowance': 0,
-            'statutory_allowance': 0,
-            'sum_ordinary_salary_and_statutory_allowance': 0,
+            'weekly_holiday_allowance': '0',
+            'legal_holiday_allowance': '0',
+            # 'weekly_extension_wage': '0',
+            'weekly_within_law_extension_wage' : '0',
+            'weekly_outside_law_extension_wage' : '0',
+            'weekly_extension_additional_wage': '0',
+            'night_shift_wage': '0',
+            'holiday_work_wage': '0',
+            'additional_holiday_work_wage_half': '0',
+            'additional_holiday_work_wage': '0',
+            'annual_allowance': '0',
+            'statutory_allowance': '0',
+            'sum_ordinary_salary_and_statutory_allowance': '0',
+
+            'additional': '0',
+            'deduction': '0',
 
         }
     
@@ -572,7 +585,7 @@ class DataCollector:
         weekly_extension_additional_wage = math.ceil(times_data['total_outside_law_extension_minute'] / 60 * ordinary_hourly_wage * 0.5) # 주 연장 가산임금
         night_shift_wage = math.ceil(times_data['total_night_shift_minute'] / 60 * ordinary_hourly_wage * 0.5) # 야간근로 가산임금
         
-        holiday_work_wage = math.ceil(times_data['holiday_minute'] / 60 * hourly_wage1) # 휴일 기본임금
+        holiday_work_wage = math.ceil((times_data['holiday_minute'] / 60 + times_data['additional_holiday_minute'] / 60) * hourly_wage1) # 휴일 기본임금
         additional_holiday_work_wage_half = math.ceil(times_data['holiday_minute'] / 60 * ordinary_hourly_wage * 0.5) #휴일 50%가산임금
         additional_holiday_work_wage = math.ceil(times_data['additional_holiday_minute'] / 60 * ordinary_hourly_wage) #휴일 100%가산임금
         annual_allowance = int(self.member_salary['annual_allowance']) # 연차수당
@@ -619,6 +632,9 @@ class DataCollector:
             'annual_allowance': format_number_with_commas(annual_allowance), # 연차수당
             'statutory_allowance': format_number_with_commas(statutory_allowance),
             'sum_ordinary_salary_and_statutory_allowance': format_number_with_commas(ordinary_salary + statutory_allowance),
+
+            'additional': format_number_with_commas(int(self.member_salary['additional'])),
+            'deduction': format_number_with_commas(int(self.member_salary['deduction'])),
         }
 
 class SalaryStatusDataCollector(DataCollector):
@@ -638,3 +654,35 @@ class SalaryTableDataCollector(DataCollector):
 class SalaryTableDataCollector2(SalaryTableDataCollector):
     def set_wage(self, total_weekly_minute, hourly_wage1):
         return math.ceil(hourly_wage1 * 1470 / 12)
+
+class SalaryTableDataCollector3(SalaryTableDataCollector):
+    def get_calculate_wages(self, times_data):
+        datas = super().get_calculate_wages(times_data)
+
+        #통상급여
+        datas['ordinary_salary'] = format_number_with_commas(remove_comma_from_number(datas['ordinary_salary']) - int(self.member_salary['performance_allowance']))
+
+        datas['team_leader_allowance_roll_call'] = format_number_with_commas(int(self.member_salary['team_leader_allowance_roll_call']))
+        datas['team_leader_allowance_vehicle_management'] = format_number_with_commas(int(self.member_salary['team_leader_allowance_vehicle_management']))
+        datas['team_leader_allowance_task_management'] = format_number_with_commas(int(self.member_salary['team_leader_allowance_task_management']))
+        datas['full_attendance_allowance'] = format_number_with_commas(int(self.member_salary['full_attendance_allowance']))
+        datas['diligence_allowance'] = format_number_with_commas(int(self.member_salary['diligence_allowance']))
+        datas['accident_free_allowance'] = format_number_with_commas(int(self.member_salary['accident_free_allowance']))
+        #datas['annual_allowance'] = int(self.member_salary['annual_allowance'])
+        
+        #법정수당 합계
+        datas['statutory_allowance'] = format_number_with_commas(int(datas['statutory_allowance'].replace(",","")) - int(datas['meal'].replace(",","")) + int(datas['team_leader_allowance_roll_call']) + int(datas['team_leader_allowance_vehicle_management']) + int(datas['team_leader_allowance_task_management']) + int(datas['full_attendance_allowance']) + int(datas['diligence_allowance']) + int(datas['accident_free_allowance']))
+
+        datas['welfare_meal_allowance'] = format_number_with_commas(int(self.member_salary['welfare_meal_allowance']))
+        datas['welfare_fuel_allowance'] = format_number_with_commas(int(self.member_salary['welfare_fuel_allowance']))
+
+        datas['sum_ordinary_salary_and_statutory_allowance'] = format_number_with_commas(
+            remove_comma_from_number(datas['ordinary_salary']) + \
+            remove_comma_from_number(datas['statutory_allowance']) + \
+            remove_comma_from_number(datas['welfare_meal_allowance']) + \
+            remove_comma_from_number(datas['welfare_fuel_allowance'])
+        )
+        datas['total'] = format_number_with_commas(remove_comma_from_number(datas['sum_ordinary_salary_and_statutory_allowance']) + int(remove_comma_from_number(datas['additional'])) - int(remove_comma_from_number(datas['deduction'])))
+        
+
+        return datas

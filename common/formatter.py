@@ -6,3 +6,6 @@ def format_number_with_commas(number):
         return f"{number:,}"
     else:
         raise ValueError("숫자 형식의 값만 입력 가능합니다.")
+
+def remove_comma_from_number(string_number):
+    return int(string_number.replace(",",""))
