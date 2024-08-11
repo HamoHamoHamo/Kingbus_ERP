@@ -91,6 +91,7 @@ function setTotal() {
     const welfare_fuel_allowance = document.querySelector(".welfare_fuel_allowance")
     const additional = document.querySelector(".additional")
     const deduction = document.querySelector(".deduction")
+    const total = document.querySelector(".total")
 
 
     // console.log("SET", DATAS)
@@ -125,6 +126,7 @@ function setTotal() {
     let total_welfare_fuel_allowance = 0
     let total_additional = 0
     let total_deduction = 0
+    let total_total = 0
 
     Object.entries(DATAS).map(([key, value]) => {
         total_total_work_minute += Number(value['total_work_minute'])
@@ -158,6 +160,7 @@ function setTotal() {
         total_welfare_fuel_allowance += Number(removeComma(value['welfare_fuel_allowance']))
         total_additional += Number(removeComma(value['additional']))
         total_deduction += Number(removeComma(value['deduction']))
+        total_total += Number(removeComma(value['total']))
     })
 
     total_work_minute ? total_work_minute.innerText = `${parseInt(total_total_work_minute / 60)}시간 ${total_total_work_minute % 60}분` : null
@@ -191,6 +194,7 @@ function setTotal() {
     welfare_fuel_allowance ? welfare_fuel_allowance.innerText = addComma(total_welfare_fuel_allowance.toString()) : null
     additional ? additional.innerText = addComma(total_additional.toString()) : null
     deduction ? deduction.innerText = addComma(total_deduction.toString()) : null
+    total ? total.innerText = addComma(total_total.toString()) : null
 }
 
 function addComma(value) {
