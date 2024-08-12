@@ -69,12 +69,16 @@
             <div class="orderListScrollBox">
                 <!--고정요소-->
                 {% for member in member_list %}
+                {% with data=datas|obj:member.id %}
+                {% if data.total_work_hour_minute != "0" %}
                 <div class="orderListItem">
                     <div class="orderListMainContents orderListMain0"><input type="checkbox"></div>
                     <div class="orderListMainContents orderListMain1">{{forloop.counter}}</div>
                     <div class="orderListMainContents orderListMain2">{{member.name}}</div>
                     <div class="orderListMainContents orderListMain2 orderListMain3">{{member.role}}</div>
                 </div>
+                {% endif %}
+                {% endwith %}
                 {% endfor %}
                 <!--고정요소 done-->
             </div>
@@ -220,6 +224,7 @@
                 {% for member in member_list %}
                 {% with member_id=member.id %}
                 {% with data=datas|obj:member.id %}
+                {% if data.total_work_hour_minute != "0" %}
                 <div class="tbodyItemTr">
                     <!-- 입사일자 -->
                     <div class="addCommaToInnerText tbodyDate">{{data.entering_date}}</div>
@@ -310,6 +315,7 @@
                     <div class="tbodyAdditionalAllowance tableEdit addCommaToInnerText">{{data.additional}}</div>
                     <div class="tbodySum tbodySumLast addCommaToInnerText">{{data.total}}</div>
                 </div>
+                {% endif %}
                 {% endwith %}
                 {% endwith %}
                 {% endfor %}
