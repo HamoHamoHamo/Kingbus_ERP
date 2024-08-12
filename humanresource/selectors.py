@@ -47,6 +47,7 @@ class MemberSelector:
             'deduction_salary__price',
             'deduction_salary__remark',
 
+            'new_annual_allowance',
             'team_leader_allowance_roll_call',
             'team_leader_allowance_vehicle_management',
             'team_leader_allowance_task_management',

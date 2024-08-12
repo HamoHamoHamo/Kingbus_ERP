@@ -13,14 +13,14 @@ function amountValidation(){
     tr.querySelector('.salaryPerformanceAllowance') ? tr.querySelector('.salaryPerformanceAllowance').name = 'performance' : null
     tr.querySelector('.salaryMeal') ? tr.querySelector('.salaryMeal').name = 'meal' : null
 
-    tr.querySelector('.team_leader_allowance_roll_call') ? tr.querySelector('.team_leader_allowance_roll_call').name = 'team_leader_allowance_roll_call' : null
-    tr.querySelector('.team_leader_allowance_vehicle_management') ? tr.querySelector('.team_leader_allowance_vehicle_management').name = 'team_leader_allowance_vehicle_management' : null
-    tr.querySelector('.team_leader_allowance_task_management') ? tr.querySelector('.team_leader_allowance_task_management').name = 'team_leader_allowance_task_management' : null
-    tr.querySelector('.full_attendance_allowance') ? tr.querySelector('.full_attendance_allowance').name = 'full_attendance_allowance' : null
-    tr.querySelector('.diligence_allowance') ? tr.querySelector('.diligence_allowance').name = 'diligence_allowance' : null
-    tr.querySelector('.accident_free_allowance') ? tr.querySelector('.accident_free_allowance').name = 'accident_free_allowance' : null
-    tr.querySelector('.welfare_meal_allowance') ? tr.querySelector('.welfare_meal_allowance').name = 'welfare_meal_allowance' : null
-    tr.querySelector('.welfare_fuel_allowance') ? tr.querySelector('.welfare_fuel_allowance').name = 'welfare_fuel_allowance' : null
+    tr.querySelector('.teamLeaderAllowanceRollCall') ? tr.querySelector('.teamLeaderAllowanceRollCall').name = 'team_leader_allowance_roll_call' : null
+    tr.querySelector('.teamLeaderAllowanceVehicleManagement') ? tr.querySelector('.teamLeaderAllowanceVehicleManagement').name = 'team_leader_allowance_vehicle_management' : null
+    tr.querySelector('.teamLeaderAllowanceTaskManagement') ? tr.querySelector('.teamLeaderAllowanceTaskManagement').name = 'team_leader_allowance_task_management' : null
+    tr.querySelector('.fullAttendanceAllowance') ? tr.querySelector('.fullAttendanceAllowance').name = 'full_attendance_allowance' : null
+    tr.querySelector('.diligenceAllowance') ? tr.querySelector('.diligenceAllowance').name = 'diligence_allowance' : null
+    tr.querySelector('.accidentFreeAllowance') ? tr.querySelector('.accidentFreeAllowance').name = 'accident_free_allowance' : null
+    tr.querySelector('.welfareMealAllowance') ? tr.querySelector('.welfareMealAllowance').name = 'welfare_meal_allowance' : null
+    tr.querySelector('.welfareFuelAllowance') ? tr.querySelector('.welfareFuelAllowance').name = 'welfare_fuel_allowance' : null
 
     if(tr.querySelector('.hiddenId') == undefined){
         const hidden = document.createElement("input")

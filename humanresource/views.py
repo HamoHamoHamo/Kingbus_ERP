@@ -33,6 +33,7 @@ from media_firebase import upload_to_firebase, get_download_url, delete_firebase
 from salary.views import SalaryDataController
 from salary.services import SalaryTableDataCollector3
 from dispatch.selectors import DispatchSelector
+from common.formatter import format_number_with_commas, remove_comma_from_number
 
 def send_message(title, body, token, topic):
     cred_path = os.path.join(BASE_DIR, CRED_PATH)
@@ -1086,9 +1087,23 @@ class NewSalaryList(SalaryList):
 
         context['wage_list'] = []
         context['total_wage_list'] = []
+        context['total_work_hour_minute_list'] = []
         for data_id in context['datas']:
-            context['wage_list'].append(context['datas'][data_id]['wage'])
+            #context['wage_list'].append(context['datas'][data_id]['wage'])
             context['total_wage_list'].append(context['datas'][data_id]['total'])
+            context['wage_list'].append(format_number_with_commas(
+                remove_comma_from_number(context['datas'][data_id]['total'])
+                - remove_comma_from_number(context['datas'][data_id]['new_annual_allowance'])
+                - remove_comma_from_number(context['datas'][data_id]['team_leader_allowance_roll_call'])
+                - remove_comma_from_number(context['datas'][data_id]['team_leader_allowance_vehicle_management'])
+                - remove_comma_from_number(context['datas'][data_id]['team_leader_allowance_task_management'])
+                - remove_comma_from_number(context['datas'][data_id]['full_attendance_allowance'])
+                - remove_comma_from_number(context['datas'][data_id]['diligence_allowance'])
+                - remove_comma_from_number(context['datas'][data_id]['accident_free_allowance'])
+                - remove_comma_from_number(context['datas'][data_id]['additional']) 
+                + remove_comma_from_number(context['datas'][data_id]['deduction'])
+            ))
+            context['total_work_hour_minute_list'].append(context['datas'][data_id]['total_work_hour_minute'])
         return context
 
 def salary_edit(request):
