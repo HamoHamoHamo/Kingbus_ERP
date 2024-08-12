@@ -654,7 +654,8 @@ class SalaryTableDataCollector2(SalaryTableDataCollector):
 class SalaryTableDataCollector3(SalaryTableDataCollector):
     def get_calculate_wages(self, times_data):
         datas = super().get_calculate_wages(times_data)
-
+        if datas['total_work_hour_minute'] == "0":
+            return datas
         #통상급여
         datas['ordinary_salary'] = format_number_with_commas(remove_comma_from_number(datas['ordinary_salary']) - int(self.member_salary['performance_allowance']))
 
