@@ -1,4 +1,5 @@
 from config.custom_logging import logger
+from django.forms.models import model_to_dict
 from dispatch.models import DispatchRegularlyData, MorningChecklist, EveningChecklist, DispatchRegularly
 from dispatch.selectors import DispatchSelector
 from humanresource.models import Member, Salary
@@ -10,6 +11,7 @@ from datetime import datetime, timedelta
 import math
 from .selectors import SalarySelector
 from .models import HourlyWage
+
 
 class DataCollector:
     def __init__(self, member, month, mondays, connect_time_list, holiday_data, date_list):
@@ -51,26 +53,7 @@ class DataCollector:
 
         if not self.member_salary:
             salary = Salary.new_salary(self.member, self.month, self.member)
-            self.member_salary = {
-                'member_id' : salary.member_id,
-                'base' : salary.base,
-                'service_allowance' : salary.service_allowance,
-                'performance_allowance' : salary.performance_allowance,
-                'annual_allowance' : salary.annual_allowance,
-                'overtime_allowance' : salary.overtime_allowance,
-                'meal' : salary.meal,
-                'attendance' : salary.attendance,
-                'leave' : salary.leave,
-                'order' : salary.order,
-                'additional' : salary.additional,
-                'deduction' : salary.deduction,
-                'assignment' : salary.assignment,
-                'regularly_assignment' : salary.regularly_assignment,
-                'total' : salary.total,
-                'month' : salary.month,
-                'payment_date' : salary.payment_date,
-                # additional이랑 reduction은 나중에 사용할 때 추가
-            }
+            self.member_salary = model_to_dict(salary)
 
     def round_up_to_nearest_ten(self, number):
         """
@@ -290,6 +273,18 @@ class DataCollector:
 
             'additional': '0',
             'deduction': '0',
+
+            'new_annual_allowance': '0',
+            'team_leader_allowance_roll_call': '0',
+            'team_leader_allowance_vehicle_management': '0',
+            'team_leader_allowance_task_management': '0',
+            'full_attendance_allowance': '0',
+            'diligence_allowance': '0',
+            'accident_free_allowance': '0',
+
+            'welfare_meal_allowance': '0',
+            'welfare_fuel_allowance': '0',
+            'total': '0',
 
         }
     
@@ -575,7 +570,8 @@ class DataCollector:
         performance_allowance = int(self.member_salary['performance_allowance']) # 성과급
         service_allowance = int(self.member_salary['service_allowance']) # 근속수당
         ordinary_salary = wage + service_allowance + performance_allowance
-        ordinary_hourly_wage = math.ceil(hourly_wage1 + (performance_allowance * 12 / 2349) + (service_allowance * 12 / 1470))
+        #ordinary_hourly_wage = math.ceil(hourly_wage1 + (performance_allowance * 12 / 2349) + (service_allowance * 12 / 1470))
+        ordinary_hourly_wage = math.ceil(hourly_wage1 + (service_allowance * 12 / 1470))
 
         # 법정수당
         weekly_holiday_allowance = ordinary_hourly_wage * 6 * weekly_holiday_count # 주휴수당
@@ -662,6 +658,7 @@ class SalaryTableDataCollector3(SalaryTableDataCollector):
         #통상급여
         datas['ordinary_salary'] = format_number_with_commas(remove_comma_from_number(datas['ordinary_salary']) - int(self.member_salary['performance_allowance']))
 
+        datas['new_annual_allowance'] = format_number_with_commas(int(self.member_salary['new_annual_allowance']))
         datas['team_leader_allowance_roll_call'] = format_number_with_commas(int(self.member_salary['team_leader_allowance_roll_call']))
         datas['team_leader_allowance_vehicle_management'] = format_number_with_commas(int(self.member_salary['team_leader_allowance_vehicle_management']))
         datas['team_leader_allowance_task_management'] = format_number_with_commas(int(self.member_salary['team_leader_allowance_task_management']))
@@ -674,6 +671,7 @@ class SalaryTableDataCollector3(SalaryTableDataCollector):
         datas['statutory_allowance'] = format_number_with_commas(
             remove_comma_from_number(datas['statutory_allowance'])
             - remove_comma_from_number(datas['meal'])
+            + remove_comma_from_number(datas['new_annual_allowance'])
             + remove_comma_from_number(datas['team_leader_allowance_roll_call'])
             + remove_comma_from_number(datas['team_leader_allowance_vehicle_management'])
             + remove_comma_from_number(datas['team_leader_allowance_task_management'])
@@ -690,7 +688,7 @@ class SalaryTableDataCollector3(SalaryTableDataCollector):
             remove_comma_from_number(datas['welfare_meal_allowance']) + \
             remove_comma_from_number(datas['welfare_fuel_allowance'])
         )
-        datas['total'] = format_number_with_commas(remove_comma_from_number(datas['sum_ordinary_salary_and_statutory_allowance']) + int(remove_comma_from_number(datas['additional'])) - int(remove_comma_from_number(datas['deduction'])))
+        datas['total'] = format_number_with_commas(remove_comma_from_number(datas['sum_ordinary_salary_and_statutory_allowance']) + remove_comma_from_number(datas['additional']) - remove_comma_from_number(datas['deduction']))
         
 
         return datas

@@ -73,7 +73,7 @@
             <tbody>
                 {% for member in member_list %}
                 {% with salary=salary_list|index:forloop.counter0 %}
-
+                {% if total_work_hour_minute_list|index:forloop.counter0 != "0" %}
                 <tr class="table-list_body-tr salaryList cursor">
                     <td class="checkTd table-list_body-tr_td">
                         <input tabindex="100" type="checkbox" class="amountCheck" name="member_id"
@@ -97,7 +97,7 @@
                         <input type="text" class="amountInput length100 salaryServiceAllowance" value="{{salary.service_allowance}}">
                     </td>
                     <td class="checkTd table-list_body-tr_td">
-                        <input type="text" class="amountInput length100 salaryAnnualAllowance" value="{{salary.annual_allowance}}">
+                        <input type="text" class="amountInput length100 salaryAnnualAllowance" value="{{salary.new_annual_allowance}}">
                     </td>
                     <td class="checkTd table-list_body-tr_td">
                         <input type="text" class="amountInput length100 teamLeaderAllowanceRollCall" value="{{salary.team_leader_allowance_roll_call}}">
@@ -127,6 +127,7 @@
                     <td class="table-list_body-tr_td salaryDeduction addComma deductionTd">{{salary.deduction}}</td>
                     <td class="checkTd table-list_body-tr_td salaryTotal addComma">{{total_wage_list|index:forloop.counter0}}</td>
                 </tr>
+                {% endif %}
                 {% endwith %}
                 {% endfor %}
 

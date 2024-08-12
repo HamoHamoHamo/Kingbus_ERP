@@ -250,6 +250,9 @@ class SalaryTable(AuthorityCheckView, generic.ListView):
         mondays = get_mondays_from_last_week_of_previous_month(context['month'])
         start_date = mondays[0] if mondays[0][:7] != context['month'] else first_date
 
+        salary_selector = SalarySelector()
+        context['hourly_wage'] = salary_selector.get_hourly_wage_by_month(context['month'])
+
         # 불러온 월요일부터 배차 데이터 가져오기
         dispatch_selector = DispatchSelector()
         connect_time_list = dispatch_selector.get_driving_time_list(start_date, get_next_sunday_after_last_day(context['month']))
@@ -305,7 +308,14 @@ class HourlyWageSaveView(AuthorityCheckView):
             hourly_wage = hourly_wage_form.save(commit=False)
             hourly_wage.creator = self.creator
             hourly_wage.save()
-            logger.warning(f"test {old_hourly_wage}")
+        
+            # 급여 연차수당 수정
+            
+            salary_list = Salary.objects.filter(month=month)
+            for salary in salary_list:
+                salary.new_annual_allowance = Salary.set_new_annual_allowance(month, salary.member_id)
+                salary.save()
+
             return redirect(request.META.get('HTTP_REFERER', 'redirect_if_referer_not_found'))
         raise BadRequest(hourly_wage_form.errors)
 
