@@ -146,9 +146,9 @@ class Salary(models.Model):
         meal = 0
 
         new_annual_allowance = Salary.set_new_annual_allowance(month, member)
-        team_leader_allowance_roll_call = 100000 if member.role == "팀장" or member.role == "운전원" else 0
-        team_leader_allowance_vehicle_management = 100000 if member.role == "팀장" or member.role == "운전원" else 0
-        team_leader_allowance_task_management = 100000 if member.role == "팀장" or member.role == "운전원" else 0
+        team_leader_allowance_roll_call = 100000 if member.role == "팀장" else 0
+        team_leader_allowance_vehicle_management = 100000 if member.role == "팀장" else 0
+        team_leader_allowance_task_management = 100000 if member.role == "팀장" else 0
         full_attendance_allowance = 200000 if member.role == "팀장" or member.role == "운전원" else 0
         diligence_allowance = 200000 if member.role == "팀장" or member.role == "운전원" else 0
         accident_free_allowance = 200000 if member.role == "팀장" or member.role == "운전원" else 0
