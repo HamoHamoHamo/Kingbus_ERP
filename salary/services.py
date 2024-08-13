@@ -672,6 +672,7 @@ class SalaryTableDataCollector3(SalaryTableDataCollector):
         datas['statutory_allowance'] = format_number_with_commas(
             remove_comma_from_number(datas['statutory_allowance'])
             - remove_comma_from_number(datas['meal'])
+            - remove_comma_from_number(datas['annual_allowance'])
             + remove_comma_from_number(datas['new_annual_allowance'])
             + remove_comma_from_number(datas['team_leader_allowance_roll_call'])
             + remove_comma_from_number(datas['team_leader_allowance_vehicle_management'])
