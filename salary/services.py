@@ -576,8 +576,9 @@ class DataCollector:
         # 법정수당
         weekly_holiday_allowance = ordinary_hourly_wage * 6 * weekly_holiday_count # 주휴수당
         legal_holiday_allowance = ordinary_hourly_wage * 6 * legal_holiday_count # 법정휴일
-        weekly_within_law_extension_wage = math.ceil(times_data['total_within_law_extension_minute'] / 60 * hourly_wage2) # 주 연장 법내 기본임금
-        weekly_outside_law_extension_wage = math.ceil(times_data['total_outside_law_extension_minute'] / 60 * hourly_wage2) # 주 연장 법외 기본임금
+        weekly_within_law_extension_wage = math.ceil(times_data['total_within_law_extension_minute'] / 60 * hourly_wage1) # 주 연장 법내 기본임금
+        weekly_within_law_extension_wage = math.ceil(weekly_within_law_extension_wage + weekly_within_law_extension_wage * 0.2)
+        weekly_outside_law_extension_wage = math.ceil(times_data['total_outside_law_extension_minute'] / 60 * hourly_wage1) # 주 연장 법외 기본임금
         weekly_extension_additional_wage = math.ceil(times_data['total_outside_law_extension_minute'] / 60 * ordinary_hourly_wage * 0.5) # 주 연장 가산임금
         night_shift_wage = math.ceil(times_data['total_night_shift_minute'] / 60 * ordinary_hourly_wage * 0.5) # 야간근로 가산임금
         

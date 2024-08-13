@@ -98,7 +98,7 @@
                 <div class="theadDate">입사일자</div>
                 <div class="theadWorkTime">근무시간</div>
                 <div class="theadBasic">기본시급<br>(1)<br>30시간이하</div>
-                <div class="theadBasic">기본시급<br>(2)<br>30시간초과</div>
+                <!-- <div class="theadBasic">기본시급<br>(2)<br>30시간초과</div> -->
                 <div class="theadNormal">통상시급</div>
 
 
@@ -233,7 +233,7 @@
                     <!-- 기본시급1 -->
                     <div class="addCommaToInnerText tbodyBasic">{{data.hourly_wage1}}</div>
                     <!-- 기본시급2 -->
-                    <div class="addCommaToInnerText tbodyBasic">{{data.hourly_wage2}}</div>
+                    <!-- <div class="addCommaToInnerText tbodyBasic">{{data.hourly_wage2}}</div> -->
                     <!-- 통상시급 -->
                     <div class="addCommaToInnerText tbodyNormal">{{data.ordinary_hourly_wage}}</div>
                     <!--산정시간-->
@@ -337,7 +337,7 @@
                 <div class="sumDate"></div>
                 <div class="total_work_minute sumWorkTime"></div>
                 <div class="hourly_wage sumBasic"></div>
-                <div class="hourly_wage sumBasic"></div>
+                <!-- <div class="hourly_wage sumBasic"></div> -->
                 <div class="ordinary_hourly_wage sumNormal"></div>
                 <div class="countTimeSum">
                     <div class="countTimeSumTd"></div>
@@ -422,13 +422,13 @@
                 <div class="popupArticle">
                     <label for="" class="popupArticleLabel">
                         <span class="importantStar">*</span>
-                        기본시급1 (주 30시간 이하)
+                        기본시급
                     </label>
                     <input required autocomplete="off" name="wage1" type="text"
                         class="popupPrice inputText inputComma essential length100"
                         value="{{hourly_wage.wage1}}">
                 </div>
-                <div class="popupArticle">
+                <!-- <div class="popupArticle">
                     <label for="" class="popupArticleLabel">
                         <span class="importantStar">*</span>
                         기본시급2 (주 30시간 초과)
@@ -436,7 +436,7 @@
                     <input required autocomplete="off" name="wage2" type="text"
                         class="popupPrice inputText essential inputComma length100"
                         value="{{hourly_wage.wage2}}">
-                </div>
+                </div> -->
             </div>
             <div class="popupFooter">
                 <input class="btnModules hourlyRateEditBtn blue" type="submit" value="확인">
