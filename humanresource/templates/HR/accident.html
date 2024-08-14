@@ -4,8 +4,8 @@
 {% block head %}
 <meta http-equiv="Cache-Control" content="private, no-cache, no-store, max-age=0, must-revalidate">
 
-<link rel="stylesheet" href="{% static 'css/vehicle/popup.css' %}" type="text/css" />
-<link rel="stylesheet" href="{% static 'css/vehicle/accident.css' %}" type="text/css" />
+<link rel="stylesheet" href="{% static 'css/humanresource/popup.css' %}" type="text/css" />
+<link rel="stylesheet" href="{% static 'css/humanresource/accident.css' %}" type="text/css" />
 {% endblock %}
 
 {% block content-header %}
@@ -59,17 +59,17 @@
                         <td class="table-list_head-tr_td">나이</td>
                     </tr>
                 </thead>
-                {% for vehicle in vehicle_list %}
+                {% for accident in accident_list %}
                     <tbody class="scrolling_table-list_body">
                         <tr class="table-list_body-tr salaryList cursor">
                             <td class="table-list_body-tr_td">
                                 <input tabindex="100" type="checkbox" class="amountCheck" name="member_id"
-                                    value="{{ vehicle.member.id }}">
+                                    value="{{ accident.member.id }}">
                             </td>
                             <td class="table-list_body-tr_td">{{ objects_cnt|add:forloop.counter }}</td> <!-- 번호 -->
                             <td class="table-list_body-tr_td">
                                 <button class="accident-detail-button" type="button">
-                                    {{ vehicle.driver_name }}
+                                    {{ accident.driver_name }}
                                 </button>
                             </td> <!-- 이름 -->
                             <td class="table-list_body-tr_td">0/4</td> <!-- 결재 -->
@@ -79,10 +79,10 @@
                                 남양출근 <!-- 노선명 -->
                             </td>
                             <td class="table-list_body-tr_td">
-                               {{ vehicle.vehicle_num0 }} {{ vehicle.vehicle_num }} <!-- 차량번호 -->
+                               {{ accident.vehicle_num0 }} {{ accident.vehicle_num }} <!-- 차량번호 -->
                             </td>
                             <td class="table-list_body-tr_td">
-                                {{ vehicle.passenger_num }}명 <!-- 탑승인원 -->
+                                {{ accident.passenger_num }}명 <!-- 탑승인원 -->
                             </td>
                             <td class="table-list_body-tr_td">
                                 1명 <!-- 부상자 -->
@@ -94,10 +94,10 @@
                                 24.02.12 <!-- 사고날짜 -->
                             </td>
                             <td class="table-list_body-tr_td">
-                                {{ vehicle.company }} <!-- 업체명 -->
+                                {{ accident.company }} <!-- 업체명 -->
                             </td>
                             <td class="table-list_body-tr_td">
-                                {{ vehicle.role }} <!-- 담당업무 -->
+                                {{ accident.role }} <!-- 담당업무 -->
                             </td>
                             <td class="table-list_body-tr_td">
                                 42 <!-- 나이 -->
@@ -751,19 +751,19 @@
 
 <!-- Script Block -->
 {% block script %}
-<script src="{% static 'js/vehicle/accident.js' %}"></script>
+<script src="{% static 'js/hr/accident.js' %}"></script>
 <script type="text/javascript">
     const detailButtons = document.getElementsByClassName("accident-detail-button");
     const ourCarNumberValue = document.getElementById("our-car-number-value");
     const nameValue = document.getElementById("name-value");
 
-    {% for vehicle in vehicle_list %}
+    {% for accident in accident_list %}
     for (let detailButton of detailButtons) {
         detailButton.addEventListener("click", () => {
-            if (detailButton.innerText === "{{ vehicle.driver_name }}") {
+            if (detailButton.innerText === "{{ accident.driver_name }}") {
                 document.querySelector(".pop-up-bg-container").style.display = "flex";
-                ourCarNumberValue.textContent = "{{ vehicle.vehicle_num0 }} {{ vehicle.vehicle_num }}"
-                nameValue.textContent = "{{ vehicle.driver_name }}"
+                ourCarNumberValue.textContent = "{{ accident.vehicle_num0 }} {{ accident.vehicle_num }}"
+                nameValue.textContent = "{{ accident.driver_name }}"
             }
         });
     }

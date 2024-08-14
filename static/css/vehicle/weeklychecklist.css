@@ -197,4 +197,9 @@ td:nth-child(13) {
     font-size: 1.4rem;
     margin-right: 1rem;
     cursor: pointer;
+    font-family: url(http://fonts.googleapis.com/earlyaccess/nanummyeongjo.css);
+
 }
+
+@import url(http://fonts.googleapis.com/earlyaccess/nanummyeongjo.css);
+

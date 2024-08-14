@@ -38,6 +38,8 @@ urlpatterns = [
     path('salary/deduction/delete', views.salary_deduction_delete, name='salary_deduction_delete'),
     path('salary/load', views.salary_load, name='salary_load'),
     path('personnelcommittee', views.PersonnelCommittee.as_view(), name='personnelcommittee'),
+    path('accident', views.AccidentList.as_view(), name='accident'),
+    
     # path('mgmt', views.ManagementList.as_view(), name='mgmt'),
     # path('mgmt/create', views.mgmt_create, name='mgmt_create'),
 

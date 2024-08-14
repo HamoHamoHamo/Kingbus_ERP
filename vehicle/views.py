@@ -38,11 +38,12 @@ class MaintenanceList(generic.ListView):
     model = Vehicle
     paginate_by = 10
 
-class AccidentList(generic.ListView):
-    template_name = 'vehicle/accident.html'
-    context_object_name = 'vehicle_list'
-    model = Vehicle
-    paginate_by = 10
+# moved to humanresources app
+# class AccidentList(generic.ListView):
+#     template_name = 'vehicle/accident.html'
+#     context_object_name = 'vehicle_list'
+#     model = Vehicle
+#     paginate_by = 10
 
 class VehicleList(generic.ListView):
     template_name = 'vehicle/list.html'

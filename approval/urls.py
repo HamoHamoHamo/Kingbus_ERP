@@ -4,6 +4,6 @@ from . import views
 appname= 'approval'
 
 urlpatterns = [
-    path('approvalwrite/', views.ApprovalWrite.as_view(), name='approvalwrite'),
-    path('approvaldisposal/', views.ApprovalDisposal.as_view(), name='approvaldisposal'),
+    path('approval', views.Approval.as_view(), name='approval'),
+    path('approval_process', views.ApprovalProcess.as_view(), name='approval_process'),
 ]

@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.views import generic
 from humanresource.models import Member
 
+
 # Create your views here.
 class Educational(generic.ListView):
     template_name = 'education/educational.html'

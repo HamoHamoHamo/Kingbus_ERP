@@ -4,8 +4,8 @@ from humanresource.models import Member
 
 # Create your views here.
 
-class ApprovalWrite(generic.ListView):
-    template_name = 'approval/approvalwrite.html'
+class Approval(generic.ListView):
+    template_name = 'approval/approval.html'
     context_object_name = 'member_list'
     model = Member
     authority_level = 3
@@ -17,8 +17,8 @@ class ApprovalWrite(generic.ListView):
         }
         return render(request, self.template_name, context)
 
-class ApprovalDisposal(generic.ListView):
-    template_name = 'approval/approvaldisposal.html'
+class ApprovalProcess(generic.ListView):
+    template_name = 'approval/approval_process.html'
     context_object_name = 'member_list'
     model = Member
     authority_level = 3

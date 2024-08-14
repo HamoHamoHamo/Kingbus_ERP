@@ -19,7 +19,7 @@ from config.settings import BASE_DIR
 from crudmember.models import Category
 from vehicle.models import Vehicle
 from .forms import MemberForm
-from .models import Member, MemberFile, Salary, AdditionalSalary, DeductionSalary, Team
+from .models import Member, MemberFile, Salary, AdditionalSalary, DeductionSalary, Team, AccidentCase
 from accounting.models import TotalPrice
 from assignment.models import AssignmentConnect
 import math
@@ -1514,3 +1514,11 @@ class PersonnelCommittee(generic.ListView):
             return render(request, 'authority.html')
         else:
             return super().get(request, **kwargs)
+
+
+class AccidentList(generic.ListView):
+    template_name = 'HR/accident.html'
+    context_object_name = 'accident_list'
+    model = AccidentCase
+    paginate_by = 10
+

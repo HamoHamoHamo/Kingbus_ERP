@@ -9,11 +9,13 @@
 }
 
 .approvalSubSection {
-    font-size: 4rem;
+    font-size: 3rem;
     margin-bottom: 4rem;
     margin-top: 8rem;
-    margin-left: 2rem;
+    text-align: center;
+    font-weight: 700;
 }
+
 
 .rule-section ol {
     list-style-type: decimal;
@@ -26,13 +28,15 @@
 }
 
 .approvalMain{
-    font-size: 3rem;
+    font-size: 2rem;
+    font-weight: 600;
 }
 
 .approvalSub {
     margin-top: 2rem;
     margin-left: 6rem;
     font-size: 2rem;
+    font-family: "Nanum Myeongjo", serif;
 }
 
 .approvalrulesPrint {
@@ -94,4 +98,12 @@ table tbody tr:last-of-type {
 .approvalTable{
     margin-bottom: 1rem;
     font-size: 2rem;
+}
+
+.MainHeaderTitle{
+    text-align: center;
+    font-size: 5rem;
+    margin-top: 5rem;
+    font-family: "Nanum Myeongjo", serif;
+    font-weight: 700;
 }
