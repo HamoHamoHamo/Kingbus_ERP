@@ -631,3 +631,16 @@ class EquipmentChecklistListView(generic.ListView):
         context['date'] = self.request.GET.get('date', TODAY)
         
         return context
+
+class  MaintenanceGraph(generic.ListView):
+    template_name = 'vehicle/maintenancegraph.html'
+    context_object_name = 'member_list'
+    model = Member
+    authority_level = 3
+
+    def get(self, request, *args, **kwargs):
+        members = self.model.objects.all()
+        context = {
+            self.context_object_name: members
+        }
+        return render(request, self.template_name, context)

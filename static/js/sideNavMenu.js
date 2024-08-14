@@ -55,32 +55,32 @@ function openSideNav() {
         sideMenuNav2[idx].style.height = "12.4rem";
         break;
       case 6:
-        sideMenuNav2Box[idx].style.height = "30.4rem";
-        sideMenuNav2[idx].style.height = "28.4rem";
+        sideMenuNav2Box[idx].style.height = "47.4rem";
+        sideMenuNav2[idx].style.height = "44.4rem";
         break;
       case 7:
-        sideMenuNav2Box[idx].style.height = "30.4rem";
-        sideMenuNav2[idx].style.height = "28.4rem";
+        sideMenuNav2Box[idx].style.height = "44.4rem";
+        sideMenuNav2[idx].style.height = "42.4rem";
         break;
       case 8:
         sideMenuNav2Box[idx].style.height = "22.4rem";
         sideMenuNav2[idx].style.height = "20.4rem";
         break;
       case 9:
-        sideMenuNav2Box[idx].style.height = "14.4rem";
-        sideMenuNav2[idx].style.height = "12.4rem";
+        sideMenuNav2Box[idx].style.height = "18.4rem";
+        sideMenuNav2[idx].style.height = "16.4rem";
         break;
       case 10:
         sideMenuNav2Box[idx].style.height = "14.4rem";
         sideMenuNav2[idx].style.height = "12.4rem";
         break;
       case 11:
-        sideMenuNav2Box[idx].style.height = "10.4rem";
-        sideMenuNav2[idx].style.height = "8.4rem";
+        sideMenuNav2Box[idx].style.height = "14.4rem";
+        sideMenuNav2[idx].style.height = "12.4rem";
         break;
       case 12:
-        sideMenuNav2Box[idx].style.height = "18.4rem";
-        sideMenuNav2[idx].style.height = "16.4rem";
+        sideMenuNav2Box[idx].style.height = "22.4rem";
+        sideMenuNav2[idx].style.height = "20.4rem";
         break;
       case 13:
         sideMenuNav2Box[idx].style.height = "50.6rem";

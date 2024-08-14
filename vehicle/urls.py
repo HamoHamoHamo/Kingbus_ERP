@@ -20,6 +20,7 @@ urlpatterns = [
     path('dailychecklist', views.DailyChecklistListView.as_view(), name='dailychecklist'),
     path('weeklychecklist', views.WeeklyChecklistListView.as_view(), name='weeklychecklist'),
     path('equipmentchecklist', views.EquipmentChecklistListView.as_view(), name='equipmentchecklist'),
+    path('maintenancegraph', views.MaintenanceGraph.as_view(), name='maintenancegraph'),
     
     # path('accident', views.AccidentList.as_view(), name='accident'),
 
