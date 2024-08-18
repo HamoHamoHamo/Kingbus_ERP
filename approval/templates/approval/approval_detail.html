@@ -1,0 +1,103 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block head %}
+<meta http-equiv="Cache-Control" content="private, no-cache, no-store, max-age=0, must-revalidate">
+
+<link rel="stylesheet" href="{% static 'css/notice/notice_create.css' %}" type="text/css" />
+<link rel="stylesheet" href="{% static 'css/approval/approval_create.css' %}" type="text/css" />
+<link rel="stylesheet" href="{% static 'css/approval/approval_detail.css' %}" type="text/css" />
+
+</style>
+{% endblock %}
+
+{% block content-header %}
+<div class="HeaderTitle">
+    결재 처리
+</div>
+{% endblock %}
+
+{% block content %}
+
+<div class="contentsAreaBox">
+    <form action="" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="creteHeader">
+            <div class="headerInput">
+                <div class="inputCell">
+                    <span class="inputName">제목</span>
+                    <input value="{{approval.title}}" disabled autocomplete="off" type="text" name="title" class="length100" required>
+                </div>
+                <div class="inputCell inputCellApprover">
+                    <div class="typeCell">
+                        <div class="inputNameType">분류</div>
+                    </div>
+                    <div class="typeCellSelect">
+                        <select class="typeSelect" name="approval_type" disabled>
+                            <option {% if approval.approval_type == "지출결의서"%}selected{% endif %} value="지출결의서">지출결의서</option>
+                            <option {% if approval.approval_type == "휴가계"%}selected{% endif %} value="휴가계">휴가계</option>
+                            <option {% if approval.approval_type == "사고처리"%}selected{% endif %} value="사고처리">사고처리</option>
+                        </select>
+                        <div class="approverCell">
+                            <span class="approverText">결재자</span>
+                            <span class="approverText">재가여부</span>
+                        </div>
+                        <div class="approverCell">
+                            <select class="approverSelect" name="next_approver">
+                                {% for member in approver_select_list %}
+                                <option value="{{member.id}}">{{member.name}}</option>
+                                {% endfor %}
+                            </select>
+                            <select class="approverSelect" name="status">
+                                <option value="승인">승인</option>
+                                <option value="반려">반려</option>
+                            </select>
+                        </div>
+                        <div class="approverCell">
+                            <select class="approverSelect" name="next_approver">
+                                {% for member in approver_select_list %}
+                                <option value="{{member.id}}">{{member.name}}</option>
+                                {% endfor %}
+                            </select>
+                            <select class="approverSelect" name="status">
+                                <option value="승인">승인</option>
+                                <option value="반려">반려</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="inputCell inputCellFile">
+                    <span class="inputName">첨부파일</span>
+                    <input autocomplete="off" type="file" name="file" multiple>
+                </div>
+            </div>
+            <div class="headerDateTime">
+                <div class="headerDateTimeDiv pubDateDiv">
+                    <div>등록일</div>
+                    <div>{{pub_date}}</div>
+                </div>
+                <div class="headerDateTimeDiv approvalDateDiv">
+                    <div>결제일</div>
+                    <div>2024-05-04 10:23</div>
+                </div>
+                <div class="headerDateTimeDiv approvalDateDiv">
+                    <div></div>
+                    <div>2024-05-04 10:23</div>
+                </div>
+                <div class="headerDateTimeDiv approvalDateDiv">
+                    <div></div>
+                    <div>2024-05-04 10:23</div>
+                </div>
+            </div>
+        </div>
+        <textarea required name="content" required class="noticeTextarea length3000" disabled>{{approval.content}}</textarea>
+        <div class="createBtnBox">
+            <!-- <input autocomplete="off" type="submit" value="등록" class="createBtn"> -->
+        </div>
+    </form>
+</div>
+
+{% endblock %}
+
+{% block script %}
+
+{% endblock %}
