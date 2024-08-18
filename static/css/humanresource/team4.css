@@ -218,3 +218,16 @@
   text-align: center;
   box-sizing: border-box;
 }
+
+.TeamCreates{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    box-sizing: border-box;
+    background-color: white;
+    border-radius: 0.2rem;
+    box-shadow: 0.1rem 0.1rem 0.6rem rgba(0, 0, 0, 0.3);
+    height: 15rem;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+}

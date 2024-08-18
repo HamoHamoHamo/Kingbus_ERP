@@ -39,6 +39,7 @@ urlpatterns = [
     path('salary/load', views.salary_load, name='salary_load'),
     path('personnelcommittee', views.PersonnelCommittee.as_view(), name='personnelcommittee'),
     path('accident', views.AccidentList.as_view(), name='accident'),
+    path('operationquality', views.OperationQuality.as_view(), name='operationquality'),
     
     # path('mgmt', views.ManagementList.as_view(), name='mgmt'),
     # path('mgmt/create', views.mgmt_create, name='mgmt_create'),

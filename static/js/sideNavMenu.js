@@ -83,8 +83,8 @@ function openSideNav() {
         sideMenuNav2[idx].style.height = "20.4rem";
         break;
       case 13:
-        sideMenuNav2Box[idx].style.height = "50.6rem";
-        sideMenuNav2[idx].style.height = "48.6rem";
+        sideMenuNav2Box[idx].style.height = "51.6rem";
+        sideMenuNav2[idx].style.height = "49.6rem";
         break;
       case 14:
         sideMenuNav2Box[idx].style.height = "10.4rem";

@@ -533,7 +533,7 @@ select[name=use]{
 .RouteListForm {
   position: relative;
   width: 100%;
-  height: calc(100% - 8rem);
+  height: 100%;
 }
 
 .routeInputSave {
@@ -675,13 +675,15 @@ select[name=use]{
 }
 
 .popupContainer {
-  width: 50rem;
+  width: 113.9rem;
+  height: 60.1rem;
 }
 
 .popupContainerMap {
   width: 100rem;
   height: auto;
 }
+
 
 .popupArticleFileDouble {
   width: 100%;
@@ -1288,3 +1290,97 @@ select[name=use]{
     height: 2.4rem;
     width: 9.6rem;
 }
+
+.transaction-table{
+  width: 96.8rem;
+  height: 24.7rem;
+  border-collapse: collapse;
+  margin-bottom: 2rem;
+  border: 0.15rem solid #575757;
+  font-size: 1.4rem;
+  text-align: center;
+  margin-left: 8rem;
+  margin-top: 3rem;
+}
+
+.transaction-table thead tr:last-child th {
+    border-bottom: 0.15rem solid #575757;
+}
+
+
+.transaction-table th {
+  height: 4.7rem;
+}
+
+.transaction-table td {
+  height: 2rem;
+}
+
+.buttons {
+    text-align: left;
+    margin-bottom: 2rem;
+    width: 96.8rem;
+    margin-left: 8rem;
+    background-color: #DEDEDE;
+    overflow: scroll;
+}
+
+.popupArticleSub{
+  display: flex;
+}
+
+.popupArticleBoxs{
+    display: flex;
+    width: 100%;
+    height: 2.8rem;
+    margin-top: 2rem;
+}
+
+.PopupData{
+  width: 12.8rem;
+  height: 2.6rem;
+  margin-right: 5.4rem;
+}
+
+.popupArticleFont{
+  font-size: 1.4rem;
+  text-align: center;
+  margin-right: 2.1rem;
+  width: 6rem;
+}
+
+.popupFooterBox{
+  margin-left: 8rem;
+}
+
+.popupSubTitle{
+  font-size: 1.4rem;
+  margin-bottom: 3rem;
+}
+
+.SubButton{
+  width: 21rem;
+  margin-left: 1rem;
+}
+
+.PopupColor{
+  color:#0069D9;
+}
+
+
+.popupFooters{
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    width: 100%;
+    height: 7.2rem;
+    box-sizing: border-box;
+}
+
+
+.closeBtn{
+    position: static;
+    background-color: #444;
+    margin-left: 1rem;
+}
+

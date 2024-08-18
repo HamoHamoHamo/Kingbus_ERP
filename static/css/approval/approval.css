@@ -106,23 +106,24 @@
     color: black;
 }
 
-.theadTh:nth-child(1){width: 3.5%;}
-.theadTh:nth-child(2){width: 5%;}
-.theadTh:nth-child(3){width: 10%;}
-.theadTh:nth-child(4){width: 46%}
-.theadTh:nth-child(5){width: 10%;}
-.theadTh:nth-child(6){width: 10%;}
-.theadTh:nth-child(7){width: 7%}
-.theadTh:nth-child(8){width: 8.5%;}
-
+.theadTh:nth-child(1), 
 .tbodyTrTd:nth-child(1){width: 3.5%;}
+.theadTh:nth-child(2), 
 .tbodyTrTd:nth-child(2){width: 5%;}
+.theadTh:nth-child(3), 
 .tbodyTrTd:nth-child(3){width: 10%;}
-.tbodyTrTd:nth-child(4){width: 46%}
-.tbodyTrTd:nth-child(5){width: 10%;}
+.theadTh:nth-child(4), 
+.tbodyTrTd:nth-child(4){width: 10%;}
+.theadTh:nth-child(5), 
+.tbodyTrTd:nth-child(5){width: 36%}
+.theadTh:nth-child(6), 
 .tbodyTrTd:nth-child(6){width: 10%;}
-.tbodyTrTd:nth-child(7){width: 7%}
-.tbodyTrTd:nth-child(8){width: 8.5%;}
+.theadTh:nth-child(7), 
+.tbodyTrTd:nth-child(7){width: 10%;}
+.theadTh:nth-child(8), 
+.tbodyTrTd:nth-child(8){width: 7%}
+.theadTh:nth-child(9), 
+.tbodyTrTd:nth-child(9){width: 8.5%;}
 
 .blue{
     color: #0069D9;

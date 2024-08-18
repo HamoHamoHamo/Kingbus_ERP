@@ -644,3 +644,29 @@ class  MaintenanceGraph(generic.ListView):
             self.context_object_name: members
         }
         return render(request, self.template_name, context)
+
+class  InspectionLog(generic.ListView):
+    template_name = 'vehicle/inspectionlog.html'
+    context_object_name = 'member_list'
+    model = Member
+    authority_level = 3
+
+    def get(self, request, *args, **kwargs):
+        members = self.model.objects.all()
+        context = {
+            self.context_object_name: members
+        }
+        return render(request, self.template_name, context)
+
+class  PartsManagement(generic.ListView):
+    template_name = 'vehicle/partsmanagement.html'
+    context_object_name = 'member_list'
+    model = Member
+    authority_level = 3
+
+    def get(self, request, *args, **kwargs):
+        members = self.model.objects.all()
+        context = {
+            self.context_object_name: members
+        }
+        return render(request, self.template_name, context)

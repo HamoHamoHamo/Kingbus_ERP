@@ -4,7 +4,6 @@ function printDiv(divId) {
 
     var originalContents = document.body.innerHTML;
 
-
     document.body.innerHTML = "<head><title>Print</title></head><body>" + printContents + "</body>";
 
     window.print();

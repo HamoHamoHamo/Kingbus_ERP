@@ -21,6 +21,8 @@ urlpatterns = [
     path('weeklychecklist', views.WeeklyChecklistListView.as_view(), name='weeklychecklist'),
     path('equipmentchecklist', views.EquipmentChecklistListView.as_view(), name='equipmentchecklist'),
     path('maintenancegraph', views.MaintenanceGraph.as_view(), name='maintenancegraph'),
+    path('inspectionlog', views.InspectionLog.as_view(), name='inspectionlog'),
+    path('partsmanagement', views.PartsManagement.as_view(), name='partsmanagement'),
     
     # path('accident', views.AccidentList.as_view(), name='accident'),
 

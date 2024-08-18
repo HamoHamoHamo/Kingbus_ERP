@@ -61,9 +61,9 @@
         </div>
 
         {% if team and team != "전체" and team != "팀없음" %}
-        <form action="{% url 'HR:team_edit' %}" method="post" class="groupCreate">
+        <form action="{% url 'HR:team_edit' %}" method="post" class="TeamCreates">
         {% else %}
-        <form action="{% url 'HR:team_create' %}" method="post" class="groupCreate">
+        <form action="{% url 'HR:team_create' %}" method="post" class="TeamCreates">
         {% endif %}
             <input autocomplete="off" type="hidden" name="id" value="{{team.id}}">
             {% csrf_token %}

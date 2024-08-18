@@ -26,5 +26,7 @@ urlpatterns = [
     path('deposit/hide', views.deposit_hide, name='deposit_hide'),
     path('deposit/delete', views.deposit_delete, name='deposit_delete'),
 
+    path('salesmanagement', views.SalesManagement.as_view(), name='salesmanagement'),
+
     path('efficiency/member', views.MemberEfficiencyList.as_view(), name='member_efficiency'),
 ]

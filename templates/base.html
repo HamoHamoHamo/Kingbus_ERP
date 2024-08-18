@@ -155,16 +155,16 @@
                 <path id="패스_256" data-name="패스 256" d="M0,0,6.753,8.223,14,0" transform="translate(2.111 2.117)" fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="3"/>
               </svg>        
             </li>
-            <div class="sideMenuNav2Box">
+            {% comment %} <div class="sideMenuNav2Box">
               <ul class="sideMenuNav2">
                 <a href="{% url 'approval' %}" class="sideMenuNav2Link">
                   <li class="sideMenuNav2Menu">결재작성</li>
                 </a>
                 <a href="{% url 'approval_process' %}" class="sideMenuNav2Link">
-                  <li class="sideMenuNav2Menu">결재처리</li>
+                  <li class="approver_edit">결재처리</li>
                 </a>
               </ul>
-            </div>
+            </div> {% endcomment %}
           </div>
           
           <div class="nav1Box">
@@ -207,7 +207,7 @@
                   <li class="sideMenuNav2Menu">대당효율</li>
                 </a>
                 <a href="{% url 'vehicle:maintenancegraph' %}" class="sideMenuNav2Link">
-                  <li class="sideMenuNav2Menu">정비 그래프</li>
+                  <li class="sideMenuNav2Menu">정비그래프</li>
                 </a>
                 <a href="{% url 'vehicle:list' %}" class="sideMenuNav2Link">
                   <li class="sideMenuNav2Menu">차량관리</li>
@@ -218,8 +218,8 @@
                 <a href="{% url 'vehicle:list' %}" class="sideMenuNav2Link">
                   <li class="sideMenuNav2Menu">차량관리(정비내역)</li>
                 </a>
-                <a href="{% url 'HR:teamfour' %}" class="sideMenuNav2Link">
-                  <li class="sideMenuNav2Menu">점검 일지</li>
+                <a href="{% url 'vehicle:inspectionlog' %}" class="sideMenuNav2Link">
+                  <li class="sideMenuNav2Menu">점검일지</li>
                 </a>
                 <a href="{% url 'vehicle:refueling' %}" class="sideMenuNav2Link">
                   <li class="sideMenuNav2Menu">주유관리</li>
@@ -233,7 +233,7 @@
                 <a href="{% url 'vehicle:equipmentchecklist' %}" class="sideMenuNav2Link">
                   <li class="sideMenuNav2Menu">비품점검</li>
                 </a>
-                <a href="{% url 'vehicle:equipmentchecklist' %}" class="sideMenuNav2Link">
+                <a href="{% url 'vehicle:partsmanagement' %}" class="sideMenuNav2Link">
                   <li class="sideMenuNav2Menu">부품관리</li>
                 </a>
                 <a href="{% url 'vehicle:equipmentchecklist' %}" class="sideMenuNav2Link">
@@ -257,7 +257,7 @@
                 <a href="/accounting/efficiency/member" class="sideMenuNav2Link">
                   <li class="sideMenuNav2Menu">인당효율</li>
                 </a>
-                <a href="{% url 'HR:accident' %}" class="sideMenuNav2Link">
+                <a href="{% url 'HR:operationquality' %}" class="sideMenuNav2Link">
                   <li class="sideMenuNav2Menu">운행품질</li>
                 </a>
                 <a href="{% url 'HR:accident' %}" class="sideMenuNav2Link">
@@ -330,7 +330,7 @@
             <div class="sideMenuNav2Box">
               <ul class="sideMenuNav2">
                 <a href="{% url 'management' %}" class="sideMenuNav2Link">
-                  <li class="sideMenuNav2Menu">점호 관리</li>
+                  <li class="sideMenuNav2Menu">점호관리</li>
                 </a>
                 <a href="{% url 'dispatch:regularly_route_know' %}" class="sideMenuNav2Link">
                   <li class="sideMenuNav2Menu">출/퇴근 노선숙지</li>
@@ -424,7 +424,7 @@
                 <a href="/accounting/sales" class="sideMenuNav2Link">
                   <li class="sideMenuNav2Menu">매출현황</li>
                 </a>
-                <a href="/accounting/sales" class="sideMenuNav2Link">
+                <a href="/accounting/salesmanagement" class="sideMenuNav2Link">
                   <li class="sideMenuNav2Menu">매출관리</li>
                 </a>
                 <a href="/accounting/deposit" class="sideMenuNav2Link">
