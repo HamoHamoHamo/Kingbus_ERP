@@ -1,14 +1,415 @@
 {% extends 'base.html' %}
 {% load static %}
-{% load custom_tags %}
+{% load dispatch_custom_tags %}
 
 {% block head %}
 <meta http-equiv="Cache-Control" content="private, no-cache, no-store, max-age=0, must-revalidate">
-<link rel="stylesheet" href="{% static 'css/education/educational.css' %}" type="text/css" />
+<link rel="stylesheet" href="{% static 'css/dispatch/dispatchBase.css' %}" type="text/css" />
+<link rel="stylesheet" href="{% static 'css/humanresource/team.css' %}" type="text/css" />
+<link rel="stylesheet" href="{% static 'css/education/completionastatus.css' %}" type="text/css" />
 {% endblock %}
 
 {% block content-header %}
 <div class="HeaderTitle">
-    교육이수현황
+    교육 현황
 </div>
+{% endblock %}
+
+
+{% block content %}
+
+<form class="routeLayout searchForm">
+    <div class="groupLayout">
+        <div class="groupList">
+            <div class="groupListBox">
+                <div class="groupListHead">
+                    <div class="groupListTitle">당일 필수 교육</div>
+                </div>
+                <div class="groupListBody">
+                  <div class="groupListHeaderText">오늘의 학습 인원</div>
+                  <div class=""><span>21</span> / 25 명</div>
+                  <div class="">미이수 명단 확인하기</div>
+
+                  <div class="groupListHeaderText">오늘의 교육 내역</div>
+                  <div class="">버스 운행 중, 중대 교통사고가 났을 때 대응법</div>
+                  <div class="">버스 운행 중, 차량 화재가 났을 때 대응법</div>
+                  <div class="">버스 운행 중, 응급 상황 시 비상 대응법</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="groupList">
+            <div class="groupListBox">
+                <div class="groupListHead">
+                    <span class="groupListTitle">교육 이수 현황 비교</span>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="foldGroup">
+            <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 30 30">
+                <g id="그룹_1629" data-name="그룹 1629" transform="translate(-13664 -4980)">
+                    <rect id="사각형_11725" data-name="사각형 11725" width="30" height="30" rx="15"
+                        transform="translate(13664 4980)" fill="#444" />
+                    <path id="패스_327" data-name="패스 327" d="M0,0,5.788,7.048,12,0"
+                        transform="translate(13681.063 5001) rotate(-90)" fill="none" stroke="#fff"
+                        stroke-linecap="round" stroke-linejoin="round" stroke-width="3" />
+                    <path id="패스_329" data-name="패스 329" d="M0,0H12"
+                        transform="translate(13677.063 5001) rotate(-90)" fill="none" stroke="#fff"
+                        stroke-linecap="round" stroke-linejoin="round" stroke-width="3" />
+                    <path id="패스_330" data-name="패스 330" d="M0,0H12"
+                        transform="translate(13673.063 5001) rotate(-90)" fill="none" stroke="#fff"
+                        stroke-linecap="round" stroke-linejoin="round" stroke-width="3" />
+                </g>
+            </svg>
+        </div>
+    </div>
+
+    <div class="mainLayout">
+
+
+        <div class="searchBox">
+            <div class="routListSearch">
+                <div> 
+                    
+                    <span class="SearchName">검색 종류</span>
+                    <select name="type">
+                    <option  value="이름">이름</option>
+                    <option  value="차량번호">차량번호</option>
+                    <option  value="기사명">기사명</option>
+                    </select>
+                </div>
+                <input type="text" placeholder="노선명을 입력해주세요." value="{{search}}" name="search" class="searchInput">
+                <input autocomplete="off" type="submit" class="btnModules searchBtn" value="검색">
+            </div>
+        </div>
+
+        <div class="subSearch">
+                <div class="subSearchHeader">
+                <span="subSearchSpan">학습 현황</span>
+                </div>
+                <div class="subSearchBody">
+                <input type="checkbox">이수
+                <input type="checkbox">미이수
+                <input type="checkbox">지연 이수
+                </div>
+                <div class="subSearchHeader">
+                <span="subSearchSpan">날짜</span>
+                </div>
+                <div class="subSearchBody">
+                <input type="date"> ~ 
+                <input type="date">
+                <input type="radio">전체
+                <input type="radio">당일
+                </div>
+        </div>
+
+        <div class="RouteListForm teamSaveForm">
+            <div class="RouteList">
+                <div class="RouteListHeadScroll">
+                    <table class="RouteListHeader">
+                        <thead>
+                            <tr>
+                                <td><input type="checkbox"></td>
+                                <td>번호</td>
+                                <td>이름</td>
+                                <td>교육 제목</td>
+                                <td>필수 이수일</td>
+                                <td>실제 이수일</td>
+                                <td>진행 상태</td>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+
+                <div class="RouteListScroll">
+                    <table class="RouteListBody">
+                        <tbody>
+                            <tr class="RouteListBodyTr">
+                                <td><input type="checkbox"></td>
+                                <td>1</td>
+                                <td>유정노</td>
+                                <td>버스 운행 중 중대교통사고가 났을 때 대응법</td>
+                                <td>2024 - 07 - 09</td>
+                                <td>2024 - 07 - 10</td>
+                                <td>지연 이수</td>
+                            </tr>
+
+                            <tr class="RouteListBodyTr">
+                                <td><input type="checkbox"></td>
+                                <td>1</td>
+                                <td>유정노</td>
+                                <td>버스 운행 중 중대교통사고가 났을 때 대응법</td>
+                                <td>2024 - 07 - 09</td>
+                                <td>2024 - 07 - 10</td>
+                                <td>지연 이수</td>
+                            </tr>
+
+                            <tr class="RouteListBodyTr">
+                                                                <td><input type="checkbox"></td>
+                                <td>1</td>
+                                <td>유정노</td>
+                                <td>버스 운행 중 중대교통사고가 났을 때 대응법</td>
+                                <td>2024 - 07 - 09</td>
+                                <td>2024 - 07 - 10</td>
+                                <td>지연 이수</td>
+                            </tr>
+
+                            <tr class="RouteListBodyTr">
+                                                               <td><input type="checkbox"></td>
+                                <td>1</td>
+                                <td>유정노</td>
+                                <td>버스 운행 중 중대교통사고가 났을 때 대응법</td>
+                                <td>2024 - 07 - 09</td>
+                                <td>2024 - 07 - 10</td>
+                                <td>지연 이수</td>
+                            </tr>
+
+                            <tr class="RouteListBodyTr">
+                                                                <td><input type="checkbox"></td>
+                                <td>1</td>
+                                <td>유정노</td>
+                                <td>버스 운행 중 중대교통사고가 났을 때 대응법</td>
+                                <td>2024 - 07 - 09</td>
+                                <td>2024 - 07 - 10</td>
+                                <td>지연 이수</td>
+                            </tr>
+
+                            <tr class="RouteListBodyTr">
+                                                                <td><input type="checkbox"></td>
+                                <td>1</td>
+                                <td>유정노</td>
+                                <td>버스 운행 중 중대교통사고가 났을 때 대응법</td>
+                                <td>2024 - 07 - 09</td>
+                                <td>2024 - 07 - 10</td>
+                                <td>지연 이수</td>
+                            </tr>
+
+                            <tr class="RouteListBodyTr">
+                                                                <td><input type="checkbox"></td>
+                                <td>1</td>
+                                <td>유정노</td>
+                                <td>버스 운행 중 중대교통사고가 났을 때 대응법</td>
+                                <td>2024 - 07 - 09</td>
+                                <td>2024 - 07 - 10</td>
+                                <td>지연 이수</td>
+                            </tr>
+
+                            <tr class="RouteListBodyTr">
+                                                                <td><input type="checkbox"></td>
+                                <td>1</td>
+                                <td>유정노</td>
+                                <td>버스 운행 중 중대교통사고가 났을 때 대응법</td>
+                                <td>2024 - 07 - 09</td>
+                                <td>2024 - 07 - 10</td>
+                                <td>지연 이수</td>
+                            </tr>
+
+                            <tr class="RouteListBodyTr">
+                                <td><input type="checkbox"></td>
+                                <td>1</td>
+                                <td>유정노</td>
+                                <td>버스 운행 중 중대교통사고가 났을 때 대응법</td>
+                                <td>2024 - 07 - 09</td>
+                                <td>2024 - 07 - 10</td>
+                                <td>지연 이수</td>
+                            </tr>
+
+                            <tr class="bl anckTr"></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+{% endblock %}
+
+
+
+{% block popup %}
+<div class="popupAreaModules">
+  <div class="popupBgModules"></div>
+  <form
+    method="post"
+    action="/vehicle/list/edit"
+    class="popupContainer popupContainerDouble vehicleEditForm"
+    enctype="multipart/form-data"
+  >
+    <input
+      type="hidden"
+      name="csrfmiddlewaretoken"
+      value="EyL29BbSCVMLttjaZm3ueufxXe1noxGcR5J47lDU6pjO9R3OQeSIir3gmURDbOZZ"
+    />
+    <div class="popupHeader">
+      <div class="popupTitle">운행일보</div>
+    </div>
+    <div class="popupBody">
+          <div class="popupArticleDoubles">
+            <table class="transaction-table">
+              <thead>
+                <tr>
+                  <th>번호</th>
+                  <th>거래일</th>
+                  <th>거래처</th>
+                  <th>내용</th>
+                  <th>은행명</th>
+                  <th>계좌번호</th>
+                  <th>금액</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>1</td>
+                  <td>-</td>
+                  <td>명성차유리</td>
+                  <td>유리 교체</td>
+                  <td>김재황</td>
+                  <td>0000-00000-0000</td>
+                  <td>275,000</td>
+                </tr>
+                <tr>
+                  <td>2</td>
+                  <td>2024-04-15</td>
+                  <td>정림상사</td>
+                  <td>호스</td>
+                  <td>김재두</td>
+                  <td>0000-00000-0000</td>
+                  <td>133,000</td>
+                </tr>
+                <tr>
+                  <td>3</td>
+                  <td>2024-04-15</td>
+                  <td>세종코퍼레이션</td>
+                  <td>오일</td>
+                  <td>농협</td>
+                  <td>0000-00000-0000</td>
+                  <td>539,000</td>
+                </tr>
+                <tr>
+                  <td>4</td>
+                  <td>2024-04-15</td>
+                  <td>한일타이어</td>
+                  <td>타이어</td>   
+                  <td>우리</td>
+                  <td>0000-00000-0000</td>
+                  <td>5,280,000</td>
+                </tr>
+              </tbody>
+            </table>
+
+            <div class="buttons">
+                <button class="SubButton">미리보기 | 영수증png.</button>
+                <button class="SubButton">미리보기 | 영수증png.</button>
+                <button class="SubButton">미리보기 | 영수증png.</button>
+                <button class="SubButton">미리보기 | 영수증png.</button>
+            </div>
+          </div>
+
+          <div class="popupFooterBox">
+            <div class="popupSubTitle">지출결의서 작성하기</div>
+                <div class="popupArticleBoxs">
+                    <div class="popupArticleSub">
+                        <label for="" class="popupArticleFont">거래일</label>
+                        <input type="date" class="PopupData"></input>
+                    </div>
+                    <div class="popupArticleSub">
+                        <label for="" class="popupArticleFont">운행명</label>
+                        <input type="textbox" class="PopupData"></input>
+                    </div>
+                </div>
+                <div class="popupArticleBoxs">
+                    <div class="popupArticleSub">
+                        <label for="" class="popupArticleFont">거래처</label>
+                        <input type="textbox" class="PopupData"></input>
+                    </div>
+                    <div class="popupArticleSub">
+                        <label for="" class="popupArticleFont">계좌번호</label>
+                        <input type="textbox" class="PopupData"></input>
+                    </div>
+                </div>
+                <div class="popupArticleBoxs">
+                    <div class="popupArticleSub">
+                        <label for="" class="popupArticleFont">금액</label>
+                        <input type="textbox" class="PopupData"></input>
+                    </div>
+                    <div class="popupArticleSub">
+                        <label for="" class="popupArticleFont">내용</label>
+                        <input type="textbox" class="PopupData"></input>
+                    </div>
+                </div>
+          </div>
+
+      <div class="popupFooters popupFooterDetail">
+        <div class="btnModules createBtn">저장</div>
+        <div class="btnModules closeBtn">닫기</div>
+      </div>
+    </div>
+  </form>
+</div>
+
+{% endblock %}
+
+
+
+{% block script %}
+<script>
+    {% autoescape off %}
+    const businessGroupData = {{business_group_data}}
+    const businessData = 
+    {
+        {% for business in business_list %}
+        "{{business.id}}" : {
+            "name" : "{{business.name}}",
+            "number" : "{{business.number}}",
+        },
+        {% endfor %}
+    }
+    const searchGroupList = {{search_group_list}}
+    const searchTeamList = {{search_team_list}}
+    const searchTimeList = {{search_time_list}}
+    {% endautoescape %}
+    console.log("search", searchGroupList, searchTeamList, searchTimeList)
+    console.log(businessGroupData)
+    console.log(businessData)
+    
+    function opendispatchPrint(url){
+        if (window.location.search){
+            targetLink = `${url}${window.location.search}`
+            window.open(targetLink, `{{date}}배차표`, "width=1640, height=640")
+        } else{
+            alert("그룹 또는 노선을 선택해 주세요")
+        }
+    }
+</script>
+
+<script>
+function openPopup() {
+    document.querySelector('.popupAreaModules').style.display = 'block';
+}
+</script>
+
+<script src="{% static 'js/dispatch/regularly/regularlyConnectSearch.js' %}"></script>
+<script type="module" src="{% static 'js/dispatch/regularly/regularlyConnectPopup.js' %}"></script>
+</script>
+
+<script>
+function openPopup() {
+    document.querySelector('.popupAreaModules').style.display = 'block';
+}
+
+function closePopup() {
+    document.querySelector('.popupAreaModules').style.display = 'none';
+}
+
+function savePopup() {
+    alert("저장되었습니다.");
+}
+
+document.querySelector('.createBtn').addEventListener('click', savePopup);
+document.querySelector('.closeBtn').addEventListener('click', closePopup);
+</script>
+
 {% endblock %}

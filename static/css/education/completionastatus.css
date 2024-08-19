@@ -1,0 +1,1356 @@
+.routeLayout {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  width: 100%;
+  height: 78rem;
+}
+
+.groupLayout {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  width: 36rem;
+  height: 100%;
+}
+
+/* 그룹목록 */
+.groupList {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: calc(100% - 19.6rem);
+  box-sizing: border-box;
+  background-color: white;
+  border-radius: 0.2rem;
+  box-shadow: 0.1rem 0.1rem 0.6rem rgba(0, 0, 0, 0.3);
+}
+
+.groupListHead {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  height: 3.6rem;
+  padding: 0 1rem;
+  background-color: #444;
+  box-sizing: border-box;
+  border-radius: 0.2rem 0.2rem 0 0;
+}
+
+.groupListTitle {
+  font-size: 1.4rem;
+  color: white;
+}
+
+.groupLock {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 2.4rem;
+  height: 2.2rem;
+  margin: 0 1rem 0 auto;
+  border-radius: 0.2rem;
+  font-size: 1.4rem;
+  background-color: white;
+  cursor: pointer;
+}
+
+.lockOpen {
+  display: none;
+}
+
+.groupListHead svg {
+  cursor: pointer;
+}
+
+.groupListBody {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.groupListHeaderText{
+  margin-bottom: 2rem;
+}
+
+.groupListItem {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  height: 3.6rem;
+  order: 2;
+}
+
+.fixedGroup {
+  order: 1;
+}
+
+.groupNum {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 3.6rem;
+  height: 3.6rem;
+  font-size: 1.4rem;
+  font-weight: 700;
+  box-sizing: border-box;
+  border-right: 0.1rem solid #CDCDCE;
+  border-bottom: 0.1rem solid #CDCDCE;
+}
+
+.groupName {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  width: calc(100% - 3.6rem);
+  height: 100%;
+  padding-left: 1rem;
+  box-sizing: border-box;
+  font-size: 1.4rem;
+  border-bottom: 0.1rem solid #CDCDCE;
+  cursor: pointer;
+}
+
+.groupFixe {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 3.6rem;
+  height: 3.6rem;
+  box-sizing: border-box;
+  border-bottom: 0.1rem solid #CDCDCE;
+  cursor: pointer;
+}
+
+.groupListItem:hover .groupNum,
+.groupListItem:hover .groupName {
+  background-color: #CDCDCE;
+}
+
+
+
+
+
+
+
+
+
+/* 그룹등록 */
+
+.groupCreate {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 17.6rem;
+  box-sizing: border-box;
+  background-color: white;
+  border-radius: 0.2rem;
+  box-shadow: 0.1rem 0.1rem 0.6rem rgba(0, 0, 0, 0.3);
+}
+
+.groupCreateHead {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  width: 100%;
+  height: 3.6rem;
+  padding-left: 1rem;
+  background-color: #444;
+  box-sizing: border-box;
+  font-size: 1.4rem;
+  color: white;
+  border-radius: 0.2rem 0.2rem 0 0;
+}
+
+.groupCreateBody {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  width: 100%;
+  height: calc(100% - 3.6rem);
+  padding: 1rem;
+  box-sizing: border-box;
+}
+
+.groupCreateinput {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  height: 2.8rem;
+}
+
+.groupCreateinput input {
+  height: 100%;
+  padding-left: 0.6rem;
+  border: 0.1rem solid #CDCDCE;
+  border-radius: 0.2rem;
+  outline: none;
+  box-sizing: border-box;
+}
+
+.groupNameCreate {
+  width: 100%;
+}
+
+.groupCalculateinput {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  height: 2.8rem;
+  font-size: 1.4rem;
+}
+
+.groupCalculateinput span:nth-child(1) {
+  margin-right: 2rem;
+}
+
+.tilde {
+  margin: 0 0.4rem;
+}
+
+.groupCalculateinput input {
+  width: 3rem;
+  height: 100%;
+  border: 0.1rem solid #CDCDCE;
+  border-radius: 0.2rem;
+  padding-left: 0.6rem;
+  outline: none;
+  box-sizing: border-box;
+}
+
+.groupCalculateinput div {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  width: 5rem;
+  height: 100%;
+  padding-left: 1rem;
+  border: 0.1rem solid #CDCDCE;
+  border-radius: 0.2rem;
+  outline: none;
+  box-sizing: border-box;
+  font-size: 1.4rem;
+  background-color: #D2D2D2;
+}
+
+
+.groupCreateBtnBox {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  width: 100%;
+}
+
+.groupCreateBtnBox a {
+  margin-right: auto;
+}
+
+.groupCreateNew {
+  background-color: #0069D9;
+}
+
+.groupCreateSave {
+  background-color: #0069D9;
+  margin-right: 1rem;
+}
+
+.groupCreateDelete {
+  background-color: #444;
+}
+
+
+
+
+/* 그룹 접기 */
+.foldGroup {
+  display: none;
+  justify-content: center;
+  align-items: center;
+  width: 6rem;
+  height: 100%;
+  background-color: white;
+  border-radius: 0 0.2rem 0.2rem 0;
+  box-shadow: 0.1rem 0.1rem 0.6rem rgba(0, 0, 0, 0.3);
+}
+
+.foldGroup svg {
+  cursor: pointer;
+}
+
+
+
+
+
+
+
+
+.mainLayout {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  width: calc(100% - 38rem);
+  height: 100%;
+}
+
+
+/* 노선등록 */
+.routeinput {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 24rem;
+  box-sizing: border-box;
+  background-color: white;
+  border-radius: 0.2rem;
+  box-shadow: 0.1rem 0.1rem 0.6rem rgba(0, 0, 0, 0.3);
+}
+
+.routeInputHead {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  height: 3.6rem;
+  padding: 0 1rem;
+  box-sizing: border-box;
+}
+
+.routeInputHead span {
+  font-size: 1.4rem;
+}
+
+.routeInputBtnBox {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  width: 21.5rem;
+}
+
+.routeInputNew {
+  background-color: #0069D9;
+  margin-right: 1rem;
+}
+
+.dispatcTable {
+  width: 100%;
+  height: 15.4rem;
+  table-layout: fixed;
+}
+
+.dispatcTable tr {
+  width: 100%;
+  height: 3.1rem;
+  box-sizing: border-box;
+}
+
+.dispatcTable tr:nth-child(1) td:nth-child(2),
+.dispatcTable tr:nth-child(1) td:nth-child(4),
+.dispatcTable tr:nth-child(1) td:nth-child(6) {
+  border-top: 0.1rem solid #CDCDCE;
+}
+
+.dispatcTable td {
+  padding: 0;
+  font-size: 1.4rem;
+  border-bottom: 0.1rem solid #CDCDCE;
+}
+
+.tdTypeA {
+  text-align: center;
+  background-color: #444;
+  color: white;
+  font-size: 1.4rem;
+  width: 7%;
+}
+
+.tdTypeB {
+  width: 43%;
+  font-size: 1.4rem;
+}
+
+.tdTypeC {
+  width: 18%;
+  font-size: 1.4rem;
+}
+
+.routeWeek {
+  align-items: center;
+  width: 100%;
+  height: 100%;
+}
+
+.routeWeek input:nth-child(1) {
+  margin-left: 1rem;
+}
+
+.routeWeek label:nth-child(2) {
+  margin-right: 1.6rem;
+}
+
+.routeWeek,
+.routeNumber,
+.routeTime {
+  display: flex;
+}
+
+.inputSelect {
+  width: calc(100% - 1.6rem);
+  height: 2.4rem;
+  margin: 0 0.8rem;
+}
+
+.tdTypeC input[type=radio]{
+  margin-left: 2rem;
+}
+
+.tdTypeC label{
+  cursor: pointer;
+}
+
+.inputWidthCalc {
+  width: calc(100% - 10rem);
+}
+
+.waypointBox {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  padding-right: 0.8rem;
+  box-sizing: border-box;
+  align-items: center;
+}
+
+/* 노선목록 검색 */
+.routListSearch {
+  position: relative;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  width: 100%;
+  height: 3.6rem;
+  padding: 0 1rem;
+  box-sizing: border-box;
+  background-color: white;
+  border-radius: 0.2rem;
+  box-shadow: 0.1rem 0.1rem 0.6rem rgba(0, 0, 0, 0.3);
+}
+
+.routListSearch label {
+  font-size: 1.4rem;
+}
+
+#routeListsearch {
+  width: 30%;
+  height: 2.6rem;
+  margin: 0 2rem;
+  border: 0.1rem solid #CDCDCE;
+  border-radius: 0.2rem;
+  outline: none;
+  box-sizing: border-box;
+}
+
+.routeListSearchBtn {
+  background-color: #444;
+}
+
+.popupFooter {
+  position: relative;
+}
+
+.excelUpload {
+  position: absolute;
+  right: 13.4rem;
+  width: 10.4rem;
+  background-color: #444;
+}
+
+.excelDownload {
+  position: absolute;
+  right: 1rem;
+  width: 11.4rem;
+  background-color: #444;
+}
+
+.popupCloseBtn {
+  background-color: #444;
+  margin-left: 1rem;
+}
+
+.popupDeleteBtn {
+  background-color: #444;
+  position: absolute;
+  left: 0;
+}
+
+.popupFooter a {
+  margin-right: auto;
+}
+
+.downloadFormat {
+  background-color: #444;
+}
+
+select[name=use]{
+  width: 10rem;
+  height: 2.4rem;
+  padding-left: 0.3rem;
+  border: 0.1rem solid #B5B5B5;
+  border-radius: 0.2rem;
+  font-size: 1.5rem;
+  box-sizing: border-box;
+}
+
+.SearchName{
+    font-size:1.4rem;
+    margin-right: 1rem;
+}
+
+
+/* 노선목록 */
+.RouteListForm {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.routeInputSave {
+  position: absolute;
+  top: -3.3rem;
+  right: 8rem;
+  background-color: #444;
+}
+
+.routeInputScan {
+  position: absolute;
+  top: -3.3rem;
+  right: 1rem;
+  background-color: #444;
+}
+
+.RouteList {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+  background-color: white;
+  border-radius: 0.2rem;
+  box-shadow: 0.1rem 0.1rem 0.6rem rgba(0, 0, 0, 0.3);
+}
+
+.RouteList table td {
+  text-align: center;
+  box-sizing: border-box;
+}
+
+.RouteListHeadScroll {
+  width: calc(100% - 0.6rem);
+  height: 3.6rem;
+  overflow-x: scroll;
+}
+
+.RouteListHeadScroll::-webkit-scrollbar {
+  display: none;
+}
+
+.RouteListHeader {
+  width: 100%;
+  height: 3.6rem;
+}
+
+.RouteListHeader tr {
+  background-color: #444;
+  color: white;
+  font-size: 1.4rem;
+}
+
+.RouteListScroll {
+  width: 100%;
+  height: calc(100% - 3.6rem);
+  overflow-y: scroll;
+}
+
+.RouteListScroll::-webkit-scrollbar {
+  width: 0.6rem;
+  height: 1rem;
+}
+
+.RouteListScroll::-webkit-scrollbar-thumb {
+  height: 17%;
+  background-color: #444444;
+  border-radius: 1rem;
+}
+
+.RouteListScroll::-webkit-scrollbar-track {
+  background-color: #D2D2D2;
+}
+
+.RouteListBody {
+  width: 100%;
+  height: 100%;
+}
+
+.RouteListBodyTr {
+  width: 100%;
+  height: 3.6rem;
+}
+
+.RouteListBodyTr:hover {
+  background-color: #CDCDCE;
+  cursor: pointer;
+}
+
+.RouteListBodyTr:hover td {
+  border-right: 0.1rem solid white;
+  border-bottom: 0.1rem solid white;
+}
+
+.RouteListBody td {
+  font-size: 1.4rem;
+  border-right: 0.1rem solid #CDCDCE;
+  border-bottom: 0.1rem solid #CDCDCE;
+  padding: 0.6rem 0;
+  word-break: keep-all;
+}
+
+.blanckTr {
+  width: 100%;
+  height: 100%;
+}
+
+
+/* 팝업 */
+.popupBody {
+  height: 100%;
+}
+
+.popupArticletitle {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 9rem;
+  height: 2.6rem;
+  border-radius: 0.3rem 0 0 0.3rem;
+  background-color: #444444;
+  color: white;
+  font-size: 1.3rem;
+  box-sizing: border-box;
+}
+
+.popupArticleTitle {
+  width: 100%;
+  padding-bottom: 0.4rem;
+  margin-top: 2rem;
+  font-size: 1.4rem;
+  font-weight: bold;
+  border-bottom: 0.1rem solid black;
+}
+
+.popupSection {
+  height: calc(100% - 7.2rem);
+}
+
+.popupContainer {
+  width: 113.9rem;
+  height: 60.1rem;
+}
+
+.popupContainerMap {
+  width: 100rem;
+  height: auto;
+}
+
+
+.popupArticleFileDouble {
+  width: 100%;
+  height: 2.6rem;
+}
+
+.popupArticleInput {
+  width: 100%;
+  height: 2.6rem;
+  margin-bottom: 2rem;
+  display: flex;
+  position: relative;
+}
+
+.popupFooterMinibox {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 32rem;
+  margin-right: auto;
+}
+
+.visibleLoadingBox {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  padding-left: 1rem;
+  width: calc(100% - 8rem);
+  box-sizing: border-box;
+}
+
+.visibleLoading {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  display: none;
+  font-size: 1.6rem;
+}
+
+.visibleLoading span {
+  margin-right: 0.6rem;
+}
+
+.popupArticleCategory {
+  width: 100%;
+  padding-bottom: 0.4rem;
+  font-size: 1.4rem;
+  font-weight: bold;
+  border-bottom: 0.1rem solid black;
+}
+
+
+/* 기준날짜 선택 */
+.pricePopupArea {
+  text-align: right;
+  width: calc(100% - 1.4rem);
+  height: 2.2rem;
+  margin: 0 0.8rem;
+  padding: 0 0.6rem;
+  border: 0.1rem solid black;
+  box-sizing: border-box;
+  border-radius: 0.2rem;
+  cursor: pointer;
+  background-color: #CDCDCE;
+}
+
+.referenceeContainer {
+  width: 36rem;
+  min-height: 22.4rem;
+}
+
+.referenceDateInput {
+  width: 20rem
+}
+
+.fixedDate {
+  text-align: center;
+  font-size: 1.4rem;
+  width: 6rem;
+  height: 2.2rem;
+  margin: 0 0.8rem;
+  padding: 0 0.6rem;
+  border: 0.1rem solid black;
+  box-sizing: border-box;
+  border-radius: 0.2rem;
+  background-color: #CDCDCE;
+}
+
+.referenceEditBtn {
+  background-color: #0069D9;
+  margin-right: 1rem;
+}
+
+.referenceCloseBtn {
+  background-color: #444;
+}
+
+.detailMapLinkInput {
+  width: calc(100% - 10rem);
+  outline: none;
+}
+
+.detailMapPopupHeader {
+  width: calc(100% - 0.6rem);
+}
+
+
+.detailMapPopupHeader td {
+  background-color: #444;
+  color: white;
+  text-align: center;
+  position: sticky;
+  top: 0;
+}
+
+.popupArticleStation td:nth-child(1),
+.popupArticleStation td:nth-child(2) {
+  width: 5%;
+}
+
+.detailMapPopupScrollBox {
+  width: 100%;
+  overflow: auto;
+  height: 22.4rem;
+
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+}
+
+.detailMapPopupScrollBox::-webkit-scrollbar {
+  width: 0.6rem;
+  height: 1rem;
+}
+
+.detailMapPopupScrollBox::-webkit-scrollbar-thumb {
+  height: 17%;
+  background-color: #444444;
+  border-radius: 1rem;
+}
+
+.detailMapPopupScrollBox::-webkit-scrollbar-track {
+  background-color: #F5F5F5;
+}
+
+.detailMapPopupScrollBox table {
+  min-width: 100%;
+}
+
+.detailMapPopupScrollBox tr {
+  width: 100%;
+  height: 3rem;
+}
+
+.detailMapPopupHeader tr {
+  width: 100%;
+  height: 3rem;
+  text-align: center;
+  font-size: 1.4rem;
+}
+
+.detailMapPopupScrollBox td {
+  text-align: center;
+  font-size: 1.4rem;
+  border-left: 0.1rem solid #D4D4D4;
+  border-bottom: 0.1rem solid #D4D4D4;
+  white-space: nowrap;
+  padding: 0 2rem;
+}
+
+.popupArticleSearch {
+  justify-content: flex-start;
+}
+
+.stationSearchInput {
+  margin-right: 2rem;
+}
+
+.stationSearchBtn {
+  background-color: #444;
+  margin-left: 3rem;
+}
+
+.stationSearchInputText {
+  margin-right: 1rem;
+}
+
+.popupSectionFirst {
+  padding-bottom: 0rem;
+}
+
+
+.detailMapPopupScrollBoxTr:hover {
+  cursor: pointer;
+  background-color: #EFEFEF;
+}
+
+.stationNumberInputText {
+  margin-left: 2rem;
+}
+
+.waypointNumberInput {
+  width: 8rem;
+}
+
+.routeStationTime {
+  font-size: 1.2rem;
+}
+
+.mainTeamroute{
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 77%;
+  height: 100%;
+  box-sizing: border-box;
+  border-radius: 0.2rem;
+}
+
+.mainTeamScroll{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    height: 90%;
+    overflow-x: hidden;
+    margin-top: 0.8rem;
+}
+
+.btnModule {
+    width: 100%;
+    text-align: right;
+    margin-top: 1.2rem;
+}
+
+.groupCreates{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    box-sizing: border-box;
+    background-color: white;
+    border-radius: 0.2rem;
+    box-shadow: 0.1rem 0.1rem 0.6rem rgba(0, 0, 0, 0.3);
+    height: 15rem;
+}
+
+.inputTeamJang{
+    height: 2.5rem;
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+    background-color: white;
+    border: 0.1rem solid #D2D2D2;
+    border-radius: 0.2rem;
+    box-sizing: border-box;
+    font-size: 1.4rem;
+    color: #191919;
+    width: 80%;
+}
+
+.excelUploads{
+    background-color: #444;
+    color: white;
+    width: 12.8rem;
+    height: 2.5rem;
+    border-radius: 0.2rem;
+}
+
+.excelDownloads{
+    background-color: #444;
+    color: white;
+    width: 12.8rem;
+    height: 2.5rem;
+    border-radius: 0.2rem;
+}
+
+.routeScan{
+  background-color: #0069D9;
+    color: white;
+    width: 6.5rem;
+    height: 2.5rem;
+    border-radius: 0.2rem;
+}
+
+.searchName{
+  margin-left: 1.5rem;
+}
+
+
+
+.groupList {
+    height: 100%;
+}
+
+.groupListBox {
+    height: 33.3%;
+}
+
+/* .groupListBody {
+    height: calc(33.3% - 3.6rem);
+} */
+
+.groupAddBtn {
+    background-color: #EFEFEF;
+    color: #444;
+    display: flex;
+    align-items: center;
+}
+
+.detailItemBox {
+    display: none;
+    flex-direction: column;
+}
+
+.detailItem {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    height: 3.2rem;
+}
+
+.detailItem:hover {
+  background-color: #EFEFEF;
+}
+
+.groupListItemBox {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    width: 100%;
+    height: auto;
+}
+  
+.groupListItem {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    height: 3.6rem;
+    background-color: #EFEFEF;
+    order: initial;
+}
+
+.groupListItem:hover {
+  background-color: #CDCDCE;
+}
+
+.openGroup #Icon_awesome-folder{
+    fill: #0069D9;
+}
+
+.routeGap {
+    width: 3.6rem;
+    height: 100%;
+    box-sizing: border-box;
+    border-bottom: 0.1rem solid #CDCDCE;
+}
+
+
+.routeNameBox {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    width: calc(100% - 3.6rem);
+    height: 100%;
+    padding-left: 1rem;
+    box-sizing: border-box;
+    font-size: 1.4rem;
+    border-bottom: 0.1rem solid #CDCDCE;
+    cursor: pointer;
+}
+
+.routeName{
+    margin-left: 1rem;
+}
+/*   
+.popupContainer {
+    width: 80rem;
+} */
+
+.popupArticleCategory {
+    width: 100%;
+    padding-bottom: 0.4rem;
+    margin-top: 2rem;
+    font-size: 1.4rem;
+    font-weight: bold;
+    border-bottom: 0.1rem solid black;
+}
+
+.popupArticleCategory:nth-child(1) {
+    margin-top: 0;
+}
+
+.scrolling_table-list_body {
+    height: 14.4rem;
+}
+
+.addWaypointBtn {
+    background-color: #0069D9;
+    margin-left: auto;
+}
+
+.popupFooter {
+    position: relative;
+}
+
+.waypointDeleteBtn {
+    position: absolute;
+    left: 0;
+    background-color: #444;
+}
+
+.addtionalBtn {
+    background-color: #0069D9;
+    margin-right: 1rem;
+}
+
+.waypointCloseBtn {
+    background-color: #444;
+}
+
+.popupArticleDouble {
+    width: 100%;
+}
+
+.popupArticleBoxTable {
+    margin-top: 2rem;
+}
+
+.popupArticleBoxTable td:nth-child(1) {
+    width: 10%;
+}
+
+.businessGroupEditBtn {
+    margin-left: auto;
+    margin-right: 1rem;
+}
+
+.tableLabel {
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+
+/* 검색 */
+
+.searchInput {
+    width: 19rem;
+    height: 2.4rem;
+    padding-left: 0.3rem;
+    border: 0.1rem solid #B5B5B5;
+    border-radius: 0.2rem;
+    font-size: 1.4rem;
+    box-sizing: border-box;
+}
+
+.searchDate {
+    width: 16rem;
+    height: 2.4rem;
+    padding-left: 0.3rem;
+    margin: 0 0.6rem;
+    border: 0.1rem solid #B5B5B5;
+    border-radius: 0.2rem;
+    font-size: 1.5rem;
+    box-sizing: border-box;
+    outline: none;
+}
+
+.dateControllBtnBox {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 10rem;
+    margin-left: 1.2rem;
+}
+
+.dateToday {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 4.2rem;
+    height: 2.4rem;
+    background-color: #444;
+    color: white;
+    font-size: 1.4rem;
+    border-radius: 0.3rem;
+    cursor: pointer;
+}
+
+.dateControllBtn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 2.4rem;
+    height: 2.4rem;
+    border-radius: 100%;
+    background-color: #444;
+    font-size: 1.6rem;
+    color: white;
+    cursor: pointer;
+}
+
+.dateControllBtn svg {
+    width: 40%;
+}
+
+
+.RouteList table td:nth-child(1) {
+    width: 3%;
+}
+
+.RouteList table td:nth-child(2) {
+    width: 3%;
+}
+
+.RouteList table td:nth-child(3) {
+    width: 5%;
+}
+
+.RouteList table td:nth-child(4) {
+    width: 40%;
+}
+
+.RouteList table td:nth-child(5) {
+    width: 10%;
+}
+
+.RouteList table td:nth-child(6) {
+    width: 10%;
+}
+
+.RouteList table td:nth-child(7) {
+    width: 7%;
+}
+
+
+
+.RouteListHeader table td:nth-child(1) {
+    width: 3%;
+}
+
+.RouteListHeader table td:nth-child(2) {
+    width: 3%;
+}
+
+.RouteListHeader table td:nth-child(3) {
+    width: 5%;
+}
+
+.RouteListHeader table td:nth-child(4) {
+    width: 40%;
+}
+
+.RouteListHeader table td:nth-child(5) {
+    width: 10%;
+}
+
+.RouteListHeader table td:nth-child(6) {
+    width: 10%;
+}
+
+.RouteListHeader table td:nth-child(7) {
+    width: 7%;
+}
+
+.routListSearch select{
+    height: 2.5rem;
+    width: 12.2rem;
+}
+
+.RouteListCheckbox{
+    height: 2.4rem;
+    width: 9.6rem;
+}
+
+.transaction-table{
+  width: 96.8rem;
+  height: 24.7rem;
+  border-collapse: collapse;
+  margin-bottom: 2rem;
+  border: 0.15rem solid #575757;
+  font-size: 1.4rem;
+  text-align: center;
+  margin-left: 8rem;
+  margin-top: 3rem;
+}
+
+.transaction-table thead tr:last-child th {
+    border-bottom: 0.15rem solid #575757;
+}
+
+
+.transaction-table th {
+  height: 4.7rem;
+}
+
+.transaction-table td {
+  height: 2rem;
+}
+
+.buttons {
+    text-align: left;
+    margin-bottom: 2rem;
+    width: 96.8rem;
+    margin-left: 8rem;
+    background-color: #DEDEDE;
+    overflow: scroll;
+}
+
+.popupArticleSub{
+  display: flex;
+}
+
+.popupArticleBoxs{
+    display: flex;
+    width: 100%;
+    height: 2.8rem;
+    margin-top: 2rem;
+}
+
+.PopupData{
+  width: 12.8rem;
+  height: 2.6rem;
+  margin-right: 5.4rem;
+}
+
+.popupArticleFont{
+  font-size: 1.4rem;
+  text-align: center;
+  margin-right: 2.1rem;
+  width: 6rem;
+}
+
+.popupFooterBox{
+  margin-left: 8rem;
+}
+
+.popupSubTitle{
+  font-size: 1.4rem;
+  margin-bottom: 3rem;
+}
+
+.SubButton{
+  width: 21rem;
+  margin-left: 1rem;
+}
+
+.subSearch{
+    position: relative;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    width: 100%;
+    box-sizing: border-box;
+    background-color: white;
+    border-radius: 0.2rem;
+    box-shadow: 0.1rem 0.1rem 0.6rem rgba(0, 0, 0, 0.3);
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+}
+
+.subSearchHeader{
+    font-size: 1.6rem;
+    text-align: center;
+    line-height: 3.2rem;
+    width: 18.6rem;
+    height: 3.6rem;
+    background-color: #444444;
+    color: white;
+}
+
+.subSearchBody{
+    font-size: 1.6rem;
+    width: 46.4rem;
+    margin-left: 1rem;
+}
+
+.groupListHead{
+    text-align: center;
+}
+
+.groupListTitle{
+    width: 100%;
+}
+
+.groupListHeaderText{
+    font-size: 2rem;
+    
+}

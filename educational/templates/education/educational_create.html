@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block head %}
+<meta http-equiv="Cache-Control" content="private, no-cache, no-store, max-age=0, must-revalidate">
+
+<link rel="stylesheet" href="{% static 'css/notice/notice_create.css' %}" type="text/css" />
+<link rel="stylesheet" href="{% static 'css/education/educational_create.css' %}" type="text/css" />
+
+</style>
+{% endblock %}
+
+{% block content-header %}
+<div class="HeaderTitle">
+    교육 자료
+</div>
+{% endblock %}
+
+{% block content %}
+
+<div class="contentsAreaBox">
+    <form action="" method="post" enctype="multipart/form-data">
+        <div class="createHeader">
+            <div class="inputMainCell">
+                <span class="inputName">제목</span>
+                <input autocomplete="off" type="text" name="title" class="length100" required>
+            </div>
+            <div class="inputCell inputCellFile">
+                <span class="inputName">자료 파일</span>
+                <input autocomplete="off" type="file" name="file" multiple>
+            </div>
+        </div>
+        <div class="inputTextBox">
+        <span class="inputTextBoxText">내용 추가</span>
+        <textarea required name="content" required class="noticeTextarea length3000" placeholder="내용을 입력하세요"></textarea>
+        </div>
+        <div class="createBtnBox">
+            <input autocomplete="off" type="submit" value="등록" class="createBtn">
+        </div>
+    </form>
+</div>
+
+{% endblock %}
+
+{% block script %}
+
+{% endblock %}

@@ -91,7 +91,7 @@
         </div>
         <textarea required name="content" required class="noticeTextarea length3000" disabled>{{approval.content}}</textarea>
         <div class="createBtnBox">
-            <!-- <input autocomplete="off" type="submit" value="등록" class="createBtn"> -->
+            <a href="{% url 'approval:approval' %}" value="닫기">{{approval.title}}</a>
         </div>
     </form>
 </div>

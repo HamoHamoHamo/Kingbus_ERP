@@ -12,6 +12,7 @@ class Approval(models.Model):
     pub_date = models.DateTimeField(auto_now_add=True, verbose_name='작성시간')
     updated_at = models.DateTimeField(auto_now=True, verbose_name='수정시간')
     creator = models.ForeignKey(Member, on_delete=models.SET_NULL, related_name="approval_creator", db_column="creator_id", null=True)
+    # file = models.FileField(verbose_name="첨부파일")
 
 class Approver(models.Model):
     index = models.IntegerField(verbose_name="순서", default=1)
