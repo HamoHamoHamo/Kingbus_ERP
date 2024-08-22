@@ -146,9 +146,10 @@ class DataCollector:
 
     def is_weekly_holiday(self, weekly_minute):
         # 5일 이상 근무하면 주휴발생
-        if int(weekly_minute) >= 15 * 60:
-            return True
-        return False
+        # if int(weekly_minute) >= 15 * 60:
+        #     return True
+        # return False
+        return True
     
     def get_work_type(self, minutes, weekday, weekly_minute):
         if weekday == '일' and self.is_weekly_holiday(weekly_minute):
