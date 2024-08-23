@@ -1654,7 +1654,8 @@ def regularly_order_edit(request):
                     DispatchRegularly.objects.get(regularly_id=regularly_data, edit_date=station_edit_date)
                 except DispatchRegularly.DoesNotExist:
                     edit_date_regularly = DispatchRegularly.objects.filter(regularly_id=regularly_data, edit_date__lte=station_edit_date).order_by('-edit_date').first()
-                    #FIXME(edit_date_regularly 없으면 에러남 )
+                    if not edit_date_regularly:
+                        edit_date_regularly = DispatchRegularly.objects.filter(regularly_id=regularly_data, edit_date__gt=station_edit_date).order_by('-edit_date').last()
                     edit_date_regularly_data = model_to_dict(edit_date_regularly)
                     edit_date_regularly_data.pop('id')
                     edit_date_regularly_data.pop('station')
