@@ -332,6 +332,24 @@
             </div>
           </div>
           <div class="nav1Box">
+            <li class="nav1BoxMenu nav1BoxMenuHaveDepth2">
+              <div class="nav1BoxMenuImgDiv">
+                <img class="nav1BoxMenuImg" src="{% static 'images/document.png' %}" alt="공지사항 아이콘">
+              </div>
+              <div class="nav1BoxMenuHaveDepth2Text">결재관리</div>
+              <svg class="sideMenuArrow" xmlns="http://www.w3.org/2000/svg" width="18.228" height="11.84" viewBox="0 0 18.228 11.84">
+                <path id="패스_256" data-name="패스 256" d="M0,0,6.753,8.223,14,0" transform="translate(2.111 2.117)" fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="3"/>
+              </svg>        
+            </li>
+            <div class="sideMenuNav2Box">
+              <ul class="sideMenuNav2">
+                <a href="{% url 'approval:approval' %}" class="sideMenuNav2Link">
+                  <li class="sideMenuNav2Menu">결재목록</li>
+                </a>
+              </ul>
+            </div>
+          </div>
+          <div class="nav1Box">
             <li class="nav1BoxMenu">
               <div class="nav1BoxMenuImgDiv">
                 <img class="nav1BoxMenuImg" src="{% static 'images/calendar.png' %}" alt="일정 아이콘">

@@ -1,0 +1,26 @@
+.contentsAreaBox {
+    padding: 2rem 2rem 0 2rem;
+    width: calc(100% - 4rem);
+}
+
+.typeCell {
+    width: calc(100% - 11rem);
+    
+}
+
+.approverText {
+    margin-left: 10rem;
+}
+
+.approverSelect {
+    margin-left: 2rem;
+}
+
+.inputCell {
+    font-size: 1.6rem;
+    font-weight: 500;
+}
+
+.typeSelect {
+    width: 13rem;
+}

@@ -73,6 +73,10 @@ function openSideNav() {
         sideMenuNav2Box[idx].style.height = "10.4rem";
         sideMenuNav2[idx].style.height = "8.4rem";
         break;
+      case 9:
+        sideMenuNav2Box[idx].style.height = "5.4rem";
+        sideMenuNav2[idx].style.height = "4rem";
+        break;
     }
     sideNavControll[idx].style.transform = "rotate(180deg)"
     this.parentNode.style.backgroundColor = "#19173B";
