@@ -1,0 +1,397 @@
+.flex {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.popupHeader,.popupBody{
+    display: none;
+}
+
+.search-Container{
+    height: 6rem;
+}
+
+
+.searchFormLabel{
+    font-size: 1.4rem;
+}
+
+.searchFormInput{
+    border: 0.1rem solid #d2d2d2;
+    margin-left: 1rem;
+    width: 12.2rem;
+    height: 2.4rem;
+    font-size: 1.4rem;
+}
+
+.textInput{
+    border-radius: 0.3rem;
+    border: 0.1rem solid #d2d2d2;
+    padding-block: 0;
+    width: 20.7rem;
+}
+
+.dateInput{
+    border-radius: 0.3rem;
+    border: 0.1rem solid #d2d2d2;
+    padding-block: 0;
+    vertical-align: bottom;
+}
+
+.last{
+    margin-left: 0;
+}
+
+.searchFormSearchBtn{
+    width: 6.5rem;
+    vertical-align: bottom;
+    padding-block: 0;
+    border-radius: 0.2rem;
+    border: none;
+    height: 2.5rem;
+    background-color: #444444;
+    color: white;
+    margin-left: 1rem;
+    font-size: 1.4rem;
+    cursor: pointer;
+}
+
+.tableContainer{
+    font-size: 1.4rem;
+    width: 100%;
+    height: 67.2rem;
+    border-radius: 0.3rem;
+    box-shadow: 0 0.2rem 0.4rem rgba(0, 0, 0, 0.16);
+    background-color: white;
+
+}
+
+.thead{
+    font-size: 1.4rem;
+    width: 100%;
+    height: 3.2rem;
+    box-sizing: border-box;
+}
+
+.tbody{
+    width: 100%;
+    height: calc(100% - 3.2rem);
+    box-sizing: border-box;
+}
+
+.tbodyTr{
+    height: 6.4rem;
+}
+
+
+
+.th{
+    border-right: none;
+    border-bottom: none;
+}
+
+.theadTh:nth-child(1), 
+.tbodyTrTd:nth-child(1){width: 3.5%;}
+.theadTh:nth-child(2), 
+.tbodyTrTd:nth-child(2){width: 5%;}
+.theadTh:nth-child(3), 
+.tbodyTrTd:nth-child(3){width: 10%;}
+.theadTh:nth-child(4), 
+.tbodyTrTd:nth-child(4){width: 10%;}
+.theadTh:nth-child(5), 
+.tbodyTrTd:nth-child(5){width: 36%}
+.theadTh:nth-child(6), 
+.tbodyTrTd:nth-child(6){width: 10%;}
+.theadTh:nth-child(7), 
+.tbodyTrTd:nth-child(7){width: 10%;}
+.theadTh:nth-child(8), 
+.tbodyTrTd:nth-child(8){width: 7%}
+.theadTh:nth-child(9), 
+.tbodyTrTd:nth-child(9){width: 8.5%;}
+
+.blue{
+    color: #0069D9;
+}
+
+.pageTransition{
+    font-size: 1.4rem;
+    margin-top: 1rem;
+    gap: 2rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.write{
+    width: 6.5rem;
+    height: 2.5rem;
+    color: white;
+    background-color: #0069D9;
+    margin-left: auto;
+    border: none;
+}
+
+
+.boxSize{
+    
+    width: 100%;
+    height: 70.7rem;
+    background-color: white;
+    border-radius: 0.3rem;
+    box-shadow: 0 0.2rem 0.4rem rgba(0, 0, 0, 0.16);
+    font-size: 1.4rem;
+    padding-top: 1rem;
+    z-index: 0;
+}
+
+.contentBoxArticle{
+    margin-top: 2rem;
+    margin-left: 5rem;
+    width: calc(100% - 5rem);
+    height: 2.7rem;
+    justify-content: flex-start;
+}
+
+.contentBoxArticleInput{
+    width: 96%;
+    height: 100%;
+    border: 0.1rem solid #d2d2d2;
+    margin-left: 2rem;
+    cursor: pointer;
+}
+
+.contentBoxArticleSelect {
+    width: 10%;
+    height: 100%;
+    border: 0.1rem solid #d2d2d2;
+    margin-left: 2rem;
+}
+
+.contentBoxArticleLabelLabel{
+    margin-left: 10rem;
+}
+
+.contentBoxArticleLong{
+    height: 7.6rem;
+}
+
+#fileInput{
+    margin-left: 1rem;
+    margin-top:1rem;
+}
+
+.contentBoxArticleLabel{
+    width: 6%;
+}
+
+.contentBoxArticleFileArea{
+    height: 100%;
+    border: 0.1rem solid #d2d2d2;
+    margin-left: 2rem;
+    width: 96%;
+}
+
+.contentBoxArticleLast{
+    width: 100%;
+    height: 44.1rem;
+}
+
+.contentBoxArticleText{
+    height: 100%;
+    border: 0.1rem solid #d2d2d2;
+    width: 96%;
+    padding: 0;
+}
+
+input[type="text" i] {
+    padding-left: 0.5rem;
+}
+
+.createDelete{
+    justify-content: flex-end;
+    height: 2.5rem;
+    margin-top: 2rem;
+}
+
+.Btn{
+    width: 6.5rem;
+    height: 100%;
+    color: white;
+}
+
+.deleteBtn{
+    margin-left: 1rem;
+    background-color: #444444;
+    border:none;
+}
+
+.contentBoxContent{
+    height: 30%;
+}
+
+.contentBoxContentContent{
+    width: 75%;
+    height: 100%;
+}
+
+.contentBoxExamine{
+    justify-content: flex-start;
+    flex-direction: column;
+    width: 25%;
+    height: 100%;
+}
+
+.contentBoxExamineArticleContent{
+    margin-left: 3rem;
+}
+
+.contentBoxExamineArticle{
+    width: 100%;
+    height: 2.7rem;
+    margin-top: 2rem;
+
+}
+
+.contentBoxExamineArticleTitle,
+.contentBoxExamineArticleContent{
+    width: 20%;
+}
+
+.contentInput{
+    height: 100%;
+    margin-right: 5rem;
+    width: 95.7%;
+}
+
+.contentBoxArticleNayoung{
+    width: calc(100% - 5rem);
+    height: 15%;
+}
+
+.contentInputLabel{
+    width: 4.3%;
+    height: 100%;
+}
+
+.approverSpeak{
+    height: 55%;
+}
+
+.approverSpeakTr{
+    margin-top: 2rem;
+    margin-left: 5rem;
+    height: 4rem;
+}
+
+.approverSpeakTrTd{
+    margin-top: 2rem;
+    margin-left: 5rem;
+    height: 4rem;
+    justify-content: flex-start;
+}
+
+.approverSpeakPerson{
+
+    width: 4.3%;
+}
+
+.approverSpeakContent{
+    margin-right: 5rem;
+    width: 95.7%;
+    height: 100%;
+    margin-left: 2rem;
+    border: 0.1rem solid #d2d2d2;
+}
+
+.writeContent,
+.waitContent,
+.rejectedAndApproveContent{
+    display: none;
+}
+
+
+/*tableHead*/
+.tableHead {
+    width: 100%;
+    height: 4.8rem;
+    border-spacing: 0;
+    box-sizing: border-box;
+}
+
+.tableHead tr {
+    width: 100%;
+    height: 100%;
+    font-size: 1.4rem;
+    color: white;
+    background-color: #444444;
+}
+
+.tableHead td {
+    text-align: center;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.tableBody {
+    width: 100%;
+    height: 64em;
+    border-spacing: 0;
+    box-sizing: border-box;
+}
+
+table tbody tr {
+    width: 100%;
+    height: 6.4rem;
+    font-size: 1.4rem;
+    color: #191919;
+}
+
+table tbody tr:nth-child(odd) {
+    background-color: white;
+}
+
+table tbody tr:nth-child(even) {
+    background-color: #EFEFEF;
+}
+
+.tableBody td:nth-child(1) {
+    border-left: 0.1rem solid #D4D4D4;
+}
+
+.tableBody td {
+    border-right: 0.1rem solid #D4D4D4;
+    border-bottom: 0.1rem solid #D4D4D4;
+    padding: 0;
+    box-sizing: border-box;
+    text-align: center;
+}
+
+
+.btnBox input {
+    background-color: #444444;
+    outline: none;
+    box-sizing: border-box;
+    text-align: center;
+}
+
+
+.headerBtn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 10rem;
+    height: 3.8rem;
+    border-radius: 0.2rem;
+    background-color: #444444;
+    font-size: 1.4rem;
+    color: white;
+    cursor: pointer;
+    margin-left: 1rem;
+    background-color: #0069D9;
+    font-size: 1.4rem;
+}
+
+.blanckTr {
+    height: 100%;
+}

@@ -1,0 +1,90 @@
+.creteHeader {
+    flex-direction: row;
+
+}
+
+.headerInput {
+    width: 75%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.headerDateTime {
+    width: 20%;
+    display: flex;
+    flex-direction: column;
+}
+
+.headerDateTimeDiv {
+    display: flex;
+    font-size: 1.6rem;
+    font-weight: 500;
+    justify-content: space-between;
+    padding-right: 2rem;
+}
+
+
+.pubDateDiv {
+    margin-bottom: 2rem;
+}
+
+.creteHeader {
+    height: 17.5rem;
+}
+
+
+.inputCellApprover {
+    height: 5rem;
+    width: 100%;
+    
+}
+
+.typeCell {
+    display: flex;
+    width: 7rem;
+}
+
+.approverCell {
+    display: flex;
+    flex-direction: column;
+    margin-left: 5rem;
+}
+
+.inputNameType {
+    padding-left: 1rem;
+    width: 7rem;
+}
+
+.typeCellSelect {
+    width: calc(100% - 10rem);
+    height: 5rem;
+    padding-left: 1rem;
+    display: flex;
+}
+
+.typeSelect {
+    height: 2.5rem;
+    margin-left: 1rem;
+
+}
+
+.approverText, .approverSelect {
+    margin: 0;
+    height: 2.5rem;
+}
+
+.textareaInputCell {
+    align-items: baseline;
+    height: 100%;
+}
+
+.contentTextarea {
+    width: calc(100% - 13rem);
+    padding: 1rem;
+}
+
+.approverInputCell {
+    margin-top: 5rem;
+}
+
