@@ -114,12 +114,14 @@ class ApprovalDetail(generic.DetailView):
     
 def set_approver_select():
     approver_select_list = []
-    approver_select_list.append(Member.objects.filter(use="사용").get(name="고영이"))
-    approver_select_list.append(Member.objects.filter(use="사용").get(name="이세명"))
-    approver_select_list.append(Member.objects.filter(use="사용").get(name="김인숙"))
-    approver_select_list.append(Member.objects.filter(use="사용").get(name="김형주"))
-    approver_select_list.append(Member.objects.filter(use="사용").get(name="엄성환"))
-    approver_select_list.append(Member.objects.filter(use="사용").get(name="김성태"))
+    approver_select_list.append(Member.objects.filter(use="사용", authority__lte=1).get(name="고영이"))
+    approver_select_list.append(Member.objects.filter(use="사용", authority__lte=1).get(name="이세명"))
+    approver_select_list.append(Member.objects.filter(use="사용", authority__lte=1).get(name="김인숙"))
+    approver_select_list.append(Member.objects.filter(use="사용", authority__lte=1).get(name="김형주"))
+    approver_select_list.append(Member.objects.filter(use="사용", authority__lte=1).get(name="엄성환"))
+    approver_select_list.append(Member.objects.filter(use="사용", authority__lte=1).get(name="전조술"))
+    approver_select_list.append(Member.objects.filter(use="사용", authority__lte=1).get(name="최정이"))
+    approver_select_list.append(Member.objects.filter(use="사용", authority__lte=1).get(name="김성태"))
     return approver_select_list
 
 def approval_create(request):
@@ -209,7 +211,7 @@ def approver_edit(request):
             approval.status = status
             approval.save()
         approver.save()
-        return redirect(request.META.get('HTTP_REFERER', 'redirect_if_referer_not_found'))
+        return redirect(reverse('approval:approval'))
 
         # approver_form = ApproverForm(request.POST)
     
