@@ -360,15 +360,15 @@
 
 {% block script %}
 <script>
-    download = document.querySelector(".fileDownload")
+    download = document.querySelectorAll(".fileDownload")
     console.log(download.parrent)
-    download.addEventListener("click", () => {
-        
-        window.open(`file/${download.parentElement.parentElement.className}`, "test", "width=630, height=891")
+
+    Array.from(download).forEach(item => {
+        item.addEventListener("click", () => {  
+            window.open(`file/${item.parentElement.parentElement.className}`, "test", "width=630, height=891")
+        })
     })
     
-    function getDownloadUrl(data) {
-  
-}
+    
 </script>
 {% endblock %}
