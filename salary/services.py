@@ -76,7 +76,6 @@ class DataCollector:
 
     # 보파보
     def get_work_time(self, date):
-        # TODO get_connects_time_list로 가져온 데이터로 시간 계산하게 수정해야됨
         connects_list = self.get_connects_time_list(date)
         minutes = 0
 
@@ -298,7 +297,7 @@ class DataCollector:
             connect_time_list = ['' for i in range(6)]
             if connect['work_type'] == '일반':
                 connect_list.append({
-                    'total_time': 0,
+                    'total_time': get_minute_from_colon_time(connect['arrival_date'][11:]) - get_minute_from_colon_time(connect['departure_date'][11:]),
                     'work_type': '일반',
                     'route': connect['order_id__route'],
                     'connect_time_list': connect_time_list,
