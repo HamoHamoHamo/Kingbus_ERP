@@ -93,20 +93,28 @@
 
 .theadTh:nth-child(1), 
 .tbodyTrTd:nth-child(1){width: 3.5%;}
+
 .theadTh:nth-child(2), 
 .tbodyTrTd:nth-child(2){width: 5%;}
+
 .theadTh:nth-child(3), 
 .tbodyTrTd:nth-child(3){width: 10%;}
+
 .theadTh:nth-child(4), 
 .tbodyTrTd:nth-child(4){width: 10%;}
+
 .theadTh:nth-child(5), 
 .tbodyTrTd:nth-child(5){width: 36%}
+
 .theadTh:nth-child(6), 
 .tbodyTrTd:nth-child(6){width: 10%;}
+
 .theadTh:nth-child(7), 
 .tbodyTrTd:nth-child(7){width: 10%;}
+
 .theadTh:nth-child(8), 
 .tbodyTrTd:nth-child(8){width: 7%}
+
 .theadTh:nth-child(9), 
 .tbodyTrTd:nth-child(9){width: 8.5%;}
 
@@ -334,6 +342,9 @@ input[type="text" i] {
 }
 
 .tableBody {
+    word-wrap: break-word;
+    white-space: normal;
+    table-layout: fixed;
     width: 100%;
     height: 64em;
     border-spacing: 0;
