@@ -747,6 +747,7 @@
 
 .waypoinBtn {
   background-color: #0069D9;
+  width: 5rem;
 }
 
 .popupArticleCategori {
@@ -891,7 +892,8 @@
   margin-right: 1rem;
 }
 
-.accountCloseBtn {
+.accountCloseBtn,
+.waypointCloseBtn {
   background-color: #444;
 }
 
@@ -903,12 +905,6 @@
 .openStationPopupBtn,
 .openTimeDistancePopupBtn {
   cursor: pointer;
-}
-
-.blockInput {
-  background-color: #CDCDCE;
-  font-size: 1.6rem;
-  border: 0.1rem solid black;
 }
 
 .popupArticleDouble
@@ -1077,4 +1073,8 @@
 
 .routeStationTime {
   font-size: 1.2rem;
+}
+
+.waypointBox {
+  display: flex;
 }

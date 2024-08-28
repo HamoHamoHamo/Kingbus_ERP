@@ -2741,7 +2741,7 @@ def order_create(request):
                 raise BadRequest("정류장 정보를 잘못 입력하셨습니다.", e)
 
             # 노선의 정류장에서 정류장 사이의 거리, 시간 측정해서 저장
-            get_order_distance_and_time(order)
+            # get_order_distance_and_time(order)
 
             return redirect(reverse('dispatch:order') + f'?date1={request.POST.get("departure_date")}&date2={request.POST.get("arrival_date")}')
         else:
@@ -2956,7 +2956,7 @@ def order_edit(request):
                 raise BadRequest("정류장 정보를 잘못 입력하셨습니다.", e)
             
             # 노선의 정류장에서 정류장 사이의 거리, 시간 측정해서 저장
-            get_order_distance_and_time(order)
+            # get_order_distance_and_time(order)
 
             return redirect(request.META.get('HTTP_REFERER', 'redirect_if_referer_not_found'))
         else:
@@ -2965,46 +2965,20 @@ def order_edit(request):
         return HttpResponseNotAllowed(['post'])
 
 def create_order_stations(request, order, creator):
-    station_list = request.POST.getlist('station_name')
-    station_time_list = request.POST.getlist('station_time')
+    waypoint_list = request.POST.getlist('waypoint')
+    waypoint_time_list = request.POST.getlist('waypoint_time')
     delegate_list = request.POST.getlist('delegate')
     delegate_phone_list = request.POST.getlist('delegate_phone')
-    place_name_list = request.POST.getlist('place_name')
-    address_list = request.POST.getlist('address')
-    longitude_list = request.POST.getlist('longitude')
-    latitude_list = request.POST.getlist('latitude')
-
-    if (len(station_time_list) == len(station_list) and
-    len(delegate_list) == len(station_list) and
-    len(delegate_phone_list) == len(station_list) and
-    len(place_name_list) == len(station_list) and
-    len(address_list) == len(station_list) and
-    len(longitude_list) == len(station_list) and
-    len(latitude_list) == len(station_list)):
-        for i in range(len(station_list)):
-            station = DispatchOrderStation(
-                order_id=order,
-                station_name=station_list[i],
-                place_name=place_name_list[i],
-                address=address_list[i],
-                longitude=longitude_list[i],
-                latitude=latitude_list[i],
-                time=station_time_list[i],
-                delegate=delegate_list[i],
-                delegate_phone=delegate_phone_list[i],
-                creator=creator,
-            )
-            station.save()
-    else:
-        raise Exception("정류장 데이터 개수 다름", 
-            len(station_time_list),
-            len(delegate_list),
-            len(delegate_phone_list),
-            len(place_name_list),
-            len(address_list),
-            len(longitude_list),
-            len(latitude_list), len(station_list)
+    for i in range(len(waypoint_list)):
+        waypoint = DispatchOrderStation(
+            order_id=order,
+            station_name=waypoint_list[i],
+            time=waypoint_time_list[i],
+            delegate=delegate_list[i] if delegate_list[i] != " " else '',
+            delegate_phone=delegate_phone_list[i] if delegate_phone_list[i] != " " else '',
+            creator=creator,
         )
+        waypoint.save()
 
 def order_delete(request):
     if request.session.get('authority') > 3:

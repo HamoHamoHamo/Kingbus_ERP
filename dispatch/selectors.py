@@ -1,6 +1,6 @@
-from django.db.models import Q, Value, F, Prefetch
+from django.db.models import Value, F, Prefetch
 
-from .models import DispatchOrder, DispatchRegularlyData, DispatchRegularly, DispatchOrderConnect, DispatchRegularlyConnect, MorningChecklist, EveningChecklist, DispatchRegularlyStation
+from .models import DispatchRegularly, DispatchOrderConnect, DispatchRegularlyConnect, MorningChecklist, EveningChecklist, DispatchRegularlyStation
 
 class DispatchSelector:
 
