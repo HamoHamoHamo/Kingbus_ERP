@@ -404,11 +404,3 @@
     margin-bottom: 1rem;
     text-align: right;
 }
-
-.upload{
-    display: flex;
-    justify-content: space-between;
-    width: 10rem;
-    margin: 0 auto;
-    cursor: pointer;
-}

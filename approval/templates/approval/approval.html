@@ -65,7 +65,9 @@
                     <div class="tbodyTrTd td flex blue">
                         <a href="{% url 'approval:approval_detail' approval.id %}">{{approval.title}}</a>
                     </div>
-                    <div class="tbodyTrTd td flex blue">파일명.png</div>
+                    <div class="tbodyTrTd td flex blue">
+                        파일명.png
+                    </div>
                     <div class="tbodyTrTd td flex">{{approval.date}}</div>
                     <div class="tbodyTrTd td flex">{{approval.status}}</div>
                     <div class="tbodyTrTd td flex">{{approver_list|index:forloop.counter0}}</div>

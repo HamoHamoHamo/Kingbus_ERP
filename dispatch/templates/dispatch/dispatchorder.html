@@ -1,0 +1,120 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load dispatch_custom_tags %}
+
+{% block head %}
+<meta http-equiv="Cache-Control" content="private, no-cache, no-store, max-age=0, must-revalidate">
+<link rel="stylesheet" href="{% static 'css/dispatch/line_sheet.css' %}" type="text/css" />
+{% endblock %}
+
+{% block content-header %}
+<div class="HeaderTitle">
+    배차 지시서
+</div>
+{% endblock %}
+
+{% block content %}
+    <div><input type="button" value="팝업 버튼" onclick="openPopup()"></div>
+{% endblock %}
+
+{% block popup %}
+<div id="lineSheetPopup" class="lineSheetPopup">
+    <div class="lineSheetContainer">
+        <div class="lineSheetTitle">노선별 배차 지시서</div>
+
+        <div class="lineSheetSectionTitle">1. 남양 연구소 출근 (8월 1일)</div>
+        <table class="lineSheetTable">
+            <thead>
+                <tr>
+                    <th>출발 시간</th>
+                    <th>순번</th>
+                    <th>출발지 > 도착지</th>
+                    <th>차량 번호</th>
+                    <th>담당 기사</th>
+                    <th>전화 번호</th>
+                    <th>체크</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>04:41</td>
+                    <td>1</td>
+                    <td>암남순환로 - 한국 조폐공사 본사 [ 웅남 ]</td>
+                    <td>7611</td>
+                    <td>정한영</td>
+                    <td>010-6262-6353</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>04:41</td>
+                    <td>5</td>
+                    <td>암남순환로 - 한국 조폐공사 본사 [ 웅남 ]</td>
+                    <td>7611</td>
+                    <td class="lineSheetImportant">정한영</td>
+                    <td>010-6262-6353</td>
+                    <td></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="lineSheetSectionTitle">2. 반도체 출근 (8월 1일)</div>
+        <table class="lineSheetTable">
+            <thead>
+                <tr>
+                    <th>출발 시간</th>
+                    <th>순번</th>
+                    <th>출발지 > 도착지</th>
+                    <th>차량 번호</th>
+                    <th>담당 기사</th>
+                    <th>전화 번호</th>
+                    <th>체크</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>04:41</td>
+                    <td>1</td>
+                    <td>암남순환로 - 한국 조폐공사 본사 [ 웅남 ]</td>
+                    <td>7611</td>
+                    <td>정한영</td>
+                    <td>010-6262-6353</td>
+                    <td></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="lineSheetSectionTitle">ㅁ미지정 된 출,퇴근 ( 8월 1일 )</div>
+        <table class="lineSheetTable">
+            <thead>
+                <tr>
+                    <th>운행요일</th>
+                    <th>출발지 시간</th>
+                    <th>순번</th>
+                    <th>출발지 > 도착지</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>월 화 수 목 금</td>
+                    <td>04:41</td>
+                    <td>1</td>
+                    <td>향남소방서 ▸ 한국 쓰리엠 출,퇴근 ( 왕복 )</td>
+                </tr>
+            </tbody>
+        </table>
+        <button onclick="closePopup()">닫기</button>
+    </div>
+</div>
+{% endblock %}
+
+{% block script %}
+<script>
+function openPopup() {
+    document.getElementById('lineSheetPopup').style.display = 'block';
+}
+
+function closePopup() {
+    document.getElementById('lineSheetPopup').style.display = 'none';
+}
+</script>
+{% endblock %}

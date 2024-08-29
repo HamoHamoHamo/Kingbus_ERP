@@ -64,12 +64,12 @@
                         <tr class="table-list_body-tr salaryList cursor">
                             <td class="table-list_body-tr_td">
                                 <input tabindex="100" type="checkbox" class="amountCheck" name="member_id"
-                                    value="{{ accident.member.id }}">
+                                    value="{{ accident.id }}">
                             </td>
                             <td class="table-list_body-tr_td">{{ objects_cnt|add:forloop.counter }}</td> <!-- 번호 -->
                             <td class="table-list_body-tr_td">
                                 <button class="accident-detail-button" type="button">
-                                    {{ accident.driver_name }}
+                                    {{ accident.member.name }}
                                 </button>
                             </td> <!-- 이름 -->
                             <td class="table-list_body-tr_td">0/4</td> <!-- 결재 -->

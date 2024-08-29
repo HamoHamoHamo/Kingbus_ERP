@@ -3,7 +3,6 @@
 {% block head %}
 <meta http-equiv="Cache-Control" content="private, no-cache, no-store, max-age=0, must-revalidate">
 
-<link rel="stylesheet" href="{% static 'css/notice/notice_create.css' %}" type="text/css" />
 <link rel="stylesheet" href="{% static 'css/education/educational_create.css' %}" type="text/css" />
 
 </style>
@@ -25,8 +24,12 @@
                 <input autocomplete="off" type="text" name="title" class="length100" required>
             </div>
             <div class="inputCell inputCellFile">
+                <span class="inputName">썸네일 파일</span>
+                <input autocomplete="off" type="file" name="file" class="Sumnailefile" multiple >
+            </div>
+            <div class="inputCell inputCellFile">
                 <span class="inputName">자료 파일</span>
-                <input autocomplete="off" type="file" name="file" multiple>
+                <input autocomplete="off" type="file" name="file" class="datafile" multiple>
             </div>
         </div>
         <div class="inputTextBox">

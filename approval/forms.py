@@ -3,6 +3,7 @@ import re
 
 from .models import Approval, Approver
 
+
 class ApprovalForm(forms.ModelForm):
     class Meta:
         model = Approval
@@ -10,6 +11,7 @@ class ApprovalForm(forms.ModelForm):
             'approval_type',
             'title',
             'content',
+            
         ]
 
 class ApproverForm(forms.ModelForm):
@@ -20,3 +22,5 @@ class ApproverForm(forms.ModelForm):
             'status',
             'index',
         ]
+
+

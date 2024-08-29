@@ -1,0 +1,142 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load custom_tags %}
+{% block head %}
+<meta http-equiv="Cache-Control" content="private, no-cache, no-store, max-age=0, must-revalidate">
+<link rel="stylesheet" href="{% static 'css/humanresource/personnelcommittee_Report.css' %}" type="text/css" />
+{% endblock %}
+
+{% block content-header %}
+<div class="HeaderTitle">
+    인사위원회
+</div>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h2>인사 보고서 작성</h2>
+
+    <form action="/submit-report" method="POST" enctype="multipart/form-data">
+        <div class="popupPersonnelcommitte">
+        
+            <div class="popupPersonnelcommitteMain">
+                <label for="company" class="popupLabelText">소속</label>
+                <select name="company">
+                    <option value="성화투어">성화투어</option>
+                    <option value="오랜친구여행사">오랜친구여행사</option>
+                    <option value="성화관광">성화관광</option>
+                </select>
+            </div>
+
+            <div class="popupPersonnelcommitteMain">
+                <label for="position" class="popupLabelText">직책</label>
+                <select name="position">
+                    <option value="운전원">운전원</option>
+                    <option value="일당직">일당직</option>
+                    <option value="팀장">팀장</option>
+                    <option value="인턴">인턴</option>
+                    <option value="사원">사원</option>
+                    <option value="주임">주임</option>
+                    <option value="대리">대리</option>
+                    <option value="과장">과장</option>
+                    <option value="부장">부장</option>
+                    <option value="차장">차장</option>
+                    <option value="이사">이사</option>
+                    <option value="전무">전무</option>    
+                </select>
+            </div>
+            
+            <div class="popupPersonnelcommitteMain">
+                <label for="incident-date" class="popupLabelText">사고 발생 날짜</label>
+                <input type="date" id="incident-date" name="incident_date" />
+            </div>
+
+            <div class="popupPersonnelcommitteMain">
+                <label for="name" class="popupLabelText">성명</label>
+                <input type="text" id="name" name="name" placeholder="예: 신용민" />
+            </div>
+
+        </div>
+
+        <label for="incident-location" class="popupLabelText">사고 발생 장소</label>
+        <input type="text" id="incident-location" name="incident_location" placeholder="사고가 발생한 장소를 입력하세요" class="textarea"/>
+
+        <label for="incident-details" class="popupLabelText">사고 및 위반 사항 정보</label>
+        <textarea id="incident-details" name="incident_details" placeholder="사고가 발생한 경위와 상황을 상세히 적어주세요" class="textarea"></textarea>
+
+        <label for="incident-response" class="popupLabelText">사고 처리는 어떻게 하였나요?</label>
+        <textarea id="incident-response" name="incident_response" placeholder="사고 후 처리한 방법을 적어주세요" class="textarea"></textarea>
+
+        <label for="expected-consequence" class="popupLabelText">사고 처리 결과에 대해 어떻게 예상하십니까?</label>
+        <textarea id="expected-consequence" name="expected_consequence" placeholder="사고 처리 결과에 대해 어떻게 생각하시는지 적어주세요" class="textarea"></textarea>
+
+        <!-- 사고 발생 후 생각 추가 -->
+        <div id="thoughts-section">
+            <div class="thought-group">
+                <label for="thoughts-after-incident" class="popupLabelText">사고 발생 후 본인은 어떤 생각을 하셨나요?</label>
+                <textarea id="thoughts-after-incident" name="thoughts_after_incident[]" placeholder="사고 후의 생각이나 소감을 적어주세요"></textarea>
+                <button type="button" class="remove-button" onclick="removeThoughtsField(this)">제거</button>
+            </div>
+        </div>
+
+        <!-- 라벨과 플레이스홀더 입력을 위한 필드 추가 -->
+        <label for="custom-label" class="popupLabelText">제목 입력</label>
+        <input type="text" id="custom-label" placeholder="제목 텍스트를 입력하세요" />
+
+        <!-- 사용자 입력값을 바탕으로 동적 텍스트 영역을 추가하는 버튼 -->
+        <button type="button" onclick="addCustomThoughtsField()">추가</button>
+
+        <div class="button-group">
+            <button type="submit" class="submit">제출</button>
+        </div>
+    </form>
+</div>
+
+<script>
+function addCustomThoughtsField() {
+    const labelText = document.getElementById('custom-label').value;
+    
+    // 만약 제목 입력란이 비어있다면 추가하지 않음
+    if (labelText.trim() === "") {
+        alert("제목을 입력하세요.");
+        return;
+    }
+
+    addThoughtsField(labelText);
+}
+
+function addThoughtsField(labelText) {
+    const thoughtsSection = document.getElementById('thoughts-section');
+    
+    const thoughtGroup = document.createElement('div');
+    thoughtGroup.className = 'thought-group';
+    
+    const newLabel = document.createElement('label');
+    newLabel.className = 'popupLabelText';
+    newLabel.textContent = labelText;
+    
+    const newTextarea = document.createElement('textarea');
+    newTextarea.name = 'thoughts_after_incident[]';
+    
+    const removeButton = document.createElement('button');
+    removeButton.type = 'button';
+    removeButton.className = 'remove-button';
+    removeButton.textContent = '제거';
+    removeButton.onclick = function() {
+        removeThoughtsField(removeButton);
+    };
+
+    thoughtGroup.appendChild(newLabel);
+    thoughtGroup.appendChild(newTextarea);
+    thoughtGroup.appendChild(removeButton);
+    
+    thoughtsSection.appendChild(thoughtGroup);
+}
+
+function removeThoughtsField(button) {
+    const thoughtGroup = button.parentElement;
+    thoughtGroup.remove();
+}
+</script>
+
+{% endblock %}

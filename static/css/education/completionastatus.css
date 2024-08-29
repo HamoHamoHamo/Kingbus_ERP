@@ -40,7 +40,8 @@
 }
 
 .groupListTitle {
-  font-size: 1.4rem;
+  width: 100%;
+  font-size: 2rem;
   color: white;
 }
 
@@ -69,10 +70,14 @@
   display: flex;
   flex-direction: column;
   width: 100%;
+  margin-left: 2rem;
 }
 
+
 .groupListHeaderText{
+  font-size: 2rem;
   margin-bottom: 2rem;
+  margin-top: 3rem;
 }
 
 .groupListItem {
@@ -129,10 +134,24 @@
   background-color: #CDCDCE;
 }
 
+.groupMember{
+  font-size: 2rem;
+}
 
+.groupMemberSpan{
+  font-size: 2.5rem;
+}
 
+.groupListFooterText{
+  font-size: 1.2rem;
+  margin-top: 1.5rem;
+}
 
-
+.groupListButton{
+  background-color: #1C1A4E;
+  font-size: 1.2rem;
+  color: white;
+}
 
 
 
@@ -279,11 +298,6 @@
 .foldGroup svg {
   cursor: pointer;
 }
-
-
-
-
-
 
 
 
@@ -625,8 +639,58 @@ select[name=use]{
 
 
 /* 팝업 */
-.popupBody {
+.popupButtonBody {
   height: 100%;
+}
+
+.popupBodyHeader{
+  font-size: 1rem;
+  text-align: left;
+  margin-top: 0.6rem;
+  margin-left: 2.2rem;
+}
+
+.popupBodySubHeader{
+  font-size: 1rem;
+  text-align: left;
+  margin-bottom: 0.6rem;
+  margin-left: 2.2rem;
+  margin-top: 2rem;
+}
+
+.popupBodyNumber{
+  font-size: 2rem;
+  margin-top: 0.6rem;
+}
+
+.popupBodyBody{
+  height: 23.3rem;
+  width: 34rem;
+  border: 0.05rem solid #838383;
+  border-radius: 0.5rem;;
+  margin-left: 1rem;
+  overflow: scroll;
+}
+
+.popupBodyList{
+  display: flex;
+  justify-content: space-between;
+  margin-left: 1.7rem;
+  margin-right: 2.4rem;
+  margin-top: 1.5rem;
+  font-size: 1.2rem;
+  color: #808080;
+}
+
+.popupFooterButton{
+  margin-top: 1rem;
+  margin-right: 2.3rem;
+  text-align: right;
+}
+
+.popupBodyListButton{
+  background-color: #1C1A4E;
+  color: white;
 }
 
 .popupArticletitle {
@@ -771,15 +835,6 @@ select[name=use]{
   width: calc(100% - 0.6rem);
 }
 
-
-.detailMapPopupHeader td {
-  background-color: #444;
-  color: white;
-  text-align: center;
-  position: sticky;
-  top: 0;
-}
-
 .popupArticleStation td:nth-child(1),
 .popupArticleStation td:nth-child(2) {
   width: 5%;
@@ -819,12 +874,6 @@ select[name=use]{
   height: 3rem;
 }
 
-.detailMapPopupHeader tr {
-  width: 100%;
-  height: 3rem;
-  text-align: center;
-  font-size: 1.4rem;
-}
 
 .detailMapPopupScrollBox td {
   text-align: center;
@@ -956,13 +1005,8 @@ select[name=use]{
 
 
 .groupList {
-    height: 100%;
+  height: 38.7rem;
 }
-
-.groupListBox {
-    height: 33.3%;
-}
-
 /* .groupListBody {
     height: calc(33.3% - 3.6rem);
 } */
@@ -1044,6 +1088,52 @@ select[name=use]{
 .popupContainer {
     width: 80rem;
 } */
+
+.popupeducationalContainer{
+  position: fixed;
+  top: 50%;
+  left: calc(50% + 11rem);
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  min-height: 19.6rem;
+  background-color: white;
+  box-shadow: 0 0.2rem 0.4rem rgb(0 0 0 / 16%);
+  transform: translate(-50%, -50%);
+  width: 36rem;
+  height: 40.6rem;
+}
+
+.popupHeaderTitle{
+  height: 4rem;
+  border-bottom: 1px solid black;
+}
+
+.popupTitle{
+  display: flex;
+  justify-content: space-between;
+  text-align: left;
+}
+
+.popupTitleList{
+  font-size: 1rem;
+  color: #808080;
+  margin-top: 1rem;
+  margin-left: 1.5rem;
+}
+
+.popupTitleSpan{
+  font-size: 1.5rem;
+  color: black;
+}
+
+.OutButton{
+  margin-right: 1.2rem;
+  margin-top: 1.2rem;
+  border: none;
+  background-color: white;
+}
 
 .popupArticleCategory {
     width: 100%;
@@ -1346,11 +1436,94 @@ select[name=use]{
     text-align: center;
 }
 
-.groupListTitle{
-    width: 100%;
+.subSearchCheckbox{
+  margin-left: 1rem;
 }
 
-.groupListHeaderText{
-    font-size: 2rem;
-    
+ .groupGraphBody {
+  background-color: white;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  padding: 1rem;
+}
+
+.EdChartHeader {
+  text-align: center;
+  background-color: #333;
+  color: white;
+  padding: 0.5rem;
+  font-size: 1.2rem;
+}
+
+.EdChartMainHeader {
+  font-size: 1.8rem;
+}
+
+.EdChartMainSpan {
+  font-size: 2.4rem;
+  color: #1c1a4e;
+}
+
+.EdChartMainHeader {
+  text-align: center;
+  color: #333;
+  font-size: 1.5rem;
+  margin-top: 1rem;
+}
+
+.chart-container {
+  width: 28.2rem;
+  margin-left: 1rem;
+}
+
+.legend {
+  display: flex;
+  justify-content: space-around;
+  margin-top: 1rem;
+}
+
+.legend div {
+  text-align: center;
+}
+
+.GraphFooter {
+  display: flex;
+  justify-content: space-around;
+  margin-top: 1rem;
+  font-size: 1.4rem;
+}
+
+.GraphMainFooter {
+  width: 15rem;
+  height: 12.9rem;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.GraphFooterHeader {
+  height: 2rem;
+  font-size: 1.2rem;
+  background-color: #808080;
+  text-align: center;
+  color: white;
+}
+
+.GraphFooterBody {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.8rem;
+}
+
+.myChart {
+  height: 30rem;
+}
+
+.completeSpan{
+  color: #1C1A4E;
+}
+
+.incompleteSpan{
+  color: #B00020;
+}
+
+.delayedCompletionSpan{
+  color: #808080;
 }

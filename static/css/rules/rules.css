@@ -63,27 +63,18 @@ table {
 }
 
 table thead tr {
-    background-color: skyblue;
-    color: #ffffff;
     text-align: left;
     font-weight: bold;
 }
 
 table th, table td {
-    height: 3rem;
-    border: 1px solid #dddddd;
+    height: 6.5rem;
+    border: 0.1rem solid #000000;
+    text-align: center;
 }
 
-table tbody tr {
-    border-bottom: 1px solid #dddddd;
-}
-
-table tbody tr:nth-of-type(even) {
-    background-color: #f3f3f3;
-}
-
-table tbody tr:last-of-type {
-    border-bottom: 2px solid #aeb8b6;
+table th{
+    border-bottom: 0.2rem solid #000000;
 }
 
 .tableNumber{
@@ -106,4 +97,30 @@ table tbody tr:last-of-type {
     margin-top: 5rem;
     font-family: "Nanum Myeongjo", serif;
     font-weight: 700;
+}
+
+.MainGoalsTitle{
+    text-align: right;
+    font-size: 2rem;
+    margin-top: 3rem;
+    margin-right: 5rem;
+    font-weight: 700;
+}
+
+.Criteria{
+    display: flex;
+    text-align: left;
+    font-size: 2rem;
+    margin-top: 3rem;
+    font-weight: 700;
+}
+
+.CriteriaSpan{
+    display: flex;
+    align-items: center;
+    margin-right: 2rem;
+}
+
+.SubLi{
+    margin-top: 0;
 }

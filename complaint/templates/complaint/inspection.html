@@ -2,174 +2,267 @@
 {% load static %}
 {% load custom_tags %}
 {% block head %}
-<link rel="stylesheet" href="{% static 'css/listpage.css' %}" type="text/css" />
+<meta http-equiv="Cache-Control" content="private, no-cache, no-store, max-age=0, must-revalidate">
 <link rel="stylesheet" href="{% static 'css/complaint/inspection.css' %}" type="text/css" />
-<link rel="stylesheet" href="{% static 'css/pagination.css' %}" type="text/css" />
 {% endblock %}
 
 {% block content-header %}
 <div class="HeaderTitle">
-    차량정비신청관리
+    상담일지
 </div>
 {% endblock %}
+
 
 {% block content %}
-
-
-
-
-<div class="searchAreaBox">
-    <form class="searchForm" action="">
-        <div class="searchTool">
-            <span class="searchName">직원검색</span>
-            <div class="routeFilterBox">
-                <input autocomplete="off" value="{{name}}" name="name" type="text" class="inputModules" list="hrFilter"
-                    placeholder="직원이름" autocomplete="off">
-                <select name="role" class="inputModules">
-                    <option {% if role == '담당업무' %} selected {% endif %} value="담당업무">담당업무</option>
-                    <option {% if role == '팀장' %} selected {% endif %} value="팀장">팀장</option>
-                    <option {% if role == '운전원' %} selected {% endif %} value="운전원">운전원</option>
-                    <option {% if role == '용역' %} selected {% endif %} value="용역">용역</option>
-                    <option {% if role == '임시' %} selected {% endif %} value="임시">임시</option>
-                </select>
-                <span class="searchName searchDate">날짜</span>
-                <input class="searchDateInput" value={{date1}} autocomplete="off" type="date" name="date1" class="" max="9999-12-31">~
-                <input class="searchDateInput" value={{date2}} autocomplete="off" type="date" name="date2" class="" max="9999-12-31">
-            </div>
-            <div class="searchBtn btnModules">검색</div>
-        </div>
+<div class="search-Container">
+    <form action="" class="search-Form">
+        <select name="select" class="search-Form_input search-Form-Select">
+            <option value="이름">이름</option>
+            <option value="담당 팀장">담당 팀장</option>
+        </select>
+        <input name="search" value="{{search}}" autocomplete="off" type="text" class="search-Form_input">
+        <select name="select" class="search-Form_input search-Form-Select">
+            <option value="대면 상담">대면 상담</option>
+            <option value="전화 상담">전화 상담</option>
+        </select>
+        <input name="date" type="date" class="searchDateInput"> ~ 
+        <input name="date" type="date" class="searchDateInput">
+        <input type="submit" class="search-Form_search-btn" value="검색">
+        <input type="radio" class="inspectionlogradio" name="dateOption"> <span class="inspectionlogradioText">상담 전<span>
+        <input type="radio" class="inspectionlogradio" name="dateOption"> <span class="inspectionlogradioText">상담 완료<span>
     </form>
-    <button id="saveBtn" class="btnModulesCreate btnModules">저장</button>
 </div>
 
-
-
-
-<form method="post" action="{% url 'complaint:inspection_delete' %}" class="deleteForm" onsubmit="return confirm('정말로 삭제하시겠습니까?');">
-    {% csrf_token %}
-    <div class="contentsAreaBox">
-        <table class="tableHead">
-            <thead>
-                <tr class="headerLine">
-                    <td>선택</td>
-                    <td>번호</td>
-                    <td>신청일</td>
-                    <td>차량번호</td>
-                    <td>이름</td>
-                    <td>담당업무</td>
-                    <td>입사일</td>
-                    <td>사유</td>
-                    <td>사진</td>
-                    <td>처리상태</td>
-                    <td>확인</td>
-                </tr>
-            </thead>
-        </table>
-
-        <table class="tableBody">
-            <tbody>
-                {% for data in inspection_list %}
-                <tr class="{{data.id}}">
-                    <td>
-                        <input autocomplete="off" name="check" value="{{data.id}}" type="checkbox">
-                    </td>
-                    <td>{{num|sub:forloop.counter0}}</td>
-                    <td>{{data.date}}</td>
-                    <td>{{data.vehicle_id.vehicle_num0}} {{data.vehicle_id.vehicle_num}}</td>
-                    <td>{{data.member_id.name}}</td>
-                    <td>{{data.member_id.role}}</td>
-                    <td>{{data.member_id.entering_date}}</td>
-                    <td>{{data.content}}</td>
-                    <td>
-                        <div class="bluelink" onclick='openBlankPage("{% url 'complaint:inspection_img' data.id %}")'>
-                        {% for file in data.inspection_request_file.all %}
-                            {{file.filename | slice:":10"}}
-                            {% if forloop.count > 1 %}<br>{% endif %}
-                        {% endfor %}
-                        </div>
-                    </td>
-                    <td>
-                        <select class="tableSelect">
-                            <option {% if data.status == '처리전' %} selected {% endif %} value="처리전">처리전</option>
-                            <option {% if data.status == '처리중' %} selected {% endif %} value="처리중">처리중</option>
-                            <option {% if data.status == '완료' %} selected {% endif %} value="완료">완료</option>
-                        </select>
-                    </td>
-                    <td>{{data.check_member_id.name}}</td>
-                </tr>
-                {% endfor %}
-                <tr class="blanckTr"></tr>
-            </tbody>
-        </table>
-
-        <div class="btnAreaBox">
-            <div class="pagination">
-                <!-- 페이징 처리 -->
-                {% if is_paginated %}
-                <div class="pagination">
-                    {% if page_obj.has_previous %}
-                    <div class="page-item page-pre">
-                        <a class="page-link"
-                            href="?&name={{name}}&role={{role}}&date1={{date1}}&date2={{date2}}&page={{ page_obj.previous_page_number }}"
-                            tabindex="-1">이전</a>
-                    </div>
-                    {% else %}
-                    <div class="page-item page-pre disabled">
-                        <a class="page-link" href="#" tabindex="-1">이전</a>
-                    </div>
-                    {% endif %}
-                    {% for page in page_range %}
-                    <div class="page-item {% if page == page_obj.number %} page-activate {% endif %}">
-                        <a class="page-link" href="?&name={{name}}&role={{role}}&date1={{date1}}&date2={{date2}}&page={{ page }}">{{ page }}</a>
-                    </div>
-                    {% endfor %}
-
-                    {% if page_obj.has_next %}
-                    <div class="page-item">
-                        <a class="page-link page-next"
-                            href="?&name={{name}}&role={{role}}&date1={{date1}}&date2={{date2}}&page={{ page_obj.next_page_number }}">다음</a>
-                    </div>
-                    {% else %}
-                    <div class="page-item page-next disabled">
-                        <a class="page-link" href="#">다음</a>
-                    </div>
-                    {% endif %}
-                </div>
-                {% endif %}
-            </div>
-            <div class="btnBox">
-                <input class="btnModules" type="submit" value="삭제">
-            </div>
-
+<div class="main-layout_container">
+    <form method="post" class="clientTableForm clientDeleteForm">
+        <div class="scrolling_table-list_header">
+            <table class="table-list">
+                <thead>
+                    <tr class="table-list_head-tr">
+                        <td class="table-list_head-tr_td">
+                            <input type="checkbox" class="deleteAllChecker">
+                        </td>
+                        <td class="table-list_head-tr_td">번호</td>
+                        <td class="table-list_head-tr_td">이름</td>
+                        <td class="table-list_head-tr_td">직책</td>
+                        <td class="table-list_head-tr_td">상담 일자</td>
+                        <td class="table-list_head-tr_td">담당 팀장</td>
+                        <td class="table-list_head-tr_td">팀</td>
+                        <td class="table-list_head-tr_td">상담 방식</td>
+                        <td class="table-list_head-tr_td">일지 제목</td>
+                        <td class="table-list_head-tr_td">이미지</td>
+                        <td class="table-list_head-tr_td">상담 현황</td>
+                    </tr>
+                </thead>
+            </table>
         </div>
-    </div>
-</form>
+        
+        <div class="scrolling_table-list_body">
+            <table class="table-list">
+                <tbody>
+                    <tr class="table-list_body-tr accountTr">
+                        <td class="table-list_body-tr_td">
+                            <input type="checkbox" class="deleteChecker" name="check" value="{{client.id}}">
+                        </td>
+                        <td class="table-list_body-tr_td">1</td>
+                        <td class="table-list_body-tr_td">유정노</td>
+                        <td class="table-list_body-tr_td">승무원</td>
+                        <td class="table-list_body-tr_td">2024 - 07 - 22</td>
+                        <td class="table-list_body-tr_td">전민철</td>
+                        <td class="table-list_body-tr_td">팀 A</td>
+                        <td class="table-list_body-tr_td">대면 상담</td>
+                        <td class="table-list_body-tr_td">일지 제목</td>
+                        <td class="table-list_body-tr_td"><img src="path_to_your_image.jpg" alt="-.jpg" class="thumbnail"></td>
+                        <td class="table-list_body-tr_td Popupbutton">상담 완료</td>
+                    </tr>
 
+                    <tr class="table-list_body-tr accountTr">
+                        <td class="table-list_body-tr_td">
+                            <input type="checkbox" class="deleteChecker" name="check" value="{{client.id}}">
+                        </td>
+                        <td class="table-list_body-tr_td">1</td>
+                        <td class="table-list_body-tr_td">유정노</td>
+                        <td class="table-list_body-tr_td">승무원</td>
+                        <td class="table-list_body-tr_td">2024 - 07 - 22</td>
+                        <td class="table-list_body-tr_td">전민철</td>
+                        <td class="table-list_body-tr_td">팀 A</td>
+                        <td class="table-list_body-tr_td">대면 상담</td>
+                        <td class="table-list_body-tr_td">일지 제목</td>
+                        <td class="table-list_body-tr_td"><img srx="#" value="12345.jpg"></td>
+                        <td class="table-list_body-tr_td Popupbutton">상담 완료</td>
+                    </tr>
+
+                    <tr class="table-list_body-tr accountTr">
+                        <td class="table-list_body-tr_td">
+                            <input type="checkbox" class="deleteChecker" name="check" value="{{client.id}}">
+                        </td>
+                        <td class="table-list_body-tr_td">1</td>
+                        <td class="table-list_body-tr_td">유정노</td>
+                        <td class="table-list_body-tr_td">승무원</td>
+                        <td class="table-list_body-tr_td">2024 - 07 - 22</td>
+                        <td class="table-list_body-tr_td">전민철</td>
+                        <td class="table-list_body-tr_td">팀 A</td>
+                        <td class="table-list_body-tr_td">대면 상담</td>
+                        <td class="table-list_body-tr_td">일지 제목</td>
+                        <td class="table-list_body-tr_td"><img srx="#" value="12345.jpg"></td>
+                        <td class="table-list_body-tr_td Popupbutton">상담 완료</td>
+                    </tr>
+
+                    <tr class="table-list_body-tr accountTr">
+                        <td class="table-list_body-tr_td">
+                            <input type="checkbox" class="deleteChecker" name="check" value="{{client.id}}">
+                        </td>
+                        <td class="table-list_body-tr_td">1</td>
+                        <td class="table-list_body-tr_td">유정노</td>
+                        <td class="table-list_body-tr_td">승무원</td>
+                        <td class="table-list_body-tr_td">2024 - 07 - 22</td>
+                        <td class="table-list_body-tr_td">전민철</td>
+                        <td class="table-list_body-tr_td">팀 A</td>
+                        <td class="table-list_body-tr_td">대면 상담</td>
+                        <td class="table-list_body-tr_td">일지 제목</td>
+                        <td class="table-list_body-tr_td"><img srx="#" value="12345.jpg"></td>
+                        <td class="table-list_body-tr_td Popupbutton">상담 완료</td>
+                    </tr>
+
+                    <tr class="table-list_body-tr accountTr">
+                        <td class="table-list_body-tr_td">
+                            <input type="checkbox" class="deleteChecker" name="check" value="{{client.id}}">
+                        </td>
+                        <td class="table-list_body-tr_td">1</td>
+                        <td class="table-list_body-tr_td">유정노</td>
+                        <td class="table-list_body-tr_td">승무원</td>
+                        <td class="table-list_body-tr_td">2024 - 07 - 22</td>
+                        <td class="table-list_body-tr_td">전민철</td>
+                        <td class="table-list_body-tr_td">팀 A</td>
+                        <td class="table-list_body-tr_td">대면 상담</td>
+                        <td class="table-list_body-tr_td">일지 제목</td>
+                        <td class="table-list_body-tr_td"><img srx="#" value="12345.jpg"></td>
+                        <td class="table-list_body-tr_td Popupbutton">상담 완료</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </form>
+</div>
 {% endblock %}
+
+
+{% block popup %}
+<div class="popupAreaModules">
+    <div class="popupBgModules"></div>
+    <form method="post" class="popupContainer popupInspectionlogSize clientCreteForm">
+        <div class="popupHeader">
+            <div class="popupTitle">상담 내용</div>
+        </div>
+        <div class="popupBody">
+            <div class="popupArticleCategori">기본정보</div>
+            <div class="popupMainInspectionlogSection">
+                <div class="popupFirstArticleBox">
+                    <div class="popupMainInspectionlogDouble">
+                        <label for="" class="popupArticleLabel">상담자</label>
+                        <input autocomplete="off" name="business_num" type="text" class="popupMainInspectionlogDoubleText length100">
+                    </div>
+                    <div class="popupMainInspectionlogDouble">
+                        <label for="" class="popupLastArticleLabel">직책</label>
+                        <input autocomplete="off" name="name" type="text" class="popupMainInspectionlogDoubleText length100 essential">
+                    </div>
+                </div>
+                <div class="popupSecondArticleBox">
+                    <div class="popupMainInspectionlogDouble">
+                        <label for="" class="popupArticleLabel">상담일</label>
+                        <input autocomplete="off" name="representative" type="text" class="popupMainInspectionlogDoubleText length20">
+                    </div>
+                    <div class="popupMainInspectionlogDouble">
+                        <label for="" class="popupLastArticleLabel">상담 방식</label>
+                        <input autocomplete="off" name="phone" type="text" class="popupMainInspectionlogDoubleText length100">
+                    </div>
+                </div>
+                <div class="popupSecondArticleBox">
+                    <div class="popupMainInspectionlogDouble">
+                        <label for="" class="popupArticleLabel">담당 팀장</label>
+                        <input autocomplete="off" name="representative" type="text" class="popupMainInspectionlogDoubleText length20">
+                    </div>
+                </div>
+            </div>
+
+        <div class="popupArticleCategori">일지 제목</div>
+
+        <div class="popupInspectionlogMainSection">
+          <input type="text" name="일지제목" class="MainSectionText" maxlength=5000>
+        </div>
+
+        <div class="popupArticleCategori">일지 내용</div>
+
+        <div class="popupInspectionlogMainSection">
+          <input type="text" name="일지내용" class="SubSectionText" maxlength=5000>
+        </div>
+
+
+            <div class="popupCheckFooter">
+                <div class="btnModules popupCloseBtn">닫기</div>
+            </div>
+        </div>
+    </form>
+</div>
+
+<div id="imagePopup" class="popupAreaModules">
+    <div class="popupBgModules"></div>
+    <div class="popupContainer">
+        <img id="popupImage" src="" alt="팝업 이미지" class="popupImage">
+        <div class="popupCloseBtn">닫기</div>
+    </div>
+</div>
+{% endblock %}
+
+
+
 
 
 {% block script %}
 <script>
-    const saveUrl = '{% url "complaint:inspection_edit" %}';
-    const searchBtn = document.querySelector(".searchBtn")
-    const searchForm = document.querySelector(".searchForm")
-    const searchDate = document.querySelectorAll(".searchDateInput")
-    const deleteForm = document.querySelectorAll(".deleteForm")
-
-        // 검색 날짜 역전 방지
-    searchBtn.addEventListener("click", orderPeriod)
-
-    function orderPeriod() {
-        if (searchDate[0].value.replace(/\-/g, "") > searchDate[1].value.replace(/\-/g, "")) {
-            alert("잘못된 범위입니다. 날짜를 다시 확인해 주세요.")
-            searchDate[1].value = ""
-        } else {
-            searchForm.submit()
-        }
-    }
-    function openBlankPage(url) {
-        window.open(url, "사진", "width=630, height=891" )
-    }
+    {% autoescape off %}
+    const dataList = {{data_list}};
+    console.log("dataList", dataList);
+    
+    {% endautoescape %}
 </script>
-<script src="{% static 'js/complaint/complaint.js' %}"></script>
+<script src="{% static 'js/crudmember/clientCreate.js' %}"></script>
+<script src="{% static 'js/crudmember/deleteChecker.js' %}"></script>
+<script src="{% static 'js/crudmember/deleteAlert.js' %}"></script>
+<script src="{% static 'js/crudmember/createEssential.js' %}"></script>
+<script src="{% static 'js/phoneNumberForm.js' %}"></script>
+
+<script>
+  // 팝업 열기 버튼 클릭 이벤트를 모든 Popupbutton 요소에 추가
+  document.querySelectorAll('.Popupbutton').forEach(function(button) {
+    button.addEventListener('click', function() {
+      document.querySelector('.popupAreaModules').style.display = 'block';
+    });
+  });
+
+  // 팝업 닫기 버튼 클릭 이벤트
+  document.querySelector('.popupCloseBtn').addEventListener('click', function() {
+    document.querySelector('.popupAreaModules').style.display = 'none';
+  });
+</script>
+
+
+<script>
+    document.querySelectorAll('.thumbnail').forEach(function(img) {
+    img.addEventListener('click', function() {
+        const src = img.getAttribute('src');
+        const popupImage = document.getElementById('popupImage');
+        popupImage.setAttribute('src', src);
+        document.getElementById('imagePopup').style.display = 'flex';
+    });
+});
+
+document.querySelector('.popupCloseBtn').addEventListener('click', function() {
+    document.getElementById('imagePopup').style.display = 'none';
+});
+
+document.querySelector('.popupBgModules').addEventListener('click', function() {
+    document.getElementById('imagePopup').style.display = 'none';
+});
+</script>
 {% endblock %}

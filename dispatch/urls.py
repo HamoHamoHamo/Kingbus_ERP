@@ -78,4 +78,6 @@ urlpatterns = [
     path('automaticdispatch', views.AutomaticDispatch.as_view(), name='automaticdispatch'),
 
     path('dispatchanalysis', views.dispatchAnalysis.as_view(), name='dispatchanalysis'),
+
+    path('dispatchorder', views.DispatchOrder.as_view(), name='dispatchorder'),
 ]

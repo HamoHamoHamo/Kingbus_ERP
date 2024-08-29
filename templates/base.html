@@ -58,6 +58,9 @@
             </li>
             <div class="sideMenuNav2Box">
               <ul class="sideMenuNav2">
+                <a href="{% url 'personnelcommittee' %}" class="sideMenuNav2Link">
+                  <li class="sideMenuNav2Menu">교통사고처리수칙</li>
+                </a>
                 <a href="{% url 'approvalrules' %}" class="sideMenuNav2Link">
                   <li class="sideMenuNav2Menu">결재수칙</li>
                 </a>
@@ -145,7 +148,7 @@
             </div>
           </div>
 
-           {% comment %} <div class="nav1Box">
+          <div class="nav1Box">
             <li class="nav1BoxMenu nav1BoxMenuHaveDepth2">
               <div class="nav1BoxMenuImgDiv">
                 <img class="nav1BoxMenuImg" src="{% static 'images/document.png' %}" alt="공지사항 아이콘">
@@ -156,17 +159,16 @@
               </svg>        
             </li>
            <div class="sideMenuNav2Box">
-                <ul class="sideMenuNav2">
-                  <a href="{% url 'approval' %}" class="sideMenuNav2Link">
-                    <li class="sideMenuNav2Menu">결재작성</li>
-                  </a>
-                  <a href="{% url 'approval_process' %}" class="sideMenuNav2Link">
-                    <li class="approver_edit">결재처리</li>
-                  </a>
-                </ul>
-              </div> 
-            </div> {% endcomment %}
-          
+              <ul class="sideMenuNav2">
+                <a href="{% url 'approval:approval' %}" class="sideMenuNav2Link">
+                  <li class="sideMenuNav2Menu">결재작성</li>
+                </a>
+                <a href="{% url 'approval:approval_process' %}" class="sideMenuNav2Link">
+                  <li class="approver_edit">결재처리</li>
+                </a>
+              </ul>
+            </div> 
+          </div>
           
           <div class="nav1Box">
             <li class="nav1BoxMenu nav1BoxMenuHaveDepth2">

@@ -3,10 +3,559 @@
 {% load custom_tags %}
 {% block head %}
 <meta http-equiv="Cache-Control" content="private, no-cache, no-store, max-age=0, must-revalidate">
+<link rel="stylesheet" href="{% static 'css/vehicle/inspectionlog.css' %}" type="text/css" />
 {% endblock %}
 
 {% block content-header %}
 <div class="HeaderTitle">
     점검일지
 </div>
+{% endblock %}
+
+
+{% block content %}
+<div class="search-Container">
+    <form action="" class="search-Form">
+        <select name="select" class="search-Form_input search-Form-Select">
+            <option value="차량 번호">차량 번호</option>
+            <option value="담당 기사">담당 기사</option>
+        </select>
+        <input name="search" value="{{search}}" autocomplete="off" type="text" class="search-Form_input">
+        <input name="date" type="date" class="searchDateInput"> ~ 
+        <input name="date" type="date" class="searchDateInput">
+        <input type="submit" class="search-Form_search-btn" value="검색">
+        <input type="radio" class="inspectionlogradio" name="dateOption"> <span class="inspectionlogradioText">점검 전<span>
+        <input type="radio" class="inspectionlogradio" name="dateOption"> <span class="inspectionlogradioText">점검 완료<span>
+    </form>
+</div>
+
+<div class="main-layout_container">
+    <form method="post" class="clientTableForm clientDeleteForm">
+        <div class="scrolling_table-list_header">
+            <table class="table-list">
+                <thead>
+                    <tr class="table-list_head-tr">
+                        <td class="table-list_head-tr_td">
+                            <input type="checkbox" class="deleteAllChecker">
+                        </td>
+                        <td class="table-list_head-tr_td">번호</td>
+                        <td class="table-list_head-tr_td">차량번호</td>
+                        <td class="table-list_head-tr_td">담당기사</td>
+                        <td class="table-list_head-tr_td">점검일자</td>
+                        <td class="table-list_head-tr_td">점검팀장</td>
+                        <td class="table-list_head-tr_td">팀</td>
+                        <td class="table-list_head-tr_td">기타 기재 내용</td>
+                        <td class="table-list_head-tr_td">점검 종합 평가</td>
+                        <td class="table-list_head-tr_td">점검 현황</td>
+                    </tr>
+                </thead>
+            </table>
+        </div>
+        
+        <div class="scrolling_table-list_body">
+            <table class="table-list">
+                <tbody>
+                    <tr class="table-list_body-tr accountTr">
+                        <td class="table-list_body-tr_td">
+                            <input type="checkbox" class="deleteChecker" name="check" value="{{client.id}}">
+                        </td>
+                        <td class="table-list_body-tr_td">1</td>
+                        <td class="table-list_body-tr_td">경기 03바 0710</td>
+                        <td class="table-list_body-tr_td">유정노</td>
+                        <td class="table-list_body-tr_td">2024 - 07 - 22</td>
+                        <td class="table-list_body-tr_td">유성재</td>
+                        <td class="table-list_body-tr_td">팀 A</td>
+                        <td class="table-list_body-tr_td">망치 개수가 모자라요.</td>
+                        <td class="table-list_body-tr_td">버스 실내 복도 청소에 조금 더 신경써야 할 것 같습니다.</td>
+                        <td class="table-list_body-tr_td Popupbutton">점검 완료</td>
+                    </tr>
+
+                    <tr class="table-list_body-tr accountTr">
+                        <td class="table-list_body-tr_td">
+                            <input type="checkbox" class="deleteChecker" name="check" value="{{client.id}}">
+                        </td>
+                        <td class="table-list_body-tr_td">1</td>
+                        <td class="table-list_body-tr_td">경기 03바 0710</td>
+                        <td class="table-list_body-tr_td">유정노</td>
+                        <td class="table-list_body-tr_td">2024 - 07 - 22</td>
+                        <td class="table-list_body-tr_td">유성재</td>
+                        <td class="table-list_body-tr_td">팀 A</td>
+                        <td class="table-list_body-tr_td">망치 개수가 모자라요.</td>
+                        <td class="table-list_body-tr_td">버스 실내 복도 청소에 조금 더 신경써야 할 것 같습니다.</td>
+                        <td class="table-list_body-tr_td Popupbutton">점검 완료</td>
+                    </tr>
+
+                    <tr class="table-list_body-tr accountTr">
+                        <td class="table-list_body-tr_td">
+                            <input type="checkbox" class="deleteChecker" name="check" value="{{client.id}}">
+                        </td>
+                        <td class="table-list_body-tr_td">1</td>
+                        <td class="table-list_body-tr_td">경기 03바 0710</td>
+                        <td class="table-list_body-tr_td">유정노</td>
+                        <td class="table-list_body-tr_td">2024 - 07 - 22</td>
+                        <td class="table-list_body-tr_td">유성재</td>
+                        <td class="table-list_body-tr_td">팀 A</td>
+                        <td class="table-list_body-tr_td">망치 개수가 모자라요.</td>
+                        <td class="table-list_body-tr_td">버스 실내 복도 청소에 조금 더 신경써야 할 것 같습니다.</td>
+                        <td class="table-list_body-tr_td Popupbutton">점검 완료</td>
+                    </tr>
+
+                    <tr class="table-list_body-tr accountTr">
+                        <td class="table-list_body-tr_td">
+                            <input type="checkbox" class="deleteChecker" name="check" value="{{client.id}}">
+                        </td>
+                        <td class="table-list_body-tr_td">1</td>
+                        <td class="table-list_body-tr_td">경기 03바 0710</td>
+                        <td class="table-list_body-tr_td">유정노</td>
+                        <td class="table-list_body-tr_td">2024 - 07 - 22</td>
+                        <td class="table-list_body-tr_td">유성재</td>
+                        <td class="table-list_body-tr_td">팀 A</td>
+                        <td class="table-list_body-tr_td">망치 개수가 모자라요.</td>
+                        <td class="table-list_body-tr_td">버스 실내 복도 청소에 조금 더 신경써야 할 것 같습니다.</td>
+                        <td class="table-list_body-tr_td Popupbutton">점검 완료</td>
+                    </tr>
+
+                    <tr class="table-list_body-tr accountTr">
+                        <td class="table-list_body-tr_td">
+                            <input type="checkbox" class="deleteChecker" name="check" value="{{client.id}}">
+                        </td>
+                        <td class="table-list_body-tr_td">1</td>
+                        <td class="table-list_body-tr_td">경기 03바 0710</td>
+                        <td class="table-list_body-tr_td">유정노</td>
+                        <td class="table-list_body-tr_td">2024 - 07 - 22</td>
+                        <td class="table-list_body-tr_td">유성재</td>
+                        <td class="table-list_body-tr_td">팀 A</td>
+                        <td class="table-list_body-tr_td">망치 개수가 모자라요.</td>
+                        <td class="table-list_body-tr_td">버스 실내 복도 청소에 조금 더 신경써야 할 것 같습니다.</td>
+                        <td class="table-list_body-tr_td Popupbutton">점검 완료</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </form>
+</div>
+{% endblock %}
+
+
+{% block popup %}
+<div class="popupAreaModules">
+    <div class="popupBgModules"></div>
+    <form method="post" class="popupContainer popupInspectionlogSize clientCreteForm">
+        <div class="popupHeader">
+            <div class="popupTitle">점검 내역</div>
+        </div>
+        <div class="popupBody">
+            <div class="popupArticleCategori">기본정보</div>
+            <div class="popupMainInspectionlogSection">
+                <div class="popupFirstArticleBox">
+                    <div class="popupMainInspectionlogDouble">
+                        <label for="" class="popupArticleLabel">차량 번호</label>
+                        <input autocomplete="off" name="business_num" type="text" class="popupMainInspectionlogDoubleText length100">
+                    </div>
+                    <div class="popupMainInspectionlogDouble">
+                        <label for="" class="popupLastArticleLabel">담당 기사</label>
+                        <input autocomplete="off" name="name" type="text" class="popupMainInspectionlogDoubleText length100 essential">
+                    </div>
+                </div>
+                <div class="popupSecondArticleBox">
+                    <div class="popupMainInspectionlogDouble">
+                        <label for="" class="popupArticleLabel">점검일자</label>
+                        <input autocomplete="off" name="representative" type="text" class="popupMainInspectionlogDoubleText length20">
+                    </div>
+                    <div class="popupMainInspectionlogDouble">
+                        <label for="" class="popupLastArticleLabel">점검 팀장</label>
+                        <input autocomplete="off" name="phone" type="text" class="popupMainInspectionlogDoubleText length100">
+                    </div>
+                </div>
+            </div>
+
+            <div class="popupArticleCategori">점검 내역</div>
+
+          <div class="popupInspectionlogMainSection">
+            <div class="popupInspectionlogSection">
+                    <div class="popupInspectionlogMainTitle">
+                        <span class="popupInspectionlogMainSpan">일일 점검
+                    </div>
+                    <hr>
+                    <div class="popupInspectionlogBox">
+                    <div class="popupInspectionlogDouble">
+                        <label for="" class="popupArticleLabelText">엔진 오일</label>
+                        <input autocomplete="off" type="radio">
+                    </div>
+                    </div>
+                    <div class="popupInspectionlogBox">
+                    <div class="popupInspectionlogDouble">
+                        <label for="" class="popupArticleLabelText">파워 오일</label>
+                        <input autocomplete="off" type="radio">
+                    </div>
+                    </div>
+                    <div class="popupInspectionlogBox">
+                    <div class="popupInspectionlogDouble">
+                        <label for="" class="popupArticleLabelText">냉각수 / 부동액</label>
+                        <input autocomplete="off" type="radio">
+                    </div>
+                    </div>
+                    <div class="popupInspectionlogBox">
+                    <div class="popupInspectionlogDouble">
+                        <label for="" class="popupArticleLabelText">클러치</label>
+                        <input autocomplete="off" type="radio">
+                    </div>
+                    </div>
+                    <div class="popupInspectionlogBox">
+                    <div class="popupInspectionlogDouble">
+                        <label for="" class="popupArticleLabelText">외부 차체 상태 ( 파손 확인 ) </label>
+                        <input autocomplete="off" type="radio">
+                    </div>
+                    </div>
+                    <div class="popupInspectionlogBox">
+                    <div class="popupInspectionlogDouble">
+                        <label for="" class="popupArticleLabelText">등화 장치 ( 실 / 내외 ) </label>
+                        <input autocomplete="off" type="radio">
+                    </div>
+                    </div>
+                    <div class="popupInspectionlogBox">
+                    <div class="popupInspectionlogDouble">
+                        <label for="" class="popupArticleLabelText">블랙박스 작동 여부</label>
+                        <input autocomplete="off" type="radio">
+                    </div>
+                    </div>
+                    <div class="popupInspectionlogBox">
+                    <div class="popupInspectionlogDouble">
+                        <label for="" class="popupArticleLabelText">타이어 상태</label>
+                        <input autocomplete="off" type="radio">
+                    </div>
+                    </div>
+                    <div class="popupInspectionlogLastBox">
+                    <div class="popupInspectionlogDouble">
+                        <label for="" class="popupArticleLabelText">버스 실내 상태</label>
+                        <input autocomplete="off" type="radio">
+                    </div>
+                    </div>      
+             </div>
+
+            <div class="popupInspectionlogSection">
+                    <div class="popupInspectionlogMainTitle">
+                        <span class="popupInspectionlogMainSpan">주간 점검
+                    </div>
+                    <hr>
+                    <div class="popupInspectionlogBox">
+                    <div class="popupInspectionlogDouble">
+                        <label for="" class="popupArticleLabelText">유리 / 선팅</label>
+                        <input autocomplete="off" type="radio">
+                    </div>
+                    </div>
+                    <div class="popupInspectionlogBox">
+                    <div class="popupInspectionlogDouble">
+                        <label for="" class="popupArticleLabelText">자격증</label>
+                        <input autocomplete="off" type="radio">
+                    </div>
+                    </div>
+                    <div class="popupInspectionlogBox">
+                    <div class="popupInspectionlogDouble">
+                        <label for="" class="popupArticleLabelText">차고지 증명서</label>
+                        <input autocomplete="off" type="radio">
+                    </div>
+                    </div>
+                    <div class="popupInspectionlogBox">
+                    <div class="popupInspectionlogDouble">
+                        <label for="" class="popupArticleLabelText">운행 기록증</label>
+                        <input autocomplete="off" type="radio">
+                    </div>
+                    </div>
+                    <div class="popupInspectionlogBox">
+                    <div class="popupInspectionlogDouble">
+                        <label for="" class="popupArticleLabelText">타이어 휠 상태</label>
+                        <input autocomplete="off" type="radio">
+                    </div>
+                    </div>
+                    <div class="popupInspectionlogBox">
+                    <div class="popupInspectionlogDouble">
+                        <label for="" class="popupArticleLabelText">차량 청결</label>
+                        <input autocomplete="off" type="radio">
+                    </div>
+                    </div>
+                    <div class="popupInspectionlogBox">
+                    <div class="popupInspectionlogDouble">
+                        <label for="" class="popupArticleLabelText">비상 망치 ( 개수 )</label>
+                        <input autocomplete="off" type="radio">
+                    </div>
+                    </div>
+                    <div class="popupInspectionlogBox">
+                    <div class="popupInspectionlogDouble">
+                        <label for="" class="popupArticleLabelText">소화기 수량</label>
+                        <input autocomplete="off" type="radio">
+                    </div>
+                    </div>
+                    <div class="popupInspectionlogLastBox">
+                    <div class="popupInspectionlogDouble">
+                        <label for="" class="popupArticleLabelText">블랙박스 포맷 여부</label>
+                        <input autocomplete="off" type="radio">
+                    </div>
+                    </div>      
+             </div>
+
+            <div class="popupInspectionlogSection">
+                    <div class="popupInspectionlogMainTitle">
+                        <span class="popupInspectionlogMainSpan">월간 점검
+                    </div>
+                    <hr>
+                    <div class="popupInspectionlogBox">
+                    <div class="popupInspectionlogDouble">
+                        <label for="" class="popupArticleLabelText">TV</label>
+                        <input autocomplete="off" type="radio">
+                    </div>
+                    </div>
+                    <div class="popupInspectionlogBox">
+                    <div class="popupInspectionlogDouble">
+                        <label for="" class="popupArticleLabelText">DVD</label>
+                        <input autocomplete="off" type="radio">
+                    </div>
+                    </div>
+                    <div class="popupInspectionlogBox">
+                    <div class="popupInspectionlogDouble">
+                        <label for="" class="popupArticleLabelText">노래방</label>
+                        <input autocomplete="off" type="radio">
+                    </div>
+                    </div>
+                    <div class="popupInspectionlogBox">
+                    <div class="popupInspectionlogDouble">
+                        <label for="" class="popupArticleLabelText">바닥 마이크</label>
+                        <input autocomplete="off" type="radio">
+                    </div>
+                    </div>
+                    <div class="popupInspectionlogBox">
+                    <div class="popupInspectionlogDouble">
+                        <label for="" class="popupArticleLabelText">길성테크</label>
+                        <input autocomplete="off" type="radio">
+                    </div>
+                    </div>
+                    <div class="popupInspectionlogBox">
+                    <div class="popupInspectionlogDouble">
+                        <label for="" class="popupArticleLabelText">바닥 파워</label>
+                        <input autocomplete="off" type="radio">
+                    </div>
+                    </div>
+                    <div class="popupInspectionlogBox">
+                    <div class="popupInspectionlogDouble">
+                        <label for="" class="popupArticleLabelText">인버터</label>
+                        <input autocomplete="off" type="radio">
+                    </div>
+                    </div>
+                    <div class="popupInspectionlogBox">
+                    <div class="popupInspectionlogDouble">
+                        <label for="" class="popupArticleLabelText">블랙박스</label>
+                        <input autocomplete="off" type="radio">
+                    </div>
+                    </div>
+                    <div class="popupInspectionlogBox">
+                    <div class="popupInspectionlogDouble">
+                        <label for="" class="popupArticleLabelText">전광판</label>
+                        <input autocomplete="off" type="radio">
+                    </div>
+                    </div>    
+                    <div class="popupInspectionlogBox">
+                    <div class="popupInspectionlogDouble">
+                        <label for="" class="popupArticleLabelText">블라인트</label>
+                        <input autocomplete="off" type="radio">
+                    </div>
+                    </div>     
+             </div>
+
+             <div class="popupInspectionlogSection">
+                    <div class="popupInspectionlogMainTitle">
+                        <span class="popupInspectionlogMainSpan">그 외 점검
+                    </div>
+                    <hr>
+                    <div class="popupInspectionlogBox">
+                    <div class="popupInspectionlogDouble">
+                        <label for="" class="popupArticleLabelText">PSI 상태 ( 130 )</label>
+                        <input autocomplete="off" type="radio">
+                    </div>
+                    </div>
+                    <div class="popupInspectionlogBox">
+                    <div class="popupInspectionlogDouble">
+                        <label for="" class="popupArticleLabelText">도어 작동</label>
+                        <input autocomplete="off" type="radio">
+                    </div>
+                    </div>
+                    <div class="popupInspectionlogBox">
+                    <div class="popupInspectionlogDouble">
+                        <label for="" class="popupArticleLabelText">비상 탈출구</label>
+                        <input autocomplete="off" type="radio">
+                    </div>
+                    </div>
+                    <div class="popupInspectionlogBox">
+                    <div class="popupInspectionlogDouble">
+                        <label for="" class="popupArticleLabelText">GPS</label>
+                        <input autocomplete="off" type="radio">
+                    </div>
+                    </div>
+                    <div class="popupInspectionlogBox">
+                    <div class="popupInspectionlogDouble">
+                        <label for="" class="popupArticleLabelText">단말기</label>
+                        <input autocomplete="off" type="radio">
+                    </div>
+                    </div>
+                    <div class="popupInspectionlogBox">
+                    <div class="popupInspectionlogDouble">
+                        <label for="" class="popupArticleLabelText">요소수량</label>
+                        <input autocomplete="off" type="radio">
+                    </div>
+                    </div>
+                    <div class="popupInspectionlogBox">
+                    <div class="popupInspectionlogDouble">
+                        <label for="" class="popupArticleLabelText">브러쉬</label>
+                        <input autocomplete="off" type="radio">
+                    </div>
+                    </div>
+                    <div class="popupInspectionlogBox">
+                    <div class="popupInspectionlogDouble">
+                        <label for="" class="popupArticleLabelText">에어컨</label>
+                        <input autocomplete="off" type="radio">
+                    </div>
+                    </div>
+                    <div class="popupInspectionlogBox">
+                    <div class="popupInspectionlogDouble">
+                        <label for="" class="popupArticleLabelText">사이드미러</label>
+                        <input autocomplete="off" type="radio">
+                    </div>
+                    </div>    
+                    <div class="popupInspectionlogBox">
+                    <div class="popupInspectionlogDouble">
+                        <label for="" class="popupArticleLabelText">차량 문 잠금 장치</label>
+                        <input autocomplete="off" type="radio">
+                    </div>
+                    </div>        
+             </div>
+
+        </div>
+
+        <div class="popupArticleCategori">기타 기재 사항</div>
+
+        <div class="popupInspectionlogMainSection">
+          <input type="text" name="기타 기재 사항" class="MainSectionText" maxlength=5000>
+        </div>
+
+
+        <div class="popupArticleCategori">평가 내역</div>
+
+        <div class="popupEvaluationhistorySection">
+          <div class="popupCheckevaluationdetails">수리/보완 <span class="popupCheckevaluationdetailsText"><input type="text" value="완벽해요." class="popupMainInspectionlogDoubleText"></span></div>
+          <div class="popupCheckevaluationdetails">차량 내부 <span class="popupCheckevaluationdetailsText"><input type="text" value="깨끗해요." class="popupMainInspectionlogDoubleText"></span></div>
+          <div class="popupCheckevaluationdetails">점검 <span class="popupCheckevaluationdetailsText"><input type="text" value="꼼꼼해요." class="popupMainInspectionlogDoubleText"></span></div>
+        </div>
+
+
+        <div class="popupArticleCategori">종합 평가</div>
+
+        <div class="popupInspectionlogMainSection">
+          <input type="text" name="종합평가" class="MainSectionText" maxlength=5000>
+        </div>
+
+
+            <div class="popupCheckFooter">
+                <div class="btnModules popupCloseBtn">닫기</div>
+            </div>
+        </div>
+    </form>
+</div>
+
+<div class="popupAreaModules">
+    <div class="popupBgModules"></div>
+    <form method="post" class="popupContainer popupContainerDouble clientEditForm">
+        <div class="popupHeader">
+            <div class="popupTitle">거래처 정보</div>
+        </div>
+        <div class="popupBody">
+                <div class="popupArticleCategori">기본정보</div>
+                <div class="popupSection">
+                <div class="popupArticleBox">
+                    <div class="popupArticleDouble">
+                        <label for="" class="popupArticleLabel">사업자번호</label>
+                        <input autocomplete="off" name="business_num" type="text" class="popupArticleinput editBusiness length100">
+                    </div>
+                    <div class="popupArticleDouble">
+                        <label for="" class="popupArticleLabel"><span class="importantStar">*</span>거래처명</label>
+                        <input autocomplete="off" name="name" type="text" class="popupArticleinput editAccount length100 editEssential">
+                    </div>
+                </div>
+                <div class="popupArticleBox">
+                    <div class="popupArticleDouble">
+                        <label for="" class="popupArticleLabel">대표자명</label>
+                        <input autocomplete="off" name="representative" type="text" class="popupArticleinput editCeo length100">
+                    </div>
+                    <div class="popupArticleDouble">
+                        <label for="" class="popupArticleLabel"><span class="importantStar">*</span>대표전화</label>
+                        <input autocomplete="off" name="phone" type="text" class="popupArticleinput editCeoPhone length100 editEssential phoneNumber" maxlength="13">
+                    </div>
+                </div>
+                <div class="popupArticleBox">
+                    <div class="popupArticleDouble">
+                        <label for="" class="popupArticleLabel">담당자명</label>
+                        <input autocomplete="off" name="manager" type="text" class="popupArticleinput editWorker length100">
+                    </div>
+                    <div class="popupArticleDouble">
+                        <label for="" class="popupArticleLabel">담당자 전화번호</label>
+                        <input autocomplete="off" name="manager_phone" type="text" class="popupArticleinput editWorkerPhone length100 phoneNumber" maxlength="13">
+                    </div>
+                </div>
+                <div class="popupArticleBox">
+                    <div class="popupArticleDouble">
+                        <label for="" class="popupArticleLabel">이메일</label>
+                        <input autocomplete="off" name="email" type="text" class="popupArticleinput editEmail length100" placeholder="ex) adminEmail@email.com">
+                    </div>
+                    <div class="popupArticleDouble">
+                        <label for="" class="popupArticleLabel">주소</label>
+                        <input autocomplete="off" name="address" type="text" class="popupArticleinput editAddress length100">
+                    </div>
+                </div>
+                <div class="popupArticleBox">
+                    <div class="popupArticle">
+                        <label for="" class="popupArticleLabel">비고</label>
+                        <input autocomplete="off" name="note" type="text" class="popupArticleinput editBlanck length100">
+                    </div>
+                </div>
+            </div>
+            <div class="popupFooter">
+                <div class="btnModules clientSaveEditBtn">등록</div>
+                <div class="btnModules popupCloseBtn">닫기</div>
+            </div>
+        </div>
+        <input type="hidden" name="id" class="editAccountId">
+    </form>
+</div>
+{% endblock %}
+
+
+
+
+
+{% block script %}
+<script>
+    {% autoescape off %}
+    const dataList = {{data_list}};
+    console.log("dataList", dataList);
+    
+    {% endautoescape %}
+</script>
+<script src="{% static 'js/crudmember/clientCreate.js' %}"></script>
+<script src="{% static 'js/crudmember/deleteChecker.js' %}"></script>
+<script src="{% static 'js/crudmember/deleteAlert.js' %}"></script>
+<script src="{% static 'js/crudmember/createEssential.js' %}"></script>
+<script src="{% static 'js/phoneNumberForm.js' %}"></script>
+
+<script>
+  // 팝업 열기 버튼 클릭 이벤트를 모든 Popupbutton 요소에 추가
+  document.querySelectorAll('.Popupbutton').forEach(function(button) {
+    button.addEventListener('click', function() {
+      document.querySelector('.popupAreaModules').style.display = 'block';
+    });
+  });
+
+  // 팝업 닫기 버튼 클릭 이벤트
+  document.querySelector('.popupCloseBtn').addEventListener('click', function() {
+    document.querySelector('.popupAreaModules').style.display = 'none';
+  });
+</script>
+
 {% endblock %}

@@ -95,3 +95,23 @@
     margin-top: 1rem;
     margin-bottom: 1rem;
 }
+
+.groupSelectBody{
+    display:flex;
+}
+
+.routeScan{
+    border: none;
+}
+
+.routeInputSaves{
+    border: none;
+}
+
+.excelUploads{
+    border: none;
+}
+
+.excelDownloads{
+    border: none;
+}

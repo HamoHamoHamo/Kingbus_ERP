@@ -1533,3 +1533,15 @@ class OperationQuality(generic.ListView):
             return render(request, 'authority.html')
         else:
             return super().get(request, **kwargs)
+
+class Personnelcommittee_Report(generic.ListView):
+    template_name = 'HR/personnelcommittee_Report.html'
+    context_object_name = 'member_list'
+    model = Member
+    paginate_by = 10
+
+    def get(self, request, **kwargs):
+        if request.session.get('authority') >= 3:
+            return render(request, 'authority.html')
+        else:
+            return super().get(request, **kwargs)

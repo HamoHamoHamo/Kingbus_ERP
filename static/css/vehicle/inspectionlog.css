@@ -45,38 +45,31 @@
 }
 
 .clientTableForm td:nth-child(3) {
-    width: 7%;
+    width: 10%;
 }
 
 .clientTableForm td:nth-child(4){
-    width: 7%;
+    width: 8%;
 }
-
-.clientTableForm td:nth-child(5) {
+.clientTableForm td:nth-child(6) {
     width: 8%;
 }
 
-.clientTableForm td:nth-child(6) {
-    width: 5%;
-}
-
+.clientTableForm td:nth-child(5),
 .clientTableForm td:nth-child(7) {
-    width: 5%;
+    width: 8%;
 }
 
 .clientTableForm td:nth-child(8) {
-    width: 5%;
+    width: 20%;
 }
 
 .clientTableForm td:nth-child(9) {
-    width: 40%;
+    width: 25%;
 }
 
 .clientTableForm td:nth-child(10) {
-    width: 8%;
-}
-.clientTableForm td:nth-child(11) {
-    width: 8%;
+    width: 10%;
 }
 
 .client{
@@ -86,8 +79,8 @@
 .popupBody{
     display: flex;
     flex-direction: column;
-    width: 70rem;
-    height: 68rem;
+    width: 118rem;
+    height: 92.2rem;
     padding: 0 2rem;
     background-color: white;
     box-sizing: border-box;
@@ -95,13 +88,13 @@
 }
 
 .popupInspectionlogSize{
-    width: 70rem;
-    height: 68rem;
+    width: 118rem;
+    height: 78rem;
 }
 
 .popupArticleCategori {
     margin-left: 5rem;
-    margin-top: 1rem;
+    margin-top: 1.5rem;
     margin-bottom: 1rem;
     font-size: 1.4rem;
     font-weight: bold;
@@ -141,11 +134,12 @@
     border-radius: 0.5rem;
     display: flex;
     flex-direction: column;
-    width: 60rem;
+    width: 103.5rem;
+
     box-sizing: border-box;
     margin-top: 1rem;
     margin-bottom: 1.5rem;
-    margin-left: 4rem;
+    margin-left: 5rem;
 }
 
 .popupInspectionlogDouble{
@@ -170,7 +164,6 @@
     gap: 2.6rem;
     margin-left: 5.1rem;
     margin-right: 5.1rem;
-    width: 59rem;
 }
 
 .popupInspectionlogMainTitle{
@@ -181,13 +174,8 @@
 }
 
 .MainSectionText{
-    height: 4.4rem;
-    width: 59rem;
-}
-
-.SubSectionText{
-    height: 31.3rem;
-    width: 59rem;
+    height: 10.2rem;
+    width: 108rem;
 }
 
 .popupMainInspectionlogDouble {
@@ -210,14 +198,14 @@
 }
 
 .popupLastArticleLabel{
-    margin-left: 2.6rem;
+    margin-left: 10rem;
     width: 9rem;
     text-align: left;
     font-size: 1.4rem;
 }
 
 .popupMainInspectionlogDoubleText{
-    width: 16rem;
+    width: 18rem;
     height: 2.6rem;
     color: #575757;
     border: 0.1rem solid #808080;
@@ -250,6 +238,7 @@
 .popupCheckFooter {
     display: flex;
     align-items: center;
+    width: 103.5rem;
     height: 7.2rem;
     margin-left: 5.1rem;
     margin-top: 1.2rem;

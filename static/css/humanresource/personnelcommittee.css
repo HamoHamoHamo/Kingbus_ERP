@@ -45,38 +45,35 @@
 }
 
 .clientTableForm td:nth-child(3) {
-    width: 7%;
+    width: 5%;
 }
 
 .clientTableForm td:nth-child(4){
-    width: 7%;
+    width: 8%;
 }
 
 .clientTableForm td:nth-child(5) {
-    width: 8%;
+    width: 15%;
 }
 
 .clientTableForm td:nth-child(6) {
-    width: 5%;
+    width: 10%;
 }
 
 .clientTableForm td:nth-child(7) {
-    width: 5%;
+    width: 8%;
 }
 
 .clientTableForm td:nth-child(8) {
-    width: 5%;
+    width: 15%;
 }
 
 .clientTableForm td:nth-child(9) {
-    width: 40%;
+    width: 20%;
 }
 
 .clientTableForm td:nth-child(10) {
-    width: 8%;
-}
-.clientTableForm td:nth-child(11) {
-    width: 8%;
+    width: 7%;
 }
 
 .client{
@@ -91,7 +88,6 @@
     padding: 0 2rem;
     background-color: white;
     box-sizing: border-box;
-    overflow: scroll;
 }
 
 .popupInspectionlogSize{
@@ -278,4 +274,30 @@
 
 .Popupbutton{
     color: #0069D9;
+}
+
+.inputModules{
+    margin-right: 2rem;
+}
+
+.popupContainerDouble{
+    height: 30rem;
+}
+
+.popupHeader{
+    height: 8rem;
+}
+
+.popupFooter{
+    margin-top: 1rem
+}
+
+.fileUplode{
+    border: none;
+    background-color: white;
+    color: #0069D9
+}
+
+.fileName{
+    color: #0069D9
 }

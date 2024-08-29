@@ -110,7 +110,7 @@ def set_approver_select():
     approver_select_list.append(Member.objects.filter(use="사용").get(name="이세명"))
     approver_select_list.append(Member.objects.filter(use="사용").get(name="김인숙"))
     approver_select_list.append(Member.objects.filter(use="사용").get(name="김형주"))
-    # approver_select_list.append(Member.objects.filter(use="사용").get(name="엄성환"))
+    approver_select_list.append(Member.objects.filter(use="사용").get(name="엄성환"))
     approver_select_list.append(Member.objects.filter(use="사용").get(name="김성태"))
     return approver_select_list
 

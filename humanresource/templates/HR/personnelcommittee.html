@@ -3,13 +3,204 @@
 {% load custom_tags %}
 {% block head %}
 <meta http-equiv="Cache-Control" content="private, no-cache, no-store, max-age=0, must-revalidate">
-
-<link rel="stylesheet" href="{% static 'css/humanresource/salary.css' %}" type="text/css" />
-<link rel="stylesheet" href="{% static 'css/humanresource/salaryChange.css' %}" type="text/css" />
+<link rel="stylesheet" href="{% static 'css/humanresource/personnelcommittee.css' %}" type="text/css" />
 {% endblock %}
 
 {% block content-header %}
 <div class="HeaderTitle">
     인사위원회
 </div>
+{% endblock %}
+
+{% block content %}
+<div class="search-Container">
+    <form class="search-Form">
+        <label for="" class="search-Form_label">이름 : </label>
+        <input autocomplete="off" name="name" value="{{name}}" type="text" class="search-Form_input">
+        <select class="inputModules marginLeft2" name="type">
+            <option value = "">구분</option>
+            <option value = "견책">견책</option>
+            <option value = "감급">감급</option>
+            <option value = "정직">정직</option>
+            <option value = "해고">해고</option>
+        </select>
+        <input autocomplete="off" name='month' value="{{month}}" type="month"
+            class="search-Form_input search-Form_input-Month">
+        <input type="submit" class="search-Form_search-btn" value="검색">
+    </form>
+    <div class="popup-area-box">
+        <div class="popup-area-box_btn" onclick="openCreatePopup()">등록</div>
+    </div>
+</div>
+
+<div class="main-layout_container">
+    <form method="post" class="clientTableForm clientDeleteForm">
+        <div class="scrolling_table-list_header">
+            <table class="table-list">
+                <thead>
+                    <tr class="table-list_head-tr">
+                        <td class="table-list_head-tr_td">
+                            <input type="checkbox" class="deleteAllChecker">
+                        </td>
+                        <td class="table-list_head-tr_td">번호</td>
+                        <td class="table-list_head-tr_td">이름</td>
+                        <td class="table-list_head-tr_td">사항</td>
+                        <td class="table-list_head-tr_td">징계 조치 내역</td>
+                        <td class="table-list_head-tr_td">보고 날짜</td>
+                        <td class="table-list_head-tr_td">담당자</td>
+                        <td class="table-list_head-tr_td">재발 방지 조치</td>
+                        <td class="table-list_head-tr_td">이의 신청</td>
+                        <td class="table-list_head-tr_td">보고서 작성</td>
+                    </tr>
+                </thead>
+            </table>
+        </div>
+        
+        <div class="scrolling_table-list_body">
+            <table class="table-list">
+                <tbody>
+                    <tr class="table-list_body-tr accountTr">
+                        <td class="table-list_body-tr_td">
+                            <input type="checkbox" class="deleteChecker" name="check" value="{{client.id}}">
+                        </td>
+                        <td class="table-list_body-tr_td">1</td>
+                        <td class="table-list_body-tr_td">유정노</td>
+                        <td class="table-list_body-tr_td">충돌 사고</td>
+                        <td class="table-list_body-tr_td">감봉 1개월</td>
+                        <td class="table-list_body-tr_td">2024 - 07 - 22</td>
+                        <td class="table-list_body-tr_td">고영이</td>
+                        <td class="table-list_body-tr_td">안전 교육 실시</td>
+                        <td class="table-list_body-tr_td">
+                            <input type="file" id="incident-files" name="incident_files" multiple style="display:none;" />
+                            <button type="button" id="upload-button" onclick="document.getElementById('incident-files').click()" class="fileUplode">파일 업로드</button>
+                            <span id="file-name-display" style="display:none;" class="fileName"></span>
+                        </td>
+                        <td class="table-list_body-tr_td Popupbutton"><a class="WriteButton" href="/HR/personnelcommittee_Report">작성</a></td> 
+                    </tr>
+
+                    
+                    
+                </tbody>
+            </table>
+        </div>
+    </form>
+</div>
+
+{% endblock %}
+
+{% block popup %}
+<div class="popupAreaModules">
+    <div class="popupBgModules"></div>
+    <form method="post" class="popupContainer popupContainerDouble vehicleCreateForm"
+        enctype="multipart/form-data">
+        <div class="popupHeader">
+            <div class="popupTitle">인사위원회등록</div>
+        </div>
+        <div class="popupBody">
+            <div class="popupSection">
+                <div class="popupArticleBox">
+                    <div class="popupArticleDouble">
+                        <label for="" class="popupArticleLabel">이름</label>
+                        <input autocomplete="off" name="maker" type="text" class="popupArticleinput length100">
+                    </div>
+                    <div class="popupArticleDouble">
+                        <label for="" class="popupArticleLabel">사항</label>
+                        <input autocomplete="off" name="maker" type="text" class="popupArticleinput length100">
+                    </div>
+                </div>
+                <div class="popupArticleBox">
+                    <div class="popupArticleDouble">
+                        <label for="" class="popupArticleLabel">징계 조치</label>
+                        <select name="disciplinary action" class="popupArticleinput">
+                            <option value="견책">견책</option>
+                            <option value="감급">감급</option>
+                            <option value="정직">정직</option>
+                            <option value="해고">해고</option>
+                        </select>
+                    </div>
+                    <div class="popupArticleDouble">
+                        <label for="" class="popupArticleLabel">보고날짜</label>
+                        <input autocomplete="off" name="release_date" type="date" class="popupArticleinput" max="9999-12-31">
+                    </div>
+                </div>
+                <div class="popupArticleBox">
+                    <div class="popupArticleDouble">
+                        <label for="" class="popupArticleLabel">담당자</label>
+                        <select name="disciplinary action" class="popupArticleinput">
+                            <option value="대리">고영이</option>
+                            <option value="대리">이세명</option>
+                            <option value="과장">김인숙</option>
+                        </select>
+                    </div>
+                    <div class="popupArticleDouble">
+                        <label for="" class="popupArticleLabel">방지 조치</label>
+                        <input autocomplete="off" name="passenger_num" type="number" class="popupArticleinput length100">
+                    </div>
+                </div>
+                <div class="popupArticleBox">
+                    <div class="popupArticleDouble">
+                        <label for="" class="popupArticleLabel">사고 날짜</label>
+                        <input autocomplete="off" name="release_date" type="date" class="popupArticleinput" max="9999-12-31">
+                    </div>
+                </div>
+            </div>
+            <div class="popupFooter">
+                <div class="btnModules createBtn marginR1">등록</div>
+                <div class="btnModules closeBtn" onclick="closePopup()">닫기</div>
+            </div>
+        </div>
+    </form>
+</div>
+{% endblock %}
+
+{% block script %}
+<script>
+// 등록 버튼과 팝업 관련 요소들 정의
+const openCrete = document.querySelector(".popup-area-box_btn");
+const popupAreaModules = document.querySelectorAll(".popupAreaModules");
+const popupBgModules = document.querySelectorAll(".popupBgModules");
+const popupCloseBtns = document.querySelectorAll(".closeBtn");
+
+// 등록 팝업 열기
+openCrete.addEventListener("click", openCreatePopup);
+
+function openCreatePopup() {
+    popupAreaModules[0].style.display = "block";
+}
+
+// 팝업 닫기
+popupBgModules.forEach((bg) => {
+    bg.addEventListener("click", closePopup);
+});
+
+popupCloseBtns.forEach((btn) => {
+    btn.addEventListener("click", closePopup);
+});
+
+function closePopup() {
+    popupAreaModules.forEach((popup) => {
+        popup.style.display = "none";
+    });
+}
+</script>
+
+<script>
+// 파일이 선택되면 버튼을 숨기고 선택된 파일 이름을 표시
+document.getElementById('incident-files').addEventListener('change', function() {
+    const fileInput = document.getElementById('incident-files');
+    const fileNameDisplay = document.getElementById('file-name-display');
+    const uploadButton = document.getElementById('upload-button');
+    
+    if (fileInput.files.length > 0) {
+        const fileNames = Array.from(fileInput.files).map(file => file.name).join(', ');
+        fileNameDisplay.textContent = fileNames;
+        fileNameDisplay.style.display = 'inline';  // 파일 이름 표시
+        uploadButton.style.display = 'none';       // 업로드 버튼 숨기기
+    } else {
+        fileNameDisplay.textContent = '선택된 파일이 없습니다';
+        fileNameDisplay.style.display = 'none';
+        uploadButton.style.display = 'inline';
+    }
+});
+</script>
 {% endblock %}

@@ -69,26 +69,7 @@
 
             <div class="groupCreateHead">팀 등록</div>
             <div class="groupCreateBody">
-                <div class="groupCreateinput">
-                    <input autocomplete="off" value="{{team.name}}" name="name" type="text" placeholder="팀이름" class="groupNameCreate length50">
-                </div>
-                <div class="groupCreateBtnBox">
-                    <input autocomplete="off" type="submit" class="btnModules groupCreateSave" value="저장">
-                    <div class="btnModules groupCreateDelete" onclick="groupCreateDeleteUrl()">삭제</div>
-                </div>
-            </div>
-        </form>
-
-        {% if team and team != "전체" and team != "팀없음" %}
-        <form action="{% url 'HR:team_edit' %}" method="post" class="groupCreates">
-        {% else %}
-        <form action="{% url 'HR:team_create' %}" method="post" class="groupCreates">
-        {% endif %}
-            <input autocomplete="off" type="hidden" name="id" value="{{team.id}}">
-            {% csrf_token %}
-
-            <div class="groupCreateHead">팀장 선택</div>
-            <div class="groupCreateBody">
+              <div class="groupSelectBody">
                 <div class="groupCreateinput">
                     <select name="role" class="inputTeamJang">
                     <option {% if role == '팀장선택' %} selected {% endif %} value="팀장선택">팀장선택</option>
@@ -102,6 +83,12 @@
                     <option {% if role == '추광엽' %} selected {% endif %} value="추광엽">추광엽</option>
                 </select>
                 </div>
+               
+                <div class="groupCreateinput">
+                    <input autocomplete="off" value="{{team.name}}" name="name" type="text" placeholder="팀이름" class="groupNameCreate length50">
+                </div>
+
+              </div> 
                 <div class="groupCreateBtnBox">
                     <input autocomplete="off" type="submit" class="btnModules groupCreateSave" value="저장">
                     <div class="btnModules groupCreateDelete" onclick="groupCreateDeleteUrl()">삭제</div>
@@ -109,7 +96,6 @@
             </div>
         </form>
 
-        
 
         <div class="foldGroup">
             <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 30 30">

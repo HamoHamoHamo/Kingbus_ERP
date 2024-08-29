@@ -77,3 +77,113 @@
     margin: 0 auto;
     cursor: pointer;
 }
+
+
+
+
+.contentsAreaBox form {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: auto;
+}
+
+.creteHeader {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 100%;
+  height: 15rem;
+}
+
+.inputCell {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  height: 2.5rem;
+}
+
+.inputCellFile {
+  align-items: flex-start;
+  height: 6.5rem;
+}
+
+.inputName {
+  padding-left: 1rem;
+  font-size: 1.6rem;
+  font-weight: 500;
+  color: #191919;
+}
+
+.inputCell input{
+  border: 0.1rem solid #D2D2D2;
+  border-radius: 0.3rem;
+  outline: none;
+}
+
+.inputCell input[type=text] {
+  width: calc(100% - 12rem);
+  height: 2.3rem;
+  padding-left: 1rem;
+}
+
+.inputCell .datafile {
+  width: calc(100% - 13rem);
+  height: 5rem;
+  padding: 1rem;
+}
+
+.inputCell .Sumnailefile{
+  width: calc(100% - 13rem);
+  height: 2.4rem;
+  padding: 1rem;
+}
+
+.radiobox {
+  display: flex;
+  align-items: center;
+  width: calc(100% - 11rem);
+}
+
+.radiobox input{
+  width: 1.6rem;
+  height: 1.6rem;
+  margin: 0.3rem 1rem 0 0;
+  border: 0.1rem solid #D2D2D2;
+  cursor: pointer;
+}
+
+.radiobox label {
+  font-size: 1.6rem;
+  color: #191919;
+  margin-right: 2rem;
+  cursor: pointer;
+}
+
+.contentsAreaBox form textarea {
+  height: auto;
+  min-height: 36rem;
+  margin-top: 2rem;
+  padding: 1rem;
+  border: 0.1rem solid #D2D2D2;
+  border-radius: 0.3rem;
+  resize: none;
+  outline: none;
+}
+
+.createBtnBox {
+  display: flex;
+  justify-content: flex-end;
+  width: 100%;
+  height: 2.5rem;
+  margin: 2rem 0;
+}
+
+.textArea{
+  width: 100%;
+  height: 5rem;
+  border: 0.1rem solid black;
+}
+
+
