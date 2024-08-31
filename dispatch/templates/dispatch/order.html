@@ -733,10 +733,14 @@
                       </div>
                 </div>
             </div>
-            <div class="popupFooter">
-                <div class="btnModules waypointDeleteBtn">삭제</div>
-                <div class="btnModules addtionalBtn">저장</div>
-                <div class="btnModules waypointCloseBtn">닫기</div>
+            <div class="popupFooter stationPopupFooter">
+                <div class="popupFooterLeftBox">
+                    <div class="btnModules waypointDeleteBtn">삭제</div>
+                </div>
+                <div class="popupFooterRightBox">
+                    <div class="btnModules addtionalBtn">저장</div>
+                    <div class="btnModules waypointCloseBtn">닫기</div>
+                </div>
             </div>
         </div>
     </div>
@@ -898,6 +902,91 @@
             </div>
         </div>
     </div>
+</div>
+
+<div class="popupAreaModules" id="information">
+    <div class="popupBgModules"></div>
+    <div class="popupContainer popupContainerDouble popupContainerReservation">
+        <div class="popupHeader">
+            <div class="popupTitle">예약정보</div>
+        </div>
+        <div class="popupBody popupBodyReservation">
+            <div class="popupSection">
+                <div class="popupArticleCategori">예약자 정보</div>
+                <div class="popupArticleBox">
+                    <div class="popupArticleDouble">
+                        <label for="" class="popupArticleLabel"><span class="importantStar">*</span>예약자명</label>
+                        <input autocomplete="off" type="text" class="popupArticleinput waypointInput length100">
+                    </div>
+                    <div class="popupArticleDouble">
+                        <label for="" class="popupArticleLabel">전화번호</label>
+                        <input type="text" class="popupArticleinput">
+                    </div>
+                </div>
+                <div class="popupArticleBox">
+                    <div class="popupArticleDouble">
+                        <label for="" class="popupArticleLabel">은행명</label>
+                        <input autocomplete="off" type="text" class="popupArticleinput delegateInput length100">
+                    </div>
+                    <div class="popupArticleDouble">
+                        <label for="" class="popupArticleLabel">전화번호</label>
+                        <input type="text" class="popupArticleinput">
+                    </div>
+                </div>
+                <div class="popupArticleBox">
+                    <button class="btnModules addBtn">추가</button>
+                </div>
+                <div class="popupArticleCategori categoriFlex">
+                    <div class="first">예약자 명단</div>
+                    <div class="second">15/25</div>
+                </div>
+                <div class="popupArticleBoxTable reservationTable">
+                    <div class="scrolling_table-list_header">
+                        <table class="table-list">
+                          <thead>
+                            <tr class="table-list_head-tr">
+                              <td class="table-list_head-tr_td reservationTableTd">선택</td>
+                              <td class="table-list_head-tr_td reservationTableTd">예약자명</td>
+                              <td class="table-list_head-tr_td reservationTableTd">전화번호</td>
+                              <td class="table-list_head-tr_td reservationTableTd">은행명</td>
+                              <td class="table-list_head-tr_td reservationTableTd">금액</td>
+                              <td class="table-list_head-tr_td reservationTableTd">결제시간</td>
+                              <td class="table-list_head-tr_td reservationTableTd">수급현황</td>
+                            </tr>
+                          </thead>
+                        </table>
+                      </div>
+                      <div class="scrolling_table-list_body">
+                        <table class="table-list">
+                          <tbody>
+                            <tr class="table-list_body-tr">
+                                <td class="table-list_body-tr_td"><input type="checkbox" calss="waypointCheckbox"></td>
+                                <td class="table-list_body-tr_td">예약자명</td>
+                                <td class="table-list_body-tr_td">전화번호</td>
+                                <td class="table-list_body-tr_td">은행명</td>
+                                <td class="table-list_body-tr_td">금액</td>
+                                <td class="table-list_body-tr_td"><input class="datetimeLocal" type="datetime-local"></td>
+                                <td class="table-list_body-tr_td">
+                                    <select class="selectType">
+                                        <option value="수금" selected>수급</option>
+                                        <option value="수급완료">수급완료</option>
+                                    </select>
+                                </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                </div>
+                <div class="popupFooter">
+                    <div class="btnModules delete">삭제</div>
+                    <div class="btnModules save">저장</div>
+                    <div class="btnModules close"  onclick="closeInformation()">닫기</div>
+                </div>
+            </div>
+        </div>
+        
+    </div>
+    
 </div>
 {% endblock %}
   
