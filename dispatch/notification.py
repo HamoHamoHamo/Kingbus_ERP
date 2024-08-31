@@ -1,6 +1,7 @@
 from .models import *
 from datetime import datetime, timedelta
 from config.settings import TODAY, FORMAT
+from config.custom_logging import logger
 from humanresource.views import send_message
 
 def driver_check_notification():
@@ -38,3 +39,36 @@ def driver_check_notification():
 				print(e)
 			print("TOKEN ", user.name)
 	print("DATETIME : ", str(datetime.now())[:16])
+
+# rpap 관리자 알림
+def admin_dispatch_check_notification():
+	order_list = DispatchOrder.objects.exclude(firebase_uid=None).filter(departure_date__gte=TODAY, info_order=None)
+
+	target_list = []
+	try:
+		target_list.append(Member.objects.get(use="사용", authority__lte=1, name="김인숙"))
+		target_list.append(Member.objects.get(use="사용", authority__lte=1, name="이세명"))
+		target_list.append(Member.objects.get(use="사용", authority__lte=1, name="박유진"))
+		target_list.append(Member.objects.get(use="사용", authority__lte=1, name="엄성환"))
+
+	except Exception as e:
+		logger.error(f"ERROR {e}")
+	for order in order_list:
+		for target in target_list:
+			send_message("TRP에서 배차 확정을 해주세요", f"{order.route}\n{order.departure_date} ~ {order.arrival_date}", target.token, None)
+
+def admin_complete_check_notification():
+	order_list = DispatchOrder.objects.exclude(firebase_uid=None, info_order=None, contract_status="확정").filter(departure_date__gte=TODAY)
+
+	target_list = []
+	try:
+		target_list.append(Member.objects.get(use="사용", authority__lte=1, name="김인숙"))
+		target_list.append(Member.objects.get(use="사용", authority__lte=1, name="이세명"))
+		target_list.append(Member.objects.get(use="사용", authority__lte=1, name="박유진"))
+		target_list.append(Member.objects.get(use="사용", authority__lte=1, name="엄성환"))
+
+	except Exception as e:
+		logger.error(f"ERROR {e}")
+	for order in order_list:
+		for target in target_list:
+			send_message("계약금 입금 확인 후 TRP에서 계약현황 확정을 해주세요", f"{order.route}\n{order.departure_date} ~ {order.arrival_date}", target.token, None)

@@ -28,6 +28,7 @@ from humanresource.views import send_message
 from itertools import chain
 from vehicle.models import Vehicle
 
+from firebase.rpa_p_firebase import RpaPFirebase
 from datetime import datetime, timedelta, date
 # from utill.decorator import option_year_deco
 from common.constant import TODAY, FORMAT, WEEK, WEEK2
@@ -2617,10 +2618,27 @@ def order_connect_create(request):
             except Exception as e:
                 print(e)
         
+        # rpa-p
+        if count == int(order.bus_cnt) and order.firebase_path:
+            edit_rpap_value(order, "isEstimateApproval", '견적 예약이 완료되었습니다!')
+
         return redirect(request.META.get('HTTP_REFERER', 'redirect_if_referer_not_found'))
 
     else:
         return HttpResponseNotAllowed(['post'])
+
+def edit_rpap_value(order, field, message):
+    firebase = RpaPFirebase()
+    estimate_uid = order.firebase_path
+    # isEstimateApproval이 false면 값 변경, 알림 보냄
+    if (not firebase.get_value(estimate_uid, field)):
+        estimate_data = firebase.edit_estimate(estimate_uid, field, True)
+        
+        # rpap 유저에게 알림보내기
+        user_uid = estimate_uid.split("/Estimate")[0]
+        fcm_token = firebase.get_value(user_uid, "fcmToken")
+        send_message(message, f'{order.route}\n{order.departure_date} ~ {order.arrival_date}', fcm_token, None)
+
 
 def get_order_distance_and_time(order):
     data_list = list(order.station.order_by('pub_date').values('longitude', 'latitude', 'address'))
@@ -2947,6 +2965,10 @@ def order_edit(request):
             order.creator = creator
             order.save()
 
+            # rpap
+            if order.firebase_path and order.contract_status == "확정":
+                edit_rpap_value(order, "isCompletedReservation", "운행이 확정되었습니다!")
+
             # 경유지 처리
             old_stations = order.station.all()
             old_stations.delete()
@@ -2965,8 +2987,8 @@ def order_edit(request):
         return HttpResponseNotAllowed(['post'])
 
 def create_order_stations(request, order, creator):
-    waypoint_list = request.POST.getlist('waypoint')
-    waypoint_time_list = request.POST.getlist('waypoint_time')
+    waypoint_list = request.POST.getlist('station_name')
+    waypoint_time_list = request.POST.getlist('station_time')
     delegate_list = request.POST.getlist('delegate')
     delegate_phone_list = request.POST.getlist('delegate_phone')
     for i in range(len(waypoint_list)):

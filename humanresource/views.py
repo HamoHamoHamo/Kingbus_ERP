@@ -34,52 +34,56 @@ from salary.views import SalaryDataController
 from salary.services import SalaryTableDataCollector3
 from dispatch.selectors import DispatchSelector
 from common.formatter import format_number_with_commas, remove_comma_from_number
+from config.custom_logging import logger
 
 def send_message(title, body, token, topic):
-    cred_path = os.path.join(BASE_DIR, CRED_PATH)
-    cred = credentials.Certificate(cred_path)
-    
-    if not firebase_admin._apps:
-        firebase_admin.initialize_app(cred)
+    try:
+        cred_path = os.path.join(BASE_DIR, CRED_PATH)
+        cred = credentials.Certificate(cred_path)
+        
+        if not firebase_admin._apps:
+            firebase_admin.initialize_app(cred)
 
-    # Android 알림 설정
-    android_config = messaging.AndroidConfig(
-        notification=messaging.AndroidNotification(
-            title=title,
-            body=body,
-            sound='kingbus.wav',  # 알림 소리 지정
-            channel_id='DefaultChannel',
-        )
-    )
-
-    
-    # APNs 알림 설정
-    apns_config = messaging.APNSConfig(
-        payload=messaging.APNSPayload(
-            aps=messaging.Aps(
-                alert=messaging.ApsAlert(
-                    title=title,
-                    body=body,
-                ),
-                sound='KingbusAlarmSound.caf'  # 알림 소리 지정
+        # Android 알림 설정
+        android_config = messaging.AndroidConfig(
+            notification=messaging.AndroidNotification(
+                title=title,
+                body=body,
+                sound='kingbus.wav',  # 알림 소리 지정
+                channel_id='DefaultChannel',
             )
         )
-    )
-    message = messaging.Message(
-        # android=android_config,
-        apns=apns_config,
-        token=token,
-        topic=topic,
-        data = {
-            'title' : title,
-            'body' : body,
-            'sound' : 'kingbus.wav',  # 알림 소리 지정
-        }
-    )
 
-    response = messaging.send(message)
-    print('Successfully sent message:', response)
+        
+        # APNs 알림 설정
+        apns_config = messaging.APNSConfig(
+            payload=messaging.APNSPayload(
+                aps=messaging.Aps(
+                    alert=messaging.ApsAlert(
+                        title=title,
+                        body=body,
+                    ),
+                    sound='KingbusAlarmSound.caf'  # 알림 소리 지정
+                )
+            )
+        )
+        message = messaging.Message(
+            # android=android_config,
+            apns=apns_config,
+            token=token,
+            topic=topic,
+            data = {
+                'title' : title,
+                'body' : body,
+                'sound' : 'kingbus.wav',  # 알림 소리 지정
+            }
+        )
 
+        response = messaging.send(message)
+        print('Successfully sent message:', response)
+    except Exception as e:
+        logger.error(f"Message Error : {e}")
+        # raise Exception(f"Message Error : {e}")
 
 class MemberList(generic.ListView):
     template_name = 'HR/member.html'

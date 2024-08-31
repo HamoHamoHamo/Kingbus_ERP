@@ -122,8 +122,8 @@ addtionalBtn.addEventListener("click", additionalWaypoint)
 
 function additionalWaypoint() {
 
-    const hiddenWaypoint = document.querySelectorAll("input[name=waypoint]")
-    const waypointTimeHidden = document.querySelectorAll("input[name=waypoint_time]")
+    const hiddenWaypoint = document.querySelectorAll("input[name=station_name]")
+    const waypointTimeHidden = document.querySelectorAll("input[name=station_time]")
     const delegateHidden = document.querySelectorAll("input[name=delegate]")
     const delegatePhoneHidden = document.querySelectorAll("input[name=delegate_phone]")
 
@@ -146,13 +146,13 @@ function additionalWaypoint() {
 
             const waypointHidden = document.createElement("input")
             waypointHidden.setAttribute("type", "hidden")
-            waypointHidden.setAttribute("name", "waypoint")
+            waypointHidden.setAttribute("name", "station_name")
             waypointHidden.setAttribute("value", createTable.children[i].children[1].innerText)
             inputDispatchForm.appendChild(waypointHidden);
 
             const waypointTimeHidden = document.createElement("input")
             waypointTimeHidden.setAttribute("type", "hidden")
-            waypointTimeHidden.setAttribute("name", "waypoint_time")
+            waypointTimeHidden.setAttribute("name", "station_time")
             waypointTimeHidden.setAttribute("value", createTable.children[i].children[2].innerText)
             inputDispatchForm.appendChild(waypointTimeHidden);
 
