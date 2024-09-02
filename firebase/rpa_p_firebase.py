@@ -5,9 +5,11 @@ from firebase_admin import credentials, initialize_app, storage, _apps, get_app,
 # sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 
 from config.custom_logging import logger
+from my_settings import FIREBASE_SERVER_DOCUMENT
+
+TOUR_PATH = f"Server/{FIREBASE_SERVER_DOCUMENT}/Sunghwatour/"
 
 class RpaPFirebase():
-    
     def __init__(self):
         self.db = firestore.Client()
         self.ref = self.db.collection("Server").document("Dev")
@@ -49,21 +51,21 @@ class RpaPFirebase():
         doc = self.ref.collection("User").document(user_uid).collection("Estimate").document(uid)
         return doc.path
 
-    def edit_estimate(self, path, type, value):
+    def edit_value(self, path, type, value):
         doc = self.db.document(path)
-        estimate = doc.get()
-        if not estimate:
+        data = doc.get()
+        if not data:
             raise Exception("Firebase get error : No matched data")
-        estimate_data = estimate.to_dict()
-        estimate_data[type] = value
+        data_dict = data.to_dict()
+        data_dict[type] = value
 
         try:
-            doc.set(estimate_data)
+            doc.set(data_dict)
         except Exception as e:
             logger.error(f"Firebase add error : {e}")
             raise Exception(f"Firebase add error : {e}")
 
-        return estimate_data
+        return data_dict
 
     def get_value(self, uid, field):
         doc = self.db.document(uid)

@@ -188,7 +188,7 @@ class DispatchOrderTour(models.Model):
 
 class DispatchOrderTourCustomer(models.Model):
     tour_id = models.ForeignKey(DispatchOrderTour, on_delete=models.CASCADE, related_name="tour_customer", null=False)
-    user_uid = models.CharField(verbose_name="파이어베이스 유저 uid", max_length=100, null=False)
+    user_uid = models.CharField(verbose_name="파이어베이스 유저 uid", max_length=100, null=False, blank=True)
     name = models.CharField(verbose_name="이름", max_length=100, null=False)
     phone = models.CharField(verbose_name="전화번호", max_length=100, null=False)
     bank = models.CharField(verbose_name="은행", max_length=100, null=False)

@@ -178,5 +178,5 @@ function additionalWaypoint() {
         };
     }
     closeWaypointPopup()
-    alert("경유지가 저장되었습니다.")
+    // alert("경유지가 저장되었습니다.")
 }

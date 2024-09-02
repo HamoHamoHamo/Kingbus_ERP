@@ -1,7 +1,7 @@
 from django import forms 
 import re
 
-from .models import DispatchOrder, DispatchOrderConnect, DispatchRegularlyData, Station, DispatchRegularly
+from .models import DispatchOrder, DispatchOrderConnect, DispatchRegularlyData, Station, DispatchRegularly, DispatchOrderTour, DispatchOrderTourCustomer
 
 class RegularlyDataForm(forms.ModelForm):
     departure_time1 = forms.CharField(max_length=2, required=True)
@@ -146,4 +146,13 @@ class StationForm(forms.ModelForm):
             'latitude',
             'longitude',
             'references',
+        ]
+
+class TourForm(forms.ModelForm):
+    class Meta:
+        model = DispatchOrderTour
+        fields = [
+            'firebase_uid',
+            'price',
+            'max_people',
         ]

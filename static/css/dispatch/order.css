@@ -858,6 +858,10 @@
   width: 100%;
 }
 
+.popupArticleTriple {
+  width: calc(33% - 2rem);
+}
+
 .popupArticleDouble .accountSelect {
   width: 10rem;
   margin-right: 1rem;
@@ -1094,7 +1098,6 @@
 }
 
 .popupContainerReservation{
-  height: 57rem;
   width: 110rem;
 }
 

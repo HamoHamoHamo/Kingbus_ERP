@@ -17,7 +17,7 @@ from django.urls import reverse
 from django.views import generic
 
 from .commons import get_date_connect_list, get_multi_date_connect_list
-from .forms import OrderForm, ConnectForm, RegularlyDataForm, StationForm, RegularlyForm
+from .forms import OrderForm, ConnectForm, RegularlyDataForm, StationForm, RegularlyForm, TourForm
 from .models import DispatchRegularlyRouteKnow, DispatchCheck, DispatchRegularlyData, DispatchRegularlyWaypoint, Schedule, DispatchOrderConnect, DispatchOrder, DispatchRegularly, RegularlyGroup, DispatchRegularlyConnect, DispatchOrderStation, ConnectRefusal, MorningChecklist, EveningChecklist, DrivingHistory, BusinessEntity, Station, DispatchRegularlyDataStation, DispatchRegularlyStation, DispatchOrderTourCustomer, DispatchOrderTour
 from .selectors import DispatchSelector
 from assignment.models import AssignmentConnect
@@ -28,7 +28,7 @@ from humanresource.views import send_message
 from itertools import chain
 from vehicle.models import Vehicle
 
-from firebase.rpa_p_firebase import RpaPFirebase
+from firebase.rpa_p_firebase import RpaPFirebase, TOUR_PATH
 from datetime import datetime, timedelta, date
 # from utill.decorator import option_year_deco
 from common.constant import TODAY, FORMAT, WEEK, WEEK2
@@ -2625,22 +2625,22 @@ def order_connect_create(request):
         
         # rpa-p
         if count == int(order.bus_cnt) and order.firebase_path:
-            edit_rpap_value(order, "isEstimateApproval", '견적 예약이 완료되었습니다!')
+            edit_rpap_estimate_value(order, "isEstimateApproval", '견적 예약이 완료되었습니다!')
 
         return redirect(request.META.get('HTTP_REFERER', 'redirect_if_referer_not_found'))
 
     else:
         return HttpResponseNotAllowed(['post'])
 
-def edit_rpap_value(order, field, message):
+def edit_rpap_estimate_value(order, field, message):
     firebase = RpaPFirebase()
-    estimate_uid = order.firebase_path
+    estimate_path = order.firebase_path
     # isEstimateApproval이 false면 값 변경, 알림 보냄
-    if (not firebase.get_value(estimate_uid, field)):
-        estimate_data = firebase.edit_estimate(estimate_uid, field, True)
+    if (not firebase.get_value(estimate_path, field)):
+        estimate_data = firebase.edit_value(estimate_path, field, True)
         
         # rpap 유저에게 알림보내기
-        user_uid = estimate_uid.split("/Estimate")[0]
+        user_uid = estimate_path.split("/Estimate")[0]
         fcm_token = firebase.get_value(user_uid, "fcmToken")
         send_message(message, f'{order.route}\n{order.departure_date} ~ {order.arrival_date}', fcm_token, None)
 
@@ -2972,7 +2972,7 @@ def order_edit(request):
 
             # rpap
             if order.firebase_path and order.contract_status == "확정":
-                edit_rpap_value(order, "isCompletedReservation", "운행이 확정되었습니다!")
+                edit_rpap_estimate_value(order, "isCompletedReservation", "운행이 확정되었습니다!")
 
             # 경유지 처리
             old_stations = order.station.all()
@@ -3316,6 +3316,97 @@ def order_station_search(request):
         return JsonResponse({'data': data, 'result': result, 'page': page})
     else:
         return HttpResponseNotAllowed(['POST'])
+
+def order_tour_save(request):
+    if request.session.get('authority') > 2:
+        return render(request, 'authority.html')
+    if request.method == "GET":
+        return HttpResponseNotAllowed(['POST'])
+
+    tour_id = request.POST.get("tour_id")
+    if tour_id:
+        tour_form = TourForm(request.POST, instance=get_object_or_404(DispatchOrderTour, id=tour_id))
+    else:
+        tour_form = TourForm(request.POST)
+    
+    if tour_form.is_valid():
+        creator = get_object_or_404(Member, id=request.session.get('user'))
+        order = get_object_or_404(DispatchOrder, id=request.POST.get('order_id', ''))
+        tour = tour_form.save(commit=False)
+        tour.creator = creator
+        tour.order_id = order
+        tour.save()
+        return redirect(request.META.get('HTTP_REFERER', 'redirect_if_referer_not_found'))
+    raise BadRequest(f"{tour_form.errors}")
+
+
+def order_tour_customer_save(request):
+    if request.session.get('authority') > 2:
+        return render(request, 'authority.html')
+    if request.method == "GET":
+        return HttpResponseNotAllowed(['POST'])
+    
+    # 신규 생성
+    if request.POST.getlist("new_payment_status"):
+        new_pay_datetime_list = request.POST.getlist("new_pay_datetime")
+        new_payment_status_list = request.POST.getlist("new_payment_status")
+        name_list = request.POST.getlist("name")
+        phone_list = request.POST.getlist("phone")
+        bank_list = request.POST.getlist("bank")
+
+        tour = get_object_or_404(DispatchOrderTour, id=request.POST.get("tour_id"))
+
+        if len(new_pay_datetime_list) + DispatchOrderTour.tour_customer.count() > tour.max_people:
+            raise BadRequest("최대 예약 인원을 초과했습니다.")
+        
+        for pay_datetime, payment_status, name, phone, bank in zip(new_pay_datetime_list, new_payment_status_list, name_list, phone_list, bank_list):
+            DispatchOrderTourCustomer.objects.create(
+                tour_id=tour,
+                name=name,
+                phone=phone,
+                bank=bank,
+                pay_datetime=pay_datetime,
+                payment_status=payment_status,
+                creator = get_object_or_404(Member, id=request.session.get('user')),
+            )
+        
+        # 최대 인원일 떄 파이어베이스 데이터 모집 마감으로 변경
+        if len(new_pay_datetime_list) + DispatchOrderTour.tour_customer.count() == tour.max_people:
+            edit_rpap_tour_value(tour, "status", "1")
+        
+    # 기존 값 수정
+    pay_datetime_list = request.POST.getlist("pay_datetime")
+    payment_status_list = request.POST.getlist("payment_status")
+    edit_customer_list = request.POST.getlist("edit_customer")
+
+    for pay_datetime, payment_status, customer_id in zip(pay_datetime_list, payment_status_list, edit_customer_list):
+        customer = get_object_or_404(DispatchOrderTourCustomer, id=customer_id)
+        customer.pay_datetime = pay_datetime
+        customer.payment_status = payment_status
+        customer.save()
+
+    return redirect(request.META.get('HTTP_REFERER', 'redirect_if_referer_not_found'))
+
+def edit_rpap_tour_value(tour, field, value):
+    firebase = RpaPFirebase()
+    path = TOUR_PATH + tour.firebase_uid
+    # isEstimateApproval이 false면 값 변경, 알림 보냄
+    estimate_data = firebase.edit_value(path, field, value)
+
+def order_tour_customer_delete(request):
+    if request.session.get('authority') > 2:
+        return render(request, 'authority.html')
+    if request.method == "GET":
+        return HttpResponseNotAllowed(['POST'])
+    
+    delete_list = request.POST.getlist("delete")
+    for delete_id in delete_list:
+        customer = get_object_or_404(DispatchOrderTourCustomer, id=delete_id)
+        customer.delete()
+
+    # TODO 최대 인원 아닐때 파이어베이스 데이터 모집으로 변경
+
+    return redirect(request.META.get('HTTP_REFERER', 'redirect_if_referer_not_found'))
 
 def line_print(request):
     if request.session.get('authority') > 3:
