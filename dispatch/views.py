@@ -18,7 +18,7 @@ from django.views import generic
 
 from .commons import get_date_connect_list, get_multi_date_connect_list
 from .forms import OrderForm, ConnectForm, RegularlyDataForm, StationForm, RegularlyForm
-from .models import DispatchRegularlyRouteKnow, DispatchCheck, DispatchRegularlyData, DispatchRegularlyWaypoint, Schedule, DispatchOrderConnect, DispatchOrder, DispatchRegularly, RegularlyGroup, DispatchRegularlyConnect, DispatchOrderStation, ConnectRefusal, MorningChecklist, EveningChecklist, DrivingHistory, BusinessEntity, Station, DispatchRegularlyDataStation, DispatchRegularlyStation
+from .models import DispatchRegularlyRouteKnow, DispatchCheck, DispatchRegularlyData, DispatchRegularlyWaypoint, Schedule, DispatchOrderConnect, DispatchOrder, DispatchRegularly, RegularlyGroup, DispatchRegularlyConnect, DispatchOrderStation, ConnectRefusal, MorningChecklist, EveningChecklist, DrivingHistory, BusinessEntity, Station, DispatchRegularlyDataStation, DispatchRegularlyStation, DispatchOrderTourCustomer, DispatchOrderTour
 from .selectors import DispatchSelector
 from assignment.models import AssignmentConnect
 from accounting.models import Collect, TotalPrice
@@ -2459,6 +2459,11 @@ class OrderList(generic.ListView):
                     'distance': distance,
                     'duration': duration,
                 })
+            
+            # rpap tour
+            context['customer_list'] = DispatchOrderTourCustomer.objects.filter(tour_id__order_id=context['detail'])
+            context['tour'] = DispatchOrderTour.objects.filter(order_id=context['detail']).first()
+
 
         driver_list = Member.objects.filter(Q(role='운전원')|Q(role='팀장')).filter(use='사용').values_list('id', 'name')
         context['driver_dict'] = {}
