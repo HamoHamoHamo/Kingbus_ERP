@@ -48,6 +48,9 @@ urlpatterns = [
     path('order/route/upload', views.order_upload, name="order_upload"),
     path('order/route/download', views.order_download, name="order_download"),
     path('order/station', views.order_station_search, name="order_station_search"),
+    path('order/tour/save', views.order_tour_save, name="order_tour_save"),
+    path('order/tour/customer/save', views.order_tour_customer_save, name="order_tour_customer_save"),
+    path('order/tour/customer/delete', views.order_tour_customer_delete, name="order_tour_customer_delete"),
     
     #운행확인
     path('schedule', views.ScheduleList.as_view(), name="schedule"),

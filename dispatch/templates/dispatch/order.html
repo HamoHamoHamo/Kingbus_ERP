@@ -738,7 +738,7 @@
                     <div class="btnModules waypointDeleteBtn">삭제</div>
                 </div>
                 <div class="popupFooterRightBox">
-                    <div class="btnModules addtionalBtn">저장</div>
+                    <div class="btnModules addtionalBtn">확인</div>
                     <div class="btnModules waypointCloseBtn">닫기</div>
                 </div>
             </div>
@@ -906,37 +906,60 @@
 
 <div class="popupAreaModules" id="information">
     <div class="popupBgModules"></div>
-    <form action="" method="post" class="popupContainer popupContainerDouble popupContainerReservation">
+    <div class="popupContainer popupContainerDouble popupContainerReservation">
         <div class="popupHeader">
             <div class="popupTitle">예약정보</div>
         </div>
         <div class="popupBody popupBodyReservation">
             <div class="popupSection">
+                <div class="popupArticleCategori">여행상품 정보</div>
+                <form action="{% url 'dispatch:order_tour_save' %}" method="post" class="popupArticleBox" id="reservationInfoForm">
+                    {% csrf_token %}
+                    <input type="hidden" name="order_id" value="{{detail.id}}">
+                    <input type="hidden" name="tour_id" value="{{tour.id}}">
+                    <div class="popupArticleDouble popupArticleTriple">
+                        <label for="" class="popupArticleLabel"><span class="importantStar">*</span>여행상품 uid</label>
+                        <input value="{{tour.firebase_uid}}" name="firebase_uid" autocomplete="off" type="text" class="popupArticleinput length100">
+                    </div>
+                    <div class="popupArticleDouble popupArticleTriple">
+                        <label for="" class="popupArticleLabel"><span class="importantStar">*</span>가격</label>
+                        <input value="{{tour.price}}" name="price" type="text" class="popupArticleinput" placeholder="'-'없이 입력해 주세요">
+                    </div>
+                    <div class="popupArticleDouble popupArticleTriple">
+                        <label for="" class="popupArticleLabel"><span class="importantStar">*</span>최대 인원</label>
+                        <input value="{{tour.max_people}}" name="max_people" type="text" class="popupArticleinput" placeholder="'-'없이 입력해 주세요">
+                    </div>
+                </form>
+                <div class="popupArticleBox popupArticleBoxAddBtn">
+                    <div class="btnModules tourReservationInfoSaveBtn backgroundBlue">저장</div>
+                </div>
                 <div class="popupArticleCategori">예약자 정보</div>
                 <div class="popupArticleBox">
-                    <div class="popupArticleDouble">
+                    <div class="popupArticleDouble popupArticleTriple">
                         <label for="" class="popupArticleLabel"><span class="importantStar">*</span>예약자명</label>
-                        <input autocomplete="off" type="text" class="popupArticleinput waypointInput length100">
+                        <input id="reservationCustomerName" autocomplete="off" type="text" class="popupArticleinput length100">
                     </div>
-                    <div class="popupArticleDouble">
-                        <label for="" class="popupArticleLabel">전화번호</label>
-                        <input type="text" class="popupArticleinput" placeholder="'-'없이 입력해 주세요">
+                    <div class="popupArticleDouble popupArticleTriple">
+                        <label for="" class="popupArticleLabel"><span class="importantStar">*</span>전화번호</label>
+                        <input id="reservationCustomerPhone" type="text" class="popupArticleinput" placeholder="'-'없이 입력해 주세요">
                     </div>
-                </div>
-                <div class="popupArticleBox">
-                    <div class="popupArticleDouble">
-                        <label for="" class="popupArticleLabel">은행명</label>
-                        <input autocomplete="off" type="text" class="popupArticleinput delegateInput length100">
+                    <div class="popupArticleDouble popupArticleTriple">
+                        <label for="" class="popupArticleLabel"><span class="importantStar">*</span>은행명</label>
+                        <input id="reservationCustomerBank" autocomplete="off" type="text" class="popupArticleinput length100">
                     </div>
                 </div>
+                
+                
                 <div class="popupArticleBox popupArticleBoxAddBtn">
-                    <button class="btnModules tourReservationAddBtn">추가</button>
+                    <div class="btnModules tourReservationAddBtn">추가</div>
                 </div>
                 <div class="popupArticleCategori categoriFlex">
                     <div class="first">예약자 명단</div>
-                    <div class="second">{{customer_list.count}}/{{tour.max_people}}</div>
+                    <div class="second reservationCustomerCount">{{customer_list.count}}/{{tour.max_people}}</div>
                 </div>
-                <div class="popupArticleBoxTable reservationTable">
+                <form action="" method="post" class="popupArticleBoxTable reservationTable tourReservationCustomerForm">
+                    {% csrf_token %}
+                    <input type="hidden" name="tour_id" value="{{tour.id}}">
                     <div class="scrolling_table-list_header">
                         <table class="table-list">
                             <thead>
@@ -953,20 +976,22 @@
                     </div>
                     <div class="scrolling_table-list_body">
                         <table class="table-list">
-                            <tbody>
+                            <tbody id="reservationTbody">
                                 {% for customer in customer_list %}
                                 <tr class="table-list_body-tr">
                                     <td class="table-list_body-tr_td">
-                                        <input type="checkbox" calss="waypointCheckbox" value="{{customer.id}}" name="delete">
+                                        <input type="checkbox" value="{{customer.id}}" name="delete">
                                     </td>
                                     <td class="table-list_body-tr_td">{{customer.name}}</td>
                                     <td class="table-list_body-tr_td">{{customer.phone}}</td>
                                     <td class="table-list_body-tr_td">{{customer.bank}}</td>
-                                    <td class="table-list_body-tr_td"><input class="datetimeLocal" type="datetime-local"></td>
                                     <td class="table-list_body-tr_td">
-                                        <select class="selectType">
-                                            <option value="결제대기" selected>결제대기</option>
-                                            <option value="결제완료">결제완료</option>
+                                        <input class="payDatetime" type="datetime-local" value="{{customer.pay_datetime}}">
+                                    </td>
+                                    <td class="table-list_body-tr_td">
+                                        <select class="paymentStatus">
+                                            <option {% if customer.payment_status == "결제대기" %}selected{% endif %} value="결제대기">결제대기</option>
+                                            <option {% if customer.payment_status == "결제완료" %}selected{% endif %} value="결제완료">결제완료</option>
                                         </select>
                                     </td>
                                 </tr>
@@ -974,7 +999,7 @@
                             </tbody>
                         </table>
                     </div>
-                </div>
+                </form>
             </div>
             <div class="popupFooter">
                 <div class="btnModules delete">삭제</div>
@@ -982,7 +1007,7 @@
                 <div class="btnModules close tourReservationCloseBtn">닫기</div>
             </div>
         </div>        
-    </form>
+    </div>
 </div>
 {% endblock %}
   
@@ -1006,8 +1031,8 @@
     const THIS_URL = '{% url "dispatch:order" %}'
     const COPY_URL = "{% url 'dispatch:order_create' %}"
     const STATION_SEARCH_URL = "{% url 'dispatch:order_station_search' %}"
-    const TOUR_RESERVATION_DELETE_URL = ""
-    const TOUR_RESERVATION_SAVE_URL = ""
+    const TOUR_CUSTOMER_DELETE_URL = "{% url 'dispatch:order_tour_customer_delete' %}"
+    const TOUR_CUSTOMER_SAVE_URL = "{% url 'dispatch:order_tour_customer_save' %}"
 
     console.log("DATA", data)
     console.log("DATA2", data2)
