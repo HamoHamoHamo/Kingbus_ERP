@@ -8,7 +8,7 @@
 
 .orderExcelList {
   display: flex;
-  width: 25rem;
+  width: 40rem;
   justify-content: space-between;
 }
 
@@ -435,7 +435,8 @@
   height: 3.6rem;
 }
 
-.dispatchBtn {
+.dispatchBtn,
+.tourReservationBtn {
   background-color: #0069D9;
 }
 
@@ -1094,6 +1095,7 @@
 
 .popupContainerReservation{
   height: 57rem;
+  width: 110rem;
 }
 
 .categoriFlex{
@@ -1101,15 +1103,24 @@
   justify-content: space-between;
 }
 
-.reservationTable td:nth-child(1){width: 5%;}
-.reservationTable td:nth-child(2){width: 15%;}
-.reservationTable td:nth-child(3){width: 20%;}
-.reservationTable td:nth-child(4){width: 10%;}
-.reservationTable td:nth-child(5){width: 15%;}
-.reservationTable td:nth-child(6){
-  width: 25%;
+.reservationTable td:nth-child(1){
+  width: 5%;
 }
-.reservationTable td:nth-child(7){width: 10%;}
+.reservationTable td:nth-child(2){
+  width: 15%;
+}
+.reservationTable td:nth-child(3){
+  width: 15%;
+}
+.reservationTable td:nth-child(4){
+  width: 15%;
+}
+.reservationTable td:nth-child(5){
+  width: 35%;
+}
+.reservationTable td:nth-child(6){
+  width: 15%;
+}
 
 .delete{
   background-color: #444;
@@ -1125,14 +1136,14 @@
   background-color: #444;
 }
 
-.selectType{
-  border: none;
-}
-
 .datetimeLocal{
   height: 3rem;
 }
 
-.orderListSubContentsbBlue{
-  color: blue;
+.popupArticleBoxAddBtn {
+  justify-content: right;
+}
+
+.tourReservationAddBtn {
+  background-color: #0069D9;
 }

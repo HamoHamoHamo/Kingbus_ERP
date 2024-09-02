@@ -131,16 +131,15 @@
             <form action="{% url 'dispatch:order_edit' %}" method="post" class="inputDispatchForm" id="editForm">
                 <!-- 정류장 팝업 데이터 -->
                 {% for station in detail.station.all %}
-                    <input type="hidden" name="station_name" value="{{station.station_name}}">
-                    <input type="hidden" name="station_time" value="{{station.time}}">
-                    <input type="hidden" name="delegate" value="{{station.delegate}}">
-                    <input type="hidden" name="delegate_phone" value="{{station.delegate_phone}}">
+                <input type="hidden" name="station_name" value="{{station.station_name}}">
+                <input type="hidden" name="station_time" value="{{station.time}}">
+                <input type="hidden" name="delegate" value="{{station.delegate}}">
+                <input type="hidden" name="delegate_phone" value="{{station.delegate_phone}}">
 
-                    <input type="hidden" name="place_name" value="{{station.place_name}}">
-                    <input type="hidden" name="address" value="{{station.address}}">
-                    <input type="hidden" name="latitude" value="{{station.latitude}}">
-                    <input type="hidden" name="longitude" value="{{station.longitude}}">
-
+                <input type="hidden" name="place_name" value="{{station.place_name}}">
+                <input type="hidden" name="address" value="{{station.address}}">
+                <input type="hidden" name="latitude" value="{{station.latitude}}">
+                <input type="hidden" name="longitude" value="{{station.longitude}}">
                 {% endfor %}
             {% else %}
             <form action="{% url 'dispatch:order_create' %}" method="post" class="inputDispatchForm">
@@ -529,6 +528,7 @@
             <div class="orderListHeader">
                 <span></span>
                 <div class="orderExcelList">
+                    <div id="" class="btnModules tourReservationBtn">투어 예약자 현황</div>
                     <div id="uploadExcel" class="btnModules excelBtn">엑셀 업로드</div>
                     <div id="downloadExcel" class="btnModules excelBtn">엑셀 다운로드</div>
                 </div>
@@ -906,7 +906,7 @@
 
 <div class="popupAreaModules" id="information">
     <div class="popupBgModules"></div>
-    <div class="popupContainer popupContainerDouble popupContainerReservation">
+    <form action="" method="post" class="popupContainer popupContainerDouble popupContainerReservation">
         <div class="popupHeader">
             <div class="popupTitle">예약정보</div>
         </div>
@@ -920,7 +920,7 @@
                     </div>
                     <div class="popupArticleDouble">
                         <label for="" class="popupArticleLabel">전화번호</label>
-                        <input type="text" class="popupArticleinput">
+                        <input type="text" class="popupArticleinput" placeholder="'-'없이 입력해 주세요">
                     </div>
                 </div>
                 <div class="popupArticleBox">
@@ -928,65 +928,61 @@
                         <label for="" class="popupArticleLabel">은행명</label>
                         <input autocomplete="off" type="text" class="popupArticleinput delegateInput length100">
                     </div>
-                    <div class="popupArticleDouble">
-                        <label for="" class="popupArticleLabel">전화번호</label>
-                        <input type="text" class="popupArticleinput">
-                    </div>
                 </div>
-                <div class="popupArticleBox">
-                    <button class="btnModules addBtn">추가</button>
+                <div class="popupArticleBox popupArticleBoxAddBtn">
+                    <button class="btnModules tourReservationAddBtn">추가</button>
                 </div>
                 <div class="popupArticleCategori categoriFlex">
                     <div class="first">예약자 명단</div>
-                    <div class="second">15/25</div>
+                    <div class="second">{{customer_list.count}}/{{tour.max_people}}</div>
                 </div>
                 <div class="popupArticleBoxTable reservationTable">
                     <div class="scrolling_table-list_header">
                         <table class="table-list">
-                          <thead>
-                            <tr class="table-list_head-tr">
-                              <td class="table-list_head-tr_td reservationTableTd">선택</td>
-                              <td class="table-list_head-tr_td reservationTableTd">예약자명</td>
-                              <td class="table-list_head-tr_td reservationTableTd">전화번호</td>
-                              <td class="table-list_head-tr_td reservationTableTd">은행명</td>
-                              <td class="table-list_head-tr_td reservationTableTd">금액</td>
-                              <td class="table-list_head-tr_td reservationTableTd">결제시간</td>
-                              <td class="table-list_head-tr_td reservationTableTd">수급현황</td>
-                            </tr>
-                          </thead>
+                            <thead>
+                                <tr class="table-list_head-tr">
+                                <td class="table-list_head-tr_td reservationTableTd">선택</td>
+                                <td class="table-list_head-tr_td reservationTableTd">예약자명</td>
+                                <td class="table-list_head-tr_td reservationTableTd">전화번호</td>
+                                <td class="table-list_head-tr_td reservationTableTd">은행명</td>
+                                <td class="table-list_head-tr_td reservationTableTd">결제시간</td>
+                                <td class="table-list_head-tr_td reservationTableTd">결제현황</td>
+                                </tr>
+                            </thead>
                         </table>
-                      </div>
-                      <div class="scrolling_table-list_body">
+                    </div>
+                    <div class="scrolling_table-list_body">
                         <table class="table-list">
-                          <tbody>
-                            <tr class="table-list_body-tr">
-                                <td class="table-list_body-tr_td"><input type="checkbox" calss="waypointCheckbox"></td>
-                                <td class="table-list_body-tr_td">예약자명</td>
-                                <td class="table-list_body-tr_td">전화번호</td>
-                                <td class="table-list_body-tr_td">은행명</td>
-                                <td class="table-list_body-tr_td">금액</td>
-                                <td class="table-list_body-tr_td"><input class="datetimeLocal" type="datetime-local"></td>
-                                <td class="table-list_body-tr_td">
-                                    <select class="selectType">
-                                        <option value="수금" selected>수급</option>
-                                        <option value="수급완료">수급완료</option>
-                                    </select>
-                                </td>
-                            </tr>
-                          </tbody>
+                            <tbody>
+                                {% for customer in customer_list %}
+                                <tr class="table-list_body-tr">
+                                    <td class="table-list_body-tr_td">
+                                        <input type="checkbox" calss="waypointCheckbox" value="{{customer.id}}" name="delete">
+                                    </td>
+                                    <td class="table-list_body-tr_td">{{customer.name}}</td>
+                                    <td class="table-list_body-tr_td">{{customer.phone}}</td>
+                                    <td class="table-list_body-tr_td">{{customer.bank}}</td>
+                                    <td class="table-list_body-tr_td"><input class="datetimeLocal" type="datetime-local"></td>
+                                    <td class="table-list_body-tr_td">
+                                        <select class="selectType">
+                                            <option value="결제대기" selected>결제대기</option>
+                                            <option value="결제완료">결제완료</option>
+                                        </select>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
                         </table>
-                      </div>
-                </div>
-                <div class="popupFooter">
-                    <div class="btnModules delete">삭제</div>
-                    <div class="btnModules save">저장</div>
-                    <div class="btnModules close"  onclick="closeInformation()">닫기</div>
+                    </div>
                 </div>
             </div>
-        </div>
-        
-    </div>
-    
+            <div class="popupFooter">
+                <div class="btnModules delete">삭제</div>
+                <div class="btnModules save">저장</div>
+                <div class="btnModules close tourReservationCloseBtn">닫기</div>
+            </div>
+        </div>        
+    </form>
 </div>
 {% endblock %}
   
@@ -1010,6 +1006,9 @@
     const THIS_URL = '{% url "dispatch:order" %}'
     const COPY_URL = "{% url 'dispatch:order_create' %}"
     const STATION_SEARCH_URL = "{% url 'dispatch:order_station_search' %}"
+    const TOUR_RESERVATION_DELETE_URL = ""
+    const TOUR_RESERVATION_SAVE_URL = ""
+
     console.log("DATA", data)
     console.log("DATA2", data2)
     console.log("driverObj", driverObj);
@@ -1055,6 +1054,7 @@
 <script src="{% static 'js/dispatch/order/routeCopy.js' %}"></script>
 <script src="{% static 'js/dispatch/order/loadAccount.js' %}"></script>
 <script src="{% static 'js/dispatch/order/excel.js' %}"></script>
+<script src="{% static 'js/dispatch/order/tourReservation.js' %}"></script>
 <!-- <script type="module" src="{% static 'js/dispatch/order/stationPopup.js' %}"></script> -->
 <script type="module" src="{% static 'js/dispatch/order/waypoint.js' %}"></script>
 {% endblock %}
