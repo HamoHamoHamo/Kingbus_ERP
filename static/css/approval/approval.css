@@ -406,3 +406,7 @@ table tbody tr:nth-child(even) {
 .blanckTr {
     height: 100%;
 }
+
+.fileDownload {
+    cursor: pointer;
+}

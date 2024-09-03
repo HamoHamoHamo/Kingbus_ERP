@@ -88,3 +88,18 @@
     margin-top: 5rem;
 }
 
+
+.fileListDiv {
+    width: calc(100% - 13rem);
+    height: 4.3rem;
+    padding: 1rem;
+    border: 0.1rem solid #D2D2D2;
+    border-radius: 0.3rem;
+    outline: none;
+    overflow-y: auto;
+}
+
+.fileLink {
+    color: #0069D9;
+    display: block;
+}

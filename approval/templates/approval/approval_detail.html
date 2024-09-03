@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load custom_tags %}
 {% block head %}
 <meta http-equiv="Cache-Control" content="private, no-cache, no-store, max-age=0, must-revalidate">
 
@@ -71,7 +72,7 @@
                         </div>
                         {% endif %}
                         <!-- 다음 결재자 지정 -->
-                        {% if can_add_approver %}
+                        {% if can_approve and can_add_approver %}
                         <div class="approverCell">
                             <select class="approverSelect" name="next_approver">
                                 <option value=""></option>
@@ -88,7 +89,11 @@
                 </div>
                 <div class="inputCell inputCellFile">
                     <span class="inputName">첨부파일</span>
-                    <input disabled autocomplete="off" type="file" name="file" multiple>
+                    <div class="fileListDiv">
+                        {% for file in file_list %}
+                        <a class="fileLink" href="{{file}}">{{file_name_list|index:forloop.counter0}}</a>
+                        {% endfor %}
+                    </div>
                 </div>
             </div>
             <div class="headerDateTime">
@@ -115,18 +120,18 @@
         {% if approver.content %}
         <div class="inputCell approverInputCell">
             <div>{{approver.creator.name}}</div>
-            <input disabled name="content" class="contentTextarea" placeholder="내용을 작성하세요." value="{{approver.content}}">
+            <input disabled name="content" class="contentTextarea" value="{{approver.content}}">
         </div>
         {% endif %}
         {% endfor %}
-        {% if last_approver %}
+        {% if can_approve and last_approver %}
         <div class="inputCell approverInputCell">
             <div>{{last_approver.creator.name}}</div>
             <input name="content" class="contentTextarea" placeholder="내용을 작성하세요.">
         </div>
         {% endif %}
         <div class="createBtnBox">
-            {% if can_add_approver %}
+            {% if can_approve and can_add_approver %}
             <input autocomplete="off" type="submit" value="저장" class="createBtn">
             {% endif %}
         </div>
