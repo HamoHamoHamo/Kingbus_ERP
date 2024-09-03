@@ -83,11 +83,12 @@ class ApprovalList(generic.ListView):
 
 
         context['approver_list'] = []
+        context['file_name_list'] = []
         context['file_list'] = []
         for approval in context['approval_list']:
             context['approver_list'].append(approval.approver.order_by("index").last().creator.name)
-            context['file_list'].append(list(approval.approval_file.values_list("filename")))
-        
+            context['file_name_list'].append(approval.approval_file.values_list("filename", flat=True))
+            context['file_list'].append(get_file_download_path(approval.id))
 
         return context
 
@@ -109,6 +110,8 @@ class ApprovalDetail(generic.DetailView):
         context['can_approve'] = True if context['last_approver'] and login_user == context['last_approver'].creator or login_user.role == "최고관리자" else False
         context['can_add_approver'] = True if len(context['approver_list']) < 3 and (context['approval'].status == "대기" or context['approval'].status == "처리중") else False
 
+        context['file_name_list'] = context['approval'].approval_file.values_list("filename", flat=True)
+        context['file_list'] = get_file_download_path(context['approval'].id)
         return context
     
     
@@ -291,14 +294,39 @@ def approval_file_download(request, pk):
     if user_auth >= 3:
         return render(request, 'authority.html')
     
+    url_list = get_file_download_path(pk)
+
+    context = {
+        'url_list' : url_list
+    }
+    return render(request, 'approval/approval_img.html', context)
+
+def get_file_download_path(pk):
     approval = get_object_or_404(Approval, id=pk)
 
     url_list = []
     file_list = approval.approval_file.all()
     for file in file_list:
         url_list.append(get_download_url(file.path))
+    return url_list
 
-    context = {
-        'url_list' : url_list
-    }
-    return render(request, 'approval/approval_img.html', context)
+# def download(request, kinds, notice_id, file_id):
+#     kinds_check(kinds)
+#     if request.session.get('authority') >= 3 and kinds == 'office':
+#         return render(request, 'authority.html')
+#     download_file = get_object_or_404(NoticeFile, pk=file_id)
+#     if download_file.notice_id == Notice.objects.get(pk=notice_id):
+#         url = download_file.file.url
+#         root = str(BASE_DIR)+url
+
+#         if os.path.exists(root):
+#             with open(root, 'rb') as fh:
+#                 quote_file_url = urllib.parse.quote(download_file.filename.encode('utf-8'))
+#                 response = HttpResponse(fh.read(), content_type=mimetypes.guess_type(url)[0])
+#                 response['Content-Disposition'] = 'attachment;filename*=UTF-8\'\'%s' % quote_file_url
+#                 return response
+#             raise Http404
+#         else:
+#             raise Http404
+#     else:
+#         raise Http404
