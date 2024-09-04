@@ -3018,6 +3018,12 @@ def order_delete(request):
 
         for id in id_list:
             order = get_object_or_404(DispatchOrder, id=id)
+
+            #rpap
+            if order.firebase_path:
+                firebase = RpaPFirebase()
+                firebase.delete_doc(order.firebase_path)
+
             order.delete()
 
         return redirect(reverse('dispatch:order') + f'?date1={date1}&date2={date2}')

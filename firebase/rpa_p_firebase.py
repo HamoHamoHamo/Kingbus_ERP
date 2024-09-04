@@ -81,3 +81,13 @@ class RpaPFirebase():
             logger.error(f"Firebase add error : {e}")
             raise Exception(f"Firebase add error : {e}")
         
+    def delete_doc(self, path):
+        doc = self.db.document(path)
+        
+        if not doc:
+            raise Exception("Firebase get error : No matched data")
+        try:
+            doc.delete()
+        except Exception as e:
+            logger.error(f"Firebase delete error : {e}")
+            raise Exception(f"Firebase delete error : {e}")
