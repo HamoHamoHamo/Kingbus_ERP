@@ -79,5 +79,5 @@ urlpatterns = [
 
     path('dispatchanalysis', views.dispatchAnalysis.as_view(), name='dispatchanalysis'),
 
-    path('dispatchorder', views.DispatchOrder.as_view(), name='dispatchorder'),
+    # path('dispatchorder', views.DispatchOrder.as_view(), name='dispatchorder'),
 ]

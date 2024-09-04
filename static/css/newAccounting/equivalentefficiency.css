@@ -1,0 +1,131 @@
+.left{
+    width: 44.9rem;
+    height: 82.1rem;
+}
+
+.firstgraph1{
+    height: 35.2rem;
+    border: 1px solid black;
+    margin-bottom: 2.6rem;
+}
+
+.firstgraph2{
+    height: 44.4rem;
+    border: 1px solid black;
+}
+
+.firstgraphheader{
+    font-size: 2rem;
+    text-align: center;
+    background-color: #444444;
+    color: white;
+    height: 4.9rem;
+    line-height: 5rem;
+}
+
+.topbody{
+    display: flex;
+    margin-top: 1.3rem;
+    margin-left: 1.6rem;
+    box-shadow: -2px 4px 8.9px rgba(0, 0, 0, 0.25);
+    gap: 1rem;
+    font-size: 1.2rem;
+}
+
+.textBox{
+    padding: 0.8rem;
+    width: 20.4rem;
+    height: 8rem;
+    border: 1px solid black;
+}
+
+.bodybody{
+    display: flex;
+}
+
+
+.graph1{
+    margin-left: 3rem;
+}
+
+.graph2{
+    margin-left: 3rem;
+}
+
+.firstgraphbody{
+    display: flex;
+    font-size: 1.8rem;
+    margin-top: 1,1rem;
+}
+
+.driverDate{
+    box-shadow: -2px 4px 8.9px rgba(0, 0, 0, 0.25);
+}
+
+.secondbodytop{
+    text-align: center;
+    margin-left: 2.4rem;
+    margin-top: 1.1rem;
+}
+
+.secondbodybottom{
+    text-align: center;
+    width: 20.4rem;
+    height: 4.3rem;
+    margin-left: 2.4rem;
+    margin-top: 1.1rem;
+    line-height: 4rem;
+    box-shadow: -2px 4px 8.9px rgba(0, 0, 0, 0.25);
+    border-radius: 1.7rem;
+}
+
+.secondgraphbody{
+    text-align: center;
+    width: 42rem;
+    height: 11.7rem;
+    box-shadow: -2px 4px 8.9px rgba(0, 0, 0, 0.25);
+    border-radius: 17px;
+    margin-bottom: 2rem;
+    margin-left: 1.5rem;
+    margin-top: 2.4rem;
+}
+
+.thirdgraphbody{
+    text-align: center;
+    width: 42rem;
+    height: 13.5rem;
+    box-shadow: -2px 4px 8.9px rgba(0, 0, 0, 0.25);
+    border-radius: 17px;
+    margin-left: 1.5rem;
+}
+
+.threeTable{
+    margin-left: 0.5rem;
+    gap: 0.8rem;
+    text-align: center;
+    display: flex;
+}
+
+.firstTable{
+    border: 0.05rem solid black;
+    width: 12.9rem;
+    height: 6rem;
+    border-radius: 0.9rem;
+}
+
+.secondTable{
+    border: 0.05rem solid black;
+    width: 12.9rem;
+    height: 7.8rem;
+    border-radius: 0.9rem;
+}
+
+.secondHeaderText{
+    height:  2.6rem;
+    font-size: 1.8rem;
+}
+
+.driverdate{
+    text-align: left;
+    margin-left: 1rem;
+}

@@ -2479,7 +2479,7 @@ class OrderList(generic.ListView):
             elif search_type == 'vehicle' and search:
                 dispatch_list = dispatch_list.filter(info_order__bus_id__vehicle_num__contains=search).order_by('departure_date')
 
-        else:            
+        else:
             dispatch_list = DispatchOrder.objects.prefetch_related('info_order').exclude(arrival_date__lt=f'{TODAY} 00:00').exclude(departure_date__gt=f'{TODAY} 24:00').order_by('departure_date')
         
         return dispatch_list
@@ -4004,15 +4004,15 @@ class  dispatchAnalysis(generic.ListView):
         return render(request, self.template_name, context)
 
         
-class  DispatchOrder(generic.ListView):
-    template_name = 'dispatch/dispatchorder.html'
-    context_object_name = 'member_list'
-    model = Member
-    authority_level = 3
+# class  DispatchOrder(generic.ListView):
+#     template_name = 'dispatch/dispatchorder.html'
+#     context_object_name = 'member_list'
+#     model = Member
+#     authority_level = 3
 
-    def get(self, request, *args, **kwargs):
-        members = self.model.objects.all()
-        context = {
-            self.context_object_name: members
-        }
-        return render(request, self.template_name, context)
+#     def get(self, request, *args, **kwargs):
+#         members = self.model.objects.all()
+#         context = {
+#             self.context_object_name: members
+#         }
+#         return render(request, self.template_name, context)

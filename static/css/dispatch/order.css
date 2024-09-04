@@ -718,6 +718,7 @@
 }
 
 .orderListItem .orderListSubContents:nth-child(9) {
+  color: #0069D9;
   flex-direction: column;
   justify-content: center;
   align-items: flex-start;
@@ -820,9 +821,11 @@
   background-color: #444;
 }
 
-.addWaypointBtn {
+.addBtn {
   background-color: #0069D9;
+  border: none;
   margin-left: auto;
+  width: 4rem;
 }
 
 .stationTable input[type=text] {
@@ -1077,4 +1080,54 @@
 
 .routeStationTime {
   font-size: 1.2rem;
+}
+
+
+.popupBodyReservation{
+  height: calc(100% - 3.6rem);
+}
+
+.popupContainerReservation{
+  height: 57rem;
+}
+
+.categoriFlex{
+  display: flex;
+  justify-content: space-between;
+}
+
+.reservationTable td:nth-child(1){width: 5%;}
+.reservationTable td:nth-child(2){width: 15%;}
+.reservationTable td:nth-child(3){width: 20%;}
+.reservationTable td:nth-child(4){width: 10%;}
+.reservationTable td:nth-child(5){width: 15%;}
+.reservationTable td:nth-child(6){
+  width: 25%;
+}
+.reservationTable td:nth-child(7){width: 10%;}
+
+.delete{
+  background-color: #444;
+  margin-right: auto;
+}
+
+.save{
+  background-color: #0069D9;
+  margin-right: 2rem;
+}
+
+.close{
+  background-color: #444;
+}
+
+.selectType{
+  border: none;
+}
+
+.datetimeLocal{
+  height: 3rem;
+}
+
+.orderListSubContentsbBlue{
+  color: blue;
 }

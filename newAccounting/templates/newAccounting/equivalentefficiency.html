@@ -1,0 +1,110 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load custom_tags %}
+{% block head %}
+<meta http-equiv="Cache-Control" content="private, no-cache, no-store, max-age=0, must-revalidate">
+
+<link rel="stylesheet" href="{% static 'css/newAccounting/equivalentefficiency.css' %}" type="text/css" />
+{% endblock %}
+
+{% block content-header %}
+<div class="HeaderTitle">
+    차량효율 및 원가절감
+</div>
+{% endblock %}
+
+{% block content %}
+    <div class="#">
+        <div class="left">
+            <div class="firstgraph1">
+                <div class="firstgraphheader">총 운행량 달성 비율</div>
+                <div class="firstgraphbody">
+                    <div class="bodytop">
+                        <div class="topbody">
+                            <div class="textBox">
+                                <div class="#">● 달성: 목표 운행량 이상</div>
+                                <div class="#">● 미달성: 목표 운행량 미만</div>
+                                <hr>
+                                <div class="#">● 달성: 76명 ● 미달성: 24 명</div>
+                            </div>
+                            <div class="textBox">
+                                <div class="#">● 달성: 현재 달성한 운행량</div>
+                                <div class="#">● 미달성: 앞으로 달성해야 할 운행량</div>
+                                <hr>
+                                <div class="#">● 현재: 76%% ● 달성까지: 24%</div>
+                            </div>
+                        </div>
+                        <div class="bodybody">
+                            <div class="graph1">전체 운행량 달성 비율</div>
+                            <div class="graph2">개인 운행량 달성 비율</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="firstgraph2">
+                <div class="firstgraphheader">차량 운행량 달성 비율</div>
+                <div class="firstgraphbody">
+                    <div class="secondbodytop">
+                        <div class="#">권장 운행량:7000KM</div>
+                        <div class="#">목표 운행량: 6500KM</div>
+                    </div>
+                    <div class="secondbodybottom">
+                        <div class="driverdate">운행 일수: 18/23  ●</div>
+                    </div>
+                </div>
+
+                <div class="secondgraphbody">
+                    <div class="secondHeaderText">총 운행량 평균</div>
+                    <div class="threeTable">
+                        <div class="firstTable">
+                            <div>운행순</div>
+                            <hr>
+                            <div>86</div>
+                        </div>
+                        <div class="firstTable">
+                            <div>거리</div>
+                            <hr>
+                            <div>65000 km</div>
+                        </div>
+                        <div class="firstTable">
+                            <div>유류비</div>
+                            <hr>
+                            <div>840000</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="thirdgraphbody">
+                    <div class="secondHeaderText">개인 운행량 평균</div>
+                    <div class="threeTable">
+                        <div class="secondTable">
+                            <div>운행순</div>
+                            <hr>
+                            <div>86</div>
+                        </div>
+                        <div class="secondTable">
+                            <div>거리</div>
+                            <hr>
+                            <div>65000 km</div>
+                        </div>
+                        <div class="secondTable">
+                            <div>유류비</div>
+                            <hr>
+                            <div>840000</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="right">
+            <div class="search"></div>
+            <div class="filter"></div>
+            <div class="graph1"></div>
+            <div class="graph2"></div>
+            </div>
+        </div>
+    </div>
+
+
+    
+{% endblock %}
