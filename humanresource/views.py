@@ -1273,7 +1273,7 @@ def salary_new_edit(request):
 
             salary = Salary.objects.filter(member_id=member).get(month=month)
             salary.service_allowance = service_allowance.replace(',','')
-            salary.annual_allowance = annual_allowance.replace(',','')
+            salary.new_annual_allowance = annual_allowance.replace(',','')
             salary.team_leader_allowance_roll_call = team_leader_allowance_roll_call.replace(',','')
             salary.team_leader_allowance_vehicle_management = team_leader_allowance_vehicle_management.replace(',','')
             salary.team_leader_allowance_task_management = team_leader_allowance_task_management.replace(',','')
@@ -1286,7 +1286,7 @@ def salary_new_edit(request):
 
             if TODAY[:7] <= month:
                 member.service_allowance = service_allowance.replace(',','')
-                member.annual_allowance = annual_allowance.replace(',','')
+                member.new_annual_allowance = annual_allowance.replace(',','')
                 member.team_leader_allowance_roll_call = team_leader_allowance_roll_call.replace(',','')
                 member.team_leader_allowance_vehicle_management = team_leader_allowance_vehicle_management.replace(',','')
                 member.team_leader_allowance_task_management = team_leader_allowance_task_management.replace(',','')
