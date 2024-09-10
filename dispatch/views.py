@@ -2623,10 +2623,6 @@ def order_connect_create(request):
             except Exception as e:
                 print(e)
         
-        # rpa-p
-        if count == int(order.bus_cnt) and order.firebase_path:
-            edit_rpap_estimate_value(order, "isEstimateApproval", '견적 예약이 완료되었습니다!')
-
         return redirect(request.META.get('HTTP_REFERER', 'redirect_if_referer_not_found'))
 
     else:
@@ -2971,6 +2967,8 @@ def order_edit(request):
             order.save()
 
             # rpap
+            if order.firebase_path and order.contract_status == "예약확정":
+                edit_rpap_estimate_value(order, "isEstimateApproval", '견적 예약이 완료되었습니다!')
             if order.firebase_path and order.contract_status == "확정":
                 edit_rpap_estimate_value(order, "isCompletedReservation", "운행이 확정되었습니다!")
 

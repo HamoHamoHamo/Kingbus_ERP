@@ -7,7 +7,7 @@ body {
   }
   .page {
     width: 49.625rem; /* 210mm -> rem */
-    height: 70.1875rem; /* 297mm -> rem */
+    height: 84.2rem;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     margin: auto;
     padding: 1.25rem; /* 20mm -> rem */

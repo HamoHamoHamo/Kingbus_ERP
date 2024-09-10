@@ -2,6 +2,7 @@ from .models import *
 from datetime import datetime, timedelta
 from config.settings import TODAY, FORMAT
 from config.custom_logging import logger
+from django.db.models import Q
 from humanresource.views import send_message
 
 def driver_check_notification():
@@ -42,7 +43,7 @@ def driver_check_notification():
 
 # rpap 관리자 알림
 def admin_dispatch_check_notification():
-	order_list = DispatchOrder.objects.exclude(firebase_uid=None).filter(departure_date__gte=TODAY, info_order=None)
+	order_list = DispatchOrder.objects.exclude(Q(firebase_uid=None) | Q(contract_status="예약확정") | Q(contract_status="확정")).filter(departure_date__gte=TODAY)
 
 	target_list = []
 	try:
@@ -55,7 +56,7 @@ def admin_dispatch_check_notification():
 		logger.error(f"ERROR {e}")
 	for order in order_list:
 		for target in target_list:
-			send_message("TRP에서 배차 확정을 해주세요", f"{order.route}\n{order.departure_date} ~ {order.arrival_date}", target.token, None)
+			send_message("TRP에서 계약현황-예약확정을 해주세요", f"{order.route}\n{order.departure_date} ~ {order.arrival_date}", target.token, None)
 
 def admin_complete_check_notification():
 	order_list = DispatchOrder.objects.exclude(firebase_uid=None, info_order=None, contract_status="확정").filter(departure_date__gte=TODAY)
@@ -71,4 +72,4 @@ def admin_complete_check_notification():
 		logger.error(f"ERROR {e}")
 	for order in order_list:
 		for target in target_list:
-			send_message("계약금 입금 확인 후 TRP에서 계약현황 확정을 해주세요", f"{order.route}\n{order.departure_date} ~ {order.arrival_date}", target.token, None)
+			send_message("계약금 입금 확인 후 TRP에서 계약현황-확정을 해주세요", f"{order.route}\n{order.departure_date} ~ {order.arrival_date}", target.token, None)
