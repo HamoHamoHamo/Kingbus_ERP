@@ -1,0 +1,98 @@
+
+.page2 {
+    
+    font-size: 1.1rem;
+    width: 59.5rem; /* A4 width (210mm -> 59.5rem) */
+    height: 86.2rem;
+    margin: auto;
+    padding: 1rem;
+    background-color: white;
+    font-family: "맑은 고딕", sans-serif;
+    line-height: 1.6;
+    
+}
+
+.table2 {
+    width: 100%;
+    margin-bottom: 2rem;
+    border-spacing: 0;
+    font-size: 1.1rem;
+    border-collapse: collapse; /* 테두리 겹침 방지 */
+}
+.table2, th, td {
+    border: 1px solid black;
+    padding: 0.5rem;
+    text-align: start;
+    vertical-align: middle;
+}
+
+.payment-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+.payment-table td {
+    border: 1px solid black;
+    padding: 0.5rem;
+}
+.col-small-small{
+    width: 5%;
+}
+.col-small {
+    width: 15%;
+}
+.col-medium {
+    width: 30%;
+    text-align: start;
+}
+.center {
+    text-align: center;
+}
+.title{
+    font-size: 3.5rem;
+}
+.sub-title{
+    font-weight: bold;
+}
+
+.margin08 {
+    margin: 0.8rem 0;
+}
+.ul {
+    list-style: number;
+    padding-left: 2rem;
+}
+
+.ul .ul{
+    list-style: disc;
+}
+.center {
+    text-align: center;
+}
+.signature {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 3rem;
+}
+.signature .box {
+    text-align: center;
+    border-top: 1px solid black;
+    width: 40%;
+}
+.signature-section div {
+    display: flex;
+    justify-content: flex-end;
+    
+}
+.date{
+    font-size: 1.5rem;
+    text-align: center;
+}
+
+.blue{
+    color: #0057FF;
+}
+
+.stationDiv {
+    font-size: 0.8rem;
+    overflow-y: auto;
+}
