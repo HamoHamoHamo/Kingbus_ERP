@@ -15,7 +15,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
 from django.views import generic
 from datetime import datetime
-from media_firebase import upload_to_firebase, get_download_url, delete_firebase_file
+from firebase.media_firebase import upload_to_firebase, get_download_url, delete_firebase_file
 from my_settings import CRED_PATH, CLOUD_MEDIA_PATH
 from .forms import ApprovalForm, ApproverForm
 from .models import Approver, Approval, ApprovalFile
