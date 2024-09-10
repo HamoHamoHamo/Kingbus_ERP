@@ -28,68 +28,29 @@ function openSideNav() {
   } else {
     switch (idx) {
       case 0:
-        sideMenuNav2Box[idx].style.height = "26.6rem";
-        sideMenuNav2[idx].style.height = "24.6rem";
+        sideMenuNav2Box[idx].style.height = "10.6rem";
+        sideMenuNav2[idx].style.height = "8.6rem";
         break;
       case 1:
         if (typeof AUTHORITY !== "undefined" && AUTHORITY === 3)
           sideMenuNav2Box[idx].style.height = "18.4rem";
         else
-          sideMenuNav2Box[idx].style.height = "10.4rem";
-        sideMenuNav2[idx].style.height = "8.4rem";
+          sideMenuNav2Box[idx].style.height = "14.4rem";
+        sideMenuNav2[idx].style.height = "12.4rem";
         break;
       case 2:
-        sideMenuNav2Box[idx].style.height = "14.6rem";
-        sideMenuNav2[idx].style.height = "12.6rem";
+        sideMenuNav2Box[idx].style.height = "22.6rem";
+        sideMenuNav2[idx].style.height = "20.6rem";
         break;
       case 3:
         sideMenuNav2Box[idx].style.height = "10.4rem";
         sideMenuNav2[idx].style.height = "8.4rem";
         break;
       case 4:
-        sideMenuNav2Box[idx].style.height = "10.4rem";
-        sideMenuNav2[idx].style.height = "8.4rem";
-        break;
-      case 5:
-        sideMenuNav2Box[idx].style.height = "14.4rem";
-        sideMenuNav2[idx].style.height = "12.4rem";
-        break;
-      case 6:
-        sideMenuNav2Box[idx].style.height = "47.4rem";
-        sideMenuNav2[idx].style.height = "44.4rem";
-        break;
-      case 7:
-        sideMenuNav2Box[idx].style.height = "44.4rem";
-        sideMenuNav2[idx].style.height = "42.4rem";
-        break;
-      case 8:
-        sideMenuNav2Box[idx].style.height = "22.4rem";
-        sideMenuNav2[idx].style.height = "20.4rem";
-        break;
-      case 9:
         sideMenuNav2Box[idx].style.height = "18.4rem";
         sideMenuNav2[idx].style.height = "16.4rem";
         break;
-      case 10:
-        sideMenuNav2Box[idx].style.height = "14.4rem";
-        sideMenuNav2[idx].style.height = "12.4rem";
-        break;
-      case 11:
-        sideMenuNav2Box[idx].style.height = "14.4rem";
-        sideMenuNav2[idx].style.height = "12.4rem";
-        break;
-      case 12:
-        sideMenuNav2Box[idx].style.height = "22.4rem";
-        sideMenuNav2[idx].style.height = "20.4rem";
-        break;
-      case 13:
-        sideMenuNav2Box[idx].style.height = "51.6rem";
-        sideMenuNav2[idx].style.height = "49.6rem";
-        break;
-      case 14:
-        sideMenuNav2Box[idx].style.height = "10.4rem";
-        sideMenuNav2[idx].style.height = "8.4rem";
-        break;
+      
     }
 
     sideNavControll[idx].style.transform = "rotate(180deg)";

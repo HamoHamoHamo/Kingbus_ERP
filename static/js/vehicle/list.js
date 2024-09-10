@@ -47,9 +47,9 @@ const deleteBusEdit = document.querySelector("#deleteBusEdit")
 //등록팝업 열기
 openCrete.addEventListener("click", openCreatePopup)
 
-function openCreatePopup() {
-  popupAreaModules[0].style.display = "block"
-}
+// function openCreatePopup() {
+//   popupAreaModules[0].style.display = "block"
+// }
 
 
 uploadExcelBtn.addEventListener("click", openUploadExcelPopup)
@@ -85,9 +85,9 @@ function closePopup() {
 
 
 //상세팝업 열기
-for (i = 0; i < openDetail.length; i++) {
-  openDetail[i].addEventListener("click", openDetailPopup)
-}
+// for (i = 0; i < openDetail.length; i++) {
+//   openDetail[i].addEventListener("click", openDetailPopup)
+// }
 
 function openDetailPopup() {
   popupAreaModules[1].style.display = "block"

@@ -44,7 +44,7 @@ class Member(models.Model):
     apprenticeship_note = models.CharField(verbose_name='견습노선 및 내용', max_length=100, null=False, blank=True)
     leave_reason = models.CharField(verbose_name='퇴사사유', max_length=100, null=False, blank=True)
     company = models.CharField(verbose_name='소속회사', max_length=100, null=False, blank=True)
-    # team = models.ForeignKey(Team, on_delete=models.SET_NULL, related_name="member_team", null=True)
+    team = models.ForeignKey(Team, on_delete=models.SET_NULL, related_name="member_team", null=True) #추가됨
     final_opinion = models.CharField(verbose_name='최종소견', max_length=100, null=False, blank=True)
     interviewer = models.CharField(verbose_name='면접담당자', max_length=100, null=False, blank=True)
     end_date = models.CharField(verbose_name='종료일', max_length=100, null=False, blank=True)

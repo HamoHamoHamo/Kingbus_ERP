@@ -69,9 +69,8 @@ textarea {
   position: fixed;
   z-index: 10000;
   width: 22rem;
-  height: 102vh;
+  height: 100vh;
   background-color: #1C1A4E;
-  overflow: scroll;
 }
 
 ::-webkit-scrollbar {
@@ -187,22 +186,56 @@ textarea {
   height: auto;
 }
 
-.sideMenuNav2 a {
-  width: 100%;
-}
-
 .sideMenuNav2Link {
   display: flex;
   align-items: center;
-  width: calc(100% - 3rem);
   height: 4.2rem;
   font-size: 1.6rem;
   color: white;
 }
 
-.sideMenuNav2Link:hover .sideMenuNav2Menu {
+.sideMenuNav2Box{
+  width: 25rem;
+}
+
+.sideMenuNav2Menu:hover .sideMenuNav2Link {
   text-decoration: underline;
   text-underline-position: under;
+}
+
+.submenu {
+  display: none;
+  position: fixed;
+  background-color: #333; opacity : 0.7;
+  padding: 0;
+  margin-top: -4rem;
+  margin-left: 16rem;
+  width: 16rem;
+  text-align: center;
+}
+
+.sideMenuNav2Menu:hover .submenu {
+  display: block; /* 부모 항목에 마우스를 올리면 하위 메뉴가 나타나도록 설정 */
+}
+
+.sideMenuNav3Menu {
+  cursor: pointer;
+  padding: 10px;    
+  background-color: rgb(25, 23, 59);
+  color: white;
+  font-size: 1.6rem;
+}
+
+.sideMenuNav3Menu:hover {
+  background-color: rgb(50, 50, 90); /* hover 시 배경색 변경 */
+}
+
+.sideMenuNav3Link {
+  text-decoration: none;
+  color: inherit;
+  display: block;
+  padding: 0;
+  height: 4.2rem;
 }
 
 /* Manual */
@@ -216,6 +249,7 @@ textarea {
   height: 9.2rem;
   padding: 1rem 0;
   box-sizing: border-box;
+  bottom: 1%;
 }
 
 .manualArea a {
