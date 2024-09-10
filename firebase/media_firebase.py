@@ -2,9 +2,10 @@ from datetime import datetime, timedelta
 from pathlib import Path
 from firebase_admin import credentials, initialize_app, storage, _apps, get_app, delete_app
 import os
-from config.settings import BASE_DIR
+from config.settings import BASE_DIR, MEDIA_ROOT
 from my_settings import CRED_PATH, STORAGE_BUCKET, CLOUD_MEDIA_PATH
 from config.custom_logging import logger
+from django.core.exceptions import BadRequest
 
 def is_correct_storage_bucket(app, expected_bucket):
     try:
@@ -74,3 +75,20 @@ def delete_firebase_file(path):
     except Exception as e:
         print(f"File delete fail\nError: {e}" )
         return False
+
+def download_file(path, local_destination):
+    
+
+    init_firebase()
+    # Firebase Storage에서 다운로드 링크 가져오기
+    try:
+        bucket = storage.bucket()
+        blob = bucket.blob(path)
+
+        blob.download_to_filename(local_destination)
+        logger.info(f"Firebase file downloaded to {local_destination}.")
+    except Exception as e:
+        logger.error(f"Download file error. Exception : {e}, local_destination : {local_destination}.")
+        raise BadRequest("파이이베이스 파일 다운로드 실패")
+
+    return local_destination

@@ -3,7 +3,7 @@ import json
 import mimetypes
 import os
 import urllib
-from config.settings import MEDIA_ROOT
+from config.settings import MEDIA_ROOT, MEDIA_URL
 from dateutil.relativedelta import relativedelta
 from dispatch.models import DispatchRegularlyConnect, DispatchOrderConnect
 from django.contrib.auth.hashers import make_password, check_password
@@ -29,7 +29,7 @@ from common.datetime import calculate_time_difference, get_mondays_from_last_wee
 import firebase_admin
 from firebase_admin import credentials
 from firebase_admin import messaging
-from media_firebase import upload_to_firebase, get_download_url, delete_firebase_file
+from firebase.media_firebase import upload_to_firebase, get_download_url, delete_firebase_file, download_file
 from salary.views import SalaryDataController
 from salary.services import SalaryTableDataCollector3
 from dispatch.selectors import DispatchSelector
@@ -486,8 +486,19 @@ def member_file_download(request, file_id):
     if user_auth >= 3:
         return render(request, 'authority.html')
     file = get_object_or_404(MemberFile, id=file_id)
+    # 파일 경로 = tmp/테이블명+id
+
+    file_destination = f"tmp/MemberFile{file.id}"
+    local_destination = os.path.join(MEDIA_ROOT, file_destination)
+
+    download_file(file.path, local_destination)
+
+    splited_filename = file.filename.split(".")
+    is_pdf = True if splited_filename[len(splited_filename) - 1] == "pdf" else False
+    
     context = {
-        'url' : get_download_url(file.path)
+        'url' : os.path.join(MEDIA_URL, file_destination),
+        'is_pdf' : is_pdf,
     }
     return render(request, 'HR/member_img.html', context)
 

@@ -1,7 +1,7 @@
 from django.db.models.signals import post_save, post_delete, pre_delete
 from django.dispatch import receiver
 from .models import ApprovalFile
-from media_firebase import delete_firebase_file
+from firebase.media_firebase import delete_firebase_file
 
 @receiver(pre_delete, sender=ApprovalFile)
 def delete_member_file(sender, instance, **kwargs):
