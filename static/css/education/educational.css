@@ -411,3 +411,18 @@
     width: 5%;
     background-color: white;
 }
+.educationBlock{
+    display: none;
+}
+
+#educationTableContainer{
+    position: relative;
+}
+#educationDetail1{
+    position: absolute;          /* 리스트 위에 배치 */
+    top: 0;                      /* 리스트의 최상단에 위치 */
+    left: 0;                     /* 왼쪽에 맞춤 */
+    width: 100%;                 /* 가로를 화면 전체로 확장 */     /* 배경 색상 설정 */
+    z-index: 1000;               /* 다른 요소 위에 표시되도록 우선순위 설정 */
+    display: none;  
+}

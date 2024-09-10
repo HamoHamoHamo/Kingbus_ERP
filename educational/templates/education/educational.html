@@ -66,28 +66,28 @@
                                     <tbody class="documentContentsTableTbody">
                                         <tr>
                                             <td>1</td>
-                                            <td colspan="2"><a href="#" class="show-details" data-target="#educationDetail1">기사규정</a></td>
+                                            <td colspan="2" onclick="openBoth('driverRules')">기사규정</td>
                                             <td>관리자</td>
                                             <td>2022.09.15</td>
                                         </tr>
 
                                         <tr>
                                             <td>2</td>
-                                            <td colspan="2"><a href="#" class="show-details" data-target="#educationDetail1">입사 시 등록 서류</a></td>
+                                            <td colspan="2" onclick="openBoth('joinDocuments')">입사 시 등록 서류</td>
                                             <td>관리자</td>
                                             <td>2022.09.15</td>
                                         </tr>
 
                                         <tr>
                                             <td>3</td>
-                                            <td colspan="2"><a href="#" class="show-details" data-target="#educationDetail1">친절 교육</a></td>
+                                            <td colspan="2" onclick="openBoth('kindTraining')">친절 교육</td>
                                             <td>관리자</td>
                                             <td>2022.09.15</td>
                                         </tr>
 
                                         <tr>
                                             <td>4</td>
-                                            <td colspan="2"><a href="#" class="show-details" data-target="#educationDetail1">현장관리자 수칙</a></td>
+                                            <td colspan="2" onclick="openBoth('managerRules')">현장관리자 수칙</td>
                                             <td>관리자</td>
                                             <td>2022.09.15</td>
                                         </tr>
@@ -111,7 +111,7 @@
                                                             transform="translate(0 -4.5)" fill="#444" />
                                                     </svg>
                                                     <div>
-                                                        <input autocomplete="off" name="name" type="text" value="교육명" class="groupName" tabindex="-1" disabled>
+                                                        <input autocomplete="off" name="name" type="text" value="안전 및 사고 대응" class="groupName" tabindex="-1" disabled>
                                                     </div>
                                                 </div>
                                             </td>
@@ -122,28 +122,49 @@
                                     <tbody class="documentContentsTableTbody">
                                         <tr>
                                             <td>1</td>
-                                            <td colspan="2"><a href="#" class="show-details" data-target="#educationDetail1">교육 제목1</a></td>
+                                            <td colspan="2" onclick="openBoth('accidentResponse')">교통사고 시</td>
                                             <td>관리자</td>
                                             <td>2022.09.15</td>
                                         </tr>
 
                                         <tr>
                                             <td>2</td>
-                                            <td colspan="2"><a href="#" class="show-details" data-target="#educationDetail1">교육 제목1</a></td>
+                                            <td colspan="2" onclick="openBoth('safetyTraining')">백일해 안전 교육</td>
                                             <td>관리자</td>
                                             <td>2022.09.15</td>
                                         </tr>
 
                                         <tr>
                                             <td>3</td>
-                                            <td colspan="2"><a href="#" class="show-details" data-target="#educationDetail1">교육 제목1</a></td>
+                                            <td colspan="2" onclick="openBoth('summerTraining')">여름철 안전 교육</td>
                                             <td>관리자</td>
                                             <td>2022.09.15</td>
                                         </tr>
 
                                         <tr>
                                             <td>4</td>
-                                            <td colspan="2"><a href="#" class="show-details" data-target="#educationDetail1">교육 제목1</a></td>
+                                            <td colspan="2" onclick="openBoth('emergencyResponse')">응급 상황 시</td>
+                                            <td>관리자</td>
+                                            <td>2022.09.15</td>
+                                        </tr>
+
+                                        <tr>
+                                            <td>4</td>
+                                            <td colspan="2" onclick="openBoth('rainSafety')">장마철·호우 빗길 안전운전 수칙</td>
+                                            <td>관리자</td>
+                                            <td>2022.09.15</td>
+                                        </tr>
+
+                                        <tr>
+                                            <td>4</td>
+                                            <td colspan="2" onclick="openBoth('disabilityTraining')">장애인 인식 교육</td>
+                                            <td>관리자</td>
+                                            <td>2022.09.15</td>
+                                        </tr>
+
+                                        <tr>
+                                            <td>4</td>
+                                            <td colspan="2" onclick="openBoth('fireResponse')">차량 화재 시</td>
                                             <td>관리자</td>
                                             <td>2022.09.15</td>
                                         </tr>
@@ -167,6 +188,54 @@
                                                             transform="translate(0 -4.5)" fill="#444" />
                                                     </svg>
                                                     <div>
+                                                        <input autocomplete="off" name="name" type="text" value="운전 방법 및 운행 품질" class="groupName" tabindex="-1" disabled>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td></td>
+                                            <td></td>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="documentContentsTableTbody">
+                                        <tr>
+                                            <td>1</td>
+                                            <td colspan="2" onclick="openBoth('highwayEnforce')">고속도로 지정차로 위반 단속법</td>
+                                            <td>관리자</td>
+                                            <td>2022.09.15</td>
+                                        </tr>
+
+                                        <tr>
+                                            <td>2</td>
+                                            <td colspan="2" onclick="openBoth('recklessEnforce')">난폭운전 단속 강화</td>
+                                            <td>관리자</td>
+                                            <td>2022.09.15</td>
+                                        </tr>
+
+                                        <tr>
+                                            <td>3</td>
+                                            <td colspan="2" onclick="openBoth('rainDrive')">비 오는 날 안전운전</td>
+                                            <td>관리자</td>
+                                            <td>2022.09.15</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <table class="documentContentsTable">
+                                    <thead>
+                                        <tr>
+                                            <td>4</td>
+                                            <td colspan="2">
+                                                <div class="folderBox">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="16.5"
+                                                        viewBox="0 0 22 16.5">
+                                                        <path id="Icon_awesome-folder" data-name="Icon awesome-folder"
+                                                            d="M19.938,7.25h-8.25L8.938,4.5H2.063A2.062,2.062,0,0,0,0,6.563V18.938A2.062,2.062,0,0,0,2.063,21H19.938A2.062,2.062,0,0,0,22,18.938V9.313A2.062,2.062,0,0,0,19.938,7.25Z"
+                                                            transform="translate(0 -4.5)" fill="#444" />
+                                                    </svg>
+                                                    <div>
                                                         <input autocomplete="off" name="name" type="text" value="교육명" class="groupName" tabindex="-1" disabled>
                                                     </div>
                                                 </div>
@@ -178,31 +247,11 @@
                                     <tbody class="documentContentsTableTbody">
                                         <tr>
                                             <td>1</td>
-                                            <td colspan="2"><a href="#" class="show-details" data-target="#educationDetail1">교육 제목1</a></td>
+                                            <td colspan="2" onclick="openBoth('equipmentCare')">제네레이터 및 에어컨 관리</td>
                                             <td>관리자</td>
                                             <td>2022.09.15</td>
                                         </tr>
 
-                                        <tr>
-                                            <td>2</td>
-                                            <td colspan="2"><a href="#" class="show-details" data-target="#educationDetail1">교육 제목1</a></td>
-                                            <td>관리자</td>
-                                            <td>2022.09.15</td>
-                                        </tr>
-
-                                        <tr>
-                                            <td>3</td>
-                                            <td colspan="2"><a href="#" class="show-details" data-target="#educationDetail1">교육 제목1</a></td>
-                                            <td>관리자</td>
-                                            <td>2022.09.15</td>
-                                        </tr>
-
-                                        <tr>
-                                            <td>4</td>
-                                            <td colspan="2"><a href="#" class="show-details" data-target="#educationDetail1">교육 제목1</a></td>
-                                            <td>관리자</td>
-                                            <td>2022.09.15</td>
-                                        </tr>
                                     </tbody>
                                 </table>
                             </td>
@@ -213,10 +262,466 @@
         </div>
         <input autocomplete="off" type="hidden" name="id" class="hiddenGroupId">
     </form>
+    <div id="educationDetail1" class="education-detail" style="display: none;">
+        <div class="searchAreaBox">
+            <form action="">
+                <div class="searchTool">
+                    <label for="">제목</label>
+                    <div class="#"></div>
+                </div>
+            </form>
+        </div>
+        <div class="educationDetailBody">   
+                <div class="educationBlock" id="driverRules"> <!--기사 규정-->
+                    <div class="educationDetailImgRow">
+                        <img src="{% static 'images/educational/기본교육/기사규정/기사규정 - 1.png' %}" class="educationImg1">
+                        <div class="blank"></div>
+                        <img src="{% static 'images/educational/기본교육/기사규정/기사규정 - 2.png' %}" class="educationImg1">
+                    </div>
+                    <div class="educationDetailImgRow">
+                        <img src="{% static 'images/educational/기본교육/기사규정/기사규정 - 3.png' %}" class="educationImg1">
+                        <div class="blank"></div>
+                        <img src="{% static 'images/educational/기본교육/기사규정/기사규정 - 4.png' %}" class="educationImg1">
+                    </div>
+                    <div class="educationDetailImgRow">
+                        <img src="{% static 'images/educational/기본교육/기사규정/기사규정 - 5.png' %}" class="educationImg1">
+                        <div class="blank"></div>
+                        <img src="{% static 'images/educational/기본교육/기사규정/기사규정 - 6.png' %}" class="educationImg1">
+                    </div>
+                    <div class="educationDetailImgRow">
+                        <img src="{% static 'images/educational/기본교육/기사규정/기사규정 - 7.png' %}" class="educationImg1">
+                        <div class="blank"></div>
+                        <img src="{% static 'images/educational/기본교육/기사규정/기사규정 - 8.png' %}" class="educationImg1">
+                    </div>
+                    <div class="educationDetailImgRow">
+                        <img src="{% static 'images/educational/기본교육/기사규정/기사규정 - 9.png' %}" class="educationImg1">
+                        <div class="blank"></div>
+                        <img src="{% static 'images/educational/기본교육/기사규정/기사규정 - 10.png' %}" class="educationImg1">
+                    </div>
+                </div>
+            
+                <div class="educationBlock" id="joinDocuments"> <!--입사 시 등록 서류-->
+                    <div class="educationDetailImgRow">
+                        <img src="{% static 'images/educational/기본교육/입사 시 등록 서류/입사 시 구비 서류 - 1.png' %}" class="educationImg1">
+                        <div class="blank"></div>
+                        <img src="{% static 'images/educational/기본교육/입사 시 등록 서류/입사 시 구비 서류 - 2.png' %}" class="educationImg1">
+                    </div>
+                    <div class="educationDetailImgRow">
+                        <img src="{% static 'images/educational/기본교육/입사 시 등록 서류/입사 시 구비 서류 - 3.png' %}" class="educationImg1">
+                        <div class="blank"></div>
+                        <img src="{% static 'images/educational/기본교육/입사 시 등록 서류/입사 시 구비 서류 - 4.png' %}" class="educationImg1">
+                    </div>
+                    <div class="educationDetailImgRow">
+                        <img src="{% static 'images/educational/기본교육/입사 시 등록 서류/입사 시 구비 서류 - 5.png' %}" class="educationImg1">
+                        <div class="blank"></div>
+                        <img src="{% static 'images/educational/기본교육/입사 시 등록 서류/입사 시 구비 서류 - 6.png' %}" class="educationImg1">
+                    </div>
+                    <div class="educationDetailImgRow">
+                        <img src="{% static 'images/educational/기본교육/입사 시 등록 서류/입사 시 구비 서류 - 7.png' %}" class="educationImg1">
+                        <div class="blank"></div>
+                        <img src="{% static 'images/educational/기본교육/입사 시 등록 서류/입사 시 구비 서류 - 8.png' %}" class="educationImg1">
+                    </div>
+                    <div class="educationDetailImgRow">
+                        <img src="{% static 'images/educational/기본교육/입사 시 등록 서류/입사 시 구비 서류 - 9.png' %}" class="educationImg1">
+                        <div class="blank"></div>
+                        <img src="{% static 'images/educational/기본교육/입사 시 등록 서류/입사 시 구비 서류 - 10.png' %}" class="educationImg1">
+                    </div>
+                    <div class="educationDetailImgRow">
+                        <img src="{% static 'images/educational/기본교육/입사 시 등록 서류/입사 시 구비 서류 - 11.png' %}" class="educationImg1">
+                        <div class="blank"></div>
+                        <img src="{% static 'images/educational/기본교육/입사 시 등록 서류/입사 시 구비 서류 - 12.png' %}" class="educationImg1">
+                    </div>
+                    <div class="educationDetailImgRow">
+                        <img src="{% static 'images/educational/기본교육/입사 시 등록 서류/입사 시 구비 서류 - 13.png' %}" class="educationImg1">
+                        <div class="blank"></div>
+                        <img src="{% static 'images/educational/기본교육/입사 시 등록 서류/입사 시 구비 서류 - 14.png' %}" class="educationImg1">
+                    </div>
+                    <div class="educationDetailImgRow">
+                        <img src="{% static 'images/educational/기본교육/입사 시 등록 서류/입사 시 구비 서류 - 15.png' %}" class="educationImg1">
+                        <div class="blank"></div>
+                        <img src="{% static 'images/educational/기본교육/입사 시 등록 서류/입사 시 구비 서류 - 16.png' %}" class="educationImg1">
+                    </div>
+                    <div class="educationDetailImgRow">
+                        <img src="{% static 'images/educational/기본교육/입사 시 등록 서류/입사 시 구비 서류 - 17.png' %}" class="educationImg1">
+                        <div class="blank"></div>
+                        <img src="{% static 'images/educational/기본교육/입사 시 등록 서류/입사 시 구비 서류 - 18.png' %}" class="educationImg1">
+                    </div>
+                    <div class="educationDetailImgRow">
+                        <img src="{% static 'images/educational/기본교육/입사 시 등록 서류/입사 시 구비 서류 - 19.png' %}" class="educationImg1">
+                        <div class="blank"></div>
+                        <img src="{% static 'images/educational/기본교육/입사 시 등록 서류/입사 시 구비 서류 - 20.png' %}" class="educationImg1">
+                    </div>
+                    <div class="educationDetailImgRow">
+                        <img src="{% static 'images/educational/기본교육/입사 시 등록 서류/입사 시 구비 서류 - 21.png' %}" class="educationImg1">
+                        <div class="blank"></div>
+                        <img src="{% static 'images/educational/기본교육/입사 시 등록 서류/입사 시 구비 서류 - 22.png' %}" class="educationImg1">
+                    </div>
+                    <div class="educationDetailImgRow">
+                        <img src="{% static 'images/educational/기본교육/입사 시 등록 서류/입사 시 구비 서류 - 23.png' %}" class="educationImg1">
+                        <div class="blank"></div>
+                        <img src="{% static 'images/educational/기본교육/입사 시 등록 서류/입사 시 구비 서류 - 24.png' %}" class="educationImg1">
+                    </div>
+                    <div class="educationDetailImgRow">
+                        <img src="{% static 'images/educational/기본교육/입사 시 등록 서류/입사 시 구비 서류 - 25.png' %}" class="educationImg1">
+                        <div class="blank"></div>
+                        <img src="{% static 'images/educational/기본교육/입사 시 등록 서류/입사 시 구비 서류 - 26.png' %}" class="educationImg1">
+                    </div>
+                    <div class="educationDetailImgRow">
+                        <img src="{% static 'images/educational/기본교육/입사 시 등록 서류/입사 시 구비 서류 - 27.png' %}" class="educationImg1">
+                        <div class="blank"></div>
+                        <img src="{% static 'images/educational/기본교육/입사 시 등록 서류/입사 시 구비 서류 - 28.png' %}" class="educationImg1">
+                    </div>
+                    <div class="educationDetailImgRow">
+                        <img src="{% static 'images/educational/기본교육/입사 시 등록 서류/입사 시 구비 서류 - 29.png' %}" class="educationImg1">
+                        <div class="blank"></div>
+                        <img src="{% static 'images/educational/기본교육/입사 시 등록 서류/입사 시 구비 서류 - 30.png' %}" class="educationImg1">
+                    </div>
+                    <div class="educationDetailImgRow">
+                        <img src="{% static 'images/educational/기본교육/입사 시 등록 서류/입사 시 구비 서류 - 31.png' %}" class="educationImg1">
+                        <div class="blank"></div>
+                        <img src="{% static 'images/educational/기본교육/입사 시 등록 서류/입사 시 구비 서류 - 32.png' %}" class="educationImg1">
+                    </div>
+                    <div class="educationDetailImgRow">
+                        <img src="{% static 'images/educational/기본교육/입사 시 등록 서류/입사 시 구비 서류 - 33.png' %}" class="educationImg1">
+                        <div class="blank"></div>
+                        <img src="{% static 'images/educational/기본교육/입사 시 등록 서류/입사 시 구비 서류 - 34.png' %}" class="educationImg1">
+                    </div>
+                    <div class="educationDetailImgRow">
+                        <img src="{% static 'images/educational/기본교육/입사 시 등록 서류/입사 시 구비 서류 - 35.png' %}" class="educationImg1">
+                        <div class="blank"></div>
+                        <img src="{% static 'images/educational/기본교육/입사 시 등록 서류/입사 시 구비 서류 - 36.png' %}" class="educationImg1">
+                    </div>
+                    <div class="educationDetailImgRow">
+                        <img src="{% static 'images/educational/기본교육/입사 시 등록 서류/입사 시 구비 서류 - 37.png' %}" class="educationImg1">
+                        <div class="blank"></div>
+                        <img src="{% static 'images/educational/기본교육/입사 시 등록 서류/입사 시 구비 서류 - 38.png' %}" class="educationImg1">
+                    </div>
+                </div>
+    
+                <div class="educationBlock" id="kindTraining"> <!--친절 교육-->
+                    <div class="educationDetailImgRow">
+                        <img src="{% static 'images/educational/기본교육/친절 교육/친절교육 - 1.png' %}" class="educationImg1">
+                        <div class="blank"></div>
+                        <img src="{% static 'images/educational/기본교육/친절 교육/친절교육 - 2.png' %}" class="educationImg1">
+                    </div>
+                    <div class="educationDetailImgRow">
+                        <img src="{% static 'images/educational/기본교육/친절 교육/친절교육 - 3.png' %}" class="educationImg1">
+                        <div class="blank"></div>
+                        <img src="{% static 'images/educational/기본교육/친절 교육/친절교육 - 4.png' %}" class="educationImg1">
+                    </div>
+                    <div class="educationDetailImgRow">
+                        <img src="{% static 'images/educational/기본교육/친절 교육/친절교육 - 5.png' %}" class="educationImg1">
+                        <div class="blank"></div>
+                        <img src="{% static 'images/educational/기본교육/친절 교육/친절교육 - 6.png' %}" class="educationImg1">
+                    </div>
+                    <div class="educationDetailImgRow">
+                        <img src="{% static 'images/educational/기본교육/친절 교육/친절교육 - 7.png' %}" class="educationImg1">
+                    </div>
+                </div>
+    
+                <div class="educationBlock" id="managerRules"> <!--현장관리자 수칙-->
+                    <div class="educationDetailImgRow">
+                        <img src="{% static 'images/educational/기본교육/현장관리자 수칙/현장관리자 수칙 - 1.png' %}" class="educationImg1">
+                        <div class="blank"></div>
+                        <img src="{% static 'images/educational/기본교육/현장관리자 수칙/현장관리자 수칙 - 2.png' %}" class="educationImg1">
+                    </div>
+                    <div class="educationDetailImgRow">
+                        <img src="{% static 'images/educational/기본교육/현장관리자 수칙/현장관리자 수칙 - 3.png' %}" class="educationImg1">
+                        <div class="blank"></div>
+                        <img src="{% static 'images/educational/기본교육/현장관리자 수칙/현장관리자 수칙 - 4.png' %}" class="educationImg1">
+                    </div>
+                    <div class="educationDetailImgRow">
+                        <img src="{% static 'images/educational/기본교육/현장관리자 수칙/현장관리자 수칙 - 5.png' %}" class="educationImg1">
+                        <div class="blank"></div>
+                        <img src="{% static 'images/educational/기본교육/현장관리자 수칙/현장관리자 수칙 - 6.png' %}" class="educationImg1">
+                    </div>
+                    <div class="educationDetailImgRow">
+                        <img src="{% static 'images/educational/기본교육/현장관리자 수칙/현장관리자 수칙 - 7.png' %}" class="educationImg1">
+                        <div class="blank"></div>
+                        <img src="{% static 'images/educational/기본교육/현장관리자 수칙/현장관리자 수칙 - 8.png' %}" class="educationImg1">
+                    </div>
+                    <div class="educationDetailImgRow">
+                        <img src="{% static 'images/educational/기본교육/현장관리자 수칙/현장관리자 수칙 - 9.png' %}" class="educationImg1">
+    
+                    </div>
+                </div>
+                
+                <div class="educationBlock" id="accidentResponse"> <!--교통사고 시-->
+                    <div class="educationDetailImgRow">
+                        <img src="{% static 'images/educational/안전 및 사고 대응/교통사고 시/교통사고 대응법 - 1.png' %}" class="educationImg1">
+                        <div class="blank"></div>
+                        <img src="{% static 'images/educational/안전 및 사고 대응/교통사고 시/교통사고 대응법 - 2.png' %}" class="educationImg1">
+                    </div>
+                    <div class="educationDetailImgRow">
+                        <img src="{% static 'images/educational/안전 및 사고 대응/교통사고 시/교통사고 대응법 - 3.png' %}" class="educationImg1">
+                        <div class="blank"></div>
+                        <img src="{% static 'images/educational/안전 및 사고 대응/교통사고 시/교통사고 대응법 - 4.png' %}" class="educationImg1">
+                    </div>
+                    <div class="educationDetailImgRow">
+                        <img src="{% static 'images/educational/안전 및 사고 대응/교통사고 시/교통사고 대응법 - 5.png' %}" class="educationImg1">
+                        <div class="blank"></div>
+                        <img src="{% static 'images/educational/안전 및 사고 대응/교통사고 시/교통사고 대응법 - 6.png' %}" class="educationImg1">
+                    </div>
+                </div>
+    
+                <div class="educationBlock" id="emergencyResponse"> <!--응급 상황 시-->
+                    <div class="educationDetailImgRow">
+                        <img src="{% static 'images/educational/안전 및 사고 대응/응급 상황 시/응급 상황 시 대처 - 1.png' %}" class="educationImg1">
+                        <div class="blank"></div>
+                        <img src="{% static 'images/educational/안전 및 사고 대응/응급 상황 시/응급 상황 시 대처 - 2.png' %}" class="educationImg1">
+                    </div>
+                    <div class="educationDetailImgRow">
+                        <img src="{% static 'images/educational/안전 및 사고 대응/응급 상황 시/응급 상황 시 대처 - 3.png' %}" class="educationImg1">
+                        <div class="blank"></div>
+                        <img src="{% static 'images/educational/안전 및 사고 대응/응급 상황 시/응급 상황 시 대처 - 4.png' %}" class="educationImg1">
+                    </div>
+                    <div class="educationDetailImgRow">
+                        <img src="{% static 'images/educational/안전 및 사고 대응/응급 상황 시/응급 상황 시 대처 - 5.png' %}" class="educationImg1">
+                        <div class="blank"></div>
+                        <img src="{% static 'images/educational/안전 및 사고 대응/응급 상황 시/응급 상황 시 대처 - 6.png' %}" class="educationImg1">
+                    </div>
+                    <div class="educationDetailImgRow">
+                        <img src="{% static 'images/educational/안전 및 사고 대응/응급 상황 시/응급 상황 시 대처 - 7.png' %}" class="educationImg1">
+                        <div class="blank"></div>
+                        <img src="{% static 'images/educational/안전 및 사고 대응/응급 상황 시/응급 상황 시 대처 - 8.png' %}" class="educationImg1">
+                    </div>
+                    <div class="educationDetailImgRow">
+                        <img src="{% static 'images/educational/안전 및 사고 대응/응급 상황 시/응급 상황 시 대처 - 9.png' %}" class="educationImg1">
+                        <div class="blank"></div>
+                        <img src="{% static 'images/educational/안전 및 사고 대응/응급 상황 시/응급 상황 시 대처 - 10.png' %}" class="educationImg1">
+                    </div>
+                    <div class="educationDetailImgRow">
+                        <img src="{% static 'images/educational/안전 및 사고 대응/응급 상황 시/응급 상황 시 대처 - 11.png' %}" class="educationImg1">
+                    </div>
+                </div>
+    
+                <div class="educationBlock" id="fireResponse"> <!--차량 화재 시-->
+                    <div class="educationDetailImgRow">
+                        <img src="{% static 'images/educational/안전 및 사고 대응/차량 화재 시/차량화재 시 대처 - 1.png' %}" class="educationImg1">
+                        <div class="blank"></div>
+                        <img src="{% static 'images/educational/안전 및 사고 대응/차량 화재 시/차량화재 시 대처 - 2.png' %}" class="educationImg1">
+                    </div>
+                    <div class="educationDetailImgRow">
+                        <img src="{% static 'images/educational/안전 및 사고 대응/차량 화재 시/차량화재 시 대처 - 3.png' %}" class="educationImg1">
+                        <div class="blank"></div>
+                        <img src="{% static 'images/educational/안전 및 사고 대응/차량 화재 시/차량화재 시 대처 - 4.png' %}" class="educationImg1">
+                    </div>
+                    <div class="educationDetailImgRow">
+                        <img src="{% static 'images/educational/안전 및 사고 대응/차량 화재 시/차량화재 시 대처 - 5.png' %}" class="educationImg1">
+                        <div class="blank"></div>
+                        <img src="{% static 'images/educational/안전 및 사고 대응/차량 화재 시/차량화재 시 대처 - 6.png' %}" class="educationImg1">
+                    </div>
+                    <div class="educationDetailImgRow">
+                        <img src="{% static 'images/educational/안전 및 사고 대응/차량 화재 시/차량화재 시 대처 - 7.png' %}" class="educationImg1">
+                    </div>
+                </div>
+    
+                <div class="educationBlock" id="safetyTrainings"> <!--백일해 안전 교육-->
+                    <div class="educationDetailImgRow">
+                        <img src="{% static 'images/educational/안전 및 사고 대응/백일해 안전 교육/백일해 주의보 - 1.png' %}" class="educationImg1">
+                        <div class="blank"></div>
+                        <img src="{% static 'images/educational/안전 및 사고 대응/백일해 안전 교육/백일해 주의보 - 2.png' %}" class="educationImg1">
+                    </div>
+                    <div class="educationDetailImgRow">
+                        <img src="{% static 'images/educational/안전 및 사고 대응/백일해 안전 교육/백일해 주의보 - 3.png' %}" class="educationImg1">
+                        <div class="blank"></div>
+                        <img src="{% static 'images/educational/안전 및 사고 대응/백일해 안전 교육/백일해 주의보 - 4.png' %}" class="educationImg1">
+                    </div>
+                    <div class="educationDetailImgRow">
+                        <img src="{% static 'images/educational/안전 및 사고 대응/백일해 안전 교육/백일해 주의보 - 5.png' %}" class="educationImg1">
+                        <div class="blank"></div>
+                        <img src="{% static 'images/educational/안전 및 사고 대응/백일해 안전 교육/백일해 주의보 - 6.png' %}" class="educationImg1">
+                    </div>
+                </div>
+    
+                <div class="educationBlock" id="summerTraining"> <!--여름철 안전 교육-->
+                    <div class="educationDetailImgRow">
+                        <img src="{% static 'images/educational/안전 및 사고 대응/여름철 안전 교육/여름철 안전 교육 - 1.png' %}" class="educationImg1">
+                        <div class="blank"></div>
+                        <img src="{% static 'images/educational/안전 및 사고 대응/여름철 안전 교육/여름철 안전 교육 - 2.png' %}" class="educationImg1">
+                    </div>
+                    <div class="educationDetailImgRow">
+                        <img src="{% static 'images/educational/안전 및 사고 대응/여름철 안전 교육/여름철 안전 교육 - 3.png' %}" class="educationImg1">
+                        <div class="blank"></div>
+                        <img src="{% static 'images/educational/안전 및 사고 대응/여름철 안전 교육/여름철 안전 교육 - 4.png' %}" class="educationImg1">
+                    </div>
+                    <div class="educationDetailImgRow">
+                        <img src="{% static 'images/educational/안전 및 사고 대응/여름철 안전 교육/여름철 안전 교육 - 5.png' %}" class="educationImg1">
+                        <div class="blank"></div>
+                        <img src="{% static 'images/educational/안전 및 사고 대응/여름철 안전 교육/여름철 안전 교육 - 6.png' %}" class="educationImg1">
+                    </div>
+                    <div class="educationDetailImgRow">
+                        <img src="{% static 'images/educational/안전 및 사고 대응/여름철 안전 교육/여름철 안전 교육 - 7.png' %}" class="educationImg1">
+                        <div class="blank"></div>
+                        <img src="{% static 'images/educational/안전 및 사고 대응/여름철 안전 교육/여름철 안전 교육 - 8.png' %}" class="educationImg1">
+                    </div>
+                    <div class="educationDetailImgRow">
+                        <img src="{% static 'images/educational/안전 및 사고 대응/여름철 안전 교육/여름철 안전 교육 - 9.png' %}" class="educationImg1">
+                        <div class="blank"></div>
+                        <img src="{% static 'images/educational/안전 및 사고 대응/여름철 안전 교육/여름철 안전 교육 - 10.png' %}" class="educationImg1">
+                    </div>
+                    <div class="educationDetailImgRow">
+                        <img src="{% static 'images/educational/안전 및 사고 대응/여름철 안전 교육/여름철 안전 교육 - 11.png' %}" class="educationImg1">
+                        <div class="blank"></div>
+                        <img src="{% static 'images/educational/안전 및 사고 대응/여름철 안전 교육/여름철 안전 교육 - 12.png' %}" class="educationImg1">
+                    </div>
+                    <div class="educationDetailImgRow">
+                        <img src="{% static 'images/educational/안전 및 사고 대응/여름철 안전 교육/여름철 안전 교육 - 13.png' %}" class="educationImg1">
+                        <div class="blank"></div>
+                        <img src="{% static 'images/educational/안전 및 사고 대응/여름철 안전 교육/여름철 안전 교육 - 14.png' %}" class="educationImg1">
+                    </div>
+                    <div class="educationDetailImgRow">
+                        <img src="{% static 'images/educational/안전 및 사고 대응/여름철 안전 교육/여름철 안전 교육 - 15.png' %}" class="educationImg1">
+                        <div class="blank"></div>
+                        <img src="{% static 'images/educational/안전 및 사고 대응/여름철 안전 교육/여름철 안전 교육 - 16.png' %}" class="educationImg1">
+                    </div>
+                    <div class="educationDetailImgRow">
+                        <img src="{% static 'images/educational/안전 및 사고 대응/여름철 안전 교육/여름철 안전 교육 - 17.png' %}" class="educationImg1">
+    
+                    </div>
+                </div>
+    
+                <div class="educationBlock" id="rainSafety"> <!--장마철, 호우 빗길 안전운전 수칙-->
+                    <div class="educationDetailImgRow">
+                        <img src="{% static 'images/educational/안전 및 사고 대응/장마철·호우 빗길 안전운전 수칙/장마철 안전 운전 - 1.png' %}" class="educationImg1">
+                        <div class="blank"></div>
+                        <img src="{% static 'images/educational/안전 및 사고 대응/장마철·호우 빗길 안전운전 수칙/장마철 안전 운전 - 2.png' %}" class="educationImg1">
+                    </div>
+                    <div class="educationDetailImgRow">
+                        <img src="{% static 'images/educational/안전 및 사고 대응/장마철·호우 빗길 안전운전 수칙/장마철 안전 운전 - 3.png' %}" class="educationImg1">
+                        <div class="blank"></div>
+                        <img src="{% static 'images/educational/안전 및 사고 대응/장마철·호우 빗길 안전운전 수칙/장마철 안전 운전 - 4.png' %}" class="educationImg1">
+                    </div>
+                    <div class="educationDetailImgRow">
+                        <img src="{% static 'images/educational/안전 및 사고 대응/장마철·호우 빗길 안전운전 수칙/장마철 안전 운전 - 5.png' %}" class="educationImg1">
+                        <div class="blank"></div>
+                        <img src="{% static 'images/educational/안전 및 사고 대응/장마철·호우 빗길 안전운전 수칙/장마철 안전 운전 - 6.png' %}" class="educationImg1">
+                    </div>
+                </div>
+    
+                <div class="educationBlock" id="disabilityTraining"> <!--장애인 인식 교육-->
+                    <div class="educationDetailImgRow">
+                        <img src="{% static 'images/educational/안전 및 사고 대응/장애인 인식 교육/장애인 인식 교육 - 1.png' %}" class="educationImg1">
+                        <div class="blank"></div>
+                        <img src="{% static 'images/educational/안전 및 사고 대응/장애인 인식 교육/장애인 인식 교육 - 2.png' %}" class="educationImg1">
+                    </div>
+                    <div class="educationDetailImgRow">
+                        <img src="{% static 'images/educational/안전 및 사고 대응/장애인 인식 교육/장애인 인식 교육 - 3.png' %}" class="educationImg1">
+                        <div class="blank"></div>
+                        <img src="{% static 'images/educational/안전 및 사고 대응/장애인 인식 교육/장애인 인식 교육 - 4.png' %}" class="educationImg1">
+                    </div>
+                    <div class="educationDetailImgRow">
+                        <img src="{% static 'images/educational/안전 및 사고 대응/장애인 인식 교육/장애인 인식 교육 - 5.png' %}" class="educationImg1">
+                        <div class="blank"></div>
+                        <img src="{% static 'images/educational/안전 및 사고 대응/장애인 인식 교육/장애인 인식 교육 - 6.png' %}" class="educationImg1">
+                    </div>
+                    <div class="educationDetailImgRow">
+                        <img src="{% static 'images/educational/안전 및 사고 대응/장애인 인식 교육/장애인 인식 교육 - 7.png' %}" class="educationImg1">
+                    </div>
+                </div>
+    
+                <div class="educationBlock" id="highwayEnforce"> <!--고속도로 지정차로 위반 단속법-->
+                    <div class="educationDetailImgRow">
+                        <img src="{% static 'images/educational/운전 방법 및 운행 품질/고속도로 지정차로 위반 단속법/고속도로 지정차로 위반 단속법 - 1.png' %}" class="educationImg1">
+                        <div class="blank"></div>
+                        <img src="{% static 'images/educational/운전 방법 및 운행 품질/고속도로 지정차로 위반 단속법/고속도로 지정차로 위반 단속법 - 2.png' %}" class="educationImg1">
+                    </div>
+                    <div class="educationDetailImgRow">
+                        <img src="{% static 'images/educational/운전 방법 및 운행 품질/고속도로 지정차로 위반 단속법/고속도로 지정차로 위반 단속법 - 3.png' %}" class="educationImg1">
+                        <div class="blank"></div>
+                        <img src="{% static 'images/educational/운전 방법 및 운행 품질/고속도로 지정차로 위반 단속법/고속도로 지정차로 위반 단속법 - 4.png' %}" class="educationImg1">
+                    </div>
+                    <div class="educationDetailImgRow">
+                        <img src="{% static 'images/educational/운전 방법 및 운행 품질/고속도로 지정차로 위반 단속법/고속도로 지정차로 위반 단속법 - 5.png' %}" class="educationImg1">
+                        <div class="blank"></div>
+                        <img src="{% static 'images/educational/운전 방법 및 운행 품질/고속도로 지정차로 위반 단속법/고속도로 지정차로 위반 단속법 - 6.png' %}" class="educationImg1">
+                    </div>
+                </div>
+    
+                <div class="educationBlock" id="recklessEnforce"> <!--난폭운전 단속 강화-->
+                    <div class="educationDetailImgRow">
+                        <img src="{% static 'images/educational/운전 방법 및 운행 품질/난폭운전 단속 강화/난폭운전 단속 강화 - 1.png' %}" class="educationImg1">
+                        <div class="blank"></div>
+                        <img src="{% static 'images/educational/운전 방법 및 운행 품질/난폭운전 단속 강화/난폭운전 단속 강화 - 2.png' %}" class="educationImg1">
+                    </div>
+                    <div class="educationDetailImgRow">
+                        <img src="{% static 'images/educational/운전 방법 및 운행 품질/난폭운전 단속 강화/난폭운전 단속 강화 - 3.png' %}" class="educationImg1">
+                        <div class="blank"></div>
+                        <img src="{% static 'images/educational/운전 방법 및 운행 품질/난폭운전 단속 강화/난폭운전 단속 강화 - 4.png' %}" class="educationImg1">
+                    </div>
+                    <div class="educationDetailImgRow">
+                        <img src="{% static 'images/educational/운전 방법 및 운행 품질/난폭운전 단속 강화/난폭운전 단속 강화 - 5.png' %}" class="educationImg1">
+                        <div class="blank"></div>
+                        <img src="{% static 'images/educational/운전 방법 및 운행 품질/난폭운전 단속 강화/난폭운전 단속 강화 - 6.png' %}" class="educationImg1">
+                    </div>
+                    <div class="educationDetailImgRow">
+                        <img src="{% static 'images/educational/운전 방법 및 운행 품질/난폭운전 단속 강화/난폭운전 단속 강화 - 7.png' %}" class="educationImg1">
+                        <div class="blank"></div>
+                        <img src="{% static 'images/educational/운전 방법 및 운행 품질/난폭운전 단속 강화/난폭운전 단속 강화 - 8.png' %}" class="educationImg1">
+                    </div>
+                    <div class="educationDetailImgRow">
+                        <img src="{% static 'images/educational/운전 방법 및 운행 품질/난폭운전 단속 강화/난폭운전 단속 강화 - 9.png' %}" class="educationImg1">
+    
+                    </div>
+                </div>
+    
+                <div class="educationBlock" id="rainDrive"> <!--비 오는 날 안전운전-->
+                    <div class="educationDetailImgRow">
+                        <img src="{% static 'images/educational/운전 방법 및 운행 품질/비 오는 날 안전운전/비 오는 날 안전운전하기 - 1.png' %}" class="educationImg1">
+                        <div class="blank"></div>
+                        <img src="{% static 'images/educational/운전 방법 및 운행 품질/비 오는 날 안전운전/비 오는 날 안전운전하기 - 2.png' %}" class="educationImg1">
+                    </div>
+                    <div class="educationDetailImgRow">
+                        <img src="{% static 'images/educational/운전 방법 및 운행 품질/비 오는 날 안전운전/비 오는 날 안전운전하기 - 3.png' %}" class="educationImg1">
+                        <div class="blank"></div>
+                        <img src="{% static 'images/educational/운전 방법 및 운행 품질/비 오는 날 안전운전/비 오는 날 안전운전하기 - 4.png' %}" class="educationImg1">
+                    </div>
+                    <div class="educationDetailImgRow">
+                        <img src="{% static 'images/educational/운전 방법 및 운행 품질/비 오는 날 안전운전/비 오는 날 안전운전하기 - 5.png' %}" class="educationImg1">
+                        <div class="blank"></div>
+                        <img src="{% static 'images/educational/운전 방법 및 운행 품질/비 오는 날 안전운전/비 오는 날 안전운전하기 - 6.png' %}" class="educationImg1">
+                    </div>
+                    <div class="educationDetailImgRow">
+                        <img src="{% static 'images/educational/운전 방법 및 운행 품질/비 오는 날 안전운전/비 오는 날 안전운전하기 - 7.png' %}" class="educationImg1">
+    
+                    </div>
+                </div>
+    
+                <div class="educationBlock" id="equipmentCare"> <!--제네레이터 및 에어컨 관리-->
+                    <div class="educationDetailImgRow">
+                        <img src="{% static 'images/educational/운행 및 차량 관리/제네레이터 및 에어컨 관리/제네레이터 전압과 에어컨 관리 - 1.png' %}" class="educationImg1">
+                        <div class="blank"></div>
+                        <img src="{% static 'images/educational/운행 및 차량 관리/제네레이터 및 에어컨 관리/제네레이터 전압과 에어컨 관리 - 2.png' %}" class="educationImg1">
+                    </div>
+                    <div class="educationDetailImgRow">
+                        <img src="{% static 'images/educational/운행 및 차량 관리/제네레이터 및 에어컨 관리/제네레이터 전압과 에어컨 관리 - 3.png' %}" class="educationImg1">
+                        <div class="blank"></div>
+                        <img src="{% static 'images/educational/운행 및 차량 관리/제네레이터 및 에어컨 관리/제네레이터 전압과 에어컨 관리 - 4.png' %}" class="educationImg1">
+                    </div>
+                    <div class="educationDetailImgRow">
+                        <img src="{% static 'images/educational/운행 및 차량 관리/제네레이터 및 에어컨 관리/제네레이터 전압과 에어컨 관리 - 5.png' %}" class="educationImg1">
+                        <div class="blank"></div>
+                        <img src="{% static 'images/educational/운행 및 차량 관리/제네레이터 및 에어컨 관리/제네레이터 전압과 에어컨 관리 - 6.png' %}" class="educationImg1">
+                    </div>
+                    <div class="educationDetailImgRow">
+                        <img src="{% static 'images/educational/운행 및 차량 관리/제네레이터 및 에어컨 관리/제네레이터 전압과 에어컨 관리 - 7.png' %}" class="educationImg1">
+                        <div class="blank"></div>
+                        <img src="{% static 'images/educational/운행 및 차량 관리/제네레이터 및 에어컨 관리/제네레이터 전압과 에어컨 관리 - 8.png' %}" class="educationImg1">
+                    </div>
+                    <div class="educationDetailImgRow">
+                        <img src="{% static 'images/educational/운행 및 차량 관리/제네레이터 및 에어컨 관리/제네레이터 전압과 에어컨 관리 - 9.png' %}" class="educationImg1">
+                    </div>
+                </div>
+        </div>
+            <div class="backToTable">
+            <button id="backToTable">뒤로 가기</button>
+            </div>
+        </div>
+    </div>
 </div>
 
 <!-- 숨겨진 교육 상세 내용 -->
-<div id="educationDetail1" class="education-detail" style="display: none;">
+{% comment %} <div id="educationDetail1" class="education-detail" style="display: none;">
     <div class="searchAreaBox">
         <form action="">
             <div class="searchTool">
@@ -227,7 +732,7 @@
     </div>
     <div class="educationDetailBody">   
         <div class="education-detailLabel">내용</div>
-            <div class="driverRegulation"> <!--기사 규정-->
+            <div class="educationBlock" id="driverRules"> <!--기사 규정-->
                 <div class="educationDetailImgRow">
                     <img src="{% static 'images/educational/기본교육/기사규정/기사규정 - 1.png' %}" class="educationImg1">
                     <div class="blank"></div>
@@ -255,7 +760,7 @@
                 </div>
             </div>
         
-            <div class="employmentRegistrationDocuments">
+            <div class="educationBlock" id="joinDocuments"> <!--입사 시 등록 서류-->
                 <div class="educationDetailImgRow">
                     <img src="{% static 'images/educational/기본교육/입사 시 등록 서류/입사 시 구비 서류 - 1.png' %}" class="educationImg1">
                     <div class="blank"></div>
@@ -353,7 +858,7 @@
                 </div>
             </div>
 
-            <div class="kindService">
+            <div class="educationBlock" id="kindTraining"> <!--친절 교육-->
                 <div class="educationDetailImgRow">
                     <img src="{% static 'images/educational/기본교육/친절 교육/친절교육 - 1.png' %}" class="educationImg1">
                     <div class="blank"></div>
@@ -374,7 +879,7 @@
                 </div>
             </div>
 
-            <div class="managerRules">
+            <div class="educationBlock" id="managerRules"> <!--현장관리자 수칙-->
                 <div class="educationDetailImgRow">
                     <img src="{% static 'images/educational/기본교육/현장관리자 수칙/현장관리자 수칙 - 1.png' %}" class="educationImg1">
                     <div class="blank"></div>
@@ -401,12 +906,278 @@
                 </div>
             </div>
             
+            <div class="educationBlock" id="accidentResponse"> <!--교통사고 시-->
+                <div class="educationDetailImgRow">
+                    <img src="{% static 'images/educational/안전 및 사고 대응/교통사고 시/교통사고 대응법 - 1.png' %}" class="educationImg1">
+                    <div class="blank"></div>
+                    <img src="{% static 'images/educational/안전 및 사고 대응/교통사고 시/교통사고 대응법 - 2.png' %}" class="educationImg1">
+                </div>
+                <div class="educationDetailImgRow">
+                    <img src="{% static 'images/educational/안전 및 사고 대응/교통사고 시/교통사고 대응법 - 3.png' %}" class="educationImg1">
+                    <div class="blank"></div>
+                    <img src="{% static 'images/educational/안전 및 사고 대응/교통사고 시/교통사고 대응법 - 4.png' %}" class="educationImg1">
+                </div>
+                <div class="educationDetailImgRow">
+                    <img src="{% static 'images/educational/안전 및 사고 대응/교통사고 시/교통사고 대응법 - 5.png' %}" class="educationImg1">
+                    <div class="blank"></div>
+                    <img src="{% static 'images/educational/안전 및 사고 대응/교통사고 시/교통사고 대응법 - 6.png' %}" class="educationImg1">
+                </div>
+            </div>
+
+            <div class="educationBlock" id="emergencyResponse"> <!--응급 상황 시-->
+                <div class="educationDetailImgRow">
+                    <img src="{% static 'images/educational/안전 및 사고 대응/응급 상황 시/응급 상황 시 대처 - 1.png' %}" class="educationImg1">
+                    <div class="blank"></div>
+                    <img src="{% static 'images/educational/안전 및 사고 대응/응급 상황 시/응급 상황 시 대처 - 2.png' %}" class="educationImg1">
+                </div>
+                <div class="educationDetailImgRow">
+                    <img src="{% static 'images/educational/안전 및 사고 대응/응급 상황 시/응급 상황 시 대처 - 3.png' %}" class="educationImg1">
+                    <div class="blank"></div>
+                    <img src="{% static 'images/educational/안전 및 사고 대응/응급 상황 시/응급 상황 시 대처 - 4.png' %}" class="educationImg1">
+                </div>
+                <div class="educationDetailImgRow">
+                    <img src="{% static 'images/educational/안전 및 사고 대응/응급 상황 시/응급 상황 시 대처 - 5.png' %}" class="educationImg1">
+                    <div class="blank"></div>
+                    <img src="{% static 'images/educational/안전 및 사고 대응/응급 상황 시/응급 상황 시 대처 - 6.png' %}" class="educationImg1">
+                </div>
+                <div class="educationDetailImgRow">
+                    <img src="{% static 'images/educational/안전 및 사고 대응/응급 상황 시/응급 상황 시 대처 - 7.png' %}" class="educationImg1">
+                    <div class="blank"></div>
+                    <img src="{% static 'images/educational/안전 및 사고 대응/응급 상황 시/응급 상황 시 대처 - 8.png' %}" class="educationImg1">
+                </div>
+                <div class="educationDetailImgRow">
+                    <img src="{% static 'images/educational/안전 및 사고 대응/응급 상황 시/응급 상황 시 대처 - 9.png' %}" class="educationImg1">
+                    <div class="blank"></div>
+                    <img src="{% static 'images/educational/안전 및 사고 대응/응급 상황 시/응급 상황 시 대처 - 10.png' %}" class="educationImg1">
+                </div>
+                <div class="educationDetailImgRow">
+                    <img src="{% static 'images/educational/안전 및 사고 대응/응급 상황 시/응급 상황 시 대처 - 11.png' %}" class="educationImg1">
+                </div>
+            </div>
+
+            <div class="educationBlock" id="fireResponse"> <!--차량 화재 시-->
+                <div class="educationDetailImgRow">
+                    <img src="{% static 'images/educational/안전 및 사고 대응/차량 화재 시/차량화재 시 대처 - 1.png' %}" class="educationImg1">
+                    <div class="blank"></div>
+                    <img src="{% static 'images/educational/안전 및 사고 대응/차량 화재 시/차량화재 시 대처 - 2.png' %}" class="educationImg1">
+                </div>
+                <div class="educationDetailImgRow">
+                    <img src="{% static 'images/educational/안전 및 사고 대응/차량 화재 시/차량화재 시 대처 - 3.png' %}" class="educationImg1">
+                    <div class="blank"></div>
+                    <img src="{% static 'images/educational/안전 및 사고 대응/차량 화재 시/차량화재 시 대처 - 4.png' %}" class="educationImg1">
+                </div>
+                <div class="educationDetailImgRow">
+                    <img src="{% static 'images/educational/안전 및 사고 대응/차량 화재 시/차량화재 시 대처 - 5.png' %}" class="educationImg1">
+                    <div class="blank"></div>
+                    <img src="{% static 'images/educational/안전 및 사고 대응/차량 화재 시/차량화재 시 대처 - 6.png' %}" class="educationImg1">
+                </div>
+                <div class="educationDetailImgRow">
+                    <img src="{% static 'images/educational/안전 및 사고 대응/차량 화재 시/차량화재 시 대처 - 7.png' %}" class="educationImg1">
+                </div>
+            </div>
+
+            <div class="educationBlock" id="safetyTrainings"> <!--백일해 안전 교육-->
+                <div class="educationDetailImgRow">
+                    <img src="{% static 'images/educational/안전 및 사고 대응/백일해 안전 교육/백일해 주의보 - 1.png' %}" class="educationImg1">
+                    <div class="blank"></div>
+                    <img src="{% static 'images/educational/안전 및 사고 대응/백일해 안전 교육/백일해 주의보 - 2.png' %}" class="educationImg1">
+                </div>
+                <div class="educationDetailImgRow">
+                    <img src="{% static 'images/educational/안전 및 사고 대응/백일해 안전 교육/백일해 주의보 - 3.png' %}" class="educationImg1">
+                    <div class="blank"></div>
+                    <img src="{% static 'images/educational/안전 및 사고 대응/백일해 안전 교육/백일해 주의보 - 4.png' %}" class="educationImg1">
+                </div>
+                <div class="educationDetailImgRow">
+                    <img src="{% static 'images/educational/안전 및 사고 대응/백일해 안전 교육/백일해 주의보 - 5.png' %}" class="educationImg1">
+                    <div class="blank"></div>
+                    <img src="{% static 'images/educational/안전 및 사고 대응/백일해 안전 교육/백일해 주의보 - 6.png' %}" class="educationImg1">
+                </div>
+            </div>
+
+            <div class="educationBlock" id="summerTraining"> <!--여름철 안전 교육-->
+                <div class="educationDetailImgRow">
+                    <img src="{% static 'images/educational/안전 및 사고 대응/여름철 안전 교육/여름철 안전 교육 - 1.png' %}" class="educationImg1">
+                    <div class="blank"></div>
+                    <img src="{% static 'images/educational/안전 및 사고 대응/여름철 안전 교육/여름철 안전 교육 - 2.png' %}" class="educationImg1">
+                </div>
+                <div class="educationDetailImgRow">
+                    <img src="{% static 'images/educational/안전 및 사고 대응/여름철 안전 교육/여름철 안전 교육 - 3.png' %}" class="educationImg1">
+                    <div class="blank"></div>
+                    <img src="{% static 'images/educational/안전 및 사고 대응/여름철 안전 교육/여름철 안전 교육 - 4.png' %}" class="educationImg1">
+                </div>
+                <div class="educationDetailImgRow">
+                    <img src="{% static 'images/educational/안전 및 사고 대응/여름철 안전 교육/여름철 안전 교육 - 5.png' %}" class="educationImg1">
+                    <div class="blank"></div>
+                    <img src="{% static 'images/educational/안전 및 사고 대응/여름철 안전 교육/여름철 안전 교육 - 6.png' %}" class="educationImg1">
+                </div>
+                <div class="educationDetailImgRow">
+                    <img src="{% static 'images/educational/안전 및 사고 대응/여름철 안전 교육/여름철 안전 교육 - 7.png' %}" class="educationImg1">
+                    <div class="blank"></div>
+                    <img src="{% static 'images/educational/안전 및 사고 대응/여름철 안전 교육/여름철 안전 교육 - 8.png' %}" class="educationImg1">
+                </div>
+                <div class="educationDetailImgRow">
+                    <img src="{% static 'images/educational/안전 및 사고 대응/여름철 안전 교육/여름철 안전 교육 - 9.png' %}" class="educationImg1">
+                    <div class="blank"></div>
+                    <img src="{% static 'images/educational/안전 및 사고 대응/여름철 안전 교육/여름철 안전 교육 - 10.png' %}" class="educationImg1">
+                </div>
+                <div class="educationDetailImgRow">
+                    <img src="{% static 'images/educational/안전 및 사고 대응/여름철 안전 교육/여름철 안전 교육 - 11.png' %}" class="educationImg1">
+                    <div class="blank"></div>
+                    <img src="{% static 'images/educational/안전 및 사고 대응/여름철 안전 교육/여름철 안전 교육 - 12.png' %}" class="educationImg1">
+                </div>
+                <div class="educationDetailImgRow">
+                    <img src="{% static 'images/educational/안전 및 사고 대응/여름철 안전 교육/여름철 안전 교육 - 13.png' %}" class="educationImg1">
+                    <div class="blank"></div>
+                    <img src="{% static 'images/educational/안전 및 사고 대응/여름철 안전 교육/여름철 안전 교육 - 14.png' %}" class="educationImg1">
+                </div>
+                <div class="educationDetailImgRow">
+                    <img src="{% static 'images/educational/안전 및 사고 대응/여름철 안전 교육/여름철 안전 교육 - 15.png' %}" class="educationImg1">
+                    <div class="blank"></div>
+                    <img src="{% static 'images/educational/안전 및 사고 대응/여름철 안전 교육/여름철 안전 교육 - 16.png' %}" class="educationImg1">
+                </div>
+                <div class="educationDetailImgRow">
+                    <img src="{% static 'images/educational/안전 및 사고 대응/여름철 안전 교육/여름철 안전 교육 - 17.png' %}" class="educationImg1">
+
+                </div>
+            </div>
+
+            <div class="educationBlock" id="rainSafety"> <!--장마철, 호우 빗길 안전운전 수칙-->
+                <div class="educationDetailImgRow">
+                    <img src="{% static 'images/educational/안전 및 사고 대응/장마철·호우 빗길 안전운전 수칙/장마철 안전 운전 - 1.png' %}" class="educationImg1">
+                    <div class="blank"></div>
+                    <img src="{% static 'images/educational/안전 및 사고 대응/장마철·호우 빗길 안전운전 수칙/장마철 안전 운전 - 2.png' %}" class="educationImg1">
+                </div>
+                <div class="educationDetailImgRow">
+                    <img src="{% static 'images/educational/안전 및 사고 대응/장마철·호우 빗길 안전운전 수칙/장마철 안전 운전 - 3.png' %}" class="educationImg1">
+                    <div class="blank"></div>
+                    <img src="{% static 'images/educational/안전 및 사고 대응/장마철·호우 빗길 안전운전 수칙/장마철 안전 운전 - 4.png' %}" class="educationImg1">
+                </div>
+                <div class="educationDetailImgRow">
+                    <img src="{% static 'images/educational/안전 및 사고 대응/장마철·호우 빗길 안전운전 수칙/장마철 안전 운전 - 5.png' %}" class="educationImg1">
+                    <div class="blank"></div>
+                    <img src="{% static 'images/educational/안전 및 사고 대응/장마철·호우 빗길 안전운전 수칙/장마철 안전 운전 - 6.png' %}" class="educationImg1">
+                </div>
+            </div>
+
+            <div class="educationBlock" id="disabilityTraining"> <!--장애인 인식 교육-->
+                <div class="educationDetailImgRow">
+                    <img src="{% static 'images/educational/안전 및 사고 대응/장애인 인식 교육/장애인 인식 교육 - 1.png' %}" class="educationImg1">
+                    <div class="blank"></div>
+                    <img src="{% static 'images/educational/안전 및 사고 대응/장애인 인식 교육/장애인 인식 교육 - 2.png' %}" class="educationImg1">
+                </div>
+                <div class="educationDetailImgRow">
+                    <img src="{% static 'images/educational/안전 및 사고 대응/장애인 인식 교육/장애인 인식 교육 - 3.png' %}" class="educationImg1">
+                    <div class="blank"></div>
+                    <img src="{% static 'images/educational/안전 및 사고 대응/장애인 인식 교육/장애인 인식 교육 - 4.png' %}" class="educationImg1">
+                </div>
+                <div class="educationDetailImgRow">
+                    <img src="{% static 'images/educational/안전 및 사고 대응/장애인 인식 교육/장애인 인식 교육 - 5.png' %}" class="educationImg1">
+                    <div class="blank"></div>
+                    <img src="{% static 'images/educational/안전 및 사고 대응/장애인 인식 교육/장애인 인식 교육 - 6.png' %}" class="educationImg1">
+                </div>
+                <div class="educationDetailImgRow">
+                    <img src="{% static 'images/educational/안전 및 사고 대응/장애인 인식 교육/장애인 인식 교육 - 7.png' %}" class="educationImg1">
+                </div>
+            </div>
+
+            <div class="educationBlock" id="highwayEnforce"> <!--고속도로 지정차로 위반 단속법-->
+                <div class="educationDetailImgRow">
+                    <img src="{% static 'images/educational/운전 방법 및 운행 품질/고속도로 지정차로 위반 단속법/고속도로 지정차로 위반 단속법 - 1.png' %}" class="educationImg1">
+                    <div class="blank"></div>
+                    <img src="{% static 'images/educational/운전 방법 및 운행 품질/고속도로 지정차로 위반 단속법/고속도로 지정차로 위반 단속법 - 2.png' %}" class="educationImg1">
+                </div>
+                <div class="educationDetailImgRow">
+                    <img src="{% static 'images/educational/운전 방법 및 운행 품질/고속도로 지정차로 위반 단속법/고속도로 지정차로 위반 단속법 - 3.png' %}" class="educationImg1">
+                    <div class="blank"></div>
+                    <img src="{% static 'images/educational/운전 방법 및 운행 품질/고속도로 지정차로 위반 단속법/고속도로 지정차로 위반 단속법 - 4.png' %}" class="educationImg1">
+                </div>
+                <div class="educationDetailImgRow">
+                    <img src="{% static 'images/educational/운전 방법 및 운행 품질/고속도로 지정차로 위반 단속법/고속도로 지정차로 위반 단속법 - 5.png' %}" class="educationImg1">
+                    <div class="blank"></div>
+                    <img src="{% static 'images/educational/운전 방법 및 운행 품질/고속도로 지정차로 위반 단속법/고속도로 지정차로 위반 단속법 - 6.png' %}" class="educationImg1">
+                </div>
+            </div>
+
+            <div class="educationBlock" id="recklessEnforce"> <!--난폭운전 단속 강화-->
+                <div class="educationDetailImgRow">
+                    <img src="{% static 'images/educational/운전 방법 및 운행 품질/난폭운전 단속 강화/난폭운전 단속 강화 - 1.png' %}" class="educationImg1">
+                    <div class="blank"></div>
+                    <img src="{% static 'images/educational/운전 방법 및 운행 품질/난폭운전 단속 강화/난폭운전 단속 강화 - 2.png' %}" class="educationImg1">
+                </div>
+                <div class="educationDetailImgRow">
+                    <img src="{% static 'images/educational/운전 방법 및 운행 품질/난폭운전 단속 강화/난폭운전 단속 강화 - 3.png' %}" class="educationImg1">
+                    <div class="blank"></div>
+                    <img src="{% static 'images/educational/운전 방법 및 운행 품질/난폭운전 단속 강화/난폭운전 단속 강화 - 4.png' %}" class="educationImg1">
+                </div>
+                <div class="educationDetailImgRow">
+                    <img src="{% static 'images/educational/운전 방법 및 운행 품질/난폭운전 단속 강화/난폭운전 단속 강화 - 5.png' %}" class="educationImg1">
+                    <div class="blank"></div>
+                    <img src="{% static 'images/educational/운전 방법 및 운행 품질/난폭운전 단속 강화/난폭운전 단속 강화 - 6.png' %}" class="educationImg1">
+                </div>
+                <div class="educationDetailImgRow">
+                    <img src="{% static 'images/educational/운전 방법 및 운행 품질/난폭운전 단속 강화/난폭운전 단속 강화 - 7.png' %}" class="educationImg1">
+                    <div class="blank"></div>
+                    <img src="{% static 'images/educational/운전 방법 및 운행 품질/난폭운전 단속 강화/난폭운전 단속 강화 - 8.png' %}" class="educationImg1">
+                </div>
+                <div class="educationDetailImgRow">
+                    <img src="{% static 'images/educational/운전 방법 및 운행 품질/난폭운전 단속 강화/난폭운전 단속 강화 - 9.png' %}" class="educationImg1">
+
+                </div>
+            </div>
+
+            <div class="educationBlock" id="rainDrive"> <!--비 오는 날 안전운전-->
+                <div class="educationDetailImgRow">
+                    <img src="{% static 'images/educational/운전 방법 및 운행 품질/비 오는 날 안전운전/비 오는 날 안전운전하기 - 1.png' %}" class="educationImg1">
+                    <div class="blank"></div>
+                    <img src="{% static 'images/educational/운전 방법 및 운행 품질/비 오는 날 안전운전/비 오는 날 안전운전하기 - 2.png' %}" class="educationImg1">
+                </div>
+                <div class="educationDetailImgRow">
+                    <img src="{% static 'images/educational/운전 방법 및 운행 품질/비 오는 날 안전운전/비 오는 날 안전운전하기 - 3.png' %}" class="educationImg1">
+                    <div class="blank"></div>
+                    <img src="{% static 'images/educational/운전 방법 및 운행 품질/비 오는 날 안전운전/비 오는 날 안전운전하기 - 4.png' %}" class="educationImg1">
+                </div>
+                <div class="educationDetailImgRow">
+                    <img src="{% static 'images/educational/운전 방법 및 운행 품질/비 오는 날 안전운전/비 오는 날 안전운전하기 - 5.png' %}" class="educationImg1">
+                    <div class="blank"></div>
+                    <img src="{% static 'images/educational/운전 방법 및 운행 품질/비 오는 날 안전운전/비 오는 날 안전운전하기 - 6.png' %}" class="educationImg1">
+                </div>
+                <div class="educationDetailImgRow">
+                    <img src="{% static 'images/educational/운전 방법 및 운행 품질/비 오는 날 안전운전/비 오는 날 안전운전하기 - 7.png' %}" class="educationImg1">
+
+                </div>
+            </div>
+
+            <div class="educationBlock" id="equipmentCare"> <!--제네레이터 및 에어컨 관리-->
+                <div class="educationDetailImgRow">
+                    <img src="{% static 'images/educational/운행 및 차량 관리/제네레이터 및 에어컨 관리/제네레이터 전압과 에어컨 관리 - 1.png' %}" class="educationImg1">
+                    <div class="blank"></div>
+                    <img src="{% static 'images/educational/운행 및 차량 관리/제네레이터 및 에어컨 관리/제네레이터 전압과 에어컨 관리 - 2.png' %}" class="educationImg1">
+                </div>
+                <div class="educationDetailImgRow">
+                    <img src="{% static 'images/educational/운행 및 차량 관리/제네레이터 및 에어컨 관리/제네레이터 전압과 에어컨 관리 - 3.png' %}" class="educationImg1">
+                    <div class="blank"></div>
+                    <img src="{% static 'images/educational/운행 및 차량 관리/제네레이터 및 에어컨 관리/제네레이터 전압과 에어컨 관리 - 4.png' %}" class="educationImg1">
+                </div>
+                <div class="educationDetailImgRow">
+                    <img src="{% static 'images/educational/운행 및 차량 관리/제네레이터 및 에어컨 관리/제네레이터 전압과 에어컨 관리 - 5.png' %}" class="educationImg1">
+                    <div class="blank"></div>
+                    <img src="{% static 'images/educational/운행 및 차량 관리/제네레이터 및 에어컨 관리/제네레이터 전압과 에어컨 관리 - 6.png' %}" class="educationImg1">
+                </div>
+                <div class="educationDetailImgRow">
+                    <img src="{% static 'images/educational/운행 및 차량 관리/제네레이터 및 에어컨 관리/제네레이터 전압과 에어컨 관리 - 7.png' %}" class="educationImg1">
+                    <div class="blank"></div>
+                    <img src="{% static 'images/educational/운행 및 차량 관리/제네레이터 및 에어컨 관리/제네레이터 전압과 에어컨 관리 - 8.png' %}" class="educationImg1">
+                </div>
+                <div class="educationDetailImgRow">
+                    <img src="{% static 'images/educational/운행 및 차량 관리/제네레이터 및 에어컨 관리/제네레이터 전압과 에어컨 관리 - 9.png' %}" class="educationImg1">
+                </div>
+            </div>
     </div>
         <div class="backToTable">
         <button id="backToTable">뒤로 가기</button>
         </div>
     </div>
-</div>
+</div> {% endcomment %}
 {% endblock %}
 
 
@@ -428,6 +1199,13 @@ $(document).ready(function() {
         $('#educationTableContainer').show();
     });
 });
+
+
+function openBoth(id) {
+    // educationDetail1과 전달받은 id 요소를 모두 열기
+    document.getElementById('educationDetail1').style.display = 'block';
+    document.getElementById(id).style.display = 'block';
+}
 
 </script>
   <script>
