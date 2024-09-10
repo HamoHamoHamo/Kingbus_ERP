@@ -350,7 +350,7 @@
 }
 
 .educationDetailImg{
-    width: 151.8rem;
+    width: 100%;
     margin-left: 9.3rem;
     background-color: white;
     border: 0.1rem solid #CDCDCE;
@@ -362,7 +362,7 @@
 }
 
 .educationDetailBody{
-    width: 162.1rem;
+    width: calc(100% - 2rem);
     padding: 0 1rem;
     background-color: white;
     border: 0.1rem solid #CDCDCE;
@@ -391,4 +391,23 @@
     margin-top: 1rem;
     margin-bottom: 1rem;
     text-align: right;
+}
+
+.educationDetailImgRow{
+    padding: 0 3rem;
+    display: flex;
+    justify-content: space-between;
+    flex-direction: row;
+    
+}
+
+.educationImg1{
+    margin-top: 1rem;
+    width: 47.5%;
+    height: 85rem;
+}
+
+.blank{
+    width: 5%;
+    background-color: white;
 }
