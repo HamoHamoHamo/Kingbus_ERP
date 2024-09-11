@@ -1088,6 +1088,8 @@ class NewSalaryList(SalaryList):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 
+        context['member_list'] = context['member_list'].exclude(role="용역")
+
         data_controller = SalaryDataController()
         mondays = get_mondays_from_last_week_of_previous_month(context['month'])
         start_date = mondays[0] if mondays[0][:7] != context['month'] else first_date
