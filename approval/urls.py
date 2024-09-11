@@ -10,7 +10,7 @@ urlpatterns = [
     path('edit', views.approval_edit, name="approval_edit"),
     path('delete', views.approval_delete, name="approval_delete"),
     path('approver/edit', views.approver_edit, name="approver_edit"),
-    path('file/<int:pk>', views.approval_file_download, name='approval_file_download'),
+    path('file/<int:file_id>', views.approval_file_download, name='approval_file_download'),
 
 
 ]

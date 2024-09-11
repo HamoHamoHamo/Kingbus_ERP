@@ -1,0 +1,76 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="utf-8">
+    <title>TRP</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.11.338/pdf.min.js"></script>
+    <style>
+        
+        .pdf-page {
+            page-break-before: always;
+            margin: 0 0;
+        }
+        .pdf-page canvas {
+            display: block;
+            width: 100%;
+        }
+    </style>
+</head>
+
+<body>
+    {% if not is_pdf %}
+    <img src="{{url}}">
+    {% else %}
+    <div id="pdf-container"></div>
+
+    <script>
+        const url = '{{url}}'; // PDF 파일 경로
+
+        const container = document.getElementById('pdf-container');
+        const scale = 1.75; // PDF 확대 비율
+
+        const renderPage = (pdf, pageNum) => {
+            return pdf.getPage(pageNum).then(page => {
+                const viewport = page.getViewport({ scale });
+                const canvas = document.createElement('canvas');
+                canvas.classList.add('pdf-page');
+                canvas.height = viewport.height;
+                canvas.width = viewport.width;
+                const ctx = canvas.getContext('2d');
+                const renderCtx = {
+                    canvasContext: ctx,
+                    viewport: viewport
+                };
+
+                return page.render(renderCtx).promise.then(() => {
+                    container.appendChild(canvas);
+                });
+            });
+        };
+
+        pdfjsLib.getDocument(url).promise.then(pdfDoc => {
+            const numPages = pdfDoc.numPages;
+            const promises = [];
+
+            for (let pageNum = 1; pageNum <= numPages; pageNum++) {
+                promises.push(renderPage(pdfDoc, pageNum));
+            }
+
+            // 모든 페이지가 렌더링될 때까지 기다림
+            Promise.all(promises).then(() => {
+                console.log('All pages have been rendered.');
+            });
+        });
+    </script>
+    {% endif %}
+
+</body>
+
+<!-- <script>
+  window.print()
+  {% if not url %}
+  alert('url 에러')
+  {% endif %}
+</script> -->

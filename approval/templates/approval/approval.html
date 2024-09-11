@@ -78,10 +78,10 @@
                         <a href="{% url 'approval:approval_detail' approval.id %}">{{approval.title}}</a>
                     </td>
                     <td class="tbodyTrTd td blue">
-                        <div class="fileDownload">
-                            {% with file_name=file_name_list|index:forloop.counter0 %}
-                            {% for file in file_list|index:forloop.counter0 %}
-                                <a href="{{file}}">{{file_name|index:forloop.counter0}}</a><br>
+                        <div>
+                            {% with files=file_list|index:forloop.counter0 %}
+                            {% for file in files %}
+                                <div class="{{file.id}} fileDownload">{{file.filename}}</div>
                                 
                             {% endfor %}
                             {% endwith %}
@@ -146,5 +146,15 @@
 {% endblock %}
 
 {% block script %}
+<script>
+    download = document.querySelectorAll(".fileDownload")
 
+    Array.from(download).forEach(item => {
+        item.addEventListener("click", () => {
+            const url = "{% url 'approval:approval_file_download' 0 %}".replace('/0', '/' + `${item.classList[0]}`)
+            
+            window.open(url, "viewer", "width=630, height=891")
+        })
+    })
+</script>
 {% endblock %}
