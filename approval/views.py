@@ -6,7 +6,7 @@ from django.db.models.query import QuerySet
 from django.shortcuts import render
 from django.views import generic
 from humanresource.models import Member
-from config.settings import MEDIA_ROOT
+from config.settings import MEDIA_ROOT, MEDIA_URL
 from django.db.models import Q, Sum
 from django.forms.models import model_to_dict
 from django.core.exceptions import ObjectDoesNotExist, MultipleObjectsReturned, BadRequest
@@ -15,7 +15,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
 from django.views import generic
 from datetime import datetime
-from firebase.media_firebase import upload_to_firebase, get_download_url, delete_firebase_file
+from firebase.media_firebase import upload_to_firebase, get_download_url, delete_firebase_file, download_file
 from my_settings import CRED_PATH, CLOUD_MEDIA_PATH
 from .forms import ApprovalForm, ApproverForm
 from .models import Approver, Approval, ApprovalFile
@@ -83,12 +83,10 @@ class ApprovalList(generic.ListView):
 
 
         context['approver_list'] = []
-        context['file_name_list'] = []
         context['file_list'] = []
         for approval in context['approval_list']:
             context['approver_list'].append(approval.approver.order_by("index").last().creator.name)
-            context['file_name_list'].append(approval.approval_file.values_list("filename", flat=True))
-            context['file_list'].append(get_file_download_path(approval.id))
+            context['file_list'].append(approval.approval_file.all())
 
         return context
 
@@ -111,7 +109,7 @@ class ApprovalDetail(generic.DetailView):
         context['can_add_approver'] = True if len(context['approver_list']) < 3 and (context['approval'].status == "대기" or context['approval'].status == "처리중") else False
 
         context['file_name_list'] = context['approval'].approval_file.values_list("filename", flat=True)
-        context['file_list'] = get_file_download_path(context['approval'].id)
+        context['file_list'] = context['approval'].approval_file.all()
         return context
     
     
@@ -289,17 +287,27 @@ def approval_file_upload(request, id):
             return False
     return True
 
-def approval_file_download(request, pk):
+def approval_file_download(request, file_id):
     user_auth = request.session.get('authority')
     if user_auth >= 3:
         return render(request, 'authority.html')
     
-    url_list = get_file_download_path(pk)
+    file = get_object_or_404(ApprovalFile, id=file_id)
+    # 파일 경로 = tmp/테이블명+id
 
+    file_destination = f"tmp/ApproverFile{file.id}"
+    local_destination = os.path.join(MEDIA_ROOT, file_destination)
+
+    download_file(file.path, local_destination)
+
+    splited_filename = file.filename.split(".")
+    is_pdf = True if splited_filename[len(splited_filename) - 1] == "pdf" else False
+    
     context = {
-        'url_list' : url_list
+        'url' : os.path.join(MEDIA_URL, file_destination),
+        'is_pdf' : is_pdf,
     }
-    return render(request, 'approval/approval_img.html', context)
+    return render(request, 'file_viewer.html', context)
 
 def get_file_download_path(pk):
     approval = get_object_or_404(Approval, id=pk)
@@ -307,7 +315,13 @@ def get_file_download_path(pk):
     url_list = []
     file_list = approval.approval_file.all()
     for file in file_list:
-        url_list.append(get_download_url(file.path))
+        # 파일 경로 = tmp/테이블명+id
+
+        file_destination = f"tmp/ApprovalFile{file.id}"
+        local_destination = os.path.join(MEDIA_ROOT, file_destination)
+
+        download_file(file.path, local_destination)
+        url_list.append(os.path.join(MEDIA_URL, file_destination))
     return url_list
 
 # def download(request, kinds, notice_id, file_id):

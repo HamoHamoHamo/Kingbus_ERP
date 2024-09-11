@@ -91,7 +91,7 @@
                     <span class="inputName">첨부파일</span>
                     <div class="fileListDiv">
                         {% for file in file_list %}
-                        <a class="fileLink" href="{{file}}">{{file_name_list|index:forloop.counter0}}</a>
+                        <div class="{{file.id}} fileDownload fileLink">{{file.filename}}</div>
                         {% endfor %}
                     </div>
                 </div>
@@ -141,5 +141,16 @@
 {% endblock %}
 
 {% block script %}
+<script>
+    download = document.querySelectorAll(".fileDownload")
+
+    Array.from(download).forEach(item => {
+        item.addEventListener("click", () => {
+            const url = "{% url 'approval:approval_file_download' 0 %}".replace('/0', '/' + `${item.classList[0]}`)
+            
+            window.open(url, "viewer", "width=630, height=891")
+        })
+    })
+</script>
 <script src="{% static 'js/approval/approver.js' %}"></script>
 {% endblock %}

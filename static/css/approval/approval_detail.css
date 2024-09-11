@@ -102,4 +102,5 @@
 .fileLink {
     color: #0069D9;
     display: block;
+    cursor: pointer;
 }
