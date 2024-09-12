@@ -34,6 +34,10 @@
     margin-right: 2rem;
 }
 
+.tableScrollBox div {
+    box-sizing: border-box;
+}
+
 .searchFormSearchBtn{
     height: 2.6rem;
     margin-left: 2rem;
@@ -103,11 +107,11 @@
 }
 
 
-.theadTh:nth-child(1),.tbodyDivTd:nth-child(1){width: 3%;}
+.theadTh:nth-child(1),.tbodyDivTd:nth-child(1){width: 4%;}
 .theadTh:nth-child(2),.tbodyDivTd:nth-child(2){width: 4%;}
 .theadTh:nth-child(3),.tbodyDivTd:nth-child(3){width: 5%;}
 .theadTh:nth-child(4),.tbodyDivTd:nth-child(4){width: 5%;}
-.theadTh:nth-child(5),.tbodyDivTd:nth-child(5){width: 82%;}
+.theadTh:nth-child(5),.tbodyDivTd:nth-child(5){width: 76%;}
 .theadTh:nth-child(6),.tbodyDivTd:nth-child(6){width: 6%;}
 
 .theadThTh {
@@ -122,7 +126,7 @@
 
 .theadThDetails{
     flex-direction: column;
-    width: 36%;
+    width: 30%;
 }
 
 .theadThContent{
@@ -171,7 +175,7 @@
 
 
 .none{
-    width: 59.5%
+    width: 82%;
 }
 
 
@@ -198,7 +202,7 @@
 }
 
 .sumTime{
-    width: 9%;
+    width: 7.5%;
 }
 
 .flex > *, .personalFlex {
