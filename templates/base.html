@@ -75,36 +75,36 @@
                   </ul>
                 </li>
                 <li class="sideMenuNav2Menu">
-                  <a href="#" class="sideMenuNav2Link">수칙관리?</a>
+                  <a href="#" class="sideMenuNav2Link">수칙관리</a>
                   <ul class="submenu">
                     <li>
-                      <a href="" class="sideMenuNav3Link">
-                        <div class="sideMenuNav3Menu">교통사고처리수칙?</div>
+                      <a href="{% url 'notice:personnel_committee_rule' %}" class="sideMenuNav3Link">
+                        <div class="sideMenuNav3Menu">교통사고처리수칙</div>
                       </a>
                     </li>
                     <li>
-                      <a href="" class="sideMenuNav3Link">
-                        <div class="sideMenuNav3Menu">결재수칙?</div>
+                      <a href="{% url 'notice:approval_rule' %}" class="sideMenuNav3Link">
+                        <div class="sideMenuNav3Menu">결재수칙</div>
                       </a>
                     </li>
                     <li>
-                      <a href="" class="sideMenuNav3Link">
-                        <div class="sideMenuNav3Menu">점호수칙?</div>
+                      <a href="{% url 'notice:roll_call_rule' %}" class="sideMenuNav3Link">
+                        <div class="sideMenuNav3Menu">점호수칙</div>
                       </a>
                     </li>
                     <li>
-                      <a href="" class="sideMenuNav3Link">
-                        <div class="sideMenuNav3Menu">승무원수칙?</div>
+                      <a href="{% url 'notice:driver_rule' %}" class="sideMenuNav3Link">
+                        <div class="sideMenuNav3Menu">승무원수칙</div>
                       </a>
                     </li>
                     <li>
-                      <a href="" class="sideMenuNav3Link">
-                        <div class="sideMenuNav3Menu">현장관리자수칙?</div>
+                      <a href="{% url 'notice:field_manager_rule' %}" class="sideMenuNav3Link">
+                        <div class="sideMenuNav3Menu">현장관리자수칙</div>
                       </a>
                     </li>
                     <li>
-                      <a href="" class="sideMenuNav3Link">
-                        <div class="sideMenuNav3Menu">관리자수칙?</div>
+                      <a href="{% url 'notice:manager_rule' %}" class="sideMenuNav3Link">
+                        <div class="sideMenuNav3Menu">관리자수칙</div>
                       </a>
                     </li>
                   </ul>
@@ -498,13 +498,13 @@
                       </a>
                     </li>
                     <li>
-                      <a href="" class="sideMenuNav3Link">
-                        <div class="sideMenuNav3Menu">노선시간표?</div>
+                      <a href="{% url 'dispatch:regularly_route_time' %}" class="sideMenuNav3Link">
+                        <div class="sideMenuNav3Menu">노선시간표</div>
                       </a>
                     </li>
                     <li>
                       <a href="{% url 'salary:daily_status' %}" class="sideMenuNav3Link">
-                        <div class="sideMenuNav3Menu">일근무현황2</div>
+                        <div class="sideMenuNav3Menu">일근무현황</div>
                       </a>
                     </li>
                     <li>
@@ -513,28 +513,12 @@
                       </a>
                     </li>
                     <li>
-                      <a href="" class="sideMenuNav3Link">
-                        <div class="sideMenuNav3Menu">주근무현황?</div>
-                      </a>
-                    </li>
-                    <li>
                       <a href="{% url 'salary:status' %}" class="sideMenuNav3Link">
                         <div class="sideMenuNav3Menu">월근무현황</div>
                       </a>
                     </li>
-                    <li>
-                      <a href="{% url 'salary:table' %}" class="sideMenuNav3Link">
-                        <div class="sideMenuNav3Menu">임금테이블</div>
-                      </a>
-                    </li>
-                    <li>
-                      <a href="{% url 'salary:table2' %}" class="sideMenuNav3Link">
-                        <div class="sideMenuNav3Menu">임금테이블2</div>
-                      </a>
-                    </li>
-                    <li>
                       <a href="{% url 'salary:table3' %}" class="sideMenuNav3Link">
-                        <div class="sideMenuNav3Menu">임금테이블3</div>
+                        <div class="sideMenuNav3Menu">임금테이블</div>
                       </a>
                     </li>
                     <li>
@@ -545,11 +529,6 @@
                     <li>
                       <a href="{% url 'HR:salary' %}" class="sideMenuNav3Link">
                         <div class="sideMenuNav3Menu">급여관리(현재)</div>
-                      </a>
-                    </li>
-                    <li>
-                      <a href="{% url 'HR:salary_change' %}" class="sideMenuNav3Link">
-                        <div class="sideMenuNav3Menu">급여관리(변경)</div>
                       </a>
                     </li>
                     <li>

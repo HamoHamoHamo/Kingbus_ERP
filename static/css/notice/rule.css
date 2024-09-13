@@ -1,0 +1,126 @@
+
+.container {
+    background-color: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.Mainapproval{
+    margin-left: 5rem;
+}
+
+.approvalSubSection {
+    font-size: 3rem;
+    margin-bottom: 4rem;
+    margin-top: 8rem;
+    text-align: center;
+    font-weight: 700;
+}
+
+
+.rule-section ol {
+    list-style-type: decimal;
+}
+
+.rule-section ol li {
+    margin-top: 5rem;
+    margin-left: 3rem;
+    margin-bottom: 5rem;
+}
+
+.approvalMain{
+    font-size: 2rem;
+    font-weight: 600;
+}
+
+.approvalSub {
+    margin-top: 2rem;
+    margin-left: 6rem;
+    font-size: 2rem;
+    font-family: "Nanum Myeongjo", serif;
+}
+
+.approvalrulesPrint {
+    text-align: right;
+}
+
+.print-button {
+    background-color: #444444;
+    color: #fff;
+    border: none;
+    font-size: 1.4rem;
+    cursor: pointer;
+    width: 8rem;
+    height: 3rem;
+    margin-bottom: 1rem;
+}
+
+table {
+    width: 90%;
+    border-collapse: collapse;
+    margin-bottom: 4rem;
+    font-size: 18px;
+    text-align: left;
+}
+
+table thead tr {
+    text-align: left;
+    font-weight: bold;
+}
+
+table th, table td {
+    height: 6.5rem;
+    border: 0.1rem solid #000000;
+    text-align: center;
+}
+
+table th{
+    border-bottom: 0.2rem solid #000000;
+}
+
+.tableNumber{
+    width: 6rem;
+    text-align: center;
+}
+
+.table-note{
+    font-size: 1.5rem;
+}
+
+.approvalTable{
+    margin-bottom: 1rem;
+    font-size: 2rem;
+}
+
+.MainHeaderTitle{
+    text-align: center;
+    font-size: 5rem;
+    margin-top: 5rem;
+    font-family: "Nanum Myeongjo", serif;
+    font-weight: 700;
+}
+
+.MainGoalsTitle{
+    text-align: right;
+    font-size: 2rem;
+    margin-top: 3rem;
+    margin-right: 5rem;
+    font-weight: 700;
+}
+
+.Criteria{
+    display: flex;
+    text-align: left;
+    font-size: 2rem;
+    margin-top: 3rem;
+    font-weight: 700;
+}
+
+.CriteriaSpan{
+    display: flex;
+    align-items: center;
+    margin-right: 2rem;
+}
+
+.SubLi{
+    margin-top: 0;
+}

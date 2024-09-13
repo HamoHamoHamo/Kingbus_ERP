@@ -281,3 +281,15 @@ def kinds_check(kinds): # driver 나 office인지 체크
         raise Http404
     return True
 
+def approval_rule(request):
+    return render(request, "notice/approval_rule.html")
+def roll_call_rule(request):
+    return render(request, "notice/roll_call_rule.html")
+def driver_rule(request):
+    return render(request, "notice/driver_rule.html")
+def manager_rule(request):
+    return render(request, "notice/manager_rule.html")
+def field_manager_rule(request):
+    return render(request, "notice/field_manager_rule.html")
+def personnel_committee_rule(request):
+    return render(request, "notice/personnel_committee_rule.html")
