@@ -6,12 +6,13 @@ body {
     background-color: white;
   }
   .page {
-    width: 49.625rem; /* 210mm -> rem */
-    height: 84.2rem;
+    width: 59.5rem; /* A4 width (210mm -> 59.5rem) */
+    height: 86.2rem;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     margin: auto;
     padding: 1.25rem; /* 20mm -> rem */
     background-color: white;
+    border-bottom: 0.1rem solid black;
   }
   .container {
     width: 100%;
