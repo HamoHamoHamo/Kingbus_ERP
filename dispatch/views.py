@@ -1070,11 +1070,13 @@ class RegularlyRouteList(generic.ListView):
 
         if id:
             context['detail'] = get_object_or_404(DispatchRegularlyData, id=id)
-            context['waypoint_list'] = DispatchRegularlyWaypoint.objects.filter(regularly_id=context['detail'])
             context['station_list'] = list(context['detail'].monthly.order_by('-edit_date').first().regularly_station.values('index', 'station__name', 'station_type', 'time', 'station__references', 'station__id', 'regularly__distance_list', 'regularly__time_list').order_by('index'))
-            context['waypoint_number'] = len(context['station_list']) - 4
-            # context['station_list'] = list(DispatchRegularlyDataStation.objects.filter(regularly_data=context['detail']).values('index', 'station__name', 'station_type', 'time', 'station__references', 'station__id', 'regularly_data__distance_list', 'regularly_data__time_list').order_by('index'))
-            # context['waypoint_number'] = DispatchRegularlyDataStation.objects.filter(regularly_data=context['detail']).filter(station_type='정류장').count()
+            #context['waypoint_number'] = len(context['station_list']) - 8 if context['detail'].work_type == '출근' else len(context['station_list']) - 9
+            context['waypoint_number'] = 0
+            for station in context['station_list']:
+                if station['station_type'] == '정류장':
+                    context['waypoint_number'] += 1
+            #context['waypoint_number'] = DispatchRegularlyDataStation.objects.filter(regularly_data=context['detail']).filter(station_type='정류장').count()
             
             context['station_distance_time_list'] = []
             for i in range(len(context['station_list']) - 1):
