@@ -290,7 +290,8 @@ const selectStation = (id, name, references, time='', indexNumber=-1) => {
     if (detailRoutePopupScrollBoxTbody.children.length <= stationDatas.getStationsLength()) return;
 
     console.log("indexNumber", indexNumber);
-    const detailRouteTrIdIndex = 6
+    // 정류장 중간에 빈 곳 있으면 index 빈 곳으로 세팅
+    const detailRouteTrIdIndex = 11
     if (indexNumber < 0) {
         stationDatas.setIndex(detailRoutePopupScrollBoxTbody, detailRouteTrIdIndex)
     } else {
