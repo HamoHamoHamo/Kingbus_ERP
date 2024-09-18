@@ -20,7 +20,7 @@
 <div class="contentsAreaBox">
     <form action="" method="post" enctype="multipart/form-data">
         {% csrf_token %}
-        <div class="creteHeader">
+        <div class="createHeader">
             <div class="inputCell">
                 <span class="inputName">제목</span>
                 <input autocomplete="off" type="text" name="title" class="length100" required>
@@ -46,7 +46,10 @@
                 <input autocomplete="off" type="file" name="file" multiple>
             </div>
         </div>
-        <textarea required name="content" required class="noticeTextarea length3000" placeholder="내용을 입력하세요"></textarea>
+        <div class="inputCell textareaInputCell">
+            <div>내용</div>
+            <textarea required name="content" required class="contentTextarea length3000" placeholder="내용을 입력하세요"></textarea>
+        </div>
         <div class="createBtnBox">
             <input autocomplete="off" type="submit" value="등록" class="createBtn">
         </div>
