@@ -104,3 +104,7 @@
     display: block;
     cursor: pointer;
 }
+
+.editBtn {
+    background-color: #444;
+}

@@ -19,6 +19,7 @@ from firebase.media_firebase import upload_to_firebase, get_download_url, delete
 from my_settings import CRED_PATH, CLOUD_MEDIA_PATH
 from .forms import ApprovalForm, ApproverForm
 from .models import Approver, Approval, ApprovalFile
+from config.custom_logging import logger
 
 # Create your views here.
 
@@ -107,12 +108,56 @@ class ApprovalDetail(generic.DetailView):
         context['pub_date'] = datetime.strftime(context['approval'].pub_date, DATE_TIME_FORMAT)
         context['can_approve'] = True if context['last_approver'] and login_user == context['last_approver'].creator or login_user.role == "최고관리자" else False
         context['can_add_approver'] = True if len(context['approver_list']) < 3 and (context['approval'].status == "대기" or context['approval'].status == "처리중") else False
+        context['can_edit'] = True if context['approval'].status == "대기" and (login_user == context['approval'].creator or login_user.role == "최고관리자") else False
 
         context['file_name_list'] = context['approval'].approval_file.values_list("filename", flat=True)
         context['file_list'] = context['approval'].approval_file.all()
         return context
+
+class ApprovalEdit(generic.DetailView):
+    template_name = 'approval/approval_edit.html'
+    context_object_name = 'approval'
+    model = Approval
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['approver_select_list'] = set_approver_select()
+        context['approver'] = Approver.objects.get(approval_id=context['approval'], index=1)
+        context['file_name_list'] = context['approval'].approval_file.values_list("filename", flat=True)
+        context['file_list'] = context['approval'].approval_file.all()
+        return context
     
-    
+    def post(self, request, pk):
+        if request.method == "POST":
+            login_user = get_object_or_404(Member, id=request.session.get('user'))
+
+            approval = get_object_or_404(Approval, id=pk)
+            if approval.creator != login_user and request.session.get('authority') != 0:
+                raise BadRequest("작성자만 수정할 수 있습니다.")
+            if approval.status != "대기":
+                raise BadRequest("대기 상태일 때만 수정할 수 있습니다.")
+            approval_form = ApprovalForm(request.POST, instance=approval)
+            
+            if approval_form.is_valid():
+                creator = get_object_or_404(Member, id=request.session.get('user'))
+                approval = approval_form.save(commit=False)
+                approval.creator = creator
+                approval.date = TODAY
+                approval.save()
+                
+                # 결재자 초기화
+                approval.approver.all().delete()
+
+                # 결재자 지정
+                next_approver = get_object_or_404(Member, id=request.POST.get("next_approver"))
+                create_next_approver(approval, next_approver, 1)
+                approval_file_upload(request, approval.id)
+                return redirect(reverse('approval:approval_edit', args=(pk,)))
+            else:
+                raise Http404
+        else:
+            return HttpResponseNotAllowed(['POST'])
+        
 def set_approver_select():
     approver_select_list = []
     approver_select_list.append(Member.objects.filter(use="사용", authority__lte=1).get(name="고영이"))
@@ -152,29 +197,6 @@ def approval_create(request):
             raise BadRequest(f"{approval_form.errors}")
     else:
         return HttpResponseNotAllowed(['POST', 'GET'])
-
-def approval_edit(request):
-    if request.method == "POST":
-        creator = get_object_or_404(Member, id=request.session.get('user'))
-
-        approval = get_object_or_404(Approval, id=request.POST.get("id"))
-        if approval.creator != creator:
-            raise BadRequest("작성자만 수정할 수 있습니다.")
-        if approval.status != "대기":
-            raise BadRequest("대기 상태일 때만 수정할 수 있습니다.")
-        approval_form = ApprovalForm(request.POST, instance=approval)
-        
-        if approval_form.is_valid():
-            creator = get_object_or_404(Member, id=request.session.get('user'))
-            approval = approval_form.save(commit=False)
-            approval.creator = creator
-            approval.date = TODAY
-            approval.save()
-            return redirect(reverse('approval:approval'))
-        else:
-            raise Http404
-    else:
-        return HttpResponseNotAllowed(['POST'])
 
 def approval_delete(request):
     if request.method == "POST":
@@ -324,23 +346,18 @@ def get_file_download_path(pk):
         url_list.append(os.path.join(MEDIA_URL, file_destination))
     return url_list
 
-# def download(request, kinds, notice_id, file_id):
-#     kinds_check(kinds)
-#     if request.session.get('authority') >= 3 and kinds == 'office':
-#         return render(request, 'authority.html')
-#     download_file = get_object_or_404(NoticeFile, pk=file_id)
-#     if download_file.notice_id == Notice.objects.get(pk=notice_id):
-#         url = download_file.file.url
-#         root = str(BASE_DIR)+url
+def approval_file_delete(request, file_id):
+    if request.method == "GET":
+        file = ApprovalFile.objects.get(id=file_id)
 
-#         if os.path.exists(root):
-#             with open(root, 'rb') as fh:
-#                 quote_file_url = urllib.parse.quote(download_file.filename.encode('utf-8'))
-#                 response = HttpResponse(fh.read(), content_type=mimetypes.guess_type(url)[0])
-#                 response['Content-Disposition'] = 'attachment;filename*=UTF-8\'\'%s' % quote_file_url
-#                 return response
-#             raise Http404
-#         else:
-#             raise Http404
-#     else:
-#         raise Http404
+        if request.session.get('authority') != 0 and file.creator.id != request.session.get("user"):
+            return render(request, 'authority.html')
+        
+        try:
+            file.delete()
+            return redirect(request.META.get('HTTP_REFERER', 'redirect_if_referer_not_found'))
+        except Exception as e:
+            logger.error(f"ApprovalFile delete Error : {e}")
+            raise BadRequest(f"ApprovalFile delete Error : {e}")
+    else:
+        return HttpResponseNotAllowed(['GET'])

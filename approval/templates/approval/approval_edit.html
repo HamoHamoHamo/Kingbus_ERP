@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block head %}
+<meta http-equiv="Cache-Control" content="private, no-cache, no-store, max-age=0, must-revalidate">
+
+<link rel="stylesheet" href="{% static 'css/notice/notice_create.css' %}" type="text/css" />
+<link rel="stylesheet" href="{% static 'css/approval/approval_create.css' %}" type="text/css" />
+
+</style>
+{% endblock %}
+
+{% block content-header %}
+<div class="HeaderTitle">
+    결재 수정
+</div>
+{% endblock %}
+
+{% block content %}
+
+<div class="contentsAreaBox">
+    <form action="" method="post" id="form" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="creteHeader createHeaderEdit">
+            <div class="inputCell">
+                <span class="inputName">제목</span>
+                <input value="{{approval.title}}" autocomplete="off" type="text" name="title" class="length100" required>
+            </div>
+            <div class="inputCell">
+                <span class="inputName">분류</span>
+                <div class="typeCell">
+                    <select class="typeSelect" name="approval_type">
+                        <option {% if approval.approval_type == "지출결의서" %}selected{% endif %} value="지출결의서">지출결의서</option>
+                        <option {% if approval.approval_type == "휴가계" %}selected{% endif %} value="휴가계">휴가계</option>
+                        <option {% if approval.approval_type == "사고처리" %}selected{% endif %} value="사고처리">사고처리</option>
+                    </select>
+                    <span class="approverText">결재자</span>
+                    <select class="approverSelect" name="next_approver">
+                        {% for member in approver_select_list %}
+                        <option {% if approver.creator == member %}selected{% endif %} value="{{member.id}}">{{member.name}}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+            <div class="inputCell inputCellFile">
+                <span class="inputName">첨부파일</span>
+                <input class="fileInput" autocomplete="off" type="file" name="file" multiple>
+            </div>
+            <div class="inputCell">
+                <div class="inputName"></div>
+                <div class="createdFileBox">
+                    {% for file in file_list %}
+                    <div class="createdFileCell">
+                        <span>{{file.filename}}</span>
+                        <a href="{% url 'approval:approval_file_delete' file.id %}" class="approvalFileDeleteBtn">삭제</a>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        <div class="inputCell textareaInputCell">
+            <div class="paddingLeft">내용</div>
+            <textarea required name="content" required class="contentTextarea length3000" placeholder="내용을 입력하세요">{{approval.content}}</textarea>
+        </div>
+        <div class="createBtnBox">
+            <input autocomplete="off" type="submit" value="등록" class="createBtn">
+        </div>
+    </form>
+</div>
+
+{% endblock %}
+
+{% block script %}
+{% endblock %}

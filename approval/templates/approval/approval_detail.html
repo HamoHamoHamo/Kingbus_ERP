@@ -131,6 +131,9 @@
         </div>
         {% endif %}
         <div class="createBtnBox">
+            {% if can_edit %}
+            <a href="{% url 'approval:approval_edit' approval.id %}" class="btnModules editBtn">수정</a>
+            {% endif %}
             {% if can_approve and can_add_approver %}
             <input autocomplete="off" type="submit" value="저장" class="createBtn">
             {% endif %}
