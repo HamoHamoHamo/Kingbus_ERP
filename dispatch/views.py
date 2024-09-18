@@ -2866,9 +2866,11 @@ def order_edit(request):
     
     if request.method == 'POST':
         creator = get_object_or_404(Member, pk=request.session.get('user'))
-        order_form = OrderForm(request.POST)
+        order_form = OrderForm(request.POST, instance=order)
 
         if order_form.is_valid():
+            order = order_form.save(commit=False)
+
             post_departure_date = request.POST.get('departure_date', None)
             post_arrival_date = request.POST.get('arrival_date', None)
             
@@ -2901,17 +2903,10 @@ def order_edit(request):
             else:
                 driver_allowance = 0
 
-            order.operation_type = order_form.cleaned_data['operation_type']
-            order.references = order_form.cleaned_data['references']
-            order.departure = order_form.cleaned_data['departure']
-            order.arrival = order_form.cleaned_data['arrival']
             order.departure_date = departure_date
             order.arrival_date = arrival_date
-            order.bus_type = order_form.cleaned_data['bus_type']
-            order.bus_cnt = order_form.cleaned_data['bus_cnt']
             order.price = price
             order.driver_allowance = driver_allowance
-            order.contract_status = order_form.cleaned_data['contract_status']
             order.cost_type = ' '.join(request.POST.getlist('cost_type'))
             
             connects = order.info_order.all()
@@ -2941,16 +2936,6 @@ def order_edit(request):
                 order.departure = '<음향>' + order.departure
             elif not '음향' in option and '<음향>' in order.departure:
                 order.departure = order.departure.replace('<음향>','')
-
-            order.customer = order_form.cleaned_data['customer']
-            order.customer_phone = order_form.cleaned_data['customer_phone']
-            order.bill_place = order_form.cleaned_data['bill_place']
-            order.ticketing_info = order_form.cleaned_data['ticketing_info']
-            order.order_type = order_form.cleaned_data['order_type']
-            order.operating_company = order_form.cleaned_data['operating_company']
-            order.reservation_company = order_form.cleaned_data['reservation_company']
-            order.driver_lease = order_form.cleaned_data['driver_lease']
-            order.vehicle_lease = order_form.cleaned_data['vehicle_lease']
 
             # 현지수금(카드)
             post_collection_type = request.POST.get('collection_type')
