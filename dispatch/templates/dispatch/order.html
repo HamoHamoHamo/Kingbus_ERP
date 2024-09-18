@@ -248,14 +248,9 @@
                                 </div>
                             </div>
                         </td>
-                        <td class="tdTypeA">비용구분</td>
+                        <td class="tdTypeA">*운행시간</td>
                         <td class="tdTypeC">
-                            <input autocomplete="off" {% if detail.cost_type and detail.cost_type|in_check:'고속' %} checked {% endif %} name="cost_type" id="highway" type="checkbox" value="고속">
-                            <label for="highway">고속</label>
-                            <input autocomplete="off" {% if detail.cost_type and detail.cost_type|in_check:'주차' %} checked {% endif %} name="cost_type" id="parking" type="checkbox" value="주차">
-                            <label for="parking">주차</label>
-                            <input autocomplete="off" {% if detail.cost_type and detail.cost_type|in_check:'상여' %} checked {% endif %} name="cost_type" id="payment" type="checkbox" value="상여">
-                            <label for="payment">상여</label>
+                            <input value="{{detail.time}}" name="time" type="number" min="0" class="inputText inputTextUnit inputBusCount length1000 essential" tabindex="9">분
                         </td>
                         <td class="tdTypeA">계산서 발행처</td>
                         <td class="tdTypeC">
@@ -354,7 +349,17 @@
                             </select>
                         </td>
                         <td class="tdTypeA">참조사항</td>
-                        <td colspan="3" class="tdTypeB"><input autocomplete="off" value="{{detail.references}}" name="references" type="text" class="inputText length100 loadNote" tabindex="22">
+                        <td class="tdTypeC">
+                            <input autocomplete="off" value="{{detail.references}}" name="references" type="text" class="inputText length100 loadNote" tabindex="22">
+                        </td>
+                        <td class="tdTypeA">비용구분</td>
+                        <td class="tdTypeC">
+                            <input autocomplete="off" {% if detail.cost_type and detail.cost_type|in_check:'고속' %} checked {% endif %} name="cost_type" id="highway" type="checkbox" value="고속">
+                            <label for="highway">고속</label>
+                            <input autocomplete="off" {% if detail.cost_type and detail.cost_type|in_check:'주차' %} checked {% endif %} name="cost_type" id="parking" type="checkbox" value="주차">
+                            <label for="parking">주차</label>
+                            <input autocomplete="off" {% if detail.cost_type and detail.cost_type|in_check:'상여' %} checked {% endif %} name="cost_type" id="payment" type="checkbox" value="상여">
+                            <label for="payment">상여</label>
                         </td>
                     </tr>
                     <tr>

@@ -119,6 +119,7 @@ class OrderForm(forms.ModelForm):
             'reservation_company',
             'driver_lease',
             'vehicle_lease',
+            'time',
         ]
         
         # widgets = {
