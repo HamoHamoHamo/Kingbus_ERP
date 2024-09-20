@@ -120,6 +120,7 @@ class OrderForm(forms.ModelForm):
             'driver_lease',
             'vehicle_lease',
             'time',
+            'night_work_time'
         ]
         
         # widgets = {

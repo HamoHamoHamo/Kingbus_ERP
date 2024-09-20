@@ -160,7 +160,8 @@ class DispatchOrder(models.Model):
     vehicle_lease = models.CharField(verbose_name='차량임대차', max_length=100, null=False, blank=True)
     route = models.CharField(verbose_name='노선이름', max_length=500, null=False)
     distance = models.CharField(verbose_name='거리', max_length=50, null=False, blank=True)
-    time = models.CharField(verbose_name='운행시간(분)', max_length=50, null=False, blank=True)
+    time = models.CharField(verbose_name='운행시간(분)', max_length=50, null=False, blank=False, default="0")
+    night_work_time = models.CharField(verbose_name='야간운행시간(분)', max_length=50, null=False, blank=False, default="0")
     distance_list = models.CharField(verbose_name="정류장별 거리", max_length=500, null=False, blank=True)
     time_list = models.CharField(verbose_name="정류장별 시간", max_length=500, null=False, blank=True)
     
