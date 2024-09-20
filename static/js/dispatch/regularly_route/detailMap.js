@@ -291,7 +291,7 @@ const selectStation = (id, name, references, time='', indexNumber=-1) => {
 
     console.log("indexNumber", indexNumber);
     // 정류장 중간에 빈 곳 있으면 index 빈 곳으로 세팅
-    const detailRouteTrIdIndex = 11
+    const detailRouteTrIdIndex = 6
     if (indexNumber < 0) {
         stationDatas.setIndex(detailRoutePopupScrollBoxTbody, detailRouteTrIdIndex)
     } else {
