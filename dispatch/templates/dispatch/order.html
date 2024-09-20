@@ -248,18 +248,13 @@
                                 </div>
                             </div>
                         </td>
-                        <td class="tdTypeA">*운행시간</td>
+                        <td class="tdTypeA">*근무시간</td>
                         <td class="tdTypeC">
                             <input value="{{detail.time}}" name="time" type="number" min="0" class="inputText inputTextUnit inputBusCount length1000 essential" tabindex="9">분
                         </td>
-                        <td class="tdTypeA">계산서 발행처</td>
+                        <td class="tdTypeA">*야간근무시간</td>
                         <td class="tdTypeC">
-                            <select id="billList" class='inputSelect' tabindex="17">
-                                <option value=""></option>
-                                {% for bill in bill_places %}
-                                <option {% if detail.bill_place == bill.category %} selected {% endif %} value="{{bill.category}}">{{bill.category}}</option>
-                                {% endfor %}
-                            </select>
+                            <input value="{{detail.night_work_time}}" name="night_work_time" type="number" min="0" class="inputText inputTextUnit inputBusCount length1000 essential" tabindex="9">분
                         </td>
                     </tr>
                     <tr>
@@ -349,17 +344,8 @@
                             </select>
                         </td>
                         <td class="tdTypeA">참조사항</td>
-                        <td class="tdTypeC">
+                        <td colspan="3" class="tdTypeB">
                             <input autocomplete="off" value="{{detail.references}}" name="references" type="text" class="inputText length100 loadNote" tabindex="22">
-                        </td>
-                        <td class="tdTypeA">비용구분</td>
-                        <td class="tdTypeC">
-                            <input autocomplete="off" {% if detail.cost_type and detail.cost_type|in_check:'고속' %} checked {% endif %} name="cost_type" id="highway" type="checkbox" value="고속">
-                            <label for="highway">고속</label>
-                            <input autocomplete="off" {% if detail.cost_type and detail.cost_type|in_check:'주차' %} checked {% endif %} name="cost_type" id="parking" type="checkbox" value="주차">
-                            <label for="parking">주차</label>
-                            <input autocomplete="off" {% if detail.cost_type and detail.cost_type|in_check:'상여' %} checked {% endif %} name="cost_type" id="payment" type="checkbox" value="상여">
-                            <label for="payment">상여</label>
                         </td>
                     </tr>
                     <tr>
@@ -381,20 +367,23 @@
                                 {% endfor %}
                             </select>
                         </td>
-                        <td class="tdTypeA">임대임차</td>
-                        <td class="tdTypeC" colspan="3">
-                            <div style="display: flex">
-                                <select name="driver_lease" class="inputSelect" tabindex="22">
-                                    <option value=""></option>
-                                    <option {% if detail.driver_lease == '인력임대' %} selected {% endif %} value="인력임대">인력임대</option>
-                                    <option {% if detail.driver_lease == '인력임차' %} selected {% endif %} value="인력임차">인력임차</option>
-                                </select>
-                                <select name="vehicle_lease" class="inputSelect" tabindex="22">
-                                    <option value=""></option>
-                                    <option {% if detail.vehicle_lease == '차량임대' %} selected {% endif %} value="차량임대">차량임대</option>
-                                    <option {% if detail.vehicle_lease == '차량임차' %} selected {% endif %} value="차량임차">차량임차</option>
-                                </select>
-                            </div>
+                        <td class="tdTypeA">계산서 발행처</td>
+                        <td class="tdTypeC">
+                            <select name="bill_place" id="billList" class='inputSelect' tabindex="17">
+                                <option value=""></option>
+                                {% for bill in bill_places %}
+                                <option {% if detail.bill_place == bill.category %} selected {% endif %} value="{{bill.category}}">{{bill.category}}</option>
+                                {% endfor %}
+                            </select>
+                        </td>
+                        <td class="tdTypeA">비용구분</td>
+                        <td class="tdTypeC">
+                            <input autocomplete="off" {% if detail.cost_type and detail.cost_type|in_check:'고속' %} checked {% endif %} name="cost_type" id="highway" type="checkbox" value="고속">
+                            <label for="highway">고속</label>
+                            <input autocomplete="off" {% if detail.cost_type and detail.cost_type|in_check:'주차' %} checked {% endif %} name="cost_type" id="parking" type="checkbox" value="주차">
+                            <label for="parking">주차</label>
+                            <input autocomplete="off" {% if detail.cost_type and detail.cost_type|in_check:'상여' %} checked {% endif %} name="cost_type" id="payment" type="checkbox" value="상여">
+                            <label for="payment">상여</label>
                         </td>
                         
                     </tr>
