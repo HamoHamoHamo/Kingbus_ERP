@@ -338,7 +338,7 @@ class DataCollector:
             if get_minute_from_colon_time(connect_time_list[5]) >= get_minute_from_colon_time(connect_time_list[0]):
                 route_time = get_minute_from_colon_time(connect_time_list[5]) - get_minute_from_colon_time(connect_time_list[0])
             else:
-                route_time = 24 * 60 - get_minute_from_colon_time(connect_time_list[5]) - get_minute_from_colon_time(connect_time_list[0])
+                route_time = 24 * 60 + get_minute_from_colon_time(connect_time_list[5]) - get_minute_from_colon_time(connect_time_list[0])
 
             connect_list.append({
                 'total_time': route_time,
