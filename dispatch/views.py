@@ -1230,7 +1230,11 @@ def get_regularly_distance_and_time(regularly_data, regularly):
         
         
         distance_list.append(str(distance))
-        duration = get_minute_from_colon_time(next_data['time']) - get_minute_from_colon_time(current_data['time']) if next_data['time'] >= current_data['time'] else 24 * 60 - get_minute_from_colon_time(next_data['time']) - get_minute_from_colon_time(current_data['time'])
+        # duration 계산
+        if next_data['time'] >= current_data['time'] :
+            duration = get_minute_from_colon_time(next_data['time']) - get_minute_from_colon_time(current_data['time'])
+        else:
+            duration = 24 * 60 + get_minute_from_colon_time(next_data['time']) - get_minute_from_colon_time(current_data['time'])
         logger.info(f"DURATION {duration}")
         time_list.append(str(duration))
         
