@@ -134,7 +134,7 @@
                                         </td>
                                         <td colspan="2">{{file.filename}}</td>
                                         <td>관리자</td>
-                                        <td>2022.09.15</td>
+                                        <td>{{file.pub_date|date:"Y.m.d"}}</td>
                                     </tr>
                                     {% endif %}
                                     {% endfor %}
@@ -148,7 +148,7 @@
                                         </td>
                                         <td colspan="2">{{file.filename}}</td>
                                         <td>관리자</td>
-                                        <td>2022.09.15</td>
+                                        <td>{{file.pub_date|date:"Y.m.d"}}</td>
                                     </tr>
                                     {% endfor %}
                                     {% endif %}
