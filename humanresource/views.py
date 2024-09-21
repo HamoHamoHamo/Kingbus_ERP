@@ -429,6 +429,7 @@ class DocumentType(Enum):
     EXTENSION_OF_EMPLOYMENT_AGREEMENT = '연장근로동의서'
     PLEDGE_AGREEMENT = '서약서'
     SEXUAL_HARASSMENT_CONTRACT = '성희롱계약서'
+    OUTSIDE_PARKING_LOT_CONTRACT = '외부주차장계약서'
 
 def member_file_delete(id_list):
     for id in id_list:
@@ -500,7 +501,7 @@ def member_file_download(request, file_id):
         'url' : os.path.join(MEDIA_URL, file_destination),
         'is_pdf' : is_pdf,
     }
-    return render(request, 'HR/member_img.html', context)
+    return render(request, 'file_viewer.html', context)
 
 def member_download(request):
     if request.session.get('authority') > 1:
