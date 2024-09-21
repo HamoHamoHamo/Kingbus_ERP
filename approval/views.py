@@ -152,7 +152,7 @@ class ApprovalEdit(generic.DetailView):
                 next_approver = get_object_or_404(Member, id=request.POST.get("next_approver"))
                 create_next_approver(approval, next_approver, 1)
                 approval_file_upload(request, approval.id)
-                return redirect(reverse('approval:approval_edit', args=(pk,)))
+                return redirect(reverse('approval:approval_detail', args=(pk,)))
             else:
                 raise Http404
         else:

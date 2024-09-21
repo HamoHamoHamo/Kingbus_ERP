@@ -102,7 +102,7 @@
                     <td>{{member.birthdate}}</td>
                     <td>{{member.address}}</td>
                     <td class="{{ forloop.counter0 }}">{{data_count_list | index:forloop.counter0}}/25</td>
-                    <td class="tableDocument {{ forloop.counter0 }}">{{file_count_list | index:forloop.counter0}}/14</td>
+                    <td class="tableDocument {{ forloop.counter0 }}">{{file_count_list | index:forloop.counter0}}/15</td>
                 </tr>
                 {% endfor %}
                 <tr class="blanckTr"></tr>
@@ -993,6 +993,28 @@
                             <input type="hidden">
                         </div>
                     </div>
+                </div>
+                <div class="popupArticleBox">
+                    <div class="popupArticleDouble">
+                        <label for="" class="popupArticleLabel">외부주차장계약서</label>
+                        <div class="popupArticleFileDouble">
+                            <label for="outside_parking_lot_contract">파일 선택</label>
+                            <input autocomplete="off" name="OUTSIDE_PARKING_LOT_CONTRACT" type="file" id="outside_parking_lot_contract" class="documentFile">
+                            <input autocomplete="off" type="text" readonly class="pointer">
+                            <svg class="fileDeleteBtn documentDeleteBtn" xmlns="http://www.w3.org/2000/svg" width="11.314" height="11.314"
+                                viewBox="0 0 11.314 11.314">
+                                <g id="그룹_1513" data-name="그룹 1513" transform="translate(-442.649 -1001.97) rotate(45)">
+                                    <line id="선_691" data-name="선 691" y2="12" transform="translate(1029.5 389.5)"
+                                        fill="none" stroke="#000" stroke-linecap="round" stroke-width="2" />
+                                    <line id="선_692" data-name="선 692" y2="12"
+                                        transform="translate(1035.5 395.5) rotate(90)" fill="none" stroke="#000"
+                                        stroke-linecap="round" stroke-width="2" />
+                                </g>
+                            </svg>
+                            <input type="hidden">
+                        </div>
+                    </div>
+                    
                 </div>
             </div>
             <div class="popupFooter excelUploadPopupFooter">
