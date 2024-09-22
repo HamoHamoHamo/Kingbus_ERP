@@ -434,7 +434,14 @@ class DocumentType(Enum):
 def member_file_delete(id_list):
     for id in id_list:
         try:
-            MemberFile.objects.get(id=id).delete()
+            file = MemberFile.objects.get(id=id)
+            
+            # 외부주차여부 업데이트
+            if file.type == DocumentType.OUTSIDE_PARKING_LOT_CONTRACT.value:
+                member = file.member_id
+                member.can_parking_outside = False
+                member.save()
+            file.delete()
         except:
             print("MemberFile delete error id : ", id)
 
@@ -457,15 +464,19 @@ def member_file_upload(request):
             except MemberFile.DoesNotExist:
                 old_file = None
 
-            print("test", old_file, document_type.name)
             file = member_file_save(request_file, member, document_type.value, creator)
-            print("test22", old_file, document_type.name)
             try:
                 file_path = f'{CLOUD_MEDIA_PATH}{file.file}_{file.filename}'
                 upload_to_firebase(file, file_path)
                 file.path = file_path
                 file.save()
                 os.remove(file.file.path)
+                
+                # 외부주차여부 업데이트
+                if document_type == DocumentType.OUTSIDE_PARKING_LOT_CONTRACT:
+                    member.can_parking_outside = True
+                    member.save()
+
             except Exception as e:
                 print("Firebase upload error", e)
                 #파이어베이스 업로드 실패 시 파일 삭제
@@ -1081,6 +1092,7 @@ class ManagerSalaryList(SalaryList):
     context_object_name = 'member_list'
     model = Member  
 
+# 급여2
 class NewSalaryList(SalaryList):
     template_name = 'HR/salary_new.html'
     context_object_name = 'member_list'
