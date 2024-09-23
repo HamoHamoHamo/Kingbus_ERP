@@ -318,7 +318,6 @@ class DeductionSalary(models.Model):
     member_id = models.ForeignKey(Member, on_delete=models.CASCADE, related_name="deduction_member", null=False)
     price = models.CharField(verbose_name='금액', max_length=40, null=False, default='0')
     remark = models.CharField(verbose_name='비고', null=False, blank=True, max_length=100)
-    deduction_type = models.CharField(verbose_name='종류', null=False, blank=True, max_length=100)
     creator = models.ForeignKey(Member, on_delete=models.SET_NULL, related_name="deduction_user", null=True)
     pub_date = models.DateTimeField(verbose_name='작성시간', auto_now_add=True, null=False)
     updated_at = models.DateTimeField(auto_now=True, verbose_name='수정시간')
