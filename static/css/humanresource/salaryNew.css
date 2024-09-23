@@ -383,3 +383,10 @@
     text-align: right;
     padding-right: 0.5rem;
 }
+
+.displayNone {
+    display: None;
+}
+.table-list_body-tr:nth-child(even) {
+    background-color: white;
+}

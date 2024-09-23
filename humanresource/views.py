@@ -799,26 +799,11 @@ class SalaryList(generic.ListView):
             salary_list.append(salary)
 
             ###########
-            temp_add = []
-            additionals = AdditionalSalary.objects.filter(member_id=member).filter(salary_id=salary)
-            for additional in additionals:
-                temp_add.append({
-                    'price': additional.price,
-                    'remark': additional.remark,
-                    'id': additional.id,
-                })
-            additional_list.append(temp_add)
-
-            temp_ded = []    
-            deductions = DeductionSalary.objects.filter(member_id=member).filter(salary_id=salary)
-            for deduction in deductions:
-                temp_ded.append({
-                    'price': deduction.price,
-                    'remark': deduction.remark,
-                    'id': deduction.id,
-                })
-            deduction_list.append(temp_ded)
-
+            
+            additional_list.append(list(AdditionalSalary.objects.filter(member_id=member).filter(salary_id=salary).values('id', 'price', 'remark')))
+            
+            deduction_list.append(list(DeductionSalary.objects.filter(member_id=member).filter(salary_id=salary).values('id', 'price', 'remark')))
+            
         context['additional_list'] = additional_list
         context['deduction_list'] = deduction_list
         context['salary_list'] = salary_list
@@ -1098,10 +1083,12 @@ class NewSalaryList(SalaryList):
     context_object_name = 'member_list'
     model = Member
 
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        return queryset.exclude(role="용역")
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-
-        context['member_list'] = context['member_list'].exclude(role="용역")
 
         data_controller = SalaryDataController()
         mondays = get_mondays_from_last_week_of_previous_month(context['month'])
