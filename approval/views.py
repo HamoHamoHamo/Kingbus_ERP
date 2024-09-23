@@ -29,6 +29,12 @@ class ApprovalList(generic.ListView):
     model = Approval
     paginate_by = 10
 
+    def get(self, request, **kwargs):
+        if request.session.get('authority') >= 3:
+            return render(request, 'authority.html')
+        else:
+            return super().get(request, **kwargs)
+
     def get_queryset(self) -> QuerySet[Any]:
         date1 = self.request.GET.get("date1", f"{add_days_to_date(f'{TODAY[:7]}-01', -1)[:7]}-01")
         date2 = self.request.GET.get("date2", TODAY)
@@ -96,6 +102,12 @@ class ApprovalDetail(generic.DetailView):
     context_object_name = 'approval'
     model = Approval
 
+    def get(self, request, **kwargs):
+        if request.session.get('authority') >= 3:
+            return render(request, 'authority.html')
+        else:
+            return super().get(request, **kwargs)
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         login_user = get_object_or_404(Member, id=self.request.session.get('user'))
@@ -118,6 +130,12 @@ class ApprovalEdit(generic.DetailView):
     template_name = 'approval/approval_edit.html'
     context_object_name = 'approval'
     model = Approval
+
+    def get(self, request, **kwargs):
+        if request.session.get('authority') >= 3:
+            return render(request, 'authority.html')
+        else:
+            return super().get(request, **kwargs)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
