@@ -63,10 +63,13 @@ function openAddSalaryPopup() {
     function deductionDeleteAdd() {
         for (i = 0; i < deductionChecker.length; i++) {
             if (deductionChecker[i].checked) {
-                return deductionDeleteForm.submit()
+                if (confirm('정말로 삭제하시겠습니까?')) {
+                    return deductionDeleteForm.submit()
+                }
+                else return;
             }
         };
-        alert("삭제할 항목을 선택해 주세요.")
+        return alert("삭제할 항목을 선택해 주세요.")
     }
 
     deductionListAllCheck.addEventListener("change", checkingAll)

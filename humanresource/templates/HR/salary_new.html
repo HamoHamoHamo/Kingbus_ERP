@@ -63,6 +63,7 @@
                     <td class="table-list_head-tr_td">복리후생<br>(유류비)</td>
                     <td class="table-list_head-tr_td">추가수당</td>
                     <td class="table-list_head-tr_td">공제</td>
+                    <td class="table-list_head-tr_td">주휴수당</td>
                     <td class="table-list_head-tr_td">임금총합계</td>
                 </tr>
             </thead>
@@ -122,8 +123,9 @@
                     <td class="checkTd table-list_body-tr_td">
                         <input type="text" class="amountInput length100 welfareFuelAllowance" value="{{salary.welfare_fuel_allowance}}">
                     </td>
-                    <td class="table-list_body-tr_td salaryAdditional addComma additionalTd">{{salary.additional}}</td>
-                    <td class="table-list_body-tr_td salaryDeduction addComma deductionTd">{{salary.deduction}}</td>
+                    <td class="table-list_body-tr_td salaryAdditional addComma salaryPopup additionalTd">{{salary.additional}}</td>
+                    <td class="table-list_body-tr_td salaryDeduction addComma salaryPopup deductionTd">{{salary.deduction}}</td>
+                    <td class="table-list_body-tr_td salaryWeeklyDeduction addComma salaryPopup weeklyDeductionTd {% if salary.weekly_holiday_allowance_deduction == '0' %}backgroundWhite{% endif %}">{{weekly_holiday_allowance|index:forloop.counter0}}</td>
                     <td class="checkTd table-list_body-tr_td salaryTotal addComma">{{total_wage_list|index:forloop.counter0}}</td>
                 </tr>
                 {% endwith %}
@@ -154,8 +156,8 @@
                 <td class="table-list_body-tr_td totalWelfareFuelAllowance"></td>
                 <td class="table-list_body-tr_td totalAdditional"></td>
                 <td class="table-list_body-tr_td totalDeduction"></td>
+                <td class="table-list_body-tr_td totalWeeklyDeduction"></td>
                 <td class="table-list_body-tr_td totalTotal"></td>
-
             </tr>
         </tbody>
     </table>
@@ -309,6 +311,77 @@
         </div>
     </div>
 </div>
+
+<div class="popupAreaModules weeklyDeductionPopup">
+    <div class="popupBgModules popupBgModulesWeeklyDeduction"></div>
+    <div class="popupContainer popupContainerDouble">
+        <div class="popupHeader">
+            <div class="popupTitle">주휴수당 차감</div>
+        </div>
+        <div class="popupBody">
+            <div class="popupSection">
+                <form method="post" action="{% url 'HR:salary_weekly_holiday_deduction_create' %}">
+                    {% csrf_token %}
+                    <div class="popupArticleCategori">주휴수당 차감</div>
+                    <div class="popupArticleBox">
+                        <div class="popupArticleDouble weeklyDeductionPriceBox">
+                            <label for="" class="popupArticleLabel">금액</label>
+                            <input autocomplete="off" name="price" type="text"
+                                class="popupArticleinput weeklyDeductionPrice length100 numberOnly">
+                        </div>
+                        <div class="popupArticleDouble weeklyDeductionReasonBox">
+                            <label for="" class="popupArticleLabel">사유</label>
+                            <input autocomplete="off" name="remark" type="text"
+                                class="popupArticleinput weeklyDeductionReason length100">
+                        </div>
+                    </div>
+                    <div class="popupArticleBox">
+                        <input type="submit" class="btnModules weeklyDeductionBtn" value="추가">
+                    </div>
+                    <input type="hidden" name="id" class="weeklyDeductionMoreHidden">
+                    <input type="hidden" name="month" class="weeklyDeductionMoreHiddenMonth">
+                </form>
+                <form method="post" action="{% url 'HR:salary_weekly_holiday_deduction_delete' %}" class="weeklyDeductionDeleteForm">
+                    {% csrf_token %}
+                    <div class="popupArticleCategori">주휴수당 차감 목록</div>
+                    <div class="popupArticleBoxTable">
+                        <div class="scrolling_table-list_header weeklyDeductionTable">
+                            <table class="table-list">
+                                <thead>
+                                    <tr class="table-list_head-tr">
+                                        <td class="table-list_head-tr_td">
+                                            <input type="checkbox" class="weeklyDeductionListAllCheck">
+                                        </td>
+                                        <td class="table-list_head-tr_td">금액</td>
+                                        <td class="table-list_head-tr_td">사유</td>
+                                    </tr>
+                                </thead>
+                            </table>
+                        </div>
+                        <div class="scrolling_table-list_body weeklyDeductionTable weeklyDeductionTableScroll">
+                            <table class="table-list">
+                                <tbody>
+                                </tbody>
+                            </table>
+                        </div>
+                        <table class="weeklyDeductionTotalTable">
+                            <tr>
+                                <td>합계</td>
+                                <td class="totalAddSalaryPrice"></td>
+                                <td></td>
+                            </tr>
+                        </table>
+                    </div>
+                    <input type="hidden" name="order_id" class="deleteAddHidden">
+                </form>
+            </div>
+            <div class="popupFooter">
+                <div class="btnModules weeklyDeductionDeleteBtn">삭제</div>
+                <div class="btnModules weeklyDeductionCloseBtn">닫기</div>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}
 
 
@@ -345,7 +418,8 @@
     console.log("deductionList", deductionList);
     const additionalList = {{ additional_list }};
     console.log("additionalList", additionalList);
-
+    const weeklyDeductionList = {{ weekly_deduction_list }};
+    console.log("weeklyDeductionList", weeklyDeductionList);
     {% endautoescape %}
 
 
@@ -360,6 +434,7 @@
 <script src="{% static 'js/hr/authority.js' %}"></script>
 <script src="{% static 'js/hr/addSalary.js' %}"></script>
 <script src="{% static 'js/hr/deduction.js' %}"></script>
+<script src="{% static 'js/hr/weeklyHolidayAllowanceDeduction.js' %}"></script>
 <script src="{% static 'js/hr/textValidation.js' %}"></script>
 <script src="{% static 'js/hr/checker.js' %}"></script>
 <script src="{% static 'js/hr/addComma.js' %}"></script>
