@@ -270,6 +270,7 @@ class Salary(models.Model):
     order = models.CharField(verbose_name='일반주문요금', max_length=20, null=False)
     additional = models.CharField(verbose_name='추가요금', max_length=20, null=False, default=0)
     deduction = models.CharField(verbose_name='공제', max_length=20, null=False, default=0)
+    weekly_holiday_allowance_deduction = models.CharField(verbose_name='주휴수당 차감', max_length=20, null=False, default=0)
     assignment = models.CharField(verbose_name='일반업무', max_length=20, null=False, default=0)
     regularly_assignment = models.CharField(verbose_name='고정업무', max_length=20, null=False, default=0)
     
@@ -326,6 +327,18 @@ class DeductionSalary(models.Model):
         if self.member_id:
             return self.member_id.name + ' ' + self.salary_id.month
 
+class WeeklyHolidayAllowanceDeductionSalary(models.Model):
+    salary_id = models.ForeignKey(Salary, on_delete=models.CASCADE, related_name="weekly_holiday_allowance_deduction_data", null=False)
+    member_id = models.ForeignKey(Member, on_delete=models.CASCADE, related_name="weekly_holiday_allowance_deduction_data", null=False)
+    price = models.CharField(verbose_name='금액', max_length=40, null=False, default='0')
+    remark = models.CharField(verbose_name='비고', null=False, blank=True, max_length=100)
+    creator = models.ForeignKey(Member, on_delete=models.SET_NULL, related_name="weekly_holiday_allowance_deduction_user", null=True)
+    pub_date = models.DateTimeField(verbose_name='작성시간', auto_now_add=True, null=False)
+    updated_at = models.DateTimeField(auto_now=True, verbose_name='수정시간')
+     
+    def __str__(self):
+        if self.member_id:
+            return self.member_id.name + ' ' + self.salary_id.month
 
 class SalaryChecked(models.Model):
     salary = models.OneToOneField(Salary, on_delete=models.SET_NULL, related_name="salary_checked", null=True)

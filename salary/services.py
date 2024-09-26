@@ -574,7 +574,7 @@ class DataCollector:
         ordinary_hourly_wage = math.ceil(hourly_wage1 + (service_allowance * 12 / 1470))
 
         # 법정수당
-        weekly_holiday_allowance = ordinary_hourly_wage * 6 * weekly_holiday_count # 주휴수당
+        weekly_holiday_allowance = ordinary_hourly_wage * 6 * weekly_holiday_count - int(self.member_salary['weekly_holiday_allowance_deduction'])# 주휴수당
         legal_holiday_allowance = ordinary_hourly_wage * 6 * legal_holiday_count # 법정휴일
         weekly_within_law_extension_wage = math.ceil(times_data['total_within_law_extension_minute'] / 60 * hourly_wage1) # 주 연장 법내 기본임금
         weekly_within_law_extension_wage = math.ceil(weekly_within_law_extension_wage + weekly_within_law_extension_wage * 0.2)
@@ -589,8 +589,6 @@ class DataCollector:
         meal = int(self.member_salary['meal']) # 식대 > 만근수당
         statutory_allowance = math.ceil(weekly_holiday_allowance + legal_holiday_allowance + weekly_within_law_extension_wage + weekly_outside_law_extension_wage + weekly_extension_additional_wage + night_shift_wage + holiday_work_wage + additional_holiday_work_wage + additional_holiday_work_wage_half + annual_allowance + meal)
 
-        # additional_salary = int(self.member_salary['additional_salary__price'])
-        # deduction_salary = int(self.member_salary['deduction_salary__price'])
         return {
             'entering_date': self.member.entering_date,
             'total_work_minute': times_data['total_work_minute'],

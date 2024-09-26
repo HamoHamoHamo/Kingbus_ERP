@@ -19,7 +19,7 @@ from config.settings import BASE_DIR
 from crudmember.models import Category
 from vehicle.models import Vehicle
 from .forms import MemberForm
-from .models import Member, MemberFile, Salary, AdditionalSalary, DeductionSalary, Team
+from .models import Member, MemberFile, Salary, AdditionalSalary, DeductionSalary, Team, WeeklyHolidayAllowanceDeductionSalary
 from accounting.models import TotalPrice
 from assignment.models import AssignmentConnect
 import math
@@ -783,6 +783,7 @@ class SalaryList(generic.ListView):
         salary_list = []
         additional_list = []
         deduction_list = []
+        weekly_deduction_list = []
         year_list = []
         for member in context['member_list']:
             year = math.floor((datetime.strptime(TODAY[:10], FORMAT) - datetime.strptime(member.entering_date, FORMAT)).days/365)
@@ -803,9 +804,12 @@ class SalaryList(generic.ListView):
             additional_list.append(list(AdditionalSalary.objects.filter(member_id=member).filter(salary_id=salary).values('id', 'price', 'remark')))
             
             deduction_list.append(list(DeductionSalary.objects.filter(member_id=member).filter(salary_id=salary).values('id', 'price', 'remark')))
+
+            weekly_deduction_list.append(list(WeeklyHolidayAllowanceDeductionSalary.objects.filter(member_id=member).filter(salary_id=salary).values('id', 'price', 'remark')))
             
         context['additional_list'] = additional_list
         context['deduction_list'] = deduction_list
+        context['weekly_deduction_list'] = weekly_deduction_list
         context['salary_list'] = salary_list
         context['year_list'] = year_list
 
@@ -1090,6 +1094,7 @@ class NewSalaryList(SalaryList):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 
+        first_date = f"{context['month']}-01"
         data_controller = SalaryDataController()
         mondays = get_mondays_from_last_week_of_previous_month(context['month'])
         start_date = mondays[0] if mondays[0][:7] != context['month'] else first_date
@@ -1097,7 +1102,7 @@ class NewSalaryList(SalaryList):
         connect_time_list = dispatch_selector.get_driving_time_list(start_date, get_next_sunday_after_last_day(context['month']))
         holiday_data = get_holiday_list_from_open_api(context['month'])
         context['date_list'] = ['' for i in range(31)]
-        first_date = f"{context['month']}-01"
+        
         date_list = get_date_range_list(first_date, last_date_of_month(first_date))
 
         context['datas'] = data_controller.get_datas(context['member_list'], SalaryTableDataCollector3, context['month'], mondays, connect_time_list, holiday_data, date_list)
@@ -1105,9 +1110,11 @@ class NewSalaryList(SalaryList):
         context['wage_list'] = []
         context['total_wage_list'] = []
         context['total_work_hour_minute_list'] = []
+        context['weekly_holiday_allowance'] = []
         for data_id in context['datas']:
             #context['wage_list'].append(context['datas'][data_id]['wage'])
             context['total_wage_list'].append(context['datas'][data_id]['total'])
+            context['weekly_holiday_allowance'].append(context['datas'][data_id]['weekly_holiday_allowance'])
             context['wage_list'].append(format_number_with_commas(
                 remove_comma_from_number(context['datas'][data_id]['total'])
                 - remove_comma_from_number(context['datas'][data_id]['new_annual_allowance'])
@@ -1423,6 +1430,58 @@ def salary_deduction_delete(request):
     else:
         return HttpResponseNotAllowed(['post'])
 
+def salary_weekly_holiday_deduction_create(request):
+    if request.method == 'POST':
+        user_auth = request.session.get('authority')
+        if user_auth >= 3:
+            return render(request, 'authority.html')
+
+        member_id = request.POST.get('id', '')
+        price = request.POST.get('price', '0').replace(',','')
+        if price == '':
+            price = '0'
+        remark = request.POST.get('remark')
+        month = request.POST.get('month')
+        creator = Member.objects.get(pk=request.session.get('user'))
+
+        member = get_object_or_404(Member, id=member_id)
+        salary = Salary.objects.filter(member_id=member).get(month=month)
+
+        deduction = WeeklyHolidayAllowanceDeductionSalary(
+            salary_id = salary,
+            member_id = member,
+            price = price,
+            remark = remark,
+            creator = creator,
+        )
+        deduction.save()
+        salary.weekly_holiday_allowance_deduction = int(salary.weekly_holiday_allowance_deduction) + int(price)
+        salary.total = int(salary.total) - int(price)
+        salary.save()
+        return redirect(request.META.get('HTTP_REFERER', 'redirect_if_referer_not_found'))
+    else:
+        return HttpResponseNotAllowed(['post'])
+
+def salary_weekly_holiday_deduction_delete(request):
+    if request.method == 'POST':
+        user_auth = request.session.get('authority')
+        if user_auth >= 3:
+            return render(request, 'authority.html')
+
+        id_list = request.POST.getlist('id')
+        for id in id_list:
+            deduction = get_object_or_404(WeeklyHolidayAllowanceDeductionSalary, id=id)
+            
+            salary = deduction.salary_id
+            salary.weekly_holiday_allowance_deduction = int(salary.weekly_holiday_allowance_deduction) - int(deduction.price)
+            salary.total = int(salary.total) + int(deduction.price)
+            salary.save()
+            
+            deduction.delete()
+
+        return redirect(request.META.get('HTTP_REFERER', 'redirect_if_referer_not_found'))
+    else:
+        return HttpResponseNotAllowed(['post'])
 
 def salary_load(request):
     if request.method == 'POST':

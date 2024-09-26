@@ -12,6 +12,7 @@ const salaryOrder = document.querySelectorAll(".salaryOrder")
 const salaryAssignment = document.querySelectorAll(".salaryAssignment")
 const salaryAdditional = document.querySelectorAll(".salaryAdditional")
 const salaryDeduction = document.querySelectorAll(".salaryDeduction")
+const salaryWeeklyDeduction = document.querySelectorAll(".salaryWeeklyDeduction")
 const salaryTotal = document.querySelectorAll(".salaryTotal")
 const salaryOvertimeAllowance = document.querySelectorAll(".salaryOvertimeAllowance")
 
@@ -26,6 +27,7 @@ const totalOrder = document.querySelector(".totalOrder")
 const totalAssignment = document.querySelector(".totalAssignment")
 const totalAdditional = document.querySelector(".totalAdditional")
 const totalDeduction = document.querySelector(".totalDeduction")
+const totalWeeklyDeduction = document.querySelector(".totalWeeklyDeduction")
 const totalTotal = document.querySelector(".totalTotal")
 const totalOvertimeAllowance = document.querySelector(".totalOvertimeAllowance")
 
@@ -65,6 +67,7 @@ function totalSalary(){
     let priceAssignment = 0
     let priceAdditional = 0
     let priceDeduction = 0
+    let priceWeeklyDeduction = 0
     let priceTotal = 0
 
     let priceWage = 0
@@ -90,6 +93,7 @@ function totalSalary(){
         priceAssignment = priceAssignment + parseInt(salaryAssignment[i]?.innerText?.replace(/\,/g,""))
         priceAdditional = priceAdditional + parseInt(salaryAdditional[i]?.innerText?.replace(/\,/g,""))
         priceDeduction = priceDeduction + parseInt(salaryDeduction[i]?.innerText?.replace(/\,/g,""))
+        priceWeeklyDeduction = priceWeeklyDeduction + parseInt(salaryWeeklyDeduction[i]?.innerText?.replace(/\,/g,""))
         priceTotal = priceTotal + parseInt(salaryTotal[i]?.innerText?.replace(/\,/g,""))
 
         priceWage = priceWage + parseInt(wage[i]?.innerText?.replace(/\,/g,""))
@@ -114,6 +118,7 @@ function totalSalary(){
     totalAssignment ? totalAssignment.innerText = priceAssignment.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",") : null;
     totalAdditional ? totalAdditional.innerText = priceAdditional.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",") : null;
     totalDeduction ? totalDeduction.innerText = priceDeduction.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",") : null;
+    totalWeeklyDeduction ? totalWeeklyDeduction.innerText = priceWeeklyDeduction.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",") : null;
     totalTotal ? totalTotal.innerText = priceTotal.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",") : null;
 
     totalWage ? totalWage.innerText = priceWage.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",") : null;

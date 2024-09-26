@@ -59,32 +59,25 @@
 .salaryContainer td:nth-child(7),
 .salaryContainer td:nth-child(8),
 .salaryContainer td:nth-child(9),
-.salaryContainer td:nth-child(10) {
-    width: 6%;
-}
-
+.salaryContainer td:nth-child(10),
 .salaryContainer td:nth-child(11),
 .salaryContainer td:nth-child(12),
 .salaryContainer td:nth-child(13),
 .salaryContainer td:nth-child(14),
-.salaryContainer td:nth-child(15),
-.salaryContainer td:nth-child(16) {
+.salaryContainer td:nth-child(15) {
     width: 5%;
 }
 
-.salaryContainer td:nth-child(17) {
-    width: 5.5%;
-}
-
+.salaryContainer td:nth-child(16),
+.salaryContainer td:nth-child(17),
 .salaryContainer td:nth-child(18) {
-    width: 5.5%;
+    width: 5%;
 }
 
 .salaryContainer td:nth-child(19) {
-    width: 5%;
+    width: 6%;
 }
-.salaryContainer tbody td:nth-child(17),
-.salaryContainer tbody td:nth-child(18) {
+.salaryPopup {
     background-color: rgb(255, 242, 204);
     cursor: pointer;
 }
@@ -104,6 +97,8 @@
     cursor: pointer;
 }
 
+.salaryContainer tbody td:nth-child(8),
+.salaryContainer tbody td:nth-child(7),
 .salaryContainer tbody td:nth-child(9),
 .salaryContainer tbody td:nth-child(10),
 .salaryContainer tbody td:nth-child(11),
@@ -113,7 +108,8 @@
 .salaryContainer tbody td:nth-child(15),
 .salaryContainer tbody td:nth-child(16),
 .salaryContainer tbody td:nth-child(17),
-.salaryContainer tbody td:nth-child(18) {
+.salaryContainer tbody td:nth-child(18),
+.salaryContainer tbody td:nth-child(19) {
     text-align: right;
     padding-right: 0.5rem;
 }
@@ -227,24 +223,30 @@
     border-bottom: 0.1rem solid black;
 }
 
-.deductionPriceBox {
+.deductionPriceBox,
+.weeklyDeductionPriceBox {
     width: calc(30% - 2rem);
 }
 
-.deductionPriceBox .popupArticleinput {
+.deductionPriceBox .popupArticleinput,
+.weeklyDeductionPriceBox .popupArticleinput {
     width: 16rem;
 }
 
-.deductionReasonBox {
+.deductionReasonBox,
+.weeklyDeductionReasonBox {
     width: calc(70% - 2rem);
 }
 
-.deductionReasonBox .popupArticleinput {
+.deductionReasonBox .popupArticleinput,
+.weeklyDeductionReasonBox .popupArticleinput {
     width: 46rem;
 }
 
 .deductionPriceBox .popupArticleLabel,
-.deductionReasonBox .popupArticleLabel{
+.deductionReasonBox .popupArticleLabel,
+.weeklyDeductionPriceBox .popupArticleLabel,
+.weeklyDeductionReasonBox .popupArticleLabel {
     width: 5rem;
 }
 
@@ -252,7 +254,8 @@
     margin-top: 2rem;
 }
 
-.deductionTableScroll{
+.deductionTableScroll,
+.weeklyDeductionTableScroll {
     height: 14.4rem;
 }
 
@@ -280,37 +283,44 @@
     box-sizing: border-box;
 }
 
-.deductionTotalTable{
+.deductionTotalTable,
+.weeklyDeductionTotalTable {
     width: calc(100% - 0.6rem);
     height: 3.6rem;
     background-color: #CDCDCE;
     font-size: 1.4rem;
 }
 
-.deductionTotalTable td:nth-child(1){
+.deductionTotalTable td:nth-child(1),
+.weeklyDeductionTotalTable td:nth-child(1){
     width: 6%;
     text-align: center;
     border-right: 0.1rem solid white;
 }
 
-.deductionTotalTable td:nth-child(2){
+.deductionTotalTable td:nth-child(2),
+.weeklyDeductionTotalTable td:nth-child(2){
     width: 18%;
     text-align: right;
     padding-right: 1rem;
     box-sizing: border-box;
 }
 
-.deductionBtn{
+.deductionBtn,
+.weeklyDeductionBtn{
     margin-left: auto;
     background-color: #0069D9;
 }
 
 .deductionDeleteBtn,
-.deductionCloseBtn{
+.deductionCloseBtn,
+.weeklyDeductionDeleteBtn,
+.weeklyDeductionCloseBtn{
     background-color: #444;
 }
 
-.deductionDeleteBtn{
+.deductionDeleteBtn,
+.weeklyDeductionDeleteBtn{
     margin-right: 1rem;
 }
 
@@ -322,7 +332,10 @@
 .addSalaryListAllCheck,
 .deductionList,
 .deductionChecker,
-.deductionListAllCheck{
+.deductionListAllCheck,
+.weeklyDeductionList,
+.weeklyDeductionChecker,
+.weeklyDeductionListAllCheck{
     cursor: pointer;
 }
 
@@ -346,9 +359,7 @@
 .salaryTotalContainer td:nth-child(3),
 .salaryTotalContainer td:nth-child(4),
 .salaryTotalContainer td:nth-child(5),
-.salaryTotalContainer td:nth-child(6) {
-    width: 6%;
-}
+.salaryTotalContainer td:nth-child(6),
 .salaryTotalContainer td:nth-child(7),
 .salaryTotalContainer td:nth-child(8),
 .salaryTotalContainer td:nth-child(9),
@@ -360,7 +371,11 @@
 .salaryTotalContainer td:nth-child(13),
 .salaryTotalContainer td:nth-child(14),
 .salaryTotalContainer td:nth-child(15) {
-    width: 5.5%;
+    width: 5%;
+}
+
+.salaryTotalContainer td:nth-child(16) {
+    width: 6%;
 }
 
 
@@ -387,6 +402,7 @@
 .displayNone {
     display: None;
 }
-.table-list_body-tr:nth-child(even) {
+.table-list_body-tr:nth-child(even),
+.backgroundWhite {
     background-color: white;
 }

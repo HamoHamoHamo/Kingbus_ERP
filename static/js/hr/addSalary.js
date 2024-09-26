@@ -64,13 +64,17 @@ function openAddSalaryPopup() {
 
     addSalaryDeleteBtn.addEventListener("click", addDeleteAdd)
 
+
     function addDeleteAdd() {
         for (i = 0; i < addChecker.length; i++) {
             if (addChecker[i].checked) {
-                return addSalaryDeleteForm.submit()
+                if (confirm('정말로 삭제하시겠습니까?')) {
+                    return addSalaryDeleteForm.submit()
+                }
+                else return;
             }
         };
-        alert("삭제할 항목을 선택해 주세요.")
+        return alert("삭제할 항목을 선택해 주세요.")
     }
 
     addSalaryListAllCheck.addEventListener("change", checkingAll)
