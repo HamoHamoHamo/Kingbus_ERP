@@ -125,7 +125,7 @@
                     </td>
                     <td class="table-list_body-tr_td salaryAdditional addComma salaryPopup additionalTd">{{salary.additional}}</td>
                     <td class="table-list_body-tr_td salaryDeduction addComma salaryPopup deductionTd">{{salary.deduction}}</td>
-                    <td class="table-list_body-tr_td salaryWeeklyDeduction addComma salaryPopup weeklyDeductionTd {% if salary.weekly_holiday_allowance_deduction == '0' %}backgroundWhite{% endif %}">{{weekly_holiday_allowance|index:forloop.counter0}}</td>
+                    <td class="table-list_body-tr_td salaryWeeklyDeduction addComma salaryPopup weeklyDeductionTd {% if salary.weekly_holiday_allowance_deduction != '0' %}backgroundGray{% endif %}">{{weekly_holiday_allowance|index:forloop.counter0}}</td>
                     <td class="checkTd table-list_body-tr_td salaryTotal addComma">{{total_wage_list|index:forloop.counter0}}</td>
                 </tr>
                 {% endwith %}
