@@ -278,7 +278,7 @@ def assignment_create(request):
             assignment.save()
 
             return redirect(request.META.get('HTTP_REFERER', 'redirect_if_referer_not_found'))
-        raise Http404
+        raise BadRequest(f'{assignment_form.errors}')
     else:
         return HttpResponseNotAllowed(['post'])
 
@@ -976,7 +976,7 @@ def temporary_assignment_create(request):
             assignment.save()
 
             return redirect(request.META.get('HTTP_REFERER', 'redirect_if_referer_not_found'))
-        raise Http404
+        raise BadRequest(f'{assignment_form.errors}')
     else:
         return HttpResponseNotAllowed(['post'])
 

@@ -72,9 +72,9 @@
     <div class="scrolling_table-list_body">
         <table class="table-list">
             <tbody>
-                {% for member in member_list %}
+                {% for member in datas_member_list %}
                 {% with salary=salary_list|index:forloop.counter0 %}
-                <tr class="table-list_body-tr salaryList cursor {% if total_work_hour_minute_list|index:forloop.counter0 == '0' %}displayNone{% endif %}">
+                <tr class="table-list_body-tr salaryList cursor">
                     <td class="checkTd table-list_body-tr_td">
                         <input tabindex="100" type="checkbox" class="amountCheck" name="member_id"
                             value="{{member.id}}">

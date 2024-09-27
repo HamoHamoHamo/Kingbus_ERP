@@ -86,7 +86,8 @@ class DispatchSelector:
                 route_time=F("order_id__time"),
                 time=Value(""),
                 time_list=F("order_id__time_list"),
-                route=F("order_id__route")
+                route=F("order_id__route"),
+                night_work_time=F("order_id__night_work_time"),
             )
             .order_by('departure_date')
             .values(
@@ -98,7 +99,7 @@ class DispatchSelector:
                 "route_time",
                 "route",
                 'time',
-                'time_list',
+                'night_work_time',
             )
         )
         return regularly + order
@@ -197,3 +198,5 @@ class DispatchSelector:
             )
         )
         return regularly + order
+
+# type: ignore

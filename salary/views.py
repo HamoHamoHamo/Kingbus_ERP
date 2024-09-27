@@ -210,6 +210,7 @@ class SalaryDataController(AuthorityCheckView):
         for member in member_list:
             data_collector = data_collector_class(member, month, mondays, connect_time_list, holiday_data, date_list)
             datas[member.id] = data_collector.get_collected_data()
+            datas[member.id]['member'] = member
         return datas
 
 

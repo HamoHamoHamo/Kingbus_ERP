@@ -774,18 +774,13 @@ class SalaryList(generic.ListView):
             raise HttpResponseBadRequest('url에러')
         return member_list
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-
-        month = self.request.GET.get('month', TODAY[:7])
-        name = self.request.GET.get('name', '')
-
+    def get_datas(self, member_list, context, month):
         salary_list = []
         additional_list = []
         deduction_list = []
         weekly_deduction_list = []
         year_list = []
-        for member in context['member_list']:
+        for member in member_list:
             year = math.floor((datetime.strptime(TODAY[:10], FORMAT) - datetime.strptime(member.entering_date, FORMAT)).days/365)
             if year == 0:
                 year = f'0{math.floor(((datetime.strptime(TODAY[:10], FORMAT) - datetime.strptime(member.entering_date, FORMAT)).days/30+0.5))}'
@@ -812,6 +807,15 @@ class SalaryList(generic.ListView):
         context['weekly_deduction_list'] = weekly_deduction_list
         context['salary_list'] = salary_list
         context['year_list'] = year_list
+        return context
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        month = self.request.GET.get('month', TODAY[:7])
+        name = self.request.GET.get('name', '')
+
+        context.update(self.get_datas(context['member_list'], context, month))
 
         context['month'] = month
         context['name'] = name
@@ -1111,12 +1115,17 @@ class NewSalaryList(SalaryList):
         context['total_wage_list'] = []
         context['total_work_hour_minute_list'] = []
         context['weekly_holiday_allowance'] = []
+        context['datas_member_list'] = []
         for data_id in context['datas']:
+            if context['datas'][data_id]['total_work_hour_minute'] == "0":
+                continue
+            context['datas_member_list'].append(context['datas'][data_id]['member'])
             #context['wage_list'].append(context['datas'][data_id]['wage'])
             context['total_wage_list'].append(context['datas'][data_id]['total'])
             context['weekly_holiday_allowance'].append(context['datas'][data_id]['weekly_holiday_allowance'])
             context['wage_list'].append(format_number_with_commas(
                 remove_comma_from_number(context['datas'][data_id]['total'])
+                - remove_comma_from_number(context['datas'][data_id]['service_allowance'])
                 - remove_comma_from_number(context['datas'][data_id]['new_annual_allowance'])
                 - remove_comma_from_number(context['datas'][data_id]['team_leader_allowance_roll_call'])
                 - remove_comma_from_number(context['datas'][data_id]['team_leader_allowance_vehicle_management'])
@@ -1124,10 +1133,16 @@ class NewSalaryList(SalaryList):
                 - remove_comma_from_number(context['datas'][data_id]['full_attendance_allowance'])
                 - remove_comma_from_number(context['datas'][data_id]['diligence_allowance'])
                 - remove_comma_from_number(context['datas'][data_id]['accident_free_allowance'])
+                - remove_comma_from_number(context['datas'][data_id]['welfare_meal_allowance'])
+                - remove_comma_from_number(context['datas'][data_id]['welfare_fuel_allowance'])
+                - remove_comma_from_number(context['datas'][data_id]['weekly_holiday_allowance'])
                 - remove_comma_from_number(context['datas'][data_id]['additional']) 
                 + remove_comma_from_number(context['datas'][data_id]['deduction'])
+                
             ))
-            context['total_work_hour_minute_list'].append(context['datas'][data_id]['total_work_hour_minute'])
+        
+        context.update(self.get_datas(context['datas_member_list'], context, context['month']))
+
         return context
 
 def salary_edit(request):
