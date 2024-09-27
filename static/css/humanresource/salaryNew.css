@@ -402,9 +402,6 @@
 .displayNone {
     display: None;
 }
-.table-list_body-tr:nth-child(even) {
-    background-color: white;
-}
 
 .backgroundGray {
     background-color: #EFEFEF;
