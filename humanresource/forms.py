@@ -51,7 +51,7 @@ class SalaryForm(forms.ModelForm):
         model = Salary
         fields = [
             'service_allowance',
-            'annual_allowance',
+            'new_annual_allowance',
             'team_leader_allowance_roll_call',
             'team_leader_allowance_vehicle_management',
             'team_leader_allowance_task_management',

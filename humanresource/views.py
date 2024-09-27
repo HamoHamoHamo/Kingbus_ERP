@@ -1313,7 +1313,7 @@ def salary_new_edit(request):
             
             salary_data = {
                 'service_allowance': service_allowance.replace(',', ''),
-                'annual_allowance': annual_allowance.replace(',', ''),
+                'new_annual_allowance': annual_allowance.replace(',', ''),
                 'team_leader_allowance_roll_call': team_leader_allowance_roll_call.replace(',', ''),
                 'team_leader_allowance_vehicle_management': team_leader_allowance_vehicle_management.replace(',', ''),
                 'team_leader_allowance_task_management': team_leader_allowance_task_management.replace(',', ''),
