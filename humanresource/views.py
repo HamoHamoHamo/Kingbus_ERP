@@ -12,13 +12,14 @@ from django.http import Http404, HttpResponse, HttpResponseNotAllowed, HttpRespo
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import resolve
 from django.views import generic
+from django.core.exceptions import BadRequest
 from enum import Enum
 from config.settings import FORMAT
 from datetime import datetime, timedelta
 from config.settings import BASE_DIR
 from crudmember.models import Category
 from vehicle.models import Vehicle
-from .forms import MemberForm
+from .forms import MemberForm, SalaryForm
 from .models import Member, MemberFile, Salary, AdditionalSalary, DeductionSalary, Team, WeeklyHolidayAllowanceDeductionSalary
 from accounting.models import TotalPrice
 from assignment.models import AssignmentConnect
@@ -1306,19 +1307,28 @@ def salary_new_edit(request):
         for service_allowance, annual_allowance, team_leader_allowance_roll_call, team_leader_allowance_vehicle_management, team_leader_allowance_task_management, full_attendance_allowance, diligence_allowance, accident_free_allowance, welfare_meal_allowance, welfare_fuel_allowance, id in zip(service_allowance, annual_allowance, team_leader_allowance_roll_call, team_leader_allowance_vehicle_management, team_leader_allowance_task_management, full_attendance_allowance, diligence_allowance, accident_free_allowance, welfare_meal_allowance, welfare_fuel_allowance, id_list):
             member = get_object_or_404(Member, id=id)
 
-            salary = Salary.objects.filter(member_id=member).get(month=month)
-            salary.service_allowance = service_allowance.replace(',','')
-            salary.new_annual_allowance = annual_allowance.replace(',','')
-            salary.team_leader_allowance_roll_call = team_leader_allowance_roll_call.replace(',','')
-            salary.team_leader_allowance_vehicle_management = team_leader_allowance_vehicle_management.replace(',','')
-            salary.team_leader_allowance_task_management = team_leader_allowance_task_management.replace(',','')
-            salary.full_attendance_allowance = full_attendance_allowance.replace(',','')
-            salary.diligence_allowance = diligence_allowance.replace(',','')
-            salary.accident_free_allowance = accident_free_allowance.replace(',','')
-            salary.welfare_meal_allowance = welfare_meal_allowance.replace(',','')
-            salary.welfare_fuel_allowance = welfare_fuel_allowance.replace(',','')
-            salary.save()
 
+
+            salary = Salary.objects.filter(member_id=member).get(month=month)
+            
+            salary_data = {
+                'service_allowance': service_allowance.replace(',', ''),
+                'annual_allowance': annual_allowance.replace(',', ''),
+                'team_leader_allowance_roll_call': team_leader_allowance_roll_call.replace(',', ''),
+                'team_leader_allowance_vehicle_management': team_leader_allowance_vehicle_management.replace(',', ''),
+                'team_leader_allowance_task_management': team_leader_allowance_task_management.replace(',', ''),
+                'full_attendance_allowance': full_attendance_allowance.replace(',', ''),
+                'diligence_allowance': diligence_allowance.replace(',', ''),
+                'accident_free_allowance': accident_free_allowance.replace(',', ''),
+                'welfare_meal_allowance': welfare_meal_allowance.replace(',', ''),
+                'welfare_fuel_allowance': welfare_fuel_allowance.replace(',', ''),
+            }
+            form = SalaryForm(salary_data, instance=salary)
+            if form.is_valid():
+                salary = form.save(commit=False)
+                salary.save()
+            else:
+                raise BadRequest(f"{form.errors}")
             if TODAY[:7] <= month:
                 member.service_allowance = service_allowance.replace(',','')
                 member.new_annual_allowance = annual_allowance.replace(',','')
