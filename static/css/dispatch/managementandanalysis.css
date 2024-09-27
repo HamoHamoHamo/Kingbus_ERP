@@ -1,0 +1,84 @@
+* {
+    list-style: none;
+    text-decoration: none;
+}
+
+html {
+    font-size: 62.5%;
+    font-family: "Noto Sans CJK KR";
+    overflow-x: hidden;
+}
+
+body {
+    margin: 0;
+    background-color: white;
+}
+
+.sidegroupcontainer {
+    display: flex;
+    height: 100vh;
+}
+
+.sidegroup {
+    width: 250px;
+    background-color: #333;
+    color: white;
+    padding: 20px;
+}
+
+.sidegroupmenu, .route-add {
+    margin-bottom: 20px;
+}
+
+.sidegroupmenu ul {
+    list-style: none;
+}
+
+.sidegroupmenu ul li {
+    margin-bottom: 10px;
+}
+
+.route-add input {
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+.route-add button {
+    display: block;
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+.main-content {
+    padding: 20px;
+    gap: 18px;
+    display: grid;
+}
+
+.sub-content{
+    display: flex;
+    gap: 15px;
+}
+
+.section {
+    width: 38rem;
+    height: 33rem;
+    background-color: #f1f1f1;
+    padding: 20px;
+    border-radius: 10px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+table, th, td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+}
+
+h3 {
+    margin-bottom: 10px;
+}

@@ -269,6 +269,7 @@ def vehicle_upload(request):
                 Vehicle.objects.get(id=data['id'])
             if data['driver']:
                 driver = Member.objects.get(id=data['driver'])
+                
                 if driver.name != data['driver_name']:
                     # 기사 이름 안 맞음
                     return JsonResponse({'error': 'driver_name', 'status': 'fail', 'count': count})

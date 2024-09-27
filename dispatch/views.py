@@ -14,7 +14,7 @@ from django.core.exceptions import ObjectDoesNotExist, MultipleObjectsReturned, 
 from django.http import Http404, JsonResponse, HttpResponse, HttpResponseNotAllowed
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
-from django.views import generic
+from django.views import View, generic
 
 from .commons import get_date_connect_list, get_multi_date_connect_list
 from .forms import OrderForm, ConnectForm, RegularlyDataForm, StationForm, RegularlyForm
@@ -4003,7 +4003,14 @@ class  dispatchAnalysis(generic.ListView):
         }
         return render(request, self.template_name, context)
 
-        
+  
+class managementandanalysis(View):  # View 클래스를 상속받아야 합니다.
+    template_name = 'dispatch/managementandanalysis.html'
+
+    def get(self, request):  # HTTP GET 요청에 대한 처리
+        return render(request, self.template_name)
+ 
+ 
 # class  DispatchOrder(generic.ListView):
 #     template_name = 'dispatch/dispatchorder.html'
 #     context_object_name = 'member_list'

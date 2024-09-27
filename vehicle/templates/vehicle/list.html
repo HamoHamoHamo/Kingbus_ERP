@@ -53,7 +53,7 @@
 
 
 
-<form method="post" action="{% url 'vehicle:vehicle_delete' %}" class="vehicleListForm">
+{% comment %} <form method="post" action="{% url 'vehicle:vehicle_delete' %}" class="vehicleListForm">
     {% csrf_token %}
     <div class="contentsAreaBox">
         <table class="tableHead">
@@ -154,7 +154,7 @@
 
         </div>
     </div>
-</form>
+</form> {% endcomment %}
 
 
 
@@ -282,6 +282,8 @@
         </div>
     </form>
 </div>
+
+
 
 
 

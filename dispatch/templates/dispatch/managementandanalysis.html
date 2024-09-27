@@ -1,0 +1,155 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load custom_tags %}
+{% block head %}
+<link rel="stylesheet" href="{% static 'css/dispatch/managementandanalysis.css' %}" type="text/css" />
+{% endblock %}
+
+{% block content-header %}
+<div class="HeaderTitle">
+    경영 및 분석
+</div>
+{% endblock %}
+
+{% block content %}
+    <div class="sidegroupcontainer">
+        <!-- 좌측 메뉴 -->
+        <div class="sidegroup">
+            <div class="sidegroupmenu">
+                <h3>노선 목록</h3>
+                <ul>
+                    <li>45번 노선</li>
+                </ul>
+            </div>
+            <div class="route-add">
+                <h3>노선 추가</h3>
+                <input type="text" placeholder="노선 이름">
+                <button>신규</button>
+                <button>저장</button>
+                <button>삭제</button>
+            </div>
+        </div>
+
+        <!-- 메인 컨텐츠 -->
+        <div class="main-content">
+            <!-- 노선 기본 정보 -->
+         <div class="sub-content">
+            <div class="section basic-info">
+                <table>
+                    <thead>
+                        <tr>
+                            <th colspan="3">노선 기본 정보</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td colspan="2">기점</td>
+                            <td><input type="text">번</td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">종점</td>
+                            <td><input type="text">대</td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">총 운행 횟수</td>
+                            <td><input type="text">회</td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">대당 필요 명수</td>
+                            <td>1.5명</td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">하루 필요 명수</td>
+                            <td><input type="text">6명</td>
+                        </tr>
+                        <tr>
+                            <td rowspan="2">운행 시간</td>
+                        </tr>
+
+                            <td>최소 시간</td>
+                            <td><input type="text">분</td>
+
+                            <td>최소 시간</td>
+                            <td><input type="text">분</td>
+
+                        <tr>
+                            <td colspan="2">노선 당 총 거리</td>
+                            <td><input type="text">KM</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- 시급 책정 기준 -->
+            <div class="section wage-criteria">
+                <h3>시급 책정 기준</h3>
+                <table>
+                    <tr><td>시급</td><td>14,500원</td></tr>
+                    <tr><td>명당 한달 급여</td><td>4,894,500원</td></tr>
+                    <tr><td>차량 정기 상각비</td><td>2,314,815원</td></tr>
+                    <tr><td>정비비</td><td>300,000원</td></tr>
+                    <tr><td>보험료</td><td>275,000원</td></tr>
+                    <tr><td>기타 차량 유지비</td><td>500,000원</td></tr>
+                    <tr><td>일반 관리비</td><td>300,000원</td></tr>
+                    <tr><td>성과 이윤</td><td>4%</td></tr>
+                    <tr><td>손익 본기금</td><td>651,057원</td></tr>
+                </table>
+            </div>
+
+            <!-- 입찰 금액 -->
+            <div class="section bidding-amount">
+                <h3>입찰 금액</h3>
+                <table>
+                    <tr><td>인건비</td><td>546,400원</td></tr>
+                    <tr><td>연료비 (CNG 기준)</td><td>166,486원</td></tr>
+                    <tr><td>통행료</td><td>-</td></tr>
+                    <tr><td>차량 정기 상각비</td><td>31,953원</td></tr>
+                    <tr><td>정비비</td><td>44,829원</td></tr>
+                    <tr><td>보험료</td><td>17,871원</td></tr>
+                    <tr><td>기타 차량 유지비</td><td>18,234원</td></tr>
+                    <tr><td>일반 관리비</td><td>36,389원</td></tr>
+                    <tr><td>성과 이윤</td><td>23,312원</td></tr>
+                    <tr><td>합계</td><td>885,474원</td></tr>
+                </table>
+            </div>
+         </div>
+
+         <div class="sub-content">
+            <!-- 금리 비교 -->
+            <div class="section interest-comparison">
+                <h3>금리 비교</h3>
+                <table>
+                    <tr><th>년도</th><th>?</th><th>금액 비교</th></tr>
+                    <tr><td>1년</td><td>553,683원</td><td>331,791원</td></tr>
+                    <tr><td>2년</td><td>575,830원</td><td>274,225원</td></tr>
+                    <tr><td>3년</td><td>598,864원</td><td>217,189원</td></tr>
+                    <tr><td>4년</td><td>622,818원</td><td>160,593원</td></tr>
+                    <tr><td>5년</td><td>647,731원</td><td>104,343원</td></tr>
+                    <tr><td>6년</td><td>673,640원</td><td>48,351원</td></tr>
+                    <tr><td>7년</td><td>700,586원</td><td>-7,474원</td></tr>
+                    <tr><td>8년</td><td>728,609원</td><td>-63,222원</td></tr>
+                    <tr><td>9년</td><td>757,754원</td><td>-118,982원</td></tr>
+                </table>
+            </div>
+
+            <!-- 손익 계산 -->
+            <div class="section profit-calculation">
+                <h3>손익 계산</h3>
+                <table>
+                    <tr><td>1년</td><td>87,514,932원</td></tr>
+                    <tr><td>2년</td><td>79,431,159원</td></tr>
+                    <tr><td>3년</td><td>71,024,036원</td></tr>
+                    <tr><td>4년</td><td>62,280,627원</td></tr>
+                    <tr><td>5년</td><td>53,187,482원</td></tr>
+                    <tr><td>6년</td><td>43,730,611원</td></tr>
+                    <tr><td>7년</td><td>33,895,466원</td></tr>
+                    <tr><td>8년</td><td>23,666,914원</td></tr>
+                    <tr><td>9년</td><td>13,029,221원</td></tr>
+                </table>
+            </div>
+         </div>
+        </div>
+    </div>
+
+
+{% endblock %}

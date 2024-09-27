@@ -84,62 +84,62 @@ function closePopup() {
 
 
 
-//상세팝업 열기
-for (i = 0; i < openDetail.length; i++) {
-  openDetail[i].addEventListener("click", openDetailPopup)
-}
+// //상세팝업 열기
+// for (i = 0; i < openDetail.length; i++) {
+//   openDetail[i].addEventListener("click", openDetailPopup)
+// }
 
-function openDetailPopup() {
-  popupAreaModules[1].style.display = "block"
-  PopupData[0].innerText = regDatas[this.className].vehicle_num0
-  PopupData[1].innerText = regDatas[this.className].vehicle_num
-  PopupData[2].innerText = regDatas[this.className].driver_name
-  PopupData[3].innerText = regDatas[this.className].maker
-  if (regDatas[this.className].use == "사용") {
-    PopupData[4].innerText = "사용"
-  } else if (regDatas[this.className].use == "미사용") {
-    PopupData[4].innerText = "미사용"
-  } else {
-    PopupData[4].innerText = "삭제"
-  }
-  PopupData[5].innerText = regDatas[this.className].vehicle_type
-  PopupData[6].innerText = regDatas[this.className].passenger_num
-  PopupData[7].innerText = regDatas[this.className].type
-  PopupData[8].innerText = regDatas[this.className].model_year
-  PopupData[9].innerText = regDatas[this.className].vehicle_id
-  PopupData[10].innerText = regDatas[this.className].release_date
-  PopupData[11].innerText = regDatas[this.className].motor_type
-  PopupData[12].innerText = regDatas[this.className].rated_output
-  PopupData[13].innerText = regDatas[this.className].check_date
-  PopupData[14].innerText = regDatas[this.className].vehicle_registration
+// function openDetailPopup() {
+//   popupAreaModules[1].style.display = "block"
+//   PopupData[0].innerText = regDatas[this.className].vehicle_num0
+//   PopupData[1].innerText = regDatas[this.className].vehicle_num
+//   PopupData[2].innerText = regDatas[this.className].driver_name
+//   PopupData[3].innerText = regDatas[this.className].maker
+//   if (regDatas[this.className].use == "사용") {
+//     PopupData[4].innerText = "사용"
+//   } else if (regDatas[this.className].use == "미사용") {
+//     PopupData[4].innerText = "미사용"
+//   } else {
+//     PopupData[4].innerText = "삭제"
+//   }
+//   PopupData[5].innerText = regDatas[this.className].vehicle_type
+//   PopupData[6].innerText = regDatas[this.className].passenger_num
+//   PopupData[7].innerText = regDatas[this.className].type
+//   PopupData[8].innerText = regDatas[this.className].model_year
+//   PopupData[9].innerText = regDatas[this.className].vehicle_id
+//   PopupData[10].innerText = regDatas[this.className].release_date
+//   PopupData[11].innerText = regDatas[this.className].motor_type
+//   PopupData[12].innerText = regDatas[this.className].rated_output
+//   PopupData[13].innerText = regDatas[this.className].check_date
+//   PopupData[14].innerText = regDatas[this.className].vehicle_registration
 
 
-  vehicleNum1.value = regDatas[this.className].vehicle_num0
-  vehicleNum2.value = regDatas[this.className].vehicle_num
-  if (regDatas[this.className].driver_name !== "") {
-    driver_name.children[0].innerText = `${regDatas[this.className].driver_name}`
-    driver_name.children[0].value = regDatas[this.className].driver_id
-  }
-  if (regDatas[this.className].use == "사용") {
-    ableBusEdit.checked = true
-  } else if (regDatas[this.className].use == "미사용") {
-    disableBusEdit.checked = true
-  } else {
-    deleteBusEdit.checked = true
-  }
-  maker.value = regDatas[this.className].maker
-  vehicle_type.value = regDatas[this.className].vehicle_type
-  passenger_num.value = regDatas[this.className].passenger_num
-  type.value = regDatas[this.className].type
-  model_year.value = regDatas[this.className].model_year
-  vehicle_id.value = regDatas[this.className].vehicle_id
-  release_date.value = regDatas[this.className].release_date
-  motor_type.value = regDatas[this.className].motor_type
-  rated_output.value = regDatas[this.className].rated_output
-  checkdate.value = regDatas[this.className].check_date
-  BusLicenseFileTextEdit.value = regDatas[this.className].vehicle_registration
-  sendToHidden.value = this.parentNode.className;
-}
+//   vehicleNum1.value = regDatas[this.className].vehicle_num0
+//   vehicleNum2.value = regDatas[this.className].vehicle_num
+//   if (regDatas[this.className].driver_name !== "") {
+//     driver_name.children[0].innerText = `${regDatas[this.className].driver_name}`
+//     driver_name.children[0].value = regDatas[this.className].driver_id
+//   }
+//   if (regDatas[this.className].use == "사용") {
+//     ableBusEdit.checked = true
+//   } else if (regDatas[this.className].use == "미사용") {
+//     disableBusEdit.checked = true
+//   } else {
+//     deleteBusEdit.checked = true
+//   }
+//   maker.value = regDatas[this.className].maker
+//   vehicle_type.value = regDatas[this.className].vehicle_type
+//   passenger_num.value = regDatas[this.className].passenger_num
+//   type.value = regDatas[this.className].type
+//   model_year.value = regDatas[this.className].model_year
+//   vehicle_id.value = regDatas[this.className].vehicle_id
+//   release_date.value = regDatas[this.className].release_date
+//   motor_type.value = regDatas[this.className].motor_type
+//   rated_output.value = regDatas[this.className].rated_output
+//   checkdate.value = regDatas[this.className].check_date
+//   BusLicenseFileTextEdit.value = regDatas[this.className].vehicle_registration
+//   sendToHidden.value = this.parentNode.className;
+// }
 
 
 //상세->수정

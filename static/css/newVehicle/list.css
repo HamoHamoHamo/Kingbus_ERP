@@ -109,44 +109,62 @@ tbody td:nth-child(13) {
     cursor: pointer;
 }
 
-td:nth-child(1),
+/* 선택, 번호 */
+td:nth-child(1), 
 td:nth-child(2) {
-    width: 3%;
+    width: 4%;
 }
 
+/* 사용여부 */
 td:nth-child(3) {
-    width: 5%;
+    width: 4%;
 }
 
+/* 차고지 */
 td:nth-child(4) {
     width: 8%;
 }
 
-td:nth-child(5),
-td:nth-child(11),
-td:nth-child(12),
-td:nth-child(13) {
+/* 차량번호 */
+td:nth-child(5) {
+    width: 9%;
+}
+
+/* 담당기사 */
+td:nth-child(6){
+    width: 8%;
+}
+
+/* 제조사 */
+td:nth-child(7) {
+    width: 6%;
+}
+
+/* 차량이름 */
+td:nth-child(8) {
+    width: 11%;
+}
+
+/* 승차인원 */
+td:nth-child(9){
     width: 7%;
 }
 
-td:nth-child(6) {
-    width: 5%;
-}
-
-td:nth-child(7) {
-    width: 10%;
-}
-
-td:nth-child(8){
-    width: 10%;
-}
-
+/* 모델연도 */
 td:nth-child(10) {
+    width: 8%;
+}
+
+/* 정기점검 */
+td:nth-child(11) {
     width: 13%;
 }
 
-td:nth-child(9) {
-    width: 5%;
+/* 정비,상세,서류 */
+td:nth-child(12),
+td:nth-child(13),
+td:nth-child(14) {
+    width: 6%;
 }
 
 .tableBody td {
@@ -248,4 +266,59 @@ td:nth-child(9) {
 
 .detailRoutePopupScrollBoxTbody tr td:last-child{
     border-right: 0.1rem solid #D4D4D4;
+}
+
+.repair td:nth-child(1),
+.repair td:nth-child(2){
+    width: 10%;
+}
+
+.repair td:nth-child(3){
+    width: 10%;
+}
+.repair td:nth-child(4){
+    width: 20%;
+}
+.repair td:nth-child(5){
+    width: 25%;
+}
+.repair td:nth-child(6){
+    width: 25%;
+}
+
+.repairCreate{
+    margin: 0;
+}
+
+.creatBtn, .deleteBtnSection{
+    margin-top: 1rem;
+    display: flex;
+    justify-content: flex-end;
+}
+
+
+.popupFooter{
+    margin-top: 1rem;
+    color: white;
+}
+
+.deleteBtn{
+    background-color: #444444;
+}
+
+.blue{
+    color: #0069D9;
+}
+
+tableBody td {
+    text-align: center;
+}
+
+.tableBody td:nth-child(9), .tableBody td:nth-child(11) {
+    text-align: center;
+    padding-left: 0;
+}
+
+.popupRepairScroll{
+    overflow: hidden;
 }
