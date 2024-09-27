@@ -1,7 +1,7 @@
 from django import forms 
 from django.db import models
 
-from .models import Member
+from .models import Member, Salary
 
 class MemberForm(forms.ModelForm):
     class Meta:
@@ -45,4 +45,19 @@ class MemberForm(forms.ModelForm):
 #             'start_date',
 #             'end_date',
 #         ]
-        
+
+class SalaryForm(forms.ModelForm):
+    class Meta:
+        model = Salary
+        fields = [
+            'service_allowance',
+            'annual_allowance',
+            'team_leader_allowance_roll_call',
+            'team_leader_allowance_vehicle_management',
+            'team_leader_allowance_task_management',
+            'full_attendance_allowance',
+            'diligence_allowance',
+            'accident_free_allowance',
+            'welfare_meal_allowance',
+            'welfare_fuel_allowance',
+        ]
