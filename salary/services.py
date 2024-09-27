@@ -208,7 +208,9 @@ class DataCollector:
         daily_connects = self.get_connects_time_list(date)
         for connect in daily_connects:
             # 지금은 일반배차 제외하고 야근시간 계산
-            if connect['work_type'] != '일반' and connect['start_date'] and connect['end_date']:
+            if connect['work_type'] == '일반':
+                minutes += connect['night_work_time']
+            elif connect['start_date'] and connect['end_date']:
                 # minutes += self.round_up_to_nearest_ten(self.calculate_night_shift_minutes(connect['start_date'], connect['end_date']))
                 minutes += self.calculate_night_shift_minutes(connect['start_date'], connect['end_date'])
             
@@ -297,12 +299,13 @@ class DataCollector:
             connect_time_list = ['' for i in range(6)]
             if connect['work_type'] == '일반':
                 connect_list.append({
-                    'total_time': get_minute_from_colon_time(connect['arrival_date'][11:]) - get_minute_from_colon_time(connect['departure_date'][11:]),
+                    'total_time': int(connect['time']) if connect['time'] else 0,
                     'work_type': '일반',
                     'route': connect['order_id__route'],
                     'connect_time_list': connect_time_list,
                     'start_date':  '',
-                    'end_date': ''
+                    'end_date': '',
+                    'night_work_time': int(connect['night_work_time']) if connect['night_work_time'] else 0
                 })
                 i += 1
                 continue
