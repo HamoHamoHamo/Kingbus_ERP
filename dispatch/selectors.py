@@ -1,6 +1,7 @@
 from django.db.models import Value, F, Prefetch
 
 from .models import DispatchRegularly, DispatchOrderConnect, DispatchRegularlyConnect, MorningChecklist, EveningChecklist, DispatchRegularlyStation
+from assignment.models import AssignmentConnect
 
 class DispatchSelector:
 
@@ -38,21 +39,14 @@ class DispatchSelector:
             DispatchRegularlyConnect.objects.filter(departure_date__gte=f'{start_date} 00:00', arrival_date__lte=f'{end_date} 23:59')
             .annotate(
                 route_time=F("regularly_id__time"),
-                time_list=F("regularly_id__time_list"),
-                route=F("regularly_id__route"),
                 group=F("regularly_id__group__name")
             )
             .order_by('departure_date')
             .values(
-                'regularly_id',
-                "driver_id", 
                 "departure_date", 
                 "arrival_date", 
                 "work_type",
                 "route_time",
-                "route",
-                "time",
-                "time_list",
                 "group",
             )
         )
@@ -84,24 +78,39 @@ class DispatchSelector:
             DispatchOrderConnect.objects.filter(departure_date__gte=f'{start_date} 00:00', arrival_date__lte=f'{end_date} 23:59')
             .annotate(
                 route_time=F("order_id__time"),
-                time=Value(""),
-                time_list=F("order_id__time_list"),
                 route=F("order_id__route"),
                 night_work_time=F("order_id__night_work_time"),
+                stations_list=Value("")
             )
             .order_by('departure_date')
             .values(
-                "order_id__route",
-                "driver_id", 
                 "departure_date", 
                 "arrival_date", 
                 "work_type",
                 "route_time",
-                "route",
-                'time',
                 'night_work_time',
             )
         )
+
+        assignment = list(
+            AssignmentConnect.objects.filter(start_date__gte=f'{start_date} 00:00', end_date__lte=f'{end_date} 23:59')
+            .annotate(
+                night_work_time=Value(""),
+                route_time=Value(""),
+                work_type=Value("업무"),
+                departure_date=F("start_date"),
+                arrival_date=F("end_date"),
+            )
+            .order_by('start_date')
+            .values(
+                "departure_date", 
+                "arrival_date", 
+                "work_type",
+                "route_time",
+                'night_work_time',
+            )
+        )
+
         return regularly + order
 
 
