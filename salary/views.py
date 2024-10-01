@@ -122,7 +122,7 @@ class DailySalaryStatus(AuthorityCheckView, generic.ListView):
 
             data_collector.set_duration(first_date, last_date)
             calculated_data = data_collector.get_calculate_times()
-            calculated_data['connects_time_list'] = data_collector.get_connects_time_list(first_date)
+            calculated_data['connects_time_list'] = data_collector.get_daily_connects(first_date)
             datas[member.id] = calculated_data
             
  

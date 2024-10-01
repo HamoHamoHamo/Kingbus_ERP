@@ -37,6 +37,18 @@ def calculate_date_difference(start_date_str, end_date_str):
     # timedelta 객체에서 일(day), 시간(hour), 분(minute)을 추출
     return date_difference.days
 
+def calculate_minute_difference(start_minute, end_minute):
+    try:
+        int(start_minute)
+        int(end_minute)
+        # 도착시간이 자정을 넘을 경우
+        if end_minute >= start_minute:
+            return end_minute - start_minute
+        else:
+            return 24 * 60 + end_minute - start_minute
+    except ValueError:
+        raise Exception("Invalid Format")
+
 def last_day_of_month(date_str):
     try:
         # 입력된 날짜 문자열을 datetime 객체로 변환

@@ -6,7 +6,7 @@ from humanresource.models import Member, Salary
 from humanresource.selectors import MemberSelector
 from common.constant import TODAY
 from common.formatter import format_number_with_commas, remove_comma_from_number
-from common.datetime import calculate_time_difference, get_hour_minute_with_colon, get_hour_minute, get_minute_from_colon_time, last_day_of_month, get_weekday_from_date, calculate_date_difference, add_days_to_date, last_date_of_month, get_next_sunday_after_last_day, calculate_time_with_minutes
+from common.datetime import calculate_time_difference, get_hour_minute_with_colon, get_hour_minute, get_minute_from_colon_time, last_day_of_month, get_weekday_from_date, calculate_date_difference, add_days_to_date, last_date_of_month, get_next_sunday_after_last_day, calculate_time_with_minutes, calculate_minute_difference
 from datetime import datetime, timedelta
 import math
 from .selectors import SalarySelector
@@ -177,29 +177,38 @@ class DataCollector:
             )
         return ''
             
-    def calculate_night_shift_minutes(self, departure_date, arrival_date):
-        # 출발 및 도착 시간 설정
-        departure = datetime.strptime(departure_date, '%Y-%m-%d %H:%M')
-        arrival = datetime.strptime(arrival_date, '%Y-%m-%d %H:%M')
-        
-        # 야근 시작 및 종료 시간 설정
-        night_start = datetime.strptime(departure_date[:10] + ' 00:00', '%Y-%m-%d %H:%M')
-        night_end = datetime.strptime(departure_date[:10] + ' 06:00', '%Y-%m-%d %H:%M')
-        mid_night_start = datetime.strptime(departure_date[:10] + ' 22:00', '%Y-%m-%d %H:%M')
-        mid_night_end = datetime.strptime(departure_date[:10] + ' 23:59', '%Y-%m-%d %H:%M')
-        
+    def calculate_night_shift_minutes(self, departure_time, arrival_time):
+        # 출발 및 도착 시간 설정 (%H:%M 형식)
+        departure = datetime.strptime(departure_time, '%H:%M')
+        arrival = datetime.strptime(arrival_time, '%H:%M')
+
+        # 야근 시간대 설정
+        night_start = datetime.strptime('00:00', '%H:%M')
+        night_end = datetime.strptime('06:00', '%H:%M')
+        mid_night_start = datetime.strptime('22:00', '%H:%M')
+        mid_night_end = datetime.strptime('23:59', '%H:%M')
+
         # 야근 시간 계산 변수 초기화
         night_shift_minutes = 0
 
-        # 00:00 ~ 06:00 시간대 야근 시간 계산
-        if departure < night_end:
-            if arrival > night_start:
-                night_shift_minutes += (min(arrival, night_end) - max(departure, night_start)).seconds // 60
+        # 도착 시간이 자정을 넘어간 경우 처리
+        if arrival < departure:
+            # 자정 이전까지의 야근 시간 계산 (22:00 ~ 23:59)
+            if departure <= mid_night_end:
+                night_shift_minutes += (mid_night_end - max(mid_night_start, departure)).seconds // 60 + 1
+            
+            # 자정 이후 (00:00)부터 도착 시간까지의 야근 시간 계산 (00:00 ~ 06:00)
+            night_shift_minutes += (arrival - night_start).seconds // 60
+        else:
+            # 00:00 ~ 06:00 시간대 야근 시간 계산
+            if departure <= night_end:
+                if arrival >= night_start:
+                    night_shift_minutes += (min(arrival, night_end) - max(departure, night_start)).seconds // 60
 
-        # 22:00 ~ 23:59 시간대 야근 시간 계산
-        if departure < mid_night_end:
-            if arrival > mid_night_start:
-                night_shift_minutes += (min(arrival, mid_night_end) - max(departure, mid_night_start)).seconds // 60
+            # 22:00 ~ 23:59 시간대 야근 시간 계산
+            if departure <= mid_night_end:
+                if arrival >= mid_night_start:
+                    night_shift_minutes += (min(arrival, mid_night_end) - max(departure, mid_night_start)).seconds // 60
 
         return night_shift_minutes
     
@@ -207,12 +216,13 @@ class DataCollector:
         minutes = 0
         daily_connects = self.get_connects_time_list(date)
         for connect in daily_connects:
-            # 지금은 일반배차 제외하고 야근시간 계산
             if connect['work_type'] == '일반':
                 minutes += connect['night_work_time']
-            elif connect['start_date'] and connect['end_date']:
-                # minutes += self.round_up_to_nearest_ten(self.calculate_night_shift_minutes(connect['start_date'], connect['end_date']))
-                minutes += self.calculate_night_shift_minutes(connect['start_date'], connect['end_date'])
+                continue
+            if connect['start_time1'] and connect['end_time1']:
+                minutes += self.calculate_night_shift_minutes(connect['start_time1'], connect['end_time1'])
+            if connect['start_time2'] and connect['end_time2']:
+                minutes += self.calculate_night_shift_minutes(connect['start_time2'], connect['end_time2'])
             
         return minutes
 
@@ -294,115 +304,151 @@ class DataCollector:
         daily_connects = self.get_daily_connects(date)
         connect_list = []
         i = 0
+        # 현재 운행 도착 시간과 다음 운행 출발 시간의 차이가 90분 이하
+        is_time_difference_under_90 = False
         for connect in daily_connects:
-            route_time = int(connect['route_time']) if connect['route_time'] else 0
-            connect_time_list = ['' for i in range(6)]
+
+            # 일반
             if connect['work_type'] == '일반':
+                route_time = int(connect['route_time']) if connect['route_time'] else 0
                 connect_list.append({
-                    'total_time': int(connect['time']) if connect['time'] else 0,
+                    'total_time': route_time,
                     'work_type': '일반',
-                    'route': connect['order_id__route'],
-                    'connect_time_list': connect_time_list,
-                    'start_date':  '',
-                    'end_date': '',
+                    'start_time1':  '',
+                    'end_time1': '',
+                    'start_time2':  '',
+                    'end_time2': '',
                     'night_work_time': int(connect['night_work_time']) if connect['night_work_time'] else 0
                 })
                 i += 1
                 continue
-            time_list = connect['stations_list']
 
-            if not time_list:
+            # 업무
+            if connect['work_type'] == '업무':
                 connect_list.append({
-                    'total_time': 0,
+                    'total_time': calculate_minute_difference(get_minute_from_colon_time(connect['departure_date'][11:]), get_minute_from_colon_time(connect['arrival_date'][11:])),
                     'work_type': connect['work_type'],
-                    'route': connect['route'],
-                    'connect_time_list': connect_time_list,
-                    'start_date':  '',
-                    'end_date': ''
+                    'start_time1': connect['departure_date'][11:],
+                    'end_time1': connect['arrival_date'][11:],
+                    'start_time2': "",
+                    'end_time2': "",
                 })
                 i += 1
                 continue
 
+            # 출퇴근
+            time_list = connect['stations_list']
+
+            # 정류장 정보 없을 경우
+            if not time_list:
+                connect_list.append({
+                    'total_time': 0,
+                    'work_type': connect['work_type'],
+                    'start_time1':  '',
+                    'end_time1': '',
+                    'start_time2':  '',
+                    'end_time2': '',
+                })
+                i += 1
+                continue
+
+            length = len(connect['stations_list'])
+            departure_index = 4 # 첫 정류장(출발지) 인덱스
+            arrival_index = length - 3 # 사업장(도착지) 인덱스
+            first_station_ready_index = 3 # 첫 정류장 대기장소 인덱스
             
-            length = len(time_list)
+            # 출발시간 정하기
+            # start_time1 = 차고지
+            # end_time1 = 첫정류장대기장소
+            # start_time2 = 첫정류장(출발지)
+            # end_time2 = 대기장소 + 10분(뒷정리)
 
-            connect_time_list[0] = self.get_first_time_list(i, daily_connects)
-            connect_time_list[1], connect_time_list[2] = self.get_pre_ready_time_and_departure_time(connect['work_type'], time_list)
+            # is_time_difference_under_90 = 전 운행과 90분 차이 이내 여부
+            start_time1 = self.get_start_time(i, daily_connects, is_time_difference_under_90)
+            start_time2 = connect['stations_list'][departure_index]
+            if is_time_difference_under_90:
+                end_time1 = start_time2
+            else:
+                end_time1 = connect['stations_list'][first_station_ready_index]
 
-            connect_time_list[3] = time_list[length - 2]
-            connect_time_list[4] = time_list[length - 1]
-            connect_time_list[5] = calculate_time_with_minutes(time_list[length - 1], 5)
+            # # is_time_difference_under_90 = 다음 운행과 90분 차이 이내 여부
+            is_time_difference_under_90 = self.check_time_difference_under_90(i, daily_connects, departure_index, arrival_index)
+            if is_time_difference_under_90:
+                end_time2 = connect['stations_list'][arrival_index]
+            else:
+                end_time2 = self.check_arrival_can_parking_outside(i, time_list, length)
 
-            if self.is_time_difference_under_90(i, daily_connects):
-                connect_time_list[4] = time_list[length - 2]
-                connect_time_list[5] = time_list[length - 2]
             
             # 운행시간이 자정을 넘겼을 떄 운행시간 계산
-            if get_minute_from_colon_time(connect_time_list[5]) >= get_minute_from_colon_time(connect_time_list[0]):
-                route_time = get_minute_from_colon_time(connect_time_list[5]) - get_minute_from_colon_time(connect_time_list[0])
-            else:
-                route_time = 24 * 60 + get_minute_from_colon_time(connect_time_list[5]) - get_minute_from_colon_time(connect_time_list[0])
+            # end_time2 + 10분(뒷정리 시간) 추가
+            route_time1 = calculate_minute_difference(get_minute_from_colon_time(start_time1), get_minute_from_colon_time(end_time1))
+            route_time2 = calculate_minute_difference(get_minute_from_colon_time(start_time2), get_minute_from_colon_time(end_time2) + 10)
 
             connect_list.append({
-                'total_time': route_time,
+                'total_time': route_time1 + route_time2,
                 'work_type': connect['work_type'],
-                'route': connect['route'],
-                'connect_time_list': connect_time_list,
-                'start_date':  f"{date} {connect_time_list[0]}",
-                'end_date': f"{date} {connect_time_list[5]}",
+                'start_time1':  start_time1,
+                'end_time1': end_time1,
+                'start_time2':  start_time2,
+                'end_time2': end_time2,
             })
             i += 1
         return connect_list
 
-    def get_first_time_list(self, i, daily_connects):
+    # 이전 도착 시간과 현재 출발 시간 차이가 1시간 30
+    def get_start_time(self, i, daily_connects, is_time_difference_under_90):
         time_list = daily_connects[i]['stations_list']
-        if i <= 0 or daily_connects[i - 1]['work_type'] == '일반' or self.is3M(daily_connects, i):
-            return time_list[0]
-
-        prev_time_list = daily_connects[i - 1]['stations_list']
-        if not prev_time_list:
-            return time_list[0]
-        prev_length = len(prev_time_list)
-        prev_arrival_time = prev_time_list[prev_length - 2]
-        # 현재 사전 준비시간 - 이전 도착시간 < 90 : 현재 차고지도착 = 이전 도착시간
-        pre_ready_time, __ = self.get_pre_ready_time_and_departure_time(daily_connects[i]['work_type'], time_list)
-        time_difference = get_minute_from_colon_time(pre_ready_time) - get_minute_from_colon_time(prev_arrival_time)
-        if time_difference < 90:
+        prev_time_list = daily_connects[i - 1]['stations_list']        
+        prev_arrival_time = prev_time_list[len(prev_time_list) - 3] # 도착지는 뒤에서 3번째 정류장
+        
+        if is_time_difference_under_90:
             return prev_arrival_time
+        return self.check_departure_can_parking_outside(i, time_list)
+        
+    def check_departure_can_parking_outside(self, i, time_list):
+        # 첫 운행일 경우에만 외부 주차 가능 여부 확인
+        if i == 0 and self.member.can_parking_outside:
+            return time_list[1]
         else:
             return time_list[0]
 
-    def is_time_difference_under_90(self, i, daily_connects) -> bool:
+    def check_arrival_can_parking_outside(self, i, time_list, length):
+        # 첫 운행일 경우에만 외부 주차 가능 여부 확인
+        if i == length - 1 and self.member.can_parking_outside:
+            return time_list[length - 1]
+        else:
+            return time_list[length - 2]
+
+
+    def check_time_difference_under_90(self, i, daily_connects, departure_index, arrival_index) -> bool:
         time_list = daily_connects[i]['stations_list']
-        length = len(time_list)
+        
+        # i가 마지막 운행이거나,
+        # 다음 운행이 일반이거나,
+        # 다음 운행이 3M일 경우 False
         if i >= len(daily_connects) - 1 or daily_connects[i + 1]['work_type'] == '일반' or self.is3M(daily_connects, i + 1):
             return False
         
+        # 다음 운행의 정류장 정보가 없으면 False
         next_time_list = daily_connects[i + 1]['stations_list']
         if not next_time_list:
             return False
-        # 다음 사전 준비시간 - 현재 도착시간 < 90 : 현재 차량입고, 뒷정리완료 = 현재 도착시간
-        arrival_time = time_list[length - 2]
-        next_pre_ready_time, __ = self.get_pre_ready_time_and_departure_time(daily_connects[i + 1]['work_type'], next_time_list)
-        time_difference = get_minute_from_colon_time(next_pre_ready_time) - get_minute_from_colon_time(arrival_time)
-        return time_difference < 90
 
-    def get_pre_ready_time_and_departure_time(self, work_type, time_list):
-        time = ['', '']
-        if work_type == '출근':
-            time[0] = time_list[1]
-            time[1] = time_list[2]
-        else:
-            time[0] = calculate_time_with_minutes(time_list[1], -10)
-            time[1] = time_list[1]
-        return time[0], time[1]
+        # 대기장소(내부), 대기장소(외부), 사전준비시간, 사업장 대기장소, 사업장, 정류장, 마지막 정류장, 차고지(내부), 차고지(외부), 뒷 정리 완료
+        arrival_time = get_minute_from_colon_time(time_list[arrival_index])
+        next_departure_time = get_minute_from_colon_time(next_time_list[departure_index])
+        
+        # 다음 출발시간 - 현재 도착시간 < 90 이면 도착지 이후 정류장들 전부 현재 도착시간
+        time_difference = calculate_minute_difference(next_departure_time, arrival_time)
+        return time_difference < 90
 
     def is3M(self, daily_connects, i) -> bool:
         try:
+            # 현재랑 다음 운행이 쓰리엠인지 확인
             return "쓰리엠" in daily_connects[i]['group'] or \
-                    (i + 1 < len(daily_connects) and "쓰리엠" in daily_connects[i + 1]['group']) or \
-                    (i > 0 and "쓰리엠" in daily_connects[i - 1]['group'])
+                    (i + 1 < len(daily_connects) and "쓰리엠" in daily_connects[i + 1]['group'])
         except Exception as e:
+            logger.info(f"is3M error {e}")
             return False
 
 
