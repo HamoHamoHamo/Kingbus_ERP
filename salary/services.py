@@ -304,6 +304,15 @@ class DataCollector:
         # 현재 운행 도착 시간과 다음 운행 출발 시간의 차이가 90분 이하
         is_time_difference_under_90 = False
         can_parking_outside = self.member.can_parking_outside
+
+        # 정류장 개수 8개 이하인 regulalry_id id 찾기
+        for connect in daily_connects:
+            if connect['work_type'] == "출근" or connect['work_type'] == "퇴근":
+                length = len(connect['stations_list'])
+                if length < 8:
+                    id = DispatchRegularly.objects.get(id=connect['regularly_id']).regularly_id
+                    logger.info(f"정류장 에러 regularly_id = {id.group.name}\t\t\t{id}\t\t\t{id.id}")
+        return []
         for connect in daily_connects:
             connect_time_list = ['' for i in range(9)]
 
@@ -394,9 +403,14 @@ class DataCollector:
                 end_time2 = self.check_arrival_can_parking_outside(i, time_list, length)
                 connect_time_list[6] = end_time2 # DailySalaryStatus
                 connect_time_list[7] = end_time2 # DailySalaryStatus
-                # 뒷정리 완료 = 마지막에서 10분 추가
-                end_time2 = get_hour_minute_with_colon(get_minute_from_colon_time(end_time2) + 10)
                 
+                # 뒷정리 완료 = 마지막에서 10분 추가
+                end_time2_minute = get_minute_from_colon_time(end_time2) + 10
+                # +10분으로 자정이 넘으면 24시간 빼기
+                if end_time2_minute >= 1440:
+                    end_time2_minute -= 1440
+                
+                end_time2 = get_hour_minute_with_colon(end_time2_minute)
                 connect_time_list[8] = get_hour_minute_with_colon(get_minute_from_colon_time(end_time2))
             
 

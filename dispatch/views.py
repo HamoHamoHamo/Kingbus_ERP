@@ -1209,8 +1209,12 @@ def get_regularly_distance_and_time(regularly_data, regularly):
         next_monday = get_next_monday(TODAY)
         departure_time = next_monday + get_mid_time(regularly_data.departure_time, regularly_data.arrival_time)
 
-        distance, duration, api_data = get_distance_and_time_from_kakao(origin, destination, departure_time)
-        
+        # 카카오 api 사용 안 함, 나중에 필요하면 다시 사용
+        # distance, duration, api_data = get_distance_and_time_from_kakao(origin, destination, departure_time)
+        distance = 0
+        duration = 0
+        api_data = ""
+
         if distance is None or duration is None:
             logger.error(f"ERROR {current_data['station__address']} > {next_data['station__address']}")
             # API 호출 실패 처리
@@ -1450,80 +1454,100 @@ def regularly_order_edit_check(request):
     
     return JsonResponse({'status': 'success'})
 
-def edit_station_time(recent_regularly, stations):
-    time_list = recent_regularly.time_list.split(",")
-    departure_minute = get_minute_from_colon_time(recent_regularly.departure_time)
-    cnt = 0
-    for station in stations:
-        if station.index == 1:
-            time = departure_minute - int(time_list[0])
-        elif station.index == 2:
-            time = departure_minute
-        else:
-            time = get_minute_from_colon_time(stations[cnt - 1].time) + int(time_list[cnt - 1])
-
-        station.time = get_hour_minute_with_colon(time)
-        station.save()
-        cnt += 1
 
 def time_data(request):
+    if request.session.get('authority') > 1:
+        return render(request, 'authority.html')
+    
     creator = get_object_or_404(Member, pk=request.session.get('user'))
-    station_edit_date = '2024-05-01'
+    station_edit_date = '2024-08-26'
 
 
-    all_regularly_data = DispatchRegularlyData.objects.exclude(time='').exclude(time='0')
-    for regularly_data in all_regularly_data:
+    # all_regularly_data = [873, 877, 886, 887, 888, 889, 890, 891, 892, 893, 894, 895, 896, 
+    # 897, 898, 899, 900, 902, 903, 904, 906, 907, 908, 909, 912, 913, 914, 916, 918, 919, 920, 
+    # 921, 922, 923, 926, 930, 977, 981, 983, 984, 986, 990, 991, 992, 993, 994, 995, 996, 1010, 
+    # 1011, 1012, 1031, 1034, 1038, 1042, 1043, 1044, 1055, 1089, 1090, 1093, 1097, 1119, 1120, 
+    # 1121, 1122, 1123, 1133, 1134, 1146, 1147, 1149, 1150, 1151, 1153, 1154, 1155, 1156, 1157, 
+    # 1159, 1161, 1163, 1164, 1165, 1166, 1168, 1169, 1171, 1172, 1173, 1174, 1175, 1176, 1177, 
+    # 1178, 1179, 1180, 1187, 1189, 1190, 1203, 1204, 1205, 1206, 1207, 1208, 1209, 1210, 1211, 
+    # 1215, 1216, 1221, 1222, 1223, 1224, 1225, 1226, 1227, 1228, 1249, 1252, 1373, 1374, 1376, 
+    # 1377, 1416, 1418, 1419, 1420, 1427, 1428, 1503, 1505, 1508, 1509, 1510, 1525, 1531, 1532, 
+    # 1533, 1534, 1535, 1537, 1540, 1541, 1542, 1543, 1544, 1547, 1550, 1551, 1552, 1553, 1554, 
+    # 1555, 1557, 1558, 1559, 1560, 1561, 1562, 1563, 1566, 1567, 1568, 1569, 1570, 1581, 1582, 
+    # 1595, 1596, 1597, 1600, 1601, 1602, 1603, 1604, 1605, 1607, 1608, 1609, 1610, 1611, 1612, 
+    # 1613, 1614, 1620, 1621, 1622, 1623, 1624, 1625, 1626, 1627, 1628, 1629, 1680, 1684, 1688, 
+    # 1749, 1753, 1754, 1755, 1757, 1758, 1760, 1791, 1792, 1793, 1795, 1802, 1803, 1804, 1805]
+
+    all_regularly_data = []
+    for regularly_data_id in all_regularly_data:
+        regularly_data = DispatchRegularlyData.objects.get(id=regularly_data_id)
+        regularly = regularly_data.monthly.order_by("edit_date").last()
         recent_regularly = regularly_data.monthly.order_by("-edit_date").first()
         stations = recent_regularly.regularly_station.order_by('index')
-        # stations time 수정
-        edit_station_time(recent_regularly, stations)
         
         # 기준일에 데이터 없으면 새로 생성
-        try:
-            DispatchRegularly.objects.get(regularly_id=regularly_data, edit_date=station_edit_date)
-        except DispatchRegularly.DoesNotExist:
-            edit_date_regularly = DispatchRegularly.objects.filter(regularly_id=regularly_data, edit_date__lte=station_edit_date).order_by('-edit_date').first()
-            edit_date_regularly_data = model_to_dict(edit_date_regularly)
-            edit_date_regularly_data.pop('id')
-            edit_date_regularly_data.pop('station')
-            
+        if station_edit_date:
+            # 시간은 DispatchRegularlyStation time으로 계산해서, 거리는 카카오api로 저장하기
+            # get_regularly_distance_and_time(regularly_data, regularly)
+            # 카카오api로 거리, 시간 저장하기
+            # get_regularly_distance_and_time_from_kakao(regularly_data, regularly)
+            try:
+                logger.info(f"regularly_data.id {regularly_data.id} station_edit_date {station_edit_date}")
+                DispatchRegularly.objects.get(regularly_id=regularly_data, edit_date=station_edit_date)
+            except DispatchRegularly.DoesNotExist:
+                edit_date_regularly = DispatchRegularly.objects.filter(regularly_id=regularly_data, edit_date__lte=station_edit_date).order_by('-edit_date').first()
+                if not edit_date_regularly:
+                    edit_date_regularly = DispatchRegularly.objects.filter(regularly_id=regularly_data, edit_date__gt=station_edit_date).order_by('-edit_date').last()
+                edit_date_regularly_data = model_to_dict(edit_date_regularly)
+                edit_date_regularly_data.pop('id')
+                edit_date_regularly_data.pop('station')
+                
 
-            edit_date_regularly_data['regularly_id'] = regularly_data
-            edit_date_regularly_data['edit_date'] = station_edit_date
-            edit_date_regularly_data['group'] = RegularlyGroup.objects.get(id=edit_date_regularly_data['group'])
-            edit_date_regularly_data['creator'] = creator
-            edit_date_r = DispatchRegularly(**edit_date_regularly_data)
-            edit_date_r.save()
+                edit_date_regularly_data['regularly_id'] = regularly_data
+                edit_date_regularly_data['edit_date'] = station_edit_date
+                edit_date_regularly_data['group'] = RegularlyGroup.objects.get(id=edit_date_regularly_data['group'])
+                edit_date_regularly_data['creator'] = creator
+                edit_date_r = DispatchRegularly(**edit_date_regularly_data)
+                edit_date_r.save()
 
-            # 기준일 ~ 기준일 이후 첫번째 데이터 사이의 배차들 불러서 regularly_id 변경
-            recent_regularly_edit_date = DispatchRegularly.objects.filter(regularly_id=regularly_data, edit_date__gt=station_edit_date).order_by('edit_date').first().edit_date
+                logger.info(f"기준일에 데이터 없으면 생성하는 부분 확인 : 기존 데이터 {DispatchRegularly.objects.filter(id=edit_date_regularly.id).values()}")
+                logger.info(f"기준일에 데이터 없으면 생성하는 부분 확인 : 생성한 데이터 {DispatchRegularly.objects.filter(id=edit_date_r.id).values()}")
 
-            connects = DispatchRegularlyConnect.objects.filter(regularly_id__regularly_id=regularly_data).filter(departure_date__gte=station_edit_date).filter(departure_date__lt=recent_regularly_edit_date)
-            logger.info(f"기준일 ~ 기준일 이후 첫번째 데이터 사이의 배차들 확인 : 기존 데이터 {connects.values('regularly_id', 'id', 'departure_date')}")
-            for connect in connects:
-                connect.regularly_id = edit_date_r
-                connect.save()
-            logger.info(f"기준일 ~ 기준일 이후 첫번째 데이터 사이의 배차들 확인 : 변경 데이터 {connects.values('regularly_id', 'id', 'departure_date')}")
+                # 기준일 ~ 기준일 이후 첫번째 데이터 사이의 배차들 불러서 regularly_id 변경
+                first_regularly_from_edit_date = DispatchRegularly.objects.filter(regularly_id=regularly_data, edit_date__gt=station_edit_date).order_by('edit_date').first()
+                if first_regularly_from_edit_date:
+                    recent_regularly_edit_date = DispatchRegularly.objects.filter(regularly_id=regularly_data, edit_date__gt=station_edit_date).order_by('edit_date').first().edit_date
+                else:
+                    recent_regularly_edit_date = station_edit_date
+                connects = DispatchRegularlyConnect.objects.filter(regularly_id__regularly_id=regularly_data).filter(departure_date__gte=station_edit_date).filter(departure_date__lt=recent_regularly_edit_date)
+                logger.info(f"기준일 ~ 기준일 이후 첫번째 데이터 사이의 배차들 확인 : 기존 데이터 {connects.values('regularly_id')}")
+                for connect in connects:
+                    connect.regularly_id = edit_date_r
+                    connect.save()
+                logger.info(f"기준일 ~ 기준일 이후 첫번째 데이터 사이의 배차들 확인 : 변경 데이터 {connects.values('regularly_id')}")
 
+            # 기준일 이후 노선들 정류장 새로 등록
+            new_station_list = regularly.regularly_station.all()
+            edit_station_regularly_list = DispatchRegularly.objects.filter(regularly_id=regularly_data, edit_date__gte=station_edit_date).exclude(id=regularly.id)
+            logger.info(f"edit_station_regularly_list {edit_station_regularly_list}")
+            for old_regularly in edit_station_regularly_list:
+                old_regularly.time = regularly.time
+                old_regularly.time_list = regularly.time_list
+                old_regularly.distance = regularly.distance
+                old_regularly.distance_list = regularly.distance_list
+                old_regularly.save()
 
-
-        regularly_list = regularly_data.monthly.exclude(time="").exclude(time="0").exclude(id=recent_regularly.id)
-        for regularly in regularly_list:
-            regularly.time_list = recent_regularly.time_list
-            regularly.time = recent_regularly.time
-            regularly.distance_list = recent_regularly.distance_list
-            regularly.distance = recent_regularly.distance
-            regularly.save()
-
-            regularly.regularly_station.all().delete()
-            for station in stations:
-                station_data = model_to_dict(station)
-                station_data.pop('id')
-                station_data['regularly'] = regularly
-                station_data['station'] = station.station
-                station_data['creator'] = station.creator
-                new_station = DispatchRegularlyStation(**station_data)
-                new_station.save()
+                old_regularly.regularly_station.all().delete()
+                
+                for station in new_station_list:
+                    station_data = model_to_dict(station)
+                    station_data.pop('id')
+                    station_data['regularly'] = old_regularly
+                    station_data['station'] = station.station
+                    station_data['creator'] = station.creator
+                    new_station = DispatchRegularlyStation(**station_data)
+                    new_station.save()
+                    logger.info(f"old_regularly{old_regularly} new_station {new_station}")
 
 
 
