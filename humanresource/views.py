@@ -1116,11 +1116,7 @@ class NewSalaryList(SalaryList):
         context['total_wage_list'] = []
         context['total_work_hour_minute_list'] = []
         context['weekly_holiday_allowance'] = []
-        context['datas_member_list'] = []
         for data_id in context['datas']:
-            if context['datas'][data_id]['total_work_hour_minute'] == "0":
-                continue
-            context['datas_member_list'].append(context['datas'][data_id]['member'])
             #context['wage_list'].append(context['datas'][data_id]['wage'])
             context['total_wage_list'].append(context['datas'][data_id]['total'])
             context['weekly_holiday_allowance'].append(context['datas'][data_id]['weekly_holiday_allowance'])
@@ -1142,8 +1138,8 @@ class NewSalaryList(SalaryList):
                 
             ))
         
-        context.update(self.get_datas(context['datas_member_list'], context, context['month']))
-
+        context.update(self.get_datas(data_controller.member_list, context, context['month']))
+        context['datas_member_list'] = data_controller.member_list
         return context
 
 def salary_edit(request):

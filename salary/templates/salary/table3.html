@@ -68,16 +68,14 @@
 
             <div class="orderListScrollBox">
                 <!--고정요소-->
-                {% for member in member_list %}
-                {% with data=datas|obj:member.id %}
-                {% if data.total_work_hour_minute != "0" %}
+                {% for data in datas %}
+                {% with current_data=datas|obj:data %}
                 <div class="orderListItem">
                     <div class="orderListMainContents orderListMain0"><input type="checkbox"></div>
                     <div class="orderListMainContents orderListMain1">{{forloop.counter}}</div>
-                    <div class="orderListMainContents orderListMain2">{{member.name}}</div>
-                    <div class="orderListMainContents orderListMain2 orderListMain3">{{member.role}}</div>
+                    <div class="orderListMainContents orderListMain2">{{current_data.member__name}}</div>
+                    <div class="orderListMainContents orderListMain2 orderListMain3">{{current_data.member__role}}</div>
                 </div>
-                {% endif %}
                 {% endwith %}
                 {% endfor %}
                 <!--고정요소 done-->
@@ -221,80 +219,78 @@
             <!--tbody-->
             <div class="tbody">
 
-                {% for member in member_list %}
-                {% with member_id=member.id %}
-                {% with data=datas|obj:member.id %}
-                {% if data.total_work_hour_minute != "0" %}
+                {% for data in datas %}
+                {% with current_data=datas|obj:data %}
                 <div class="tbodyItemTr">
                     <!-- 입사일자 -->
-                    <div class="addCommaToInnerText tbodyDate">{{data.entering_date}}</div>
+                    <div class="addCommaToInnerText tbodyDate">{{current_data.member__entering_date}}</div>
                     <!-- 근무시간 -->
-                    <div class="addCommaToInnerText tbodyWorkTime">{{data.total_work_hour_minute}}</div>
+                    <div class="addCommaToInnerText tbodyWorkTime">{{current_data.total_work_hour_minute}}</div>
                     <!-- 기본시급1 -->
-                    <div class="addCommaToInnerText tbodyBasic">{{data.hourly_wage1}}</div>
+                    <div class="addCommaToInnerText tbodyBasic">{{current_data.hourly_wage1}}</div>
                     <!-- 기본시급2 -->
-                    <!-- <div class="addCommaToInnerText tbodyBasic">{{data.hourly_wage2}}</div> -->
+                    <!-- <div class="addCommaToInnerText tbodyBasic">{{current_data.hourly_wage2}}</div> -->
                     <!-- 통상시급 -->
-                    <div class="addCommaToInnerText tbodyNormal">{{data.ordinary_hourly_wage}}</div>
+                    <div class="addCommaToInnerText tbodyNormal">{{current_data.ordinary_hourly_wage}}</div>
                     <!--산정시간-->
                     <div class="tbodyCountTime flex">
-                        <div class="tbodyCountTimeTd td personalFlex">{{data.total_weekly_hour_minute}}</div>
-                        <div class="tbodyCountTimeTd td personalFlex">{{data.total_within_law_extension_hour_minute}}</div>
-                        <div class="tbodyCountTimeTd td personalFlex">{{data.total_outside_law_extension_hour_minute}}</div>
-                        <div class="tbodyCountTimeTd td personalFlex">{{data.total_night_shift_hour_minute}}</div>
-                        <div class="tbodyCountTimeTd td personalFlex">{{data.holiday_hour_minute}}</div>
-                        <div class="tbodyCountTimeTd td personalFlex">{{data.additional_holiday_hour_minute}}</div>
+                        <div class="tbodyCountTimeTd td personalFlex">{{current_data.total_weekly_hour_minute}}</div>
+                        <div class="tbodyCountTimeTd td personalFlex">{{current_data.total_within_law_extension_hour_minute}}</div>
+                        <div class="tbodyCountTimeTd td personalFlex">{{current_data.total_outside_law_extension_hour_minute}}</div>
+                        <div class="tbodyCountTimeTd td personalFlex">{{current_data.total_night_shift_hour_minute}}</div>
+                        <div class="tbodyCountTimeTd td personalFlex">{{current_data.holiday_hour_minute}}</div>
+                        <div class="tbodyCountTimeTd td personalFlex">{{current_data.additional_holiday_hour_minute}}</div>
                     </div>
 
                     <div class="tbodyOrdinarySalary" style="display: flex;">
                         <!-- 임금 -->
-                        <div class="addCommaToInnerText">{{data.wage}}</div>
+                        <div class="addCommaToInnerText">{{current_data.wage}}</div>
                         <!-- 근속수당 -->
-                        <div class="addCommaToInnerText">{{data.service_allowance}}</div>
+                        <div class="addCommaToInnerText">{{current_data.service_allowance}}</div>
                         <!-- 계 -->
-                        <div class="addCommaToInnerText">{{data.ordinary_salary}}</div>
+                        <div class="addCommaToInnerText">{{current_data.ordinary_salary}}</div>
                     </div>
                     <div class="tbodyLegalAllowance" style="display: flex;">
                         <!-- 주휴수당 -->
-                        <div class="addCommaToInnerText">{{data.weekly_holiday_allowance}}</div>
+                        <div class="addCommaToInnerText">{{current_data.weekly_holiday_allowance}}</div>
                         <!-- 법정휴일 -->
-                        <div class="addCommaToInnerText">{{data.legal_holiday_allowance}}</div>
+                        <div class="addCommaToInnerText">{{current_data.legal_holiday_allowance}}</div>
                         <!-- 법내연장 기본임금 -->
-                        <div class="addCommaToInnerText">{{data.weekly_within_law_extension_wage}}</div>
+                        <div class="addCommaToInnerText">{{current_data.weekly_within_law_extension_wage}}</div>
                         <!-- 주연장 기본임금 -->
-                        <div class="addCommaToInnerText">{{data.weekly_outside_law_extension_wage}}</div>
+                        <div class="addCommaToInnerText">{{current_data.weekly_outside_law_extension_wage}}</div>
                         <!-- 주연장 가산임금 -->
-                        <div class="addCommaToInnerText">{{data.weekly_extension_additional_wage}}</div>
+                        <div class="addCommaToInnerText">{{current_data.weekly_extension_additional_wage}}</div>
                         <!-- 야간근로 -->
-                        <div class="addCommaToInnerText">{{data.night_shift_wage}}</div>
+                        <div class="addCommaToInnerText">{{current_data.night_shift_wage}}</div>
                         <!-- 휴일 기본임금 -->
-                        <div class="addCommaToInnerText">{{data.holiday_work_wage}}</div>
+                        <div class="addCommaToInnerText">{{current_data.holiday_work_wage}}</div>
                         <!-- 휴일 50%임금 -->
-                        <div class="addCommaToInnerText">{{data.additional_holiday_work_wage_half}}</div>
+                        <div class="addCommaToInnerText">{{current_data.additional_holiday_work_wage_half}}</div>
                         <!-- 휴일 100%임금 -->
-                        <div class="addCommaToInnerText">{{data.additional_holiday_work_wage}}</div>
+                        <div class="addCommaToInnerText">{{current_data.additional_holiday_work_wage}}</div>
                         <!--팀장점호관리수당-->
-                        <div class="addCommaToInnerText">{{data.team_leader_allowance_roll_call}}</div>
+                        <div class="addCommaToInnerText">{{current_data.team_leader_allowance_roll_call}}</div>
                         <!--팀장차량관리수당-->
-                        <div class="addCommaToInnerText">{{data.team_leader_allowance_vehicle_management}}</div>
+                        <div class="addCommaToInnerText">{{current_data.team_leader_allowance_vehicle_management}}</div>
                         <!--팀장입고관리수당-->
-                        <div class="addCommaToInnerText">{{data.team_leader_allowance_task_management}}</div>
+                        <div class="addCommaToInnerText">{{current_data.team_leader_allowance_task_management}}</div>
                         <!--성실수당-->
-                        <div class="addCommaToInnerText">{{data.diligence_allowance}}</div>
+                        <div class="addCommaToInnerText">{{current_data.diligence_allowance}}</div>
                         <!--만근수당-->
-                        <div class="addCommaToInnerText">{{data.full_attendance_allowance}}</div>
+                        <div class="addCommaToInnerText">{{current_data.full_attendance_allowance}}</div>
                         <!-- 무사고수당 -->
-                        <div class="addCommaToInnerText">{{data.accident_free_allowance}}</div>
+                        <div class="addCommaToInnerText">{{current_data.accident_free_allowance}}</div>
                         <!-- 연차수당 -->
-                        <div class="addCommaToInnerText">{{data.new_annual_allowance}}</div>
+                        <div class="addCommaToInnerText">{{current_data.new_annual_allowance}}</div>
                         <!-- 계 -->
-                        <div class="addCommaToInnerText">{{data.statutory_allowance}}</div>
+                        <div class="addCommaToInnerText">{{current_data.statutory_allowance}}</div>
                     </div>
                     <div class="tbodyInsurance" style="display: flex;">
-                        <div class="addCommaToInnerText">{{data.welfare_meal_allowance}}</div>
-                        <div class="addCommaToInnerText">{{data.welfare_fuel_allowance}}</div>
+                        <div class="addCommaToInnerText">{{current_data.welfare_meal_allowance}}</div>
+                        <div class="addCommaToInnerText">{{current_data.welfare_fuel_allowance}}</div>
                     </div>
-                    <div class="tbodySum addCommaToInnerText">{{data.sum_ordinary_salary_and_statutory_allowance}}</div>
+                    <div class="tbodySum addCommaToInnerText">{{current_data.sum_ordinary_salary_and_statutory_allowance}}</div>
                     <div class="tbodyInsurance" style="display: flex;">
                         <div class="addCommaToInnerText"></div>
                         <div class="addCommaToInnerText"></div>
@@ -309,14 +305,12 @@
                         <div class="addCommaToInnerText"></div>
                         
                         <div class="tableEdit addCommaToInnerText"></div>
-                        <div class="addCommaToInnerText">{{data.deduction}}</div>
+                        <div class="addCommaToInnerText">{{current_data.deduction}}</div>
 
                     </div>
-                    <div class="tbodyAdditionalAllowance tableEdit addCommaToInnerText">{{data.additional}}</div>
-                    <div class="tbodySum tbodySumLast addCommaToInnerText">{{data.total}}</div>
+                    <div class="tbodyAdditionalAllowance tableEdit addCommaToInnerText">{{current_data.additional}}</div>
+                    <div class="tbodySum tbodySumLast addCommaToInnerText">{{current_data.total}}</div>
                 </div>
-                {% endif %}
-                {% endwith %}
                 {% endwith %}
                 {% endfor %}
 

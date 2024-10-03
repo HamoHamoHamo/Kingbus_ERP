@@ -61,7 +61,8 @@ class StationDatas {
     }
 
     validateLength = () => {
-        if (this.#stations.length + this.#waypointNumber < 4 + this.#waypointNumber) {
+        console.log("LENGTH", this.#stations.length, this.#waypointNumber)
+        if (this.#stations.length < 7 + this.#waypointNumber) {
             window.alert('정류장을 모두 입력해 주세요.');
             return false;
         }

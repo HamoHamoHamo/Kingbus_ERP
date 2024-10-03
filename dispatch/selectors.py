@@ -43,11 +43,13 @@ class DispatchSelector:
             )
             .order_by('departure_date')
             .values(
+                "driver_id",
                 "departure_date", 
                 "arrival_date", 
                 "work_type",
                 "route_time",
                 "group",
+                "regularly_id",
             )
         )
 
@@ -84,6 +86,7 @@ class DispatchSelector:
             )
             .order_by('departure_date')
             .values(
+                "driver_id",
                 "departure_date", 
                 "arrival_date", 
                 "work_type",
@@ -100,9 +103,11 @@ class DispatchSelector:
                 work_type=Value("업무"),
                 departure_date=F("start_date"),
                 arrival_date=F("end_date"),
+                driver_id=F("member_id"),
             )
             .order_by('start_date')
             .values(
+                "driver_id",
                 "departure_date", 
                 "arrival_date", 
                 "work_type",
@@ -111,7 +116,7 @@ class DispatchSelector:
             )
         )
 
-        return regularly + order
+        return regularly + order + assignment
 
 
     def get_monthly_morning_checklist(self, month):
