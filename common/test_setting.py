@@ -2,7 +2,7 @@ from django.test import TestCase
 
 from humanresource.models import Member
 
-class LoginTestCase(TestCase):
+class AuthenticatedUserTestCase(TestCase):
 
     @classmethod
     def setUpTestData(cls):

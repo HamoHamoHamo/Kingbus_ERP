@@ -1,5 +1,5 @@
 from django.test import TestCase
-from common.test_setting import LoginTestCase
+from common.test_setting import AuthenticatedUserTestCase
 from django.urls import reverse
 
 from assignment.models import Assignment, AssignmentConnect
@@ -31,7 +31,7 @@ from common.constant import TODAY
 #         self.assertEqual(1 + 1, 2)
 
 
-class RegularlyEditCheckViewTest(LoginTestCase):
+class RegularlyEditCheckViewTest(AuthenticatedUserTestCase):
 
     DEPARTURE_DATE1 = f'{TODAY} 01:00'
     ARRIVAL_DATE1 = f'{TODAY} 08:00'
