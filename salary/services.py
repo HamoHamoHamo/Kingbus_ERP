@@ -304,6 +304,15 @@ class DataCollector:
         # 현재 운행 도착 시간과 다음 운행 출발 시간의 차이가 90분 이하
         is_time_difference_under_90 = False
         can_parking_outside = self.member.can_parking_outside
+
+        # 정류장 개수 8개 이하인 regulalry_id id 찾기
+        for connect in daily_connects:
+            if connect['work_type'] == "출근" or connect['work_type'] == "퇴근":
+                length = len(connect['stations_list'])
+                if length < 8:
+                    id = DispatchRegularly.objects.get(id=connect['regularly_id']).regularly_id
+                    logger.info(f"정류장 에러 regularly_id = {id.group.name}\t\t\t{id}\t\t\t{id.id}")
+        return []
         for connect in daily_connects:
             connect_time_list = ['' for i in range(9)]
 
