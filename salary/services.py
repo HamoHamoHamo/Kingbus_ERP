@@ -394,9 +394,14 @@ class DataCollector:
                 end_time2 = self.check_arrival_can_parking_outside(i, time_list, length)
                 connect_time_list[6] = end_time2 # DailySalaryStatus
                 connect_time_list[7] = end_time2 # DailySalaryStatus
-                # 뒷정리 완료 = 마지막에서 10분 추가
-                end_time2 = get_hour_minute_with_colon(get_minute_from_colon_time(end_time2) + 10)
                 
+                # 뒷정리 완료 = 마지막에서 10분 추가
+                end_time2_minute = get_minute_from_colon_time(end_time2) + 10
+                # +10분으로 자정이 넘으면 24시간 빼기
+                if end_time2_minute >= 1440:
+                    end_time2_minute -= 1440
+                
+                end_time2 = get_hour_minute_with_colon(end_time2_minute)
                 connect_time_list[8] = get_hour_minute_with_colon(get_minute_from_colon_time(end_time2))
             
 
