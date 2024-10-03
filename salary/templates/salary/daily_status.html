@@ -41,25 +41,28 @@
                 <div class="theadThTh theadThThImformation th">회차</div>
                 <div class="theadThTh theadThThImformation th">노선명</div>
                 <div class="theadThTh theadThThImformation th">출/퇴근</div>
-                <div class="theadThTh th">차고지 도착</div>
+                <div class="theadThTh th">차고지 도착(내부)</div>
+                <div class="theadThTh th">차고지 도착(외부)</div>
                 <div class="theadThTh th">사전 준비 시간</div>
+                <div class="theadThTh th">대기장소</div>
                 <div class="theadThTh th">출발 시간</div>
                 <div class="theadThTh th">도착 시간</div>
-                <div class="theadThTh th">차량 입고</div>
+                <div class="theadThTh th">차량 입고(외부)</div>
+                <div class="theadThTh th">차량 입고(내부)</div>
                 <div class="theadThTh th">뒷정리 완료</div>
 
                 <div class="theadThTh th theadThDetails">
                     <div class="theadThTitle personalFlex">근로내역</div>
                     <div class="theadThContent personalFlex">
                         <div class="theadThContents personalFlex">총 시간</div>
-                        <div class="theadThContents personalFlex">휴게 시간</div>
+                        <div class="theadThContents personalFlex">휴식 시간</div>
                         <div class="theadThContents personalFlex">야간근로</div>
                         <div class="theadThContents personalFlex">휴일(8시간 이하)</div>
                         <div class="theadThContents personalFlex theadThContentsLast">휴일(8시간 초과)</div>
                     </div>
                 </div>
             </div>
-            <div class="theadTh th">확인서명</div>
+            {% comment %} <div class="theadTh th">확인서명</div> {% endcomment %}
         </div>
 
         <div class="tbody">
@@ -86,6 +89,9 @@
                         <div class="tbodyDivTdTd tbodyDivTdTdTimeValue td">{{connect.connect_time_list.3}}</div>
                         <div class="tbodyDivTdTd tbodyDivTdTdTimeValue td">{{connect.connect_time_list.4}}</div>
                         <div class="tbodyDivTdTd tbodyDivTdTdTimeValue td">{{connect.connect_time_list.5}}</div>
+                        <div class="tbodyDivTdTd tbodyDivTdTdTimeValue td">{{connect.connect_time_list.6}}</div>
+                        <div class="tbodyDivTdTd tbodyDivTdTdTimeValue td">{{connect.connect_time_list.7}}</div>
+                        <div class="tbodyDivTdTd tbodyDivTdTdTimeValue td">{{connect.connect_time_list.8}}</div>
 
                         <div class="tbodyDivTdTd tbodyDivTdTdTimeValue td sumTime">{{connect.total_time}}</div>
                         <div class="tbodyDivTdTd tbodyDivTdTdTimeValue td sumTime"></div>
@@ -98,15 +104,16 @@
                     <div class="tbodyDivTdTdSum personalFlex">
                         <div class="tbodyDivTdTd tbodyDivTdTdInformation td">소계</div>
                         <div class="tbodyDivTdTd none td">해당없음</div>
+                        
                         <div class="tbodyDivTdTd tbodyDivTdTdTimeValue td sumTime">{{data.total_work_hour_minute}}</div>
-                        <div class="tbodyDivTdTd tbodyDivTdTdTimeValue td sumTime">{{data.wait_time_list.0}}</div>
+                        <div class="tbodyDivTdTd tbodyDivTdTdTimeValue td sumTime"></div>
                         <div class="tbodyDivTdTd tbodyDivTdTdTimeValue td sumTime">{{data.night_shift_time_list.0}}</div>
                         <div class="tbodyDivTdTd tbodyDivTdTdTimeValue td sumTime">{{data.holiday_hour_minute}}</div>
                         <div class="tbodyDivTdTd tbodyDivTdTdTimeValue td sumTime">{{data.additional_holiday_hour_minute}}</div>
                     </div>
 
                 </div>
-                <div class="tbodyDivTd tbodyInformationElement td">(서명)</div>
+                {% comment %} <div class="tbodyDivTd tbodyInformationElement td">(서명)</div> {% endcomment %}
 
             </div>
             {% endwith %}

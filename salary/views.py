@@ -122,7 +122,9 @@ class DailySalaryStatus(AuthorityCheckView, generic.ListView):
 
             data_collector.set_duration(first_date, last_date)
             calculated_data = data_collector.get_calculate_times()
-            calculated_data['connects_time_list'] = data_collector.get_daily_connects(first_date)
+            # 다음 운행이 1시간 30분 이내인지 확인해서 이어주는 정류장별 시간만 받으면됨
+            # TODO get_connects_time_list 말고 이어진 정류장별 시간 데이터 받는 메서드 새로 만들기
+            calculated_data['connects_time_list'] = data_collector.get_connects_time_list(first_date)
             datas[member.id] = calculated_data
             
  
@@ -205,12 +207,23 @@ class WeeklySalaryStatus(AuthorityCheckView, generic.ListView):
         return context
 
 class SalaryDataController(AuthorityCheckView):
+    member_list = []
+
     def get_datas(self, member_list, data_collector_class, month, mondays, connect_time_list, holiday_data, date_list):
         datas = {}
+        self.member_list = []
         for member in member_list:
             data_collector = data_collector_class(member, month, mondays, connect_time_list, holiday_data, date_list)
-            datas[member.id] = data_collector.get_collected_data()
-            datas[member.id]['member'] = member
+            temp_data = data_collector.get_collected_data()
+
+            # 근무시간이 0이 아닌 사람의 데이터만 리턴
+            if temp_data['total_work_hour_minute'] != "0":
+                datas[member.id] = temp_data
+                datas[member.id]['member__name'] = member.name
+                datas[member.id]['member__role'] = member.role
+                datas[member.id]['member__entering_date'] = member.entering_date
+                self.member_list.append(member)
+
         return datas
 
 
