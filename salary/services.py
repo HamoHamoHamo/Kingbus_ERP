@@ -81,6 +81,8 @@ class DataCollector:
 
         for connect in connects_list:
             minutes += connect['total_time']
+            # print("TESt", connect['total_time'], connect['connect_time_list'])
+            # print(connect['start_time1'],connect['end_time1'], connect['start_time2'],connect['end_time2'],)
 
         # minutes = sum(self.round_up_to_nearest_ten(int(connect['route_time'])) if connect['route_time'] else self.round_up_to_nearest_ten(calculate_time_difference(connect['departure_date'], connect['arrival_date'])) for connect in daily_connects)
         return minutes
@@ -305,14 +307,14 @@ class DataCollector:
         is_time_difference_under_90 = False
         can_parking_outside = self.member.can_parking_outside
 
-        # 정류장 개수 8개 이하인 regulalry_id id 찾기
-        for connect in daily_connects:
-            if connect['work_type'] == "출근" or connect['work_type'] == "퇴근":
-                length = len(connect['stations_list'])
-                if length < 8:
-                    id = DispatchRegularly.objects.get(id=connect['regularly_id']).regularly_id
-                    logger.info(f"정류장 에러 regularly_id = {id.group.name}\t\t\t{id}\t\t\t{id.id}")
-        return []
+        # # 정류장 개수 8개 이하인 regulalry_id id 찾기
+        # for connect in daily_connects:
+        #     if connect['work_type'] == "출근" or connect['work_type'] == "퇴근":
+        #         length = len(connect['stations_list'])
+        #         if length < 8:
+        #             id = DispatchRegularly.objects.get(id=connect['regularly_id']).regularly_id
+        #             logger.info(f"정류장 에러 regularly_id = {id.group.name}\t\t\t{id}\t\t\t{id.id}")
+        # return []
         for connect in daily_connects:
             connect_time_list = ['' for i in range(9)]
 
@@ -327,7 +329,8 @@ class DataCollector:
                     'start_time2':  '',
                     'end_time2': '',
                     'connect_time_list': '',
-                    'night_work_time': int(connect['night_work_time']) if connect['night_work_time'] else 0
+                    'night_work_time': int(connect['night_work_time']) if connect['night_work_time'] else 0,
+                    'route': connect['route'],
                 })
                 i += 1
                 continue
@@ -342,6 +345,7 @@ class DataCollector:
                     'start_time2': "",
                     'end_time2': "",
                     'connect_time_list': '',
+                    'route': connect['route'],
                 })
                 i += 1
                 continue
@@ -358,6 +362,7 @@ class DataCollector:
                     'end_time1': '',
                     'start_time2':  '',
                     'end_time2': '',
+                    'route': connect['route'],
                 })
                 i += 1
                 continue
@@ -375,7 +380,8 @@ class DataCollector:
 
             # is_time_difference_under_90 = 전 운행과 90분 차이 이내 여부
             start_time1 = self.get_start_time(i, daily_connects, is_time_difference_under_90)
-            start_time2 = connect['stations_list'][departure_index]
+            # 출발지 인덱스 = 4
+            start_time2 = connect['stations_list'][4]
 
             connect_time_list[0] = start_time1 # DailySalaryStatus
             connect_time_list[1] = start_time1 # DailySalaryStatus
@@ -395,10 +401,12 @@ class DataCollector:
             
             # # is_time_difference_under_90 = 다음 운행과 90분 차이 이내 여부
             is_time_difference_under_90 = self.check_time_difference_under_90(i, daily_connects, departure_index, arrival_index)
+            print("is_time_difference_under_90", is_time_difference_under_90)
             if is_time_difference_under_90:
                 end_time2 = connect['stations_list'][arrival_index]
                 connect_time_list[6] = end_time2 # DailySalaryStatus
                 connect_time_list[7] = end_time2 # DailySalaryStatus
+                connect_time_list[8] = end_time2
             else:
                 end_time2 = self.check_arrival_can_parking_outside(i, time_list, length)
                 connect_time_list[6] = end_time2 # DailySalaryStatus
@@ -417,6 +425,8 @@ class DataCollector:
             
             # 운행시간이 자정을 넘겼을 떄 운행시간 계산
             # end_time2 + 10분(뒷정리 시간) 추가
+
+            # 외부주차장 시간이 사전준비시간 이후 라면?
             route_time1 = calculate_minute_difference(get_minute_from_colon_time(start_time1), get_minute_from_colon_time(end_time1))
             route_time2 = calculate_minute_difference(get_minute_from_colon_time(start_time2), get_minute_from_colon_time(end_time2))
 
@@ -428,6 +438,7 @@ class DataCollector:
                 'start_time2':  start_time2,
                 'end_time2': end_time2,
                 'connect_time_list': connect_time_list,
+                'route': connect['route'],
             })
             i += 1
         return connect_list
@@ -476,7 +487,8 @@ class DataCollector:
         next_departure_time = get_minute_from_colon_time(next_time_list[departure_index])
         
         # 다음 출발시간 - 현재 도착시간 < 90 이면 도착지 이후 정류장들 전부 현재 도착시간
-        time_difference = calculate_minute_difference(next_departure_time, arrival_time)
+        time_difference = calculate_minute_difference(arrival_time, next_departure_time)
+        print("time_difference", time_difference, arrival_time, next_departure_time)
         return time_difference < 90
 
     def is3M(self, daily_connects, i) -> bool:
