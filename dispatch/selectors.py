@@ -39,7 +39,8 @@ class DispatchSelector:
             DispatchRegularlyConnect.objects.filter(departure_date__gte=f'{start_date} 00:00', arrival_date__lte=f'{end_date} 23:59')
             .annotate(
                 route_time=F("regularly_id__time"),
-                group=F("regularly_id__group__name")
+                group=F("regularly_id__group__name"),
+                route=F("regularly_id__route"),
             )
             .order_by('departure_date')
             .values(
@@ -50,6 +51,7 @@ class DispatchSelector:
                 "route_time",
                 "group",
                 "regularly_id",
+                "route",
             )
         )
 
@@ -92,6 +94,7 @@ class DispatchSelector:
                 "work_type",
                 "route_time",
                 'night_work_time',
+                'route',
             )
         )
 
@@ -104,6 +107,7 @@ class DispatchSelector:
                 departure_date=F("start_date"),
                 arrival_date=F("end_date"),
                 driver_id=F("member_id"),
+                route=F("assignment_id__assignment")
             )
             .order_by('start_date')
             .values(
@@ -113,6 +117,7 @@ class DispatchSelector:
                 "work_type",
                 "route_time",
                 'night_work_time',
+                'route',
             )
         )
 

@@ -1463,26 +1463,15 @@ def time_data(request):
     station_edit_date = '2024-08-26'
 
 
-    # all_regularly_data = [873, 877, 886, 887, 888, 889, 890, 891, 892, 893, 894, 895, 896, 
-    # 897, 898, 899, 900, 902, 903, 904, 906, 907, 908, 909, 912, 913, 914, 916, 918, 919, 920, 
-    # 921, 922, 923, 926, 930, 977, 981, 983, 984, 986, 990, 991, 992, 993, 994, 995, 996, 1010, 
-    # 1011, 1012, 1031, 1034, 1038, 1042, 1043, 1044, 1055, 1089, 1090, 1093, 1097, 1119, 1120, 
-    # 1121, 1122, 1123, 1133, 1134, 1146, 1147, 1149, 1150, 1151, 1153, 1154, 1155, 1156, 1157, 
-    # 1159, 1161, 1163, 1164, 1165, 1166, 1168, 1169, 1171, 1172, 1173, 1174, 1175, 1176, 1177, 
-    # 1178, 1179, 1180, 1187, 1189, 1190, 1203, 1204, 1205, 1206, 1207, 1208, 1209, 1210, 1211, 
-    # 1215, 1216, 1221, 1222, 1223, 1224, 1225, 1226, 1227, 1228, 1249, 1252, 1373, 1374, 1376, 
-    # 1377, 1416, 1418, 1419, 1420, 1427, 1428, 1503, 1505, 1508, 1509, 1510, 1525, 1531, 1532, 
-    # 1533, 1534, 1535, 1537, 1540, 1541, 1542, 1543, 1544, 1547, 1550, 1551, 1552, 1553, 1554, 
-    # 1555, 1557, 1558, 1559, 1560, 1561, 1562, 1563, 1566, 1567, 1568, 1569, 1570, 1581, 1582, 
-    # 1595, 1596, 1597, 1600, 1601, 1602, 1603, 1604, 1605, 1607, 1608, 1609, 1610, 1611, 1612, 
-    # 1613, 1614, 1620, 1621, 1622, 1623, 1624, 1625, 1626, 1627, 1628, 1629, 1680, 1684, 1688, 
-    # 1749, 1753, 1754, 1755, 1757, 1758, 1760, 1791, 1792, 1793, 1795, 1802, 1803, 1804, 1805]
-
-    all_regularly_data = []
-    for regularly_data_id in all_regularly_data:
-        regularly_data = DispatchRegularlyData.objects.get(id=regularly_data_id)
+    # all_regularly_data = [355, 1686, 1750, 350, 422, 365, 402, 975, 1564, 1251, 1417, 1423, 1526, 1556, 1415, 1527, 982, 663, 1052, 661, 1751, 1752, 1756, 873, 1032, 838, 911, 848, 1794, 701, 363, 404, 966]
+    count = 0
+    all_regularly_data = DispatchRegularlyData.objects.filter(use="사용")
+    for regularly_data in all_regularly_data:
+        if regularly_data.monthly.filter(edit_date__startswith="2024-08-26"):
+            continue
+        count += 1
         regularly = regularly_data.monthly.order_by("edit_date").last()
-        recent_regularly = regularly_data.monthly.order_by("-edit_date").first()
+        recent_regularly = regularly
         stations = recent_regularly.regularly_station.order_by('index')
         
         # 기준일에 데이터 없으면 새로 생성
@@ -1555,7 +1544,7 @@ def time_data(request):
 
 
 
-    return JsonResponse({"result": "aa"})
+    return JsonResponse({"result": count})
 
 def regularly_order_edit(request):
     if request.session.get('authority') > 1:
