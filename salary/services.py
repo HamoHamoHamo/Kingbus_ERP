@@ -380,6 +380,8 @@ class DataCollector:
 
             # is_time_difference_under_90 = 전 운행과 90분 차이 이내 여부
             start_time1 = self.get_start_time(i, daily_connects, is_time_difference_under_90)
+            
+            end_time1 = connect['stations_list'][departure_index]
             # 출발지 인덱스 = 4
             start_time2 = connect['stations_list'][4]
 
@@ -387,11 +389,9 @@ class DataCollector:
             connect_time_list[1] = start_time1 # DailySalaryStatus
 
             if is_time_difference_under_90:
-                end_time1 = start_time2    
                 connect_time_list[2] = start_time1 # DailySalaryStatus
                 connect_time_list[3] = end_time1 # DailySalaryStatus
             else:
-                end_time1 = connect['stations_list'][first_station_ready_index]
                 connect_time_list[2] = connect['stations_list'][2] # DailySalaryStatus
                 connect_time_list[3] = connect['stations_list'][3] # DailySalaryStatus
 
