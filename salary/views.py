@@ -12,7 +12,7 @@ from .selectors import SalarySelector
 from .services import SalaryStatusDataCollector, SalaryTableDataCollector, SalaryTableDataCollector2, SalaryTableDataCollector3
 from .models import HourlyWage
 from config.custom_logging import logger
-from dispatch.models import DispatchRegularlyData, MorningChecklist, EveningChecklist
+from dispatch.models import DispatchRegularlyData, MorningChecklist, EveningChecklist, DispatchRegularly
 from dispatch.selectors import DispatchSelector
 from humanresource.models import Member, Salary
 from humanresource.selectors import MemberSelector
@@ -333,3 +333,34 @@ class HourlyWageSaveView(AuthorityCheckView):
             return redirect(request.META.get('HTTP_REFERER', 'redirect_if_referer_not_found'))
         raise BadRequest(hourly_wage_form.errors)
 
+
+def test(request):
+    regularly_list = DispatchRegularly.objects.filter(edit_date__gte="2024-08-26")
+    result = []
+    result2 = []
+    for regularly in regularly_list:
+        station_list = regularly.regularly_station.order_by('index')
+        length = regularly.regularly_station.all().count()
+        # for i in range(length):
+        #     if i < length - 2:
+        #         if i != 0 and i != length - 2 and station_list[i].time > station_list[i + 1].time:
+        #             result.append({
+        #                 'length': length,
+        #                 'i': i,
+        #                 'regularly': regularly.regularly_id.id,
+        #                 'station_time1': f"{station_list[i].time} {station_list[i].index}",
+        #                 'station_time2': f"{station_list[i+1].time} {station_list[i+1].index}",
+        #             })
+        # 외부, 내부 빼고
+        if length < 2:
+            continue
+        order_by_index = list(regularly.regularly_station.exclude(index__lte=2).exclude(index__gte=length-1).exclude(time__startswith="00").order_by('index', 'pub_date').values('index', 'time'))
+        order_by_time = list(regularly.regularly_station.exclude(index__lte=2).exclude(index__gte=length-1).exclude(time__startswith="00").order_by('time', 'pub_date').values('index', 'time'))
+        if order_by_index != order_by_time:
+            result2.append({
+                'regularly': regularly.regularly_id.id,
+                
+            })
+            
+
+    return JsonResponse({"test": result, "length": len(result2), "result2": result2})
