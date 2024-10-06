@@ -500,7 +500,7 @@ class DataCollector:
             return "쓰리엠" in daily_connects[i]['group'] or \
                     (i + 1 < len(daily_connects) and "쓰리엠" in daily_connects[i + 1]['group'])
         except Exception as e:
-            logger.info(f"is3M error {e}")
+            # logger.info(f"is3M error {e}")
             return False
 
 

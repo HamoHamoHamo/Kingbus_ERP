@@ -37,6 +37,8 @@ urlpatterns = [
     path('salary/weekly-holiday-deduction/create', views.salary_weekly_holiday_deduction_create, name='salary_weekly_holiday_deduction_create'),
     path('salary/weekly-holiday-deduction/delete', views.salary_weekly_holiday_deduction_delete, name='salary_weekly_holiday_deduction_delete'),
     path('salary/load', views.salary_load, name='salary_load'),
+
+    path('salary/test', views.SalaryTest.as_view(), name='salary_new_test'),
     # path('mgmt', views.ManagementList.as_view(), name='mgmt'),
     # path('mgmt/create', views.mgmt_create, name='mgmt_create'),
 
