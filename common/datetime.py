@@ -190,7 +190,7 @@ def get_holiday_list(year_month):
             return holiday_data
     except Exception as e:
         logger.error(f"redis error {e}")
-        
+
     api_url = 'http://apis.data.go.kr/B090041/openapi/service/SpcdeInfoService/getRestDeInfo'
 
     try:
@@ -215,7 +215,11 @@ def get_holiday_list(year_month):
 
     holiday_data['count'] = len(filtered_list)
     
-    cache.set(f"holiday:{year_month}", holiday_data)
+    try:
+        cache.set(f"holiday:{year_month}", holiday_data)
+    except Exception as e:
+        logger.error(f"redis error {e}")
+
 
     return holiday_data
 

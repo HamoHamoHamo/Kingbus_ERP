@@ -8,7 +8,7 @@ from dateutil.relativedelta import relativedelta
 from dispatch.models import DispatchRegularlyConnect, DispatchOrderConnect
 from django.contrib.auth.hashers import make_password, check_password
 from django.db.models import Sum, Q, F
-from django.http import Http404, HttpResponse, HttpResponseNotAllowed, HttpResponseBadRequest
+from django.http import Http404, HttpResponse, HttpResponseNotAllowed, HttpResponseBadRequest, JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import resolve
 from django.views import generic
@@ -771,6 +771,8 @@ class SalaryList(generic.ListView):
             member_list = member_list.filter(Q(role='관리자'))
         elif view_name == 'salary_new':
             member_list = member_list.filter(Q(role='용역')|Q(role='팀장')|Q(role='운전원'))
+        elif view_name == 'salary_new_test':
+            member_list = member_list.filter(Q(role='용역')|Q(role='팀장')|Q(role='운전원'))
         else:
             raise HttpResponseBadRequest('url에러')
         return member_list
@@ -1141,6 +1143,35 @@ class NewSalaryList(SalaryList):
         context.update(self.get_datas(data_controller.member_list, context, context['month']))
         context['datas_member_list'] = data_controller.member_list
         return context
+
+class SalaryTest(NewSalaryList):
+    template_name = 'HR/salary_new_test.html'
+    context_object_name = 'member_list'
+    model = Member
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['old_salary_total'] = []
+        context['salary_total'] = []
+        context['salary_diff_member'] = []
+
+        i = 0
+        salary_list = Salary.objects.prefetch_related('member_id').filter(month=context['month']).values('member_id', 'total')
+        for member in context['datas_member_list']:
+            matching_dict = next(item for item in salary_list if item['member_id'] == member.id)
+            
+
+            difference = remove_comma_from_number(matching_dict['total']) - remove_comma_from_number(context['total_wage_list'][i])
+            if difference > 300000 or difference < -300000:
+                context['salary_diff_member'].append(member)
+                context['old_salary_total'].append(format_number_with_commas(int(matching_dict['total'])))
+                context['salary_total'].append(context['total_wage_list'][i])
+                
+
+            i += 1
+        return context
+
+
 
 def salary_edit(request):
     if request.method == 'POST':

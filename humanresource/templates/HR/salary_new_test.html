@@ -1,0 +1,443 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load custom_tags %}
+{% block head %}
+<meta http-equiv="Cache-Control" content="private, no-cache, no-store, max-age=0, must-revalidate">
+
+<link rel="stylesheet" href="{% static 'css/humanresource/salaryNew.css' %}" type="text/css" />
+{% endblock %}
+
+{% block content-header %}
+<div class="HeaderTitle">
+    급여2 테스트
+</div>
+{% endblock %}
+
+{% block content %}
+<div class="search-Container">
+    <form class="search-Form">
+        <label for="" class="search-Form_label">날짜 : </label>
+        <input autocomplete="off" name='month' value="{{month}}" type="month"
+            class="search-Form_input search-Form_input-Month">
+        <label for="" class="search-Form_label">이름 : </label>
+        <input autocomplete="off" name="name" value="{{name}}" type="text" class="search-Form_input">
+        <select class="inputModules marginLeft2" name="type">
+            <option {% if search_type == "" %} selected {% endif %} value = "">구분</option>
+            <option {% if search_type == "일반" %} selected {% endif %} value = "일반">일반</option>
+            <option {% if search_type == "용역" %} selected {% endif %} value = "용역">용역</option>
+        </select>
+        <input type="submit" class="search-Form_search-btn" value="검색">
+    </form>
+    <div class="popup-area-box">
+        <div class="popup-area-box_btn" onclick="salaryPrint()">급여현황</div>
+    </div>
+</div>
+
+
+<form method="post" action="{% url 'HR:salary_new_edit' %}" class="salaryContainer">
+    {% csrf_token %}
+    <input type="hidden" name="month" value="{{month}}">
+    <input class="btnModules salarySaveBtn" type="submit" value="저장">
+    <div class="btnModules salarySaveBtn salarySaveBtn2" onclick="loadPrevMonthlyBase()">불러오기</div>
+    <div class="scrolling_table-list_header">
+        <table class="table-list">
+            <thead>
+                <tr class="table-list_head-tr">
+                    <td class="table-list_head-tr_td">
+                        <input type="checkbox" class="amountCheckAll">
+                    </td>
+                    <td class="table-list_head-tr_td">번호</td>
+                    <td class="table-list_head-tr_td">이름</td>
+                    <td class="table-list_head-tr_td">구분</td>
+                    <td class="table-list_head-tr_td">입사일자</td>
+                    <td class="table-list_head-tr_td">예전급여합계</td>
+                    <td class="table-list_head-tr_td">급여합계</td>
+                    <td class="table-list_head-tr_td"></td>
+                    <td class="table-list_head-tr_td"></td>
+                    <td class="table-list_head-tr_td"></td>
+                    <td class="table-list_head-tr_td"></td>
+                    <td class="table-list_head-tr_td"></td>
+                    <td class="table-list_head-tr_td"></td>
+                    <td class="table-list_head-tr_td"></td>
+                    <td class="table-list_head-tr_td"></td>
+                    <td class="table-list_head-tr_td"></td>
+                    <td class="table-list_head-tr_td"></td>
+                    <td class="table-list_head-tr_td"></td>
+                    <td class="table-list_head-tr_td"></td>
+                    <td class="table-list_head-tr_td"></td>
+                </tr>
+            </thead>
+        </table>
+    </div>
+    <div class="scrolling_table-list_body">
+        <table class="table-list">
+            <tbody>
+                {% for member in salary_diff_member %}
+                {% with salary=salary_list|index:forloop.counter0 %}
+                <tr class="table-list_body-tr salaryList cursor">
+                    <td class="checkTd table-list_body-tr_td">
+                        <input tabindex="100" type="checkbox" class="amountCheck" name="member_id"
+                            value="{{member.id}}">
+                    </td>
+                    <td class="checkTd table-list_body-tr_td">{{forloop.counter}}</td>
+                    <td class="checkTd table-list_body-tr_td {% if salary.salary_checked %} bluelink {% endif %}">
+                        {{member.name}}
+                    </td>
+                    <td class="checkTd table-list_body-tr_td">{{member.role}}</td>
+                    <td class="checkTd table-list_body-tr_td">
+                        {{member.entering_date}} {% if year_list|index:forloop.counter0|slice:':1' != '0' %}
+                        ({{year_list|index:forloop.counter0}}년)
+                        {% else %}({{year_list|index:forloop.counter0|slice:'1:'}}개월)
+                        {% endif %}
+                    </td>
+                    <td class="checkTd table-list_body-tr_td wage">
+                        <div class="">{{old_salary_total|index:forloop.counter0}}</div>
+                    </td>
+                    <td class="checkTd table-list_body-tr_td">
+                        <div class="">{{salary_total|index:forloop.counter0}}</div>
+                    </td>
+                    <td class="checkTd table-list_body-tr_td">
+                        <input type="text" class="amountInput length100 salaryAnnualAllowance" >
+                    </td>
+                    <td class="checkTd table-list_body-tr_td">
+                        <input type="text" class="amountInput length100 teamLeaderAllowanceRollCall" >
+                    </td>
+                    <td class="checkTd table-list_body-tr_td">
+                        <input type="text" class="amountInput length100 teamLeaderAllowanceVehicleManagement" >
+                    </td>
+                    <td class="checkTd table-list_body-tr_td">
+                        <input type="text" class="amountInput length100 teamLeaderAllowanceTaskManagement" >
+                    </td>
+                    <td class="checkTd table-list_body-tr_td">
+                        <input type="text" class="amountInput length100 fullAttendanceAllowance" >
+                    </td>
+                    <td class="checkTd table-list_body-tr_td">
+                        <input type="text" class="amountInput length100 diligenceAllowance" >
+                    </td>
+                    <td class="checkTd table-list_body-tr_td">
+                        <input type="text" class="amountInput length100 accidentFreeAllowance" >
+                    </td>
+                    <td class="checkTd table-list_body-tr_td">
+                        <input type="text" class="amountInput length100 welfareMealAllowance" >
+                    </td>
+                    <td class="checkTd table-list_body-tr_td">
+                        <input type="text" class="amountInput length100 welfareFuelAllowance" >
+                    </td>
+                    <td class="table-list_body-tr_td salaryAdditional addComma salaryPopup additionalTd">{{salary.additional}}</td>
+                    <td class="table-list_body-tr_td salaryDeduction addComma salaryPopup deductionTd">{{salary.deduction}}</td>
+                    <td class="table-list_body-tr_td salaryWeeklyDeduction addComma salaryPopup weeklyDeductionTd {% if salary.weekly_holiday_allowance_deduction != '0' %}backgroundGray{% endif %}">{{weekly_holiday_allowance|index:forloop.counter0}}</td>
+                    <td class="checkTd table-list_body-tr_td salaryTotal addComma">{{total_wage_list|index:forloop.counter0}}</td>
+                </tr>
+                {% endwith %}
+                {% endfor %}
+
+
+
+            </tbody>
+        </table>
+    </div>
+</form>
+
+<div class="salaryTotalContainer">
+    <table class="table-list">
+        <tbody>
+            <tr class="table-list_body-tr totalSalaryList">
+                <td class="table-list_body-tr_td" colspan="4">합계</td>
+                <td class="table-list_body-tr_td totalWage"></td>
+                <td class="table-list_body-tr_td totalServiceAllowance"></td>
+                <td class="table-list_body-tr_td totalAnnualAllowance"></td>
+                <td class="table-list_body-tr_td totalTeamLeaderAllowanceRollCall"></td>
+                <td class="table-list_body-tr_td totalTeamLeaderAllowanceVehicleManagement"></td>
+                <td class="table-list_body-tr_td totalTeamLeaderAllowanceTaskManagement"></td>
+                <td class="table-list_body-tr_td totalFullAttendanceAllowance"></td>
+                <td class="table-list_body-tr_td totalDiligenceAllowance"></td>
+                <td class="table-list_body-tr_td totalAccidentFreeAllowance"></td>
+                <td class="table-list_body-tr_td totalWelfareMealAllowance"></td>
+                <td class="table-list_body-tr_td totalWelfareFuelAllowance"></td>
+                <td class="table-list_body-tr_td totalAdditional"></td>
+                <td class="table-list_body-tr_td totalDeduction"></td>
+                <td class="table-list_body-tr_td totalWeeklyDeduction"></td>
+                <td class="table-list_body-tr_td totalTotal"></td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+
+{% endblock %}
+
+
+
+{% block popup %}
+<div class="popupAreaModules addSalaryPopup">
+    <div class="popupBgModules popupBgModulesAddSalary"></div>
+    <div class="popupContainer popupContainerDouble">
+        <div class="popupHeader">
+            <div class="popupTitle">추가수당</div>
+        </div>
+        <div class="popupBody">
+            <div class="popupSection">
+                <form method="post" action="{% url 'HR:salary_additional_create' %}">
+                    {% csrf_token %}
+                    <div class="popupArticleCategori">추가수당</div>
+                    <div class="popupArticleBox">
+                        <div class="popupArticleDouble addSalaryPriceBox">
+                            <label for="" class="popupArticleLabel">금액</label>
+                            <input autocomplete="off" name="price" type="text"
+                                class="popupArticleinput addSalaryPrice length100 numberOnly">
+                        </div>
+                        <div class="popupArticleDouble addSalaryReasonBox">
+                            <label for="" class="popupArticleLabel">사유</label>
+                            <input autocomplete="off" name="remark" type="text"
+                                class="popupArticleinput addSalaryReason length100">
+                        </div>
+                    </div>
+                    <div class="popupArticleBox">
+                        <input type="submit" class="btnModules addSalaryBtn" value="추가">
+                    </div>
+                    <input type="hidden" name="id" class="addSalaryMoreHidden">
+                    <input type="hidden" name="month" class="addSalaryMoreHiddenMonth">
+                </form>
+                <form method="post" action="{% url 'HR:salary_additional_delete' %}" class="addSalaryDeleteForm">
+                    {% csrf_token %}
+                    <div class="popupArticleCategori">추가수당 목록</div>
+                    <div class="popupArticleBoxTable">
+                        <div class="scrolling_table-list_header addSalaryTable">
+                            <table class="table-list">
+                                <thead>
+                                    <tr class="table-list_head-tr">
+                                        <td class="table-list_head-tr_td">
+                                            <input type="checkbox" class="addSalaryListAllCheck">
+                                        </td>
+                                        <td class="table-list_head-tr_td">금액</td>
+                                        <td class="table-list_head-tr_td">사유</td>
+                                    </tr>
+                                </thead>
+                            </table>
+                        </div>
+                        <div class="scrolling_table-list_body addSalaryTable addSalaryTableScroll">
+                            <table class="table-list">
+                                <tbody>
+                                </tbody>
+                            </table>
+                        </div>
+                        <table class="addSalaryTotalTable">
+                            <tr>
+                                <td>합계</td>
+                                <td class="totalAddSalaryPrice"></td>
+                                <td></td>
+                            </tr>
+                        </table>
+                    </div>
+                    <input type="hidden" name="order_id" class="deleteAddHidden">
+                </form>
+            </div>
+            <div class="popupFooter">
+                <div class="btnModules addSalaryDeleteBtn">삭제</div>
+                <div class="btnModules addSalaryCloseBtn">닫기</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="popupAreaModules deductionPopup">
+    <div class="popupBgModules popupBgModulesDeduction"></div>
+    <div class="popupContainer popupContainerDouble">
+        <div class="popupHeader">
+            <div class="popupTitle">공제</div>
+        </div>
+        <div class="popupBody">
+            <div class="popupSection">
+                <form method="post" action="{% url 'HR:salary_deduction_create' %}">
+                    {% csrf_token %}
+                    <div class="popupArticleCategori">공제</div>
+                    <div class="popupArticleBox">
+                        <div class="popupArticleDouble deductionPriceBox">
+                            <label for="" class="popupArticleLabel">금액</label>
+                            <input autocomplete="off" name="price" type="text"
+                                class="popupArticleinput deductionPrice length100 numberOnly">
+                        </div>
+                        <div class="popupArticleDouble deductionReasonBox">
+                            <label for="" class="popupArticleLabel">사유</label>
+                            <input autocomplete="off" name="remark" type="text"
+                                class="popupArticleinput deductionReason length100">
+                        </div>
+                    </div>
+                    <div class="popupArticleBox">
+                        <input type="submit" class="btnModules deductionBtn" value="추가">
+                    </div>
+                    <input type="hidden" name="id" class="deductionMoreHidden">
+                    <input type="hidden" name="month" class="deductionMoreHiddenMonth">
+                </form>
+                <form method="post" action="{% url 'HR:salary_deduction_delete' %}" class="deductionDeleteForm">
+                    {% csrf_token %}
+                    <div class="popupArticleCategori">공제목록</div>
+                    <div class="popupArticleBoxTable">
+                        <div class="scrolling_table-list_header deductionTable">
+                            <table class="table-list">
+                                <thead>
+                                    <tr class="table-list_head-tr">
+                                        <td class="table-list_head-tr_td">
+                                            <input type="checkbox" class="deductionListAllCheck">
+                                        </td>
+                                        <td class="table-list_head-tr_td">금액</td>
+                                        <td class="table-list_head-tr_td">사유</td>
+                                    </tr>
+                                </thead>
+                            </table>
+                        </div>
+                        <div class="scrolling_table-list_body deductionTable deductionTableScroll">
+                            <table class="table-list">
+                                <tbody>
+                                </tbody>
+                            </table>
+                        </div>
+                        <table class="deductionTotalTable">
+                            <tr>
+                                <td>합계</td>
+                                <td class="totalAddSalaryPrice"></td>
+                                <td></td>
+                            </tr>
+                        </table>
+                    </div>
+                    <input type="hidden" name="order_id" class="deleteAddHidden">
+                </form>
+            </div>
+            <div class="popupFooter">
+                <div class="btnModules deductionDeleteBtn">삭제</div>
+                <div class="btnModules deductionCloseBtn">닫기</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="popupAreaModules weeklyDeductionPopup">
+    <div class="popupBgModules popupBgModulesWeeklyDeduction"></div>
+    <div class="popupContainer popupContainerDouble">
+        <div class="popupHeader">
+            <div class="popupTitle">주휴수당 차감</div>
+        </div>
+        <div class="popupBody">
+            <div class="popupSection">
+                <form method="post" action="{% url 'HR:salary_weekly_holiday_deduction_create' %}">
+                    {% csrf_token %}
+                    <div class="popupArticleCategori">주휴수당 차감</div>
+                    <div class="popupArticleBox">
+                        <div class="popupArticleDouble weeklyDeductionPriceBox">
+                            <label for="" class="popupArticleLabel">금액</label>
+                            <input autocomplete="off" name="price" type="text"
+                                class="popupArticleinput weeklyDeductionPrice length100 numberOnly">
+                        </div>
+                        <div class="popupArticleDouble weeklyDeductionReasonBox">
+                            <label for="" class="popupArticleLabel">사유</label>
+                            <input autocomplete="off" name="remark" type="text"
+                                class="popupArticleinput weeklyDeductionReason length100">
+                        </div>
+                    </div>
+                    <div class="popupArticleBox">
+                        <input type="submit" class="btnModules weeklyDeductionBtn" value="추가">
+                    </div>
+                    <input type="hidden" name="id" class="weeklyDeductionMoreHidden">
+                    <input type="hidden" name="month" class="weeklyDeductionMoreHiddenMonth">
+                </form>
+                <form method="post" action="{% url 'HR:salary_weekly_holiday_deduction_delete' %}" class="weeklyDeductionDeleteForm">
+                    {% csrf_token %}
+                    <div class="popupArticleCategori">주휴수당 차감 목록</div>
+                    <div class="popupArticleBoxTable">
+                        <div class="scrolling_table-list_header weeklyDeductionTable">
+                            <table class="table-list">
+                                <thead>
+                                    <tr class="table-list_head-tr">
+                                        <td class="table-list_head-tr_td">
+                                            <input type="checkbox" class="weeklyDeductionListAllCheck">
+                                        </td>
+                                        <td class="table-list_head-tr_td">금액</td>
+                                        <td class="table-list_head-tr_td">사유</td>
+                                    </tr>
+                                </thead>
+                            </table>
+                        </div>
+                        <div class="scrolling_table-list_body weeklyDeductionTable weeklyDeductionTableScroll">
+                            <table class="table-list">
+                                <tbody>
+                                </tbody>
+                            </table>
+                        </div>
+                        <table class="weeklyDeductionTotalTable">
+                            <tr>
+                                <td>합계</td>
+                                <td class="totalAddSalaryPrice"></td>
+                                <td></td>
+                            </tr>
+                        </table>
+                    </div>
+                    <input type="hidden" name="order_id" class="deleteAddHidden">
+                </form>
+            </div>
+            <div class="popupFooter">
+                <div class="btnModules weeklyDeductionDeleteBtn">삭제</div>
+                <div class="btnModules weeklyDeductionCloseBtn">닫기</div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+
+
+
+
+
+{% block script %}
+<script>
+    const amountCheck = document.querySelectorAll(".amountCheck")
+    const month = document.querySelector(".search-Form input[type=month]")
+    function salaryPrint() {
+        let checkDriver = 0
+        let checkerArr = []
+        for (i = 0; i < amountCheck.length; i++) {
+            if (amountCheck[i].checked) {
+                checkDriver++
+                checkerArr.push(amountCheck[i].value)
+            }
+        };
+        if (checkDriver !== 0) {
+            targetLink = `{% url "HR:salary_detail" %}?date=${month.value}&driver=${checkerArr}`
+            window.open(targetLink, "노선별A4", "width=1200, height=800")
+        } else {
+            alert("기사를 선택해 주세요.")
+        }
+    }
+</script>
+<script>
+    const loadForm = document.querySelector('.salaryContainer');
+
+    {% autoescape off %}
+    const deductionList = {{ deduction_list }};
+    console.log("deductionList", deductionList);
+    const additionalList = {{ additional_list }};
+    console.log("additionalList", additionalList);
+    const weeklyDeductionList = {{ weekly_deduction_list }};
+    console.log("weeklyDeductionList", weeklyDeductionList);
+    {% endautoescape %}
+
+
+    function loadPrevMonthlyBase() {
+        if (confirm('저번달 기본급, 근속수당, 연차수당, 직급수당, 식대를 불러오시겠습니까?')) {
+            loadForm.action = "{% url 'HR:salary_load' %}"
+            loadForm.submit()
+        }
+    }
+
+</script>
+<script src="{% static 'js/hr/authority.js' %}"></script>
+<script src="{% static 'js/hr/addSalary.js' %}"></script>
+<script src="{% static 'js/hr/deduction.js' %}"></script>
+<script src="{% static 'js/hr/weeklyHolidayAllowanceDeduction.js' %}"></script>
+<script src="{% static 'js/hr/textValidation.js' %}"></script>
+<script src="{% static 'js/hr/checker.js' %}"></script>
+<script src="{% static 'js/hr/addComma.js' %}"></script>
+<script src="{% static 'js/hr/totalSalary.js' %}"></script>
+<script src="{% static 'js/onlyNumber.js' %}"></script>
+{% endblock %}
