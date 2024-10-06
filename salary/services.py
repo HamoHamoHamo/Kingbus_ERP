@@ -412,8 +412,11 @@ class DataCollector:
                 connect_time_list[6] = end_time2 # DailySalaryStatus
                 connect_time_list[7] = end_time2 # DailySalaryStatus
                 
-                # 뒷정리 완료 = 마지막에서 10분 추가
-                end_time2_minute = get_minute_from_colon_time(end_time2) + 10
+                # 뒷정리 완료 = 그 날 마지막 운행이면 마지막에서 10분 추가
+                if connect == daily_connects[len(daily_connects) - 1]:
+                    end_time2_minute = get_minute_from_colon_time(end_time2) + 10
+                else:
+                    end_time2_minute = get_minute_from_colon_time(end_time2)
                 # +10분으로 자정이 넘으면 24시간 빼기
                 if end_time2_minute >= 1440:
                     end_time2_minute -= 1440
