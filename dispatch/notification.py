@@ -1,6 +1,6 @@
 from .models import *
 from datetime import datetime, timedelta
-from config.settings import TODAY, FORMAT
+from config.settings.base import TODAY, FORMAT
 from config.custom_logging import logger
 from django.db.models import Q
 from humanresource.views import send_message

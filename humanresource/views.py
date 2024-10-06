@@ -3,7 +3,7 @@ import json
 import mimetypes
 import os
 import urllib
-from config.settings import MEDIA_ROOT, MEDIA_URL
+from config.settings.base import MEDIA_ROOT, MEDIA_URL
 from dateutil.relativedelta import relativedelta
 from dispatch.models import DispatchRegularlyConnect, DispatchOrderConnect
 from django.contrib.auth.hashers import make_password, check_password
@@ -14,9 +14,9 @@ from django.urls import resolve
 from django.views import generic
 from django.core.exceptions import BadRequest
 from enum import Enum
-from config.settings import FORMAT
+from config.settings.base import FORMAT
 from datetime import datetime, timedelta
-from config.settings import BASE_DIR
+from config.settings.base import BASE_DIR
 from crudmember.models import Category
 from vehicle.models import Vehicle
 from .forms import MemberForm, SalaryForm
@@ -26,7 +26,7 @@ from assignment.models import AssignmentConnect
 import math
 from my_settings import CRED_PATH, CLOUD_MEDIA_PATH
 from common.constant import TODAY, WEEK
-from common.datetime import calculate_time_difference, get_mondays_from_last_week_of_previous_month, get_holiday_list_from_open_api, last_day_of_month, get_next_sunday_after_last_day, get_date_range_list, last_date_of_month
+from common.datetime import calculate_time_difference, get_mondays_from_last_week_of_previous_month, get_holiday_list, last_day_of_month, get_next_sunday_after_last_day, get_date_range_list, last_date_of_month
 import firebase_admin
 from firebase_admin import credentials
 from firebase_admin import messaging
@@ -1105,7 +1105,7 @@ class NewSalaryList(SalaryList):
         start_date = mondays[0] if mondays[0][:7] != context['month'] else first_date
         dispatch_selector = DispatchSelector()
         connect_time_list = dispatch_selector.get_driving_time_list(start_date, get_next_sunday_after_last_day(context['month']))
-        holiday_data = get_holiday_list_from_open_api(context['month'])
+        holiday_data = get_holiday_list(context['month'])
         context['date_list'] = ['' for i in range(31)]
         
         date_list = get_date_range_list(first_date, last_date_of_month(first_date))

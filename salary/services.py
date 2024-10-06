@@ -401,7 +401,7 @@ class DataCollector:
             
             # # is_time_difference_under_90 = 다음 운행과 90분 차이 이내 여부
             is_time_difference_under_90 = self.check_time_difference_under_90(i, daily_connects, departure_index, arrival_index)
-            print("is_time_difference_under_90", is_time_difference_under_90)
+            # print("is_time_difference_under_90", is_time_difference_under_90)
             if is_time_difference_under_90:
                 end_time2 = connect['stations_list'][arrival_index]
                 connect_time_list[6] = end_time2 # DailySalaryStatus
@@ -491,7 +491,7 @@ class DataCollector:
         
         # 다음 출발시간 - 현재 도착시간 < 90 이면 도착지 이후 정류장들 전부 현재 도착시간
         time_difference = calculate_minute_difference(arrival_time, next_departure_time)
-        print("time_difference", time_difference, arrival_time, next_departure_time)
+        # print("time_difference", time_difference, arrival_time, next_departure_time)
         return time_difference < 90
 
     def is3M(self, daily_connects, i) -> bool:
@@ -557,7 +557,6 @@ class DataCollector:
             weekday = get_weekday_from_date(date)
             daily_connects = self.get_daily_connects(date)
             minutes = self.get_work_time(date)
-            print("minutes", minutes, date)
             work_time = get_hour_minute_with_colon(minutes) if minutes != 0 else ''
 
             work_type = self.get_work_type(minutes, weekday, weekly_minute)

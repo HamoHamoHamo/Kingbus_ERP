@@ -1,5 +1,5 @@
 import os
-from config.settings import MEDIA_ROOT
+from config.settings.base import MEDIA_ROOT
 from config.custom_logging import logger
 
 def delete_tmp_media_files():

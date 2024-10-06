@@ -1,7 +1,7 @@
 import json
 import math
 import re
-from config.settings import MEDIA_ROOT
+from config.settings.base import MEDIA_ROOT
 from django.shortcuts import render
 from django.db.models import Q, Sum
 from django.core.exceptions import ObjectDoesNotExist, MultipleObjectsReturned, BadRequest

@@ -9,12 +9,12 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.http import Http404, JsonResponse, HttpResponse, HttpResponseNotAllowed
 from django.views import generic
 from django.urls import reverse
-from config.settings import MEDIA_ROOT
+from config.settings.base import MEDIA_ROOT
 import pandas as pd
 from .models import Vehicle, VehicleDocument, Refueling, DailyChecklist, WeeklyChecklist, EquipmentChecklist
 from .forms import VehicleForm
 from humanresource.models import Member
-from config.settings import BASE_DIR
+from config.settings.base import BASE_DIR
 from dateutil.relativedelta import relativedelta
 
 TODAY = str(datetime.now())[:10]

@@ -1,10 +1,13 @@
+import calendar
 import requests
 import xml.etree.ElementTree as ET
 from datetime import datetime, timedelta
 from common.constant import WEEK2, DATE_FORMAT, DATE_TIME_FORMAT
 from my_settings import OPEN_API_KEY
 from django.core.exceptions import BadRequest
-import calendar
+from config.custom_logging import logger
+
+from django.core.cache import cache
 
 def calculate_time_difference(start_time_str, end_time_str):
     # 입력된 시간 문자열을 datetime 객체로 변환
@@ -180,7 +183,14 @@ def get_mondays_from_last_week_of_previous_month(month):
     
     return mondays
 
-def get_holiday_list_from_open_api(year_month):
+def get_holiday_list(year_month):
+    try:
+        holiday_data = cache.get(f"holiday:{year_month}")
+        if holiday_data:
+            return holiday_data
+    except Exception as e:
+        logger.error(f"redis error {e}")
+        
     api_url = 'http://apis.data.go.kr/B090041/openapi/service/SpcdeInfoService/getRestDeInfo'
 
     try:
@@ -204,6 +214,9 @@ def get_holiday_list_from_open_api(year_month):
     filtered_list = [item for item in holiday_data['date_name_list'] if '대체' not in item]
 
     holiday_data['count'] = len(filtered_list)
+    
+    cache.set(f"holiday:{year_month}", holiday_data)
+
     return holiday_data
 
 def parse_xml_data(xml_data):

@@ -7,7 +7,7 @@ import os
 import mimetypes
 import requests
 
-from config.settings import MEDIA_ROOT
+from config.settings.base import MEDIA_ROOT
 from django.db.models import Q, Sum
 from django.forms.models import model_to_dict
 from django.core.exceptions import ObjectDoesNotExist, MultipleObjectsReturned, BadRequest

@@ -1,7 +1,7 @@
 # from config.django.base import SERVER_ENV
 import logging
 import os
-from config.settings import BASE_DIR
+from config.settings.base import BASE_DIR
 
 LOGGING = {
     "version": 1,

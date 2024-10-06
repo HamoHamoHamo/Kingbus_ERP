@@ -10,7 +10,7 @@ from django.http import JsonResponse, Http404, HttpResponse, HttpResponseNotAllo
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views import generic
 from django.core.exceptions import BadRequest
-from config.settings import TODAY
+from config.settings.base import TODAY
 
 class ConsultingList(generic.ListView):
     template_name = 'complaint/consulting.html'

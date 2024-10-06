@@ -9,8 +9,10 @@ TODAY = str(datetime.now())[:10]
 FORMAT = "%Y-%m-%d"
 VERSION = my_settings.VERSION
 
+SERVER_ENV = os.environ.get("DJANGO_SETTINGS_MODULE", "config.settings.base")
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
-BASE_DIR = Path(__file__).resolve().parent.parent
+BASE_DIR = Path(__file__).resolve().parent.parent.parent
 # BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # Quick-start development settings - unsuitable for production
@@ -97,6 +99,17 @@ WSGI_APPLICATION = 'config.wsgi.application'
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 
 DATABASES = my_settings.DATABASES
+
+CACHES = {
+    'default': {
+        'BACKEND': 'django_redis.cache.RedisCache',
+        'LOCATION': 'redis://localhost:6379/1',  # Redis 데이터베이스 1번 사용
+        'OPTIONS': {
+            'CLIENT_CLASS': 'django_redis.client.DefaultClient',
+            'DEFAULT_TIMEOUT': 86400,  # 기본 만료 시간 24시간
+        }
+    }
+}
 
 
 # Password validation
