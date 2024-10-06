@@ -25,6 +25,7 @@ https://docs.djangoproject.com/en/3.1/howto/deployment/wsgi/
 import os, sys
 
 from django.core.wsgi import get_wsgi_application
+from config.settings.base import SERVER_ENV
 
 # os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'kenaf.settings')
 
@@ -34,5 +35,5 @@ path = os.path.abspath(__file__ + "/../..")
 if path not in sys.path:
     sys.path.append(path)
 
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "config.settings")
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", SERVER_ENV)
 application = get_wsgi_application()

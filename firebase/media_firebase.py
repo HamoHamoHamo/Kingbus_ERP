@@ -2,7 +2,7 @@ from datetime import datetime, timedelta
 from pathlib import Path
 from firebase_admin import credentials, initialize_app, storage, _apps, get_app, delete_app
 import os
-from config.settings import BASE_DIR, MEDIA_ROOT
+from config.settings.base import BASE_DIR, MEDIA_ROOT
 from my_settings import CRED_PATH, STORAGE_BUCKET, CLOUD_MEDIA_PATH
 from config.custom_logging import logger
 from django.core.exceptions import BadRequest

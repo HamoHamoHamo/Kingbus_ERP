@@ -11,5 +11,6 @@ urlpatterns = [
     path('table2', views.SalaryTable2.as_view(), name="table2"),
     path('table3', views.SalaryTable3.as_view(), name="table3"),
     path('hourlywage/save', views.HourlyWageSaveView.as_view(), name="hourly_wage_save"),
-    path('test', views.test)
+    path('test', views.test),
+    path('test2', views.SalaryTest2.as_view()),
 ]

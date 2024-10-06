@@ -2,7 +2,7 @@ from datetime import datetime
 from uuid import uuid4
 from django.db import models
 from datetime import datetime, timedelta
-from config.settings import FORMAT
+from config.settings.base import FORMAT
 from dateutil.relativedelta import relativedelta
 from common.constant import TODAY, WEEK
 from django.apps import apps

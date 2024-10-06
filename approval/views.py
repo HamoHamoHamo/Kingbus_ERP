@@ -6,7 +6,7 @@ from django.db.models.query import QuerySet
 from django.shortcuts import render
 from django.views import generic
 from humanresource.models import Member
-from config.settings import MEDIA_ROOT, MEDIA_URL
+from config.settings.base import MEDIA_ROOT, MEDIA_URL
 from django.db.models import Q, Sum
 from django.forms.models import model_to_dict
 from django.core.exceptions import ObjectDoesNotExist, MultipleObjectsReturned, BadRequest

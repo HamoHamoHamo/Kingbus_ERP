@@ -10,7 +10,8 @@ https://docs.djangoproject.com/en/3.1/howto/deployment/asgi/
 import os
 
 from django.core.asgi import get_asgi_application
+from config.settings.base import SERVER_ENV
 
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'ERP.settings')
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', SERVER_ENV)
 
 application = get_asgi_application()

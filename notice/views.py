@@ -9,7 +9,7 @@ from humanresource.models import Member
 from humanresource.views import send_message
 from notice.forms import NoticeForm
 from notice.models import Notice, NoticeFile, NoticeComment, NoticeViewCnt
-from config.settings import BASE_DIR
+from config.settings.base import BASE_DIR
 '''
 class NoticeKindsView(generic.ListView):
     model = Notice

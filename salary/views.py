@@ -1,4 +1,4 @@
-from config.settings import MEDIA_ROOT
+from config.settings.base import MEDIA_ROOT
 from django.db.models import Q, Sum
 from django.core.exceptions import ObjectDoesNotExist, MultipleObjectsReturned, BadRequest
 from django.http import Http404, JsonResponse, HttpResponse, HttpResponseNotAllowed
@@ -53,7 +53,7 @@ class SalaryStatus(AuthorityCheckView, generic.ListView):
         # 불러온 월요일부터 배차 데이터 가져오기
         dispatch_selector = DispatchSelector()
         connect_time_list = dispatch_selector.get_driving_time_list(start_date, last_day_of_month(first_date))
-        holiday_data = get_holiday_list_from_open_api(context['month'])
+        holiday_data = get_holiday_list(context['month'])
 
         morning_list = dispatch_selector.get_monthly_morning_checklist(context['month'])
         evening_list = dispatch_selector.get_monthly_evening_checklist(context['month'])
@@ -103,7 +103,7 @@ class DailySalaryStatus(AuthorityCheckView, generic.ListView):
         # 불러온 월요일부터 배차 데이터 가져오기
         dispatch_selector = DispatchSelector()
         connect_time_list = dispatch_selector.get_driving_time_list(first_date, last_date)
-        holiday_data = get_holiday_list_from_open_api(first_date[:7])
+        holiday_data = get_holiday_list(first_date[:7])
 
         morning_list = dispatch_selector.get_morning_checklist(first_date, last_date)
         evening_list = dispatch_selector.get_evening_checklist(first_date, last_date)
@@ -182,7 +182,7 @@ class WeeklySalaryStatus(AuthorityCheckView, generic.ListView):
         # 불러온 월요일부터 배차 데이터 가져오기
         dispatch_selector = DispatchSelector()
         connect_time_list = dispatch_selector.get_driving_time_list(first_date, last_date)
-        holiday_data = get_holiday_list_from_open_api(first_date[:7])
+        holiday_data = get_holiday_list(first_date[:7])
 
         morning_list = dispatch_selector.get_morning_checklist(first_date, last_date)
         evening_list = dispatch_selector.get_evening_checklist(first_date, last_date)
@@ -272,7 +272,7 @@ class SalaryTable(AuthorityCheckView, generic.ListView):
         connect_time_list = dispatch_selector.get_driving_time_list(start_date, get_next_sunday_after_last_day(context['month']))
 
         # TODO 휴일 데이터 db에 저장하기
-        holiday_data = get_holiday_list_from_open_api(context['month'])
+        holiday_data = get_holiday_list(context['month'])
         context['date_list'] = ['' for i in range(31)]
 
         for i in range(last_day_of_month(first_date)):
