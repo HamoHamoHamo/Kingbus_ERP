@@ -37,6 +37,7 @@ class DispatchSelector:
     def get_driving_time_list(self, start_date, end_date):
         regularly = list(
             DispatchRegularlyConnect.objects.filter(departure_date__gte=f'{start_date} 00:00', arrival_date__lte=f'{end_date} 23:59')
+            .select_related('regularly_id__group')
             .annotate(
                 route_time=F("regularly_id__time"),
                 group=F("regularly_id__group__name"),
@@ -62,7 +63,7 @@ class DispatchSelector:
         regularly_objects = DispatchRegularly.objects.filter(id__in=regularly_ids).prefetch_related(
             Prefetch(
                 'regularly_station',
-                queryset=DispatchRegularlyStation.objects.order_by('index'),
+                queryset=DispatchRegularlyStation.objects.only('time', 'regularly_id').order_by('index'),
                 to_attr='stations_list'
             )
         )
