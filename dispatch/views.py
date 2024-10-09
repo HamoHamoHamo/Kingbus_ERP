@@ -1464,7 +1464,7 @@ def time_data(request):
 
     count = 0
     all_regularly_data = DispatchRegularlyData.objects.filter(use="사용")
-    all_regularly_data = all_regularly_data[630:]
+    all_regularly_data = all_regularly_data
     for regularly_data in all_regularly_data:
         count += 1
         regularly = regularly_data.monthly.order_by("edit_date").last()
@@ -1500,14 +1500,16 @@ def time_data(request):
                 logger.info(f"기준일에 데이터 없으면 생성하는 부분 확인 : 생성한 데이터 {DispatchRegularly.objects.filter(id=edit_date_r.id).values('id')}")
 
                 # 기준일 ~ 기준일 이후 첫번째 regularly 데이터 사이의 배차들 불러서 regularly_id 변경
+                connects = DispatchRegularlyConnect.objects.filter(regularly_id__regularly_id=regularly_data).filter(departure_date__gte=station_edit_date)
+                logger.info(f"기준일 ~ 기준일 이후 첫번째 데이터 사이의 배차들 확인 : 기존 데이터 {connects.values('regularly_id')}")
+
+                # 기준일 이후 첫번째 regularly가 있으면 그 전까지의 배차만 가져오기
                 first_regularly_from_edit_date = DispatchRegularly.objects.filter(regularly_id=regularly_data, edit_date__gt=station_edit_date).order_by('edit_date').first()
                 if first_regularly_from_edit_date:
-                    recent_regularly_edit_date = first_regularly_from_edit_date.edit_date
-                else:
-                    recent_regularly_edit_date = station_edit_date
+                    connects = connects.filter(departure_date__lt=first_regularly_from_edit_date.edit_date)
+                
 
-                connects = DispatchRegularlyConnect.objects.filter(regularly_id__regularly_id=regularly_data).filter(departure_date__gte=station_edit_date).filter(departure_date__lt=recent_regularly_edit_date)
-                logger.info(f"기준일 ~ 기준일 이후 첫번째 데이터 사이의 배차들 확인 : 기존 데이터 {connects.values('regularly_id')}")
+                
                 for connect in connects:
                     connect.regularly_id = edit_date_r
                     connect.save()
@@ -1694,14 +1696,16 @@ def regularly_order_edit(request):
                     logger.info(f"기준일에 데이터 없으면 생성하는 부분 확인 : 생성한 데이터 {DispatchRegularly.objects.filter(id=edit_date_r.id).values('id')}")
 
                     # 기준일 ~ 기준일 이후 첫번째 regularly 데이터 사이의 배차들 불러서 regularly_id 변경
+                    connects = DispatchRegularlyConnect.objects.filter(regularly_id__regularly_id=regularly_data).filter(departure_date__gte=station_edit_date)
+                    logger.info(f"기준일 ~ 기준일 이후 첫번째 데이터 사이의 배차들 확인 : 기존 데이터 {connects.values('regularly_id')}")
+
+                    # 기준일 이후 첫번째 regularly가 있으면 그 전까지의 배차만 가져오기
                     first_regularly_from_edit_date = DispatchRegularly.objects.filter(regularly_id=regularly_data, edit_date__gt=station_edit_date).order_by('edit_date').first()
                     if first_regularly_from_edit_date:
-                        recent_regularly_edit_date = first_regularly_from_edit_date.edit_date
-                    else:
-                        recent_regularly_edit_date = station_edit_date
+                        connects = connects.filter(departure_date__lt=first_regularly_from_edit_date.edit_date)
+                    
 
-                    connects = DispatchRegularlyConnect.objects.filter(regularly_id__regularly_id=regularly_data).filter(departure_date__gte=station_edit_date).filter(departure_date__lt=recent_regularly_edit_date)
-                    logger.info(f"기준일 ~ 기준일 이후 첫번째 데이터 사이의 배차들 확인 : 기존 데이터 {connects.values('regularly_id')}")
+                    
                     for connect in connects:
                         connect.regularly_id = edit_date_r
                         connect.save()
