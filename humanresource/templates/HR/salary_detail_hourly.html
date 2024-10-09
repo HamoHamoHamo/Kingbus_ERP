@@ -1,0 +1,343 @@
+{% load dispatch_custom_tags %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <title>TRP</title>
+    <link href="{% static 'css/humanresource/print.css' %}" rel="stylesheet" type="text/css" />
+    <link href="" id="printSizeCss" rel="stylesheet" type="text/css" />
+</head>
+
+<body>
+    {% for data in member_list %}
+    {% with salary_data=datas|index:data.member_id %}
+    <div class="salaryStatus">
+        <div class="salaryStatusTitle">{{month|slice:':4'}}년 {{month|slice:'5:7'}}월 급여현황</div>
+
+        <div class="signBox">
+            <span>{{salary_data.member__name}}</span>
+            <span>(서명)</span>
+        </div>
+
+        <table class="personalInformationTable">
+            <colgroup>
+                <col style="width: 7%">
+                <col style="width: 8%">
+                <col style="width: 23%">
+                <col style="width: 8%">
+                <col style="width: 23%">
+                <col style="width: 8%">
+                <col style="width: 23%">
+            </colgroup>
+            <tr>
+                <td rowspan="2" class="titleTd">
+                    인적<br>
+                    사항
+                </td>
+                <td class="titleTd">회사명</td>
+                <td>성화투어</td>
+                <td class="titleTd">성명</td>
+                <td>{{salary_data.member__name}}</td>
+                <td class="titleTd">생년월일</td>
+                <td>{{data.member.birthdate}}</td>
+            </tr>
+            <tr>
+                <td class="titleTd">직급</td>
+                <td>{{salary_data.member__role}}</td>
+                <td class="titleTd">입사일</td>
+                <td>{{salary_data.member__entering_date}}</td>
+                <td class="titleTd">지급일</td>
+                <td>{{data.salary_date}}</td>
+            </tr>
+        </table>
+
+        <table class="dateListTable">
+            <colgroup>
+                <col style="width: 4%">
+                <col style="width: 29%">
+                <col style="width: 29%">
+                <col style="width: 29%">
+                <col style="width: 9%">
+            </colgroup>
+            <thead>
+                <tr>
+                    <td>일자</td>
+                    <td>출근운행</td>
+                    <td>퇴근운행</td>
+                    <td>일반운행</td>
+                    <td>운행횟수</td>
+                </tr>
+            </thead>
+            <tbody>
+                {% for i in data.order_list %}
+                <tr>
+                    <td>{{forloop.counter}}{{data.week_list|index:forloop.counter0}}</td>
+                    <td title="{{data.attendance_list|index:forloop.counter0}}">
+                        {% for d in data.attendance_list|index:forloop.counter0 %}
+                            {{d|slice:':8'}},
+                        {% endfor %}
+                    </td>
+                    <td title="{{data.leave_list|index:forloop.counter0}}">
+                        {% for d in data.leave_list|index:forloop.counter0 %}
+                            {{d|slice:':8'}},
+                        {% endfor %}
+                    </td>
+                    <td title="{{data.order_list|index:forloop.counter0}}">
+                        {% for d in data.order_list|index:forloop.counter0 %}
+                            {{d|index:0|slice:':8'}}. {{d|index:1|slice:':8'}} /
+                        {% endfor %}
+                    </td>
+                    <td title="{{data.total_list|index:forloop.counter0}}">
+                        {{data.total_list|index:forloop.counter0}}
+                    </td>
+                </tr>
+                {% endfor %}
+                <tr class="workTotal">
+                    <td>소계</td>
+                    <td colspan="1">{{data.attendance_cnt}}</td>
+                    <td colspan="1">{{data.leave_cnt}}</td>
+                    <td colspan="1">{{data.order_cnt}}</td>
+                    <td>{{data.total_cnt}}</td>
+                </tr>
+            </tbody>
+        </table>
+
+    </div>
+    <div class="salaryStatus">
+        <div class="salaryStatusTitle">{{month|slice:':4'}}년 {{month|slice:'5:7'}}월 급여현황</div>
+
+        <div class="signBox">
+            <span>{{salary_data.member__name}}</span>
+            <span>(서명)</span>
+        </div>
+
+        <table class="personalInformationTable">
+            <colgroup>
+                <col style="width: 7%">
+                <col style="width: 8%">
+                <col style="width: 23%">
+                <col style="width: 8%">
+                <col style="width: 23%">
+                <col style="width: 8%">
+                <col style="width: 23%">
+            </colgroup>
+            <tr>
+                <td rowspan="2" class="titleTd">
+                    인적<br>
+                    사항
+                </td>
+                <td class="titleTd">회사명</td>
+                <td>성화투어</td>
+                <td class="titleTd">성명</td>
+                <td>{{salary_data.member__name}}</td>
+                <td class="titleTd">생년월일</td>
+                <td>{{data.member.birthdate}}</td>
+            </tr>
+            <tr>
+                <td class="titleTd">직급</td>
+                <td>{{salary_data.member__role}}</td>
+                <td class="titleTd">입사일</td>
+                <td>{{salary_data.member__entering_date}}</td>
+                <td class="titleTd">지급일</td>
+                <td>{{data.salary_date}}</td>
+            </tr>
+        </table>
+
+        <table class="dateListTable">
+            <colgroup>
+                <col style="width: 4%">
+                <col style="width: 43.5%">
+                <col style="width: 43.5%">
+                <col style="width: 9%">
+            </colgroup>
+            <thead>
+                <tr>
+                    <td>일자</td>
+                    <td>고정업무</td>
+                    <td>일반업무</td>
+                    <td>일일합계</td>
+                </tr>
+            </thead>
+            <tbody>
+                {% for i in data.assignment_list %}
+                <tr>
+                    <td>{{forloop.counter}}{{data.week_list|index:forloop.counter0}}</td>
+                    <!-- <td>기흥기숙.마북동 /</td> -->
+                    <td title="{{data.assignment_list|index:forloop.counter0}}">
+                        {% for d in data.assignment_list|index:forloop.counter0 %}
+                            {{d|slice:':8'}},
+                        {% endfor %}
+                    </td>
+                    <td title="{{data.regularly_assignment_list|index:forloop.counter0}}">
+                        {% for d in data.regularly_assignment_list|index:forloop.counter0 %}
+                            {{d|slice:':8'}},
+                        {% endfor %}
+                    </td>
+                    <td title="{{data.assignment_total_list|index:forloop.counter0}}">
+                        {{data.assignment_total_list|index:forloop.counter0}}
+                    </td>
+                </tr>
+                {% endfor %}
+                <tr class="workTotal">
+                    <td>소계</td>
+                    <td colspan="1">{{data.assignment_cnt}}</td>
+                    <td colspan="1">{{data.regularly_assignment_cnt}}</td>
+                    <td>{{data.assignment_total_cnt}}</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="moreInforArea">
+
+            <table class="additionalSalaryTable">
+                <colgroup>
+                    <col style="width: 10%">
+                    <col style="width: 90%">
+                </colgroup>
+                <tr>
+                    <td rowspan="2" class="titleTd">
+                        추<br>
+                        가<br>
+                        수<br>
+                        당
+                    </td>
+                    <td class="titleTd">지급사유</td>
+                </tr>
+                <tr>
+                    <td>
+                        
+                        {% for add in data.additional %}
+                            ({{add.price}}){{add.remark}} /
+                        {% endfor %}
+                    </td>
+                </tr>
+                <tr>
+                    <td rowspan="2" class="titleTd">
+                        공<br>
+                        제<br>
+                    </td>
+                    <td class="titleTd">공제사유</td>
+                </tr>
+                <tr>
+                    <td>
+                        {% for ded in data.deduction %}
+                            ({{ded.price}}){{ded.remark}} /
+                        {% endfor %}
+                    </td>
+                </tr>
+            </table>
+
+            <div class="amountBox">
+
+                <table class="allMountTable">
+                    <colgroup>
+                        <col style="width: 20%">
+                        <col style="width: 30%">
+                        <col style="width: 20%">
+                        <col style="width: 30%">
+                    </colgroup>
+                    <!-- 
+                    통상급여 
+                    +임금
+                    +근속수당
+                    +계
+
+                    팀장수당 
+                    +점호관리 
+                    +차량관리 
+                    +업무관리
+
+                    +성실수당
+                    +만근수당
+                    +무사고수당
+                    +연차수당
+
+                    복리후생 
+                    +식대
+                    +유류비
+
+                    +공제수당
+                    +추가수당 -->
+                    <tr class="allMountTable12Line">
+                        <td class="titleTd">임금</td>
+                        <td class="printComma">{{salary_data.wage}}</td>
+                        <td class="titleTd">근속수당</td>
+                        <td class="printComma">{{salary_data.service_allowance}}</td>
+                    </tr>
+                    <tr class="allMountTable12Line">
+                        <td class="titleTd">연차수당</td>
+                        <td class="printComma">{{salary_data.new_annual_allowance}}</td>
+                        <td class="titleTd">팀장수당</td>
+                        <td class="printComma">{{salary_data.team_leader_allowance}}</td>
+                    </tr>
+                    <tr class="allMountTable12Line">
+                        <td class="titleTd">만근수당</td>
+                        <td class="printComma">{{salary_data.full_attendance_allowance}}</td>
+                        <td class="titleTd">성실수당</td>
+                        <td class="printComma">{{salary_data.diligence_allowance}}</td>
+                    </tr>
+                    <tr class="allMountTable12Line">
+                        <td class="titleTd">무사고수당</td>
+                        <td class="printComma">{{salary_data.accident_free_allowance}}</td>
+                        <td class="titleTd">주휴수당</td>
+                        <td class="printComma">{{salary_data.weekly_holiday_allowance}}</td>
+                        
+                    </tr>
+                    <tr class="allMountTable12Line">
+                        <td class="titleTd">식대</td>
+                        <td class="printComma">{{salary_data.welfare_meal_allowance}}</td>
+                        <td class="titleTd">유류비</td>
+                        <td class="printComma">{{salary_data.welfare_fuel_allowance}}</td>
+                    </tr>
+                    <tr class="allMountTable12Line">
+                        <td class="titleTd">추가수당</td>
+                        <td class="printComma">{{data.salary.additional}}</td>
+                        <td class="titleTd">공제</td>
+                        <td class="printComma">{{data.salary.deduction}}</td>
+                    </tr>
+                </table>
+
+                <!-- <table class="totalAmountTable">
+                    <colgroup>
+                        <col style="width: 20%">
+                        <col style="width: 30%">
+                        <col style="width: 20%">
+                        <col style="width: 30%">
+                    </colgroup>
+                    <tr>
+                        <td class="titleTd">합계</td>
+                        <td class="printComma">{{data.salary.total|add:data.salary.deduction}}</td>
+                        <td class="titleTd">공제</td>
+                        <td class="printComma">{{data.salary.deduction}}</td>
+                    </tr>
+                </table> -->
+
+                <table class="salaryTable">
+                    <colgroup>
+                        <col style="width: 20%">
+                        <col style="width: 80%">
+                    </colgroup>
+                    <tr>
+                        <td class="titleTd">급여</td>
+                        <td class="printComma">{{salary_data.total}}</td>
+                    </tr>
+                </table>
+
+            </div>
+        </div>
+        
+    </div>
+    {% endwith %}
+    {% endfor %}
+
+
+
+    {% block script %}
+    <script src="{% static 'js/hr/printAddComma.js' %}"></script>
+    {% endblock %}
+</body>
+
+</html>

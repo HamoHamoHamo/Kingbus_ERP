@@ -28,7 +28,7 @@ urlpatterns = [
     path('regularly/business/edit', views.business_edit, name="business_edit"),
 
     
-    path('regularly/route/test', views.time_data, name="time_data"),
+    # path('regularly/route/test', views.time_data, name="time_data"),
     
     path('regularly/station', views.RegularlyStationList.as_view(), name="regularly_station"),
     path('regularly/station/list', views.regularly_station_list, name="regularly_station_list"),

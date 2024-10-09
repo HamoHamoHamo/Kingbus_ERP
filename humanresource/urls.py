@@ -30,6 +30,7 @@ urlpatterns = [
     path('salary/manager/edit', views.salary_manager_edit, name='salary_manager_edit'),
     path('salary/new/edit', views.salary_new_edit, name='salary_new_edit'),
     path('salary/detail', views.salary_detail, name='salary_detail'),
+    path('salary/detail/hourly', views.salary_detail_hourly, name='salary_detail_hourly'),
     path('salary/additional/create', views.salary_additional_create, name='salary_additional_create'),
     path('salary/additional/delete', views.salary_additional_delete, name='salary_additional_delete'),
     path('salary/deduction/create', views.salary_deduction_create, name='salary_deduction_create'),

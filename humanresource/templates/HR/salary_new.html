@@ -403,7 +403,7 @@
             }
         };
         if (checkDriver !== 0) {
-            targetLink = `{% url "HR:salary_detail" %}?date=${month.value}&driver=${checkerArr}`
+            targetLink = `{% url "HR:salary_detail_hourly" %}?date=${month.value}&driver=${checkerArr}`
             window.open(targetLink, "노선별A4", "width=1200, height=800")
         } else {
             alert("기사를 선택해 주세요.")
