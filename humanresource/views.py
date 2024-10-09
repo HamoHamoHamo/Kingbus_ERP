@@ -32,7 +32,7 @@ from firebase_admin import credentials
 from firebase_admin import messaging
 from firebase.media_firebase import upload_to_firebase, get_download_url, delete_firebase_file, download_file
 from salary.views import SalaryDataController
-from salary.services import SalaryTableDataCollector3
+from salary.services import SalaryTableDataCollector3, SalaryDataController2
 from dispatch.selectors import DispatchSelector
 from common.formatter import format_number_with_commas, remove_comma_from_number
 from config.custom_logging import logger
@@ -907,6 +907,10 @@ def salary_detail(request):
     else:
         member_id_list = request.GET.get('driver').split(',')
     month = request.GET.get('date', TODAY[:7])
+
+    # 24년 9월부터 시급제 적용
+    # if month >= "2024-09":
+    #     return salary_detail_hourly(request)
     
     # try:
     #     category_date = Category.objects.get(type='급여지급일').category
@@ -1072,6 +1076,157 @@ def salary_detail(request):
         'month': month
     }
     return render(request, 'HR/salary_detail.html', context)
+
+def salary_detail_hourly(request):
+    user_auth = request.session.get('authority')
+    if user_auth >= 3:
+        member_id_list = [request.session.get('user')]
+    else:
+        member_id_list = request.GET.get('driver').split(',')
+    
+    context = {}
+
+    month = request.GET.get('date', TODAY[:7])
+
+    request_member_list = []
+    for member_id in member_id_list:
+        request_member_list.append(get_object_or_404(Member, id=member_id))
+
+    data_controller = SalaryDataController2(month)
+    context['datas'] = data_controller.get_datas(request_member_list)
+    
+    member_list = []
+    for member in request_member_list:
+
+        last_date = datetime.strftime(datetime.strptime(month+'-01', FORMAT) + relativedelta(months=1) - timedelta(days=1), FORMAT)[8:10]
+        
+        attendance_list = [''] * int(last_date)
+        leave_list = [''] * int(last_date)
+        order_list = [''] * int(last_date)
+        assignment_list = [''] * int(last_date)
+        regularly_assignment_list = [''] * int(last_date)
+
+        week_list = []
+
+        order_cnt = 0
+        attendance_cnt = 0
+        leave_cnt = 0
+        assignment_cnt = 0
+        regularly_assignment_cnt = 0
+        
+        total_list = [0] * int(last_date)
+        assignment_total_list = [0] * int(last_date)
+        work_cnt = 0
+        
+
+        salary = Salary.objects.filter(member_id=member).get(month=month)
+        meal = salary.meal
+        payment_date = salary.payment_date
+        if payment_date == '말일':
+            salary_date = datetime.strftime(datetime.strptime(month+'-01', FORMAT) + relativedelta(months=1) - timedelta(days=1), FORMAT)
+        else:
+            salary_date = datetime.strftime(datetime.strptime(f'{month}-{payment_date}', FORMAT) - relativedelta(months=1), FORMAT)
+
+        additional = salary.additional_salary.all()
+        deduction = salary.deduction_salary.all()
+
+        connects = DispatchOrderConnect.objects.filter(departure_date__range=(f'{month}-01 00:00', f'{month}-{last_date} 24:00')).filter(driver_id=member)
+        order_cnt = connects.count()
+        for connect in connects:
+            c_date = int(connect.departure_date[8:10]) - 1
+            if not order_list[c_date]:
+                order_list[c_date] = []
+            order_list[c_date].append([connect.order_id.departure, connect.order_id.arrival])
+            
+            total_list[c_date] += 1
+
+        attendances = DispatchRegularlyConnect.objects.filter(departure_date__range=(f'{month}-01 00:00', f'{month}-{last_date} 24:00')).filter(work_type='출근').filter(driver_id=member)
+        attendance_cnt = attendances.count()
+        for attendance in list(attendances.values('regularly_id__route', 'departure_date', 'driver_allowance')):
+            c_date = int(attendance['departure_date'][8:10]) - 1
+            if not attendance_list[c_date]:
+                attendance_list[c_date] = []
+            attendance_list[c_date].append(attendance['regularly_id__route'])
+
+            total_list[c_date] += 1
+
+        leaves = DispatchRegularlyConnect.objects.filter(departure_date__range=(f'{month}-01 00:00', f'{month}-{last_date} 24:00')).filter(work_type='퇴근').filter(driver_id=member)
+        leave_cnt = leaves.count()
+        for leave in list(leaves.values('regularly_id__route', 'departure_date', 'driver_allowance')):
+            c_date = int(leave['departure_date'][8:10]) - 1
+            if not leave_list[c_date]:
+                leave_list[c_date] = []
+            leave_list[c_date].append(leave['regularly_id__route'])
+        
+            total_list[c_date] += 1
+
+        # 업무 급여 데이터
+        assignments = AssignmentConnect.objects.filter(start_date__range=(f'{month}-01 00:00', f'{month}-{last_date} 24:00')).filter(type='일반업무').filter(member_id=member)
+        assignment_cnt = assignments.count()
+        for assignment in list(assignments.values('assignment_id__assignment', 'start_date', 'allowance')):
+            c_date = int(assignment['start_date'][8:10]) - 1
+            if not assignment_list[c_date]:
+                assignment_list[c_date] = []
+            assignment_list[c_date].append(assignment['assignment_id__assignment'])
+
+            assignment_total_list[c_date] += 1
+        
+        regularly_assignments = AssignmentConnect.objects.filter(start_date__range=(f'{month}-01 00:00', f'{month}-{last_date} 24:00')).filter(type='고정업무').filter(member_id=member)
+        regularly_assignment_cnt = regularly_assignments.count()
+        for regularly_assignment in list(regularly_assignments.values('assignment_id__assignment', 'start_date', 'allowance')):
+            c_date = int(regularly_assignment['start_date'][8:10]) - 1
+            if not regularly_assignment_list[c_date]:
+                regularly_assignment_list[c_date] = []
+            regularly_assignment_list[c_date].append(regularly_assignment['assignment_id__assignment'])
+
+            assignment_total_list[c_date] += 1
+
+
+        for i in range(int(last_date)):
+            check = 0
+
+            if i + 1 < 10:
+                date = f'{month}-0{i+1}'
+            else:
+                date = f'{month}-{i+1}'
+
+            week_list.append(WEEK[datetime.strptime(date, FORMAT).weekday()])
+
+            if check == 1:
+                work_cnt += 1
+
+        total_cnt = leave_cnt + attendance_cnt + order_cnt
+        assignment_total_cnt = assignment_cnt + regularly_assignment_cnt
+        member_list.append({
+            'order_list': order_list,
+            'attendance_list': attendance_list,
+            'leave_list': leave_list,
+            'assignment_list': assignment_list,
+            'regularly_assignment_list': regularly_assignment_list,
+            'order_cnt': order_cnt,
+            'total_cnt': total_cnt,
+            'assignment_total_cnt': assignment_total_cnt,
+            'attendance_cnt': attendance_cnt,
+            'leave_cnt': leave_cnt,
+            'assignment_cnt': assignment_cnt,
+            'regularly_assignment_cnt': regularly_assignment_cnt,
+            'salary': salary,
+            'member': member,
+            'week_list': week_list,
+            'total_list': total_list,
+            'assignment_total_list': assignment_total_list,
+            'work_cnt': work_cnt,
+            'additional': additional,
+            'deduction': deduction,
+            'meal': meal,
+            'salary_date': salary_date,
+            'member_id': member.id,
+        })
+        
+    context['member_list'] = member_list
+    context['month'] = month
+
+    return render(request, 'HR/salary_detail_hourly.html', context)
 
 class ChangeSalaryList(SalaryList):
     template_name = 'HR/salary_change.html'
