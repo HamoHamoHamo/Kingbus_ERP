@@ -409,12 +409,12 @@ class DataCollector:
                 connect_time_list[7] = end_time2 # DailySalaryStatus
                 connect_time_list[8] = end_time2
             else:
-                end_time2 = self.check_arrival_can_parking_outside(i, time_list, length)
+                end_time2 = self.check_arrival_can_parking_outside(i, time_list, length, daily_connects)
                 connect_time_list[6] = end_time2 # DailySalaryStatus
                 connect_time_list[7] = end_time2 # DailySalaryStatus
                 
                 # 뒷정리 완료 = 그 날 마지막 운행이면 마지막에서 10분 추가
-                if connect == daily_connects[len(daily_connects) - 1]:
+                if connect == daily_connects[len(daily_connects) - 1] or daily_connects[i + 1]['work_type'] == '일반' or daily_connects[i + 1]['work_type'] == '업무':
                     end_time2_minute = get_minute_from_colon_time(end_time2) + 10
                 else:
                     end_time2_minute = get_minute_from_colon_time(end_time2)
@@ -464,9 +464,9 @@ class DataCollector:
         else:
             return time_list[0]
 
-    def check_arrival_can_parking_outside(self, i, time_list, length):
+    def check_arrival_can_parking_outside(self, i, time_list, length, daily_connects):
         # 첫 운행일 경우에만 외부 주차 가능 여부 확인
-        if i == length - 1 and self.member.can_parking_outside:
+        if (i == len(daily_connects) - 1 or daily_connects[i + 1]['work_type'] == '일반' or daily_connects[i + 1]['work_type'] == '업무') and self.member.can_parking_outside:
             return time_list[length - 1]
         else:
             return time_list[length - 2]
