@@ -105,7 +105,7 @@
                     <td>{{newVehicle.passenger_capacity|default_if_none:''}}</td>
                     <td>{{newVehicle.model_year|default_if_none:''}}</td>
                     <td>{{newVehicle.registration_date|default_if_none:''}}</td>
-                    <td onclick="openMaintenanceRecordPopup()" class="blue">상세보기</td>
+                    <td onclick="openMaintenanceRecordPopup({{ newVehicle.id }})" class="blue">상세보기</td>
                     <td onclick="openDetailPopup({{ newVehicle.id }})">{{ newVehicle.details_count }}/29</td>
                     <td onclick="openDocumentPopup()" class="blue">상세보기</td>
                 </tr>
@@ -224,13 +224,16 @@
                 <div class="popupArticleBox">
                     <div class="popupArticleDouble">
                     <label for="" class="popupArticleLabel">담당기사</label>
-                    <input autocomplete="off" id="" name="driver" type="text" class="popupArticleinput length100">
-                    {% comment %} <select name="driver" class="popupArticleinput">
-                        <option></option>
+                    {% comment %} <input autocomplete="off" id="" name="driver" type="text" class="popupArticleinput length100"> {% endcomment %}
+                    {% if driver_list %}
+                    <select name="driver" class="popupArticleinput">
                         {% for driver in driver_list %}
-                        <option value="{{driver.id}}">{{ driver.name }}{% if driver.role == '용역' %}(용역){% endif %}</option>
+                            <option value="{{ driver.id }}">{{ driver.name }}{% if driver.role == '용역' %}(용역){% endif %}</option>
                         {% endfor %}
-                    </select> {% endcomment %}
+                    </select>
+                    {% else %}
+                        <p>No drivers found.</p>
+                    {% endif %}
                     </div>
                     <div class="popupArticleDouble">
                         <label for="" class="popupArticleLabel">차대번호</label>
@@ -479,13 +482,13 @@
                 <div class="popupArticleBox">
                     <div class="popupArticleDouble">
                     <label for="" class="popupArticleLabel">담당기사</label>
-                        <input autocomplete="off" id="" name="driver" type=""
-                        class="popupArticleinput length100" value="{{newVehicle.driver|default_if_none:''}}"> 
-                         {% comment %} <select name="driver" class="popupArticleinput">
+                        {% comment %} <input autocomplete="off" id="" name="driver" type=""
+                        class="popupArticleinput length100" value="{{newVehicle.driver|default_if_none:''}}">  {% endcomment %}
+                        <select name="driver" class="popupArticleinput">
                             {% for driver in driver_list %}
                             <option value="{{driver.id}}">{{driver.name}}{% if driver.role == '용역'%}(용역){% endif %}</option>
                             {% endfor %}
-                        </select> {% endcomment %}
+                        </select>
                     </div>
                     <div class="popupArticleDouble">
                         <label for="" class="popupArticleLabel">차대번호</label>
@@ -677,119 +680,125 @@
 
 <!--정비내역팝업-->
 
-
-<div class="popupAreaModules" id="MaintenanceRecordPopup">
+{% for newVehicle in vehicles %}
+<div class="popupAreaModules" id="MaintenanceRecordPopup{{ newVehicle.id }}">
+    <p>ID: {{ newVehicle.id }}</p>
     <div class="popupBgModules"></div>
-    <form method="post" action="" class="popupContainer popupContainerDouble">
-    {% csrf_token %}
+
+    <!-- 정비내역 생성 및 삭제 폼 -->
+    <form method="post" action="{% url 'newVehicle:maintenance_create_or_delete' newVehicle.id %}" class="popupContainer popupContainerDouble">
+        {% csrf_token %}
+        <!-- 정비내역 등록 섹션 -->
         <div class="popupHeader">
-            <div class="popupTitle popupHR">정비내역</div>
+            <div class="popupTitle popupHR">정비내역 등록</div>
         </div>
         <div class="popupBody popupBodyMember popupRepairScroll">
             <div class="popupSection">
                 <div class="popupArticleCategori">정비금액</div>
                 <div class="popupArticleBox">
                     <div class="popupArticleDouble">
-                        <label for="" class="popupArticleLabel">총정비금액</label>
-                        <input autocomplete="off" id="" name="" type=""
-                            class="popupArticleinput length100">
+                        <label for="total_maintenance_cost" class="popupArticleLabel">총정비금액</label>
+                        <input autocomplete="off" id="total_maintenance_cost" name="total_maintenance_cost" type="text"
+                            class="popupArticleinput length100" value="{{ newVehicle.total_maintenance_cost }}">
                     </div>
                     <div class="popupArticleDouble">
-                        <label for="" class="popupArticleLabel">총튜닝금액</label>
-                        <input autocomplete="off" id="" name="" type=""
+                        <label for="total_tuning_cost" class="popupArticleLabel">총튜닝금액</label>
+                        <input autocomplete="off" id="total_tuning_cost" name="total_tuning_cost" type="text" value="{{ newVehicle.total_tuning_cost }}"
                             class="popupArticleinput length100">
                     </div>
                 </div>
 
+                <!-- 정비등록 -->
                 <div class="popupArticleCategori">정비등록</div>
                 <div class="popupArticleBox">
                     <div class="popupArticleDouble">
-                        <label for="" class="popupArticleLabel">구분</label>
-                        <select class="popupArticleinput inputMonth">
-                            <option value="전체" select>전체</option>
+                        <label for="type" class="popupArticleLabel">구분</label>
+                        <select class="popupArticleinput inputMonth" name="type">
                             <option value="정비">정비</option>
                             <option value="튜닝">튜닝</option>
                             <option value="점검">점검</option>
                         </select>
                     </div>
                     <div class="popupArticleDouble">
-                        <label for="" class="popupArticleLabel">작업날짜</label>
-                        <input autocomplete="off" name="work_date" type="date" class="popupArticleinput" max="9999-12-31">
+                        <label for="work_date" class="popupArticleLabel">작업날짜</label>
+                        <input autocomplete="off" name="work_date" type="date" class="popupArticleinput">
                     </div>
                 </div>
                 <div class="popupArticleBox">
                     <div class="popupArticleDouble">
-                        <label for="" class="popupArticleLabel">작업내용</label>
-                        <input autocomplete="off" name="" type="text" class="popupArticleinput" max="9999-12-31">
+                        <label for="content" class="popupArticleLabel">작업내용</label>
+                        <input autocomplete="off" name="content" type="text" class="popupArticleinput">
                     </div>
                     <div class="popupArticleDouble">
-                        <label for="" class="popupArticleLabel">비용</label>
-                        <input autocomplete="off" name="" type="text" class="popupArticleinput" max="9999-12-31">
+                        <label for="cost" class="popupArticleLabel">비용</label>
+                        <input autocomplete="off" name="cost" type="text" class="popupArticleinput">
                     </div>
-                    
                 </div>
 
                 <div class="creatBtn">
-                    <button type="submit" class="btnModules btnModulesCreate repairCreate">등록</button>
-                </div>
-                <div class="popupArticleCategori">정비내역</div>
-                <div class="maintenanceSearchForm">
-                    <input autocomplete="off" name="check_date" type="month" class="popupArticleinput inputMonth" max="9999-12-31">
-                    <select class="popupArticleinput inputMonth">
-                        <option value="전체" select>전체</option>
-                        <option value="정비">정비</option>
-                        <option value="튜닝">튜닝</option>
-                        <option value="점검">점검</option>
-                    </select>
-                </div>
-                <div class="popupArticle popupArticleStation detailMapPopupScrollBox">
-                    <table>
-                        <thead class="detailMapPopupHeader repair">
-                            <tr>
-                                <td>선택</td>
-                                <td>번호</td>
-                                <td>구분</td>
-                                <td>작업날짜</td>
-                                <td>작업내역</td>
-                                <td>비용</td>
-                            </tr>
-                        </thead>
-                        <tbody class="detailRoutePopupScrollBoxTbody repair">
-                            
-                            <tr>
-                               
-                                <td><input type="checkbox"></td>
-                                <td>{{ forloop.counter }}</td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                
-                            </tr>
-
-
-
-
-                        </tbody>
-
-                    </table>
-                    
-                </div>
-                <div class="deleteBtnSection">
-                    <input autocomplete="off" type="submit" value="삭제" class="btnModules deleteBtn">
+                    <button type="submit" name="action" value="create" class="btnModules btnModulesCreate repairCreate">등록</button>
                 </div>
             </div>
-            
 
-            <div class="popupFooter">
-                <div class="btnModules btnModulesCreate">저장</div>
-                <div class="btnModules popupCloseBtn" onclick="closeMaintenanceRecordPopup
-                ()">닫기</div>
+            <!-- 정비내역 삭제 섹션 -->
+            <div class="popupArticleCategori">정비내역</div>
+            <div class="maintenanceSearchForm">
+                <input autocomplete="off" name="check_date" type="month" class="popupArticleinput inputMonth">
+                <select class="popupArticleinput inputMonth">
+                    <option value="전체" selected>전체</option>
+                    <option value="정비">정비</option>
+                    <option value="튜닝">튜닝</option>
+                    <option value="점검">점검</option>
+                </select>
             </div>
+
+            <div class="popupArticle popupArticleStation detailMapPopupScrollBox popupMaintenanceForm">
+                <table>
+                    <thead class="tableHead">
+                        <tr>
+                            <th>선택</th>
+                            <th>번호</th>
+                            <th>구분</th>
+                            <th>작업일짜</th>
+                            <th>작업내용</th>
+                            <th>비용</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for maintenance in maintenance_records %}
+                        <tr>
+                            <td>
+                                <input type="checkbox" name="maintenance_ids" value="{{ maintenance.id }}">
+                            </td>
+                            <td>{{ forloop.counter }}</td>
+                            <td>{{ maintenance.type }}</td>
+                            <td>{{ maintenance.work_date }}</td>
+                            <td>{{ maintenance.content }}</td>
+                            <td>{{ maintenance.cost }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                
+            </div>
+            <div class="deleteBtnSection">
+                <button type="submit" name="action" value="delete" class="btnModules deleteBtn">삭제</button>
+            </div>
+        </div>
+
+        <div class="popupFooter">
+            <button type="button" class="btnModules popupCloseBtn maintenanceClose" onclick="closeMaintenanceRecordPopup({{ newVehicle.id }})">닫기</button>
         </div>
     </form>
 </div>
+{% endfor %}
 
+
+<script>
+function closeMaintenanceRecordPopup(id) {
+    document.getElementById('MaintenanceRecordPopup' + id).style.display = 'none';
+}
+</script>
 
 
 <div class="popupAreaModules" id="documentPopup">
@@ -856,6 +865,70 @@
                         <div class="popupArticleFileDouble">
                             <label for="carpooling_agreement">파일 선택</label>
                             <input autocomplete="off" name="CARPOOLING_AGREEMENT" type="file" id="carpooling_agreement" class="documentFile">
+                            <input autocomplete="off" type="text" readonly="" class="pointer">
+                            <svg class="fileDeleteBtn documentDeleteBtn" xmlns="http://www.w3.org/2000/svg" width="11.314" height="11.314" viewBox="0 0 11.314 11.314">
+                                <g id="그룹_1513" data-name="그룹 1513" transform="translate(-442.649 -1001.97) rotate(45)">
+                                    <line id="선_691" data-name="선 691" y2="12" transform="translate(1029.5 389.5)" fill="none" stroke="#000" stroke-linecap="round" stroke-width="2"></line>
+                                    <line id="선_692" data-name="선 692" y2="12" transform="translate(1035.5 395.5) rotate(90)" fill="none" stroke="#000" stroke-linecap="round" stroke-width="2"></line>
+                                </g>
+                            </svg>
+                            <input type="hidden" value="">
+                        </div>
+                    </div>
+                </div>
+                <div class="popupArticleBox">
+                    <div class="popupArticleDouble">
+                        <label for="" class="popupArticleLabel">버스 앞사진</label>
+                        <div class="popupArticleFileDouble">
+                            <label for="resume">파일 선택</label>
+                            <input autocomplete="off" name="" type="file" id="resume" class="documentFile">
+                            <input autocomplete="off" type="text" readonly="" class="pointer">
+                            <svg class="fileDeleteBtn documentDeleteBtn" xmlns="http://www.w3.org/2000/svg" width="11.314" height="11.314" viewBox="0 0 11.314 11.314">
+                                <g id="그룹_1513" data-name="그룹 1513" transform="translate(-442.649 -1001.97) rotate(45)">
+                                    <line id="선_691" data-name="선 691" y2="12" transform="translate(1029.5 389.5)" fill="none" stroke="#000" stroke-linecap="round" stroke-width="2"></line>
+                                    <line id="선_692" data-name="선 692" y2="12" transform="translate(1035.5 395.5) rotate(90)" fill="none" stroke="#000" stroke-linecap="round" stroke-width="2"></line>
+                                </g>
+                            </svg>
+                            <input type="hidden" value="">
+                        </div>
+                    </div>
+                    <div class="popupArticleDouble">
+                        <label for="" class="popupArticleLabel">버스 뒤 사진</label>
+                        <div class="popupArticleFileDouble">
+                            <label for="carpooling_agreement">파일 선택</label>
+                            <input autocomplete="off" name="" type="file" id="carpooling_agreement" class="documentFile">
+                            <input autocomplete="off" type="text" readonly="" class="pointer">
+                            <svg class="fileDeleteBtn documentDeleteBtn" xmlns="http://www.w3.org/2000/svg" width="11.314" height="11.314" viewBox="0 0 11.314 11.314">
+                                <g id="그룹_1513" data-name="그룹 1513" transform="translate(-442.649 -1001.97) rotate(45)">
+                                    <line id="선_691" data-name="선 691" y2="12" transform="translate(1029.5 389.5)" fill="none" stroke="#000" stroke-linecap="round" stroke-width="2"></line>
+                                    <line id="선_692" data-name="선 692" y2="12" transform="translate(1035.5 395.5) rotate(90)" fill="none" stroke="#000" stroke-linecap="round" stroke-width="2"></line>
+                                </g>
+                            </svg>
+                            <input type="hidden" value="">
+                        </div>
+                    </div>
+                </div>
+                <div class="popupArticleBox">
+                    <div class="popupArticleDouble">
+                        <label for="" class="popupArticleLabel">버스 운전석쪽 옆사진</label>
+                        <div class="popupArticleFileDouble">
+                            <label for="resume">파일 선택</label>
+                            <input autocomplete="off" name="" type="file" id="resume" class="documentFile">
+                            <input autocomplete="off" type="text" readonly="" class="pointer">
+                            <svg class="fileDeleteBtn documentDeleteBtn" xmlns="http://www.w3.org/2000/svg" width="11.314" height="11.314" viewBox="0 0 11.314 11.314">
+                                <g id="그룹_1513" data-name="그룹 1513" transform="translate(-442.649 -1001.97) rotate(45)">
+                                    <line id="선_691" data-name="선 691" y2="12" transform="translate(1029.5 389.5)" fill="none" stroke="#000" stroke-linecap="round" stroke-width="2"></line>
+                                    <line id="선_692" data-name="선 692" y2="12" transform="translate(1035.5 395.5) rotate(90)" fill="none" stroke="#000" stroke-linecap="round" stroke-width="2"></line>
+                                </g>
+                            </svg>
+                            <input type="hidden" value="">
+                        </div>
+                    </div>
+                    <div class="popupArticleDouble">
+                        <label for="" class="popupArticleLabel">버스 운전석쪽 옆사진</label>
+                        <div class="popupArticleFileDouble">
+                            <label for="carpooling_agreement">파일 선택</label>
+                            <input autocomplete="off" name="" type="file" id="carpooling_agreement" class="documentFile">
                             <input autocomplete="off" type="text" readonly="" class="pointer">
                             <svg class="fileDeleteBtn documentDeleteBtn" xmlns="http://www.w3.org/2000/svg" width="11.314" height="11.314" viewBox="0 0 11.314 11.314">
                                 <g id="그룹_1513" data-name="그룹 1513" transform="translate(-442.649 -1001.97) rotate(45)">
@@ -988,13 +1061,15 @@
     function openCreatePopup(){
         document.querySelector("#CreatePopup").style.display = "block";
     }
-    function closeMaintenanceRecordPopup  () {
-        document.querySelector("#MaintenanceRecordPopup").style.display = "none";
+    function openMaintenanceRecordPopup(newVehicleId) {
+        // 해당 차량의 팝업 열기
+        document.getElementById('MaintenanceRecordPopup' + newVehicleId).style.display = 'block';
     }
 
-    function openMaintenanceRecordPopup () {
-        document.querySelector("#MaintenanceRecordPopup").style.display = "block";
-    };
+    function closeMaintenanceRecordPopup(newVehicleId) {
+        // 해당 차량의 팝업 닫기
+        document.getElementById('MaintenanceRecordPopup' + newVehicleId).style.display = 'none';
+    }
 
     function openDocumentPopup() {
         document.querySelector("#documentPopup").style.display="block";
@@ -1041,15 +1116,15 @@
             console.error("Popup with ID deatilPopup" + newVehicleId + " not found.");
         }
     }
-// 팝업 닫기 함수
-function closeDetailPopup(newVehicleId) {
-    const popupElement = document.querySelector("#deatilPopup" + newVehicleId);
-    if (popupElement) {
-        popupElement.style.display = "none";  // 팝업 닫기
-    } else {
-        console.error("Popup with ID deatilPopup" + newVehicleId + " not found.");
+    // 팝업 닫기 함수
+    function closeDetailPopup(newVehicleId) {
+        const popupElement = document.querySelector("#deatilPopup" + newVehicleId);
+        if (popupElement) {
+            popupElement.style.display = "none";  // 팝업 닫기
+        } else {
+            console.error("Popup with ID deatilPopup" + newVehicleId + " not found.");
+        }
     }
-}
 
 </script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.15.5/xlsx.full.min.js"></script>

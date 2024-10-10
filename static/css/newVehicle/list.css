@@ -322,3 +322,19 @@ tableBody td {
 .popupRepairScroll{
     overflow: hidden;
 }
+
+.green{
+    background-color: red;
+    color: green;
+}
+
+.tableHead tr th{
+    height: 3.0rem;
+    font-size: 1.4rem;
+
+
+}
+
+.maintenanceClose{
+    margin-right: 2rem;
+}

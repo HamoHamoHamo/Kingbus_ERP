@@ -1,0 +1,128 @@
+.container {
+  background-color: #fff;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.Mainapproval {
+  margin-left: 5rem;
+}
+
+.approvalSubSection {
+  font-size: 3rem;
+  margin-bottom: 4rem;
+  margin-top: 8rem;
+  text-align: center;
+  font-weight: 700;
+}
+
+.rule-section ol {
+  list-style-type: decimal;
+}
+
+.rule-section ol li {
+  margin-top: 5rem;
+  margin-left: 3rem;
+  margin-bottom: 5rem;
+}
+
+.approvalMain {
+  font-size: 2rem;
+  font-weight: 600;
+}
+
+.approvalSub {
+  margin-top: 2rem;
+  margin-left: 6rem;
+  font-size: 2rem;
+  font-family: "Nanum Myeongjo", serif;
+}
+
+.approvalrulesPrint {
+  text-align: right;
+}
+
+.print-button {
+  background-color: #444444;
+  color: #fff;
+  border: none;
+  font-size: 1.4rem;
+  cursor: pointer;
+  width: 8rem;
+  height: 3rem;
+  margin-bottom: 1rem;
+}
+
+.MainHeaderTitle {
+  text-align: center;
+  font-size: 5rem;
+  margin-top: 5rem;
+  font-family: "Nanum Myeongjo", serif;
+  font-weight: 700;
+}
+
+.MainGoalsTitle {
+  text-align: right;
+  font-size: 2rem;
+  margin-top: 3rem;
+  margin-right: 5rem;
+  font-weight: 700;
+}
+
+.Criteria {
+  display: flex;
+  text-align: left;
+  font-size: 2rem;
+  margin-top: 3rem;
+  font-weight: 700;
+}
+
+.CriteriaSpan {
+  display: flex;
+  align-items: center;
+  margin-right: 2rem;
+}
+
+.tariff {
+  width: 100%;
+}
+
+table {
+  width: 97%;
+  border-collapse: collapse;
+  margin-top: 20px;
+  height:50rem;
+  margin-bottom:1rem;
+}
+
+th,
+td {
+  border: 1px solid #ddd;
+  padding: 1rem;
+  text-align: center;
+   font-size:1.1rem;
+}
+
+th {
+  background-color: #f2b63f;
+  font-weight: bold;
+}
+
+.highlight {
+  background-color: #f2b63f;
+}
+
+td {
+  background-color: #fff;
+}
+
+.header {
+  background-color: #eee;
+}
+
+.add-fee {
+  background-color: #fff8e1;
+}
+
+.total {
+  font-weight: bold;
+}

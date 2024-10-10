@@ -1,6 +1,11 @@
 from django import forms
 from . import models
-from .models import Vehicle
+from .models import Vehicle, Member, Maintenance
+
+class MaintenanceForm(forms.ModelForm):
+    class Meta:
+        model = Maintenance
+        fields = ['type', 'work_date', 'content', 'cost']
 
 class VehicleForm(forms.ModelForm):
     class Meta:
@@ -36,7 +41,10 @@ class VehicleForm(forms.ModelForm):
             'hot',
             'tv'
         ]
-    
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        # `role`이 '운전원', '팀장', '용역'인 멤버만 가져오기
+        self.fields['driver'].queryset = Member.objects.filter(role__in=['운전원', '팀장', '용역'])
 # class MaintenanceForm(forms.ModelForm):
 #     class Meta:
 #         model = models.Maintenance

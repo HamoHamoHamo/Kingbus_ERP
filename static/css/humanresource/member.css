@@ -153,7 +153,8 @@ td:nth-child(13) {
 }
 
 .tableBody td:nth-child(12),
-.tableBody td:nth-child(13) {
+.tableBody td:nth-child(13),
+.tableBody td:nth-child(14) {
     color: #0069D9;
     cursor: pointer;
 }

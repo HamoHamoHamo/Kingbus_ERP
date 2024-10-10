@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load custom_tags %}
+
+{% block head %}
+<link rel="stylesheet" href="{% static 'css/rules/itemmanagement.css' %}" type="text/css" />
+{% endblock %}
+
+{% block content-header %}
+<div class="HeaderTitle">항목 관리</div>
+{% endblock %}
+
+{% block content %}
+<div class="search">
+    <div class="searchTitle">검색
+        <div class="search_inputArea">
+            <select name="type" id="" class="orderSearchSelect">
+                <option value="route">업무</option>
+                <option value="vehicle">차량번호</option>
+            </select>
+        </div>
+    </div>
+
+    <form action="" class="searchForm">
+        <div class="btnModules searchBtn">검색</div>
+    </form>
+</div>
+
+<div class="table-container">
+    <table>
+        <thead>
+            <tr>
+                <th><input type="checkbox"></th>
+                <th>부서</th>
+                <th>부서별</th>
+                <th>업무</th>
+                <th>가격 책정 (하루/건당 기준)</th>
+                <th>가격 책정 (한달 기준)</th>
+                <th>업무 담당</th>
+                <th>직급별</th>
+                <th>결재</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for row in rows %}
+            <tr>
+                <td><input type="checkbox"></td>
+                <td>{{ row.department }}</td>
+                <td>{{ row.sub_department }}</td>
+                <td>{{ row.task }}</td>
+                <td>{{ row.daily_price }}</td>
+                <td>{{ row.monthly_price }}</td>
+                <td>{{ row.responsible }}</td>
+                <td>{{ row.position }}</td>
+                <td>{{ row.approval_line }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{% endblock %}

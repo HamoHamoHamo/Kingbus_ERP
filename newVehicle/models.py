@@ -10,8 +10,9 @@ class Vehicle(models.Model):
     vehicle_name = models.CharField(max_length=20, verbose_name='차량이름', null=True, blank=True)  # 차량종류
     # driver = models.OneToOneField(Member, verbose_name='기사', on_delete=models.SET_NULL, null=True, related_name="newVehicle")
     # driver_name = models.CharField(verbose_name='기사이름', max_length=100, null=False, blank=True)
-    driver = models.CharField(verbose_name='기사이름', max_length=100, null=False, blank=True)
+    # driver = models.CharField(verbose_name='기사이름', max_length=100, null=False, blank=True)
     # driver = models.ForeignKey(Member, on_delete=models.CASCADE, related_name='newVehicles')
+    driver = models.ForeignKey("humanresource.Member", on_delete=models.CASCADE, null=True, related_name='newVehicle')
     vehicle_serial = models.CharField(max_length=50, verbose_name='제조사', null=True, blank=True)  # 차대번호
     passenger_capacity = models.IntegerField(verbose_name='승차인원', null=False, blank=False)  # 승차인원
     type = models.CharField(verbose_name='형식', max_length=100, null=True, blank=True) #형식
@@ -40,6 +41,12 @@ class Vehicle(models.Model):
     usb = models.BooleanField(verbose_name='USB 유무', null=True, blank=True, default=False)
     hot = models.BooleanField(verbose_name='온수기유무', null=True, blank=True, default=False)
     tv = models.BooleanField(verbose_name='tv유무', null=True, blank=True, default=False)
+
+    # 총 정비 금액
+    total_maintenance_cost = models.IntegerField(verbose_name='총정비금액', default=0)
+    # 총 튜닝 금액
+    total_tuning_cost = models.IntegerField(verbose_name='총튜닝금액', default=0)
+
     
     def count_filled_fields(self):
         """차량 필드 중 값이 채워진 필드의 개수를 계산하고 디버깅 출력"""
@@ -80,13 +87,58 @@ class Vehicle(models.Model):
     def __str__(self):
         return f'{self.id} / {self.vehicle_number_back}'
 
+# class Maintenance(models.Model):
+#     MAINTENANCE_CHOICES = [
+#         ('정비', '정비'),
+#         ('튜닝', '튜닝'),
+#         ('점검', '점검')  # 점검 추가
+#     ]
 
-# class Maintenance(models.Model    ):
-#     vehicle = models.ForeignKey(Vehicle, on_delete=models.CASCADE)  # 차량과의 관계 설정
-#     maintenance_type = models.CharField(verbose_name='구분', max_length=10, null=False, blank=False)
-#     work_date = models.DateField(verbose_name='작업날짜', null=False, blank=False)
-#     work_detail = models.CharField(verbose_name='작업내용', max_length=100, null=False, blank=False)
-#     work_price = models.IntegerField(verbose_name='비용', null=False, blank=False)
+#     vehicle = models.ForeignKey(Vehicle, on_delete=models.CASCADE, related_name='maintenance_records')
+#     type = models.CharField(verbose_name='구분', max_length=100, choices=MAINTENANCE_CHOICES)
+#     work_date = models.DateField(verbose_name='작업일자')
+#     content = models.TextField(verbose_name='작업내용')
+#     cost = models.IntegerField(verbose_name='비용')
+
+#     def save(self, *args, **kwargs):
+#         # 기존 저장 처리
+#         super().save(*args, **kwargs)
+
+#         # 선택된 타입에 따라 금액을 Vehicle의 필드에 합산
+#         if self.type == '정비':
+#             self.vehicle.total_maintenance_cost += self.cost
+#         elif self.type == '튜닝':
+#             self.vehicle.total_tuning_cost += self.cost
+
+#         # Vehicle 저장
+#         self.vehicle.save()
 
 #     def __str__(self):
-#         return f'{self.maintenance_type} - {self.vehicle}'
+#         return f'{self.vehicle} - {self.type}'
+
+class Maintenance(models.Model):
+    MAINTENANCE_CHOICES = [
+        ('정비', '정비'),
+        ('튜닝', '튜닝'),
+        ('점검', '점검')
+    ]
+
+    vehicle = models.ForeignKey(Vehicle, on_delete=models.CASCADE, related_name='maintenance_records')
+    type = models.CharField(verbose_name='구분', max_length=100, choices=MAINTENANCE_CHOICES)
+    work_date = models.DateField(verbose_name='작업일자')
+    content = models.TextField(verbose_name='작업내용')
+    cost = models.IntegerField(verbose_name='비용')
+
+
+    def delete(self, *args, **kwargs):
+        # 삭제 시, 정비 내역에 따라 차량 금액에서 빼줍니다.
+        if self.type == '정비':
+            self.vehicle.total_maintenance_cost -= self.cost
+        elif self.type == '튜닝':
+            self.vehicle.total_tuning_cost -= self.cost
+
+        # super() 호출하여 실제 삭제 처리
+        super().delete(*args, **kwargs)
+
+        # Vehicle 저장
+        self.vehicle.save()

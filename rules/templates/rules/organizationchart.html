@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load custom_tags %}
+
+{% block head %}
+<link rel="stylesheet" href="{% static 'css/rules/organizationchart.css' %}" type="text/css" />
+{% endblock %}
+
+{% block content-header %}
+<div class="HeaderTitle">조직도</div>
+{% endblock %}
+
+{% block content %}
+<div class="org-chart">
+  <img src="/static/images/회사조직도.png">
+</div>
+{% endblock %}

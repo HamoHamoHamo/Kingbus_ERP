@@ -60,6 +60,9 @@
             <div class="sideMenuNav2Box">
               <ul class="sideMenuNav2">
                 <li class="sideMenuNav2Menu">
+                  <a href="{% url 'organizationchart' %}" class="sideMenuNav2Link">조직도</a>
+                </li>
+                <li class="sideMenuNav2Menu">
                   <a href="#" class="sideMenuNav2Link">공지사항</a>
                   <ul class="submenu">
                     <li>
@@ -228,6 +231,11 @@
                     <li>
                       <a href="{% url 'vehicle:maintenancegraph' %}" class="sideMenuNav3Link">
                         <div class="sideMenuNav3Menu">정비그래프</div>
+                      </a>
+                    </li>
+                    <li>
+                      <a href="{% url 'newVehicle:vehicle_view' %}" class="sideMenuNav3Link">
+                        <div class="sideMenuNav3Menu">새로운차량관리</div>
                       </a>
                     </li>
                     <li>
