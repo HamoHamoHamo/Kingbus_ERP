@@ -106,8 +106,8 @@ CACHES = {
         'LOCATION': 'redis://localhost:6379/1',  # Redis 데이터베이스 1번 사용
         'OPTIONS': {
             'CLIENT_CLASS': 'django_redis.client.DefaultClient',
-            'DEFAULT_TIMEOUT': 86400,  # 기본 만료 시간 24시간
-        }
+        },
+        'TIMEOUT': 86400,  # 기본 만료 시간 24시간
     }
 }
 
