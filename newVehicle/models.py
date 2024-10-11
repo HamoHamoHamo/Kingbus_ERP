@@ -87,34 +87,6 @@ class Vehicle(models.Model):
     def __str__(self):
         return f'{self.id} / {self.vehicle_number_back}'
 
-# class Maintenance(models.Model):
-#     MAINTENANCE_CHOICES = [
-#         ('정비', '정비'),
-#         ('튜닝', '튜닝'),
-#         ('점검', '점검')  # 점검 추가
-#     ]
-
-#     vehicle = models.ForeignKey(Vehicle, on_delete=models.CASCADE, related_name='maintenance_records')
-#     type = models.CharField(verbose_name='구분', max_length=100, choices=MAINTENANCE_CHOICES)
-#     work_date = models.DateField(verbose_name='작업일자')
-#     content = models.TextField(verbose_name='작업내용')
-#     cost = models.IntegerField(verbose_name='비용')
-
-#     def save(self, *args, **kwargs):
-#         # 기존 저장 처리
-#         super().save(*args, **kwargs)
-
-#         # 선택된 타입에 따라 금액을 Vehicle의 필드에 합산
-#         if self.type == '정비':
-#             self.vehicle.total_maintenance_cost += self.cost
-#         elif self.type == '튜닝':
-#             self.vehicle.total_tuning_cost += self.cost
-
-#         # Vehicle 저장
-#         self.vehicle.save()
-
-#     def __str__(self):
-#         return f'{self.vehicle} - {self.type}'
 
 class Maintenance(models.Model):
     MAINTENANCE_CHOICES = [
