@@ -87,7 +87,7 @@
         <table class="tableBody">
             <tbody>
                 {% for newVehicle in vehicles %}
-                <tr class="{{newVehicle.id}}">
+                <tr class="{{newVehicle.id}} tbodyTr">
                     <td>
                         <input autocomplete="off" name="vehicle_ids" value="{{newVehicle.id}}" type="checkbox">
                     </td>

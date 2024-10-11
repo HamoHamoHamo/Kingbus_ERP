@@ -14,7 +14,7 @@ class Vehicle(models.Model):
     # driver = models.ForeignKey(Member, on_delete=models.CASCADE, related_name='newVehicles')
     driver = models.ForeignKey("humanresource.Member", on_delete=models.CASCADE, null=True, related_name='newVehicle')
     vehicle_serial = models.CharField(max_length=50, verbose_name='제조사', null=True, blank=True)  # 차대번호
-    passenger_capacity = models.IntegerField(verbose_name='승차인원', null=False, blank=False)  # 승차인원
+    passenger_capacity = models.IntegerField(verbose_name='승차인원', null=True, blank=True)  # 승차인원
     type = models.CharField(verbose_name='형식', max_length=100, null=True, blank=True) #형식
     make_year = models.IntegerField(verbose_name='출고연도', null=True, blank=True) #출고년도
     model_year = models.IntegerField(verbose_name='모델연도', null=True, blank=True)  # 모델연도

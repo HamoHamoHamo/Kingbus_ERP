@@ -84,7 +84,7 @@ table tr:nth-child(10) {
 
 .tableBody {
     width: 100%;
-    height: 62em;
+    height: 57rem;
     margin-top: -0.1rem;
     border: 0.1rem solid #CDCDCE;
     border-spacing: 0;
@@ -117,7 +117,7 @@ td:nth-child(2) {
 
 /* 사용여부 */
 td:nth-child(3) {
-    width: 4%;
+    width: 5%;
 }
 
 /* 차고지 */
@@ -132,7 +132,7 @@ td:nth-child(5) {
 
 /* 담당기사 */
 td:nth-child(6){
-    width: 8%;
+    width: 7%;
 }
 
 /* 제조사 */
@@ -337,4 +337,8 @@ tableBody td {
 
 .maintenanceClose{
     margin-right: 2rem;
+}
+
+.tbodyTr {
+    height: 5.7rem;
 }
