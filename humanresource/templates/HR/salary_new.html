@@ -59,8 +59,8 @@
                     <td class="table-list_head-tr_td">만근수당</td>
                     <td class="table-list_head-tr_td">성실수당</td>
                     <td class="table-list_head-tr_td">무사고수당</td>
-                    <td class="table-list_head-tr_td">복리후생<br>(식대)</td>
                     <td class="table-list_head-tr_td">복리후생<br>(유류비)</td>
+                    <td class="table-list_head-tr_td">복리후생<br>(식대)</td>
                     <td class="table-list_head-tr_td">추가수당</td>
                     <td class="table-list_head-tr_td">공제</td>
                     <td class="table-list_head-tr_td">주휴수당</td>
@@ -118,11 +118,9 @@
                         <input type="text" class="amountInput length100 accidentFreeAllowance" value="{{salary.accident_free_allowance}}">
                     </td>
                     <td class="checkTd table-list_body-tr_td">
-                        <input type="text" class="amountInput length100 welfareMealAllowance" value="{{salary.welfare_meal_allowance}}">
-                    </td>
-                    <td class="checkTd table-list_body-tr_td">
                         <input type="text" class="amountInput length100 welfareFuelAllowance" value="{{salary.welfare_fuel_allowance}}">
                     </td>
+                    <td class="table-list_body-tr_td salaryAdditional addComma salaryPopup mealTd">{{meal_list|index:forloop.counter0}}</td>
                     <td class="table-list_body-tr_td salaryAdditional addComma salaryPopup additionalTd">{{salary.additional}}</td>
                     <td class="table-list_body-tr_td salaryDeduction addComma salaryPopup deductionTd">{{salary.deduction}}</td>
                     <td class="table-list_body-tr_td salaryWeeklyDeduction addComma salaryPopup weeklyDeductionTd {% if salary.weekly_holiday_allowance_deduction != '0' %}backgroundGray{% endif %}">{{weekly_holiday_allowance|index:forloop.counter0}}</td>
@@ -382,6 +380,51 @@
         </div>
     </div>
 </div>
+
+<div class="popupAreaModules mealPopup">
+    <div class="popupBgModules popupBgModulesMeal"></div>
+    <div class="popupContainer popupContainerDouble">
+        <div class="popupHeader">
+            <div class="popupTitle">식대</div>
+        </div>
+        <div class="popupBody">
+            <div class="popupSection">
+                <div class="">
+                    {% csrf_token %}
+                    <div class="popupArticleCategori">식대 목록</div>
+                    <div class="popupArticleBoxTable">
+                        <div class="scrolling_table-list_header mealTable">
+                            <table class="table-list">
+                                <thead>
+                                    <tr class="table-list_head-tr">
+                                        <td class="table-list_head-tr_td">날짜</td>
+                                        <td class="table-list_head-tr_td">금액</td>
+                                    </tr>
+                                </thead>
+                            </table>
+                        </div>
+                        <div class="scrolling_table-list_body mealTable mealTableScroll popupTableScroll">
+                            <table class="table-list">
+                                <tbody>
+                                </tbody>
+                            </table>
+                        </div>
+                        <table class="mealTotalTable popupTotalTable">
+                            <tr>
+                                <td>합계</td>
+                                <td class="totalAddSalaryPrice"></td>
+                            </tr>
+                        </table>
+                    </div>
+                    <input type="hidden" name="order_id" class="deleteAddHidden">
+                </div>
+            </div>
+            <div class="popupFooter">
+                <div class="btnModules mealCloseBtn closeBtn">닫기</div>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}
 
 
@@ -420,6 +463,8 @@
     console.log("additionalList", additionalList);
     const weeklyDeductionList = {{ weekly_deduction_list }};
     console.log("weeklyDeductionList", weeklyDeductionList);
+    const mealList = {{ monthly_meal_list }};
+    console.log("mealList", mealList);
     {% endautoescape %}
 
 
@@ -429,12 +474,14 @@
             loadForm.submit()
         }
     }
+    const DAILY_SALARY_URL = "{% url 'salary:daily_status' %}"
 
 </script>
 <script src="{% static 'js/hr/authority.js' %}"></script>
 <script src="{% static 'js/hr/addSalary.js' %}"></script>
 <script src="{% static 'js/hr/deduction.js' %}"></script>
 <script src="{% static 'js/hr/weeklyHolidayAllowanceDeduction.js' %}"></script>
+<script src="{% static 'js/hr/mealPopup.js' %}"></script>
 <script src="{% static 'js/hr/textValidation.js' %}"></script>
 <script src="{% static 'js/hr/checker.js' %}"></script>
 <script src="{% static 'js/hr/addComma.js' %}"></script>

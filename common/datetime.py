@@ -6,6 +6,7 @@ from common.constant import WEEK2, DATE_FORMAT, DATE_TIME_FORMAT
 from my_settings import OPEN_API_KEY
 from django.core.exceptions import BadRequest
 from config.custom_logging import logger
+from typing import Dict, Any
 
 from django.core.cache import cache
 
@@ -304,3 +305,32 @@ def calculate_time_with_minutes(time_str, minutes):
 
     # 결과 시간을 "HH:MM" 형식으로 반환
     return new_time_obj.strftime("%H:%M")
+
+# 출발 시간과 도착 시간이 특정 시간 범위에 해당할 경우 카운트를 1씩 증가시키는 함수
+def count_range_hits(start_time_str, end_time_str, result) -> Dict[str, Any]:
+    # 주어진 시간 문자열을 datetime 객체로 변환
+    start_time = datetime.strptime(start_time_str, DATE_TIME_FORMAT)
+    end_time = datetime.strptime(end_time_str, DATE_TIME_FORMAT)
+    
+    # 범위 설정: 04:00 ~ 10:00, 17:00 ~ 21:00
+    RANGES = [
+        (timedelta(hours=4), timedelta(hours=10)),
+        (timedelta(hours=17), timedelta(hours=21)),
+    ]
+    
+    # 현재 시간을 출발 시간으로 초기화
+    current_time = start_time
+    while current_time <= end_time.replace(hour=23, minute=59):
+        # 현재 날짜의 04:00과 10:00, 17:00과 21:00 범위를 확인
+        for start_range, end_range in RANGES:
+            range_start_time = current_time.replace(hour=start_range.seconds // 3600, minute=0)
+            range_end_time = current_time.replace(hour=end_range.seconds // 3600, minute=0)
+            
+            # 현재 범위가 주어진 출발~도착 시간 내에 있으면 카운트를 증가
+            if start_time <= range_end_time and end_time >= range_start_time:
+                result[datetime.strftime(range_start_time, DATE_TIME_FORMAT)] = 1
+
+        # 현재 시간을 하루씩 증가시킴
+        current_time += timedelta(days=1)
+    
+    return result

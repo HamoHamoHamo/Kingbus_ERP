@@ -191,7 +191,7 @@ class Salary(models.Model):
         #     order_price = int(order['driver_allowance__sum'])
         
         try:
-            Category = apps.get_model('Category', 'Model')
+            Category = apps.get_model('crudmember', 'Category')
             payment_date = Category.objects.get(type='급여지급일').category
         except:
             payment_date = 1
