@@ -107,7 +107,7 @@ CACHES = {
         'OPTIONS': {
             'CLIENT_CLASS': 'django_redis.client.DefaultClient',
         },
-        'TIMEOUT': 86400,  # 기본 만료 시간 24시간
+        'TIMEOUT': 60 * 60 * 24 * 7,  # 기본 만료 시간 24시간
     }
 }
 

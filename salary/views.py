@@ -216,75 +216,20 @@ class SalaryDataController(AuthorityCheckView):
         for member in member_list:
             data_collector = data_collector_class(member, month, mondays, connect_time_list, holiday_data, date_list)
             temp_data = data_collector.get_collected_data()
+            
+            # NewSalary에서 사용, 나중에 분리
+            time_datas = data_collector.get_calculate_times()
 
             # 근무시간이 0이 아닌 사람의 데이터만 리턴
+            member_id = member.id
             if temp_data['total_work_hour_minute'] != "0":
-                datas[member.id] = temp_data
-                datas[member.id]['member__name'] = member.name
-                datas[member.id]['member__role'] = member.role
-                datas[member.id]['member__entering_date'] = member.entering_date
+                datas[member_id] = temp_data
+                datas[member_id]['member__name'] = member.name
+                datas[member_id]['member__role'] = member.role
+                datas[member_id]['member__entering_date'] = member.entering_date
                 self.member_list.append(member)
 
-        return datas
-
-class SalaryDataController2(AuthorityCheckView):
-    member_list = []
-    dispatch_selector = DispatchSelector
-    data_collector_class = SalaryTableDataCollector3
-
-    def __init__(self, month):
-        self.set_date_datas(month)
-        self.get_connect_time_list_from_dispatch_selector()
-
-
-    def set_date_datas(self, month):
-        self.month = month
-        self.first_date = f"{month}-01"
-        self.mondays = get_mondays_from_last_week_of_previous_month(month)
-        self.start_date = self.mondays[0] if self.mondays[0][:7] != month else self.first_date
-        self.holiday_data = get_holiday_list(month)
-        self.date_list = get_date_range_list(self.first_date, last_date_of_month(self.first_date))
-
-
-    def get_connect_time_list_from_dispatch_selector(self):
-        self.connect_time_list = self.dispatch_selector().get_driving_time_list(self.start_date, get_next_sunday_after_last_day(self.month))
-
-    def get_datas(self, member_list):
-        datas = {}
-        self.member_list = []
-        for member in member_list:
-            data_collector = self.data_collector_class(member, self.month, self.mondays, self.connect_time_list, self.holiday_data, self.date_list)
-            temp_data = data_collector.get_collected_data()
-
-            datas[member.id] = temp_data
-            datas[member.id]['member__name'] = member.name
-            datas[member.id]['member__role'] = member.role
-            datas[member.id]['member__entering_date'] = member.entering_date
-            # 임금
-            datas[member.id]['wage'] = format_number_with_commas(
-                remove_comma_from_number(temp_data['total'])
-                - remove_comma_from_number(temp_data['service_allowance'])
-                - remove_comma_from_number(temp_data['new_annual_allowance'])
-                - remove_comma_from_number(temp_data['team_leader_allowance_roll_call'])
-                - remove_comma_from_number(temp_data['team_leader_allowance_vehicle_management'])
-                - remove_comma_from_number(temp_data['team_leader_allowance_task_management'])
-                - remove_comma_from_number(temp_data['full_attendance_allowance'])
-                - remove_comma_from_number(temp_data['diligence_allowance'])
-                - remove_comma_from_number(temp_data['accident_free_allowance'])
-                - remove_comma_from_number(temp_data['welfare_meal_allowance'])
-                - remove_comma_from_number(temp_data['welfare_fuel_allowance'])
-                - remove_comma_from_number(temp_data['weekly_holiday_allowance'])
-                - remove_comma_from_number(temp_data['additional']) 
-                + remove_comma_from_number(temp_data['deduction'])   
-            )
-            # 팀장수당
-            datas[member.id]['team_leader_allowance'] = format_number_with_commas(
-                + remove_comma_from_number(temp_data['team_leader_allowance_roll_call'])
-                + remove_comma_from_number(temp_data['team_leader_allowance_vehicle_management'])
-                + remove_comma_from_number(temp_data['team_leader_allowance_task_management'])
-            )
-
-            self.member_list.append(member)
+                datas[member_id]['meal_list'] = time_datas['meal_list']
 
         return datas
 

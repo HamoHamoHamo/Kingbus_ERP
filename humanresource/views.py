@@ -1125,7 +1125,7 @@ def salary_detail_hourly(request):
         if payment_date == '말일':
             salary_date = datetime.strftime(datetime.strptime(month+'-01', FORMAT) + relativedelta(months=1) - timedelta(days=1), FORMAT)
         else:
-            salary_date = datetime.strftime(datetime.strptime(f'{month}-{payment_date}', FORMAT) - relativedelta(months=1), FORMAT)
+            salary_date = datetime.strftime(datetime.strptime(f'{month}-{payment_date}', FORMAT) + relativedelta(months=1), FORMAT)
 
         additional = salary.additional_salary.all()
         deduction = salary.deduction_salary.all()
@@ -1273,6 +1273,8 @@ class NewSalaryList(SalaryList):
         context['total_wage_list'] = []
         context['total_work_hour_minute_list'] = []
         context['weekly_holiday_allowance'] = []
+        context['meal_list'] = []
+        context['monthly_meal_list'] = []
         for data_id in context['datas']:
             #context['wage_list'].append(context['datas'][data_id]['wage'])
             context['total_wage_list'].append(context['datas'][data_id]['total'])
@@ -1287,13 +1289,14 @@ class NewSalaryList(SalaryList):
                 - remove_comma_from_number(context['datas'][data_id]['full_attendance_allowance'])
                 - remove_comma_from_number(context['datas'][data_id]['diligence_allowance'])
                 - remove_comma_from_number(context['datas'][data_id]['accident_free_allowance'])
-                - remove_comma_from_number(context['datas'][data_id]['welfare_meal_allowance'])
+                - remove_comma_from_number(context['datas'][data_id]['meal'])
                 - remove_comma_from_number(context['datas'][data_id]['welfare_fuel_allowance'])
                 - remove_comma_from_number(context['datas'][data_id]['weekly_holiday_allowance'])
-                - remove_comma_from_number(context['datas'][data_id]['additional']) 
+                - remove_comma_from_number(context['datas'][data_id]['additional'])
                 + remove_comma_from_number(context['datas'][data_id]['deduction'])
-                
             ))
+            context['meal_list'].append(context['datas'][data_id]['meal'])
+            context['monthly_meal_list'].append(context['datas'][data_id]['meal_list'])
         
         context.update(self.get_datas(data_controller.member_list, context, context['month']))
         context['datas_member_list'] = data_controller.member_list
@@ -1481,12 +1484,11 @@ def salary_new_edit(request):
         full_attendance_allowance = request.POST.getlist('full_attendance_allowance')
         diligence_allowance = request.POST.getlist('diligence_allowance')
         accident_free_allowance = request.POST.getlist('accident_free_allowance')
-        welfare_meal_allowance = request.POST.getlist('welfare_meal_allowance')
         welfare_fuel_allowance = request.POST.getlist('welfare_fuel_allowance')
         id_list = request.POST.getlist('id')
         month = request.POST.get('month')
 
-        for service_allowance, annual_allowance, team_leader_allowance_roll_call, team_leader_allowance_vehicle_management, team_leader_allowance_task_management, full_attendance_allowance, diligence_allowance, accident_free_allowance, welfare_meal_allowance, welfare_fuel_allowance, id in zip(service_allowance, annual_allowance, team_leader_allowance_roll_call, team_leader_allowance_vehicle_management, team_leader_allowance_task_management, full_attendance_allowance, diligence_allowance, accident_free_allowance, welfare_meal_allowance, welfare_fuel_allowance, id_list):
+        for service_allowance, annual_allowance, team_leader_allowance_roll_call, team_leader_allowance_vehicle_management, team_leader_allowance_task_management, full_attendance_allowance, diligence_allowance, accident_free_allowance, welfare_fuel_allowance, id in zip(service_allowance, annual_allowance, team_leader_allowance_roll_call, team_leader_allowance_vehicle_management, team_leader_allowance_task_management, full_attendance_allowance, diligence_allowance, accident_free_allowance, welfare_fuel_allowance, id_list):
             member = get_object_or_404(Member, id=id)
 
 
@@ -1502,7 +1504,6 @@ def salary_new_edit(request):
                 'full_attendance_allowance': full_attendance_allowance.replace(',', ''),
                 'diligence_allowance': diligence_allowance.replace(',', ''),
                 'accident_free_allowance': accident_free_allowance.replace(',', ''),
-                'welfare_meal_allowance': welfare_meal_allowance.replace(',', ''),
                 'welfare_fuel_allowance': welfare_fuel_allowance.replace(',', ''),
             }
             form = SalaryForm(salary_data, instance=salary)
@@ -1520,7 +1521,6 @@ def salary_new_edit(request):
                 member.full_attendance_allowance = full_attendance_allowance.replace(',','')
                 member.diligence_allowance = diligence_allowance.replace(',','')
                 member.accident_free_allowance = accident_free_allowance.replace(',','')
-                member.welfare_meal_allowance = welfare_meal_allowance.replace(',','')
                 member.welfare_fuel_allowance = welfare_fuel_allowance.replace(',','')
                 member.save()
 
@@ -1730,7 +1730,6 @@ def salary_load(request):
             salary.full_attendance_allowance = prev_salary.full_attendance_allowance
             salary.diligence_allowance = prev_salary.diligence_allowance
             salary.accident_free_allowance = prev_salary.accident_free_allowance
-            salary.welfare_meal_allowance = prev_salary.welfare_meal_allowance
             salary.welfare_fuel_allowance = prev_salary.welfare_fuel_allowance
 
             salary.save()
