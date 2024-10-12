@@ -54,7 +54,6 @@ const totalWelfareFuelAllowance = document.querySelector(".totalWelfareFuelAllow
 
 
 function totalSalary(){
-    console.log("TES", totalWelfareMealAllowance)
     let priceOvertimeAllowance = 0
     let priceBase = 0
     let priceServiceAllowance = 0
@@ -103,7 +102,7 @@ function totalSalary(){
         priceFullAttendanceAllowance = priceFullAttendanceAllowance + parseInt(fullAttendanceAllowance[i]?.value?.replace(/\,/g,""))
         priceDiligenceAllowance = priceDiligenceAllowance + parseInt(diligenceAllowance[i]?.value?.replace(/\,/g,""))
         priceAccidentFreeAllowance = priceAccidentFreeAllowance + parseInt(accidentFreeAllowance[i]?.value?.replace(/\,/g,""))
-        priceWelfareMealAllowance = priceWelfareMealAllowance + parseInt(welfareMealAllowance[i]?.value?.replace(/\,/g,""))
+        priceWelfareMealAllowance = priceWelfareMealAllowance + parseInt(welfareMealAllowance[i]?.innerText?.replace(/\,/g,""))
         priceWelfareFuelAllowance = priceWelfareFuelAllowance + parseInt(welfareFuelAllowance[i]?.value?.replace(/\,/g,""))
     };
     totalOvertimeAllowance ? totalOvertimeAllowance.innerText = priceOvertimeAllowance?.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",") : null
