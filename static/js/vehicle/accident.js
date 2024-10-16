@@ -29,6 +29,14 @@ const closePopUp = () => {
     document.querySelector(".pop-up-bg-container").style.display = "none";
 }
 
+const onEstimatePopUp = () => {
+    document.querySelector(".estimate-pop-up-bg-container").style.display = "flex";
+}
+
+const closeEstimatePopUp = () => {
+    document.querySelector(".estimate-pop-up-bg-container").style.display = "none";
+}
+
 // MARK: - Today, DayBefore, DayAfter Function
 const setToday = () => {
     const today = new Date();
@@ -131,14 +139,20 @@ const dayAfterButton = document.querySelector(".day-after-button");
 const searchButton = document.querySelector(".dispatch-path-search-button"); 
 const nameField = document.querySelector(".search-dispatch-path");
 
+// Table
+// const detailButtons = document.getElementsByClassName("accident-detail-button");
+
+// 사고처리 견적서
+const estimateButton = document.querySelector("#estimate-button");
+
 // 등록
-const registerButton = document.querySelector("#register-button")
-const completeButton = document.querySelector("#complete-button")
-const closeButton = document.querySelector("#close-button")
+const registerButton = document.querySelector("#register-button");
+const completeButton = document.querySelector("#complete-button");
+const closeButton = document.querySelector("#close-button");
 
 // 파일
-const uploadNameDocument = document.querySelector(".upload-name")
-const accidentReportButton = document.querySelector("#accident-report")
+const uploadNameDocument = document.querySelector(".upload-name");
+const accidentReportButton = document.querySelector("#accident-report");
 
 // variables
 const today = new Date();
@@ -213,6 +227,17 @@ dateField.addEventListener("change", () => {
 searchButton.addEventListener("click", () => {
 
 });
+
+// for (let detailButton of detailButtons) {
+//     detailButton.addEventListener("click", () => {
+//         console.log("Detail Button Clicked");
+//     })
+// }
+
+estimateButton.addEventListener("click", () => {
+    closePopUp();
+    onEstimatePopUp();
+})
 
 registerButton.addEventListener("click", () => {
     onPopUp();

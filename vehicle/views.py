@@ -44,6 +44,18 @@ class AccidentList(generic.ListView):
     model = Vehicle
     paginate_by = 20
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        # paginator = context['paginator']
+        objects_cnt_per_page = self.paginate_by
+        page = self.request.GET.get('page')
+        current_page = int(page) if page else 1
+
+        context['objects_cnt'] = objects_cnt_per_page * (current_page - 1)
+
+        return context
+
 class VehicleList(generic.ListView):
     template_name = 'vehicle/list.html'
     context_object_name = 'vehicle_list'

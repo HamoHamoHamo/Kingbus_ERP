@@ -7,7 +7,7 @@ from django.shortcuts import render, redirect, HttpResponse, get_object_or_404
 from django.template.loader import render_to_string
 from django.utils.http import urlsafe_base64_encode,urlsafe_base64_decode
 from django.views import generic
-
+from django.utils.encoding import force_bytes
 from .models import User, UserFile, Category, Client
 from .forms import UserForm, ClientForm
 from humanresource.models import Member, Salary
@@ -655,8 +655,8 @@ def passwordfinder(request):
                 'justify-content: center; align-items: center;">'
                 '입력하신 이메일<span>로 인증 링크가 전송되었습니다.</span>'
                 '</div>'
-            )
-            return redirect('home')
+                )
+        return redirect('home')
 
 
 # def pwchangeauth(request, uid64, token):

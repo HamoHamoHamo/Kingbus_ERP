@@ -109,3 +109,47 @@ class EquipmentChecklist(models.Model):
     pub_date = models.DateTimeField(auto_now_add=True, verbose_name='작성시간')
     updated_at = models.DateTimeField(auto_now=True, verbose_name='수정시간')
     creator = models.ForeignKey(Member, on_delete=models.SET_NULL, related_name="equipment_checklist_creator", db_column="creator_id", null=True)
+
+class Accident(models.Model):
+    member = models.ForeignKey(Member, on_delete=models.SET_NULL, related_name="accident_member", null=True)
+    date = models.CharField(verbose_name="사고날짜", max_length=100, null=False, blank=True)
+    # TODO 결재 구현시 반영
+    # approval = models.ForeignKey(Approval, ...)
+    pub_date = models.DateTimeField(auto_now_add=True, verbose_name='작성시간')
+    updated_at = models.DateTimeField(auto_now=True, verbose_name='수정시간')
+    creator = models.ForeignKey(Member, on_delete=models.SET_NULL, related_name="accident_creator", db_column="creator_id", null=True)
+    
+    #세부사항부분
+    # https://stackoverflow.com/questions/44601550/how-to-solve-the-circular-import-error-in-django
+    carnum = models.ForeignKey('vehicle.Vehicle', verbose_name='차량 번호', on_delete=models.SET_NULL, related_name="accident_details_car_id", null=True)
+    # carnum = models.CharField(verbose_name='차량 번호', max_length=100, null=False, blank=True) #Vehicle모델 참조하기로함
+    # route_name = models.CharField(verbose_name='노선명', max_length=100, null=False, blank=True)
+    dispatch_order_connect = models.ForeignKey('dispatch.DispatchOrderConnect', verbose_name='일반노선', on_delete=models.SET_NULL, related_name="accident_details_dispatch_order_connect", null=True)
+    dispatch_regularly_connect = models.ForeignKey('dispatch.DispatchRegularlyConnect', verbose_name='출퇴근노선', on_delete=models.SET_NULL, related_name="accident_details_dispatch_regularly_connect", null=True)
+
+    kind_of_accident = models.CharField(verbose_name='자차/대물', max_length=100, null=False, blank=True)
+    damaged_car = models.CharField(verbose_name='피해 차량', max_length=100, null=False, blank=True)
+    accident_location = models.CharField(verbose_name='사고 발생 지점', max_length=100, null=False, blank=True) # 간략히? 아니면 지도 좌표??
+    accident_time_occur = models.CharField(verbose_name='사고 발생 시간', max_length=100, null=False, blank=True) 
+    accident_time_solve = models.CharField(verbose_name='운행 재개 시간', max_length=100, null=False, blank=True)
+    vehicle_speed = models.CharField(verbose_name='사고당시 차량 속도', max_length=100, null=False, blank=True)
+    passenger_count = models.CharField(verbose_name='탑승인원', max_length=100, null=False, blank=True)
+    accident_description = models.TextField(verbose_name='사고 개요', null=False, blank=True)
+
+    #파일부분
+    picture_our_vehicle = models.TextField(verbose_name='내 차량', null=False, blank=True)
+    picture_thier_vehicle = models.TextField(verbose_name='상대방 차량', null=False, blank=True)
+    picture_all_vehicles = models.TextField(verbose_name='내 차량/상대방 차량', null=False, blank=True) # 상대가 사람이면 어떻게??
+    picture_from_far = models.TextField(verbose_name='먼 사진', null=False, blank=True)
+    picture_from_close = models.TextField(verbose_name='가까운 사진', null=False, blank=True)
+
+    picture_passenger_list = models.TextField(verbose_name='승객 명단 파일', null=False, blank=True)
+    
+    accident_report = models.TextField(verbose_name='사고 보고서', null=False, blank=True)
+    # driver_license = models.TextField(verbose_name='운전면허증', null=False, blank=True)
+    # 운전면허 누구의? 그리고 member모델에 있는거 쓰면 되는게 아닌지? case의 member모델 참조하여 가져오기
+    agreement = models.TextField(verbose_name='합의서', null=False, blank=True)
+    execution_confirm_oath = models.TextField(verbose_name='이행확약서', null=False, blank=True)
+    vehicle_accident_reception = models.TextField(verbose_name='자동차 공제 사고 접수서', null=False, blank=True)
+    vehicle_maintenence_bill = models.TextField(verbose_name='자동차 점검 정비 명세서', null=False, blank=True)
+    deducted_payment_bill = models.TextField(verbose_name='공제금 지급청구서', null=False, blank=True)
