@@ -58,6 +58,6 @@ class SalaryForm(forms.ModelForm):
             'full_attendance_allowance',
             'diligence_allowance',
             'accident_free_allowance',
-            'welfare_meal_allowance',
+            # 'welfare_meal_allowance',
             'welfare_fuel_allowance',
         ]

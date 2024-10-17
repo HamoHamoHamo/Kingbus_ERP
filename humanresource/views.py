@@ -1739,3 +1739,38 @@ def salary_load(request):
         return redirect(request.META.get('HTTP_REFERER', 'redirect_if_referer_not_found'))
     else:
         return HttpResponseNotAllowed(['post'])
+
+def salary_load_new(request):
+    if request.method == 'POST':
+        user_auth = request.session.get('authority')
+        if user_auth >= 3:
+            return render(request, 'authority.html')
+
+        id_list = request.POST.getlist('member_id')
+        month = request.POST.get('month')
+        prev_month = datetime.strftime(datetime.strptime(f'{month}-01', FORMAT) - relativedelta(months=1), FORMAT)[:7]
+
+        for id in id_list:
+            member = get_object_or_404(Member, id=id)
+            try:
+                prev_salary = Salary.objects.filter(month=prev_month).get(member_id=member)
+            except Salary.DoesNotExist:
+                continue
+
+            service_allowance = prev_salary.service_allowance
+            new_annual_allowance = prev_salary.new_annual_allowance
+            full_attendance_allowance = prev_salary.full_attendance_allowance
+            diligence_allowance = prev_salary.diligence_allowance
+            accident_free_allowance = prev_salary.accident_free_allowance
+
+            salary = Salary.objects.filter(month=month).get(member_id=member)
+            salary.service_allowance = service_allowance
+            salary.new_annual_allowance = new_annual_allowance
+            salary.full_attendance_allowance = full_attendance_allowance
+            salary.diligence_allowance = diligence_allowance
+            salary.accident_free_allowance = accident_free_allowance
+
+            salary.save()        
+        return redirect(request.META.get('HTTP_REFERER', 'redirect_if_referer_not_found'))
+    else:
+        return HttpResponseNotAllowed(['post'])
