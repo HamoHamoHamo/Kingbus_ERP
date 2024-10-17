@@ -136,7 +136,7 @@ def vehicle_download(request):
     vehicles = Vehicle.objects.all()
     for vehicle in vehicles:
         sheet.append([vehicle.vehicle_number_front, vehicle.vehicle_number_back, vehicle.maker, vehicle.vehicle_name,
-                      vehicle.driver, vehicle.vehicle_serial, vehicle.passenger_capacity, vehicle.model_year])
+                      vehicle.driver.name, vehicle.vehicle_serial, vehicle.passenger_capacity, vehicle.model_year])
 
     # 엑셀 파일을 HttpResponse로 반환
     response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
@@ -165,7 +165,7 @@ def vehicle_excel_upload(request):
                 )
 
             # 성공 후 리스트 페이지로 리다이렉트
-            return HttpResponseRedirect('/newVehicle/list/')
+            return HttpResponseRedirect('/newVehicle/list')
         except Exception as e:
             # 에러 발생 시 JSON 응답으로 에러 메시지 반환
             return JsonResponse({'success': False, 'message': str(e)}, status=500)

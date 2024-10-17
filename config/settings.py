@@ -63,6 +63,7 @@ INSTALLED_APPS = [
     'rollcall',
     'newVehicle',
     'newAccounting',
+    
 ]
 
 MIDDLEWARE = [
