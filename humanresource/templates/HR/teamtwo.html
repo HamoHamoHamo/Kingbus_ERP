@@ -74,13 +74,11 @@
                     <select name="role" class="inputTeamJang">
                     <option {% if role == '팀장선택' %} selected {% endif %} value="팀장선택">팀장선택</option>
                     <option {% if role == '전민철' %} selected {% endif %} value="전민철">전민철</option>
-                    <option {% if role == '유성재' %} selected {% endif %} value="유성재">유성재</option>
                     <option {% if role == '박우덕' %} selected {% endif %} value="박우덕">박우덕</option>
-                    <option {% if role == '신용민' %} selected {% endif %} value="신용민">신용민</option>
                     <option {% if role == '홍대수' %} selected {% endif %} value="홍대수">홍대수</option>
-                    <option {% if role == '엄현민' %} selected {% endif %} value="엄현민">엄현민</option>
                     <option {% if role == '목진국' %} selected {% endif %} value="목진국">목진국</option>
                     <option {% if role == '추광엽' %} selected {% endif %} value="추광엽">추광엽</option>
+                    <option {% if role == '김영천' %} selected {% endif %} value="추광엽">김영천</option>
                 </select>
                 </div>
                
@@ -138,7 +136,6 @@
             {% csrf_token %}
             <input type="hidden" name="team" value="{{group.id}}">
             <div class="RouteList">
-                <div class="RouteListHeadScroll">
                     <table class="RouteListHeader">
                         <thead>
                             <tr>
@@ -151,7 +148,10 @@
                                 <td>도착지</td>
                                 <td>사업장</td>
                                 <td>출/퇴근</td>
-                                <td>운행시간</td>    
+                                <td>운행시간</td>
+                            </tr>
+                        </thead>
+                    </table>    
                 </div> 
  
                 <div class="RouteListScroll">
