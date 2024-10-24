@@ -103,7 +103,7 @@ DATABASES = my_settings.DATABASES
 CACHES = {
     'default': {
         'BACKEND': 'django_redis.cache.RedisCache',
-        'LOCATION': 'redis://localhost:6379/1',  # Redis 데이터베이스 1번 사용
+        'LOCATION': 'redis://localhost:6379',
         'OPTIONS': {
             'CLIENT_CLASS': 'django_redis.client.DefaultClient',
         },
@@ -149,9 +149,10 @@ USE_TZ = False
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
 STATIC_URL = '/static/'
-STATIC_DIR = os.path.join(BASE_DIR, 'static'),
+# STATIC_DIR = os.path.join(BASE_DIR, 'static')
 #STATICFILES_FINDERS = ['django.contrib.staticfiles.finders.FileSystemFinder',]
 STATICFILES_DIRS=[
+    os.path.join(BASE_DIR, 'static')
 #     os.path.join(BASE_DIR,'crudmember','static'),
 #     os.path.join(BASE_DIR,'accounting','static'),
 #     os.path.join(BASE_DIR,'dispatch','static'),
@@ -161,7 +162,9 @@ STATICFILES_DIRS=[
 #     os.path.join(BASE_DIR,'notice','static'),
     
 ]
-STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+
+# collectstatic 명령어가 실행되면 이 경로로 static 파일이 복사됨
+# STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 # 미디어 파일을 관리할 루트 media 디렉터리
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
