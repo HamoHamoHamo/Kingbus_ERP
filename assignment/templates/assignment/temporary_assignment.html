@@ -63,7 +63,7 @@
                         <div class="hourTd"></div>
                         <div class="hourTd"></div>
                         <div class="hourTd"></div>
-                        <div class="driverTd {{v.id}} d{{v.driver.id}}" title="{{v.vehicle_num0}} {{v.vehicle_num}} ({{v.model_year}})">{{v.vehicle_num}} {% if v.driver_name %}({{v.driver_name}}){% endif %}</div>
+                        <div class="driverTd {{v.id}} d{{v.driver.id}}" title="{{v.vehicle_num0}} {{v.vehicle_num}} ({{v.model_year}})">{{v.vehicle_num}} {% if v.driver %}({{v.driver.name}}){% endif %}</div>
                         <!-- 기사 없으면 괄호 없애기 -->
                     </div>
                     {% endfor %}
@@ -184,9 +184,9 @@
                         <td colspan="3" class="tdTypeB">
                             <input name="assignment" value="{{detail.assignment}}" type="text" class="inputText">
                         </td>
-                        <td class="tdTypeA">위치</td>
+                        <td class="tdTypeA">*위치</td>
                         <td colspan="3" class="tdTypeB">
-                            <input name="location" value="{{detail.location}}" type="text" class="inputText">
+                            <input name="location" value="{{detail.location}}" type="text" class="inputText essential">
                         </td>
                     </tr>
                     <tr>
