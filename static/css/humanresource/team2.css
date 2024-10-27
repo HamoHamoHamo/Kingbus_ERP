@@ -38,31 +38,6 @@
     overflow-x: hidden;
 }
 
-.RouteList table td:nth-child(1) {
-    width: 4%;
-}
-
-.RouteList table td:nth-child(2) {
-    width: 8%;
-}
-
-.RouteList table td:nth-child(3) {
-    width: 8%;
-}
-
-.RouteList table td:nth-child(4) {
-    width: 8%;
-    text-align: center;
-    padding: 0;
-}
-
-.RouteList table td:nth-child(5) {
-    width: 16%;
-}
-
-.RouteList table td:nth-child(6) {
-    width: 16%;
-}
 
 .RouteListBodyTr:hover {
     background-color: #CDCDCE;
@@ -114,4 +89,67 @@
 
 .excelDownloads{
     border: none;
+}
+
+
+/* 선택,순번,출근/퇴근,차량,출/퇴근 */
+.routeListHeaderTd:nth-child(1), .routeListBodyTd:nth-child(1),
+.routeListHeaderTd:nth-child(2), .routeListBodyTd:nth-child(2),
+.routeListHeaderTd:nth-child(4), .routeListBodyTd:nth-child(4),
+.routeListHeaderTd:nth-child(5), .routeListBodyTd:nth-child(5),
+.routeListHeaderTd:nth-child(8), .routeListBodyTd:nth-child(8){
+    width : 6% !important
+}
+
+.routeListHeaderTd:nth-child(3), .routeListBodyTd:nth-child(3),
+.routeListHeaderTd:nth-child(10), .routeListBodyTd:nth-child(10){
+    width : 8% !important
+}
+
+.routeListHeaderTd:nth-child(6), .routeListBodyTd:nth-child(6){
+    width : 28% !important
+}
+
+.routeListHeaderTd:nth-child(7), .routeListBodyTd:nth-child(7){
+    width : 12% !important
+}
+
+.routeListHeaderTd:nth-child(9), .routeListBodyTd:nth-child(9){
+    width : 14% !important
+}
+
+.RouteHeaderScroll{
+    height: 3.6rem;
+}
+
+.RouteHeaderScroll{
+    margin: 0.6rem;
+}
+
+.RouteListScroll::-webkit-scrollbar {
+    width: 0.6rem;
+    height: 1rem;
+  }
+  
+  .RouteListScroll::-webkit-scrollbar-thumb {
+    height: 17%;
+    background-color: #444444;
+    border-radius: 1rem;
+  }
+  
+  .RouteListScroll::-webkit-scrollbar-track {
+    background-color: #D2D2D2;
+  }
+.RouteListHeader{
+  position: sticky; 
+  top: 0; 
+  z-index: 1; 
+}
+
+.groupList{
+    height: calc(100% - 20rem);
+}
+
+.groupCreateBtnn{
+    margin-right: auto;
 }

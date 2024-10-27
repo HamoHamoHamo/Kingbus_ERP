@@ -58,16 +58,12 @@
             </div>
         </div>
 
-        {% if team and team != "전체" and team != "팀없음" %}
-        <form action="{% url 'HR:team_edit' %}" method="post" class="TeamCreates">
-        {% else %}
         
-        <form action="{% url 'HR:team_create' %}" method="post" class="TeamCreates">
-        {% endif %}
+        <form action= method="post" class="TeamCreates">
             <input autocomplete="off" type="hidden" name="id" value="{{team.id}}">
             {% csrf_token %}
 
-            <div class="groupCreateHead">팀 등록</div>
+            <div class="groupCreateHead">팀 수정</div>
             <div class="groupCreateBody">
               <div class="groupSelectBody">
                 <div class="groupCreateinput">
@@ -88,6 +84,7 @@
 
               </div> 
                 <div class="groupCreateBtnBox">
+                    <input autocomplete="off" type="submit" class="btnModules groupCreateSave groupCreateBtnn" value="신규">
                     <input autocomplete="off" type="submit" class="btnModules groupCreateSave" value="저장">
                     <div class="btnModules groupCreateDelete" onclick="groupCreateDeleteUrl()">삭제</div>
                 </div>
@@ -117,15 +114,13 @@
                     <option {% if role == '출근' %} selected {% endif %} value="출근">출근</option>
                     <option {% if role == '퇴근' %} selected {% endif %} value="퇴근">퇴근</option>
                 </select>
-                <input type="date" name="date">
-                <span class="searchName">운전원</span>
-                <input autocomplete="off" name="name" value="{{name}}" type="text" id="routeListsearch">
+                
                 <input autocomplete="off" type="submit" class="btnModules routeListSearchBtn" value="검색">
             </form>
         </div>
 
         <div class="btnModule">
-            <input type="submit" value="엑섹 업로드" class="excelUploads">
+            <input type="submit" value="엑섹 업로드" class="excelUploads">  
             <input type="submit" value="엑셀 다운로드" class="excelDownloads">
             <input type="submit" value="저장" class="routeInputSaves">
             <input type="submit" value="인쇄" class="routeScan">
@@ -136,41 +131,39 @@
             {% csrf_token %}
             <input type="hidden" name="team" value="{{group.id}}">
             <div class="RouteList">
+                <div class="RouteListScroll">
                     <table class="RouteListHeader">
                         <thead>
-                            <tr>
-                                <td><input type="checkbox" class="선택"></td>
-                                <td>순번</td>
-                                <td>노선명</td>
-                                <td>출근</td>
-                                <td>차량</td>
-                                <td>출발지</td>
-                                <td>도착지</td>
-                                <td>사업장</td>
-                                <td>출/퇴근</td>
-                                <td>운행시간</td>
+                            <tr class="RoutelistHeaderTr">
+                                <td class="routeListHeaderTd"><input type="checkbox" class="선택"></td>
+                                <td class="routeListHeaderTd">순번</td>
+                                <td class="routeListHeaderTd">노선명</td>
+                                <td class="routeListHeaderTd">운전자</td>
+                                <td class="routeListHeaderTd">차량</td>
+                                <td class="routeListHeaderTd">출발지 &nbsp&nbsp&nbsp&nbsp▶&nbsp&nbsp&nbsp&nbsp도착지</td>
+                                <td class="routeListHeaderTd">사업장</td>
+                                <td class="routeListHeaderTd">출/퇴근</td>
+                                <td class="routeListHeaderTd">운행시간</td>
+                                <td class="routeListHeaderTd">팀선택</td>
                             </tr>
                         </thead>
-                    </table>    
-                </div> 
- 
-                <div class="RouteListScroll">
+                    </table>       
+                               
                     <table class="RouteListBody">
                         <tbody>
                             {% for member in member_list %}
                             <tr class="RouteListBodyTr">
-                                <td><input type="checkbox"></td>
-                                <td>{{forloop.counter}}</td>
-                                <td>{{member.name}}</td>
-                                <td>{{member.role}}</td>
-                                <td>{{member.position}}</td>
-                                <td>{{member.phone_num}}</td>
-                                <td>{{forloop.counter}}</td>
-                                <td>{{forloop.counter}}</td>
-                                <td>{{forloop.counter}}</td>
-                                <td>{{forloop.counter}}</td>
+                                <td class="routeListBodyTd"><input type="checkbox"></td>
+                                <td class="routeListBodyTd">{{ forloop.counter }}</td>
+                                <td class="routeListBodyTd"></td>
+                                <td class="routeListBodyTd"></td>
+                                <td class="routeListBodyTd"></td>
+                                <td class="routeListBodyTd"></td>
+                                <td class="routeListBodyTd"></td>
+                                <td class="routeListBodyTd"></td>
+                                <td class="routeListBodyTd"></td>
                                 
-                                <td class="{{member.id}}">
+                                <td class="{{member.id}} routeListBodyTd">
                                     <select class="tableSelect">
                                         <option value="none"></option>
                                         {% for team in team_list %}
@@ -189,4 +182,28 @@
      </div>
     </div>
 </div>
+{% endblock %}
+
+{% block script %}
+<script>
+    function groupCreateDeleteUrl() {
+        const teamId = document.querySelector('input[name="id"]').value;
+        if (confirm('정말로 이 팀을 삭제하시겠습니까?')) {
+            fetch(`/teams/delete/${teamId}/`, { method: 'DELETE', headers: { 'X-CSRFToken': getCsrfToken() } })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        alert('팀이 삭제되었습니다.');
+                        location.reload();  // 페이지 새로고침
+                    } else {
+                        alert('삭제에 실패했습니다.');
+                    }
+                });
+        }
+    }
+    
+    function getCsrfToken() {
+        return document.querySelector('[name=csrfmiddlewaretoken]').value;
+    }
+</script>
 {% endblock %}

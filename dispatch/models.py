@@ -32,11 +32,25 @@ class RegularlyGroup(models.Model):
     def __str__(self):
         return str(self.number) + self.name
 
+        #팀노선관리
+# class RouteTeam(models.Model):
+#     team_name = models.CharField(verbose_name='팀이름', max_length=100, null=False, blank=False)
+#     team_leader = models.ForeignKey(
+#         Member,
+#         on_delete=models.CASCADE,
+#         limit_choices_to={'role': '팀장'}, 
+#         related_name='route_teams_leader'
+#     )
+
+#     def __str__(self):
+#         return f"{self.team_name} - {self.team_leader.name}"
+        
 class DispatchRegularlyData(models.Model):
     def get_hour_minute(self):
         return get_hour_minute(int(self.time)) if self.time else ""
 
     group = models.ForeignKey(RegularlyGroup, verbose_name='그룹', related_name="regularly", on_delete=models.SET_NULL, null=True)
+    # team = models.ForeignKey(RouteTeam, verbose_name='팀', related_name="team", on_delete=models.SET_NULL, null=True)
     station = models.ManyToManyField("Station", related_name="regularly_data", through="DispatchRegularlyDataStation")
     references = models.CharField(verbose_name='참조사항', max_length=100, null=False, blank=True)
     departure = models.CharField(verbose_name='출발지', max_length=200, null=False)
@@ -62,7 +76,7 @@ class DispatchRegularlyData(models.Model):
     time = models.CharField(verbose_name='운행시간(분)', max_length=50, null=False, blank=True)
     distance_list = models.CharField(verbose_name="정류장별 거리", max_length=500, null=False, blank=True)
     time_list = models.CharField(verbose_name="정류장별 시간", max_length=500, null=False, blank=True)
-
+ 
     pub_date = models.DateTimeField(auto_now_add=True, verbose_name='작성시간')
     updated_at = models.DateTimeField(auto_now=True, verbose_name='수정시간')
     creator = models.ForeignKey(Member, on_delete=models.SET_NULL, related_name="regularly_creator", db_column="creator_id", null=True)
@@ -355,6 +369,8 @@ class DrivingHistory(models.Model):
     pub_date = models.DateTimeField(auto_now_add=True, verbose_name='작성시간')
     updated_at = models.DateTimeField(auto_now=True, verbose_name='수정시간')
     creator = models.ForeignKey(Member, on_delete=models.SET_NULL, related_name="driving_history_creator", db_column="creator_id", null=True)
+
+
 
 class Station(models.Model):
     TYPES_CHOICES = [

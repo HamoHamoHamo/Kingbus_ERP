@@ -7,6 +7,7 @@ from dateutil.relativedelta import relativedelta
 from common.constant import TODAY, WEEK
 from django.apps import apps
 
+
 class Team(models.Model):
     name =models.CharField(verbose_name='팀이름', max_length=100, null=False, blank=False)
     # team_leader = models.ForeignKey('humanresource.Member', verbose_name='팀장', on_delete=models.SET_NULL, null=True, blank=True, related_name='team_loader_member')
@@ -302,3 +303,14 @@ class AccidentCase(models.Model):
     vehicle_maintenence_bill = models.TextField(verbose_name='자동차 점검 정비 명세서', null=False, blank=True)
     deducted_payment_bill = models.TextField(verbose_name='공제금 지급청구서', null=False, blank=True)
 
+
+# class RotueTeamList(models.Model):
+#     group = models.ForeignKey(DispatchRegularlyData, verbose_name='그룹', related_name="regularly", on_delete=models.SET_NULL, null=True)
+#     week = models.CharField(verbose_name='운행요일', max_length=20, null=False)
+#     departure = models.CharField(verbose_name='출발지', max_length=200, null=False)
+#     arrival = models.CharField(verbose_name='도착지', max_length=200, null=False)
+#     route = models.CharField(verbose_name='노선이름', max_length=15, null=False)
+#     work_type = models.CharField(verbose_name='출/퇴근', max_length=2, null=False)
+#     departure_time = models.CharField(verbose_name='출발시간', max_length=10, null=False)
+#     arrival_time = models.CharField(verbose_name='복귀시간', max_length=10, null=False)
+#     team = models.ForeignKey(RouteTeam, verbose_name="배정팀", on_delete=models.SET_NULL)

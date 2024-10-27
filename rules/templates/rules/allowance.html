@@ -1,0 +1,215 @@
+{% extends 'base.html' %} 
+{% load static %} 
+{% block head %}
+<meta
+  http-equiv="Cache-Control"
+  content="private, no-cache, no-store, max-age=0, must-revalidate"
+/>
+<link rel="stylesheet" href="{% static 'css/dispatch/dispatchBase.css' %}" />
+<link rel="stylesheet" href="{% static 'css/dispatch/regularlyRoute.css' %}" />
+<link rel="stylesheet" href="{% static 'css/rules/rules.css' %}" />
+
+{% endblock %} 
+
+{% block content-header %}
+<div class="HeaderTitle">수당 수칙</div>
+{% endblock %} 
+
+{% block content %}
+
+<div class="approvalrulesPrint">
+    <button class="print-button" onclick="printDiv('printableArea')">인쇄</button>
+</div>
+
+<div id="printableArea" class="container">
+  <div class="MainHeaderTitle">수당 수칙</div>
+
+  <section class="rule-section">
+    <div class="approvalSubSection">제 1장 수당 관련 조항</div>
+    <ol>
+      <li>
+        <div class="approvalMain">제 1조 「임금 지급」</div>
+        <div class="approvalSub">
+          임금은 매월 15일 지급함을 원칙으로 합니다.
+        </div>
+      </li>
+      <li>
+        <div class="approvalMain">제 2조 「임금 구성」</div>
+        <div class="approvalSub">
+          임금은 기본급, 통상급여 (임금, 직책 수당, 근속 수당), 법정수당 (연장
+          수당, 야간근로 가산임금, 휴일 근로수당, 만근 수당 등)으로 구성됩니다.
+        </div>
+      </li>6
+    </ol>
+  </section>
+
+  <section class="rule-section">
+    <div class="approvalTable">표1. 회사 별도 수당 기준</div>
+    <div class="approvalSub">
+      <table>
+        <thead>
+          <tr>
+            <th>항목</th>
+            <th>항목 수당</th>
+            <th>감봉 조건</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>만근수당</td>
+            <td>10만원</td>
+            <td>
+              연차, 휴가계 제외 결근 시 100% 감급. * 20분 이상 지각 시 결근으로 처리
+            </td>
+          </tr>
+          <tr>
+            <td>성실수당</td>
+            <td>30만원</td>
+            <td>
+              지각할 때마다 차례로 5만원, 5만원, 10만원 감봉. * 결행 시 100% 감급
+            </td>
+          </tr>
+          <tr>
+            <td>무사고 수당</td>
+            <td>20만원</td>
+            <td>
+              피해금액(추정) 최종율이 달라지면 가감정산 (100미만 -5, 200미만
+              -10, 300미만 -15, 300이상 -20), 징계처분은 별도
+            </td>
+          </tr>
+          <tr>
+            <td>복리후생</td>
+            <td>20만원</td>
+            <td>
+              결근 시, 운행 일수의 퍼센트만큼 감봉. * 의사 소견서와 같은 정확한
+              사유가 있을 경우 제외
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="rule-section">
+    <div class="approvalSubSection">제 2장 성실수당</div>
+    <ol>
+      <li>
+        <div class="approvalMain">
+          제 3조 배차 거부 및 결행 관련 (-100% 차감%)
+        </div>
+        <div class="approvalSub">기사 기본 소정근로 시간 (36시간)</div>
+        <div class="approvalSub">
+          주 5일 근무 x 주 6일도 가능(달에 2번 격주로 일정 변경)
+        </div>
+      </li>
+      <li>
+        <div class="approvalMain">제 4조 배차지연 (-50% 차감)</div>
+        <div class="approvalSub">배차 지연 시 50% 수당 차감 적용</div>
+      </li>
+      <li>
+        <div class="approvalMain">제 5조 복장문제</div>
+        <div class="approvalSub">1회 적발 시 -1만원 차감</div>
+        <div class="approvalSub">민원 발생 시 -5만원 차감</div>
+      </li>
+      <li>
+        <div class="approvalMain">제 6조 차량관리</div>
+        <div class="approvalSub">
+          <table>
+            <thead>
+              <tr>
+                <th colspan="2">실내</th>
+                <th colspan="2">실외</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>차량내 흡연</td>
+                <td>-5만원</td>
+                <td>외부세차 (월2회)</td>
+                <td>지적 시 -2만원<br />민원 발생 시 -5만원</td>
+              </tr>
+              <tr>
+                <td>실내청소 미흡</td>
+                <td>적발 시 -2만원<br />민원 발생 시 -5만원</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </li>
+      <li>
+        <div class="approvalMain">제 7조 지각 및 결근 처리 기준</div>
+        <div class="approvalSub">
+          3회 이상 지각 시 결근 처리되며 성실수당에서 50% 차감.
+        </div>
+        <div class="approvalSub">
+          사전 보고 및 승인된 경우 성실수당 차감 제외.
+        </div>
+      </li>
+      <li>
+        <div class="approvalMain">제 8조 작업 시간 중 휴대폰 사용 금지</div>
+        <div class="approvalSub">
+          불필요한 휴대폰 사용 시 1회 적발 시 5만원 차감.
+        </div>
+      </li>
+    </ol>
+  </section>
+
+  <section class="rule-section">
+    <div class="approvalSubSection">제 3장 만근수당</div>
+    <ol>
+      <li>
+        <div class="approvalMain">제 4조 급작스런 통증 및 문제 발생</div>
+        <div class="approvalSub">
+          진료 진단서 또는 영수증 제출 시 만근수당 차감 제외.
+        </div>
+      </li>
+      <li>
+        <div class="approvalMain">제 5조 병가 및 휴가 처리 기준</div>
+        <div class="approvalSub">
+          사전 신청 없이 무단 결근 시 만근수당 100% 차감.
+        </div>
+        <div class="approvalSub">사전 승인된 병가에 대해서는 차감 제외.</div>
+      </li>
+    </ol>
+  </section>
+
+  <section class="rule-section">
+    <div class="approvalSubSection">제 4장 추가 수당 및 복리후생</div>
+    <ol>
+      <li>
+        <div class="approvalMain">제 9조 성과급 지급 기준</div>
+        <div class="approvalSub">
+          성과에 따른 성과급 지급. 성과 평가 기준에 따름.
+        </div>
+      </li>
+      <li>
+        <div class="approvalMain">제 10조 교통비 지원 규정</div>
+        <div class="approvalSub">원거리 출퇴근 발생 시 교통비 지원.</div>
+        <div class="approvalSub">교통비는 월별 한도 내에서 지급.</div>
+      </li>
+    </ol>
+  </section>
+
+  <section class="rule-section">
+    <div class="approvalSubSection">제 5장 퇴직 및 기타 조항</div>
+    <ol>
+      <li>
+        <div class="approvalMain">제 11조 퇴직금 지급 기준</div>
+        <div class="approvalSub">
+          1년 이상 근무 시 퇴직금 지급. 근무 기간에 비례하여 지급.
+        </div>
+      </li>
+      <li>
+        <div class="approvalMain">제 12조 퇴직 시 물품 반납 의무</div>
+        <div class="approvalSub">퇴직 시 회사에서 지급받은 모든 물품 반납.</div>
+        <div class="approvalSub">고의로 훼손된 물품에 대한 배상 책임 있음.</div>
+      </li>
+    </ol>
+  </section>
+</div>
+
+{% endblock %} 
+
+{% block script %}
+<script src="{% static 'js/rules/rules.js' %}"></script>
+{% endblock %}

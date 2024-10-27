@@ -28,6 +28,7 @@ from humanresource.views import send_message
 from itertools import chain
 from vehicle.models import Vehicle
 
+
 from datetime import datetime, timedelta, date
 # from utill.decorator import option_year_deco
 from common.constant import TODAY, FORMAT, WEEK, WEEK2
@@ -4023,3 +4024,16 @@ class managementandanalysis(View):  # View 클래스를 상속받아야 합니�
 #             self.context_object_name: members
 #         }
 #         return render(request, self.template_name, context)
+
+class TeamListTwo(generic.ListView):
+    template_name = 'dispatch/teamtwo.html'
+    context_object_name = 'member_list'
+    model = Member
+    authority_level = 3
+
+    def get(self, request, *args, **kwargs):
+        members = self.model.objects.all()
+        context = {
+            self.context_object_name: members
+        }
+        return render(request, self.template_name, context)

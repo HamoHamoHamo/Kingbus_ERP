@@ -42,6 +42,9 @@ urlpatterns = [
     path('operationquality', views.OperationQuality.as_view(), name='operationquality'),
     path('personnelcommittee_Report', views.Personnelcommittee_Report.as_view(), name='personnelcommittee_Report'),
     
+    # path('route_teams/', views.route_team_list_view, name='route_team_list'),
+    # path('route_teams/create/', views.route_team_create, name='route_team_create'),
+    # path('route_teams/delete/<int:team_id>/', views.route_team_delete, name='route_team_delete'),
     # path('mgmt', views.ManagementList.as_view(), name='mgmt'),
     # path('mgmt/create', views.mgmt_create, name='mgmt_create'),
 

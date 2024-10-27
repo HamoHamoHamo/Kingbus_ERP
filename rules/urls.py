@@ -12,4 +12,5 @@ urlpatterns = [
     path('personnelcommittee', views.PersonnelCommittee.as_view(), name='personnelcommittee'),
     path('Itemmanagement', views.ItemManagement.as_view(), name='Itemmanagement'),
     path('organizationchart', views.OrganizationChart.as_view(), name='organizationchart'),
+    path('allowance', views.Allowance.as_view(), name='allowance'),
 ]
