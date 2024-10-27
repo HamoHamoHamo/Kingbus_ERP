@@ -33,33 +33,16 @@
                     <div class="groupName" onclick="location.href='{{ request.path }}'">전체</div>
                 </div>
                 <div class="groupListItem {% if team == '팀없음' %}backgroundGray{% endif %}" draggable="true">
-                    <div class="groupNum">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="16.5" viewBox="0 0 22 16.5">
-                            <path id="Icon_awesome-folder" data-name="Icon awesome-folder"
-                                d="M19.938,7.25h-8.25L8.938,4.5H2.063A2.062,2.062,0,0,0,0,6.563V18.938A2.062,2.062,0,0,0,2.063,21H19.938A2.062,2.062,0,0,0,22,18.938V9.313A2.062,2.062,0,0,0,19.938,7.25Z"
-                                transform="translate(0 -4.5)" fill="#444" />
-                        </svg>
-                    </div>
-                    <div class="groupName" onclick="location.href='{{ request.path }}?team_none=팀없음'">팀없음
-                    </div>
+                    
                 </div>
-                {% for object in team_list %}
-                <div class="groupListItem {% if team == object %}backgroundGray{% endif %}" draggable="true">
-                    <div class="groupNum">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="16.5" viewBox="0 0 22 16.5">
-                            <path id="Icon_awesome-folder" data-name="Icon awesome-folder"
-                                d="M19.938,7.25h-8.25L8.938,4.5H2.063A2.062,2.062,0,0,0,0,6.563V18.938A2.062,2.062,0,0,0,2.063,21H19.938A2.062,2.062,0,0,0,22,18.938V9.313A2.062,2.062,0,0,0,19.938,7.25Z"
-                                transform="translate(0 -4.5)" fill="#444" />
-                        </svg>
-                    </div>
-                    <div class="groupName" onclick="location.href='{{ request.path }}?team={{object.id}}'">{{object.name}}</div>
-                </div>
-                {% endfor %}
+                
+
+                
             </div>
         </div>
 
         
-        <form action= method="post" class="TeamCreates">
+        <form action="" method="post" class="TeamCreates">
             <input autocomplete="off" type="hidden" name="id" value="{{team.id}}">
             {% csrf_token %}
 
@@ -67,15 +50,12 @@
             <div class="groupCreateBody">
               <div class="groupSelectBody">
                 <div class="groupCreateinput">
-                    <select name="role" class="inputTeamJang">
-                    <option {% if role == '팀장선택' %} selected {% endif %} value="팀장선택">팀장선택</option>
-                    <option {% if role == '전민철' %} selected {% endif %} value="전민철">전민철</option>
-                    <option {% if role == '박우덕' %} selected {% endif %} value="박우덕">박우덕</option>
-                    <option {% if role == '홍대수' %} selected {% endif %} value="홍대수">홍대수</option>
-                    <option {% if role == '목진국' %} selected {% endif %} value="목진국">목진국</option>
-                    <option {% if role == '추광엽' %} selected {% endif %} value="추광엽">추광엽</option>
-                    <option {% if role == '김영천' %} selected {% endif %} value="추광엽">김영천</option>
-                </select>
+                    <select name="role" required class="inputTeamJang">
+                        <option value="" disabled selected>팀장 선택</option>
+                        {% for member in members %}
+                            <option value="{{ member.id }}">{{ member.name }}</option>
+                        {% endfor %}
+                    </select>
                 </div>
                
                 <div class="groupCreateinput">
@@ -102,7 +82,66 @@
                 </g>
             </svg>
         </div>
-    </div>
+    </div> 
+
+    {% comment %} <div class="groupLayout">
+        <div class="groupList">
+            <div class="groupListHead">
+                <span class="groupListTitle">팀목록</span>
+            </div>
+            <div class="groupListBody">
+                {% for team in teams %}
+                <div class="groupListItem" draggable="true">
+                    <div class="groupNum">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="16.5" viewBox="0 0 22 16.5">
+                            <path id="Icon_awesome-folder" data-name="Icon awesome-folder"
+                                d="M19.938,7.25h-8.25L8.938,4.5H2.063A2.062,2.062,0,0,0,0,6.563V18.938A2.062,2.062,0,0,0,2.063,21H19.938A2.062,2.062,0,0,0,22,18.938V9.313A2.062,2.062,0,0,0,19.938,7.25Z"
+                                transform="translate(0 -4.5)" fill="#444" />
+                        </svg>
+                    </div>
+                    <div class="groupName">{{ team.team_name }}</div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    
+        <form action="{% url 'dispatch:save_team' %}" method="post" class="TeamCreates">
+            {% csrf_token %}
+            <input type="hidden" name="id" value="{{ team.id|default_if_none:'' }}">
+    
+            <div class="groupCreateHead">
+                {% if team %}팀 수정{% else %}팀 생성{% endif %}
+            </div>
+            <div class="groupCreateBody">
+                <div class="groupSelectBody">
+                    <div class="groupCreateinput">
+                        <select name="role" required class="inputTeamJang">
+                            <option value="" disabled selected>팀장 선택</option>
+                            {% for member in members %}
+                                <option value="{{ member.id }}" 
+                                        {% if team and team.team_leader_id == member.id %}selected{% endif %}>
+                                    {{ member.name }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="groupCreateinput">
+                        <input autocomplete="off" value="{{ team.team_name|default_if_none:'' }}" 
+                               name="name" type="text" placeholder="팀이름" 
+                               class="groupNameCreate length50">
+                    </div>
+                </div>
+    
+                <div class="groupCreateBtnBox">
+                    <button type="submit" class="btnModules groupCreateSave">저장</button>
+                    <form action="{% url 'dispatch:delete_team' %}" method="post" style="display: inline;">
+                        {% csrf_token %}
+                        <button type="submit" class="btnModules groupCreateDelete">삭제</button>
+                    </form>
+                </div>
+            </div>
+        </form>
+    </div> {% endcomment %}
 
     <div class="mainTeamroute">
 
@@ -186,24 +225,26 @@
 
 {% block script %}
 <script>
-    function groupCreateDeleteUrl() {
-        const teamId = document.querySelector('input[name="id"]').value;
-        if (confirm('정말로 이 팀을 삭제하시겠습니까?')) {
-            fetch(`/teams/delete/${teamId}/`, { method: 'DELETE', headers: { 'X-CSRFToken': getCsrfToken() } })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        alert('팀이 삭제되었습니다.');
-                        location.reload();  // 페이지 새로고침
-                    } else {
-                        alert('삭제에 실패했습니다.');
-                    }
-                });
-        }
-    }
+    document.addEventListener('DOMContentLoaded', function() {
+        const newButton = document.querySelector('.groupCreateBtnBox .btnModules[value="신규"]');
+        const saveButton = document.querySelector('.groupCreateBtnBox .btnModules[value="저장"]');
+        const formTitle = document.querySelector('.groupCreateHead');
+        const teamIdInput = document.querySelector('input[name="id"]');
+        const teamNameInput = document.querySelector('input[name="name"]');
     
-    function getCsrfToken() {
-        return document.querySelector('[name=csrfmiddlewaretoken]').value;
-    }
+        newButton.addEventListener('click', function(event) {
+            event.preventDefault();  // 기본 제출 동작 방지
+            formTitle.textContent = '팀 생성';
+            teamIdInput.value = '';  // 새 팀이므로 ID 초기화
+            teamNameInput.value = '';  // 팀 이름도 초기화
+        });
+    
+        saveButton.addEventListener('click', function(event) {
+            if (!teamIdInput.value) {
+                alert('기존 팀이 선택되지 않았습니다. 신규 팀을 먼저 등록하세요.');
+                event.preventDefault();  // 기존 팀 없으면 저장 금지
+            }
+        });
+    });
 </script>
 {% endblock %}

@@ -82,9 +82,7 @@ urlpatterns = [
     path('managementandanalysis', views.managementandanalysis.as_view(), name='managementandanalysis'),
     # path('dispatchorder', views.DispatchOrder.as_view(), name='dispatchorder'),
 
-    path('teamtwo', views.TeamListTwo.as_view(), name='teamtwo'),
-    # path('route_teams/', views.route_team_list_view, name='route_team_list'),
-    # path('route_teams/create/', views.route_team_create, name='route_team_create'),
-    # path('route_teams/delete/<int:team_id>/', views.route_team_delete, name='route_team_delete'),
+    path('teamtwo', views.team_list_view, name='teamtwo'),  # 팀 목록 및 폼
+
 ]
     

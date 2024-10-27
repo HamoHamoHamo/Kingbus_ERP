@@ -33,17 +33,19 @@ class RegularlyGroup(models.Model):
         return str(self.number) + self.name
 
         #팀노선관리
-# class RouteTeam(models.Model):
-#     team_name = models.CharField(verbose_name='팀이름', max_length=100, null=False, blank=False)
-#     team_leader = models.ForeignKey(
-#         Member,
-#         on_delete=models.CASCADE,
-#         limit_choices_to={'role': '팀장'}, 
-#         related_name='route_teams_leader'
-#     )
+class RouteTeam(models.Model):
+    team_name = models.CharField(verbose_name='팀이름', max_length=100, null=False, blank=False)
+    team_leader = models.ForeignKey(
+        Member,
+        on_delete=models.CASCADE,
+        limit_choices_to={'role': '팀장'}, 
+        related_name='route_teams_leader'
+    )
 
-#     def __str__(self):
-#         return f"{self.team_name} - {self.team_leader.name}"
+    def __str__(self):
+        return f"{self.team_name} - {self.team_leader.name}"
+
+
         
 class DispatchRegularlyData(models.Model):
     def get_hour_minute(self):

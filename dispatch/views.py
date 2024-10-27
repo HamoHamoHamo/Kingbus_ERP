@@ -18,7 +18,7 @@ from django.views import View, generic
 
 from .commons import get_date_connect_list, get_multi_date_connect_list
 from .forms import OrderForm, ConnectForm, RegularlyDataForm, StationForm, RegularlyForm
-from .models import DispatchRegularlyRouteKnow, DispatchCheck, DispatchRegularlyData, DispatchRegularlyWaypoint, Schedule, DispatchOrderConnect, DispatchOrder, DispatchRegularly, RegularlyGroup, DispatchRegularlyConnect, DispatchOrderStation, ConnectRefusal, MorningChecklist, EveningChecklist, DrivingHistory, BusinessEntity, Station, DispatchRegularlyDataStation, DispatchRegularlyStation
+from .models import DispatchRegularlyRouteKnow, DispatchCheck, DispatchRegularlyData, DispatchRegularlyWaypoint, Schedule, DispatchOrderConnect, DispatchOrder, DispatchRegularly, RegularlyGroup, DispatchRegularlyConnect, DispatchOrderStation, ConnectRefusal, MorningChecklist, EveningChecklist, DrivingHistory, BusinessEntity, Station, DispatchRegularlyDataStation, DispatchRegularlyStation, RouteTeam
 from .selectors import DispatchSelector
 from assignment.models import AssignmentConnect
 from accounting.models import Collect, TotalPrice
@@ -4025,15 +4025,12 @@ class managementandanalysis(View):  # View 클래스를 상속받아야 합니�
 #         }
 #         return render(request, self.template_name, context)
 
-class TeamListTwo(generic.ListView):
-    template_name = 'dispatch/teamtwo.html'
-    context_object_name = 'member_list'
-    model = Member
-    authority_level = 3
 
-    def get(self, request, *args, **kwargs):
-        members = self.model.objects.all()
-        context = {
-            self.context_object_name: members
-        }
-        return render(request, self.template_name, context)
+
+
+def team_list_view(request):
+    """팀 목록 조회 및 생성/수정 폼"""
+    teams = RouteTeam.objects.all()
+    members = Member.objects.filter(role='팀장')  # 팀장 역할인 멤버만 필터링
+
+    return render(request, 'dispatch/teamtwo.html', {'teams': teams, 'members': members})
