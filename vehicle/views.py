@@ -380,6 +380,31 @@ def download(request, vehicle_id, file_id):
     else:
         raise Http404
 
+def document_file_upload_test(request):
+    if request.session.get('authority') > 0:
+        return render(request, 'authority.html')
+    file_list = VehicleDocument.objects.all()
+    
+    
+    for file in file_list:    
+        try:
+            file_path = f'{CLOUD_MEDIA_PATH}{file.get_file_path(file.filename)}_{file.filename}'
+            upload_to_firebase(file, file_path)
+            file.path = file_path
+            file.save()
+            # os.remove(file.file.path)
+            
+        except Exception as e:
+            print("Firebase upload error", e)
+            logger.error(f"Firebase upload error {e}")
+            #파이어베이스 업로드 실패 시 파일 삭제
+            # os.remove(file.file.path)
+            # file.delete()
+            raise BadRequest("파일 저장 실패")
+            
+
+    return redirect(request.META.get('HTTP_REFERER', 'redirect_if_referer_not_found'))
+
 def photo_file_create(request):
     if request.session.get('authority') > 1:
         return render(request, 'authority.html')

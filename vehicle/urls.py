@@ -28,6 +28,8 @@ urlpatterns = [
     path('weeklychecklist', views.WeeklyChecklistListView.as_view(), name='weeklychecklist'),
     path('equipmentchecklist', views.EquipmentChecklistListView.as_view(), name='equipmentchecklist'),
 
+    # path('document/upload/test', views.document_file_upload_test),
+    
     # path('mgmt', views.VehicleMgmt.as_view(), name='mgmt'),
     # path('mgmt/insurance/edit', views.insurance_edit, name='insurance_edit'),
     # path('mgmt/check/edit', views.check_edit, name='check_edit'),
