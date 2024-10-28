@@ -31,4 +31,5 @@ urlpatterns = [
     path('rule/fieldmanager/print', views.field_manager_rule_print, name='field_manager_rule_print'),
     path('rule/personnelcommittee/print', views.personnel_committee_rule_print, name='personnel_committee_rule_print'),
     
+    path('rule/organizationchart', views.organizationchart, name='organizationchart'),
 ]
