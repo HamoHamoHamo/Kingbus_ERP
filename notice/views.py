@@ -306,3 +306,6 @@ def field_manager_rule_print(request):
     return render(request, "notice/field_manager_rule_print.html")
 def personnel_committee_rule_print(request):
     return render(request, "notice/personnel_committee_rule_print.html")
+
+def organizationchart(request):
+    return render(request, "notice/organizationchart.html")
