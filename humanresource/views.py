@@ -309,10 +309,6 @@ def member_edit(request):
             if user_auth != 0 and (req_auth == 0 or cur_auth == 0):
                 return HttpResponseBadRequest('수정 권한이 없습니다')
 
-            if member_form.cleaned_data['role'] == '운전원' and member.name != member_form.cleaned_data['name']:
-                for vehicle in Vehicle.objects.filter(driver=member):
-                    vehicle.driver_name = member_form.cleaned_data['name']
-                    vehicle.save()
             member.name = member_form.cleaned_data['name']
             member.role = member_form.cleaned_data['role']
             member.entering_date = member_form.cleaned_data['entering_date']
@@ -403,10 +399,6 @@ def member_delete(request):
         ####
         for pk in del_list:
             member = get_object_or_404(Member, pk=pk)
-            vehicle_list = Vehicle.objects.filter(driver=member)
-            for vehicle in vehicle_list:
-                vehicle.driver_name = ''
-                vehicle.save()
             member.use = '삭제'
             member.user_id = ''
             member.save()

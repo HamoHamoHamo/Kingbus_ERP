@@ -95,7 +95,7 @@ function regularlyDispatch() {
                     departureDate = dataList[i].departure_date.split(" ")[1].replace(/\:/g, "")
                     arrivalDate = dataList[i].arrival_date.split(" ")[1].replace(/\:/g, "")
                     if(this.innerText.length > 4){
-                        if (this.innerText.split("(")[1].replace(/\)/g, "") == dataList[i].driver_name) {
+                        if (this.innerText.split("(")[1].replace(/\)/g, "") == dataList[i].driver.name) {
                             if (arrivalInput >= departureDate && departureInput <= arrivalDate) {
                                 return makeSelect = false
                             }

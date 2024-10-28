@@ -1,26 +1,36 @@
-const vehicleCreateForm = document.querySelector(".vehicleCreateForm")
 const essential = document.querySelectorAll(".essential")
-const vehicleEditForm = document.querySelector(".vehicleEditForm")
-const essentialEdit = document.querySelectorAll(".essentialEdit")
-
-createBtn[0].addEventListener("click", createCheck)
-
+submitBtn.addEventListener("click", createCheck)
 function createCheck(){
     for (i = 0; i < essential.length; i++){
         if(essential[i].value == ""){
             return alert("입력하지 않은 필수 입력사항이 있습니다.")
         }
     };
-    vehicleCreateForm.submit()
+    vehicleForm.submit()
 }
 
-createBtn[1].addEventListener("click", editCheck)
+const maintenanceEssential = document.querySelectorAll(".maintenanceEssential")
+const maintenanceCreateForm = document.querySelector(".maintenanceCreateForm")
+const maintenanceSubmitBtn = document.querySelector(".maintenanceSubmitBtn")
 
-function editCheck(){
-    for (i = 0; i < essentialEdit.length; i++){
-        if(essentialEdit[i].value == ""){
+maintenanceSubmitBtn.addEventListener("click", () => {
+    for (i = 0; i < maintenanceEssential.length; i++){
+        if(maintenanceEssential[i].value == ""){
             return alert("입력하지 않은 필수 입력사항이 있습니다.")
         }
     };
-    vehicleEditForm.submit()
-}
+    maintenanceCreateForm.submit()
+})
+
+const photoEssential = document.querySelectorAll(".photoEssential")
+const photoCreateForm = document.querySelector('.photoCreateForm')
+const photoSubmitBtn = document.querySelector('.photoSubmitBtn')
+
+photoSubmitBtn.addEventListener("click", () => {
+    for (i = 0; i < photoEssential.length; i++){
+        if(photoEssential[i].value == ""){
+            return alert("입력하지 않은 필수 입력사항이 있습니다.")
+        }
+    };
+    photoCreateForm.submit()
+})

@@ -34,7 +34,7 @@
                     {% for vehicle in vehicle_list %}
                     <tr class="{{vehicle.id}}">
                         <td>{{vehicle.vehicle_num}}</td>
-                        <td>{{vehicle.driver_name}}</td>
+                        <td>{{vehicle.driver.name}}</td>
                         {% with e_connect=e_connect_object|obj:vehicle.id %}
                         {% with connect=connect_object|obj:vehicle.id %}
                         {% with c_connect=c_connect_object|obj:vehicle.id %}

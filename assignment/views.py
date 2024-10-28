@@ -175,7 +175,7 @@ class AssignmentList(generic.ListView):
         
 
         context['dispatch_list'] = get_date_connect_list(date)
-        context['vehicles'] = Vehicle.objects.filter(use='사용').order_by('vehicle_num', 'driver_name')
+        context['vehicles'] = Vehicle.objects.filter(use='사용').order_by('vehicle_num', 'driver__name')
         context['members'] = Member.objects.exclude(role='최고관리자').filter(use='사용').order_by('name')
         context['group_list'] = Group.objects.all().order_by('number')
         
@@ -915,7 +915,7 @@ class TemporaryAssignmentList(generic.ListView):
         context['group_bus_list'] = group_bus_list
         context['group_member_list'] = group_member_list
         
-        context['vehicles'] = Vehicle.objects.filter(use='사용').order_by('vehicle_num', 'driver_name')
+        context['vehicles'] = Vehicle.objects.filter(use='사용').order_by('vehicle_num', 'driver__name')
         context['members'] = Member.objects.exclude(role='최고관리자').filter(use='사용').order_by('name')
         context['selected_date1'] = self.request.GET.get('date1')
         context['selected_date2'] = self.request.GET.get('date2')

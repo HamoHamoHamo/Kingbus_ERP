@@ -327,6 +327,7 @@
 .addGroupBox {
     display: flex;
     justify-content: space-between;
+    align-items: center;
     width: 8.4rem;
     height: 2.2rem;
     font-size: 1.4rem;

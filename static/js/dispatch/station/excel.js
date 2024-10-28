@@ -124,8 +124,6 @@ function dataParsing(e) {
                 if (data['status'] == 'success') {
                     alert(`${data['count']}개의 데이터가 저장되었습니다`);
                     location.reload();
-                } else if (data['error'] == 'driver_name') {
-                    alert(`${data['count']}번째 데이터의 담당기사 이름이 맞지 않습니다.`)
                 } else if (data['error'] == 'vehicle_id') {
                     alert(`${data['count']}번째 데이터의 차량id 항목이 맞지 않습니다.`)
                 } else if (data['error'] == 'driver_id') {
