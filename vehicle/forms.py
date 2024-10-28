@@ -4,7 +4,7 @@ from . import models
 
 class VehicleForm(forms.ModelForm):
     class Meta:
-        model = models.Vehicle#, models.Vehicle_insurance, models.Vehicle_document
+        model = models.Vehicle
         fields = [
             'vehicle_num0',
             'vehicle_num',
@@ -15,28 +15,32 @@ class VehicleForm(forms.ModelForm):
             'maker',
             'model_year',
             'release_date',
+            'driver',
             'use',
             'passenger_num',
             'check_date',
             'type',
+            'garage',
+            'remark',
+
+            'vehicle_price',
+            'depreciation_month',
+            'number_price',
+            'depreciation_year',
+            'insurance_pay_date',
+            'insurance_price',
+            'monthly_installment',
+            'remaining_installment_amount',
+
+            'led',
+            'fridge',
+            'sing',
+            'usb',
+            'water_heater',
+            'tv',
         ]
 
-# class VehicleInsuranceForm(forms.ModelForm):
-#     class Meta:
-#         model = models.VehicleInsurance#, models.Vehicle_insurance, models.Vehicle_document
-#         fields = [
-#             'insurance_date',
-#             'insurance_price',
-#             'insurance_comp',
-#             'expiration_date',
-#         ]
-#         widgets = {
-#             'insurance_date': forms.DateInput(format='%Y-%m-%d', attrs={'class':'datefield'}),
-#             'expiration_date': forms.DateInput(format='%Y-%m-%d', attrs={'class':'datefield'}),
-#         }
-
-
-# class VehicleDocumentForm(forms.ModelForm):
-#     class Meta:
-#         model = models.VehicleDocument
-#         fields = '__all__'
+class MaintenanceForm(forms.ModelForm):
+    class Meta:
+        model = models.Maintenance
+        exclude = ['creator']

@@ -3,40 +3,37 @@ import os
 import json
 import mimetypes
 from datetime import datetime
-from django.core.exceptions import ObjectDoesNotExist
-from django.db.models import Q
+from django.core.exceptions import ObjectDoesNotExist, BadRequest
+from django.db.models import Q, Value, CharField, Sum
+from django.db.models.functions import Coalesce
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import Http404, JsonResponse, HttpResponse, HttpResponseNotAllowed
 from django.views import generic
 from django.urls import reverse
-from config.settings.base import MEDIA_ROOT
+from config.settings.base import MEDIA_ROOT, BASE_DIR, MEDIA_URL
+from config.custom_logging import logger
+from common.custom_mixin.views import FileViewerMixin
 import pandas as pd
-from .models import Vehicle, VehicleDocument, Refueling, DailyChecklist, WeeklyChecklist, EquipmentChecklist
-from .forms import VehicleForm
+from .models import Vehicle, VehicleDocument, Refueling, DailyChecklist, WeeklyChecklist, EquipmentChecklist, Maintenance, DocumentType, VehiclePhoto
+from .forms import VehicleForm, MaintenanceForm
 from humanresource.models import Member
-from config.settings.base import BASE_DIR
 from dateutil.relativedelta import relativedelta
+from dispatch.models import Station
+from my_settings import CRED_PATH, CLOUD_MEDIA_PATH
+from firebase.media_firebase import upload_to_firebase, get_download_url, delete_firebase_file, download_file
 
 TODAY = str(datetime.now())[:10]
 FORMAT = "%Y-%m-%d"
-
-def document_image(request, file_id):
-    if request.session.get('authority') > 1:
-        return render(request, 'authority.html')
-    context = {
-        'img': get_object_or_404(VehicleDocument, id=file_id)
-    }
-    return render(request, 'vehicle/document_img.html', context)
 
 def efficiency(request):
     
     return render(request, 'vehicle/efficiency.html')
 
-class MaintenanceList(generic.ListView):
-    template_name = 'vehicle/maintenance.html'
-    context_object_name = 'vehicle_list'
-    model = Vehicle
-    paginate_by = 10
+# class MaintenanceList(generic.ListView):
+#     template_name = 'vehicle/maintenance.html'
+#     context_object_name = 'vehicle_list'
+#     model = Vehicle
+#     paginate_by = 10
 
 class AccidentList(generic.ListView):
     template_name = 'vehicle/accident.html'
@@ -63,13 +60,12 @@ class VehicleList(generic.ListView):
         if select == 'vehicle' and search:
             vehicle = Vehicle.objects.filter(use=use).filter(vehicle_num__contains=search).order_by('vehicle_num0', 'vehicle_num')
         elif select == 'driver' and search:
-            vehicle = Vehicle.objects.filter(use=use).filter(driver_name__contains=search).order_by('vehicle_num0', 'vehicle_num')
+            vehicle = Vehicle.objects.filter(use=use).filter(driver__name__contains=search).order_by('vehicle_num0', 'vehicle_num')
         elif select == 'passenger' and search:
             vehicle = Vehicle.objects.filter(use=use).filter(passenger_num__contains=search).order_by('vehicle_num0', 'vehicle_num')
         else:
             vehicle = Vehicle.objects.filter(use=use).order_by('vehicle_num0', 'vehicle_num')
-        return vehicle
-
+        return vehicle.select_related('driver', 'garage')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -93,25 +89,18 @@ class VehicleList(generic.ListView):
         context['search'] = self.request.GET.get('search', '')
         context['use'] = self.request.GET.get('use', '사용')
         # context['driver_list'] = Member.objects.filter(role='운전원')
-        context['driver_list'] = Member.objects.filter(vehicle=None).filter(Q(role='팀장') | Q(role='운전원') | Q(role='용역')).filter(use='사용').order_by('name')
-        
-        file_list = []
+        context['driver_list'] = Member.objects.filter(Q(role='팀장') | Q(role='운전원') | Q(role='용역')).filter(use='사용').order_by('name')
+        context['garage_list'] = Station.objects.filter(station_type='차고지')
+
+        context['filled_count_list'] = []
+        context['file_list'] = []
+        context['file_count_list'] = []
         for vehicle in context['vehicle_list']:
-            files = VehicleDocument.objects.filter(vehicle_id=vehicle)
-            list = []
-            try:
-                v_file = files.get(type="차량등록증")
-                list.append(v_file)
-            except:
-                list.append('')
-            try:
-                i_file = files.get(type="insurance_receipt")
-                list.append(i_file)
-            except:
-                list.append('')
-            file_list.append(list)
-        context['file_list'] = file_list
-        
+            context['filled_count_list'].append(vehicle.count_filled_fields())
+
+            files = list(VehicleDocument.objects.filter(vehicle_id=vehicle).order_by('type').values('id', 'type', 'filename'))
+            context['file_list'].append(files)
+            context['file_count_list'].append(len(files))
 
         return context
 
@@ -123,22 +112,9 @@ def vehicle_create(request):
         vehicle_form = VehicleForm(request.POST)
         if vehicle_form.is_valid():
             creator = get_object_or_404(Member, pk=request.session.get('user'))
-            vehicle_registration_file = request.FILES.get('vehicle_registration', None)
-            insurance_receipt_file = request.FILES.get('insurance_receipt', None)
-            
             vehicle = vehicle_form.save(commit=False)
-            if request.POST.get('driver'):
-                driver = get_object_or_404(Member, pk=request.POST.get('driver'))
-                vehicle.driver = driver
-                vehicle.driver_name = driver.name
             vehicle.creator = creator
             vehicle.save()
-            if vehicle_registration_file:
-                vehicle_file_save(vehicle_registration_file, vehicle, "차량등록증", creator)
-
-            if insurance_receipt_file:
-                vehicle_file_save(insurance_receipt_file, vehicle, "insurance_receipt", creator)
-
             return redirect(request.META.get('HTTP_REFERER', 'redirect_if_referer_not_found'))
         else:
             raise Http404
@@ -153,61 +129,42 @@ def vehicle_edit(request):
     vehicle = get_object_or_404(Vehicle, pk=pk)
 
     if request.method == 'POST':
-        vehicle_form = VehicleForm(request.POST)
+        vehicle_form = VehicleForm(request.POST, instance=vehicle)
         #insurance_form = VehicleInsuranceForm(request.POST)
         #if vehicle_form.is_valid() and insurance_form.is_valid():
         if vehicle_form.is_valid():
-            if request.POST.get('driver', None):
-                vehicle.driver = get_object_or_404(Member, id=request.POST.get('driver', None))
-                vehicle.driver_name = vehicle.driver.name
-            else:
-                vehicle.driver = None
-                vehicle.driver_name = ''
-            vehicle.vehicle_num0 = vehicle_form.cleaned_data['vehicle_num0']
-            vehicle.vehicle_num = vehicle_form.cleaned_data['vehicle_num']
-            vehicle.vehicle_id = vehicle_form.cleaned_data['vehicle_id']
-            vehicle.motor_type = vehicle_form.cleaned_data['motor_type']
-            vehicle.rated_output = vehicle_form.cleaned_data['rated_output']
-            vehicle.vehicle_type = vehicle_form.cleaned_data['vehicle_type']
-            vehicle.maker = vehicle_form.cleaned_data['maker']
-            vehicle.model_year = vehicle_form.cleaned_data['model_year']
-            vehicle.release_date = vehicle_form.cleaned_data['release_date']
-            vehicle.use = vehicle_form.cleaned_data['use']
-            vehicle.passenger_num = vehicle_form.cleaned_data['passenger_num']
-            vehicle.check_date = vehicle_form.cleaned_data['check_date']
-            vehicle.type = vehicle_form.cleaned_data['type']
             vehicle.save()
 
             # 파일
-            vehicle_file = request.FILES.get('vehicle_registration', None)
-            v_file_name = request.POST.get('vehicle_registration_name', None)
+            # vehicle_file = request.FILES.get('vehicle_registration', None)
+            # v_file_name = request.POST.get('vehicle_registration_name', None)
 
-            cur_files = VehicleDocument.objects.filter(vehicle_id=vehicle)
-            try:
-                cur_vehicle_files = cur_files.get(type='차량등록증')
-            except:
-                cur_vehicle_files = None
+            # cur_files = VehicleDocument.objects.filter(vehicle_id=vehicle)
+            # try:
+            #     cur_vehicle_files = cur_files.get(type='차량등록증')
+            # except:
+            #     cur_vehicle_files = None
 
-            if vehicle_file:
-                if cur_vehicle_files:
-                    os.remove(cur_vehicle_files.file.path)
-                    cur_vehicle_files.delete()
-                file = VehicleDocument(
-                    vehicle_id=vehicle,
-                    file=vehicle_file,
-                    filename=vehicle_file.name,
-                    type='차량등록증',
-                )
-                file.save()
-            elif not v_file_name and cur_vehicle_files:
-                os.remove(cur_vehicle_files.file.path)
-                cur_vehicle_files.delete()
+            # if vehicle_file:
+            #     if cur_vehicle_files:
+            #         os.remove(cur_vehicle_files.file.path)
+            #         cur_vehicle_files.delete()
+            #     file = VehicleDocument(
+            #         vehicle_id=vehicle,
+            #         file=vehicle_file,
+            #         filename=vehicle_file.name,
+            #         type='차량등록증',
+            #     )
+            #     file.save()
+            # elif not v_file_name and cur_vehicle_files:
+            #     os.remove(cur_vehicle_files.file.path)
+            #     cur_vehicle_files.delete()
 
                 
             return redirect(request.META.get('HTTP_REFERER', 'redirect_if_referer_not_found'))
         else:
-            Http404
-    raise Http404
+            raise BadRequest(f"{vehicle_form.errors}")
+    return HttpResponseNotAllowed(['post'])
 
 
 def vehicle_delete(request):
@@ -232,10 +189,79 @@ def vehicle_delete(request):
 def vehicle_download(request):
     if request.session.get('authority') > 1:
         return render(request, 'authority.html')
-    datalist = list(Vehicle.objects.exclude(use='삭제').order_by('vehicle_num0', 'vehicle_num').values_list( 'id', 'vehicle_num0', 'vehicle_num', 'vehicle_id', 'motor_type', 'rated_output', 'vehicle_type', 'maker', 'model_year', 'release_date', 'driver', 'driver_name', 'use', 'passenger_num', 'check_date', 'type'))
+    datalist = list(Vehicle.objects.exclude(use='삭제').order_by('vehicle_num0', 'vehicle_num').values_list(
+        'id', 
+        'vehicle_num0', 
+        'vehicle_num', 
+        'vehicle_id', 
+        'motor_type', 
+        'rated_output', 
+        'vehicle_type', 
+        'maker', 
+        'model_year', 
+        'release_date', 
+        'driver', 
+        'use', 
+        'passenger_num', 
+        'check_date', 
+        'type', 
+        'garage', 
+        'remark',
+
+        'vehicle_price', 
+        'depreciation_month', 
+        'number_price', 
+        'depreciation_year', 
+        'insurance_pay_date', 
+        'insurance_price', 
+        'monthly_installment', 
+        'remaining_installment_amount',
+
+        'led',
+        'fridge',
+        'sing',
+        'usb',
+        'water_heater',
+        'tv',
+
+    ))
     
     try:
-        df = pd.DataFrame(datalist, columns=['id', '차량번호 앞자리', '차량번호', '차대번호', '원동기형식', '정격출력', '차량이름', '제조사', '연식', '출고일자', '담당기사id', '담당기사', '사용여부', '승차인원', '정기점검일', '형식'])
+        df = pd.DataFrame(datalist, columns=[
+            'id',
+            '차량번호 앞자리',
+            '차량번호',
+            '차대번호',
+            '원동기형식',
+            '정격출력',
+            '차량이름',
+            '제조사',
+            '연식',
+            '출고일자',
+            '담당기사id',
+            '사용여부',
+            '승차인원',
+            '정기점검일',
+            '형식',
+            '차고지id',
+            '비고',
+
+            '차량가격',
+            '감가상각(월)',
+            '번호판가격',
+            '감가상각 기준 연도',
+            '보험납부일',
+            '보험비',
+            '할부금액(월)',
+            '남은 할부액',
+
+            '전광판유무',
+            '냉장고유무',
+            '노래방유무',
+            'USB유무',
+            '온수기유무',
+            'tv유무',
+        ])
         url = f'{MEDIA_ROOT}/vehicle/vehicleDataList.xlsx'
         df.to_excel(url, index=False)
 
@@ -250,9 +276,6 @@ def vehicle_download(request):
         #return JsonResponse({'status': 'fail', 'e': e})
         raise Http404
 
-def vehicle_file_download(request):
-    if request.session.get('authority') > 1:
-        return render(request, 'authority.html')
 
 def vehicle_upload(request):
     if request.session.get('authority') > 1:
@@ -268,23 +291,21 @@ def vehicle_upload(request):
                 Vehicle.objects.get(id=data['id'])
             if data['driver']:
                 driver = Member.objects.get(id=data['driver'])
-                if driver.name != data['driver_name']:
-                    # 기사 이름 안 맞음
-                    return JsonResponse({'error': 'driver_name', 'status': 'fail', 'count': count})
-                if Vehicle.objects.filter(driver=driver).exists():
-                    # 담당 기사는 차량 1대에 1명씩
-                    return JsonResponse({'error': 'driver_overlap', 'status': 'fail', 'count': count})
+            if data['garage']:
+                Station.objects.get(id=data['garage'])
         except Vehicle.DoesNotExist:
             # 차량 id 안 맞음
             return JsonResponse({'error': 'vehicle_id', 'status': 'fail', 'count': count})
         except Member.DoesNotExist:
             # 기사 id 안 맞음
             return JsonResponse({'error': 'driver_id', 'status': 'fail', 'count': count})
-        
+        except Station.DoesNotExist:
+            # 차고지 id 안 맞음
+            return JsonResponse({'error': 'garage_id', 'status': 'fail', 'count': count})
         if not data['vehicle_num0'] or not data['vehicle_num']:
             # 차량번호 없음
             return JsonResponse({'error': 'vehicle_num', 'status': 'fail', 'count': count})
-    
+        
     count = 0
     try:
         for data in post_data:
@@ -292,56 +313,51 @@ def vehicle_upload(request):
             driver = Member.objects.get(id=data['driver']) if data['driver'] else ''
             if data['id']:
                 vehicle = Vehicle.objects.get(id=data['id'])
-                vehicle.vehicle_num0 = data['vehicle_num0']
-                vehicle.vehicle_num = data['vehicle_num']
-                vehicle.vehicle_id = data['vehicle_id']
-                vehicle.motor_type = data['motor_type']
-                vehicle.rated_output = data['rated_output']
-                vehicle.vehicle_type = data['vehicle_type']
-                vehicle.maker = data['maker']
-                vehicle.model_year = data['model_year']
-                vehicle.release_date = data['release_date']
-                vehicle.driver_name = data['driver_name']
-                vehicle.use = data['use']
-                vehicle.passenger_num = data['passenger_num']
-                vehicle.check_date = data['check_date']
-                vehicle.type = data['type']
+                vehicle_form = VehicleForm(data, instance=vehicle)
+                if vehicle_form.is_valid():
+                    vehicle_form.save()
+                # vehicle.vehicle_num0 = data['vehicle_num0']
+                # vehicle.vehicle_num = data['vehicle_num']
+                # vehicle.vehicle_id = data['vehicle_id']
+                # vehicle.motor_type = data['motor_type']
+                # vehicle.rated_output = data['rated_output']
+                # vehicle.vehicle_type = data['vehicle_type']
+                # vehicle.maker = data['maker']
+                # vehicle.model_year = data['model_year']
+                # vehicle.release_date = data['release_date']
+                # vehicle.use = data['use']
+                # vehicle.passenger_num = data['passenger_num']
+                # vehicle.check_date = data['check_date']
+                # vehicle.type = data['type']
             else:
-                vehicle = Vehicle(
-                    vehicle_num0 = data['vehicle_num0'],
-                    vehicle_num = data['vehicle_num'],
-                    vehicle_id = data['vehicle_id'],
-                    motor_type = data['motor_type'],
-                    rated_output = data['rated_output'],
-                    vehicle_type = data['vehicle_type'],
-                    maker = data['maker'],
-                    model_year = data['model_year'],
-                    release_date = data['release_date'],
-                    driver_name = data['driver_name'],
-                    use = data['use'],
-                    passenger_num = data['passenger_num'],
-                    check_date = data['check_date'],
-                    type = data['type'],
-                    creator = creator
-                )
-            if driver:
-                vehicle.driver = driver
-            vehicle.save()
+                vehicle_form = VehicleForm(data)
+                if vehicle_form.is_valid():
+                    vehicle = vehicle_form.save(commit=False)
+                    vehicle.creator = creator
+                    vehicle.save()
+                # vehicle = Vehicle(
+                #     vehicle_num0 = data['vehicle_num0'],
+                #     vehicle_num = data['vehicle_num'],
+                #     vehicle_id = data['vehicle_id'],
+                #     motor_type = data['motor_type'],
+                #     rated_output = data['rated_output'],
+                #     vehicle_type = data['vehicle_type'],
+                #     maker = data['maker'],
+                #     model_year = data['model_year'],
+                #     release_date = data['release_date'],
+                #     use = data['use'],
+                #     passenger_num = data['passenger_num'],
+                #     check_date = data['check_date'],
+                #     type = data['type'],
+                #     creator = creator
+                # )
+            # if driver:
+            #     vehicle.driver = driver
+            # vehicle.save()
     except Exception as e:
         # 데이터 생성 중 에러발생
         return JsonResponse({'status' : 'fail', 'error' : str(e), 'count': count})
     return JsonResponse({'status': 'success', 'count': count})
-
-def vehicle_file_save(upload_file, vehicle, type, creator):
-    vehicle_file = VehicleDocument(
-        vehicle_id=vehicle,
-        file=upload_file,
-        filename=upload_file.name,
-        type=type,
-        creator=creator,
-    )
-    vehicle_file.save()
-    return
 
 
 def download(request, vehicle_id, file_id):
@@ -364,6 +380,218 @@ def download(request, vehicle_id, file_id):
     else:
         raise Http404
 
+def photo_file_create(request):
+    if request.session.get('authority') > 1:
+        return render(request, 'authority.html')
+
+    if request.method == 'GET':
+        return HttpResponseNotAllowed(['post'])
+    
+    creator = get_object_or_404(Member, id=request.session['user'])
+    vehicle = get_object_or_404(Vehicle, id=request.POST.get('vehicle'))
+    driver = get_object_or_404(Member, id=request.POST.get("driver"))
+    
+    file_type = request.POST.get('type', '')
+    request_file = request.FILES.get('file', None)
+    if request_file:
+        file = VehiclePhoto(
+            driver=driver,
+            date=request.POST.get('date', TODAY),
+            vehicle=vehicle,
+            file=request_file,
+            filename=request_file.name,
+            type=file_type,
+            creator=creator
+        )
+        file.save()
+
+        try:
+            file_path = f'{CLOUD_MEDIA_PATH}{file.file}_{file.filename}'
+            upload_to_firebase(file, file_path)
+            file.path = file_path
+            file.save()
+            os.remove(file.file.path)
+            
+        except Exception as e:
+            print("Firebase upload error", e)
+            logger.error(f"Firebase upload error {e}")
+            #파이어베이스 업로드 실패 시 파일 삭제
+            os.remove(file.file.path)
+            file.delete()
+            raise BadRequest("파일 저장 실패")
+        return redirect(request.META.get('HTTP_REFERER', 'redirect_if_referer_not_found'))
+    raise BadRequest("파일이 없습니다.")
+
+def photo_file_delete(request):
+    if request.session.get('authority') > 1:
+        return render(request, 'authority.html')
+    
+    if request.method == 'GET':
+        return HttpResponseNotAllowed(['post'])
+    
+    id_list = request.POST.getlist('id')
+
+    for id in id_list:
+        photo = get_object_or_404(VehiclePhoto, id=id)
+        photo.delete()
+    return redirect(request.META.get('HTTP_REFERER', 'redirect_if_referer_not_found'))
+
+
+def photo_list(request):
+    if request.session.get('authority') > 1:
+        return render(request, 'authority.html')
+    
+    if request.method == 'POST':
+        return HttpResponseNotAllowed(['get'])
+
+    date1 = request.GET.get('date1', None)
+    date2 = request.GET.get('date2', None)
+    search_type = request.GET.get('search_type', None)
+    pk = request.GET.get('pk', None)
+    
+    vehicle = get_object_or_404(Vehicle, id=pk)
+    qs = VehiclePhoto.objects.select_related('driver_id').filter(vehicle=vehicle).order_by('-date')
+
+    if date1 and date2:
+        qs = qs.filter(date__gte=date1).filter(date__lte=date2)
+    if search_type:
+        qs = qs.filter(type=search_type)
+
+    return JsonResponse({
+        'result' : True,
+        'data' : list(qs.values('type', 'date', 'driver_id__name', 'filename', 'id')),
+    })
+
+class PhotoImageViewer(FileViewerMixin):
+    model = VehiclePhoto
+
+class DocumentImageViewer(FileViewerMixin):
+    model = VehicleDocument
+
+def document_file_upload(request):
+    if request.session.get('authority') > 1:
+        return render(request, 'authority.html')
+
+    if request.method == 'GET':
+        return HttpResponseNotAllowed(['post'])
+    
+    creator = get_object_or_404(Member, pk=request.session['user'])
+    vehicle = get_object_or_404(Vehicle, id=request.POST.get('vehicle_id'))
+
+    for document_type in DocumentType:
+        request_file = request.FILES.get(document_type.name, None)
+        if request_file:
+            try:
+                old_file = VehicleDocument.objects.filter(vehicle_id=vehicle).get(type=document_type.value)
+            except VehicleDocument.DoesNotExist:
+                old_file = None
+
+            file = VehicleDocument(
+                vehicle_id=vehicle,
+                file=request_file,
+                filename=request_file.name,
+                type=document_type.value,
+                creator=creator
+            )
+            file.save()
+            print("file", file)
+            try:
+                file_path = f'{CLOUD_MEDIA_PATH}{file.file}_{file.filename}'
+                upload_to_firebase(file, file_path)
+                file.path = file_path
+                print("file path", file_path)
+                file.save()
+                os.remove(file.file.path)
+
+            except Exception as e:
+                print("Firebase upload error", e)
+                #파이어베이스 업로드 실패 시 파일 삭제
+                os.remove(file.file.path)
+                file.delete()
+
+            if old_file:
+                #파이어베이스에서 예전 파일 삭제 / signals에서 삭제
+                old_file.delete()
+    
+    delete_list = request.POST.getlist('delete_file_id', None)
+    for id in delete_list:
+        try:
+            file = get_object_or_404(VehicleDocument, id=id)
+            file.delete()
+        except:
+            print("MemberFile delete error id : ", id)
+            raise BadRequest("파일 삭제 실패")
+    
+
+    return redirect(request.META.get('HTTP_REFERER', 'redirect_if_referer_not_found'))
+
+def maintenance_create(request):
+    if request.session.get('authority') > 1:
+        return render(request, 'authority.html')
+
+    if request.method == 'GET':
+        return HttpResponseNotAllowed(['post'])
+    
+    creator = get_object_or_404(Member, pk=request.session['user'])
+    maintenance_form = MaintenanceForm(request.POST)
+    if maintenance_form.is_valid():
+        maintenance_form.instance.creator = creator
+        maintenance_form.save()
+            
+        return redirect(request.META.get('HTTP_REFERER', 'redirect_if_referer_not_found'))
+
+    raise BadRequest(f"{maintenance_form.errors}")
+
+
+def maintenance_list(request):
+    if request.session.get('authority') > 1:
+        return render(request, 'authority.html')
+    
+    if request.method == 'POST':
+        return HttpResponseNotAllowed(['get'])
+
+    date1 = request.GET.get('date1', None)
+    date2 = request.GET.get('date2', None)
+    search_type = request.GET.get('search_type', None)
+    pk = request.GET.get('pk', None)
+    
+    vehicle = get_object_or_404(Vehicle, id=pk)
+    qs = Maintenance.objects.filter(vehicle=vehicle).order_by('-work_date')
+
+    if date1 and date2:
+        qs = qs.filter(work_date__gte=date1).filter(work_date__lte=date2)
+    if search_type:
+        qs = qs.filter(type=search_type)
+
+    return JsonResponse({
+        'result' : True,
+        'data' : list(qs.values('type', 'work_date', 'content', 'cost', 'id')),
+    })
+
+def maintenance_delete(request):
+    if request.session.get('authority') > 1:
+        return render(request, 'authority.html')
+    
+    if request.method == 'GET':
+        return HttpResponseNotAllowed(['post'])
+    
+    
+    vehicle_id = request.POST.get('vehicle_id')
+    id_list = request.POST.getlist('id')
+
+    for id in id_list:
+        maintenance = get_object_or_404(Maintenance, id=id)
+        maintenance.delete()
+
+    vehicle = get_object_or_404(Vehicle, id=vehicle_id)
+    vehicle.total_maintenance_cost = vehicle.maintenance_records.filter(type='정비').aggregate(Sum('cost'))['cost__sum'] or 0
+    vehicle.total_tuning_cost = vehicle.maintenance_records.filter(type='튜닝').aggregate(Sum('cost'))['cost__sum'] or 0
+    vehicle.save()
+
+
+    return redirect(request.META.get('HTTP_REFERER', 'redirect_if_referer_not_found'))
+
+
 class RefuelingList(generic.ListView):
     template_name = 'vehicle/refueling.html'
     context_object_name = 'refueling_list'
@@ -382,7 +610,7 @@ class RefuelingList(generic.ListView):
         if select == 'vehicle' and search:
             vehicle = Refueling.objects.filter(vehicle__vehicle_num__contains=search).order_by('refueling_date')
         elif select == 'driver' and search:
-            vehicle = Refueling.objects.filter(driver_driver_name__contains=search).order_by('refueling_date')
+            vehicle = Refueling.objects.filter(driver__name__contains=search).order_by('refueling_date')
         else:
             vehicle = Refueling.objects.order_by('refueling_date')
         return vehicle
@@ -439,7 +667,7 @@ class VehicleMgmt(generic.ListView):
             if select == 'vehicle':
                 vehicle = Vehicle.objects.filter(vehicle_num=search).order_by('-use', '-pk')
             elif select == 'driver':
-                vehicle = Vehicle.objects.filter(driver_name=search).order_by('-use', '-pk')
+                vehicle = Vehicle.objects.filter(driver__name=search).order_by('-use', '-pk')
             elif select == 'passenger':
                 vehicle = Vehicle.objects.filter(passenger_num=search).order_by('-use', '-pk')
         return vehicle

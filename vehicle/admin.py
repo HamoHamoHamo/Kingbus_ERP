@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Vehicle, VehicleDocument, DailyChecklist, WeeklyChecklist, EquipmentChecklist
+from .models import Vehicle, VehicleDocument, DailyChecklist, WeeklyChecklist, EquipmentChecklist, Maintenance, VehiclePhoto
 
 # Register your models here.
 
@@ -16,4 +16,7 @@ admin.site.register(VehicleDocument)
 admin.site.register(DailyChecklist)
 admin.site.register(WeeklyChecklist)
 admin.site.register(EquipmentChecklist)
+admin.site.register(Maintenance)
+admin.site.register(VehiclePhoto)
+
 
