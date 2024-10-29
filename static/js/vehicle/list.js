@@ -153,6 +153,8 @@ function openDetailPopup() {
     vehicleForm.action = VEHICLE_EDIT_URL
 
     // 차량정보
+    sendToHidden.value = this.parentNode.classList[0];
+
     vehicleNum1.value = vehicleDatas[index].vehicle_num0
     vehicleNum2.value = vehicleDatas[index].vehicle_num
     driver_name.value = vehicleDatas[index].driver
@@ -173,7 +175,7 @@ function openDetailPopup() {
     rated_output.value = vehicleDatas[index].rated_output
     check_date.value = vehicleDatas[index].check_date
     garage.value = vehicleDatas[index].garage
-    sendToHidden.value = this.parentNode.className;
+    
 
     // 차량금액정보
     vehicle_price.value = vehicleDatas[index].vehicle_price
