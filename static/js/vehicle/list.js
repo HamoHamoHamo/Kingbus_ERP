@@ -289,19 +289,6 @@ function deleteFileLicensEdit() {
 
 
 
-
-// , 추가, 단위추가
-window.onload = function () {
-    for (i = 0; i < addUnit1.length; i++) {
-        if (addUnit1[i].innerText !== "") {
-            addUnit1[i].innerText = `${addUnit1[i].innerText}명`
-        }
-        if (addUnit2[i].innerText !== "") {
-            addUnit2[i].innerText = `${addUnit2[i].innerText}년`
-        }
-    }
-}
-
 //차량번호, 연식
 // PopupDataInput[1].addEventListener('change', busNumChecker)
 // PopupDataInput[7].addEventListener('change', yearChecker)
