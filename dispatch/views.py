@@ -348,7 +348,10 @@ class ScheduleList(generic.ListView):
         for driver in context['driver_list']:
             connect_list = list(filter(lambda item: item['driver'] == driver.name, daily_connect_list))
             try:
-                vehicle = driver.vehicle.vehicle_num
+                if driver.vehicle.first():
+                    vehicle = driver.vehicle.first().vehicle_num
+                else:
+                    vehicle = ''
             except Vehicle.DoesNotExist:
                 vehicle = ''
 
