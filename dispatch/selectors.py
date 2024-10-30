@@ -158,7 +158,7 @@ class DispatchSelector:
             )
             .order_by('departure_date')
             .values(
-                "driver_id",
+                "driver_id__id",
                 "driver",
                 "driver_vehicle",
                 "driver_phone_num",
@@ -199,7 +199,7 @@ class DispatchSelector:
             )
             .order_by('departure_date')
             .values(
-                "driver_id",
+                "driver_id__id",
                 "driver",
                 "driver_vehicle",
                 "driver_phone_num",
