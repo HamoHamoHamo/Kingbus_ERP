@@ -326,12 +326,15 @@ class ScheduleList(generic.ListView):
         select = self.request.GET.get('select', None)
         search = self.request.GET.get('search', None)
 
+        base_query = Member.objects.filter(Q(role='팀장')|Q(role='운전원')|Q(role='용역')|Q(role='임시'))
+
         if select == 'driver' and search:
-            driver_list = Member.objects.prefetch_related('info_driver_id', 'info_regularly_driver_id').filter(Q(role='팀장')|Q(role='운전원')|Q(role='용역')|Q(role='임시')).filter(name__contains=search).filter(use='사용').order_by('name')
+            driver_list = base_query.filter(name__contains=search).filter(use='사용').order_by('name')
         elif select == 'vehicle' and search:
-            driver_list = Member.objects.prefetch_related('info_driver_id', 'info_regularly_driver_id').filter(Q(role='팀장')|Q(role='운전원')|Q(role='용역')|Q(role='임시')).filter(vehicle__vehicle_num__contains=search).filter(vehicle__use='사용').order_by('name')
+            driver_list = base_query.filter(vehicle__vehicle_num__contains=search).filter(vehicle__use='사용').order_by('name')
         else:
-            driver_list = Member.objects.prefetch_related('info_driver_id', 'info_regularly_driver_id').filter(Q(role='팀장')|Q(role='운전원')|Q(role='용역')|Q(role='임시')).filter(use='사용').order_by('name')
+            driver_list = base_query.filter(use='사용').order_by('name')
+        # return driver_list.values('name', 'vehicle__vehicle_num', 'id',)
         return driver_list
 
     def get_context_data(self, **kwargs):
@@ -343,34 +346,33 @@ class ScheduleList(generic.ListView):
 
         dispatch_selector = DispatchSelector()
         daily_connect_list = dispatch_selector.get_daily_connect_list(date)
+
+        connect_dict = {}
+        for connect in daily_connect_list:
+            driver = connect['driver_id__id']
+            if driver not in connect_dict:
+                connect_dict[driver] = []
+            connect_dict[driver].append(connect)
+
         schedule_list = []
-
         for driver in context['driver_list']:
-            connect_list = list(filter(lambda item: item['driver'] == driver.name, daily_connect_list))
-            try:
-                if driver.vehicle.first():
-                    vehicle = driver.vehicle.first().vehicle_num
-                else:
-                    vehicle = ''
-            except Vehicle.DoesNotExist:
-                vehicle = ''
+            # driver의 connect_list 가져오기
+            connect_list = connect_dict.get(driver.id, [])
+            if connect_list:
+                for connect in connect_list:
 
-            for connect in connect_list:
-                connect['driver_vehicle'] = vehicle
+                    departure_time = datetime.strptime(connect['departure_date'], "%Y-%m-%d %H:%M")
+                    check_time1 = datetime.strftime(departure_time - timedelta(hours=1.5), "%H:%M")
+                    check_time2 = datetime.strftime(departure_time - timedelta(hours=1), "%H:%M")
+                    check_time3 = datetime.strftime(departure_time - timedelta(minutes=20), "%H:%M")
 
-                departure_time = datetime.strptime(connect['departure_date'], "%Y-%m-%d %H:%M")
-                check_time1 = datetime.strftime(departure_time - timedelta(hours=1.5), "%H:%M")
-                check_time2 = datetime.strftime(departure_time - timedelta(hours=1), "%H:%M")
-                check_time3 = datetime.strftime(departure_time - timedelta(minutes=20), "%H:%M")
-
-                if date == TODAY:
-                    if timeline > check_time1 and not connect['wake_t']:
-                        connect['check'] = 'x'
-                    elif timeline > check_time2 and not connect['drive_t']:
-                        connect['check'] = 'x'
-                    elif timeline > check_time3 and not connect['departure_t']:
-                        connect['check'] = 'x'
-            if len(connect_list) != 0:
+                    if date == TODAY:
+                        if timeline > check_time1 and not connect['wake_t']:
+                            connect['check'] = 'x'
+                        elif timeline > check_time2 and not connect['drive_t']:
+                            connect['check'] = 'x'
+                        elif timeline > check_time3 and not connect['departure_t']:
+                            connect['check'] = 'x'
                 schedule_list.append(connect_list)
 
         context['schedule_list'] = schedule_list
