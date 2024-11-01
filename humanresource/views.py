@@ -238,8 +238,9 @@ def member_create(request):
             elif role == '최고관리자':
                 req_auth = 0
             
-            if req_auth <= user_auth and user_auth != 0:
-                return HttpResponseBadRequest()
+            # if req_auth <= user_auth and user_auth != 0:
+            if req_auth < user_auth:
+                return HttpResponseBadRequest('권한이 없습니다.')
             creator = Member.objects.get(pk=request.session.get('user'))
             member = member_form.save(commit=False)
             member.birthdate = calculate_birthdate_by_resident_number(member.resident_number1)
