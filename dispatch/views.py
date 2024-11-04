@@ -2239,7 +2239,7 @@ class RouteTeamList(generic.ListView):
         if context['group']:
             context['group'] = int(context['group'])
         context['name'] = self.request.GET.get('name', '')
-        context['group_list'] = RegularlyGroup.objects.all()
+        context['group_list'] = RegularlyGroup.objects.all().order_by('number', 'name')
         context['team_leader'] = Member.objects.filter(role="팀장", use="사용").values('name', 'id')
         context['team_list'] = RouteTeam.objects.select_related('team_leader').order_by('name')
         context['team'] = team
