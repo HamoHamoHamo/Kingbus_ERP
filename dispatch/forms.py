@@ -1,7 +1,7 @@
 from django import forms 
 import re
 
-from .models import DispatchOrder, DispatchOrderConnect, DispatchRegularlyData, Station, DispatchRegularly
+from .models import DispatchOrder, DispatchOrderConnect, DispatchRegularlyData, Station, DispatchRegularly, RouteTeam
 
 class RegularlyDataForm(forms.ModelForm):
     departure_time1 = forms.CharField(max_length=2, required=True)
@@ -147,3 +147,14 @@ class StationForm(forms.ModelForm):
             'longitude',
             'references',
         ]
+
+class RouteTeamForm(forms.ModelForm):
+    class Meta:
+        model = RouteTeam
+        fields = ['team_name', 'team_leader']
+
+    def clean_team_leader(self):
+        team_leader = self.cleaned_data.get('team_leader')
+        if RouteTeam.objects.filter(team_leader=team_leader).exists():
+            raise forms.ValidationError("이미 지정된 팀장입니다")
+        return team_leader

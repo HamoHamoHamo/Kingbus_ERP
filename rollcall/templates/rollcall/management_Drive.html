@@ -11,7 +11,7 @@
 
 {% block content-header %}
 <div class="HeaderTitle">
-    점호 관리_노선
+    점호 관리_차량
 </div>
 {% endblock %}
 
@@ -112,12 +112,12 @@
     <div class="searchBox">
             <div class="routListSearch">
                 <div> 
-                     <label for="pageSelect">분류</label>
-    <select id="pageSelect" onchange="navigate()">
-      <option value="./management">노선명</option>
-      <option value="./management_Drive">차량번호</option>
-      <option value="./management_Human">이름</option>
-    </select>
+                    <label for="pageSelect">분류</label>
+                    <select id="pageSelect" onchange="navigate()">
+                        <option value="./management_Drive">차량번호</option>
+                        <option value="./management">노선명</option>
+                        <option value="./management_Human">이름</option>
+                    </select>
                 </div>
                 <input type="text" placeholder="노선명을 입력해주세요." value="{{search}}" name="search" class="searchInput">
                 <input value="{{date}}" autocomplete="off" type="date" name="date" class="searchDate" max="9999-12-31">
@@ -161,6 +161,7 @@
                                 <td>1</td>
                                 <td>7555</td>
                                 <td>전민철</td>
+                                
                                 <td>010-8884-7074</td>
                                 <td>07:30</td>
                                 <td>

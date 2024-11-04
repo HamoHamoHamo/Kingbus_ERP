@@ -11,13 +11,14 @@ from config.settings import MEDIA_ROOT
 from django.db.models import Q, Sum
 from django.forms.models import model_to_dict
 from django.core.exceptions import ObjectDoesNotExist, MultipleObjectsReturned, BadRequest
-from django.http import Http404, JsonResponse, HttpResponse, HttpResponseNotAllowed
+from django.http import Http404, JsonResponse, HttpResponse, HttpResponseNotAllowed, HttpResponseRedirect
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
 from django.views import View, generic
+from .forms import RouteTeamForm
 
 from .commons import get_date_connect_list, get_multi_date_connect_list
-from .forms import OrderForm, ConnectForm, RegularlyDataForm, StationForm, RegularlyForm
+from .forms import OrderForm, ConnectForm, RegularlyDataForm, StationForm, RegularlyForm, RouteTeamForm
 from .models import DispatchRegularlyRouteKnow, DispatchCheck, DispatchRegularlyData, DispatchRegularlyWaypoint, Schedule, DispatchOrderConnect, DispatchOrder, DispatchRegularly, RegularlyGroup, DispatchRegularlyConnect, DispatchOrderStation, ConnectRefusal, MorningChecklist, EveningChecklist, DrivingHistory, BusinessEntity, Station, DispatchRegularlyDataStation, DispatchRegularlyStation, RouteTeam
 from .selectors import DispatchSelector
 from assignment.models import AssignmentConnect
@@ -4032,5 +4033,33 @@ def team_list_view(request):
     """팀 목록 조회 및 생성/수정 폼"""
     teams = RouteTeam.objects.all()
     members = Member.objects.filter(role='팀장')  # 팀장 역할인 멤버만 필터링
+    form = RouteTeamForm()
+    return render(request, 'dispatch/teamtwo.html', {'teams': teams, 'members': members, 'form': form})
 
-    return render(request, 'dispatch/teamtwo.html', {'teams': teams, 'members': members})
+def route_team_create(request):
+    if request.method == 'POST':  
+        form = RouteTeamForm(request.POST)  
+        if form.is_valid():  
+            form.save()
+            return HttpResponseRedirect(reverse('dispatch:team_list_view'))
+        else:
+            teams = RouteTeam.objects.all()
+            members = Member.objects.filter(role='팀장')
+            error_message = None
+            if form.has_error('team_leader'):
+                error_message = form.errors['team_leader'][0]  # "이미 지정된 팀장입니다" 메시지 추출
+            return render(request, 'dispatch/teamtwo.html', {
+                'form': form,
+                'teams': teams,
+                'members': members,
+                'error_message': error_message,
+            })
+    return HttpResponseRedirect(reverse('dispatch:team_list_view'))
+def route_team_delete(request, team_id):
+    if request.method == 'POST':
+        # 특정 Route Team 객체를 가져오고 삭제합니다.
+        route_team = get_object_or_404(DispatchRouteTeam, id=team_id)
+        route_team.delete()
+        return HttpResponseRedirect(reverse('dispatch:team_list_view'))  # 삭제 후 목록 페이지로 리디렉션
+    else:
+        return HttpResponse(status=405)

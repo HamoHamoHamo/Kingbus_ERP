@@ -138,16 +138,15 @@
                             <tr>
                                 <td><input type="checkbox"></td>
                                 <td>순번</td>
-                                <td>차량</td>
                                 <td>기사명</td>
-                                <td>연락처</td>
-                                <td>시간</td>
-                                <td>노선명</td>
-                                <td>출발지 위치</td>
-                                <td>점호여부</td>
-                                <td>지각</td>
-                                <td>제복</td>
+                                <td>기상</td>
+                                <td>차고지</td>
                                 <td>음주</td>
+                                <td>제복</td>
+                                <td>차량관리</td>
+                                <td>첫정류장</td>
+                                <td>마지막정류장</td>
+                                <td>뒷정리</td>
                             </tr>
                         </thead>
                     </table>
@@ -159,16 +158,43 @@
                             <tr class="RouteListBodyTr">
                                 <td><input type="checkbox"></td>
                                 <td>1</td>
-                                <td>7555</td>
                                 <td>전민철</td>
-                                <td>010-8884-7074</td>
-                                <td>07:30</td>
                                 <td>
-                                    <div class="PopupColor" onclick="openPopup()">출근 수원역 1</div>
+                                    <select class="RouteListCheckbox" name="type">
+                                    <option  value="-">-</option>
+                                    <option  value="정상출근">정상출근</option>
+                                    <option  value="지각">지각</option>
+                                    </select>
                                 </td>
-                                <td>수원역-롯데몰</td>
-                                <td class="PopupColor" onclick="openPopup()">완료</td>
-                                <td> 
+                                <td>
+                                    <select class="RouteListCheckbox" name="type">
+                                    <option  value="-">-</option>
+                                    <option  value="정상출근">정상출근</option>
+                                    <option  value="지각">지각</option>
+                                    </select>
+                                </td>
+                                <td>
+                                     <select class="RouteListCheckbox" name="type">
+                                    <option  value="-">-</option>
+                                    <option  value="금주">금주</option>
+                                    <option  value="지각음주">음주</option> 
+                                    </select>
+                                </td>
+                                <td>
+                                    <select class="RouteListCheckbox" name="type">
+                                    <option  value="-">-</option>
+                                    <option  value="착용">착용</option>
+                                    <option  value="미착용">미착용</option>
+                                    </select>
+                                </td>
+                                <td>
+                                    <select class="RouteListCheckbox" name="type">
+                                    <option  value="-">-</option>
+                                    <option  value="이상">이상</option>
+                                    <option  value="이상무">이상무</option>
+                                    </select>
+                                </td>
+                                <td>
                                     <select class="RouteListCheckbox" name="type">
                                     <option  value="-">-</option>
                                     <option  value="정상출근">정상출근</option>
@@ -178,15 +204,16 @@
                                 <td> 
                                     <select class="RouteListCheckbox" name="type">
                                     <option  value="-">-</option>
-                                    <option  value="착용">착용</option>
-                                    <option  value="미착용">미착용</option>
+                                    <option  value="정상출근">정상출근</option>
+                                    <option  value="지각">지각</option>
                                     </select>
                                 </td>
+
                                 <td> 
                                     <select class="RouteListCheckbox" name="type">
                                     <option  value="-">-</option>
-                                    <option  value="금주">금주</option>
-                                    <option  value="지각음주">음주</option> 
+                                    <option  value="완료">완료</option>
+                                    <option  value="미완료">미완료</option> 
                                     </select>
                                 </td>
                             </tr>
