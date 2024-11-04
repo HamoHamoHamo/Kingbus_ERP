@@ -1,7 +1,9 @@
 from django import forms 
+from django.db import models
 import re
 
-from .models import DispatchOrder, DispatchOrderConnect, DispatchRegularlyData, Station, DispatchRegularly, DispatchOrderTour, DispatchOrderTourCustomer
+
+from .models import DispatchOrder, DispatchOrderConnect, DispatchRegularlyData, Station, DispatchRegularly, DispatchOrderTour, DispatchOrderTourCustomer, RouteTeam
 
 class RegularlyDataForm(forms.ModelForm):
     departure_time1 = forms.CharField(max_length=2, required=True)
@@ -158,3 +160,18 @@ class TourForm(forms.ModelForm):
             'price',
             'max_people',
         ]
+
+class RouteTeamForm(forms.ModelForm):
+    class Meta:
+        model = RouteTeam
+        exclude = ['creator']
+
+    def save(self, commit=True, creator=None):
+        instance = super().save(commit=False)
+
+        if creator:
+            instance.creator = creator
+        
+        if commit:
+            instance.save()
+        return instance

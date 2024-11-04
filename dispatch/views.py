@@ -17,8 +17,8 @@ from django.urls import reverse
 from django.views import generic
 
 from .commons import get_date_connect_list, get_multi_date_connect_list
-from .forms import OrderForm, ConnectForm, RegularlyDataForm, StationForm, RegularlyForm, TourForm
-from .models import DispatchRegularlyRouteKnow, DispatchCheck, DispatchRegularlyData, DispatchRegularlyWaypoint, Schedule, DispatchOrderConnect, DispatchOrder, DispatchRegularly, RegularlyGroup, DispatchRegularlyConnect, DispatchOrderStation, ConnectRefusal, MorningChecklist, EveningChecklist, DrivingHistory, BusinessEntity, Station, DispatchRegularlyDataStation, DispatchRegularlyStation, DispatchOrderTourCustomer, DispatchOrderTour
+from .forms import OrderForm, ConnectForm, RegularlyDataForm, StationForm, RegularlyForm, TourForm, RouteTeamForm
+from .models import DispatchRegularlyRouteKnow, DispatchCheck, DispatchRegularlyData, DispatchRegularlyWaypoint, Schedule, DispatchOrderConnect, DispatchOrder, DispatchRegularly, RegularlyGroup, DispatchRegularlyConnect, DispatchOrderStation, ConnectRefusal, MorningChecklist, EveningChecklist, DrivingHistory, BusinessEntity, Station, DispatchRegularlyDataStation, DispatchRegularlyStation, DispatchOrderTourCustomer, DispatchOrderTour, RouteTeam
 from .selectors import DispatchSelector
 from assignment.models import AssignmentConnect
 from accounting.models import Collect, TotalPrice
@@ -2185,6 +2185,132 @@ def regularly_route_know_delete(request):
         id_list = request.POST.getlist('id')
         for pk in id_list:
             DispatchRegularlyRouteKnow.objects.get(id=pk).delete()
+        return redirect(request.META.get('HTTP_REFERER', 'redirect_if_referer_not_found'))
+    else:
+        return HttpResponseNotAllowed(['POST'])
+
+class RouteTeamList(generic.ListView):
+    template_name = 'dispatch/route_team.html'
+    context_object_name = 'regulary_data_list'
+    model = DispatchRegularlyData
+
+    def get(self, request, **kwargs):
+        if request.session.get('authority') >= 3:
+            return render(request, 'authority.html')
+        else:
+            return super().get(request, **kwargs)
+
+    def get_queryset(self):
+        team = self.request.GET.get('team', '')
+        team_none = self.request.GET.get('team_none', '')
+        group = self.request.GET.get('group', '')
+        name = self.request.GET.get('name', '')
+
+        queryset = DispatchRegularlyData.objects.filter(use='사용')
+
+        if group:
+            queryset = queryset.filter(group__id=group)
+
+        if team:
+            queryset = queryset.filter(team__id=team)
+        
+        if team_none == "팀없음":
+            queryset = queryset.filter(team=None)
+
+        if name:
+            queryset = queryset.filter(route__contains=name)
+
+        return queryset
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        team_id = self.request.GET.get('team', '')
+        if team_id:
+            team = get_object_or_404(RouteTeam, id=team_id)
+        else:
+            team = '전체'
+
+        null = self.request.GET.get('team_none', '')
+        if null == '팀없음':
+            team = '팀없음'
+
+        context['group'] = self.request.GET.get('group', '')
+        if context['group']:
+            context['group'] = int(context['group'])
+        context['name'] = self.request.GET.get('name', '')
+        context['group_list'] = RegularlyGroup.objects.all()
+        context['team_leader'] = Member.objects.filter(role="팀장", use="사용").values('name', 'id')
+        context['team_list'] = RouteTeam.objects.select_related('team_leader').order_by('name')
+        context['team'] = team
+        context['name'] = self.request.GET.get('name', '')
+        context['use'] = self.request.GET.get('use', '사용')
+        context['role'] = self.request.GET.get('role', '담당업무')
+        return context
+
+def route_team_create(request):
+    if request.session.get('authority') > 1:
+        return render(request, 'authority.html')
+
+    if request.method == "POST":
+        creator = get_object_or_404(Member, pk=request.session['user'])
+        team_form = RouteTeamForm(request.POST)
+        if team_form.is_valid():
+            team_form.save(creator=creator)
+
+        return redirect(request.META.get('HTTP_REFERER', 'redirect_if_referer_not_found'))
+    else:
+        return HttpResponseNotAllowed(['POST'])
+
+def route_team_edit(request):
+    if request.session.get('authority') > 1:
+        return render(request, 'authority.html')
+
+    if request.method == "POST":
+        id = request.POST.get('id', None)
+
+        team = get_object_or_404(RouteTeam, id=id)
+
+        team_form = RouteTeamForm(request.POST, instance=team)
+        if team_form.is_valid():
+            team_form.save()
+        else:
+            raise BadRequest(f"{team_form.errors}")
+        return redirect(request.META.get('HTTP_REFERER', 'redirect_if_referer_not_found'))
+    else:
+        return HttpResponseNotAllowed(['POST'])
+
+def route_team_delete(request):
+    if request.session.get('authority') > 1:
+        return render(request, 'authority.html')
+
+    if request.method == "POST":
+        team = get_object_or_404(RouteTeam, id=request.POST.get('id', None))
+        team.delete()
+            
+            
+        return redirect('dispatch:route_team')
+    else:
+        return HttpResponseNotAllowed(['POST'])
+
+def route_team_save(request):
+    if request.session.get('authority') > 1:
+        return render(request, 'authority.html')
+
+    if request.method == "POST":
+        route_list = request.POST.getlist('id', None)
+        team_list = request.POST.getlist('team_id', None)
+        
+        
+        for index, route_id in enumerate(route_list):
+            route = get_object_or_404(DispatchRegularlyData, id=route_id)
+            team_id = team_list[index]
+            if team_id == 'none':
+                route.team = None
+            else:
+                team = get_object_or_404(RouteTeam, id=team_id)
+                route.team = team
+            route.save()
         return redirect(request.META.get('HTTP_REFERER', 'redirect_if_referer_not_found'))
     else:
         return HttpResponseNotAllowed(['POST'])
