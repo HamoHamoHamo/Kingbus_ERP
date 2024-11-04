@@ -3,7 +3,7 @@ from .models import Schedule, DispatchOrder, DispatchOrderConnect, RegularlyGrou
     DispatchRegularly, DispatchRegularlyData, DispatchRegularlyConnect, DispatchCheck, \
     DispatchOrderStation, DriverCheck, ConnectRefusal, DispatchRegularlyWaypoint, DispatchRegularlyRouteKnow, \
     MorningChecklist, EveningChecklist, DrivingHistory, BusinessEntity, Station, DispatchRegularlyDataStation, DispatchRegularlyStation, \
-    DispatchOrderTour, DispatchOrderTourCustomer
+    DispatchOrderTour, DispatchOrderTourCustomer, RouteTeam
 
 # class DispatchInfoInline(admin.TabularInline):
 #     model = DispatchOrderConnect
@@ -46,3 +46,4 @@ admin.site.register(BusinessEntity)
 admin.site.register(Station)
 admin.site.register(DispatchRegularlyDataStation)
 admin.site.register(DispatchRegularlyStation)
+admin.site.register(RouteTeam)

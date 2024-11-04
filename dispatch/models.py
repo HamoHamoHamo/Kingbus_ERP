@@ -8,6 +8,16 @@ from django.core.exceptions import BadRequest
 
 from common.datetime import get_hour_minute
 
+class RouteTeam(models.Model):
+    name = models.CharField(verbose_name='팀이름', max_length=100)
+    team_leader = models.ForeignKey(Member, on_delete=models.SET_NULL, limit_choices_to={'role': '팀장'}, related_name='route_teams_leader', null=True, blank=False)
+    pub_date = models.DateTimeField(auto_now_add=True, verbose_name='작성시간')
+    updated_at = models.DateTimeField(auto_now=True, verbose_name='수정시간')
+    creator = models.ForeignKey(Member, on_delete=models.SET_NULL, related_name="route", db_column="creator_id", null=True)
+    
+    def __str__(self):
+        return f"{self.name}"
+
 class BusinessEntity(models.Model):
     name = models.CharField(verbose_name='사업장 이름', max_length=50, null=False, unique=True)
     number = models.IntegerField(verbose_name='순번', null=False, default=999)
@@ -37,6 +47,7 @@ class DispatchRegularlyData(models.Model):
         return get_hour_minute(int(self.time)) if self.time else ""
 
     group = models.ForeignKey(RegularlyGroup, verbose_name='그룹', related_name="regularly", on_delete=models.SET_NULL, null=True)
+    team = models.ForeignKey(RouteTeam, verbose_name='팀', related_name="regularly", on_delete=models.SET_NULL, null=True)
     station = models.ManyToManyField("Station", related_name="regularly_data", through="DispatchRegularlyDataStation")
     references = models.CharField(verbose_name='참조사항', max_length=100, null=False, blank=True)
     departure = models.CharField(verbose_name='출발지', max_length=200, null=False)

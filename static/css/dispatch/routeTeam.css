@@ -1,0 +1,47 @@
+.groupLeaderSelect {
+    width: 10rem;
+}
+
+.groupNameCreate {
+    width: 60%;
+}
+
+.groupCreateBtnBox {
+    justify-content: space-between;
+}
+
+.groupCreateDeleteBtnBox {
+    display: flex;
+}
+
+#routeListsearch {
+    font-size: 1.4rem;
+}
+
+
+.RouteList table td:nth-child(1) {
+    width: 5%;
+}
+
+.RouteList table td:nth-child(2) {
+    width: 15%;
+}
+.RouteList table td:nth-child(3) {
+    width: 23%;
+}
+.RouteList table td:nth-child(4) {
+    width: 17%;
+}
+.RouteList table td:nth-child(5) {
+    width: 10%;
+}
+.RouteList table td:nth-child(6) {
+    width: 15%;
+}
+.RouteList table td:nth-child(7) {
+    width: 15%;
+}
+
+.RouteListBody td {
+    word-break: normal;
+}
