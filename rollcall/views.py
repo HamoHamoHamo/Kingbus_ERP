@@ -30,7 +30,7 @@ class Management_Human(generic.ListView):
         }
         return render(request, self.template_name, context)
 
-class Management_Drive(generic.ListView):
+class management_Drive(generic.ListView):
     template_name = 'rollcall/management_Drive.html'
     context_object_name = 'member_list'
     model = Member

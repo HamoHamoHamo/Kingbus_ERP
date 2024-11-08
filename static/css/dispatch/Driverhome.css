@@ -1,0 +1,79 @@
+body {
+  font-family: Arial, sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
+  background-color: #f9f9f9;
+}
+
+.main-TaskBoard{
+    display: flex;  
+    justify-content: space-around;
+}
+
+.task-board {
+  width: 40rem;
+  border-radius: 5px;
+  overflow: hidden;
+}
+
+.header {
+  background-color: #333;
+  color: #fff;
+  text-align: center;
+  padding: 10px;
+  font-size: 1.5rem;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  
+}
+
+.table th,
+.table td {
+  padding: 8px;
+  text-align: center;
+  border: 1px solid #ddd;
+  font-size: 1.2rem;
+}
+
+.table th {
+  background-color: #f0f0f0;
+}
+
+.button-clear {
+  background-color: #ddd;
+  color: #333;
+  border: none;
+  padding: 5px 10px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.button-clear.completed {
+  background-color: #333;
+  color: white;
+  cursor: default;
+}
+
+.button-clear[disabled] {
+  background-color: #f0f0f0;
+  color: #aaa;
+  cursor: not-allowed;
+}
+
+.time-cell.completed {
+  color: #333;
+}
+
+.incomplete {
+  color: red;
+}
+
+.time-cell {
+  color: gray;
+}

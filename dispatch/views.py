@@ -4055,6 +4055,8 @@ def route_team_create(request):
                 'error_message': error_message,
             })
     return HttpResponseRedirect(reverse('dispatch:team_list_view'))
+
+    
 def route_team_delete(request, team_id):
     if request.method == 'POST':
         # 특정 Route Team 객체를 가져오고 삭제합니다.
@@ -4063,3 +4065,10 @@ def route_team_delete(request, team_id):
         return HttpResponseRedirect(reverse('dispatch:team_list_view'))  # 삭제 후 목록 페이지로 리디렉션
     else:
         return HttpResponse(status=405)
+
+        
+#새로운 기사 홈
+# Create your views here.
+def driver_home(request):
+    return render(request, 'dispatch/Driverhome.html')
+

@@ -6,12 +6,12 @@
 <meta http-equiv="Cache-Control" content="private, no-cache, no-store, max-age=0, must-revalidate">
 <link rel="stylesheet" href="{% static 'css/dispatch/dispatchBase.css' %}" type="text/css" />
 <link rel="stylesheet" href="{% static 'css/humanresource/team.css' %}" type="text/css" />
-<link rel="stylesheet" href="{% static 'css/rollcall/management.css' %}" type="text/css" />
+<link rel="stylesheet" href="{% static 'css/rollcall/management_Drive.css' %}" type="text/css" />
 {% endblock %}
 
 {% block content-header %}
 <div class="HeaderTitle">
-    점호 관리_차량
+    점호 관리
 </div>
 {% endblock %}
 
@@ -112,12 +112,12 @@
     <div class="searchBox">
             <div class="routListSearch">
                 <div> 
-                    <label for="pageSelect">분류</label>
-                    <select id="pageSelect" onchange="navigate()">
-                        <option value="./management_Drive">차량번호</option>
-                        <option value="./management">노선명</option>
-                        <option value="./management_Human">이름</option>
-                    </select>
+                     <label for="pageSelect">분류</label>
+    <select id="pageSelect" onchange="navigate()">
+      <option value="./management">노선명</option>
+      <option value="./management_Drive">차량번호</option>
+      <option value="./management_Human">이름</option>
+    </select>
                 </div>
                 <input type="text" placeholder="노선명을 입력해주세요." value="{{search}}" name="search" class="searchInput">
                 <input value="{{date}}" autocomplete="off" type="date" name="date" class="searchDate" max="9999-12-31">
@@ -138,16 +138,14 @@
                             <tr>
                                 <td><input type="checkbox"></td>
                                 <td>순번</td>
-                                <td>차량</td>
+                                <td>노선명</td>
                                 <td>기사명</td>
                                 <td>연락처</td>
-                                <td>시간</td>
-                                <td>노선명</td>
-                                <td>출발지 위치</td>
-                                <td>점호여부</td>
-                                <td>지각</td>
-                                <td>제복</td>
-                                <td>음주</td>
+                                <td>기상</td>
+                                <td>차고지 출근</td>
+                                <td>첫정류장</td>
+                                <td>마지막정류장</td>
+                                <td>뒷정리</td>
                             </tr>
                         </thead>
                     </table>
@@ -159,41 +157,16 @@
                             <tr class="RouteListBodyTr">
                                 <td><input type="checkbox"></td>
                                 <td>1</td>
-                                <td>7555</td>
-                                <td>전민철</td>
-                                
-                                <td>010-8884-7074</td>
-                                <td>07:30</td>
                                 <td>
                                     <div class="PopupColor" onclick="openPopup()">출근 수원역 1</div>
                                 </td>
-                                <td>수원역-롯데몰</td>
-                                <td class="PopupColor" onclick="openPopup()">완료</td>
-                                <td> 
-                                    <select class="RouteListCheckbox" name="type">
-                                    <option  value="-">-</option>
-                                    <option  value="정상출근">정상출근</option>
-                                    <option  value="지각">지각</option>
-                                    </select>
-                                </td>
-                                <td> 
-                                    <select class="RouteListCheckbox" name="type">
-                                    <option  value="-">-</option>
-                                    <option  value="착용">착용</option>
-                                    <option  value="미착용">미착용</option>
-                                    </select>
-                                </td>
-                                <td> 
-                                    <select class="RouteListCheckbox" name="type">
-                                    <option  value="-">-</option>
-                                    <option  value="금주">금주</option>
-                                    <option  value="지각음주">음주</option> 
-                                    </select>
-                                </td>
-                            </tr>
-
-                            
-
+                                <td>전민철</td>
+                                <td>010-8884-7074</td>
+                                <td>07:30</td>
+                                <td>08:30</td>
+                                <td>09:20</td>
+                                <td>18:30</td>
+                                <td>19:00</td>
                             <tr class="bl anckTr"></tr>
                         </tbody>
                     </table>
@@ -222,106 +195,50 @@
       value="EyL29BbSCVMLttjaZm3ueufxXe1noxGcR5J47lDU6pjO9R3OQeSIir3gmURDbOZZ"
     />
     <div class="popupHeader">
-      <div class="popupTitle">운행일보</div>
+      <div class="popupTitle">노선 세부정보</div>
     </div>
     <div class="popupBody">
-          <div class="popupArticleDoubles">
-            <table class="transaction-table">
-              <thead>
-                <tr>
-                  <th>번호</th>
-                  <th>거래일</th>
-                  <th>거래처</th>
-                  <th>내용</th>
-                  <th>은행명</th>
-                  <th>계좌번호</th>
-                  <th>금액</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>1</td>
-                  <td>-</td>
-                  <td>명성차유리</td>
-                  <td>유리 교체</td>
-                  <td>김재황</td>
-                  <td>0000-00000-0000</td>
-                  <td>275,000</td>
-                </tr>
-                <tr>
-                  <td>2</td>
-                  <td>2024-04-15</td>
-                  <td>정림상사</td>
-                  <td>호스</td>
-                  <td>김재두</td>
-                  <td>0000-00000-0000</td>
-                  <td>133,000</td>
-                </tr>
-                <tr>
-                  <td>3</td>
-                  <td>2024-04-15</td>
-                  <td>세종코퍼레이션</td>
-                  <td>오일</td>
-                  <td>농협</td>
-                  <td>0000-00000-0000</td>
-                  <td>539,000</td>
-                </tr>
-                <tr>
-                  <td>4</td>
-                  <td>2024-04-15</td>
-                  <td>한일타이어</td>
-                  <td>타이어</td>   
-                  <td>우리</td>
-                  <td>0000-00000-0000</td>
-                  <td>5,280,000</td>
-                </tr>
-              </tbody>
-            </table>
-
-            <div class="buttons">
-                <button class="SubButton">미리보기 | 영수증png.</button>
-                <button class="SubButton">미리보기 | 영수증png.</button>
-                <button class="SubButton">미리보기 | 영수증png.</button>
-                <button class="SubButton">미리보기 | 영수증png.</button>
+          <div class="popupList">
+                    <table class="popupListHeader">
+                        <thead>
+                            <tr>
+                                <td>노선명</td>
+                                <td>기사명</td>
+                                <td>연락처</td>
+                                <td>기상</td>
+                                <td>차고지 출근</td>
+                                <td>차고지 도착</td>
+                                <td>음주측정</td>
+                                <td>제복</td>
+                                <td>차량점검</td>
+                                <td>첫정류장</td>
+                                <td>마지막정류장</td>
+                                <td>뒷정리</td>
+                            </tr>
+                        </thead>
+                    </table>
+              
+                    <table class="popupListBody">
+                        <tbody>
+                            <tr>
+                                <td>출근 수원역 1</td>
+                                <td>전민철</td>
+                                <td>010-8884-7074</td>
+                                <td>07:30</td>
+                                <td>08:30</td>
+                                <td>09:20</td>
+                                <td>이상무</td>
+                                <td>이상무</td>
+                                <td>이상무</td>
+                                <td>19:00</td>
+                                <td>18:30</td>
+                                <td>18:30</td>
+                            <tr class="bl anckTr"></tr>
+                        </tbody>
+                    </table>
             </div>
-          </div>
-
-          <div class="popupFooterBox">
-            <div class="popupSubTitle">지출결의서 작성하기</div>
-                <div class="popupArticleBoxs">
-                    <div class="popupArticleSub">
-                        <label for="" class="popupArticleFont">거래일</label>
-                        <input type="date" class="PopupData"/>
-                    </div>
-                    <div class="popupArticleSub">
-                        <label for="" class="popupArticleFont">운행명</label>
-                        <input type="textbox" class="PopupData"/>
-                    </div>
-                </div>
-                <div class="popupArticleBoxs">
-                    <div class="popupArticleSub">
-                        <label for="" class="popupArticleFont">거래처</label>
-                        <input type="textbox" class="PopupData"/>
-                    </div>
-                    <div class="popupArticleSub">
-                        <label for="" class="popupArticleFont">계좌번호</label>
-                        <input type="textbox" class="PopupData"/>
-                    </div>
-                </div>
-                <div class="popupArticleBoxs">
-                    <div class="popupArticleSub">
-                        <label for="" class="popupArticleFont">금액</label>
-                        <input type="textbox" class="PopupData"/>
-                    </div>
-                    <div class="popupArticleSub">
-                        <label for="" class="popupArticleFont">내용</label>
-                        <input type="textbox" class="PopupData"/>
-                    </div>
-                </div>
-          </div>
-
       <div class="popupFooters popupFooterDetail">
-        <div class="btnModules createBtn">저장</div>
+        <div class="btnModules createBtn">확인</div>
         <div class="btnModules closeBtn">닫기</div>
       </div>
     </div>

@@ -1,0 +1,489 @@
+{% extends 'base.html' %}
+{% load custom_tags %}
+{% load static %}
+
+{% block head %}
+<link rel="stylesheet" href="{% static 'css/dispatch/Driverhome.css' %}" type="text/css" />
+{% endblock %}
+
+{% block content-header %}
+<div class="HeaderTitle">
+  <!-- 페이지별 Title 변경 -->
+  기사 HOME
+</div>
+{% endblock %}
+
+{% block content %}
+
+<div class="main-TaskBoard">
+  <div class="task-board">
+    <div class="header">어제 한 일 (08.21)</div>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>운행시간</th>
+          <th>할일</th>
+          <th>완료 여부</th>
+          <th>완료 시간</th>
+        </tr>
+      </thead>
+      <tbody id="task-list">
+        <tr>
+          <td>~ 6:00</td>
+          <td>기상</td>
+          <td>
+            <button class="button-clear" onclick="completeTask(this)" disabled>
+              완료
+            </button>
+          </td>
+          <td class="time-cell">완료</td>
+        </tr>
+        <tr>
+          <td>~ 7:10</td>
+          <td>차고지 도착</td>
+          <td>
+            <button class="button-clear" onclick="completeTask(this)" disabled>
+              완료
+            </button>
+          </td>
+          <td class="time-cell">완료</td>
+        </tr>
+        <tr>
+          <td>12:40</td>
+          <td>출근 시간 체크</td>
+          <td>
+            <button class="button-clear" onclick="completeTask(this)" disabled>
+              완료
+            </button>
+          </td>
+          <td class="time-cell">완료</td>
+        </tr>
+        <tr>
+          <td>12:40</td>
+          <td>음주 측정</td>
+          <td>
+            <button class="button-clear" onclick="completeTask(this)" disabled>
+              완료
+            </button>
+          </td>
+          <td class="time-cell">완료</td>
+        </tr>
+        <tr>
+          <td>12:40</td>
+          <td>체온 측정</td>
+          <td>
+            <button class="button-clear" onclick="completeTask(this)" disabled>
+              완료
+            </button>
+          </td>
+          <td class="time-cell">완료</td>
+        </tr>
+        <tr>
+          <td>12:40</td>
+          <td>제복</td>
+          <td>
+            <button class="button-clear" onclick="completeTask(this)" disabled>
+              완료
+            </button>
+          </td>
+          <td class="time-cell">완료</td>
+        </tr>
+        <tr>
+          <td>12:40</td>
+          <td>[노선 5] 첫정류장</td>
+          <td>
+            <button class="button-clear" onclick="completeTask(this)" disabled>
+              완료
+            </button>
+          </td>
+          <td class="time-cell">완료</td>
+        </tr>
+        <tr>
+          <td>12:40</td>
+          <td>[노선5] 사업장</td>
+          <td>
+            <button class="button-clear" onclick="completeTask(this)" disabled>
+              완료
+            </button>
+          </td>
+          <td class="time-cell">완료</td>
+        </tr>
+        <tr>
+          <td>12:40</td>
+          <td>[노선6] 첫정류장</td>
+          <td>
+            <button class="button-clear" onclick="completeTask(this)" disabled>
+              완료
+            </button>
+          </td>
+          <td class="time-cell">완료</td>
+        </tr>
+        <tr>
+          <td>12:40</td>
+          <td>[노선6] 사업장</td>
+          <td>
+            <button class="button-clear" onclick="completeTask(this)" disabled>
+              완료
+            </button>
+          </td>
+          <td class="time-cell">완료</td>
+        </tr>
+        <tr>
+          <td>12:40</td>
+          <td>차고지 도착</td>
+          <td>
+            <button class="button-clear" onclick="completeTask(this)" disabled>
+              완료
+            </button>
+          </td>
+          <td class="time-cell">완료</td>
+        </tr>
+        <tr>
+          <td>12:40</td>
+          <td>뒷정리 완료</td>
+          <td>
+            <button class="button-clear" onclick="completeTask(this)" disabled>
+              완료
+            </button>
+          </td>
+          <td class="time-cell">완료</td>
+        </tr>
+        <tr>
+          <td>12:40</td>
+          <td>퇴근</td>
+          <td>
+            <button class="button-clear" onclick="completeTask(this)" disabled>
+              완료
+            </button>
+          </td>
+          <td class="time-cell">완료</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="task-board">
+    <div class="header">오늘 할 일 (08.23)</div>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>운행시간</th>
+          <th>할일</th>
+          <th>완료 여부</th>
+          <th>완료 시간</th>
+        </tr>
+      </thead>
+      <tbody id="task-list">
+        <tr>
+          <td>~ 6:00</td>
+          <td>기상</td>
+          <td>
+            <button class="button-clear" onclick="completeTask(this)">
+              미완료
+            </button>
+          </td>
+          <td class="time-cell">대기 중</td>
+        </tr>
+        <tr>
+          <td>~ 7:10</td>
+          <td>차고지 도착</td>
+          <td>
+            <button class="button-clear" onclick="completeTask(this)" disabled>
+              미완료
+            </button>
+          </td>
+          <td class="time-cell">대기 중</td>
+        </tr>
+        <tr>
+          <td>~ 7:15</td>
+          <td>출근 시간 체크</td>
+          <td>
+            <button class="button-clear" onclick="completeTask(this)" disabled>
+              미완료
+            </button>
+          </td>
+          <td class="time-cell">대기 중</td>
+        </tr>
+        <tr>
+          <td>~ 7:20</td>
+          <td>음주 측정</td>
+          <td>
+            <button class="button-clear" onclick="completeTask(this)" disabled>
+              미완료
+            </button>
+          </td>
+          <td class="time-cell">대기 중</td>
+        </tr>
+        <tr>
+          <td>~ 7:20</td>
+          <td>체온 측정</td>
+          <td>
+            <button class="button-clear" onclick="completeTask(this)" disabled>
+              미완료
+            </button>
+          </td>
+          <td class="time-cell">대기 중</td>
+        </tr>
+        <tr>
+          <td>~ 7:25</td>
+          <td>제복</td>
+          <td>
+            <button class="button-clear" onclick="completeTask(this)" disabled>
+              미완료
+            </button>
+          </td>
+          <td class="time-cell">대기 중</td>
+        </tr>
+        <tr>
+          <td>~ 8:45</td>
+          <td>[노선 5] 첫정류장</td>
+          <td>
+            <button class="button-clear" onclick="completeTask(this)" disabled>
+              미완료
+            </button>
+          </td>
+          <td class="time-cell">대기 중</td>
+        </tr>
+        <tr>
+          <td>~ 9:15</td>
+          <td>[노선5] 사업장</td>
+          <td>
+            <button class="button-clear" onclick="completeTask(this)" disabled>
+              미완료
+            </button>
+          </td>
+          <td class="time-cell">대기 중</td>
+        </tr>
+        <tr>
+          <td>~ 9:45</td>
+          <td>[노선6] 첫정류장</td>
+          <td>
+            <button class="button-clear" onclick="completeTask(this)" disabled>
+              미완료
+            </button>
+          </td>
+          <td class="time-cell">대기 중</td>
+        </tr>
+        <tr>
+          <td>~ 10:35</td>
+          <td>[노선6] 사업장</td>
+          <td>
+            <button class="button-clear" onclick="completeTask(this)" disabled>
+              미완료
+            </button>
+          </td>
+          <td class="time-cell">대기 중</td>
+        </tr>
+        <tr>
+          <td>20:50</td>
+          <td>차고지 도착</td>
+          <td>
+            <button class="button-clear" onclick="completeTask(this)" disabled>
+              미완료
+            </button>
+          </td>
+          <td class="time-cell">대기 중</td>
+        </tr>
+        <tr>
+          <td>21:30</td>
+          <td>뒷정리 완료</td>
+          <td>
+            <button class="button-clear" onclick="completeTask(this)" disabled>
+              미완료
+            </button>
+          </td>
+          <td class="time-cell">대기 중</td>
+        </tr>
+        <tr>
+          <td>22:00</td>
+          <td>퇴근</td>
+          <td>
+            <button class="button-clear" onclick="completeTask(this)" disabled>
+              미완료
+            </button>
+          </td>
+          <td class="time-cell">대기 중</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="task-board">
+    <div class="header">내일 할 일 (08.24)</div>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>운행시간</th>
+          <th>할일</th>
+          <th>완료 여부</th>
+          <th>완료 시간</th>
+        </tr>
+      </thead>
+      <tbody id="task-list">
+        <tr>
+          <td>~ 6:00</td>
+          <td>기상</td>
+          <td>
+            <button class="button-clear" onclick="completeTask(this)" disabled>
+              미완료
+            </button>
+          </td>
+          <td class="time-cell">대기 중</td>
+        </tr>
+        <tr>
+          <td>~ 7:10</td>
+          <td>차고지 도착</td>
+          <td>
+            <button class="button-clear" onclick="completeTask(this)" disabled>
+              미완료
+            </button>
+          </td>
+          <td class="time-cell">대기 중</td>
+        </tr>
+        <tr>
+          <td>12:40</td>
+          <td>출근 시간 체크</td>
+          <td>
+            <button class="button-clear" onclick="completeTask(this)" disabled>
+              미완료
+            </button>
+          </td>
+          <td class="time-cell">대기 중</td>
+        </tr>
+        <tr>
+          <td>12:40</td>
+          <td>음주 측정</td>
+          <td>
+            <button class="button-clear" onclick="completeTask(this)" disabled>
+              미완료
+            </button>
+          </td>
+          <td class="time-cell">대기 중</td>
+        </tr>
+        <tr>
+          <td>12:40</td>
+          <td>체온 측정</td>
+          <td>
+            <button class="button-clear" onclick="completeTask(this)" disabled>
+              미완료
+            </button>
+          </td>
+          <td class="time-cell">대기 중</td>
+        </tr>
+        <tr>
+          <td>12:40</td>
+          <td>제복</td>
+          <td>
+            <button class="button-clear" onclick="completeTask(this)" disabled>
+              미완료
+            </button>
+          </td>
+          <td class="time-cell">대기 중</td>
+        </tr>
+        <tr>
+          <td>12:40</td>
+          <td>[노선 5] 첫정류장</td>
+          <td>
+            <button class="button-clear" onclick="completeTask(this)" disabled>
+              미완료
+            </button>
+          </td>
+          <td class="time-cell">대기 중</td>
+        </tr>
+        <tr>
+          <td>12:40</td>
+          <td>[노선5] 사업장</td>
+          <td>
+            <button class="button-clear" onclick="completeTask(this)" disabled>
+              미완료
+            </button>
+          </td>
+          <td class="time-cell">대기 중</td>
+        </tr>
+        <tr>
+          <td>12:40</td>
+          <td>[노선6] 첫정류장</td>
+          <td>
+            <button class="button-clear" onclick="completeTask(this)" disabled>
+              미완료
+            </button>
+          </td>
+          <td class="time-cell">대기 중</td>
+        </tr>
+        <tr>
+          <td>12:40</td>
+          <td>[노선6] 사업장</td>
+          <td>
+            <button class="button-clear" onclick="completeTask(this)" disabled>
+              미완료
+            </button>
+          </td>
+          <td class="time-cell">대기 중</td>
+        </tr>
+        <tr>
+          <td>12:40</td>
+          <td>차고지 도착</td>
+          <td>
+            <button class="button-clear" onclick="completeTask(this)" disabled>
+              미완료
+            </button>
+          </td>
+          <td class="time-cell">대기 중</td>
+        </tr>
+        <tr>
+          <td>12:40</td>
+          <td>뒷정리 완료</td>
+          <td>
+            <button class="button-clear" onclick="completeTask(this)" disabled>
+              미완료
+            </button>
+          </td>
+          <td class="time-cell">대기 중</td>
+        </tr>
+        <tr>
+          <td>12:40</td>
+          <td>퇴근</td>
+          <td>
+            <button class="button-clear" onclick="completeTask(this)" disabled>
+              미완료
+            </button>
+          </td>
+          <td class="time-cell">대기 중</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+{% endblock %}
+
+{% block script%}
+
+<script>
+  function completeTask(button) {
+    const now = new Date();
+    const hours = String(now.getHours()).padStart(2, "0");
+    const minutes = String(now.getMinutes()).padStart(2, "0");
+    const currentTime = `${hours}:${minutes}`;
+
+    button.classList.add("completed");
+    button.disabled = true;
+    button.innerText = "완료";
+
+    const row = button.closest("tr");
+    const timeCell = row.querySelector(".time-cell");
+    timeCell.classList.add("completed");
+    timeCell.innerText = currentTime;
+
+    // 다음 버튼 활성화
+    const nextRow = row.nextElementSibling;
+    if (nextRow) {
+      const nextButton = nextRow.querySelector(".button-clear");
+      if (nextButton) {
+        nextButton.disabled = false;
+      }
+    }
+  }
+</script>
+
+{%endblock%}

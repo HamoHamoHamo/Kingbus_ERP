@@ -84,6 +84,9 @@ urlpatterns = [
 
     path('teamtwo', views.team_list_view, name='team_list_view'),
     path("teamtwo/create", views.route_team_create, name='teamtwo_create'),
-    path("teamtwo/delete", views.route_team_delete, name='teamtwo/delete') # 
+    path("teamtwo/delete", views.route_team_delete, name='teamtwo/delete'), # 
+
+    #기사 홈
+    path('driverhome', views.driver_home, name="driver_home"),
 ]
     
