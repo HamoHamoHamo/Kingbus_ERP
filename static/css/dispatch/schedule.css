@@ -364,15 +364,26 @@
 
 .PopupBtnBox {
     display: flex;
-    justify-content: center;
+    justify-content: right;
     align-items: center;
     width: 100%;
     height: 4.8rem;
     box-sizing: border-box;
 }
 
-.PopupBtnBox div {
-    background-color: #444444;
+.PopupunderBtnBox{
+    display: flex;
+    justify-content: right;
+    align-items: center;
+    width: 100%;
+    height: 4.8rem;
+    box-sizing: border-box;
+    padding: 4.2rem 3rem 3rem 3rem; 
+    gap: 1rem;
+}
+
+.btnModules{
+    background-color: blue;
 }
 
 .timeline {
@@ -382,4 +393,38 @@
     width: 0.1rem;
     height: calc(100% - 4.6rem);
     border-left: 0.5rem solid #1C1A4E;
+}
+
+.btncloseModules{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-width: 6rem;
+    height: 2.5rem;
+    padding: 0 1.2rem;
+    border: none;
+    border-radius: 0.2rem;
+    font-size: 1.4rem;
+    color: white;
+    cursor: pointer;
+    box-sizing: border-box;
+    outline: none;
+    background-color: #444444;
+}
+
+.btnsaveModules{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-width: 6rem;
+    height: 2.5rem;
+    padding: 0 1.2rem;
+    border: none;
+    border-radius: 0.2rem;
+    font-size: 1.4rem;
+    color: white;
+    cursor: pointer;
+    box-sizing: border-box;
+    outline: none;
+    background-color: blue;
 }

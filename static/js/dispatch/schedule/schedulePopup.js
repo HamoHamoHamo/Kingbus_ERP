@@ -172,3 +172,37 @@ window.onload = function () {
         }
     }
 }
+
+const popupbtn2 = () => {
+    // regularlyLine 버튼 클릭 이벤트 추가
+    const regularlyLineButtons = document.querySelectorAll(".regularlyLine");
+    const popupAreaModules2 = document.querySelector(".popupAreaModules2");
+    const popupBg = document.querySelector(".popupBgModules");
+    const btnClose = document.querySelector(".btncloseModules");
+
+    regularlyLineButtons.forEach((button) => {
+        button.addEventListener("click", () => {
+            // 팝업을 표시
+            popupAreaModules2.style.display = "block";
+
+            // 팝업 내용 업데이트 (예: title 속성 데이터 표시)
+            const routeInfo = button.getAttribute("title");
+            document.querySelector(".routeName").innerText = routeInfo || "정보 없음";
+        });
+    });
+
+    // 닫기 버튼 클릭 이벤트 추가
+    btnClose.addEventListener("click", () => {
+        // 팝업을 숨김
+        popupAreaModules2.style.display = "none";
+    });
+
+    // 팝업 배경 클릭 시 팝업 닫기
+    popupBg.addEventListener("click", () => {
+        popupAreaModules2.style.display = "none";
+    });
+};
+
+// DOMContentLoaded 후 함수 실행
+document.addEventListener("DOMContentLoaded", popupbtn2);
+

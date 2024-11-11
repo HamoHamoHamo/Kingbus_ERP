@@ -20,6 +20,7 @@ urlpatterns = [
     path('assignment/', include('assignment.urls')),
     path('salary/', include('salary.urls')),
     path('approval/', include('approval.urls')),
+    path('rollcall/', include('rollcall.urls')),
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -1,0 +1,321 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load dispatch_custom_tags %}
+
+{% block head %}
+<meta http-equiv="Cache-Control" content="private, no-cache, no-store, max-age=0, must-revalidate">
+<link rel="stylesheet" href="{% static 'css/dispatch/dispatchBase.css' %}" type="text/css" />
+<link rel="stylesheet" href="{% static 'css/humanresource/team.css' %}" type="text/css" />
+<link rel="stylesheet" href="{% static 'css/rollcall/management_Drive.css' %}" type="text/css" />
+{% endblock %}
+
+{% block content-header %}
+<div class="HeaderTitle">
+    점호 관리
+</div>
+{% endblock %}
+
+
+{% block content %}
+
+<form class="routeLayout searchForm">
+    <div class="groupLayout">
+        <div class="groupList">
+            <div class="groupListBox">
+                <div class="groupListHead">
+                    <span class="groupListTitle">팀목록</span>
+                </div>
+                <div class="groupListBody">
+                    <div class="groupListItem">
+                        <div></div>
+                        <div class="groupNum groupOpen">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="16.5" viewBox="0 0 22 16.5">
+                                <path id="Icon_awesome-folder" data-name="Icon awesome-folder"
+                                    d="M19.938,7.25h-8.25L8.938,4.5H2.063A2.062,2.062,0,0,0,0,6.563V18.938A2.062,2.062,0,0,0,2.063,21H19.938A2.062,2.062,0,0,0,22,18.938V9.313A2.062,2.062,0,0,0,19.938,7.25Z"
+                                    transform="translate(0 -4.5)" fill="#444" />
+                            </svg>
+                        </div>
+                        <div class="groupName groupOpen">
+                            <span class="{{business.id}}">{{business.name}}</span>
+                            <svg class="businessGroupEditBtn pointer" xmlns="http://www.w3.org/2000/svg" width="15" height="15.12" viewBox="0 0 15 15.12">
+                                <g id="그룹_1652" data-name="그룹 1652" transform="translate(-683.5 -772.38)">
+                                  <g id="Icon_feather-edit" data-name="Icon feather-edit" transform="translate(684 773)">
+                                    <path id="패스_339" data-name="패스 339" d="M9.262,6H4.392A1.392,1.392,0,0,0,3,7.392v9.741a1.392,1.392,0,0,0,1.392,1.392h9.741a1.392,1.392,0,0,0,1.392-1.392v-4.87" transform="translate(-3 -4.524)" fill="none" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"></path>
+                                    <path id="패스_340" data-name="패스 340" d="M19.306,3.25a1.476,1.476,0,0,1,2.087,2.087l-6.61,6.61-2.783.7.7-2.783Z" transform="translate(-7.825 -2.818)" fill="none" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"></path>
+                                  </g>
+                                </g>
+                            </svg>
+                        </div>
+                        
+                    </div>
+                    <div class="detailItemBox">
+                        <div class="detailItem {{route.id}}">
+                            <!--클래스에 노선 아이디 추가-->
+                            <div class="groupNum routeGap">
+                                <input class="groupCheckbox" id="businessGroup{{group.id}}" value="{{group.id}}" name="group_id" type="checkbox">
+                            </div>
+                            <label for="businessGroup{{group.id}}" class="routeNameBox">
+                                <div class="routeNumber">{{group.name}}</div>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="groupListBox">
+                <div class="groupListHead">
+                    <span class="groupListTitle">시간</span>
+                </div>
+                <div class="groupListBody">
+                    <div class="groupListItem">
+                        <div class="groupNum">
+                            <input id="timeCheckAll" type="checkbox">
+                        </div>
+                        <label for="timeCheckAll" class="groupName">전체</label>
+                    </div>
+                    {% for time in time_list %}
+                    <div class="groupListItem">
+                        <div></div>
+                        <div class="groupNum">
+                            <input name="time" value="{{time}}" id="timeCheckbox{{time}}" class="timeCheckbox" type="checkbox">
+                        </div>
+                        <label for="timeCheckbox{{time}}" class="groupName">{{time}}:00 ~ {{time}}:59</label>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+
+
+        <div class="foldGroup">
+            <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 30 30">
+                <g id="그룹_1629" data-name="그룹 1629" transform="translate(-13664 -4980)">
+                    <rect id="사각형_11725" data-name="사각형 11725" width="30" height="30" rx="15"
+                        transform="translate(13664 4980)" fill="#444" />
+                    <path id="패스_327" data-name="패스 327" d="M0,0,5.788,7.048,12,0"
+                        transform="translate(13681.063 5001) rotate(-90)" fill="none" stroke="#fff"
+                        stroke-linecap="round" stroke-linejoin="round" stroke-width="3" />
+                    <path id="패스_329" data-name="패스 329" d="M0,0H12"
+                        transform="translate(13677.063 5001) rotate(-90)" fill="none" stroke="#fff"
+                        stroke-linecap="round" stroke-linejoin="round" stroke-width="3" />
+                    <path id="패스_330" data-name="패스 330" d="M0,0H12"
+                        transform="translate(13673.063 5001) rotate(-90)" fill="none" stroke="#fff"
+                        stroke-linecap="round" stroke-linejoin="round" stroke-width="3" />
+                </g>
+            </svg>
+        </div>
+    </div>
+
+    <div class="mainLayout">
+
+
+    <div class="searchBox">
+            <div class="routListSearch">
+                <div> 
+                     <label for="pageSelect">분류</label>
+    <select id="pageSelect" onchange="navigate()">
+      <option value="./management">노선명</option>
+      <option value="./management_Drive">차량번호</option>
+      <option value="./management_Human">이름</option>
+    </select>
+                </div>
+                <input type="text" placeholder="노선명을 입력해주세요." value="{{search}}" name="search" class="searchInput">
+                <input value="{{date}}" autocomplete="off" type="date" name="date" class="searchDate" max="9999-12-31">
+                <input autocomplete="off" type="submit" class="btnModules searchBtn" value="검색">
+            </div>
+        </div>
+
+        <div class="RouteListForm teamSaveForm">
+            <div class="btnModules routeInputSave">저장</div>
+            <div type="submit" class="btnModules routeInputScan" onClick="opendispatchPrint('/dispatch/print/regularly/connect')">인쇄</div>
+            <div class="RouteList">
+
+        <div class="RouteListForm teamSaveForm">
+            <div class="RouteList">
+                <div class="RouteListHeadScroll">
+                    <table class="RouteListHeader">
+                        <thead>
+                            <tr>
+                                <td><input type="checkbox"></td>
+                                <td>순번</td>
+                                <td>노선명</td>
+                                <td>기사명</td>
+                                <td>연락처</td>
+                                <td>기상</td>
+                                <td>차고지 출근</td>
+                                <td>첫정류장</td>
+                                <td>마지막정류장</td>
+                                <td>뒷정리</td>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+
+               <div class="RouteListScroll">
+                    <table class="RouteListBody">
+                        <tbody>
+                            <tr class="RouteListBodyTr">
+                                <td><input type="checkbox"></td>
+                                <td>1</td>
+                                <td>
+                                    <div class="PopupColor" onclick="openPopup()">출근 수원역 1</div>
+                                </td>
+                                <td>전민철</td>
+                                <td>010-8884-7074</td>
+                                <td>07:30</td>
+                                <td>08:30</td>
+                                <td>09:20</td>
+                                <td>18:30</td>
+                                <td>19:00</td>
+                            <tr class="bl anckTr"></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+{% endblock %}
+
+
+
+{% block popup %}
+<div class="popupAreaModules">
+  <div class="popupBgModules"></div>
+  <form
+    method="post"
+    action="/vehicle/list/edit"
+    class="popupContainer popupContainerDouble vehicleEditForm"
+    enctype="multipart/form-data"
+  >
+    <input
+      type="hidden"
+      name="csrfmiddlewaretoken"
+      value="EyL29BbSCVMLttjaZm3ueufxXe1noxGcR5J47lDU6pjO9R3OQeSIir3gmURDbOZZ"
+    />
+    <div class="popupHeader">
+      <div class="popupTitle">노선 세부정보</div>
+    </div>
+    <div class="popupBody">
+          <div class="popupList">
+                    <table class="popupListHeader">
+                        <thead>
+                            <tr>
+                                <td>노선명</td>
+                                <td>기사명</td>
+                                <td>연락처</td>
+                                <td>기상</td>
+                                <td>차고지 출근</td>
+                                <td>차고지 도착</td>
+                                <td>음주측정</td>
+                                <td>제복</td>
+                                <td>차량점검</td>
+                                <td>첫정류장</td>
+                                <td>마지막정류장</td>
+                                <td>뒷정리</td>
+                            </tr>
+                        </thead>
+                    </table>
+              
+                    <table class="popupListBody">
+                        <tbody>
+                            <tr>
+                                <td>출근 수원역 1</td>
+                                <td>전민철</td>
+                                <td>010-8884-7074</td>
+                                <td>07:30</td>
+                                <td>08:30</td>
+                                <td>09:20</td>
+                                <td>이상무</td>
+                                <td>이상무</td>
+                                <td>이상무</td>
+                                <td>19:00</td>
+                                <td>18:30</td>
+                                <td>18:30</td>
+                            <tr class="bl anckTr"></tr>
+                        </tbody>
+                    </table>
+            </div>
+      <div class="popupFooters popupFooterDetail">
+        <div class="btnModules createBtn">확인</div>
+        <div class="btnModules closeBtn">닫기</div>
+      </div>
+    </div>
+  </form>
+</div>
+
+{% endblock %}
+
+
+
+{% block script %}
+<script>
+    {% autoescape off %}
+    const businessGroupData = {{business_group_data}}
+    const businessData = 
+    {
+        {% for business in business_list %}
+        "{{business.id}}" : {
+            "name" : "{{business.name}}",
+            "number" : "{{business.number}}",
+        },
+        {% endfor %}
+    }
+    const searchGroupList = {{search_group_list}}
+    const searchTeamList = {{search_team_list}}
+    const searchTimeList = {{search_time_list}}
+    {% endautoescape %}
+    console.log("search", searchGroupList, searchTeamList, searchTimeList)
+    console.log(businessGroupData)
+    console.log(businessData)
+    
+    function opendispatchPrint(url){
+        if (window.location.search){
+            targetLink = `${url}${window.location.search}`
+            window.open(targetLink, `{{date}}배차표`, "width=1640, height=640")
+        } else{
+            alert("그룹 또는 노선을 선택해 주세요")
+        }
+    }
+</script>
+
+<script>
+function openPopup() {
+    document.querySelector('.popupAreaModules').style.display = 'block';
+}
+</script>
+
+<script src="{% static 'js/dispatch/regularly/regularlyConnectSearch.js' %}"></script>
+<script type="module" src="{% static 'js/dispatch/regularly/regularlyConnectPopup.js' %}"></script>
+</script>
+
+<script>
+function openPopup() {
+    document.querySelector('.popupAreaModules').style.display = 'block';
+}
+
+function closePopup() {
+    document.querySelector('.popupAreaModules').style.display = 'none';
+}
+
+function savePopup() {
+    alert("저장되었습니다.");
+}
+
+document.querySelector('.createBtn').addEventListener('click', savePopup);
+document.querySelector('.closeBtn').addEventListener('click', closePopup);
+</script>
+
+<script>
+      function navigate() {
+        const select = document.getElementById("pageSelect");
+        const selectedValue = select.value;
+
+        if (selectedValue) {
+          window.location.href = selectedValue;
+        }
+      }
+    </script>
+
+{% endblock %}

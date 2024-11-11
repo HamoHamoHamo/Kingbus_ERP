@@ -3976,3 +3976,7 @@ def regularly_station_download(request):
         #return JsonResponse({'status': 'fail', 'e': e})
         raise Http404
     
+#새로운 기사 홈
+# Create your views here.
+def driver_home(request):
+    return render(request, 'dispatch/driverhome.html')

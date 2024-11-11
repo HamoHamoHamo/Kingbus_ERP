@@ -82,4 +82,5 @@ urlpatterns = [
     path('print/daily', views.daily_driving_print, name='daily_driving_print'),
     path('print/estimate', views.print_estimate, name='estimate_print'),
 
+    path('driverhome', views.driver_home, name="driver_home"),
 ]

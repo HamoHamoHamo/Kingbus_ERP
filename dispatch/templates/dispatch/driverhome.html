@@ -1,0 +1,347 @@
+{% extends 'base.html' %}
+{% load custom_tags %}
+{% load static %}
+
+{% block head %}
+<link rel="stylesheet" href="{% static 'css/dispatch/driverHome.css' %}" type="text/css" />
+{% endblock %}
+
+{% block content-header %}
+<div class="HeaderTitle">
+  <!-- 페이지별 Title 변경 -->
+  기사 HOME
+</div>
+{% endblock %}
+
+{% block content %}
+
+<div class="search-Container">
+
+  <div class="controllArea">
+    <div class="search-Form">
+      <label for="" class="search-Form_label">일반배차 노선</label>
+      <input autocomplete="off" type="text" class="search-Form_input">
+      <div class="search-Form_search-btn">검색</div>
+    </div>
+
+    <div class="dayController">
+      <div class="todayBtn">오늘</div>
+      <svg class="prevBtn" id="그룹_1823" data-name="그룹 1823" xmlns="http://www.w3.org/2000/svg" width="26" height="26"
+        viewBox="0 0 26 26">
+        <g id="그룹_1822" data-name="그룹 1822">
+          <rect id="사각형_8546" data-name="사각형 8546" width="26" height="26" rx="13" fill="#444" />
+        </g>
+        <path id="Icon_ionic-ios-arrow-back" data-name="Icon ionic-ios-arrow-back"
+          d="M13.662,13.188,18.957,7.9a1,1,0,1,0-1.416-1.412l-6,5.995a1,1,0,0,0-.029,1.379L17.536,19.9a1,1,0,1,0,1.416-1.412Z"
+          transform="translate(-3.251 0.81)" fill="#fff" />
+      </svg>
+      <svg class="nextBtn" xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 26 26">
+        <g id="그룹_1823" data-name="그룹 1823" transform="translate(-579 -103)">
+          <g id="그룹_1822" data-name="그룹 1822" transform="translate(301 -30)">
+            <rect id="사각형_8546" data-name="사각형 8546" width="26" height="26" rx="13" transform="translate(278 133)"
+              fill="#444" />
+          </g>
+          <path id="Icon_ionic-ios-arrow-back" data-name="Icon ionic-ios-arrow-back"
+            d="M16.839,13.188,11.544,7.9a1,1,0,0,1,1.416-1.412l6,5.995a1,1,0,0,1,.029,1.379L12.965,19.9a1,1,0,0,1-1.416-1.412Z"
+            transform="translate(577.75 103.81)" fill="#fff" />
+        </g>
+      </svg>
+    </div>
+  </div>
+
+  <div class="searchAreaSide">
+    <div class="printArea">
+
+      <div class="print">프린트</div>
+
+      <div class="prinBtn" onclick="openLinePrint()">
+        <span>노선별(A4)</span>
+      </div>
+      <div class="prinBtn" onclick="openBusPrintA4()">
+        <span>호수별(A4)</span>
+      </div>
+      <div class="prinBtn" onclick="openBusPrintA3()">
+        <span>호수별(A3)</span>
+      </div>
+      <div class="prinBtn morelonger" onclick="openDrivingListPrint()">
+        <span>운행일보(A4)</span>
+      </div>
+    </div>
+    <div class="alarmArea">
+      <div class="alarm">정기점검</div>
+      <div class="vhicleCheck inspectionAlarm"><!-- inspectionAlarm -->
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20">
+          <path id="Icon_awesome-bus" data-name="Icon awesome-bus"
+            d="M19.063,5H18.75V3.125C18.75,1.375,14.875,0,10,0S1.25,1.375,1.25,3.125V5H.938A.937.937,0,0,0,0,5.938V9.063A.938.938,0,0,0,.938,10H1.25v6.25A1.25,1.25,0,0,0,2.5,17.5v1.25A1.25,1.25,0,0,0,3.75,20H5a1.25,1.25,0,0,0,1.25-1.25V17.5h7.5v1.25A1.25,1.25,0,0,0,15,20h1.25a1.25,1.25,0,0,0,1.25-1.25V17.5h.25a.986.986,0,0,0,1-1V10h.313A.938.938,0,0,0,20,9.063V5.938A.937.937,0,0,0,19.063,5ZM4.375,15.625a1.25,1.25,0,1,1,1.25-1.25A1.25,1.25,0,0,1,4.375,15.625ZM5,11.25A1.25,1.25,0,0,1,3.75,10V5A1.25,1.25,0,0,1,5,3.75H15A1.25,1.25,0,0,1,16.25,5v5A1.25,1.25,0,0,1,15,11.25Zm10.625,4.375a1.25,1.25,0,1,1,1.25-1.25A1.25,1.25,0,0,1,15.625,15.625Z"
+            fill="#fff" />
+        </svg>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div class="main-TaskBoard">
+  
+
+  <div class="task-board">
+    <div class="header">오늘 할 일 (08.23)</div>
+    <table class="table">
+      <thead>
+        <tr>
+          <th colspan="2">RPA-D 사진 제출</th>
+          <th>완료 여부</th>
+          <th>완료 시간</th>
+        </tr>
+      </thead>
+      <tbody id="task-list">
+        <tr>
+          <td colspan="2">
+            <input type="file" id="fileInput" style="display: none;" onchange="displayFileName()" />
+            <div id="fileName">파일이 업로드되지 않았습니다.</div>
+          </td>
+          <td>
+            <input class="inputImgbtn" type="button" value="사진 업로드" onclick="triggerFileUpload()" />
+          </td>
+          <td class="time-cell">대기 중</td>
+        </tr>
+        <tr>
+          <th>운행시간</th>
+          <th>할일</th>
+          <th>완료 여부</th>
+          <th>완료 시간</th>
+        </tr>
+        <tr>
+          <td>04:00 ~ 6:00</td>
+          <td>기상</td>
+          <td>
+            <button class="button-clear" onclick="completeTask(this)">
+              미완료
+            </button>
+          </td>
+          <td class="time-cell">대기 중</td>
+        </tr>
+        <tr>
+          <td>04:00 ~ 6:00</td>
+          <td>차고지 도착</td>
+          <td>
+            <button class="button-clear" onclick="completeTask(this)" disabled>
+              미완료
+            </button>
+          </td>
+          <td class="time-cell">대기 중</td>
+        </tr>
+        <tr>
+          <td>04:00 ~ 6:00</td>
+          <td>출근 시간 체크</td>
+          <td>
+            <button class="button-clear" onclick="completeTask(this)" disabled>
+              미완료
+            </button>
+          </td>
+          <td class="time-cell">대기 중</td>
+        </tr>
+        <tr>
+          <td>04:00 ~ 6:00</td>
+          <td>음주 측정</td>
+          <td>
+            <button class="button-clear" onclick="completeTask(this)" disabled>
+              미완료
+            </button>
+          </td>
+          <td class="time-cell">대기 중</td>
+        </tr>
+        <tr>
+          <td>04:00 ~ 6:00</td>
+          <td>체온 측정</td>
+          <td>
+            <button class="button-clear" onclick="completeTask(this)" disabled>
+              미완료
+            </button>
+          </td>
+          <td class="time-cell">대기 중</td>
+        </tr>
+        <tr>
+          <td>04:00 ~ 6:00</td>
+          <td>제복</td>
+          <td>
+            <button class="button-clear" onclick="completeTask(this)" disabled>
+              미완료
+            </button>
+          </td>
+          <td class="time-cell">대기 중</td>
+        </tr>
+        <tr>
+          <td>04:00 ~ 6:00</td>
+          <td>노선1</td>
+          <td>
+            <button class="button-clear" onclick="completeTask(this)" disabled>
+              미완료
+            </button>
+          </td>
+          <td class="time-cell">대기 중</td>
+        </tr>
+        <tr>
+          <td>04:00 ~ 6:00</td>
+          <td>노선2</td>
+          <td>
+            <button class="button-clear" onclick="completeTask(this)" disabled>
+              미완료
+            </button>
+          </td>
+          <td class="time-cell">대기 중</td>
+        </tr>
+        <tr>
+          <td>04:00 ~ 6:00</td>
+          <td>노선3</td>
+          <td>
+            <button class="button-clear" onclick="completeTask(this)" disabled>
+              미완료
+            </button>
+          </td>
+          <td class="time-cell">대기 중</td>
+        </tr>
+        <tr>
+          <td>04:00 ~ 6:00</td>
+          <td>노선4</td>
+          <td>
+            <button class="button-clear" onclick="completeTask(this)" disabled>
+              미완료
+            </button>
+          </td>
+          <td class="time-cell">대기 중</td>
+        </tr>
+        <tr>
+          <td>04:00 ~ 6:00</td>
+          <td>노선5</td>
+          <td>
+            <button class="button-clear" onclick="completeTask(this)" disabled>
+              미완료
+            </button>
+          </td>
+          <td class="time-cell">대기 중</td>
+        </tr>
+        <tr>
+          <td>04:00 ~ 6:00</td>
+          <td>노선6</td>
+          <td>
+            <button class="button-clear" onclick="completeTask(this)" disabled>
+              미완료
+            </button>
+          </td>
+          <td class="time-cell">대기 중</td>
+        </tr>
+        <tr>
+          <td>04:00 ~ 6:00</td>
+          <td>차고지 도착</td>
+          <td>
+            <button class="button-clear" onclick="completeTask(this)" disabled>
+              미완료
+            </button>
+          </td>
+          <td class="time-cell">대기 중</td>
+        </tr>
+        <tr>
+          <td>04:00 ~ 6:00</td>
+          <td>뒷정리 완료</td>
+          <td>
+            <button class="button-clear" onclick="completeTask(this)" disabled>
+              미완료
+            </button>
+          </td>
+          <td class="time-cell">대기 중</td>
+        </tr>
+        <tr>
+          <td>04:00 ~ 6:00</td>
+          <td>퇴근</td>
+          <td>
+            <button class="button-clear" onclick="completeTask(this)" disabled>
+              미완료
+            </button>
+          </td>
+          <td class="time-cell">대기 중</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  
+</div>
+
+{% endblock %}
+
+{% block script%}
+
+<script>
+  function completeTask(button) {
+    const now = new Date();
+    const hours = String(now.getHours()).padStart(2, "0");
+    const minutes = String(now.getMinutes()).padStart(2, "0");
+    const currentTime = `${hours}:${minutes}`;
+
+    button.classList.add("completed");
+    button.disabled = true;
+    button.innerText = "완료";
+
+    const row = button.closest("tr");
+    const timeCell = row.querySelector(".time-cell");
+    timeCell.classList.add("completed");
+    timeCell.innerText = currentTime;
+
+    // 다음 버튼 활성화
+    const nextRow = row.nextElementSibling;
+    if (nextRow) {
+        const nextButton = nextRow.querySelector(".button-clear");
+        if (nextButton) {
+            nextButton.disabled = false;
+        }
+    }
+}
+
+
+  // 파일 선택창 열기
+function triggerFileUpload() {
+    document.getElementById('fileInput').click();
+}
+
+// 파일명 표시
+function displayFileName() {
+    const fileInput = document.getElementById('fileInput');
+    const fileNameElement = document.getElementById('fileName');
+
+    if (fileInput.files && fileInput.files[0]) {
+        fileNameElement.textContent = fileInput.files[0].name; // 파일명 표시
+    } else {
+        fileNameElement.textContent = '파일이 업로드되지 않았습니다.'; // 선택된 파일 없음
+    }
+}
+
+
+</script>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  const hamburger = document.querySelector(".hamburger"); // 햄버거 버튼
+  const sideMenu = document.querySelector(".Sidemenu"); // 사이드 메뉴
+
+  // 햄버거 버튼 클릭 이벤트
+  hamburger.addEventListener("click", function (event) {
+    event.stopPropagation(); // 이벤트 전파 방지
+    sideMenu.classList.toggle("active");
+  });
+
+  // 메뉴 외부 클릭 시 닫기
+  document.addEventListener("click", function () {
+    sideMenu.classList.remove("active");
+  });
+
+  // 사이드 메뉴 내부 클릭 시 닫히지 않도록 설정
+  sideMenu.addEventListener("click", function (event) {
+    event.stopPropagation(); // 이벤트 전파 방지
+  });
+});
+
+</script>
+
+
+{%endblock%}

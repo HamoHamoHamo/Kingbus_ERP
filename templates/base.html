@@ -621,8 +621,12 @@
       <!--trp header-->
       <div class="Header">
 
+        
         <!--trp HeaderTitle-->
+        <div class="HeaderTitle">
+          <div class="hamburger">☰</div>
         {% block content-header %}{% endblock %}
+        </div>
 
         <!--trp HeaderProfile-->
         <div class="profile">
@@ -756,7 +760,36 @@
           }
         });
       });
-    </script>{% endblock %}
+
+      
+    </script>
+
+    <script>
+document.addEventListener("DOMContentLoaded", function () {
+  const hamburger = document.querySelector(".hamburger"); // 햄버거 버튼
+  const sideMenu = document.querySelector(".Sidemenu"); // 사이드 메뉴
+
+  // 햄버거 버튼 클릭 이벤트
+  hamburger.addEventListener("click", function (event) {
+    event.stopPropagation(); // 이벤트 전파 방지
+    sideMenu.classList.toggle("active");
+  });
+
+  // 메뉴 외부 클릭 시 닫기
+  document.addEventListener("click", function () {
+    sideMenu.classList.remove("active");
+  });
+
+  // 사이드 메뉴 내부 클릭 시 닫히지 않도록 설정
+  sideMenu.addEventListener("click", function (event) {
+    event.stopPropagation(); // 이벤트 전파 방지
+  });
+});
+
+</script>
+
+
+    {% endblock %}
 </body>
 
 </html>

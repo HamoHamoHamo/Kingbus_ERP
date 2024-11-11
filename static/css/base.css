@@ -1250,3 +1250,75 @@ textarea {
 .weeklyStatus {
   left: 0;
 }
+
+.HeaderTitle{
+  display: flex;
+}
+
+  .hamburger{
+  display: none;
+}
+
+/* 기본 스타일 유지 */
+
+/* 모바일 버전 스타일 */
+@media screen and (max-width: 768px) {
+
+  .HeaderTitle {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+    .Sidemenu {
+        position: fixed;
+        z-index: 10000;
+        width: 23rem;
+        height: 100%;
+        background-color: #1C1A4E;
+    }
+
+
+  .Sidemenu.active {
+    display: block;
+  }
+
+  .logoBox {
+    text-align: center;
+    padding: 20px 0;
+  }
+
+.sideMenuNav1 {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: auto;
+    padding: 0;
+}
+
+.nav1Box {
+    display: flex;
+    flex-direction: column;
+    width: calc(100% - 5rem);
+    height: auto;
+    min-height: 4.2rem;
+    padding: 0 1rem 0 2rem;
+}
+
+  .sideMenuNav1 .nav1BoxMenu {
+    padding: 10px;
+    text-align: center;
+  }
+
+  .manualArea {
+    position: absolute;
+    bottom: 10px;
+    width: 100%;
+    text-align: center;
+  }
+
+  .manualArea a {
+    display: block;
+    margin: 10px 0;
+  }
+}
