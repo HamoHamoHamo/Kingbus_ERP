@@ -24,6 +24,7 @@ urlpatterns = [
     path('salary/outsourcing', views.OutsourcingSalaryList.as_view(), name='salary_outsourcing'),
     path('salary/manager', views.ManagerSalaryList.as_view(), name='salary_manager'),
     path('salary/new', views.NewSalaryList.as_view(), name='salary_new'),
+    path('salary/new/teamjang', views.SalaryTeamjang, name='salary_new_teamjang'),
     path('salary/edit', views.salary_edit, name='salary_edit'),
     path('salary/change/edit', views.salary_change_edit, name='salary_change_edit'),
     path('salary/outsourcing/edit', views.salary_outsourcing_edit, name='salary_outsourcing_edit'),

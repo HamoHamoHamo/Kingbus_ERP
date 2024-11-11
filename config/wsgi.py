@@ -22,18 +22,29 @@ https://docs.djangoproject.com/en/3.1/howto/deployment/wsgi/
 
 
 
-import os, sys
+# import os, sys
 
-from django.core.wsgi import get_wsgi_application
-from config.settings.base import SERVER_ENV
+# from django.core.wsgi import get_wsgi_application
+# from config.settings.base import SERVER_ENV
 
-# os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'kenaf.settings')
+# # os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'kenaf.settings')
 
+# # application = get_wsgi_application()
+
+# path = os.path.abspath(__file__ + "/../..")
+# if path not in sys.path:
+#     sys.path.append(path)
+
+# os.environ.setdefault("DJANGO_SETTINGS_MODULE", SERVER_ENV)
 # application = get_wsgi_application()
 
-path = os.path.abspath(__file__ + "/../..")
-if path not in sys.path:
-    sys.path.append(path)
+import os
+import sys
 
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", SERVER_ENV)
+# 프로젝트 경로를 Python 경로에 추가
+sys.path.append('/home/kingbus/trp')
+
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'config.settings.base')
+
+from django.core.wsgi import get_wsgi_application
 application = get_wsgi_application()

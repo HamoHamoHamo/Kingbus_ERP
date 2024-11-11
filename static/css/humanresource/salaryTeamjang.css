@@ -1,0 +1,32 @@
+.table-list_head-tr_td_teamjang td:nth-child(1), .table-list_body-tr_td_teamjang:nth-child(1),
+.table-list_head-tr_td_teamjang td:nth-child(2), .table-list_body-tr_td_teamjang:nth-child(2){
+    width: 3% !important;
+}
+
+.table-list_head-tr_td_teamjang td:nth-child(3), .table-list_body-tr_td_teamjang:nth-child(3), 
+.table-list_head-tr_td_teamjang td:nth-child(4), .table-list_body-tr_td_teamjang:nth-child(4), 
+.table-list_head-tr_td_teamjang td:nth-child(5), .table-list_body-tr_td_teamjang:nth-child(5),
+.table-list_head-tr_td_teamjang td:nth-child(6), .table-list_body-tr_td_teamjang:nth-child(6),
+.table-list_head-tr_td_teamjang td:nth-child(7), .table-list_body-tr_td_teamjang:nth-child(7),
+.table-list_head-tr_td_teamjang td:nth-child(8), .table-list_body-tr_td_teamjang:nth-child(8),
+.table-list_head-tr_td_teamjang td:nth-child(9), .table-list_body-tr_td_teamjang:nth-child(9),
+.table-list_head-tr_td_teamjang td:nth-child(10), .table-list_body-tr_td_teamjang:nth-child(10),
+.table-list_head-tr_td_teamjang td:nth-child(11), .table-list_body-tr_td_teamjang:nth-child(11),
+.table-list_head-tr_td_teamjang td:nth-child(12), .table-list_body-tr_td_teamjang:nth-child(12),
+.table-list_head-tr_td_teamjang td:nth-child(13), .table-list_body-tr_td_teamjang:nth-child(13),
+.table-list_head-tr_td_teamjang td:nth-child(14), .table-list_body-tr_td_teamjang:nth-child(14),
+.table-list_head-tr_td_teamjang td:nth-child(15), .table-list_body-tr_td_teamjang:nth-child(15),
+.table-list_head-tr_td_teamjang td:nth-child(16), .table-list_body-tr_td_teamjang:nth-child(16),
+.table-list_head-tr_td_teamjang td:nth-child(17), .table-list_body-tr_td_teamjang:nth-child(17) {
+    width: 5% !important;
+}
+
+.table-list_head-tr_td_teamjang td:nth-child(18), .table-list_body-tr_td_teamjang:nth-child(18),
+.table-list_head-tr_td_teamjang td:nth-child(19), .table-list_body-tr_td_teamjang:nth-child(19)
+{
+    width: 7% !important; 
+}
+
+.teamjang_height{
+    height: 5.2rem;
+}

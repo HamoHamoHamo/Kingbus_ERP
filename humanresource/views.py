@@ -767,7 +767,7 @@ class SalaryList(generic.ListView):
         elif view_name == 'salary_new_test':
             member_list = member_list.filter(Q(role='용역')|Q(role='팀장')|Q(role='운전원'))
         else:
-            raise HttpResponseBadRequest('url에러')
+            return HttpResponseBadRequest('url에러')
         return member_list
 
     def get_datas(self, member_list, context, month):
@@ -1294,6 +1294,11 @@ class NewSalaryList(SalaryList):
         context.update(self.get_datas(data_controller.member_list, context, context['month']))
         context['datas_member_list'] = data_controller.member_list
         return context
+
+
+def SalaryTeamjang(request):
+    members = Member.objects.filter(role='팀장', use='사용')
+    return render(request, 'HR/salary_new_teamjang.html', {'members': members})
 
 class SalaryTest(NewSalaryList):
     template_name = 'HR/salary_new_test.html'
