@@ -6,7 +6,7 @@
 <meta http-equiv="Cache-Control" content="private, no-cache, no-store, max-age=0, must-revalidate">
 <link rel="stylesheet" href="{% static 'css/dispatch/dispatchBase.css' %}" type="text/css" />
 <link rel="stylesheet" href="{% static 'css/humanresource/team.css' %}" type="text/css" />
-<link rel="stylesheet" href="{% static 'css/rollcall/management_Drive.css' %}" type="text/css" />
+<link rel="stylesheet" href="{% static 'css/rollcall/management.css' %}" type="text/css" />
 {% endblock %}
 
 {% block content-header %}
@@ -113,11 +113,11 @@
             <div class="routListSearch">
                 <div> 
                      <label for="pageSelect">분류</label>
-    <select id="pageSelect" onchange="navigate()">
-      <option>노선명</option>
-      <option>차량번호</option>
-      <option>이름</option>
-    </select>
+                    <select>
+                    <option>노선명</option>
+                    <option>차량번호</option>
+                    <option>이름</option>
+                    </select>
                 </div>
                 <input type="text" placeholder="노선명을 입력해주세요." value="{{search}}" name="search" class="searchInput">
                 <input value="{{date}}" autocomplete="off" type="date" name="date" class="searchDate" max="9999-12-31">
@@ -183,66 +183,131 @@
 {% block popup %}
 <div class="popupAreaModules">
   <div class="popupBgModules"></div>
-  <form
-    method="post"
-    action="/vehicle/list/edit"
-    class="popupContainer popupContainerDouble vehicleEditForm"
-    enctype="multipart/form-data"
-  >
-    <input
-      type="hidden"
-      name="csrfmiddlewaretoken"
-      value="EyL29BbSCVMLttjaZm3ueufxXe1noxGcR5J47lDU6pjO9R3OQeSIir3gmURDbOZZ"
-    />
-    <div class="popupHeader">
-      <div class="popupTitle">노선 세부정보</div>
+    <div class="popup-container">
+  <div class="popup-header">노선 현황판</div>
+  <div class="popup-section">
+    <h3>노선 정보</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>노선명</th>
+          <th>기사</th>
+          <th>전화번호</th>
+          <th>차량</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>병점1</td>
+          <td>노성종</td>
+          <td>010-0000-0000</td>
+          <td>7780</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="popup-section">
+    <h3>To-Do List</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>순번</th>
+          <th>업무</th>
+          <th>현황</th>
+          <th>완료 시간</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>1</td>
+          <td>운행전</td>
+          <td>완료</td>
+          <td>07:10</td>
+        </tr>
+        <tr>
+          <td>2</td>
+          <td>운행 준비 확인</td>
+          <td>완료</td>
+          <td>07:10</td>
+        </tr>
+        <tr>
+          <td>3</td>
+          <td>탑승 및 운행 시작</td>
+          <td>미완료</td>
+          <td>-</td>
+        </tr>
+        <tr>
+          <td>4</td>
+          <td>운행일보 작성(출발)</td>
+          <td>미완료</td>
+          <td>-</td>
+        </tr>
+        <tr>
+          <td>5</td>
+          <td>첫 정류장 도착</td>
+          <td>미완료</td>
+          <td>-</td>
+        </tr>
+        <tr>
+          <td>6</td>
+          <td>운행 출발</td>
+          <td>미완료</td>
+          <td>-</td>
+        </tr>
+        <tr>
+          <td>7</td>
+          <td>정류장 1</td>
+          <td>미완료</td>
+          <td>-</td>
+        </tr>
+        <tr>
+          <td>8</td>
+          <td>정류장 2</td>
+          <td>미완료</td>
+          <td>-</td>
+        </tr>
+        <tr>
+          <td>9</td>
+          <td>정류장 3</td>
+          <td>미완료</td>
+          <td>-</td>
+        </tr>
+        <tr>
+          <td>10</td>
+          <td>정류장 4</td>
+          <td>미완료</td>
+          <td>-</td>
+        </tr>
+        <tr>
+          <td>11</td>
+          <td>정류장 5</td>
+          <td>미완료</td>
+          <td>-</td>
+        </tr>
+        <tr>
+          <td>12</td>
+          <td>운행일보 작성(도착)</td>
+          <td>미완료</td>
+          <td>-</td>
+        </tr>
+        <tr>
+          <td>13</td>
+          <td>운행 종료</td>
+          <td>미완료</td>
+          <td>-</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="popup-footer">
+    <div class="popup-btn">
+      <button class="btn btn-close">닫기</button>
     </div>
-    <div class="popupBody">
-          <div class="popupList">
-                    <table class="popupListHeader">
-                        <thead>
-                            <tr>
-                                <td>노선명</td>
-                                <td>기사명</td>
-                                <td>연락처</td>
-                                <td>기상</td>
-                                <td>차고지 출근</td>
-                                <td>차고지 도착</td>
-                                <td>음주측정</td>
-                                <td>제복</td>
-                                <td>차량점검</td>
-                                <td>첫정류장</td>
-                                <td>마지막정류장</td>
-                                <td>뒷정리</td>
-                            </tr>
-                        </thead>
-                    </table>
-              
-                    <table class="popupListBody">
-                        <tbody>
-                            <tr>
-                                <td>출근 수원역 1</td>
-                                <td>전민철</td>
-                                <td>010-8884-7074</td>
-                                <td>07:30</td>
-                                <td>08:30</td>
-                                <td>09:20</td>
-                                <td>이상무</td>
-                                <td>이상무</td>
-                                <td>이상무</td>
-                                <td>19:00</td>
-                                <td>18:30</td>
-                                <td>18:30</td>
-                            <tr class="bl anckTr"></tr>
-                        </tbody>
-                    </table>
-            </div>
-      <div class="popupFooters popupFooterDetail">
-        <div class="btnModules createBtn">확인</div>
-        <div class="btnModules closeBtn">닫기</div>
-      </div>
-    </div>
-  </form>
+  </div>
+</div>
+
 </div>
 
 {% endblock %}
@@ -251,61 +316,16 @@
 
 {% block script %}
 <script>
-    {% autoescape off %}
-    const businessGroupData = {{business_group_data}}
-    const businessData = 
-    {
-        {% for business in business_list %}
-        "{{business.id}}" : {
-            "name" : "{{business.name}}",
-            "number" : "{{business.number}}",
-        },
-        {% endfor %}
-    }
-    const searchGroupList = {{search_group_list}}
-    const searchTeamList = {{search_team_list}}
-    const searchTimeList = {{search_time_list}}
-    {% endautoescape %}
-    console.log("search", searchGroupList, searchTeamList, searchTimeList)
-    console.log(businessGroupData)
-    console.log(businessData)
-    
-    function opendispatchPrint(url){
-        if (window.location.search){
-            targetLink = `${url}${window.location.search}`
-            window.open(targetLink, `{{date}}배차표`, "width=1640, height=640")
-        } else{
-            alert("그룹 또는 노선을 선택해 주세요")
-        }
-    }
-</script>
 
-<script>
-function openPopup() {
-    document.querySelector('.popupAreaModules').style.display = 'block';
-}
-</script>
-
-<script src="{% static 'js/dispatch/regularly/regularlyConnectSearch.js' %}"></script>
-<script type="module" src="{% static 'js/dispatch/regularly/regularlyConnectPopup.js' %}"></script>
-</script>
-
-<script>
 function openPopup() {
     document.querySelector('.popupAreaModules').style.display = 'block';
 }
 
 function closePopup() {
+    const closeBtn = document.querySelector('.btn.btn-close');
     document.querySelector('.popupAreaModules').style.display = 'none';
 }
 
-function savePopup() {
-    alert("저장되었습니다.");
-}
 
-document.querySelector('.createBtn').addEventListener('click', savePopup);
-document.querySelector('.closeBtn').addEventListener('click', closePopup);
 </script>
-
-
 {% endblock %}
