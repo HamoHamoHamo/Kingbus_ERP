@@ -4,5 +4,5 @@ from . import views
 appname= 'rollcall'
 
 urlpatterns = [
-    path('management', views.Management.as_view(), name='management'),
+    path('management', views.Management, name='management'),
 ]

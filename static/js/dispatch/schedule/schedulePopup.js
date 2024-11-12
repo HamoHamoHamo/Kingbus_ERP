@@ -84,6 +84,20 @@ function openScheduleDetail() {
     }
 }
 
+function openScheduleDetail2() {
+    const popupAreaModules2 = document.querySelector('.popupAreaModules2');
+    
+    popupAreaModules2.style.display = 'block';
+
+    const closeBtn = document.querySelector('.btncloseModules');
+    closeBtn.addEventListener('click', () => {
+
+        popupAreaModules2.style.display = 'none';
+        
+    });
+}
+
+
 popupBgModules.addEventListener('click', closePopup)
 SidemenuUseClose.addEventListener('click', closePopup)
 popupCloseBtn.addEventListener('click', closePopup)
@@ -148,7 +162,14 @@ window.onload = function () {
                 else if (curData.check == 'x') {
                     order.style.backgroundColor = 'red';
                 }
+                
                 tr[i].appendChild(order);
+
+                order.addEventListener('click', (function(data) {
+                    return function() {
+                        openScheduleDetail2(data);
+                    };
+                })(curData));
             } else {
                 const regularly = document.createElement('div');
                 regularly.setAttribute("class", "regularlyLine");
@@ -167,42 +188,40 @@ window.onload = function () {
                 else if (curData.check == 'x') {
                     regularly.style.backgroundColor = 'red';
                 }
+                
                 tr[i].appendChild(regularly);
+
+                regularly.addEventListener('click', (function(data) {
+                    return function() {
+                        openScheduleDetail2(data);
+                    };
+                })(curData));
             }
         }
     }
 }
 
-const popupbtn2 = () => {
-    // regularlyLine 버튼 클릭 이벤트 추가
-    const regularlyLineButtons = document.querySelectorAll(".regularlyLine");
-    const popupAreaModules2 = document.querySelector(".popupAreaModules2");
-    const popupBg = document.querySelector(".popupBgModules");
-    const btnClose = document.querySelector(".btncloseModules");
+// 수정 모드로 전환
+document.querySelector('.editbtnModules').addEventListener('click', function () {
+    const timeCells = document.querySelectorAll('.timeCell');
 
-    regularlyLineButtons.forEach((button) => {
-        button.addEventListener("click", () => {
-            // 팝업을 표시
-            popupAreaModules2.style.display = "block";
+    // 운행시간 셀을 수정 가능하게 변경
+    timeCells.forEach(cell => {
+        const currentValue = cell.innerText;
+        cell.innerHTML = `<input type="time" value="${currentValue}" class="timeInput">`;
+    });
+});
 
-            // 팝업 내용 업데이트 (예: title 속성 데이터 표시)
-            const routeInfo = button.getAttribute("title");
-            document.querySelector(".routeName").innerText = routeInfo || "정보 없음";
-        });
+// 저장 버튼 클릭 시 수정 내용 반영
+document.querySelector('.btnsaveModules').addEventListener('click', function () {
+    const timeInputs = document.querySelectorAll('.timeInput');
+
+    // 입력된 값을 업데이트하고 다시 읽기 전용으로 변경
+    timeInputs.forEach(input => {
+        const newValue = input.value;
+        const parentCell = input.parentElement;
+        parentCell.innerText = newValue; // 업데이트된 값으로 셀 교체
     });
 
-    // 닫기 버튼 클릭 이벤트 추가
-    btnClose.addEventListener("click", () => {
-        // 팝업을 숨김
-        popupAreaModules2.style.display = "none";
-    });
-
-    // 팝업 배경 클릭 시 팝업 닫기
-    popupBg.addEventListener("click", () => {
-        popupAreaModules2.style.display = "none";
-    });
-};
-
-// DOMContentLoaded 후 함수 실행
-document.addEventListener("DOMContentLoaded", popupbtn2);
-
+    alert('수정된 운행시간이 저장되었습니다!');
+});

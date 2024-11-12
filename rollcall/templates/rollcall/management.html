@@ -114,9 +114,9 @@
                 <div> 
                      <label for="pageSelect">분류</label>
     <select id="pageSelect" onchange="navigate()">
-      <option value="./management">노선명</option>
-      <option value="./management_Drive">차량번호</option>
-      <option value="./management_Human">이름</option>
+      <option>노선명</option>
+      <option>차량번호</option>
+      <option>이름</option>
     </select>
                 </div>
                 <input type="text" placeholder="노선명을 입력해주세요." value="{{search}}" name="search" class="searchInput">
@@ -307,15 +307,5 @@ document.querySelector('.createBtn').addEventListener('click', savePopup);
 document.querySelector('.closeBtn').addEventListener('click', closePopup);
 </script>
 
-<script>
-      function navigate() {
-        const select = document.getElementById("pageSelect");
-        const selectedValue = select.value;
-
-        if (selectedValue) {
-          window.location.href = selectedValue;
-        }
-      }
-    </script>
 
 {% endblock %}
