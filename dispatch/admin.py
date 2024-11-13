@@ -17,9 +17,9 @@ from .models import Schedule, DispatchOrder, DispatchOrderConnect, RegularlyGrou
 #     list_display = ('pk','departure_date','arrival_date')
 #     list_per_page = 10
 
-@admin.register(DriverCheck)
-class DriverCheckAdmin(admin.ModelAdmin):
-    list_display = ['regularly_id', 'order_id', 'wake_time','drive_time','departure_time', 'updated_at']
+# @admin.register(DriverCheck)
+# class DriverCheckAdmin(admin.ModelAdmin):
+#     list_display = ['regularly_id', 'order_id', 'wake_time','drive_time','departure_time', 'updated_at']
 
 @admin.register(ConnectRefusal)
 class ConnectRefusalAdmin(admin.ModelAdmin):
@@ -47,3 +47,5 @@ admin.site.register(Station)
 admin.site.register(DispatchRegularlyDataStation)
 admin.site.register(DispatchRegularlyStation)
 admin.site.register(RouteTeam)
+admin.site.register(DriverCheck)
+
