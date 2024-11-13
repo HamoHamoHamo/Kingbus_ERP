@@ -4,7 +4,8 @@
 
 {% block head %}
 <meta http-equiv="Cache-Control" content="private, no-cache, no-store, max-age=0, must-revalidate">
-<link rel="stylesheet" href="{% static 'css/notice/rule.css' %}" type="text/css" />
+<link rel="stylesheet" href="{% static 'css/dispatch/dispatchBase.css' %}" type="text/css" />
+<link rel="stylesheet" href="{% static 'css/rules/managerrules.css' %}" type="text/css" />
 {% endblock %}
 
 {% block content-header %}
@@ -119,6 +120,11 @@
                 <div class="approvalMain">제 16조 「배차 일정 공지」</div>
                 <div class="approvalSub">배차 일정을 승무원들에게 사전에 공지하여 혼선이 없도록 합니다.</div>
             </li>
+            <li>
+                <div class="approvalMain">CF.1 「일반 배차 금액」</div>
+                <div class="approvalSub"></div>
+            </li>
+            
         </ol>
     </section>
     
@@ -222,10 +228,464 @@
         </ol>
     </section>
 
+        <section class="rule-sction">
+  <div class="tariff">
+    <h1>운임표</h1>
+
+    <!-- 평일 기준 표 -->
+    <table>
+      <thead>
+        <tr>
+          <th class="highlight">평일기준</th>
+          <th class="header">왕복km</th>
+          <th class="header">65</th>
+          <th class="header">130</th>
+          <th class="header">195</th>
+          <th class="header">260</th>
+          <th class="header">325</th>
+          <th class="header">390</th>
+          <th class="header">455</th>
+          <th class="header">520</th>
+          <th class="header">585</th>
+          <th class="header">650</th>
+          <th class="header">715</th>
+          <th class="header">780</th>
+          <th class="header">845</th>
+          <th class="header">910</th>
+          <th class="header">975</th>
+          <th class="header">1,040</th>
+          <th class="header">1,105</th>
+          <th class="header">1,170</th>
+          <th class="header">1,235</th>
+          <th class="header">1,300</th>
+        </tr>
+        <tr>
+          <td></td>
+          <td class="header">12,000</td>
+          <td>1</td>
+          <td>2</td>
+          <td>3</td>
+          <td>4</td>
+          <td>5</td>
+          <td>6</td>
+          <td>7</td>
+          <td>8</td>
+          <td>9</td>
+          <td>10</td>
+          <td>11</td>
+          <td>12</td>
+          <td>13</td>
+          <td>14</td>
+          <td>15</td>
+          <td>16</td>
+          <td>17</td>
+          <td>18</td>
+          <td>19</td>
+          <td>20</td>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td></td>
+          <td class="header">기본</td>
+          <td>12,000</td>
+          <td>24,000</td>
+          <td>36,000</td>
+          <td>48,000</td>
+          <td>60,000</td>
+          <td>72,000</td>
+          <td>84,000</td>
+          <td>96,000</td>
+          <td>108,000</td>
+          <td>12,000</td>
+          <td>132,000</td>
+          <td>144,000</td>
+          <td>156,000</td>
+          <td>168,000</td>
+          <td>180,000</td>
+          <td>192,000</td>
+          <td>204,000</td>
+          <td>216,000</td>
+          <td>228,000</td>
+          <td>240,000</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td class="header">50%가산</td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td>6,000</td>
+          <td>12,000</td>
+          <td>18,000</td>
+          <td>24,000</td>
+          <td>30,000</td>
+          <td>36,000</td>
+          <td>42,000</td>
+          <td>48,000</td>
+          <td>54,000</td>
+          <td>60,000</td>
+          <td>66,000</td>
+          <td>72,000</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td class="header">100%가산</td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+        <tr>
+          <td></td>
+          <td class="header">20%가산</td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td>2,400</td>
+          <td>4,800</td>
+          <td>4,800</td>
+          <td>4,800</td>
+          <td>4,800</td>
+          <td>4,800</td>
+          <td>4,800</td>
+          <td>4,800</td>
+          <td>4,800</td>
+          <td>4,800</td>
+          <td>4,800</td>
+          <td>4,800</td>
+          <td>4,800</td>
+          <td>4,800</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td class="header">야간</td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+        <tr class="add-fee">
+          <td></td>
+          <td class="header">추가금</td>
+          <td>28,000</td>
+          <td>18,000</td>
+          <td>9,000</td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+        <tr class="total">
+          <td></td>
+          <td class="header">총합</td>
+          <td>40,000</td>
+          <td>42,000</td>
+          <td>45,000</td>
+          <td>48,000</td>
+          <td>60,000</td>
+          <td>72,000</td>
+          <td>86,400</td>
+          <td>100,800</td>
+          <td>118,800</td>
+          <td>136,800</td>
+          <td>154,800</td>
+          <td>172,800</td>
+          <td>190,800</td>
+          <td>208,800</td>
+          <td>226,800</td>
+          <td>244,800</td>
+          <td>262,800</td>
+          <td>280,800</td>
+          <td>298,800</td>
+          <td>316,800</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- 휴일 기준 표 -->
+    <table>
+      <thead>
+        <tr>
+          <th class="highlight">휴일기준</th>
+          <th class="header">왕복km</th>
+          <th class="header">65</th>
+          <th class="header">130</th>
+          <th class="header">195</th>
+          <th class="header">260</th>
+          <th class="header">325</th>
+          <th class="header">390</th>
+          <th class="header">455</th>
+          <th class="header">520</th>
+          <th class="header">585</th>
+          <th class="header">650</th>
+          <th class="header">715</th>
+          <th class="header">780</th>
+          <th class="header">845</th>
+          <th class="header">910</th>
+          <th class="header">975</th>
+          <th class="header">1,040</th>
+          <th class="header">1,105</th>
+          <th class="header">1,170</th>
+          <th class="header">1,235</th>
+          <th class="header">1,300</th>
+        </tr>
+        <tr>
+          <td></td>
+          <td class="header">12,000</td>
+          <td>1</td>
+          <td>2</td>
+          <td>3</td>
+          <td>4</td>
+          <td>5</td>
+          <td>6</td>
+          <td>7</td>
+          <td>8</td>
+          <td>9</td>
+          <td>10</td>
+          <td>11</td>
+          <td>12</td>
+          <td>13</td>
+          <td>14</td>
+          <td>15</td>
+          <td>16</td>
+          <td>17</td>
+          <td>18</td>
+          <td>19</td>
+          <td>20</td>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td></td>
+          <td class="header">기본</td>
+          <td>12,000</td>
+          <td>24,000</td>
+          <td>36,000</td>
+          <td>48,000</td>
+          <td>60,000</td>
+          <td>72,000</td>
+          <td>84,000</td>
+          <td>96,000</td>
+          <td>108,000</td>
+          <td>12,000</td>
+          <td>132,000</td>
+          <td>144,000</td>
+          <td>156,000</td>
+          <td>168,000</td>
+          <td>180,000</td>
+          <td>192,000</td>
+          <td>204,000</td>
+          <td>216,000</td>
+          <td>228,000</td>
+          <td>240,000</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td class="header">50%가산</td>
+          <td>6,000</td>
+          <td>12,000</td>
+          <td>18,000</td>
+          <td>24,000</td>
+          <td>30,000</td>
+          <td>36,000</td>
+          <td>42,000</td>
+          <td>48,000</td>
+          <td>48,000</td>
+          <td>48,000</td>
+          <td>48,000</td>
+          <td>48,000</td>
+          <td>48,000</td>
+          <td>48,000</td>
+          <td>48,000</td>
+          <td>48,000</td>
+          <td>48,000</td>
+          <td>48,000</td>
+          <td>48,000</td>
+          <td>48,000</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td class="header">100%가산</td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td>12,000</td>
+          <td>24,000</td>
+          <td>36,000</td>
+          <td>48,000</td>
+          <td>60,000</td>
+          <td>72,000</td>
+          <td>84,000</td>
+          <td>96,000</td>
+          <td>108,000</td>
+          <td>12,000</td>
+          <td>132,000</td>
+          <td>144,000</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td class="header">20%가산</td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+        <tr>
+          <td></td>
+          <td class="header">야간</td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+        <tr class="add-fee">
+          <td></td>
+          <td class="header">추가금</td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+        <tr class="total">
+          <td></td>
+          <td class="header">총합</td>
+          <td>18,000</td>
+          <td>36,000</td>
+          <td>54,000</td>
+          <td>72,000</td>
+          <td>90,000</td>
+          <td>108,000</td>
+          <td>126,000</td>
+          <td>144,000</td>
+          <td>168,000</td>
+          <td>192,000</td>
+          <td>216,000</td>
+          <td>240,000</td>
+          <td>264,000</td>
+          <td>288,000</td>
+          <td>312,000</td>
+          <td>336,000</td>
+          <td>360,000</td>
+          <td>384,000</td>
+          <td>408,000</td>
+          <td>432,000</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
 </div>
 </div>
 {% endblock %}
 
 {% block script %}
-<script src="{% static 'js/notice/rule.js' %}"></script>
+<script src="{% static 'js/rules/rules.js' %}"></script>
 {% endblock %}

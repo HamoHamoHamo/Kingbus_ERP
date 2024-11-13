@@ -293,6 +293,8 @@ def field_manager_rule(request):
     return render(request, "notice/field_manager_rule.html")
 def personnel_committee_rule(request):
     return render(request, "notice/personnel_committee_rule.html")
+def allowance(request):
+    return render(request, "notice/allowance_rule.html")
 
 def approval_rule_print(request):
     return render(request, "notice/approval_rule_print.html")

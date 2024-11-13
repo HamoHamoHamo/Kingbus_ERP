@@ -201,16 +201,6 @@ window.onload = function () {
     }
 }
 
-// 수정 모드로 전환
-document.querySelector('.editbtnModules').addEventListener('click', function () {
-    const timeCells = document.querySelectorAll('.timeCell');
-
-    // 운행시간 셀을 수정 가능하게 변경
-    timeCells.forEach(cell => {
-        const currentValue = cell.innerText;
-        cell.innerHTML = `<input type="time" value="${currentValue}" class="timeInput">`;
-    });
-});
 
 // 저장 버튼 클릭 시 수정 내용 반영
 document.querySelector('.btnsaveModules').addEventListener('click', function () {
@@ -223,5 +213,5 @@ document.querySelector('.btnsaveModules').addEventListener('click', function () 
         parentCell.innerText = newValue; // 업데이트된 값으로 셀 교체
     });
 
-    alert('수정된 운행시간이 저장되었습니다!');
+    alert('저장되었습니다!');
 });

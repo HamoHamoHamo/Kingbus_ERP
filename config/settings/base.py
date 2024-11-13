@@ -60,7 +60,7 @@ INSTALLED_APPS = [
     'salary',
     "debug_toolbar",
     'approval',
-    'rollcall',
+    'rollcall'
 ]
 
 MIDDLEWARE = [

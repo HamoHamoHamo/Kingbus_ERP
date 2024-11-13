@@ -145,12 +145,12 @@
           <td>04:00 ~ 6:00</td>
           <td>음주 측정</td>
           <td>
-            <button class="button-clear" onclick="completeTask(this)" disabled>
-              미완료
-            </button>
+            <input type="number" class="breathalyzer-input" placeholder="0%" onchange="completeBreathalyzerTask(this)" />
           </td>
           <td class="time-cell">대기 중</td>
         </tr>
+
+
         <tr>
           <td>04:00 ~ 6:00</td>
           <td>체온 측정</td>
@@ -273,7 +273,28 @@
 {% block script%}
 
 <script>
-  function completeTask(button) {
+
+
+function triggerFileUpload() {
+    document.getElementById('fileInput').click();
+}
+
+function displayFileName() {
+    const fileInput = document.getElementById('fileInput');
+    const fileNameElement = document.getElementById('fileName');
+
+    if (fileInput.files && fileInput.files[0]) {
+        fileNameElement.textContent = fileInput.files[0].name;
+    } else {
+        fileNameElement.textContent = '파일이 업로드되지 않았습니다.';
+    }
+}
+
+
+</script>
+
+<script>
+   function completeTask(button) {
     const now = new Date();
     const hours = String(now.getHours()).padStart(2, "0");
     const minutes = String(now.getMinutes()).padStart(2, "0");
@@ -288,7 +309,6 @@
     timeCell.classList.add("completed");
     timeCell.innerText = currentTime;
 
-    // 다음 버튼 활성화
     const nextRow = row.nextElementSibling;
     if (nextRow) {
         const nextButton = nextRow.querySelector(".button-clear");
@@ -298,50 +318,54 @@
     }
 }
 
-
-  // 파일 선택창 열기
-function triggerFileUpload() {
-    document.getElementById('fileInput').click();
-}
-
-// 파일명 표시
-function displayFileName() {
-    const fileInput = document.getElementById('fileInput');
-    const fileNameElement = document.getElementById('fileName');
-
-    if (fileInput.files && fileInput.files[0]) {
-        fileNameElement.textContent = fileInput.files[0].name; // 파일명 표시
-    } else {
-        fileNameElement.textContent = '파일이 업로드되지 않았습니다.'; // 선택된 파일 없음
-    }
-}
-
-
-</script>
-
-<script>
 document.addEventListener("DOMContentLoaded", function () {
-  const hamburger = document.querySelector(".hamburger"); // 햄버거 버튼
-  const sideMenu = document.querySelector(".Sidemenu"); // 사이드 메뉴
+  const hamburger = document.querySelector(".hamburger");
+  const sideMenu = document.querySelector(".Sidemenu"); 
 
-  // 햄버거 버튼 클릭 이벤트
+
   hamburger.addEventListener("click", function (event) {
     event.stopPropagation(); // 이벤트 전파 방지
     sideMenu.classList.toggle("active");
   });
 
-  // 메뉴 외부 클릭 시 닫기
   document.addEventListener("click", function () {
     sideMenu.classList.remove("active");
   });
 
-  // 사이드 메뉴 내부 클릭 시 닫히지 않도록 설정
   sideMenu.addEventListener("click", function (event) {
-    event.stopPropagation(); // 이벤트 전파 방지
+    event.stopPropagation();
   });
 });
 
 </script>
 
+<script>
+  function completeBreathalyzerTask(input) {
+    const value = input.value.trim(); 
+    const row = input.closest("tr");
+    const timeCell = row.querySelector(".time-cell");
+    const now = new Date();
+    const hours = String(now.getHours()).padStart(2, "0");
+    const minutes = String(now.getMinutes()).padStart(2, "0");
+    const currentTime = `${hours}:${minutes}`;
+
+    if (value && !isNaN(value)) {
+
+        input.disabled = true; 
+        input.classList.add("completed");
+        timeCell.classList.add("completed");
+        timeCell.innerText = currentTime;
+
+        const nextRow = row.nextElementSibling;
+        if (nextRow) {
+            const nextButton = nextRow.querySelector(".button-clear");
+            if (nextButton) {
+                nextButton.disabled = false;
+            }
+        }
+    }
+}
+
+</script>
 
 {%endblock%}
