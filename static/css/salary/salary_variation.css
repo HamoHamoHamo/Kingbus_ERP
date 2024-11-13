@@ -1,0 +1,25 @@
+.table-list_body-tr_td_variation td:nth-child(1){width: 6%;}
+.table-list_body-tr_td_variation td:nth-child(2){width: 6%;}
+.table-list_body-tr_td_variation td:nth-child(3){width: 6%;}
+.table-list_body-tr_td_variation td:nth-child(4){width: 16%;}
+.table-list_body-tr_td_variation td:nth-child(5){width: 6%;}
+.table-list_body-tr_td_variation td:nth-child(6){width: 15%;}
+.table-list_body-tr_td_variation td:nth-child(7){width: 15%;}
+.table-list_body-tr_td_variation td:nth-child(8){width: 15%;}
+.table-list_body-tr_td_variation td:nth-child(9){width: 15%;}
+
+.table-list_head-tr_td_variation td:nth-child(1){width: 6%;}
+.table-list_head-tr_td_variation td:nth-child(2){width: 6%;}
+.table-list_head-tr_td_variation td:nth-child(3){width: 6%;}
+.table-list_head-tr_td_variation td:nth-child(4){width: 16%;}
+.table-list_head-tr_td_variation td:nth-child(5){width: 6%;}
+.table-list_head-tr_td_variation td:nth-child(6){width: 15%;}
+.table-list_head-tr_td_variation td:nth-child(7){width: 15%;}
+.table-list_head-tr_td_variation td:nth-child(8){width: 15%;}
+.table-list_head-tr_td_variation td:nth-child(9){width: 15%;}
+
+.salaryContainer tbody td::nth-child(7),
+.salaryContainer tbody td::nth-child(8),
+.salaryContainer tbody td::nth-child(9){
+    text-align: center;
+}

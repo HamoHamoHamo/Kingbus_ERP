@@ -369,3 +369,9 @@ def test(request):
             
 
     return JsonResponse({"test": result, "length": len(result2), "result2": result2})
+
+def Salary_Distribution(request):
+    return render(request, 'salary/salary_distribution.html')
+
+def Salary_Variation(request):
+    return render(request, 'salary/salary_variation.html')

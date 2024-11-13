@@ -1,0 +1,85 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load custom_tags %}
+{% block head %}
+<meta http-equiv="Cache-Control" content="private, no-cache, no-store, max-age=0, must-revalidate">
+
+<link rel="stylesheet" href="{% static 'css/humanresource/salaryNew.css' %}" type="text/css" />
+<link rel="stylesheet" href="{% static 'css/salary/salary_variation.css' %}" type="text/css" />
+{% endblock %}
+
+{% block content-header %}
+<div class="HeaderTitle">
+    월급 변동율
+</div>
+{% endblock %}
+
+{% block content %}
+<div class="search-Container">
+    <form class="search-Form">
+        <label for="" class="search-Form_label">비교월 : </label>
+        <input autocomplete="off" name='month' value="{{month}}" type="month"
+            class="search-Form_input search-Form_input-Month">
+        <label for="" class="search-Form_label">기준월 : </label>
+        <input autocomplete="off" name='month' value="{{month}}" type="month"
+            class="search-Form_input search-Form_input-Month">
+        <label for="" class="search-Form_label">이름 : </label>
+        <input autocomplete="off" name="name" value="{{name}}" type="text" class="search-Form_input">
+        <select class="inputModules marginLeft2" name="type">
+            <option {% if search_type == "" %} selected {% endif %} value = "">구분</option>
+            <option {% if search_type == "일반" %} selected {% endif %} value = "일반">일반</option>
+            <option {% if search_type == "용역" %} selected {% endif %} value = "용역">용역</option>
+        </select>
+        <input type="submit" class="search-Form_search-btn" value="검색">
+    </form>
+    <div class="popup-area-box">
+        <div class="popup-area-box_btn" onclick="salaryPrint()">급여현황</div>
+    </div>
+</div>
+
+<form method="post" action="" class="salaryContainer">
+    {% csrf_token %}
+    <input type="hidden" name="month" value="{{month}}">
+    <div class="scrolling_table-list_header teamjang_height">
+        <table class="table-list">
+            <thead>
+                <tr class="table-list_head-tr table-list_head-tr_td_variation">
+                    <td class="table-list_head-tr_td">
+                        <input tabindex="100" type="checkbox" class="amountCheck" name="member_id"
+                            value="{{member.id}}">
+                    </td>
+                    <td class="table-list_head-tr_td">번호</td>
+                    <td class="table-list_head-tr_td">이름</td>
+                    <td class="table-list_head-tr_td">입사일</td>
+                    <td class="table-list_head-tr_td">담당업무</td>
+                    <td class="table-list_head-tr_td">비교월(비교월표기)</td>
+                    <td class="table-list_head-tr_td">기준월(기준월표기)</td>
+                    <td class="table-list_head-tr_td">차액</td>
+                    <td class="table-list_head-tr_td">변동율</td>
+                </tr>
+            <thead>
+        </table>
+    </div>
+        
+    <div class="scrolling_table-list_body table-list_body-tr_td_variation">
+        <table class="table-list">
+            <tbody>
+                <tr class="table-list_body-tr salaryList cursor">
+                    <td class="checkTd table-list_body-tr_td table-list_body-tr_td_variation">
+                        <input tabindex="100" type="checkbox" class="amountCheck" name="member_id"
+                            value="{{member.id}}">
+                    </td>
+                    <td class="checkTd table-list_body-tr_td table-list_body-tr_td_variation">1</td>
+                    <td class="checkTd table-list_body-tr_td table-list_body-tr_td_variation">김원탁</td>
+                    <td class="checkTd table-list_body-tr_td table-list_body-tr_td_variation">2024-01-01</td>
+                    <td class="checkTd table-list_body-tr_td table-list_body-tr_td_variation">운전원</td>
+                    <td class="checkTd table-list_body-tr_td table-list_body-tr_td_variation">3,400,000</td>
+                    <td class="checkTd table-list_body-tr_td table-list_body-tr_td_variation">4,000,000</td>
+                    <td class="checkTd table-list_body-tr_td table-list_body-tr_td_variation">600,000</td>
+                    <td class="checkTd table-list_body-tr_td table-list_body-tr_td_variation">17.65%</td>   
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</form>
+{% endblock %}  
