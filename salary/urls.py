@@ -13,5 +13,6 @@ urlpatterns = [
     path('hourlywage/save', views.HourlyWageSaveView.as_view(), name="hourly_wage_save"),
     path('distribution', views.Salary_Distribution, name='distribution'),
     path('variation',views.Salary_Variation, name='variation'),
+    path('analysis',views.Salary_Analysis, name='Analysis'),
     path('test', views.test)
 ]

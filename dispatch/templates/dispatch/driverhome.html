@@ -175,7 +175,7 @@
           <td>04:00 ~ 6:00</td>
           <td>노선1</td>
           <td>
-            <button class="button-clear" onclick="completeTask(this)" disabled>
+            <button class="button-clear" onclick="goToNextStep('노선1')" disabled>
               미완료
             </button>
           </td>
@@ -185,17 +185,18 @@
           <td>04:00 ~ 6:00</td>
           <td>노선2</td>
           <td>
-            <button class="button-clear" onclick="completeTask(this)" disabled>
+            <button class="button-clear" onclick="goToNextStep('노선2')" disabled>
               미완료
             </button>
           </td>
           <td class="time-cell">대기 중</td>
         </tr>
+
         <tr>
           <td>04:00 ~ 6:00</td>
           <td>노선3</td>
           <td>
-            <button class="button-clear" onclick="completeTask(this)" disabled>
+            <button class="button-clear" onclick="goToNextStep('노선3')" disabled>
               미완료
             </button>
           </td>
@@ -205,7 +206,7 @@
           <td>04:00 ~ 6:00</td>
           <td>노선4</td>
           <td>
-            <button class="button-clear" onclick="completeTask(this)" disabled>
+            <button class="button-clear" onclick="goToNextStep('노선4')" disabled>
               미완료
             </button>
           </td>
@@ -215,7 +216,7 @@
           <td>04:00 ~ 6:00</td>
           <td>노선5</td>
           <td>
-            <button class="button-clear" onclick="completeTask(this)" disabled>
+            <button class="button-clear" onclick="goToNextStep('노선5')" disabled>
               미완료
             </button>
           </td>
@@ -225,7 +226,7 @@
           <td>04:00 ~ 6:00</td>
           <td>노선6</td>
           <td>
-            <button class="button-clear" onclick="completeTask(this)" disabled>
+            <button class="button-clear" onclick="goToNextStep('노선6')" disabled>
               미완료
             </button>
           </td>
@@ -267,8 +268,195 @@
 
   
 </div>
-
 {% endblock %}
+
+{% block popup%}
+<div id="nextStepContainer" style="display: none;">
+
+  <div class="popupBgModules"></div>
+    <div class="popup-container">
+  <div class="popup-header">노선 현황판</div>
+  <div class="popup-section">
+    <h3>노선 정보</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>노선명</th>
+          <th>기사</th>
+          <th>전화번호</th>
+          <th>차량</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>병점1</td>
+          <td>노성종</td>
+          <td>010-0000-0000</td>
+          <td>7780</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="popup-section">
+    <h3>To-Do List</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>순번</th>
+          <th>업무</th>
+          <th>현황</th>
+          <th>완료 시간</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>1</td>
+          <td>운행전</td>
+          <td>
+            <button class="button-clear" onclick="completeTask(this)">
+              미완료
+            </button>
+          </td>
+          <td class="time-cell">대기 중</td>
+        </tr>
+        <tr>
+          <td>2</td>
+          <td>운행 준비 확인</td>
+          <td>
+            <button class="button-clear" onclick="completeTask(this)" disabled>
+              미완료
+            </button>
+          </td>
+          <td class="time-cell">대기 중</td>
+        </tr>
+        <tr>
+          <td>3</td>
+          <td>탑승 및 운행 시작</td>
+          <td>
+            <button class="button-clear" onclick="completeTask(this)" disabled>
+              미완료
+            </button>
+          </td>
+          <td class="time-cell">대기 중</td>
+        </tr>
+        <tr>
+          <td>4</td>
+          <td>운행일보 작성(출발)</td>
+          <td>
+            <button class="button-clear" onclick="completeTask(this)" disabled>
+              미완료
+            </button>
+          </td>
+          <td class="time-cell">대기 중</td>
+        </tr>
+        <tr>
+          <td>5</td>
+          <td>첫 정류장 도착</td>
+          <td>
+            <button class="button-clear" onclick="completeTask(this)" disabled>
+              미완료
+            </button>
+          </td>
+          <td class="time-cell">대기 중</td>
+        </tr>
+        <tr>
+          <td>6</td>
+          <td>운행 출발</td>
+          <td>
+            <button class="button-clear" onclick="completeTask(this)" disabled>
+              미완료
+            </button>
+          </td>
+          <td class="time-cell">대기 중</td>
+        </tr>
+        <tr>
+          <td>7</td>
+          <td>정류장 1</td>
+          <td>
+            <button class="button-clear" onclick="completeTask(this)" disabled>
+              미완료
+            </button>
+          </td>
+          <td class="time-cell">대기 중</td>
+        </tr>
+        <tr>
+          <td>8</td>
+          <td>정류장 2</td>
+          <td>
+            <button class="button-clear" onclick="completeTask(this)" disabled>
+              미완료
+            </button>
+          </td>
+          <td class="time-cell">대기 중</td>
+        </tr>
+        <tr>
+          <td>9</td>
+          <td>정류장 3</td>
+          <td>
+            <button class="button-clear" onclick="completeTask(this)" disabled>
+              미완료
+            </button>
+          </td>
+          <td class="time-cell">대기 중</td>
+        </tr>
+        <tr>
+          <td>10</td>
+          <td>정류장 4</td>
+          <td>
+            <button class="button-clear" onclick="completeTask(this)" disabled>
+              미완료
+            </button>
+          </td>
+          <td class="time-cell">대기 중</td>
+        </tr>
+        <tr>
+          <td>11</td>
+          <td>정류장 5</td>
+          <td>
+            <button class="button-clear" onclick="completeTask(this)" disabled>
+              미완료
+            </button>
+          </td>
+          <td class="time-cell">대기 중</td>
+        </tr>
+        <tr>
+          <td>12</td>
+          <td>운행일보 작성(도착)</td>
+          <td>
+            <button class="button-clear" onclick="completeTask(this)" disabled>
+              미완료
+            </button>
+          </td>
+          <td class="time-cell">대기 중</td>
+        </tr>
+        <tr>
+          <td>13</td>
+          <td>운행 종료</td>
+          <td>
+            <button class="button-clear" onclick="completeTask(this)" disabled>
+              미완료
+            </button>
+          </td>
+          <td class="time-cell">대기 중</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="popup-footer">
+  <div class="popup-btn">
+    <button class="btn btn-save" id="savePopupBtn">저장</button>
+  </div>
+</div>
+
+</div>
+
+</div>
+
+
+
+{% endblock%}
 
 {% block script%}
 
@@ -365,6 +553,47 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     }
 }
+
+</script>
+
+<script>
+  function goToNextStep(routeName) {
+    const nextStepContainer = document.getElementById("nextStepContainer");
+    if (nextStepContainer) {
+        nextStepContainer.style.display = "block"; // 다음 단계 섹션 표시
+    }
+
+    // 클릭된 버튼 완료 처리
+    const row = document.querySelector(`button[onclick="goToNextStep('${routeName}')"]`).closest("tr");
+    const timeCell = row.querySelector(".time-cell");
+    const now = new Date();
+    const hours = String(now.getHours()).padStart(2, "0");
+    const minutes = String(now.getMinutes()).padStart(2, "0");
+    const currentTime = `${hours}:${minutes}`;
+
+    row.querySelector("button").disabled = true;
+    row.querySelector("button").innerText = "완료";
+    timeCell.innerText = currentTime;
+
+    // 다음 노선 버튼 활성화
+    const nextRow = row.nextElementSibling;
+    if (nextRow) {
+        const nextButton = nextRow.querySelector(".button-clear");
+        if (nextButton) {
+            nextButton.disabled = false;
+        }
+    }
+}
+
+ const savePopupBtn = document.getElementById("savePopupBtn");
+    if (savePopupBtn) {
+        savePopupBtn.addEventListener("click", function () {
+            const nextStepContainer = document.getElementById("nextStepContainer");
+            if (nextStepContainer) {
+                nextStepContainer.style.display = "none"; // 팝업 닫기
+            }
+        });
+    }
 
 </script>
 

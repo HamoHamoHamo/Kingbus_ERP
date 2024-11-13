@@ -692,6 +692,93 @@ body {
   display: none;
 }
 
+.popup-container {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: #fff;
+  width: 600px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  z-index: 1000;
+}
+
+.popupBgModules {
+    background-color: rgba(0, 0, 0, 0);
+}
+
+.popup-header {
+  font-size: 1.5rem;
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 20px;
+  background-color: #444444;
+  color: white;
+  padding: 10px;
+}
+
+.popup-section {
+  margin-bottom: 20px;
+  padding: 0px 20px;
+}
+
+.popup-section table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.popup-section th,
+.popup-section td {
+  padding: 8px;
+  text-align: center;
+}
+
+.popup-section td {
+  border: 0.1rem solid #e9e9e9;
+}
+
+.popup-section th {
+  background-color: #444444;
+  color: white;
+  font-weight: 100;
+}
+
+.popup-footer {
+  padding: 0px 20px;
+}
+
+.popup-btn {
+  display: flex;
+  width: 100%;
+  justify-content: right;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  gap: 1rem;
+}
+
+.btn {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.btn-close {
+  background-color: #444444;
+  color: white;
+}
+
+.btn-save {
+  background-color: #3d7afd;
+  color: white;
+}
+
+/* 팝업 열림 상태 */
+.popup-bg.active {
+  display: block;
+}
+
+
 @media screen and (max-width: 768px) {
   .MainContainer{
     display: flex;
@@ -761,6 +848,17 @@ body {
   display: block;
 }
 
+.popup-container {
+    position: absolute;
+    top: 50%;
+    left: 57%;
+    transform: translate(-50%, -50%);
+    background: #fff;
+    width: 400px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+}
+
 }
 
 @media screen and (max-width: 768px) {
@@ -771,4 +869,6 @@ body {
         color: #191919;
         cursor: pointer;
   }
+
+
 }

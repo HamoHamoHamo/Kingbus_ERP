@@ -375,3 +375,6 @@ def Salary_Distribution(request):
 
 def Salary_Variation(request):
     return render(request, 'salary/salary_variation.html')
+
+def Salary_Analysis(request):
+    return render(request, 'salary/salary_analysis.html')

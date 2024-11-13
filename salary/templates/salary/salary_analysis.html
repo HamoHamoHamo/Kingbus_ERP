@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load dispatch_custom_tags %}
+{% block head %}
+<meta http-equiv="Cache-Control" content="private, no-cache, no-store, max-age=0, must-revalidate">
+<link rel="stylesheet" href="{% static 'css/salary/salary_analysis.css' %}" type="text/css" />
+{% endblock %}
+
+{% block content-header %}
+<div class="HeaderTitle">
+    급여 분석
+</div>
+{% endblock %}
+
+
+{% block content %}
+<div class="search-Container">
+    <form class="search-Form">
+        <label for="" class="search-Form_label">날짜 : </label>
+        <input autocomplete="off" name='month' value="{{month}}" type="month"
+            class="search-Form_input search-Form_input-Month">
+        <label for="" class="search-Form_label">담당업무 </label>
+        <select class="inputModules marginLeft2" name="type">
+            <option value = "승무원" selected>승무원</option>
+            <option value = "사무직">사무직</option>
+            <option value = "팀장">팀장</option>
+            <option value = "정비사">정비사</option>
+            <option value = "일당직">일당직</option>
+        </select>
+        <label for="" class="search-Form_label">이름 : </label>
+        <input autocomplete="off" name="name" value="{{name}}" type="text" class="search-Form_input">
+
+        <input type="submit" class="search-Form_search-btn" value="검색">
+    </form>
+    <div class="popup-area-box">
+        <div class="popup-area-box_btn" onclick="salaryPrint()">급여현황</div>
+    </div>
+</div>
+{% endblock %}
