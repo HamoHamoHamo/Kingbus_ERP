@@ -160,7 +160,9 @@
                                 <td>
                                     <div class="PopupColor" onclick="openPopup()">출근 수원역 1</div>
                                 </td>
-                                <td>전민철</td>
+                                <td>
+                                  <div class="PopupColor" onclick="openPopup2()"> 전민철 </div>
+                                </td>
                                 <td>010-8884-7074</td>
                                 <td>07:30</td>
                                 <td>08:30</td>
@@ -310,6 +312,153 @@
 
 </div>
 
+<div class="popupAreaModules2">
+  <div class="popupBgModules"></div>
+  <div class="popup-container">
+    <div class="popup-header">개인 현황판</div>
+    
+    <div class="popup-section">
+    <h3>노선 정보</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>노선명</th>
+          <th>기사</th>
+          <th>전화번호</th>
+          <th>차량</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>병점1</td>
+          <td>노성종</td>
+          <td>010-0000-0000</td>
+          <td>7780</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+    
+    <div class="main-TaskBoard">
+      <div class="task-board">
+        <table class="table">
+          <tbody id="task-list">
+            <tr>
+              <th>운행시간</th>
+              <th>할일</th>
+              <th>완료 시간</th>
+            </tr>
+            <tr>
+              <td>04:00 ~ 6:00</td>
+              <td>기상</td>
+              <td>
+                  완료
+              </td>
+            </tr>
+            <tr>
+              <td>04:00 ~ 6:00</td>
+              <td>차고지 도착</td>
+              <td>
+                  완료
+              </td>
+            </tr>
+            <tr>
+              <td>04:00 ~ 6:00</td>
+              <td>출근 시간 체크</td>
+              <td>
+                  완료
+              </td>
+            </tr>
+            <tr>
+              <td>04:00 ~ 6:00</td>
+              <td>음주 측정</td>
+              <td>
+                  완료
+              </td>
+            </tr>
+            <tr>
+              <td>04:00 ~ 6:00</td>
+              <td>제복</td>
+              <td>
+                  완료
+              </td>
+            </tr>
+            <tr>
+              <td>04:00 ~ 6:00</td>
+              <td>노선1</td>
+              <td>
+                  완료
+              </td>
+            </tr>
+            <tr>
+              <td>04:00 ~ 6:00</td>
+              <td>노선2</td>
+              <td>
+                  완료
+              </td>
+            </tr>
+
+            <tr>
+              <td>04:00 ~ 6:00</td>
+              <td>노선3</td>
+              <td>
+                  완료
+              </td>
+            </tr>
+            <tr>
+              <td>04:00 ~ 6:00</td>
+              <td>노선4</td>
+              <td>
+                  완료
+              </td>
+            </tr>
+            <tr>
+              <td>04:00 ~ 6:00</td>
+              <td>노선5</td>
+              <td>
+                  완료
+              </td>
+            </tr>
+            <tr>
+              <td>04:00 ~ 6:00</td>
+              <td>노선6</td>
+              <td>
+                  완료
+              </td>
+            </tr>
+            <tr>
+              <td>04:00 ~ 6:00</td>
+              <td>차고지 도착</td>
+              <td>
+                  완료
+              </td>
+            </tr>
+            <tr>
+              <td>04:00 ~ 6:00</td>
+              <td>뒷정리 완료</td>
+              <td>
+                  완료
+              </td>
+            </tr>
+            <tr>
+              <td>04:00 ~ 6:00</td>
+              <td>퇴근</td>
+              <td>
+                  완료
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="popup-footer">
+    <div class="popup-btn">
+      <button class="btn btn-close">닫기</button>
+    </div>
+  </div>
+  </div>
+</div>
+
 {% endblock %}
 
 
@@ -324,6 +473,15 @@ function openPopup() {
 function closePopup() {
     const closeBtn = document.querySelector('.btn.btn-close');
     document.querySelector('.popupAreaModules').style.display = 'none';
+}
+
+function openPopup2() {
+    document.querySelector('.popupAreaModules2').style.display = 'block';
+}
+
+function closePopup2() {
+    const closeBtn = document.querySelector('.btn.btn-close');
+    document.querySelector('.popupAreaModules2').style.display = 'none';
 }
 
 

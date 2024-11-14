@@ -1200,7 +1200,7 @@ select[name=use]{
 }
 
 .RouteList table td:nth-child(3) {
-    width: 5%;
+    width: 10%;
 }
 
 .RouteList table td:nth-child(4) {
@@ -1208,7 +1208,7 @@ select[name=use]{
 }
 
 .RouteList table td:nth-child(5) {
-    width: 6%;
+    width: 10%;
 }
 
 .RouteList table td:nth-child(6) {
@@ -1216,70 +1216,20 @@ select[name=use]{
 }
 
 .RouteList table td:nth-child(7) {
-    width: 7%;
-}
-
-.RouteList table td:nth-child(8) {
-    width: 17%;
-}
-.RouteList table td:nth-child(9) {
-    width: 16%;
-}
-.RouteList table td:nth-child(10) {
-    width: 9%;
-}
-.RouteList table td:nth-child(11) {
-    width: 9%;
-}
-.RouteList table td:nth-child(12) {
-    width: 9%;
-}
-
-
-
-.RouteListHeader table td:nth-child(1) {
-    width: 3%;
-}
-
-.RouteListHeader table td:nth-child(2) {
-    width: 3%;
-}
-
-.RouteListHeader table td:nth-child(3) {
-    width: 5%;
-}
-
-.RouteListHeader table td:nth-child(4) {
-    width: 6%;
-}
-
-.RouteListHeader table td:nth-child(5) {
-    width: 6%;
-}
-
-.RouteListHeader table td:nth-child(6) {
     width: 10%;
 }
 
-.RouteListHeader table td:nth-child(7) {
-    width: 9%;
+.RouteList table td:nth-child(8) {
+    width: 10%;
+}
+.RouteList table td:nth-child(9) {
+    width: 10%;
+}
+.RouteList table td:nth-child(10) {
+    width: 10%;
 }
 
-.RouteListHeader table td:nth-child(8) {
-    width: 15%;
-}
-.RouteListHeader table td:nth-child(9) {
-    width: 15%;
-}
-.RouteListHeader table td:nth-child(10) {
-    width: 9%;
-}
-.RouteListHeader table td:nth-child(11) {
-    width: 9%;
-}
-.RouteListHeader table td:nth-child(12) {
-    width: 9%;
-}
+
 
 .routListSearch select{
     height: 2.5rem;
@@ -1394,6 +1344,7 @@ select[name=use]{
   width: 600px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   z-index: 1000;
+  font-size: 1.2rem;
 }
 
 .popup-header {
@@ -1465,4 +1416,94 @@ select[name=use]{
 /* 팝업 열림 상태 */
 .popup-bg.active {
   display: block;
+}
+
+.popupAreaModules2{
+  display:none;
+}
+
+.main-TaskBoard {
+    display: flex;
+    padding: 0 20px;
+}
+
+
+.task-board {
+  width: 80rem;
+  border-radius: 5px;
+}
+
+.header {
+  background-color: #333;
+  color: #fff;
+  text-align: center;
+  padding: 10px;
+  font-size: 1.5rem;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  
+}
+
+.table th,
+.table td {
+  padding: 8px;
+  text-align: center;
+  border: 1px solid #ddd;
+  font-size: 1.2rem;
+}
+
+.table th {
+  background-color: #444444;
+  color: white;
+}
+
+.button-clear {
+  background-color: #ddd;
+  color: #333;
+  border: none;
+  padding: 5px 10px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.button-clear.completed {
+  background-color: #333;
+  color: white;
+  cursor: default;
+}
+
+.button-clear[disabled] {
+  background-color: #f0f0f0;
+  color: #aaa;
+  cursor: not-allowed;
+}
+
+.time-cell.completed {
+  color: #333;
+}
+
+.incomplete {
+  color: red;
+}
+
+.time-cell {
+  color: gray;
+}
+
+.inputImgbtn {
+  background-color: #ddd;
+  color: #333;
+  border: none;
+  padding: 5px 10px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+#fileInfoContainer {
+    margin-top: 10px;
+    font-size: 16px;
+    color: #555;
 }

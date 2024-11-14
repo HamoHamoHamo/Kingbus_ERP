@@ -23,3 +23,56 @@
 .salaryContainer tbody td::nth-child(9){
     text-align: center;
 }
+
+.flex{
+    display: flex;
+}
+
+.salaryContainer{
+    width: 73%;
+}
+
+.blankContainer{
+    width: 2%;
+}
+
+.graphContainer{
+    height: auto;
+    width: 25%;
+}
+
+.graphHeader{
+    display: flex;
+    justify-content: space-around;
+    color: white;
+    align-items: center;
+    font-size: 1.4rem;
+}
+
+.first{
+    margin-left: 7rem;
+}
+
+.flexSalary{
+    display: flex;
+}
+
+.flexSalary *{
+    height: 3.6rem;
+    width: 50%;
+    align-content: center;
+    font-size: 1.4rem;
+    text-align: center;
+    border-right: 0.1rem solid #D2D2D2;
+    border-bottom: 0.1rem solid #D2D2D2;
+}
+
+.firstFlex {
+    border-top: 0.1rem solid #D2D2D2;
+}
+
+canvas {
+    height: 50%;
+    width: 100%; 
+    padding: 1rem;
+}

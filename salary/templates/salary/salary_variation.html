@@ -6,11 +6,12 @@
 
 <link rel="stylesheet" href="{% static 'css/humanresource/salaryNew.css' %}" type="text/css" />
 <link rel="stylesheet" href="{% static 'css/salary/salary_variation.css' %}" type="text/css" />
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 {% endblock %}
 
 {% block content-header %}
 <div class="HeaderTitle">
-    월급 변동율
+    급여 변동율
 </div>
 {% endblock %}
 
@@ -26,60 +27,142 @@
         <label for="" class="search-Form_label">이름 : </label>
         <input autocomplete="off" name="name" value="{{name}}" type="text" class="search-Form_input">
         <select class="inputModules marginLeft2" name="type">
-            <option {% if search_type == "" %} selected {% endif %} value = "">구분</option>
-            <option {% if search_type == "일반" %} selected {% endif %} value = "일반">일반</option>
-            <option {% if search_type == "용역" %} selected {% endif %} value = "용역">용역</option>
+            <option value = "전체">전체</option>
+            <option value = "승무원">승무원</option>
+            <option value = "팀장">팀장</option>
+            <option value = "일당직">일당직</option>
+            <option value = "관리자">관리자</option>
+            <option value = "정비사">정비사</option>
         </select>
         <input type="submit" class="search-Form_search-btn" value="검색">
     </form>
-    <div class="popup-area-box">
+    {% comment %} <div class="popup-area-box">
         <div class="popup-area-box_btn" onclick="salaryPrint()">급여현황</div>
-    </div>
+    </div> {% endcomment %}
 </div>
 
-<form method="post" action="" class="salaryContainer">
-    {% csrf_token %}
-    <input type="hidden" name="month" value="{{month}}">
-    <div class="scrolling_table-list_header teamjang_height">
-        <table class="table-list">
-            <thead>
-                <tr class="table-list_head-tr table-list_head-tr_td_variation">
-                    <td class="table-list_head-tr_td">
-                        <input tabindex="100" type="checkbox" class="amountCheck" name="member_id"
-                            value="{{member.id}}">
-                    </td>
-                    <td class="table-list_head-tr_td">번호</td>
-                    <td class="table-list_head-tr_td">이름</td>
-                    <td class="table-list_head-tr_td">입사일</td>
-                    <td class="table-list_head-tr_td">담당업무</td>
-                    <td class="table-list_head-tr_td">비교월(비교월표기)</td>
-                    <td class="table-list_head-tr_td">기준월(기준월표기)</td>
-                    <td class="table-list_head-tr_td">차액</td>
-                    <td class="table-list_head-tr_td">변동율</td>
-                </tr>
-            <thead>
-        </table>
-    </div>
+<div class="flex">
+    <div class="salaryContainer graphContainer">
+        <div class="scrolling_table-list_header graphHeader">
+            <span class="first">비교월 총급여</span><span>기준월 총급여</span>
+        </div>
+        <canvas id="salaryChart" style="width: 100%; height: 50%;"></canvas>
         
-    <div class="scrolling_table-list_body table-list_body-tr_td_variation">
-        <table class="table-list">
-            <tbody>
-                <tr class="table-list_body-tr salaryList cursor">
-                    <td class="checkTd table-list_body-tr_td table-list_body-tr_td_variation">
-                        <input tabindex="100" type="checkbox" class="amountCheck" name="member_id"
-                            value="{{member.id}}">
-                    </td>
-                    <td class="checkTd table-list_body-tr_td table-list_body-tr_td_variation">1</td>
-                    <td class="checkTd table-list_body-tr_td table-list_body-tr_td_variation">김원탁</td>
-                    <td class="checkTd table-list_body-tr_td table-list_body-tr_td_variation">2024-01-01</td>
-                    <td class="checkTd table-list_body-tr_td table-list_body-tr_td_variation">운전원</td>
-                    <td class="checkTd table-list_body-tr_td table-list_body-tr_td_variation">3,400,000</td>
-                    <td class="checkTd table-list_body-tr_td table-list_body-tr_td_variation">4,000,000</td>
-                    <td class="checkTd table-list_body-tr_td table-list_body-tr_td_variation">600,000</td>
-                    <td class="checkTd table-list_body-tr_td table-list_body-tr_td_variation">17.65%</td>   
-                </tr>
-            </tbody>
-        </table>
+            <div class="flexSalary firstflex">
+                <span  class="firstFlex">비교월 급여</span><div class="firstFlex">3,400,000</div>
+            </div>
+            <div class="flexSalary">
+                <span>기준월 급여</span><div>4,000,000</div>
+            </div>
+            <div class="flexSalary">
+                <span>차액</span><div>600,000</div>
+            </div>
+            <div class="flexSalary">
+                <span>변동율</span><div>17.65%</div>
+            </div>
+            <div class="flexSalary">
+                <span>가장 변동률이 높은사람</span><div>17.65%</div>
+            </div>
+            <div class="flexSalary">
+                <span>가장 변동률이 낮은사람</span><div>-3.14%</div>
+            </div>
+        
     </div>
-</form>
+
+    <div class="blankContainer"></div>
+
+    <form method="post" action="" class="salaryContainer">
+        {% csrf_token %}
+        <input type="hidden" name="month" value="{{month}}">
+        <div class="scrolling_table-list_header teamjang_height">
+            <table class="table-list">
+                <thead>
+                    <tr class="table-list_head-tr table-list_head-tr_td_variation">
+                        <td class="table-list_head-tr_td">
+                            <input tabindex="100" type="checkbox" class="amountCheck" name="member_id"
+                                value="{{member.id}}">
+                        </td>
+                        <td class="table-list_head-tr_td">번호</td>
+                        <td class="table-list_head-tr_td">이름</td>
+                        <td class="table-list_head-tr_td">입사일</td>
+                        <td class="table-list_head-tr_td">담당업무</td>
+                        <td class="table-list_head-tr_td">비교월(비교월표기)</td>
+                        <td class="table-list_head-tr_td">기준월(기준월표기)</td>
+                        <td class="table-list_head-tr_td">차액</td>
+                        <td class="table-list_head-tr_td">변동율</td>
+                    </tr>
+                <thead>
+            </table>
+        </div>
+            
+        <div class="scrolling_table-list_body table-list_body-tr_td_variation">
+            <table class="table-list">
+                <tbody>
+                    <tr class="table-list_body-tr salaryList cursor">
+                        <td class="checkTd table-list_body-tr_td table-list_body-tr_td_variation">
+                            <input tabindex="100" type="checkbox" class="amountCheck" name="member_id"
+                                value="{{member.id}}">
+                        </td>
+                        <td class="checkTd table-list_body-tr_td table-list_body-tr_td_variation">1</td>
+                        <td class="checkTd table-list_body-tr_td table-list_body-tr_td_variation">김원탁</td>
+                        <td class="checkTd table-list_body-tr_td table-list_body-tr_td_variation">2024-01-01</td>
+                        <td class="checkTd table-list_body-tr_td table-list_body-tr_td_variation">운전원</td>
+                        <td class="checkTd table-list_body-tr_td table-list_body-tr_td_variation">3,400,000</td>
+                        <td class="checkTd table-list_body-tr_td table-list_body-tr_td_variation">4,000,000</td>
+                        <td class="checkTd table-list_body-tr_td table-list_body-tr_td_variation">600,000</td>
+                        <td class="checkTd table-list_body-tr_td table-list_body-tr_td_variation">17.65%</td>   
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </form>
+</div>
 {% endblock %}  
+
+{% block script %}
+<script>
+    const ctx = document.getElementById('salaryChart').getContext('2d');
+    const salaryChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: ['비교월', '기준월'],
+            datasets: [{
+                label: '월별 급여',
+                data: [187945678, 224587612],  // 예시 데이터로 교체 가능
+                backgroundColor: ['rgba(54, 162, 235, 0.6)', 'rgba(255, 99, 132, 0.6)'],
+                borderColor: ['rgba(54, 162, 235, 1)', 'rgba(255, 99, 132, 1)'],
+                borderWidth: 1,
+                barPercentage: 1,  // 막대 너비 비율 설정
+                categoryPercentage: 1,  // 카테고리 간격 설정
+                maxBarThickness: 45 ,  // 막대의 최대 두께 설정
+            }]
+        },
+        options: {
+            scales: {
+                
+                y: {
+                    max: 300000000,
+                    beginAtZero: true,
+                    ticks: {
+                        callback: function(value) {
+                            return value.toLocaleString() + '원';
+                        }
+                    }
+                }
+            },
+            plugins: {
+                legend: {
+                    display: false
+                },
+                tooltip: {
+                    callbacks: {
+                        label: function(context) {
+                            return context.raw.toLocaleString() + '원';
+                        }
+                    }
+                }
+            }
+        }
+    });
+</script>
+{% endblock %}

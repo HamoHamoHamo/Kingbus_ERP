@@ -599,8 +599,8 @@ body {
 
 
 .breathalyzer-input{
-    padding: 0.5rem 2rem;
-    width: 2rem;
+    width: 5rem;
+    height: 2rem;
 }
 
 
@@ -694,13 +694,14 @@ body {
 
 .popup-container {
   position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background: #fff;
-  width: 600px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  z-index: 1000;
+    top: 54%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: #fff;
+    width: 600px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+    font-size: 1.2rem;
 }
 
 .popupBgModules {

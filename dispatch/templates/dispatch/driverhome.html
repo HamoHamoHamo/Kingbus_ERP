@@ -91,7 +91,6 @@
         <tr>
           <th colspan="2">RPA-D 사진 제출</th>
           <th>완료 여부</th>
-          <th>완료 시간</th>
         </tr>
       </thead>
       <tbody id="task-list">
@@ -101,95 +100,76 @@
             <div id="fileName">사진이 업로드되지 않았습니다.</div>
           </td>
           <td>
-            <input class="inputImgbtn" type="button" value="사진 업로드" onclick="triggerFileUpload()" />
+            <input class="inputImgbtn" type="button" value="업로드" onclick="triggerFileUpload()" />
           </td>
-          <td class="time-cell">대기 중</td>
         </tr>
         <tr>
           <th>운행시간</th>
           <th>할일</th>
           <th>완료 여부</th>
-          <th>완료 시간</th>
         </tr>
         <tr>
           <td>04:00 ~ 6:00</td>
           <td>기상</td>
           <td>
             <button class="button-clear" onclick="completeTask(this)">
-              미완료
+              완료
             </button>
           </td>
-          <td class="time-cell">대기 중</td>
         </tr>
         <tr>
           <td>04:00 ~ 6:00</td>
           <td>차고지 도착</td>
           <td>
             <button class="button-clear" onclick="completeTask(this)" disabled>
-              미완료
+              완료
             </button>
           </td>
-          <td class="time-cell">대기 중</td>
         </tr>
         <tr>
           <td>04:00 ~ 6:00</td>
           <td>출근 시간 체크</td>
           <td>
             <button class="button-clear" onclick="completeTask(this)" disabled>
-              미완료
+              완료
             </button>
           </td>
-          <td class="time-cell">대기 중</td>
         </tr>
         <tr>
           <td>04:00 ~ 6:00</td>
           <td>음주 측정</td>
           <td>
-            <input type="number" class="breathalyzer-input" placeholder="0%" onchange="completeBreathalyzerTask(this)" />
-          </td>
-          <td class="time-cell">대기 중</td>
-        </tr>
-
-
-        <tr>
-          <td>04:00 ~ 6:00</td>
-          <td>체온 측정</td>
-          <td>
             <button class="button-clear" onclick="completeTask(this)" disabled>
-              미완료
+              완료
             </button>
           </td>
-          <td class="time-cell">대기 중</td>
         </tr>
         <tr>
           <td>04:00 ~ 6:00</td>
           <td>제복</td>
           <td>
             <button class="button-clear" onclick="completeTask(this)" disabled>
-              미완료
+              완료
             </button>
           </td>
-          <td class="time-cell">대기 중</td>
         </tr>
         <tr>
           <td>04:00 ~ 6:00</td>
           <td>노선1</td>
           <td>
             <button class="button-clear" onclick="goToNextStep('노선1')" disabled>
-              미완료
+              완료
             </button>
           </td>
-          <td class="time-cell">대기 중</td>
         </tr>
         <tr>
           <td>04:00 ~ 6:00</td>
           <td>노선2</td>
           <td>
             <button class="button-clear" onclick="goToNextStep('노선2')" disabled>
-              미완료
+              완료
             </button>
           </td>
-          <td class="time-cell">대기 중</td>
         </tr>
 
         <tr>
@@ -197,70 +177,63 @@
           <td>노선3</td>
           <td>
             <button class="button-clear" onclick="goToNextStep('노선3')" disabled>
-              미완료
+              완료
             </button>
           </td>
-          <td class="time-cell">대기 중</td>
         </tr>
         <tr>
           <td>04:00 ~ 6:00</td>
           <td>노선4</td>
           <td>
             <button class="button-clear" onclick="goToNextStep('노선4')" disabled>
-              미완료
+              완료
             </button>
           </td>
-          <td class="time-cell">대기 중</td>
         </tr>
         <tr>
           <td>04:00 ~ 6:00</td>
           <td>노선5</td>
           <td>
             <button class="button-clear" onclick="goToNextStep('노선5')" disabled>
-              미완료
+              완료
             </button>
           </td>
-          <td class="time-cell">대기 중</td>
         </tr>
         <tr>
           <td>04:00 ~ 6:00</td>
           <td>노선6</td>
           <td>
             <button class="button-clear" onclick="goToNextStep('노선6')" disabled>
-              미완료
+              완료
             </button>
           </td>
-          <td class="time-cell">대기 중</td>
         </tr>
         <tr>
           <td>04:00 ~ 6:00</td>
           <td>차고지 도착</td>
           <td>
             <button class="button-clear" onclick="completeTask(this)" disabled>
-              미완료
+              완료
             </button>
           </td>
-          <td class="time-cell">대기 중</td>
         </tr>
         <tr>
           <td>04:00 ~ 6:00</td>
           <td>뒷정리 완료</td>
           <td>
             <button class="button-clear" onclick="completeTask(this)" disabled>
-              미완료
+              완료
             </button>
           </td>
-          <td class="time-cell">대기 중</td>
         </tr>
         <tr>
           <td>04:00 ~ 6:00</td>
           <td>퇴근</td>
           <td>
             <button class="button-clear" onclick="completeTask(this)" disabled>
-              미완료
+              완료
             </button>
           </td>
-          <td class="time-cell">대기 중</td>
         </tr>
       </tbody>
     </table>
@@ -306,7 +279,6 @@
           <th>순번</th>
           <th>업무</th>
           <th>현황</th>
-          <th>완료 시간</th>
         </tr>
       </thead>
       <tbody>
@@ -315,130 +287,117 @@
           <td>운행전</td>
           <td>
             <button class="button-clear" onclick="completeTask(this)">
-              미완료
+              완료
             </button>
           </td>
-          <td class="time-cell">대기 중</td>
         </tr>
         <tr>
           <td>2</td>
           <td>운행 준비 확인</td>
           <td>
             <button class="button-clear" onclick="completeTask(this)" disabled>
-              미완료
+              완료
             </button>
           </td>
-          <td class="time-cell">대기 중</td>
         </tr>
         <tr>
           <td>3</td>
           <td>탑승 및 운행 시작</td>
           <td>
             <button class="button-clear" onclick="completeTask(this)" disabled>
-              미완료
+              완료
             </button>
           </td>
-          <td class="time-cell">대기 중</td>
         </tr>
         <tr>
           <td>4</td>
           <td>운행일보 작성(출발)</td>
           <td>
             <button class="button-clear" onclick="completeTask(this)" disabled>
-              미완료
+              완료
             </button>
           </td>
-          <td class="time-cell">대기 중</td>
         </tr>
         <tr>
           <td>5</td>
           <td>첫 정류장 도착</td>
           <td>
             <button class="button-clear" onclick="completeTask(this)" disabled>
-              미완료
+              완료
             </button>
           </td>
-          <td class="time-cell">대기 중</td>
         </tr>
         <tr>
           <td>6</td>
           <td>운행 출발</td>
           <td>
             <button class="button-clear" onclick="completeTask(this)" disabled>
-              미완료
+              완료
             </button>
           </td>
-          <td class="time-cell">대기 중</td>
         </tr>
         <tr>
           <td>7</td>
           <td>정류장 1</td>
           <td>
             <button class="button-clear" onclick="completeTask(this)" disabled>
-              미완료
+              완료
             </button>
           </td>
-          <td class="time-cell">대기 중</td>
         </tr>
         <tr>
           <td>8</td>
           <td>정류장 2</td>
           <td>
             <button class="button-clear" onclick="completeTask(this)" disabled>
-              미완료
+              완료
             </button>
           </td>
-          <td class="time-cell">대기 중</td>
         </tr>
         <tr>
           <td>9</td>
           <td>정류장 3</td>
           <td>
             <button class="button-clear" onclick="completeTask(this)" disabled>
-              미완료
+              완료
             </button>
           </td>
-          <td class="time-cell">대기 중</td>
         </tr>
         <tr>
           <td>10</td>
           <td>정류장 4</td>
           <td>
             <button class="button-clear" onclick="completeTask(this)" disabled>
-              미완료
+              완료
             </button>
           </td>
-          <td class="time-cell">대기 중</td>
         </tr>
         <tr>
           <td>11</td>
           <td>정류장 5</td>
           <td>
             <button class="button-clear" onclick="completeTask(this)" disabled>
-              미완료
+              완료
             </button>
           </td>
-          <td class="time-cell">대기 중</td>
         </tr>
         <tr>
           <td>12</td>
           <td>운행일보 작성(도착)</td>
           <td>
             <button class="button-clear" onclick="completeTask(this)" disabled>
-              미완료
+              완료
             </button>
           </td>
-          <td class="time-cell">대기 중</td>
         </tr>
         <tr>
           <td>13</td>
           <td>운행 종료</td>
           <td>
             <button class="button-clear" onclick="completeTask(this)" disabled>
-              미완료
+              완료
             </button>
           </td>
-          <td class="time-cell">대기 중</td>
         </tr>
       </tbody>
     </table>
@@ -460,9 +419,7 @@
 
 {% block script%}
 
-<script>
-
-
+<script> // 파일 업로드
 function triggerFileUpload() {
     document.getElementById('fileInput').click();
 }
@@ -477,124 +434,61 @@ function displayFileName() {
         fileNameElement.textContent = '파일이 업로드되지 않았습니다.';
     }
 }
-
-
 </script>
 
 <script>
-   function completeTask(button) {
+  function completeTask(button) {
+    // 현재 시간을 가져옴
     const now = new Date();
-    const hours = String(now.getHours()).padStart(2, "0");
-    const minutes = String(now.getMinutes()).padStart(2, "0");
+    const hours = now.getHours().toString().padStart(2, '0');
+    const minutes = now.getMinutes().toString().padStart(2, '0');
     const currentTime = `${hours}:${minutes}`;
 
-    button.classList.add("completed");
-    button.disabled = true;
-    button.innerText = "완료";
+    // 현재 버튼의 텍스트를 클릭한 시간으로 변경
+    button.innerText = currentTime;
+    button.disabled = true; // 현재 버튼 비활성화
+    button.style.cursor = 'default'; // 커서 기본값으로 변경
 
-    const row = button.closest("tr");
-    const timeCell = row.querySelector(".time-cell");
-    timeCell.classList.add("completed");
-    timeCell.innerText = currentTime;
-
-    const nextRow = row.nextElementSibling;
+    // 다음 버튼을 활성화
+    const nextRow = button.closest('tr').nextElementSibling;
     if (nextRow) {
-        const nextButton = nextRow.querySelector(".button-clear");
+        const nextButton = nextRow.querySelector('.button-clear');
         if (nextButton) {
             nextButton.disabled = false;
         }
     }
 }
 
-document.addEventListener("DOMContentLoaded", function () {
-  const hamburger = document.querySelector(".hamburger");
-  const sideMenu = document.querySelector(".Sidemenu"); 
+// 팝업 열기 함수
+function openPopup(routeName) {
+    const popup = document.getElementById('nextStepContainer');
+    popup.style.display = 'block'; // 팝업 표시
+    const routeInfo = document.querySelector('.popup-header');
+    routeInfo.textContent = `노선 현황판: ${routeName}`; // 팝업 제목에 노선명 표시
+}
 
+// 팝업 닫기 함수
+function closePopup() {
+    const popup = document.getElementById('nextStepContainer');
+    popup.style.display = 'none'; // 팝업 숨기기
+}
 
-  hamburger.addEventListener("click", function (event) {
-    event.stopPropagation(); // 이벤트 전파 방지
-    sideMenu.classList.toggle("active");
-  });
+// 노선 버튼 클릭 이벤트 추가
+function goToNextStep(routeName) {
+    openPopup(routeName); // 팝업 열기
+}
 
-  document.addEventListener("click", function () {
-    sideMenu.classList.remove("active");
-  });
-
-  sideMenu.addEventListener("click", function (event) {
-    event.stopPropagation();
-  });
+// 팝업 닫기 버튼 이벤트 추가
+document.querySelectorAll('.popupBgModules, .btn-save').forEach(element => {
+    element.addEventListener('click', closePopup);
 });
 
-</script>
+// 닫기 버튼 이벤트 추가
+document.querySelector('.btncloseModules')?.addEventListener('click', closePopup);
 
-<script>
-  function completeBreathalyzerTask(input) {
-    const value = input.value.trim(); 
-    const row = input.closest("tr");
-    const timeCell = row.querySelector(".time-cell");
-    const now = new Date();
-    const hours = String(now.getHours()).padStart(2, "0");
-    const minutes = String(now.getMinutes()).padStart(2, "0");
-    const currentTime = `${hours}:${minutes}`;
-
-    if (value && !isNaN(value)) {
-
-        input.disabled = true; 
-        input.classList.add("completed");
-        timeCell.classList.add("completed");
-        timeCell.innerText = currentTime;
-
-        const nextRow = row.nextElementSibling;
-        if (nextRow) {
-            const nextButton = nextRow.querySelector(".button-clear");
-            if (nextButton) {
-                nextButton.disabled = false;
-            }
-        }
-    }
-}
 
 </script>
 
-<script>
-  function goToNextStep(routeName) {
-    const nextStepContainer = document.getElementById("nextStepContainer");
-    if (nextStepContainer) {
-        nextStepContainer.style.display = "block"; // 다음 단계 섹션 표시
-    }
-
-    // 클릭된 버튼 완료 처리
-    const row = document.querySelector(`button[onclick="goToNextStep('${routeName}')"]`).closest("tr");
-    const timeCell = row.querySelector(".time-cell");
-    const now = new Date();
-    const hours = String(now.getHours()).padStart(2, "0");
-    const minutes = String(now.getMinutes()).padStart(2, "0");
-    const currentTime = `${hours}:${minutes}`;
-
-    row.querySelector("button").disabled = true;
-    row.querySelector("button").innerText = "완료";
-    timeCell.innerText = currentTime;
-
-    // 다음 노선 버튼 활성화
-    const nextRow = row.nextElementSibling;
-    if (nextRow) {
-        const nextButton = nextRow.querySelector(".button-clear");
-        if (nextButton) {
-            nextButton.disabled = false;
-        }
-    }
-}
-
- const savePopupBtn = document.getElementById("savePopupBtn");
-    if (savePopupBtn) {
-        savePopupBtn.addEventListener("click", function () {
-            const nextStepContainer = document.getElementById("nextStepContainer");
-            if (nextStepContainer) {
-                nextStepContainer.style.display = "none"; // 팝업 닫기
-            }
-        });
-    }
-
-</script>
+  
 
 {%endblock%}

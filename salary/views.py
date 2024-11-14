@@ -370,11 +370,26 @@ def test(request):
 
     return JsonResponse({"test": result, "length": len(result2), "result2": result2})
 
+
+
 def Salary_Distribution(request):
     return render(request, 'salary/salary_distribution.html')
 
-def Salary_Variation(request):
-    return render(request, 'salary/salary_variation.html')
+# def Salary_Variation(request):
+#     return render(request, 'salary/salary_variation.html')
+
+class Salary_Variation(generic.ListView):
+    template_name = 'salary/salary_variation.html'
+    context_object_name = 'member_list'
+    model = Member
+    authority_level = 3
+    data_collector_class = SalaryTableDataCollector3
+
+    def get_queryset(self):
+        # 기본 쿼리셋을 할당하여, 항상 member_list가 초기화되도록 보장
+        queryset = super().get_queryset()  # 부모 클래스의 get_queryset 사용
+        
+        return queryset
 
 def Salary_Analysis(request):
     return render(request, 'salary/salary_analysis.html')

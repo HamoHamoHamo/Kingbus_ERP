@@ -202,8 +202,12 @@
                     <div class="driverPhone">010-1234-5678</div>
                 </div>
             </div>
+            <div class="progress-bar">
+                    <div class="progress-bar-inner"></div>
+                </div>
+            <div>
+            </div>
             <div class="shcedulePopupTableBox"> 
-
                 <table class="shcedulePopupTableHeader2 popupTable2">
                     <thead>
                         <tr>
@@ -218,11 +222,65 @@
                     <table class="shcedulePopupTableBody2 popupTable2">
                         <tbody>
                             <tr>
-                            <td>1.</td>
-                            <td>운행 전</td>
-                            <td class="statusCell">완료</td>
-                            <td class="timeCell"><input type="time" class="timeInput"/></td>
-                        </tr>
+                                <td>1.</td>
+                                <td>운행 전</td>
+                                <td class="statusCell">완료</td>
+                                <td class="timeCell">07:10</td>
+                            </tr>
+                            <tr>
+                                <td>2.</td>
+                                <td>운행 준비 확인</td>
+                                <td class="statusCell">완료</td>
+                                <td class="timeCell">07:10</td>
+                            </tr>
+                            <tr>
+                                <td>3.</td>
+                                <td>탑승 및 운행 시작</td>
+                                <td class="statusCell">완료</td>
+                                <td class="timeCell">07:10</td>
+                            </tr>
+                            <tr>
+                                <td>4.</td>
+                                <td>운행 일보 작성(출발)</td>
+                                <td class="statusCell">미완료</td>
+                                <td class="timeCell">-</td>
+                            </tr>
+                            <tr>
+                                <td>5.</td>
+                                <td>첫 정류장 도착</td>
+                                <td class="statusCell">미완료</td>
+                                <td class="timeCell">-</td>
+                            </tr>
+                            <tr>
+                                <td>6.</td>
+                                <td>운행 출발</td>
+                                <td class="statusCell">미완료</td>
+                                <td class="timeCell">-</td>
+                            </tr>
+                            <tr> 
+                                <td>7.</td>
+                                <td>정류장</td>
+                                <td class="statusCell">미완료</td>
+                                <td class="timeCell">-</td>
+                            </tr>
+                            <tr> 
+                                <td>8.</td>
+                                <td>정류장</td>
+                                <td class="statusCell">미완료</td>
+                                <td class="timeCell">-</td>
+                            </tr>
+                            <tr>
+                                <td>9</td>
+                                <td>운행일보 작성(도착)</td>
+                                <td class="statusCell">미완료</td>
+                                <td class="timeCell">-</td>
+                            </tr>
+                            <tr>
+                                <td>10</td>
+                                <td>운행 종료</td>
+                                <td class="statusCell">미완료</td>
+                                <td class="timeCell">-</td>
+                            </tr>
                         </tbody>
                     </table>
                 </div>
@@ -231,7 +289,6 @@
 
         <div class="PopupunderBtnBox">
             <div class="btncloseModules">닫기</div>
-            <div class="btnsaveModules">저장</div>
         </div>
 
     </form>
@@ -251,4 +308,18 @@
     console.log("DATA", data)
 </script>
 <script src="{% static 'js/dispatch/schedule/schedulePopup.js' %}"></script>
+
+<script>
+
+const completionRate = 30; 
+
+
+const progressBarInner = document.querySelector('.progress-bar-inner');
+
+
+progressBarInner.style.width = `${completionRate}%`;
+progressBarInner.style.backgroundColor = completionRate === 100 ? '#4caf50' : '#f39c12';
+progressBarInner.textContent = `${completionRate}%`;
+
+</script>
 {% endblock %}

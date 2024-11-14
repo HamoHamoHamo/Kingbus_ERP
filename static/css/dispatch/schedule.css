@@ -496,3 +496,38 @@
     outline: none;
     background-color: #0069D9;
 }
+
+
+
+
+.completionRate {
+    font-size: 18px;
+    font-weight: bold;
+    color: #4caf50;
+    margin-top: 10px;
+}
+
+.PopupDataArea {
+    display: block !important;
+    visibility: visible !important;
+}
+
+.progress-bar {
+    width: 100%;
+    background-color: #e0e0e0;
+    border-radius: 5px;
+    overflow: hidden;
+    height: 20px;
+    margin: 2rem 0;
+    font-size: 1.3rem;
+}
+
+.progress-bar-inner {
+  height: 100%;
+  text-align: center;
+  color: white;
+  font-weight: bold;
+  line-height: 20px; /* Match the height for vertical centering */
+  border-radius: 5px;
+  transition: width 0.3s ease;
+}
