@@ -301,6 +301,7 @@ class DispatchOrderConnect(models.Model):
     driver_allowance = models.CharField(verbose_name='기사수당', max_length=40, null=False)
     payment_method = models.CharField(verbose_name='상여금 선지급', max_length=1, null=False, default="n")
     status = models.CharField(verbose_name='운행상태', max_length=100, null=False, default="운행 전", choices=ConnectStatus.choices())
+    has_issue = models.BooleanField(verbose_name='문제 발생 여부', null=False, default=False)
     pub_date = models.DateTimeField(auto_now_add=True, verbose_name='작성시간')
     updated_at = models.DateTimeField(auto_now=True, verbose_name='수정시간')
     creator = models.ForeignKey(Member, on_delete=models.SET_NULL, related_name="connect_creator", db_column="creator_id", null=True)
@@ -320,6 +321,7 @@ class DispatchRegularlyConnect(models.Model):
     time = models.CharField(verbose_name='시간', max_length=100, null=False, blank=True)
     distance = models.CharField(verbose_name='거리', max_length=100, null=False, blank=True)
     status = models.CharField(verbose_name='운행상태', max_length=100, null=False, default="운행 전", choices=ConnectStatus.choices())
+    has_issue = models.BooleanField(verbose_name='문제 발생 여부', null=False, default=False)
     locations = models.JSONField(verbose_name="운행 경로", null=True)
     pub_date = models.DateTimeField(auto_now_add=True, verbose_name='작성시간')
     updated_at = models.DateTimeField(auto_now=True, verbose_name='수정시간')
@@ -434,6 +436,16 @@ class EveningChecklist(models.Model):
             return order_bus.bus_id.vehicle_num
         return regularly_bus.bus_id.vehicle_num
     
+    @classmethod
+    def create_new(cls, date: str, user: Member):
+        instance = cls(
+            date = date,
+            member = user,
+            creator = user
+        )
+        instance.save()
+        return instance
+
     submit_check = models.BooleanField(verbose_name="제출여부", null=False, default=False)
     checklist_submit_time = models.CharField(verbose_name="제출시간", max_length=10, blank=True)
     tomorrow_check_submit_time = models.CharField(verbose_name="내일 배차 확인시간", max_length=10, blank=True)
