@@ -304,6 +304,7 @@ class DispatchOrderConnect(models.Model):
     pub_date = models.DateTimeField(auto_now_add=True, verbose_name='작성시간')
     updated_at = models.DateTimeField(auto_now=True, verbose_name='수정시간')
     creator = models.ForeignKey(Member, on_delete=models.SET_NULL, related_name="connect_creator", db_column="creator_id", null=True)
+    has_issue = models.BooleanField(verbose_name='문제 발생 여부', null=False, default=False)
     def __str__(self):
         return f'{self.order_id.route} / {self.departure_date[2:10]}'
 
@@ -324,6 +325,7 @@ class DispatchRegularlyConnect(models.Model):
     pub_date = models.DateTimeField(auto_now_add=True, verbose_name='작성시간')
     updated_at = models.DateTimeField(auto_now=True, verbose_name='수정시간')
     creator = models.ForeignKey(Member, on_delete=models.SET_NULL, related_name="connect_regularly_creator", db_column="creator_id", null=True)
+    has_issue = models.BooleanField(verbose_name='문제 발생 여부', null=False, default=False)
     def __str__(self):
         return f'{self.work_type} {self.regularly_id} / {self.departure_date[2:10]}'
 
