@@ -195,6 +195,7 @@ INTERNAL_IPS = [
 
 CRONJOBS = [
     ('* * * * *', 'dispatch.notification.driver_check_notification', '>> /home/kingbus/trp/data_backup/cpu_log/noti_`date +\%Y\%m\%d`.log 2>&1'),
+    ('* * * * *', 'dispatch.notification.admin_station_check_problem_notification', '>> /home/kingbus/trp/data_backup/cpu_log/noti_`date +\%Y\%m\%d`.log 2>&1'),
     ('*/30 9-18 * * 1-5', 'dispatch.notification.admin_dispatch_check_notification', '>> /home/kingbus/trp/data_backup/cpu_log/noti_`date +\%Y\%m\%d`.log 2>&1'),
     ('0 9-18 * * 1-5', 'dispatch.notification.admin_complete_check_notification', '>> /home/kingbus/trp/data_backup/cpu_log/noti_`date +\%Y\%m\%d`.log 2>&1'),
 ]
