@@ -63,7 +63,7 @@
                     <td class="table-list_head-tr_td">추가수당</td>
                     <td class="table-list_head-tr_td">공제</td>
                     <td class="table-list_head-tr_td">주휴수당</td>
-                    <td class="table-list_head-tr_td">근무시간외추가금</td>
+                    <td class="table-list_head-tr_td">근무시간외<br>추가금</td>
                     <td class="table-list_head-tr_td">임금총합계</td>
                 </tr>
             </thead>
@@ -72,22 +72,23 @@
     <div class="scrolling_table-list_body">
         <table class="table-list">
             <tbody>
-                {% for member in datas_member_list %}
-                {% with salary=salary_list|index:forloop.counter0 %}
+                {% for member in members %}
+                {% comment %} {% with salary=salary_list|index:forloop.counter0 %} {% endcomment %}
                 <tr class="table-list_body-tr salaryList cursor">
                     <td class="checkTd table-list_body-tr_td table-list_body-tr_td_teamjang">
                         <input tabindex="100" type="checkbox" class="amountCheck" name="member_id"
-                            value="{{member.id}}">
+                            value="{{member.id}}"> 
                     </td>
                     <td class="checkTd table-list_body-tr_td table-list_body-tr_td_teamjang ">{{forloop.counter}}</td>
                     <td class="checkTd table-list_body-tr_td table-list_body-tr_td_teamjang  {% if salary.salary_checked %} bluelink {% endif %}">
                         {{member.name}}
                     </td>
-                    <td class="checkTd table-list_body-tr_td table-list_body-tr_td_teamjang ">12000</td>
+                    <td class="checkTd table-list_body-tr_td table-list_body-tr_td_teamjang ">12000 <span>{{member.id}}</span></td>
                     <td class="checkTd table-list_body-tr_td table-list_body-tr_td_teamjang "></td>
 
                     <td class="checkTd table-list_body-tr_td wage">
-                        <div class="">{{wage_list|index:forloop.counter0}}</div>
+                        <div class=""></div>
+                            {% comment %} {{wage_list|index:forloop.counter0}}</div> {% endcomment %}
                     </td>
                     <td class="checkTd table-list_body-tr_td">
                         <input type="text" class="amountInput length100 salaryServiceAllowance" value="{{salary.service_allowance}}">
@@ -114,11 +115,11 @@
                     <td class="table-list_body-tr_td  table-list_body-tr_td_teamjang salaryAdditional addComma salaryPopup additionalTd">{{salary.additional}}</td>
                     <td class="table-list_body-tr_td  table-list_body-tr_td_teamjang salaryDeduction addComma salaryPopup deductionTd">{{salary.deduction}}</td>
                     <td class="table-list_body-tr_td  table-list_body-tr_td_teamjang salaryWeeklyDeduction addComma salaryPopup weeklyDeductionTd {% if salary.weekly_holiday_allowance_deduction != '0' %}backgroundGray{% endif %}"></td>
-                    <td class="table-list_body-tr_td  table-list_body-tr_td_teamjang salaryDeduction addComma salaryPopup deductionTd">{{salary.deduction}}</td>
-                    <td class="checkTd table-list_body-tr_td table-list_body-tr_td_teamjang     salaryTotal addComma"></td>
+                    <td class="table-list_body-tr_td  table-list_body-tr_td_teamjang addComma" onclick="openTeamjangStatus()"></td>
+                    <td class="checkTd table-list_body-tr_td table-list_body-tr_td_teamjang salaryTotal addComma"></td>
 
                 </tr>
-                {% endwith %}
+                {% comment %} {% endwith %} {% endcomment %}
                 {% endfor %}
 
 
@@ -417,6 +418,71 @@
         </div>
     </div>
 </div>
+
+<div class="popupAreaModules teamjangStatus" id="teamjangStatusPopup">
+    <div class="popupBgModules popupBgModulesMeal"></div>
+    <div class="popupContainer popupContainerDouble">
+        <div class="popupHeader">
+            <div class="popupTitle">팀장 시간외 근로</div>
+        </div>
+        <div class="popupBody">
+            <div class="popupSection">
+                <div class="">
+                    {% csrf_token %}
+                    <div class="popupArticleCategori">근로 내역</div>
+                    <div class="popupArticleBoxTable">
+                        <div class="scrolling_table-list_header">
+                            <table class="table-list">
+                                <thead>
+                                    <tr class="table-list_head-tr teamjangStatusTheadTr">
+                                        <td class="table-list_head-tr_td teamjangStatusTr">날짜</td>
+                                        <td class="table-list_head-tr_td teamjangStatusTr">연장근로</td>
+                                        <td class="table-list_head-tr_td teamjangStatusTr">야간근로</td>
+                                        <td class="table-list_head-tr_td teamjangStatusTr">휴일8시간이하</td>
+                                        <td class="table-list_head-tr_td teamjangStatusTr">휴일8시간초과</td> 
+                                    </tr>
+                                </thead>
+                            </table>
+                        </div>
+                        <div class="scrolling_table-list_body mealTable mealTableScroll popupTableScroll center">
+                            <table class="table-list">
+                                <tbody>
+                                    <tr class="table-list_body-tr teamjangStatusTbodyTr">
+                                        <td class="table-list_body-tr_td">6/10</td>
+                                        <td class="table-list_body-tr_td">02:12</td>
+                                        <td class="table-list_body-tr_td">01:00</td>
+                                        <td class="table-list_body-tr_td">00:00</td>
+                                        <td class="table-list_body-tr_td">00:00</td>
+                                    </tr>
+                                    <tr class="table-list_body-tr teamjangStatusTbodyTr">
+                                        <td class="table-list_body-tr_td">6/11</td>
+                                        <td class="table-list_body-tr_td">00:00</td>
+                                        <td class="table-list_body-tr_td">01:00</td>
+                                        <td class="table-list_body-tr_td">08:00</td>
+                                        <td class="table-list_body-tr_td">01:12</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <table class="mealTotalTable popupTotalTable center">
+                            <tr class="totalAdd">
+                                <td>합계</td>
+                                <td class="overTime">02:12</td>
+                                <td class="NightTime">02:00</td>
+                                <td class="Holiday8Less">08:00</td>
+                                <td class="Holiday8Over">01:12</td>
+                            </tr>
+                        </table>
+                    </div>
+                    <input type="hidden" name="order_id" class="deleteAddHidden">
+                </div>
+            </div>
+            <div class="popupFooter">
+                <div class="btnModules mealCloseBtn closeBtn" onclick="closeTeamjangStatus()">닫기</div>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}
 
 
@@ -426,6 +492,15 @@
 
 {% block script %}
 <script>
+
+    function openTeamjangStatus () {
+        document.getElementById("teamjangStatusPopup").style.display="block"
+    }
+
+    function closeTeamjangStatus () {
+        document.getElementById("teamjangStatusPopup").style.display="none"
+    }
+
     const amountCheck = document.querySelectorAll(".amountCheck")
     const month = document.querySelector(".search-Form input[type=month]")
     function salaryPrint() {

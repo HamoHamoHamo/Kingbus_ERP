@@ -21,6 +21,7 @@ class DataCollector:
         self.morning_list = []
         self.evening_list = []
         self.date_list = date_list
+        self.fixed_work_hours = settings.FIXED_WORK_HOURS.get(self.member.id, [])  # 팀장 고정 근무 시간 가져오기
         
         self.set_member_salary()
         self.hourly_wage_data = self.set_hourly_wage_data()

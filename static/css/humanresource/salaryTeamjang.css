@@ -17,7 +17,7 @@
 .table-list_head-tr_td_teamjang td:nth-child(14), .table-list_body-tr_td_teamjang:nth-child(14),
 .table-list_head-tr_td_teamjang td:nth-child(15), .table-list_body-tr_td_teamjang:nth-child(15),
 .table-list_head-tr_td_teamjang td:nth-child(16), .table-list_body-tr_td_teamjang:nth-child(16),
-.table-list_head-tr_td_teamjang td:nth-child(17), .table-list_body-tr_td_teamjang:nth-child(17) {
+.table-list_head-tr_td_teamjang td:nth-child(17), .table-list_body-tr_td_teamjang:nth-child(17){
     width: 5% !important;
 }
 
@@ -29,4 +29,18 @@
 
 .teamjang_height{
     height: 5.2rem;
+}
+
+.teamjangStatusTheadTr td:nth-child(1), .teamjangStatusTbodyTr td:nth-child(1), .totalAdd td:nth-child(1) {width: 10%;}
+.teamjangStatusTheadTr td:nth-child(2), .teamjangStatusTbodyTr td:nth-child(2), .totalAdd td:nth-child(2) {width: 22.5%;}
+.teamjangStatusTheadTr td:nth-child(3), .teamjangStatusTbodyTr td:nth-child(3), .totalAdd td:nth-child(3) {width: 22.5%;}
+.teamjangStatusTheadTr td:nth-child(4), .teamjangStatusTbodyTr td:nth-child(4), .totalAdd td:nth-child(4) {width: 22.5%;}
+.teamjangStatusTheadTr td:nth-child(5), .teamjangStatusTbodyTr td:nth-child(5), .totalAdd td:nth-child(5) {width: 22.5%;}
+
+.totalAdd *{
+    border-right: 0.1rem solid white;
+}
+
+.center * {
+    text-align: center !important;
 }

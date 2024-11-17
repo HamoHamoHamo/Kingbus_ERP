@@ -40,6 +40,8 @@ function openScheduleDetail() {
         const newTdCheck1 = document.createElement('td');
         const newTdCheck2 = document.createElement('td');
         const newTdCheck3 = document.createElement('td');
+        const newTdCheck4 = document.createElement('td');
+
         
         const newTextType = document.createTextNode(`${curData.work_type}`);
         const newTextTimeDepartureAll = document.createTextNode(`${curData.departure_date}~`);
@@ -80,6 +82,9 @@ function openScheduleDetail() {
         newTr.appendChild(newTdCheck1);
         newTr.appendChild(newTdCheck2);
         newTr.appendChild(newTdCheck3);
+        newTr.appendChild(newTdCheck4);
+
+        
         popupListBox.appendChild(newTr);
     }
 }

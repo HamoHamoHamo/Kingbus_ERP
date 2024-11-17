@@ -1341,8 +1341,8 @@ select[name=use]{
   left: 50%;
   transform: translate(-50%, -50%);
   background: #fff;
-  width: 600px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  width: 60rem;
+  box-shadow: 0 0.4rem 0.8rem rgba(0, 0, 0, 0.2);
   z-index: 1000;
   font-size: 1.2rem;
 }
@@ -1351,15 +1351,15 @@ select[name=use]{
   font-size: 1.5rem;
   font-weight: bold;
   text-align: center;
-  margin-bottom: 20px;
+  margin-bottom: 2rem;
   background-color: #444444;
   color: white;
-  padding: 10px;
+  padding: 1rem;
 }
 
 .popup-section {
-  margin-bottom: 20px;
-  padding: 0px 20px;
+  margin-bottom: 2rem;
+  padding: 0 2rem;
 }
 
 .popup-section table {
@@ -1369,7 +1369,7 @@ select[name=use]{
 
 .popup-section th,
 .popup-section td {
-  padding: 8px;
+  padding: 0.8rem;
   text-align: center;
 }
 
@@ -1384,22 +1384,22 @@ select[name=use]{
 }
 
 .popup-footer {
-  padding: 0px 20px;
+  padding: 0 2rem;
 }
 
 .popup-btn {
   display: flex;
   width: 100%;
   justify-content: right;
-  margin-top: 20px;
-  margin-bottom: 20px;
+  margin-top: 2rem;
+  margin-bottom: 2rem;
   gap: 1rem;
 }
 
 .btn {
-  padding: 10px 20px;
+  padding: 1rem 2rem;
   border: none;
-  border-radius: 5px;
+  border-radius: 0.5rem;
   cursor: pointer;
 }
 
@@ -1424,20 +1424,20 @@ select[name=use]{
 
 .main-TaskBoard {
     display: flex;
-    padding: 0 20px;
+    padding: 0 2rem;
 }
 
 
 .task-board {
   width: 80rem;
-  border-radius: 5px;
+  border-radius: 0.5rem;
 }
 
 .header {
   background-color: #333;
   color: #fff;
   text-align: center;
-  padding: 10px;
+  padding: 1rem;
   font-size: 1.5rem;
 }
 
@@ -1449,9 +1449,9 @@ select[name=use]{
 
 .table th,
 .table td {
-  padding: 8px;
+  padding: 0.8rem;
   text-align: center;
-  border: 1px solid #ddd;
+  border: 0.1rem solid #ddd;
   font-size: 1.2rem;
 }
 
@@ -1464,7 +1464,7 @@ select[name=use]{
   background-color: #ddd;
   color: #333;
   border: none;
-  padding: 5px 10px;
+  padding: 0.5rem 1rem;
   cursor: pointer;
   transition: background-color 0.3s;
 }
@@ -1497,13 +1497,13 @@ select[name=use]{
   background-color: #ddd;
   color: #333;
   border: none;
-  padding: 5px 10px;
+  padding: 0.5rem 1rem;
   cursor: pointer;
   transition: background-color 0.3s;
 }
 
 #fileInfoContainer {
-    margin-top: 10px;
-    font-size: 16px;
+    margin-top: 1rem;
+    font-size: 1.6rem;
     color: #555;
 }

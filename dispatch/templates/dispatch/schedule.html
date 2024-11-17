@@ -49,6 +49,8 @@
         <table class="scheduleTableHeader">
             <thead>
                 <tr>
+                    <td>기사님</td>
+                    <td>상태</td>
                     <td>0</td>
                     <td>02</td>
                     <td>04</td>
@@ -62,8 +64,6 @@
                     <td>20</td>
                     <td>22</td>
                     <td>24</td>
-                    <td>상태</td>
-                    <td>기사님</td>
                 </tr>
             </thead>
         </table>
@@ -72,36 +72,36 @@
                 <div class="tbody">
                     {% for driver in schedule_list %}
                     <div class="tr">
-                        <div class="td"></div>
-                        <div class="td"></div>
-                        <div class="td"></div>
-                        <div class="td"></div>
-                        <div class="td"></div>
-                        <div class="td"></div>
-                        <div class="td"></div>
-                        <div class="td"></div>
-                        <div class="td"></div>
-                        <div class="td"></div>
-                        <div class="td"></div>
-                        <div class="td"></div>
-                        <div class="td"></div>
-                        <div class="td"></div>
-                        <div class="td"></div>
-                        <div class="td"></div>
-                        <div class="td"></div>
-                        <div class="td"></div>
-                        <div class="td"></div>
-                        <div class="td"></div>
-                        <div class="td"></div>
-                        <div class="td"></div>
-                        <div class="td"></div>
-                        <div class="td"></div>
-                        <div class="tdStatus"></div>
                         <div class="tdDriver">
                             <span class="{{forloop.counter0}}"></span>
                             <span style="display:none"></span>
                             <span style="display:none"></span>
                         </div>
+                        <div class="tdStatus"></div>
+                        <div class="td"></div>
+                        <div class="td"></div>
+                        <div class="td"></div>
+                        <div class="td"></div>
+                        <div class="td"></div>
+                        <div class="td"></div>
+                        <div class="td"></div>
+                        <div class="td"></div>
+                        <div class="td"></div>
+                        <div class="td"></div>
+                        <div class="td"></div>
+                        <div class="td"></div>
+                        <div class="td"></div>
+                        <div class="td"></div>
+                        <div class="td"></div>
+                        <div class="td"></div>
+                        <div class="td"></div>
+                        <div class="td"></div>
+                        <div class="td"></div>
+                        <div class="td"></div>
+                        <div class="td"></div>
+                        <div class="td"></div>
+                        <div class="td"></div>
+                        <div class="td"></div>
                     </div>
                     {% endfor %}
                 </div>
@@ -144,6 +144,8 @@
                     <div class="driverPhone"></div>
                 </div>
             </div>
+            
+            
             <div class="shcedulePopupTableBox">
                 <table class="shcedulePopupTableHeader popupTable">
                     <thead>
@@ -153,9 +155,10 @@
                             <td>운행시간</td>
                             <td>노선</td>
                             <td>배차확인</td>
-                            <td>기상확인</td>
-                            <td>운행시작</td>
-                            <td>출발지도착</td>
+                            <td>운행전</td>
+                            <td>운행준비확인</td>
+                            <td>탑승 및 운행시작</td>
+
                         </tr>
                     </thead>
                 </table>
@@ -202,10 +205,11 @@
                     <div class="driverPhone">010-1234-5678</div>
                 </div>
             </div>
-            <div class="progress-bar">
-                    <div class="progress-bar-inner"></div>
-                </div>
             <div>
+                <h3>업무 현황</h3>
+                <div class="progress-bar">
+                <div class="progress-bar-inner"></div>
+            </div>
             </div>
             <div class="shcedulePopupTableBox"> 
                 <table class="shcedulePopupTableHeader2 popupTable2">
@@ -215,6 +219,7 @@
                             <td>업무</td>
                             <td>현황</td>
                             <td>완료시간</td>
+                            <td>예상완료시간</td>
                         </tr>
                     </thead>
                 </table>
@@ -226,60 +231,70 @@
                                 <td>운행 전</td>
                                 <td class="statusCell">완료</td>
                                 <td class="timeCell">07:10</td>
+                                <td>07:00 ~ 07:20</td>
                             </tr>
                             <tr>
                                 <td>2.</td>
                                 <td>운행 준비 확인</td>
                                 <td class="statusCell">완료</td>
                                 <td class="timeCell">07:10</td>
+                                <td>07:00 ~ 07:20</td>
                             </tr>
                             <tr>
                                 <td>3.</td>
                                 <td>탑승 및 운행 시작</td>
                                 <td class="statusCell">완료</td>
                                 <td class="timeCell">07:10</td>
+                                <td>07:00 ~ 07:20</td>
                             </tr>
                             <tr>
                                 <td>4.</td>
                                 <td>운행 일보 작성(출발)</td>
-                                <td class="statusCell">미완료</td>
+                                <td class="notDone">미완료</td>
                                 <td class="timeCell">-</td>
+                                <td>07:00 ~ 07:20</td>
                             </tr>
                             <tr>
                                 <td>5.</td>
                                 <td>첫 정류장 도착</td>
-                                <td class="statusCell">미완료</td>
+                                <td class="notDone">미완료</td>
                                 <td class="timeCell">-</td>
+                                <td>07:00 ~ 07:20</td>
                             </tr>
                             <tr>
                                 <td>6.</td>
                                 <td>운행 출발</td>
-                                <td class="statusCell">미완료</td>
+                                <td class="notDone">미완료</td>
                                 <td class="timeCell">-</td>
+                                <td>07:00 ~ 07:20</td>
                             </tr>
                             <tr> 
                                 <td>7.</td>
                                 <td>정류장</td>
-                                <td class="statusCell">미완료</td>
+                                <td class="notDone">미완료</td>
                                 <td class="timeCell">-</td>
+                                <td>07:00 ~ 07:20</td>
                             </tr>
                             <tr> 
                                 <td>8.</td>
                                 <td>정류장</td>
-                                <td class="statusCell">미완료</td>
+                                <td class="notDone">미완료</td>
                                 <td class="timeCell">-</td>
+                                <td>07:00 ~ 07:20</td>
                             </tr>
                             <tr>
                                 <td>9</td>
                                 <td>운행일보 작성(도착)</td>
-                                <td class="statusCell">미완료</td>
+                                <td class="notDone">미완료</td>
                                 <td class="timeCell">-</td>
+                                <td>07:00 ~ 07:20</td>
                             </tr>
                             <tr>
                                 <td>10</td>
                                 <td>운행 종료</td>
-                                <td class="statusCell">미완료</td>
+                                <td class="notDone">미완료</td>
                                 <td class="timeCell">-</td>
+                                <td>07:00 ~ 07:20</td>
                             </tr>
                         </tbody>
                     </table>
