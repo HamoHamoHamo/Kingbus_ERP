@@ -447,31 +447,33 @@
                         <div class="scrolling_table-list_body mealTable mealTableScroll popupTableScroll center">
                             <table class="table-list">
                                 <tbody>
-                                    <tr class="table-list_body-tr teamjangStatusTbodyTr">
-                                        <td class="table-list_body-tr_td">6/10</td>
-                                        <td class="table-list_body-tr_td">02:12</td>
-                                        <td class="table-list_body-tr_td">01:00</td>
-                                        <td class="table-list_body-tr_td">00:00</td>
-                                        <td class="table-list_body-tr_td">00:00</td>
-                                    </tr>
-                                    <tr class="table-list_body-tr teamjangStatusTbodyTr">
-                                        <td class="table-list_body-tr_td">6/11</td>
-                                        <td class="table-list_body-tr_td">00:00</td>
-                                        <td class="table-list_body-tr_td">01:00</td>
-                                        <td class="table-list_body-tr_td">08:00</td>
-                                        <td class="table-list_body-tr_td">01:12</td>
-                                    </tr>
+                                    
+                                        <tr class="table-list_body-tr teamjangStatusTbodyTr">
+                                            <td class="table-list_body-tr_td"></td>
+                                            <td class="table-list_body-tr_td"></td>
+                                            <td class="table-list_body-tr_td"></td>
+                                            <td class="table-list_body-tr_td"></td>
+                                            <td class="table-list_body-tr_td"></td>
+                                        </tr>
+                                        
+                                    {% comment %} {% empty %}
+                                        <tr>
+                                            <td colspan="6">등록된 데이터가 없습니다.</td>
+                                        </tr>
+                                    {% endfor %} {% endcomment %}
                                 </tbody>
                             </table>
                         </div>
                         <table class="mealTotalTable popupTotalTable center">
+                            
                             <tr class="totalAdd">
                                 <td>합계</td>
-                                <td class="overTime">02:12</td>
-                                <td class="NightTime">02:00</td>
-                                <td class="Holiday8Less">08:00</td>
-                                <td class="Holiday8Over">01:12</td>
+                                <td class="overTime"></td>
+                                <td class="NightTime"></td>
+                                <td class="Holiday8Less"></td>
+                                <td class="Holiday8Over"></td>
                             </tr>
+                            
                         </table>
                     </div>
                     <input type="hidden" name="order_id" class="deleteAddHidden">

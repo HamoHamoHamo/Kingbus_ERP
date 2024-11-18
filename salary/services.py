@@ -1,4 +1,5 @@
 from config.custom_logging import logger
+from django.conf import settings
 from django.forms.models import model_to_dict
 from dispatch.models import DispatchRegularlyData, MorningChecklist, EveningChecklist, DispatchRegularly
 from dispatch.selectors import DispatchSelector
@@ -21,8 +22,8 @@ class DataCollector:
         self.morning_list = []
         self.evening_list = []
         self.date_list = date_list
-        self.fixed_work_hours = settings.FIXED_WORK_HOURS.get(self.member.id, [])  # 팀장 고정 근무 시간 가져오기
-        
+        # self.fixed_work_hours = settings.FIXED_WORK_HOURS.get(self.member.id, [])  # 팀장 고정 근무 시간 가져오기 
+
         self.set_member_salary()
         self.hourly_wage_data = self.set_hourly_wage_data()
         self.connect_time_list = list(filter(lambda item: item['driver_id'] == self.member.id, connect_time_list))
@@ -769,6 +770,8 @@ class DataCollector:
             'deduction': format_number_with_commas(int(self.member_salary['deduction'])),
         }
 
+
+
 class SalaryStatusDataCollector(DataCollector):
     def get_collected_status_data(self):
         time_data = self.get_calculate_times()
@@ -781,6 +784,7 @@ class SalaryTableDataCollector(DataCollector):
     def get_collected_data(self):
         times_data = self.get_calculate_times()
         return self.get_calculate_wages(times_data)
+
 
 
 class SalaryTableDataCollector2(SalaryTableDataCollector):
@@ -891,3 +895,121 @@ class SalaryDataController2:
             self.member_list.append(member)
 
         return datas
+
+# class TeamLeaderSalaryDataCollector(SalaryTableDataCollector3):
+#     def __init__(self, member, month, mondays, connect_time_list, holiday_data, date_list):
+#         super().__init__(member, month, mondays, connect_time_list, holiday_data, date_list)
+        
+#         # 팀장들의 월별 누적 시간 초기화
+#         self.total_overtime = timedelta()
+#         self.total_night_shift = timedelta()
+#         self.total_holiday_under_8_hours = timedelta()
+#         self.total_holiday_over_8_hours = timedelta()
+
+#         # 팀장의 고정 근무 시간을 settings에서 가져옴
+#         self.fixed_work_hours = settings.FIXED_WORK_HOURS.get(member.id, [])
+
+#     def is_holiday(self, date_str):
+#         """해당 날짜가 일요일 또는 법정공휴일인지 확인"""
+#         date = datetime.strptime(date_str, "%Y-%m-%d")
+#         return date.weekday() == 6 or date.strftime("%Y%m%d") in self.holiday_data['locdate_list']
+
+#     def calculate_overtime(self, start_time, end_time):
+#         """고정 근무 시간 외의 연장 근무 시간 계산"""
+#         overtime = timedelta()
+#         for fixed_start, fixed_end in self.fixed_work_hours:
+#             fixed_start_time = datetime.strptime(fixed_start, '%H:%M').time()
+#             fixed_end_time = datetime.strptime(fixed_end, '%H:%M').time()
+            
+#             # 고정 근무 시간 이전/이후 근무 시간 계산
+#             if end_time < fixed_start_time or start_time > fixed_end_time:
+#                 overtime += datetime.combine(datetime.min, end_time) - datetime.combine(datetime.min, start_time)
+#             elif start_time < fixed_start_time:
+#                 overtime += datetime.combine(datetime.min, fixed_start_time) - datetime.combine(datetime.min, start_time)
+#             elif end_time > fixed_end_time:
+#                 overtime += datetime.combine(datetime.min, end_time) - datetime.combine(datetime.min, fixed_end_time)
+
+#         return overtime
+
+#     def calculate_night_shift_minutes(self, start_time, end_time):
+#         """야간 근로 시간(22:00 ~ 06:00) 계산"""
+#         night_shift_start = datetime.strptime("22:00", "%H:%M").time()
+#         night_shift_end = datetime.strptime("06:00", "%H:%M").time()
+        
+#         night_shift = timedelta()
+#         if start_time < night_shift_end or end_time > night_shift_start:
+#             if start_time < night_shift_end and end_time <= night_shift_end:
+#                 night_shift += datetime.combine(datetime.min, end_time) - datetime.combine(datetime.min, start_time)
+#             elif start_time >= night_shift_start:
+#                 night_shift += datetime.combine(datetime.min, end_time) - datetime.combine(datetime.min, start_time)
+#             elif start_time < night_shift_end and end_time > night_shift_start:
+#                 night_shift += (datetime.combine(datetime.min, night_shift_end) - datetime.combine(datetime.min, start_time))
+#                 night_shift += (datetime.combine(datetime.min, end_time) - datetime.combine(datetime.min, night_shift_start))
+        
+#         return night_shift
+
+#     def get_calculate_times(self):
+#         """한 달 동안의 고정 근무 시간 외의 근무 시간을 계산하여 저장"""
+#         for date in self.date_list:
+#             daily_connects = self.get_daily_connects(date)
+#             is_holiday = self.is_holiday(date)
+
+#             daily_overtime = timedelta()
+#             daily_holiday_time = timedelta()
+#             daily_night_shift = timedelta()
+
+#             for connect in daily_connects:
+#                 # 출발 시간과 도착 시간을 datetime 객체로 변환
+#                 start_time = datetime.strptime(connect['departure_time'], '%H:%M').time()
+#                 end_time = datetime.strptime(connect['arrival_time'], '%H:%M').time()
+
+#                 # 고정 근무 시간 외 근무 시간 계산
+#                 overtime = self.calculate_overtime(start_time, end_time)
+#                 night_shift = self.calculate_night_shift_minutes(start_time, end_time)
+
+#                 if is_holiday:
+#                     daily_holiday_time += overtime
+#                 else:
+#                     daily_overtime += overtime
+                
+#                 # 야간 근무 시간 누적
+#                 daily_night_shift += night_shift
+
+#             # 일별 연장 근무 및 휴일 근무 시간을 월별 누적
+#             self.total_overtime += daily_overtime
+#             self.total_night_shift += daily_night_shift
+            
+#             if is_holiday:
+#                 if daily_holiday_time <= timedelta(hours=8):
+#                     self.total_holiday_under_8_hours += daily_holiday_time
+#                 else:
+#                     self.total_holiday_under_8_hours += timedelta(hours=8)
+#                     self.total_holiday_over_8_hours += daily_holiday_time - timedelta(hours=8)
+
+#     def get_monthly_summary(self):
+#         """월별 연장 근무, 야간 근무, 휴일 근무 (8시간 이하 및 초과) 요약 데이터 반환"""
+#         return {
+#             'total_overtime': self.total_overtime,
+#             'total_night_shift': self.total_night_shift,
+#             'total_holiday_under_8_hours': self.total_holiday_under_8_hours,
+#             'total_holiday_over_8_hours': self.total_holiday_over_8_hours,
+#         }
+
+#     def get_collected_data(self):
+#         """기존 수당 계산 로직에 추가적으로 고정 근무 시간 외 시간 데이터를 포함"""
+#         # 기존 SalaryTableDataCollector3의 데이터 수집
+#         base_data = super().get_collected_data()
+        
+#         # 고정 근무 시간 외 시간 계산 추가
+#         self.get_calculate_times()
+#         overtime_summary = self.get_monthly_summary()
+
+#         # 기존 데이터에 추가하여 반환
+#         base_data.update({
+#             'total_overtime': overtime_summary['total_overtime'],
+#             'total_night_shift': overtime_summary['total_night_shift'],
+#             'total_holiday_under_8_hours': overtime_summary['total_holiday_under_8_hours'],
+#             'total_holiday_over_8_hours': overtime_summary['total_holiday_over_8_hours'],
+#         })
+
+#         return base_data

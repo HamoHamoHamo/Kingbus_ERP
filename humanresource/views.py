@@ -1296,9 +1296,111 @@ class NewSalaryList(SalaryList):
         return context
 
 
+
+
+# class SalaryTeamjangView(ListView):
+#     template_name = 'HR/salary_new_teamjang.html'
+#     context_object_name = 'members'
+#     model = Member
+
+#     def get_queryset(self):
+#         # 팀장 역할을 가진 멤버들만 필터링
+#         return Member.objects.filter(role='팀장', use='사용')
+
+#     def get_context_data(self, **kwargs):
+#         context = super().get_context_data(**kwargs)
+        
+#         # 날짜 및 배차 데이터 설정 (예시로 현재 월의 날짜 사용)
+#         month = self.request.GET.get('month', TODAY[:7])
+#         start_date = f"{month}-01"
+#         end_date = f"{month}-30"  # 예시로 해당 월의 마지막 날까지
+
+#         # 배차 데이터를 가져오기 위한 selector 및 날짜 리스트
+#         dispatch_selector = DispatchSelector()
+#         connect_time_list = dispatch_selector.get_driving_time_list(start_date, end_date)
+#         holiday_data = get_holiday_list(month)
+#         date_list = get_date_range_list(start_date, end_date)
+
+#         # 팀장별로 근무 데이터를 저장할 딕셔너리 초기화
+#         teamjang_data = {}
+
+#         # 각 팀장에 대해 근무 데이터를 수집
+#         for member in context['members']:
+#             member_data = []
+#             for date in date_list:
+#                 daily_data = {
+#                     'date': date,
+#                     '연장근로': timedelta(),
+#                     '야간근로': timedelta(),
+#                     '휴일8시간이하': timedelta(),
+#                     '휴일8시간초과': timedelta(),
+#                 }
+                
+#                 # 해당 날짜의 배차 데이터 필터링
+#                 daily_connects = [connect for connect in connect_time_list if connect['member_id'] == member.id and connect['date'] == date]
+                
+#                 for connect in daily_connects:
+#                     # 출발 시간과 도착 시간을 datetime 객체로 변환
+#                     start_time = datetime.strptime(connect['departure_time'], '%H:%M')
+#                     end_time = datetime.strptime(connect['arrival_time'], '%H:%M')
+
+#                     # 고정 근무 시간 가져오기
+#                     fixed_work_hours = FIXED_WORK_HOURS.get(member.id, [])
+                    
+#                     is_holiday = date in holiday_data
+
+#                     # 고정 근무 시간과 비교하여 초과 근무와 야간 근무 시간을 계산
+#                     for fixed_start, fixed_end in fixed_work_hours:
+#                         fixed_start_time = datetime.strptime(fixed_start, '%H:%M')
+#                         fixed_end_time = datetime.strptime(fixed_end, '%H:%M')
+
+#                         # 연장 근로 계산: 고정 근무 시간 외의 시간
+#                         if end_time < fixed_start_time or start_time > fixed_end_time:
+#                             daily_data['연장근로'] += calculate_time_difference(start_time, end_time)
+#                         elif start_time < fixed_start_time:
+#                             daily_data['연장근로'] += calculate_time_difference(start_time, fixed_start_time)
+#                         elif end_time > fixed_end_time:
+#                             daily_data['연장근로'] += calculate_time_difference(fixed_end_time, end_time)
+                        
+#                         # 야간 근로 계산: 22:00 ~ 06:00 시간대
+#                         night_start = datetime.strptime('22:00', '%H:%M')
+#                         night_end = datetime.strptime('06:00', '%H:%M')
+#                         if start_time < night_end or end_time > night_start:
+#                             if start_time < night_end and end_time <= night_end:
+#                                 daily_data['야간근로'] += calculate_time_difference(start_time, end_time)
+#                             elif start_time >= night_start:
+#                                 daily_data['야간근로'] += calculate_time_difference(start_time, end_time)
+#                             elif start_time < night_end and end_time > night_start:
+#                                 daily_data['야간근로'] += calculate_time_difference(night_start, end_time)
+#                                 daily_data['야간근로'] += calculate_time_difference(start_time, night_end)
+
+#                     # 휴일 근로 시간 계산
+#                     if is_holiday:
+#                         work_duration = calculate_time_difference(start_time, end_time)
+#                         if work_duration <= timedelta(hours=8):
+#                             daily_data['휴일8시간이하'] += work_duration
+#                         else:
+#                             daily_data['휴일8시간이하'] += timedelta(hours=8)
+#                             daily_data['휴일8시간초과'] += work_duration - timedelta(hours=8)
+
+#                 # 일별 데이터를 리스트에 추가
+#                 member_data.append(daily_data)
+
+#             # 팀장 ID를 키로 하여 근무 데이터를 저장
+#             teamjang_data[member.id] = member_data
+
+#         # Context에 데이터 추가
+#         context['teamjang_data'] = teamjang_data
+#         return context
+
 def SalaryTeamjang(request):
+    # '팀장' 역할을 가진 멤버들을 필터  링하여 members 변수에 저장
     members = Member.objects.filter(role='팀장', use='사용')
+    
+    # 필터링한 팀장 멤버 데이터를 'HR/salary_new_teamjang.html' 템플릿으로 전달
     return render(request, 'HR/salary_new_teamjang.html', {'members': members})
+
+
 
 class SalaryTest(NewSalaryList):
     template_name = 'HR/salary_new_test.html'

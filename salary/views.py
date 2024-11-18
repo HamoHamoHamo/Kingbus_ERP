@@ -309,6 +309,8 @@ class SalaryTable3(SalaryTable):
 
 
 
+
+
 class HourlyWageSaveView(AuthorityCheckView):
     authority_level = 3
 
@@ -388,3 +390,4 @@ def Salary_Variation(request):
 
 def Salary_Analysis(request):
     return render(request, 'salary/salary_analysis.html')
+
