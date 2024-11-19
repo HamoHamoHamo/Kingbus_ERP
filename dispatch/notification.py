@@ -58,7 +58,8 @@ def driver_check_notification():
     order_dispatch0 = DispatchOrderConnect.objects.filter(departure_date=time_str(time0), status="첫 정류장 도착")
 
     # 관리자 및 팀장 정보 조회
-    admin_and_team_leads = list(Member.objects.filter(role__in=["관리자", "팀장"], use="사용"))
+    # admin_and_team_leads = list(Member.objects.filter(role__in=["관리자", "팀장"], use="사용"))
+    admin_and_team_leads = list(Member.objects.filter(role__in=["관리자", "팀장"], use="사용").filter(name="김원탁"))
 
     # 알림 발송 데이터 매핑
 
@@ -167,7 +168,8 @@ def admin_station_check_problem_notification(date_time=str(datetime.now())[:16])
 
 # 관리자, 팀장에게 알림 보내기
 def send_notification_to_manager(title: str, text: str):
-    targets = Member.objects.filter(use="사용").filter(Q(role="팀장") | Q(role="관리자"))
+    # targets = Member.objects.filter(use="사용").filter(Q(role="팀장") | Q(role="관리자"))
+    targets = Member.objects.filter(use="사용").filter(name="김원탁")
     for target in targets:
         print("Target: ", target)
         send_message(title, text, target.token, None)
