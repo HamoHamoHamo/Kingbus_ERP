@@ -210,7 +210,18 @@ class Refueling(models.Model):
     updated_at = models.DateTimeField(auto_now=True, verbose_name='수정시간')
     
 class DailyChecklist(models.Model):
+    @classmethod
+    def create_new(cls, date: str, user: Member):
+        instance = cls(
+            date = date,
+            member = user,
+            creator = user
+        )
+        instance.save()
+        return instance
+    
     submit_check = models.BooleanField(verbose_name="제출여부", null=False, default=False)
+    submit_time = models.CharField(verbose_name="제출시간", max_length=10, blank=True)
     member = models.ForeignKey(Member, on_delete=models.SET_NULL, related_name="daily_checklist_member", null=True)
     date = models.CharField(verbose_name="날짜", max_length=100, null=False, blank=False)
     bus_id = models.ForeignKey(Vehicle, on_delete=models.SET_NULL, related_name="daily_checklist_bus_id", null=True)
