@@ -32,7 +32,6 @@ urlpatterns = [
     path('regularly/connect', views.RegularlyConnectList.as_view(), name="regularly_connect"),
     path('regularly/business/edit', views.business_edit, name="business_edit"),
 
-    
     # path('regularly/route/test', views.time_data, name="time_data"),
     
     path('regularly/station', views.RegularlyStationList.as_view(), name="regularly_station"),
@@ -60,6 +59,10 @@ urlpatterns = [
     #운행확인
     path('schedule', views.ScheduleList.as_view(), name="schedule"),
     path('schedule2', views.ScheduleList2.as_view(), name="schedule2"),
+    path('roll-call', views.RollCallList.as_view(), name="roll_call"),
+    path('roll-call/route/status', views.roll_call_route_status_data, name="roll_call_route_status"),
+    path('roll-call/driver/status', views.RollCallDriverStatus.as_view(), name="roll_call_driver_status"),
+
     #배차거부
     path('refusal', views.RefusalList.as_view(), name="refusal"),
     path('refusal/delete', views.refusal_delete, name="refusal_delete"),

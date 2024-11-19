@@ -17,13 +17,14 @@
 <div class="search-Container">
     <form class="search-Form">
         <label for="" class="search-Form_label">날짜 : </label>
-        <input autocomplete="off" name='month' value="{{month}}" type="month" class="search-Form_input search-Form_input-Month">
+        <input autocomplete="off" name='month' value="{{month}}" type="month"
+            class="search-Form_input search-Form_input-Month">
         <label for="" class="search-Form_label">이름 : </label>
         <input autocomplete="off" name="name" value="{{name}}" type="text" class="search-Form_input">
         <select class="inputModules marginLeft2" name="type">
-            <option {% if search_type == "" %} selected {% endif %} value="">구분</option>
-            <option {% if search_type == "일반" %} selected {% endif %} value="일반">일반</option>
-            <option {% if search_type == "용역" %} selected {% endif %} value="용역">용역</option>
+            <option {% if search_type == "" %} selected {% endif %} value = "">구분</option>
+            <option {% if search_type == "일반" %} selected {% endif %} value = "일반">일반</option>
+            <option {% if search_type == "용역" %} selected {% endif %} value = "용역">용역</option>
         </select>
         <input type="submit" class="search-Form_search-btn" value="검색">
     </form>
@@ -110,7 +111,7 @@
                 </tr>
                 {% endwith %}
                 {% endfor %}
-                
+
             </tbody>
         </table>
     </div>
@@ -300,8 +301,8 @@
     function salaryPrint() {
         let checkDriver = 0
         let checkerArr = []
-        for (i = 0; i < amountCheck.length; i++){
-            if(amountCheck[i].checked){
+        for (i = 0; i < amountCheck.length; i++) {
+            if (amountCheck[i].checked) {
                 checkDriver++
                 checkerArr.push(amountCheck[i].value)
             }
@@ -318,11 +319,11 @@
     const loadForm = document.querySelector('.salaryContainer');
 
     {% autoescape off %}
-    const deductionList = {{deduction_list}};
+    const deductionList = {{ deduction_list }};
     console.log("deductionList", deductionList);
-    const additionalList = {{additional_list}};
+    const additionalList = {{ additional_list }};
     console.log("additionalList", additionalList);
-    
+
     {% endautoescape %}
 
 
@@ -332,7 +333,7 @@
             loadForm.submit()
         }
     }
-    
+
 </script>
 <script src="{% static 'js/hr/authority.js' %}"></script>
 <script src="{% static 'js/hr/addSalary.js' %}"></script>
