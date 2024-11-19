@@ -353,14 +353,23 @@ class Schedule(models.Model):
 
 # Connect 생성될 때 signals에서 DriverCheck 생성
 class DriverCheck(models.Model):
+    @classmethod
+    def get_instance(cls, id: int, work_type: str):
+        if work_type == "출근" or work_type == "퇴근":
+            return cls.objects.get(regularly_id=id)
+        elif work_type == '일반':
+            return cls.objects.get(order_id=id)
+        
+        raise cls.DoesNotExist
+
     regularly_id = models.OneToOneField(DispatchRegularlyConnect, on_delete=models.CASCADE, related_name="check_regularly_connect", null=True)
     order_id = models.OneToOneField(DispatchOrderConnect, on_delete=models.CASCADE, related_name="check_order_connect", null=True)
     wake_time = models.CharField(verbose_name='기상확인시간(1시간 30분 전)', max_length=16, null=False, blank=True)
-    wake_time_has_issue = models.BooleanField(verbose_name='기상확인시간(1시간 30분 전)', null=False, default=True)
+    wake_time_has_issue = models.BooleanField(verbose_name='기상확인시간(1시간 30분 전)', null=True, blank=True)
     drive_time = models.CharField(verbose_name='운행시작시간(1시간 전)', max_length=16, null=False, blank=True)
-    drive_time_has_issue = models.BooleanField(verbose_name='운행시작시간(1시간 전)', null=False, default=True)
+    drive_time_has_issue = models.BooleanField(verbose_name='운행시작시간(1시간 전)', null=True, blank=True)
     departure_time = models.CharField(verbose_name='출발지도착시간(20분 전)', max_length=16, null=False, blank=True)
-    departure_time_has_issue = models.BooleanField(verbose_name='출발지도착시간(20분 전)', null=False, default=True)
+    departure_time_has_issue = models.BooleanField(verbose_name='출발지도착시간(20분 전)', null=True, blank=True)
     drive_start_time = models.CharField(verbose_name='운행 출발', max_length=16, null=False, blank=True)
     drive_end_time = models.CharField(verbose_name='운행 종료', max_length=16, null=False, blank=True)
     
@@ -371,9 +380,20 @@ class DriverCheck(models.Model):
 
 # 정류장 도착 버튼 클릭으로 입력된 시간 (출퇴근만)
 class StationArrivalTime(models.Model):
+    @classmethod
+    def create_new(cls, regularly_connect_id: int, station_id: int, has_issue=True):
+        instance = cls(
+            regularly_connect_id=regularly_connect_id,
+            station_id=station_id,
+            has_issue=has_issue,
+        )
+        instance.save()
+        return instance
+
     regularly_connect_id = models.ForeignKey(DispatchRegularlyConnect, on_delete=models.CASCADE, related_name="station_arrival_time", null=False)
     station_id = models.ForeignKey('DispatchRegularlyStation', on_delete=models.CASCADE, related_name="station_arrival_time", null=False)
-    arrival_time = models.CharField(verbose_name="정류장 도착 시각", max_length=100, null=False)
+    arrival_time = models.CharField(verbose_name="정류장 도착 시각", max_length=100, null=False, blank=True)
+    has_issue = models.BooleanField(verbose_name='정류장 도착 +-15분에 클릭 안함', null=False, default=False)
     pub_date = models.DateTimeField(auto_now_add=True, verbose_name='작성시간')
     updated_at = models.DateTimeField(auto_now=True, verbose_name='수정시간')
     creator = models.ForeignKey(Member, on_delete=models.SET_NULL, related_name="station_arrival_time_crator", db_column="creator_id", null=True)
@@ -398,6 +418,16 @@ class ConnectRefusal(models.Model):
     creator = models.ForeignKey(Member, on_delete=models.SET_NULL, related_name="connect_refusal_creator", db_column="creator_id", null=True)
 
 class MorningChecklist(models.Model):
+    @classmethod
+    def create_new(cls, date: str, user: Member):
+        instance = cls(
+            date = date,
+            member = user,
+            creator = user
+        )
+        instance.save()
+        return instance
+
     def get_vehicle_list(self):
         order_bus = list(DispatchOrderConnect.objects.filter(departure_date__startswith=self.date[:10]).filter(driver_id=self.member).values_list('bus_id__vehicle_num'))
         regularly_bus = list(DispatchRegularlyConnect.objects.filter(departure_date__startswith=self.date[:10]).filter(driver_id=self.member).values_list('bus_id__vehicle_num'))
@@ -466,6 +496,7 @@ class EveningChecklist(models.Model):
     creator = models.ForeignKey(Member, on_delete=models.SET_NULL, related_name="evening_checklist_creator", db_column="creator_id", null=True)
 
 # Connect 생성될 때 signals에서 DrivingHistory 생성
+# 운행일보
 class DrivingHistory(models.Model):
     def get_connect_data(self):
         if self.order_connect_id:

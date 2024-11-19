@@ -53,6 +53,7 @@ def driver_check_notification():
     admin_and_team_leads = list(Member.objects.filter(role__in=["관리자", "팀장"], use="사용"))
 
     # 알림 발송 데이터 매핑
+
     data_map = {
         0: {"data_list": data1, "text": "운행 준비 확인 바랍니다", "title": "운행 1시간 30분 전입니다"},
         1: {"data_list": data2, "text": "운행 출발 확인 바랍니다", "title": "운행 1시간 전입니다"},
@@ -100,14 +101,12 @@ def driver_check_notification():
     print("DATETIME : ", now.strftime("%Y-%m-%d %H:%M"))
 
 def send_admin_alerts(regular_dispatches, order_dispatches, admin_and_team_leads, admin_title, admin_text):
+    # has_issue 업데이트 및 관리자 알림 전송
     for dispatch in list(regular_dispatches) + list(order_dispatches):
         dispatch.has_issue = True
         dispatch.save()
         for admin in admin_and_team_leads:
             send_message(admin_title, f"기사 {dispatch.driver_id} {admin_text}", admin.token, None)
-
-
-	
    
 # rpad 관리자 알림
 
@@ -152,6 +151,7 @@ def admin_station_check_problem_notification(date_time=str(datetime.now())[:16])
                 connect.has_issue = True
                 connect.not_update_salary = True
                 connect.save()
+                StationArrivalTime.create_new(connect, station)
                 logger.info(f"{connect} station_index={station.index}")
                 print(f"{connect} station_index={station.index}")
                 send_notification_to_manager("문제 발생", f"{connect} {connect.bus_id.vehicle_num}({connect.driver_id.name})")
@@ -173,7 +173,8 @@ def debug_send_missing_arrival_time_notifications():
     start_time = time.time()
 
     # 함수 실행
-    admin_station_check_problem_notification("2024-08-01 06:45")
+    # admin_station_check_problem_notification("2024-08-01 06:45")
+    driver_check_notification()
     # driver_check_notification()
 
     end_time = time.time()

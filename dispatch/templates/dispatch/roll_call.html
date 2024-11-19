@@ -1,0 +1,364 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load dispatch_custom_tags %}
+
+{% block head %}
+<meta http-equiv="Cache-Control" content="private, no-cache, no-store, max-age=0, must-revalidate">
+<link rel="stylesheet" href="{% static 'css/dispatch/dispatchBase.css' %}" type="text/css" />
+<link rel="stylesheet" href="{% static 'css/humanresource/team.css' %}" type="text/css" />
+<link rel="stylesheet" href="{% static 'css/dispatch/rollCall.css' %}" type="text/css" />
+{% endblock %}
+
+{% block content-header %}
+<div class="HeaderTitle">
+    점호 관리
+</div>
+{% endblock %}
+
+
+{% block content %}
+
+<form class="routeLayout searchForm">
+    <div class="groupLayout">
+        <div class="groupList">
+            <div class="groupListBox">
+                <div class="groupListHead">
+                    <span class="groupListTitle">팀 목록</span>
+                </div>
+                <div class="groupListBody">
+                    <div class="groupListItem {% if team == '전체' %}backgroundGray{% endif %}">
+                        <div class="groupNum">
+                            <input id="teamCheckAll" type="checkbox">
+                        </div>
+                        <label for="teamCheckAll" class="groupName">전체</label>
+                    </div>
+                    <div class="groupListItem {% if team == '팀없음' %}backgroundGray{% endif %}">
+                        <div class="groupNum">
+                            <input {% if no_team %}checked {% endif %}name="no_team" class="teamCheckbox" id="noTeam" type="checkbox">
+                        </div>
+                        <label for="noTeam" class="groupName">팀없음</label>
+                    </div>
+                    {% for team in team_list %}
+                    <div class="groupListItem {% if team == team %}backgroundGray{% endif %}">
+                        <div></div>
+                        <div class="groupNum">
+                            <input name="team" value="{{team.id}}" id="teamCheckbox{{team.id}}" class="teamCheckbox" type="checkbox">
+                        </div>
+                        <label for="teamCheckbox{{team.id}}" class="groupName">{{team.name}}</label>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <div class="groupListBox timeListBox">
+                <div class="groupListHead">
+                    <span class="groupListTitle">시간</span>
+                </div>
+                <div class="groupListBody">
+                    <div class="groupListItem">
+                        <div class="groupNum">
+                            <input id="timeCheckAll" type="checkbox">
+                        </div>
+                        <label for="timeCheckAll" class="groupName">전체</label>
+                    </div>
+                    {% for time in time_list %}
+                    <div class="groupListItem">
+                        <div></div>
+                        <div class="groupNum">
+                            <input name="time" value="{{time}}" id="timeCheckbox{{time}}" class="timeCheckbox"
+                                type="checkbox">
+                        </div>
+                        <label for="timeCheckbox{{time}}" class="groupName">{{time}}:00 ~ {{time}}:59</label>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+
+
+        <div class="foldGroup">
+            <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 30 30">
+                <g id="그룹_1629" data-name="그룹 1629" transform="translate(-13664 -4980)">
+                    <rect id="사각형_11725" data-name="사각형 11725" width="30" height="30" rx="15"
+                        transform="translate(13664 4980)" fill="#444" />
+                    <path id="패스_327" data-name="패스 327" d="M0,0,5.788,7.048,12,0"
+                        transform="translate(13681.063 5001) rotate(-90)" fill="none" stroke="#fff"
+                        stroke-linecap="round" stroke-linejoin="round" stroke-width="3" />
+                    <path id="패스_329" data-name="패스 329" d="M0,0H12" transform="translate(13677.063 5001) rotate(-90)"
+                        fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="3" />
+                    <path id="패스_330" data-name="패스 330" d="M0,0H12" transform="translate(13673.063 5001) rotate(-90)"
+                        fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="3" />
+                </g>
+            </svg>
+        </div>
+    </div>
+
+    <div class="mainLayout">
+        <div class="searchBox">
+            <div class="routListSearch">
+                <div>
+                    <label for="pageSelect">분류</label>
+                    <select>
+                        <option>노선명</option>
+                        <option>차량번호</option>
+                        <option>이름</option>
+                    </select>
+                </div>
+                <input type="text" placeholder="노선명을 입력해주세요." value="{{search}}" name="search" class="searchInput">
+                <input value="{{date}}" autocomplete="off" type="date" name="date" class="searchDate" max="9999-12-31">
+                <input autocomplete="off" type="submit" class="btnModules searchBtn" value="검색">
+            </div>
+        </div>
+
+        <div class="RouteListForm teamSaveForm">
+            <div type="submit" class="btnModules routeInputScan"
+                onClick="opendispatchPrint('/dispatch/print/regularly/connect')">인쇄</div>
+            <div class="RouteList">
+
+                <div class="RouteListForm teamSaveForm">
+                    <div class="RouteListHeadScroll">
+                        <table class="RouteListHeader">
+                            <thead>
+                                <tr>
+                                    <td><input type="checkbox"></td>
+                                    <td>순번</td>
+                                    <td>노선명</td>
+                                    <td>기사</td>
+                                    <td>차량</td>
+                                    <td>팀</td>
+                                    <td>운행 시간</td>
+                                    <td>운행 준비</td>
+                                    <td>탑승 및 운행 시작</td>
+                                    <td>첫 정류장 도착</td>
+                                    <td>운행 출발</td>
+                                    <td>운행 종료</td>
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
+
+                    <div class="RouteListScroll">
+                        <table class="RouteListBody">
+                            <tbody>
+                                {% for connect in connect_list %}
+                                <tr class="{{connect.id}} RouteListBodyTr">
+                                    <td>
+                                        <input value="{{connect.id}}" name="id" type="checkbox">
+                                    </td>
+                                    <td>{{forloop.counter}}</td>
+                                    <td class="routeStatusPopupBtn">
+                                        <div class="bluelink">{{connect.regularly_id__route}}</div>
+                                    </td>
+                                    <td id="{{connect.driver_id__id}}" class="driverStatusPopupBtn">
+                                        <div class="bluelink">{{connect.driver_id__name}}</div>
+                                    </td>
+                                    <td>{{connect.bus_id__vehicle_num}}</td>
+                                    <td>{% if connect.regularly_id__regularly_id__team == None %}{% else %}{{connect.regularly_id__regularly_id__team}}{% endif %}</td>
+                                    <td>{{connect.departure_date|slice:"11:16"}} ~ {{connect.arrival_date|slice:"11:16"}}</td>
+                                    <td>{{connect.check_regularly_connect__wake_time}}</td>
+                                    <td>{{connect.check_regularly_connect__drive_time}}</td>
+                                    <td>{{connect.check_regularly_connect__departure_time}}</td>
+                                    <td>{{connect.check_regularly_connect__drive_start_time}}</td>
+                                    <td>{{connect.check_regularly_connect__drive_end_time}}</td>
+                                </tr>
+                                {% endfor %}
+                                <tr class="bl anckTr">
+                            </tbody>
+                        </table>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+{% endblock %}
+
+
+
+{% block popup %}
+<div class="popupAreaModules popup1">
+    <div class="popupBgModules"></div>
+    <form class="popupContainer">
+
+        <div class="popupHeader">
+            <div class="popupTitle">노선정보확인</div>
+        </div>
+
+        <div class="PopupDataArea">
+            <div class="PopupDataBox">
+                <div class="PopupDataCell">
+                    <span class="PopupDataTitle">노선이름</span>
+                    <div class="routeName"></div>
+                </div>
+                <div class="PopupDataCell">
+                    <span class="PopupDataTitle">이름</span>
+                    <div class="driverName"></div>
+                </div>
+                <div class="PopupDataCell">
+                    <span class="PopupDataTitle">차량번호</span>
+                    <div class="vehicleNum"></div>
+                </div>
+                <div class="PopupDataCell">
+                    <span class="PopupDataTitle">연락처</span>
+                    <div class="driverPhone"></div>
+                </div>
+            </div>
+            <div>
+                <div class="progressBarHeader">업무 현황</div>
+                <div class="progress-bar">
+                    <div class="progress-bar-inner"></div>
+                </div>
+            </div>
+            <div class="shcedulePopupTableBox"> 
+                <table class="shcedulePopupTableHeader2 popupTable2">
+                    <thead>
+                        <tr>
+                            <td>순번</td>
+                            <td>업무</td>
+                            <td>현황</td>
+                            <td>완료시간</td>
+                            <td>예상완료시간</td>
+                        </tr>
+                    </thead>
+                </table>
+                <div class="shcedulePopupTableBodyBox">
+                    <table class="shcedulePopupTableBody2 popupTable2">
+                        <tbody class="popupRouteStatusTbody">
+                            <tr>
+                                <td>1</td>
+                                <td>운행 준비</td>
+                                <td class="statusCell"></td>
+                                <td class="timeCell">07:10</td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>2</td>
+                                <td>탑승 및 운행 시작</td>
+                                <td class="statusCell"></td>
+                                <td class="timeCell">07:10</td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>3</td>
+                                <td>첫 정류장 도착</td>
+                                <td class=""></td>
+                                <td class="timeCell"></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>4</td>
+                                <td>운행 출발</td>
+                                <td class=""></td>
+                                <td class="timeCell"></td>
+                                <td></td>
+                            </tr>
+                            <!-- 정류장 -->
+                            <tr id="stationTr">
+                                <td></td>
+                                <td>운행일보 작성</td>
+                                <td class=""></td>
+                                <td class="timeCell"></td>
+                                <td>-</td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td>운행 종료</td>
+                                <td class=""></td>
+                                <td class="timeCell"></td>
+                                <td></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="popupFooter">
+                <div class="PopupunderBtnBox">
+                    <div class="btncloseModules">닫기</div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+<div class="popupAreaModules popup2">
+    <div class="popupBgModules"></div>
+    <div class="popup-container">
+        <div class="popupHeader">
+            <div class="popupTitle">개인 현황판</div>
+        </div>
+        <div class="popup-section">
+            <h3>운행정보</h3>
+            <table >
+                <thead>
+                    <tr>
+                        <th>노선명</th>
+                        <th>기사</th>
+                        <th>전화번호</th>
+                        <th>차량</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="driverPopupRoute">병점1</td>
+                        <td class="driverPopupName">노성종</td>
+                        <td class="driverPopupPhone">010-0000-0000</td>
+                        <td class="driverPopupBus">7780</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="main-TaskBoard">
+            <div class="task-board">
+                <table class="table driverPopupTableHeader popupTableDriverStatus">
+                    <thead>
+                        <tr>
+                            <td>예상 운행시간</td>
+                            <td>할일</td>
+                            <td>현황</td>
+                            <td>완료 시간</td>
+                        </tr>
+                    </thead>
+                </table>
+                <div class="shcedulePopupTableBodyBox">
+                    <table class="table popupTableDriverStatus">
+                        <tbody id="task-list">
+                            <!-- <tr>
+                                <td>04:00 ~ 6:00</td>
+                                <td>기상</td>
+                                <td></td>
+                                <td></td>
+                            </tr> -->
+                            
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="popup-footer">
+            <div class="popup-btn">
+                <div class="btn-close btnModules">닫기</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+
+
+{% block script %}
+<script>
+    {% autoescape off %}
+    const searchTeamList = {{search_team_list}}
+    const searchTimeList = {{search_time_list}}
+    {% endautoescape %}
+
+    const ROUTE_STATUS_URL =  "{% url 'dispatch:roll_call_route_status' %}"
+    const DRIVER_STATUS_URL =  "{% url 'dispatch:roll_call_driver_status' %}"
+</script>
+<script src="{% static 'js/dispatch/regularly/rollCallSearch.js' %}"></script>
+<script type="module" src="{% static 'js/dispatch/regularly/rollCallPopup.js' %}"></script>
+{% endblock %}
