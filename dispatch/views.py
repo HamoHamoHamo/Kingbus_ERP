@@ -14,11 +14,11 @@ from django.core.exceptions import ObjectDoesNotExist, MultipleObjectsReturned, 
 from django.http import Http404, JsonResponse, HttpResponse, HttpResponseNotAllowed
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
-from django.views import generic
+from django.views import generic, View
 
 from .commons import get_date_connect_list, get_multi_date_connect_list
 from .forms import OrderForm, ConnectForm, RegularlyDataForm, StationForm, RegularlyForm, TourForm, RouteTeamForm
-from .models import DispatchRegularlyRouteKnow, DispatchCheck, DispatchRegularlyData, DispatchRegularlyWaypoint, Schedule, DispatchOrderConnect, DispatchOrder, DispatchRegularly, RegularlyGroup, DispatchRegularlyConnect, DispatchOrderStation, ConnectRefusal, MorningChecklist, EveningChecklist, DrivingHistory, BusinessEntity, Station, DispatchRegularlyDataStation, DispatchRegularlyStation, DispatchOrderTourCustomer, DispatchOrderTour, RouteTeam
+from .models import DispatchRegularlyRouteKnow, DispatchCheck, DispatchRegularlyData, DispatchRegularlyWaypoint, Schedule, DispatchOrderConnect, DispatchOrder, DispatchRegularly, RegularlyGroup, DispatchRegularlyConnect, DispatchOrderStation, ConnectRefusal, MorningChecklist, EveningChecklist, DrivingHistory, BusinessEntity, Station, DispatchRegularlyDataStation, DispatchRegularlyStation, DispatchOrderTourCustomer, DispatchOrderTour, RouteTeam, StationArrivalTime, DriverCheck, ConnectStatusFieldMapping, ConnectStatus
 from .selectors import DispatchSelector
 from assignment.models import AssignmentConnect
 from accounting.models import Collect, TotalPrice
@@ -26,7 +26,7 @@ from crudmember.models import Category, Client
 from humanresource.models import Member, Salary, Team
 from humanresource.views import send_message
 from itertools import chain
-from vehicle.models import Vehicle
+from vehicle.models import Vehicle, DailyChecklist
 
 from firebase.rpa_p_firebase import RpaPFirebase, TOUR_PATH
 from datetime import datetime, timedelta, date
@@ -457,7 +457,321 @@ class ScheduleList2(generic.ListView):
         context['search'] = self.request.GET.get('search', '')
         context['date'] = date
         return context
+
+class RollCallList(generic.ListView):
+    template_name = 'dispatch/roll_call.html'
+    context_object_name = 'connect_list'
+    model = DispatchRegularly
+
+    def get(self, request, **kwargs):
+        if request.session.get('authority') > 3:
+            return render(request, 'authority.html')
+        else:
+            return super().get(request, **kwargs)
+
+    def get_queryset(self):
+        team_list = self.request.GET.getlist('team', '')
+        time_list = self.request.GET.getlist('time', '')
+        no_team = self.request.GET.get('no_team', '')
+        search = self.request.GET.get('search', '')
+        date = self.request.GET.get('date', TODAY)
+
+        if not team_list:
+            connect_list = DispatchRegularlyConnect.objects.filter(departure_date__startswith=date).order_by('regularly_id__num1', 'regularly_id__number1', 'regularly_id__num2', 'regularly_id__number2')
+        else:
+            connect_list = DispatchRegularlyConnect.objects.filter(regularly_id__regularly_id__team__in=team_list).filter(departure_date__startswith=date).order_by('regularly_id__num1', 'regularly_id__number1', 'regularly_id__num2', 'regularly_id__number2')
+        
+        if no_team:
+            connect_list = connect_list | DispatchRegularlyConnect.objects.filter(regularly_id__regularly_id__team=None)
+
+        q_objects = Q()
+        for time_value in time_list:
+            min_time = f'{date} {time_value}:00'
+            max_time = f'{date} {time_value}:59'
+            q_objects |= (Q(departure_date__lte=max_time) & Q(departure_date__gte=min_time))
+        # 기본값 모두 체크
+        if not time_list:
+            min_time = f'{date} 05:00'
+            max_time = f'{date} 24:59'
+            q_objects |= (Q(departure_date__lte=max_time) & Q(departure_date__gte=min_time))
+
+        connect_list = connect_list.filter(q_objects)
+
+        if search:
+            connect_list = connect_list.filter(regularly_id__route__contains=search)
+
+        return connect_list.values(
+            'id',
+            'regularly_id__route',
+            'regularly_id__regularly_id__team',
+            'driver_id__name',
+            'driver_id__id',
+            'bus_id__vehicle_num',
+            'departure_date',
+            'arrival_date',
+            'check_regularly_connect__wake_time',
+            'check_regularly_connect__drive_time',
+            'check_regularly_connect__departure_time',
+            'check_regularly_connect__drive_start_time',
+            'check_regularly_connect__drive_end_time',
+        )
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        time_list = []
+        count = 5
+        for i in range(19):
+            if count < 10:
+                time_list.append(f"0{count}")
+            else:
+                time_list.append(f"{count}")
+            count += 1
+
+        context['time_list'] = time_list
+
+        context['group_list'] = RegularlyGroup.objects.all().order_by('number')
+        context['team_list'] = RouteTeam.objects.order_by('name')
+
+        context['search_team_list'] = self.request.GET.getlist('team', [])
+        context['search_time_list'] = self.request.GET.getlist('time', [])
+        context['no_team'] = self.request.GET.get('no_team', '')
+        context['search'] = self.request.GET.get('search', '')
+        context['date'] = self.request.GET.get('date', TODAY)
+        return context
+
+
+def roll_call_route_status_data(request):
+    if request.session.get('authority') > 3:
+        return render(request, 'authority.html')
     
+    if request.method == 'POST':
+        return HttpResponseNotAllowed(['get'])
+
+    id = request.GET.get('id')
+
+    connect = DispatchRegularlyConnect.objects.get(id=id)
+    driver_check = DriverCheck.objects.get(regularly_id=id)
+    arrival_time_list = list(StationArrivalTime.objects.filter(regularly_connect_id=id).order_by('arrival_time').values('arrival_time', 'station_id__index', 'has_issue'))
+    driving_history = DrivingHistory.objects.get(regularly_connect_id=id)
+    station_type_list = ['정류장', '사업장', '마지막 정류장']
+    station_list = list(connect.regularly_id.regularly_station.filter(station_type__in=station_type_list).order_by('index').values('id', 'time', 'index'))
+    data = {
+        'connect': {
+            'route' : connect.regularly_id.route,
+            'name': connect.driver_id.name,
+            'phone': connect.driver_id.phone_num,
+            'vehicle_num': connect.bus_id.vehicle_num,
+            'departure_time': connect.departure_date[11:16],
+            'arrival_time': connect.arrival_date[11:16],
+            'id': connect.id,
+        },
+        'status': connect.status,
+        
+        'wake_time': driver_check.wake_time,
+        'drive_time': driver_check.drive_time,
+        'departure_time': driver_check.departure_time,
+        'drive_start_time': driver_check.drive_start_time,
+        'drive_end_time': driver_check.drive_end_time,
+        'arrival_time_list': arrival_time_list,
+        'station_list': station_list,
+        'connect_check': driver_check.connect_check,
+        'driving_history_time': driving_history.submit_time,
+        'driving_history': driving_history.submit_check,
+        'wake_time_has_issue': driver_check.wake_time_has_issue,
+        'drive_time_has_issue': driver_check.drive_time_has_issue,
+        'departure_time_has_issue': driver_check.departure_time_has_issue,
+    }
+
+    return JsonResponse({
+        'result' : True,
+        'data' : data,
+    })
+
+class DispatchConnectService:
+    # 현재 해야하는 배차 정보 불러오기
+    @staticmethod
+    def get_current_connect(connects):
+        """
+        운행 완료가 아닌 가장 첫 번째 배차를 찾습니다.
+        
+        Args:
+            connects (list): 배차 정보가 담긴 리스트
+            
+        Returns:
+            dict or None: 조건에 맞는 첫 번째 배차. 없으면 None 반환
+        """
+        
+        for connect in connects:            
+            # 상태가 '운행 완료'가 아닌 첫번째 배차정보 리턴
+            if connect['status'] != ConnectStatus.COMPLETE:
+                return connect
+                
+        return None 
+
+    # 배차 데이터 불러오기
+    @staticmethod
+    def get_daily_connect_list(date, user):
+        regularly_connects = DispatchRegularlyConnect.objects.filter(departure_date__startswith=date, driver_id=user).select_related('regularly_id', 'bus_id')
+        order_connects = DispatchOrderConnect.objects.filter(departure_date__startswith=date, driver_id=user).select_related('order_id', 'bus_id')
+
+        return regularly_connects, order_connects
+        
+
+class RollCallDriverStatus(View):
+    DATE_FORMAT = '%Y-%m-%d'
+
+    def get(self, request):
+        if request.session.get('authority') > 3:
+            return render(request, 'authority.html')
+
+        date = request.GET.get('date', TODAY)
+        user = Member.objects.get(id=request.GET.get('id'))
+
+        try:
+            datetime.strptime(date, self.DATE_FORMAT)
+        except ValueError:
+            return JsonResponse({
+                'success': False,
+                'code': '1',
+                'data': {'error': 'Invalid date format'},
+            }, status=400)
+
+        tasks = self.get_connect_list(date, user)
+
+        go_to_work = self.get_go_to_work_data(tasks)
+        go_to_work['daily_checklist'] = self.get_daily_checklist(date, user)
+        get_off_work = self.get_get_off_work_data(date, user)
+        info = self.get_current_task(tasks, user)
+
+        data = {
+            # 'status': info['status'],
+            'info': info,
+            'go_to_work': go_to_work,
+            'tasks': tasks,
+            'get_off_work': get_off_work,
+        }
+        
+        return JsonResponse({
+            'result': True,
+            'data': data,
+        }, status=200)
+    
+    def get_daily_checklist(self, date, user):
+        try:
+            morning_checklist = MorningChecklist.objects.get(date=date, member=user)
+        except MorningChecklist.DoesNotExist:
+            morning_checklist = MorningChecklist.create_new(date, user)
+        try:
+            daily_checklist = DailyChecklist.objects.get(date=date, member=user)
+        except DailyChecklist.DoesNotExist:
+            daily_checklist = DailyChecklist.create_new(date, user)
+            
+        if morning_checklist.submit_check and daily_checklist.submit_check:
+            status = "완료"
+        else:
+            status = "-"
+        return {
+            "status": status,
+            "submit_time": daily_checklist.submit_time,
+        }
+
+    def get_connect_list(self, date, user):
+        regularly_connects, order_connects = DispatchConnectService.get_daily_connect_list(date, user)
+        # 정기 배차 데이터 변환
+        regularly_data = []
+        for connect in regularly_connects:
+            try:
+                driver_check = DriverCheck.objects.get(regularly_id=connect)
+                status_info = []
+                for status, field_name in ConnectStatusFieldMapping.DRIVER_CHECK_STATUS_FIELD_MAP.items():
+                    completion_time = getattr(driver_check, field_name, '')
+                    status_info.append({
+                        'status_name': status.value,
+                        'completion_time': completion_time
+                    })
+            except DriverCheck.DoesNotExist:
+                status_info = []
+
+            regularly_data.append({
+                'dispatch_id': connect.id,
+                'work_type': connect.work_type,
+                'bus_id': connect.bus_id.id,
+                'bus_num': connect.bus_id.vehicle_num,
+                'departure_date': connect.departure_date[11:16],
+                'arrival_date': connect.arrival_date[11:16],
+                'status': connect.status,
+                'has_issue': connect.has_issue,
+                'status_info': status_info,
+                'route': connect.regularly_id.route,
+            })
+
+        # 수시 배차 데이터 변환
+        order_data = []
+        for connect in order_connects:
+            order_data.append({
+                'dispatch_id': connect.id,
+                'work_type': connect.work_type,
+                'bus_num': connect.bus_id.vehicle_num,
+                'departure_date': connect.departure_date[11:16],
+                'arrival_date': connect.arrival_date[11:16],
+                'status': connect.status,
+                'status_info': '',
+                'route': connect.order_id.route,
+            })
+
+        # 데이터 합치고 정렬
+        combined_data = regularly_data + order_data
+        return sorted(combined_data, key=lambda x: x['departure_date'])
+
+    def get_current_task(self, tasks, user):
+        current_connect = DispatchConnectService.get_current_connect(tasks)
+        if current_connect:
+            return {
+                'route': current_connect['route'],
+                'bus_num': current_connect['bus_num'],
+                'name': user.name,
+                'phone': user.phone_num,
+            }
+        
+        return {
+            'route': '',
+            'bus_num': '',
+            'name': user.name,
+            'phone': user.phone_num,
+        }
+
+    # 출근 데이터 불러오기
+    def get_go_to_work_data(self, tasks):
+        if tasks:
+            first = tasks[0]
+            first_driver_check = DriverCheck.get_instance(first['dispatch_id'], first['work_type'])
+            connect = first_driver_check.regularly_id if first_driver_check.regularly_id else first_driver_check.order_id
+
+            return {
+                "wake_time": first_driver_check.wake_time,
+                'departure_time': connect.departure_date[11:16],
+                'has_issue': first_driver_check.wake_time_has_issue,
+            }
+        else:
+            return {
+                "wake_time": "",
+                'departure_time': "",
+                'has_issue': "",
+            }
+
+    def get_get_off_work_data(self, date, user):
+        try:
+            evening_checklist = EveningChecklist.objects.get(date=date, member=user)
+        except EveningChecklist.DoesNotExist:
+            evening_checklist = EveningChecklist.create_new(date, user)
+            
+        return {
+            'roll_call_time': evening_checklist.checklist_submit_time,
+            'tomorrow_dispatch_check_time': evening_checklist.tomorrow_check_submit_time,
+            'get_off_time': evening_checklist.get_off_submit_time,
+        }
+
 class RefusalList(generic.ListView):
     template_name = 'dispatch/refusal.html'
     context_object_name = 'refusal_list'
