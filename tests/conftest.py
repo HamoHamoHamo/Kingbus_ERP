@@ -14,7 +14,7 @@ def authorized_client(client, authorized_user):
     return client
 
 @pytest.fixture
-def authorized_user():
+def authorized_user(db):
     try:
         return Member.objects.get(name="admin", authority=0)
     except:
