@@ -20,20 +20,19 @@
 <div class="searchAreaBox">
     <form action="">
         <div class="searchTool">
-            <span class="searchName">검색종류</span>
+            <span class="searchName">검색 기준</span>
             <div class="routeFilterBox">
                 <select name="select" id="" class="inputModules">
-                    <option></option>
-                    <option {% if select == "driver" %} selected {% endif %} value="driver">기사이름</option>
-                    <option {% if select == "vehicle" %} selected {% endif %} value="vehicle">차량번호</option>
+                    <option {% if select == "driver" %} selected {% endif %} value="driver">기사</option>
+                    <option {% if select == "vehicle" %} selected {% endif %} value="vehicle">차량</option>
                 </select>
-                <input autocomplete="off"value="{{search}}" name="search" type="text" class="inputModules">
+                <input autocomplete="off" value="{{search}}" name="search" type="text" class="inputModules" placeholder="이름 또는 차량번호를 입력해주세요.">
             </div>
             <div class="dateFilterBox">
                 <span>날짜</span>
-                <input autocomplete="off"value="{{date}}" name="date" type="date" class="inputModules">
+                <input autocomplete="off" value="{{date}}" name="date" type="date" class="inputModules">
             </div>
-            <input autocomplete="off"type="submit" value="검색" class="btnModules">
+            <input autocomplete="off" type="submit" value="검색" class="btnModules">
         </div>
     </form>
     <div class="optionBtnBox">
@@ -49,6 +48,8 @@
         <table class="scheduleTableHeader">
             <thead>
                 <tr>
+                    <td>{% if select == 'driver' %}기사님{% elif select == 'vehicle' %}차량번호{% endif %}</td>
+                    <td>상태</td>
                     <td>0</td>
                     <td>02</td>
                     <td>04</td>
@@ -62,8 +63,6 @@
                     <td>20</td>
                     <td>22</td>
                     <td>24</td>
-                    <td>상태</td>
-                    <td>기사님</td>
                 </tr>
             </thead>
         </table>
@@ -72,48 +71,48 @@
                 <div class="tbody">
                     {% for driver in schedule_list %}
                     <div class="tr">
-                        <div class="td"></div>
-                        <div class="td"></div>
-                        <div class="td"></div>
-                        <div class="td"></div>
-                        <div class="td"></div>
-                        <div class="td"></div>
-                        <div class="td"></div>
-                        <div class="td"></div>
-                        <div class="td"></div>
-                        <div class="td"></div>
-                        <div class="td"></div>
-                        <div class="td"></div>
-                        <div class="td"></div>
-                        <div class="td"></div>
-                        <div class="td"></div>
-                        <div class="td"></div>
-                        <div class="td"></div>
-                        <div class="td"></div>
-                        <div class="td"></div>
-                        <div class="td"></div>
-                        <div class="td"></div>
-                        <div class="td"></div>
-                        <div class="td"></div>
-                        <div class="td"></div>
-                        <div class="tdStatus"></div>
                         <div class="tdDriver">
                             <span class="{{forloop.counter0}}"></span>
                             <span style="display:none"></span>
                             <span style="display:none"></span>
                         </div>
+                        <div class="tdStatus"></div>
+                        <div class="td"></div>
+                        <div class="td"></div>
+                        <div class="td"></div>
+                        <div class="td"></div>
+                        <div class="td"></div>
+                        <div class="td"></div>
+                        <div class="td"></div>
+                        <div class="td"></div>
+                        <div class="td"></div>
+                        <div class="td"></div>
+                        <div class="td"></div>
+                        <div class="td"></div>
+                        <div class="td"></div>
+                        <div class="td"></div>
+                        <div class="td"></div>
+                        <div class="td"></div>
+                        <div class="td"></div>
+                        <div class="td"></div>
+                        <div class="td"></div>
+                        <div class="td"></div>
+                        <div class="td"></div>
+                        <div class="td"></div>
+                        <div class="td"></div>
+                        <div class="td"></div>
                     </div>
                     {% endfor %}
                 </div>
+            </div>
         </div>
     </div>
-</div>
 
 
 
 
 
-{% endblock %}
+    {% endblock %}
 
 
 
@@ -124,12 +123,12 @@
 <div class="popupAreaModules">
     <div class="popupBgModules"></div>
     <form class="popupContainer">
-
         <div class="popupHeader">
             <div class="popupTitle">배차일정</div>
         </div>
 
         <div class="PopupDataArea">
+            {% if select == 'driver' %}
             <div class="PopupDataBox">
                 <div class="PopupDataCell">
                     <span class="PopupDataTitle">이름</span>
@@ -144,6 +143,23 @@
                     <div class="driverPhone"></div>
                 </div>
             </div>
+            {% elif select == 'vehicle' %}
+            <div class="PopupDataBox">
+                <div class="PopupDataCell">
+                    <span class="PopupDataTitle">차량번호</span>
+                    <div class="driverName"></div>
+                </div>
+                <div class="PopupDataCell">
+                    <span class="PopupDataTitle">담당기사</span>
+                    <div class="vehicleNum"></div>
+                </div>
+                <div class="PopupDataCell">
+                    <span class="PopupDataTitle">연락처</span>
+                    <div class="driverPhone"></div>
+                </div>
+            </div>
+            {% endif %}
+
             <div class="shcedulePopupTableBox">
                 <table class="shcedulePopupTableHeader popupTable">
                     <thead>
@@ -153,16 +169,15 @@
                             <td>운행시간</td>
                             <td>노선</td>
                             <td>배차확인</td>
-                            <td>기상확인</td>
-                            <td>운행시작</td>
-                            <td>출발지도착</td>
+                            <td>운행전</td>
+                            <td>운행준비확인</td>
+                            <td>탑승 및 운행시작</td>
                         </tr>
                     </thead>
                 </table>
                 <div class="shcedulePopupTableBodyBox">
                     <table class="shcedulePopupTableBody popupTable">
-                        <tbody>
-                        </tbody>
+                        <tbody></tbody>
                     </table>
                 </div>
             </div>
@@ -171,12 +186,114 @@
         <div class="PopupBtnBox">
             <div class="btnModules">닫기</div>
         </div>
+    </form>
+</div>
 
+<div class="popupAreaModules popupAreaModules2">
+    <div class="popupBgModules popupBgModules2"></div>
+    <form class="popupContainer">
+        <div class="popupHeader">
+            <div class="popupTitle">노선정보확인</div>
+        </div>
+
+        <div class="PopupDataArea">
+            <div class="PopupDataBox">
+                <div class="PopupDataCell">
+                    <span class="PopupDataTitle">노선이름</span>
+                    <div class="routeName2"></div>
+                </div>
+                <div class="PopupDataCell">
+                    <span class="PopupDataTitle">이름</span>
+                    <div class="driverName2"></div>
+                </div>
+                <div class="PopupDataCell">
+                    <span class="PopupDataTitle">차량번호</span>
+                    <div class="vehicleNum2"></div>
+                </div>
+                <div class="PopupDataCell">
+                    <span class="PopupDataTitle">연락처</span>
+                    <div class="driverPhone2"></div>
+                </div>
+            </div>
+            <div>
+                <h3>업무 현황</h3>
+                <div class="progress-bar">
+                    <div class="progress-bar-inner"></div>
+                </div>
+            </div>
+            <div class="shcedulePopupTableBox">
+                <table class="shcedulePopupTableHeader2 popupTable2">
+                    <thead>
+                        <tr>
+                            <td>순번</td>
+                            <td>업무</td>
+                            <td>현황</td>
+                            <td>완료시간</td>
+                            <td>예상완료시간</td>
+                        </tr>
+                    </thead>
+                </table>
+                <div class="shcedulePopupTableBodyBox">
+                    <table class="shcedulePopupTableBody2 popupTable2">
+                        <tbody class="popupRouteStatusTbody">
+                            <tr>
+                                <td>1</td>
+                                <td>운행 준비</td>
+                                <td class="statusCell"></td>
+                                <td class="timeCell">07:10</td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>2</td>
+                                <td>탑승 및 운행 시작</td>
+                                <td class="statusCell"></td>
+                                <td class="timeCell">07:10</td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>3</td>
+                                <td>첫 정류장 도착</td>
+                                <td class=""></td>
+                                <td class="timeCell"></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>4</td>
+                                <td>운행 출발</td>
+                                <td class=""></td>
+                                <td class="timeCell"></td>
+                                <td></td>
+                            </tr>
+                            <!-- 정류장 -->
+                            <tr id="stationTr">
+                                <td></td>
+                                <td>운행일보 작성</td>
+                                <td class=""></td>
+                                <td class="timeCell"></td>
+                                <td>-</td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td>운행 종료</td>
+                                <td class=""></td>
+                                <td class="timeCell"></td>
+                                <td></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="popupFooter">
+                <div class="PopupunderBtnBox">
+                    <div class="btncloseModules">닫기</div>
+                </div>
+            </div>
+        </div>
     </form>
 </div>
 
 
-{% endblock %}
+    {% endblock %}
 
 
 
@@ -185,9 +302,25 @@
 {% block script %}
 <script>
     {% autoescape off %}
-    const data = {{schedule_list}}
+    const data = {{ schedule_list }}
     {% endautoescape %}
     console.log("DATA", data)
+    const ROUTE_STATUS_URL =  "{% url 'dispatch:roll_call_route_status' %}"
+    const SELECT = "{{select}}"
 </script>
 <script src="{% static 'js/dispatch/schedule/schedulePopup.js' %}"></script>
+
+<script>
+
+    const completionRate = 30;
+
+
+    const progressBarInner = document.querySelector('.progress-bar-inner');
+
+
+    progressBarInner.style.width = `${completionRate}%`;
+    progressBarInner.style.backgroundColor = completionRate === 100 ? '#4caf50' : '#f39c12';
+    progressBarInner.textContent = `${completionRate}%`;
+
+</script>
 {% endblock %}

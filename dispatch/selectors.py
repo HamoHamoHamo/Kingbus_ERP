@@ -143,9 +143,11 @@ class DispatchSelector:
             DispatchRegularlyConnect.objects.filter(departure_date__gte=f'{date} 00:00', arrival_date__lte=f'{date} 23:59')
             .annotate(
                 driver=F("driver_id__name"),
-                driver_vehicle=Value(""),
+                driver_vehicle=F("driver_id__vehicle__vehicle_num"),
                 driver_phone_num=F("driver_id__phone_num"),
                 bus=F("bus_id__vehicle_num"),
+                vehicle_driver=F("bus_id__driver_id__name"),
+                vehicle_driver_phone=F("bus_id__driver_id__phone_num"),
                 arrival=F("regularly_id__arrival"),
                 departure=F("regularly_id__departure"),
                 wake_t=F("check_regularly_connect__wake_time"),
@@ -158,11 +160,15 @@ class DispatchSelector:
             )
             .order_by('departure_date')
             .values(
+                "id",
                 "driver_id__id",
                 "driver",
                 "driver_vehicle",
                 "driver_phone_num",
                 "bus",
+                "vehicle_driver",
+                "vehicle_driver_phone",
+                "bus_id__id",
                 "departure_date",
                 "arrival_date",
                 "departure",
@@ -183,9 +189,11 @@ class DispatchSelector:
             DispatchOrderConnect.objects.filter(departure_date__gte=f'{date} 00:00', arrival_date__lte=f'{date} 23:59')
             .annotate(
                 driver=F("driver_id__name"),
-                driver_vehicle=Value(""),
+                driver_vehicle=F("driver_id__vehicle__vehicle_num"),
                 driver_phone_num=F("driver_id__phone_num"),
                 bus=F("bus_id__vehicle_num"),
+                vehicle_driver=F("bus_id__driver_id__name"),
+                vehicle_driver_phone=F("bus_id__driver_id__phone_num"),
                 arrival=F("order_id__arrival"),
                 departure=F("order_id__departure"),
                 wake_t=F("check_order_connect__wake_time"),
@@ -199,11 +207,15 @@ class DispatchSelector:
             )
             .order_by('departure_date')
             .values(
+                "id",
                 "driver_id__id",
                 "driver",
                 "driver_vehicle",
                 "driver_phone_num",
                 "bus",
+                "vehicle_driver",
+                "vehicle_driver_phone",
+                "bus_id__id",
                 "departure_date",
                 "arrival_date",
                 "departure",

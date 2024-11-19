@@ -120,7 +120,7 @@ const createDatas = (datas) => {
                 const stationTd4 = document.createElement('td');
 
                 stationTd0.textContent = index + stationIndex + 1
-                stationTd1.textContent = `정류장${stationIndex + 1}`
+                stationTd1.textContent = `${station.station__name}`
                 stationTd2.textContent = arrival_time?.has_issue == false ? "완료" : ""
                 if (arrival_time?.has_issue) stationTd2.textContent = "문제 발생"
                 stationTd3.textContent = arrival_time?.arrival_time
@@ -167,6 +167,7 @@ const getRouteStatusData = (connectId) => {
 
     const searchData = {
         'id' : connectId,
+        'work_type': '출퇴근'
     }
     $.ajax({
         url: ROUTE_STATUS_URL,

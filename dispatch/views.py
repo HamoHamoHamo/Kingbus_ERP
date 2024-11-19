@@ -319,23 +319,25 @@ def schedule_delete(request):
 
 class ScheduleList(generic.ListView):
     template_name = 'dispatch/schedule.html'
-    context_object_name = 'driver_list'
+    context_object_name = 'data_list'
     model = Member
 
     def get_queryset(self):
-        select = self.request.GET.get('select', None)
+        select = self.request.GET.get('select', 'driver')
         search = self.request.GET.get('search', None)
 
-        base_query = Member.objects.filter(Q(role='팀장')|Q(role='운전원')|Q(role='용역')|Q(role='임시'))
-
-        if select == 'driver' and search:
-            driver_list = base_query.filter(name__contains=search).filter(use='사용').order_by('name')
-        elif select == 'vehicle' and search:
-            driver_list = base_query.filter(vehicle__vehicle_num__contains=search).filter(vehicle__use='사용').order_by('name')
+        if select == 'driver':
+            data_list = Member.objects.filter(Q(role='팀장')|Q(role='운전원')|Q(role='용역')|Q(role='임시')).filter(use="사용").order_by('name')
+            if search:
+                data_list = data_list.filter(name__contains=search)
+        elif select == 'vehicle':
+            data_list = Vehicle.objects.filter(use="사용").order_by('vehicle_num')
+            if search:
+                data_list = data_list.filter(vehicle_num__contains=search)
         else:
-            driver_list = base_query.filter(use='사용').order_by('name')
-        # return driver_list.values('name', 'vehicle__vehicle_num', 'id',)
-        return driver_list
+            raise BadRequest('검색 종류가 잘못됐습니다')
+        
+        return data_list
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -345,21 +347,32 @@ class ScheduleList(generic.ListView):
             context['timeline'] = (int(timeline[:2]) * 60 + int(timeline[3:])) * 0.058
 
         dispatch_selector = DispatchSelector()
+        # connect 데이터 가져옴
         daily_connect_list = dispatch_selector.get_daily_connect_list(date)
 
-        connect_dict = {}
-        for connect in daily_connect_list:
-            driver = connect['driver_id__id']
-            if driver not in connect_dict:
-                connect_dict[driver] = []
-            connect_dict[driver].append(connect)
+
+        context['select'] = self.request.GET.get('select', 'driver')
+        # 기사 기준으로 데이터 불러오기
+        if context['select'] == 'driver':
+            connect_dict = self.get_schedule_list_by_driver(timeline, daily_connect_list, context['data_list'])
+        # 차량 기준으로 데이터 불러오기
+        elif context['select'] == 'vehicle':
+            connect_dict = self.get_schedule_list_by_bus(timeline, daily_connect_list, context['data_list'])
+        else:
+            raise BadRequest('검색 종류가 잘못됐습니다')
 
         schedule_list = []
-        for driver in context['driver_list']:
+        for data in context['data_list']:
             # driver의 connect_list 가져오기
-            connect_list = connect_dict.get(driver.id, [])
+            connect_list = connect_dict.get(data.id, [])
             if connect_list:
                 for connect in connect_list:
+                    if connect['driver_vehicle'] == None:
+                        connect['driver_vehicle'] = ''
+                    if connect['vehicle_driver'] == None:
+                        connect['vehicle_driver'] = ''
+                    if connect['vehicle_driver_phone'] == None:
+                        connect['vehicle_driver_phone'] = ''
 
                     departure_time = datetime.strptime(connect['departure_date'], "%Y-%m-%d %H:%M")
                     check_time1 = datetime.strftime(departure_time - timedelta(hours=1.5), "%H:%M")
@@ -376,11 +389,29 @@ class ScheduleList(generic.ListView):
                 schedule_list.append(connect_list)
 
         context['schedule_list'] = schedule_list
-        context['select'] = self.request.GET.get('select', '')
+        
         context['search'] = self.request.GET.get('search', '')
         context['date'] = date
         return context
+    
+    def get_schedule_list_by_bus(self, timeline, daily_connect_list, bus_list):
+        connect_dict = {}
+        # bus id로 dict 만들어서 해당 버스의 배차 넣기
+        for connect in daily_connect_list:
+            bus = connect['bus_id__id']
+            if bus not in connect_dict:
+                connect_dict[bus] = []
+            connect_dict[bus].append(connect)
+        return connect_dict
 
+    def get_schedule_list_by_driver(self, timeline, daily_connect_list, driver_list):
+        connect_dict = {}
+        for connect in daily_connect_list:
+            driver = connect['driver_id__id']
+            if driver not in connect_dict:
+                connect_dict[driver] = []
+            connect_dict[driver].append(connect)
+        return connect_dict
 class ScheduleList2(generic.ListView):
     template_name = 'dispatch/schedule2.html'
     context_object_name = 'driver_list'
@@ -549,16 +580,52 @@ def roll_call_route_status_data(request):
         return HttpResponseNotAllowed(['get'])
 
     id = request.GET.get('id')
+    work_type = request.GET.get('work_type')
+    if work_type == "출퇴근":
+        connect = DispatchRegularlyConnect.objects.get(id=id)
+        driver_check = DriverCheck.objects.get(regularly_id=id)
+        arrival_time_list = list(StationArrivalTime.objects.filter(regularly_connect_id=id).order_by('arrival_time').values('arrival_time', 'station_id__index', 'has_issue'))
+        driving_history = DrivingHistory.objects.get(regularly_connect_id=id)
 
-    connect = DispatchRegularlyConnect.objects.get(id=id)
-    driver_check = DriverCheck.objects.get(regularly_id=id)
-    arrival_time_list = list(StationArrivalTime.objects.filter(regularly_connect_id=id).order_by('arrival_time').values('arrival_time', 'station_id__index', 'has_issue'))
-    driving_history = DrivingHistory.objects.get(regularly_connect_id=id)
-    station_type_list = ['정류장', '사업장', '마지막 정류장']
-    station_list = list(connect.regularly_id.regularly_station.filter(station_type__in=station_type_list).order_by('index').values('id', 'time', 'index'))
-    data = {
+        station_type_list = ['정류장', '사업장', '마지막 정류장']
+        station_list = list(connect.regularly_id.regularly_station.filter(station_type__in=station_type_list).order_by('index').values('id', 'time', 'index', "station__name"))
+
+        data = {
+            'connect': {
+                'route' : connect.regularly_id.route,
+                'name': connect.driver_id.name,
+                'phone': connect.driver_id.phone_num,
+                'vehicle_num': connect.bus_id.vehicle_num,
+                'departure_time': connect.departure_date[11:16],
+                'arrival_time': connect.arrival_date[11:16],
+                'id': connect.id,
+            },
+            'status': connect.status,
+            
+            'wake_time': driver_check.wake_time,
+            'drive_time': driver_check.drive_time,
+            'departure_time': driver_check.departure_time,
+            'drive_start_time': driver_check.drive_start_time,
+            'drive_end_time': driver_check.drive_end_time,
+            'arrival_time_list': arrival_time_list,
+            'station_list': station_list,
+            'connect_check': driver_check.connect_check,
+            'driving_history_time': driving_history.submit_time,
+            'driving_history': driving_history.submit_check,
+            'wake_time_has_issue': driver_check.wake_time_has_issue,
+            'drive_time_has_issue': driver_check.drive_time_has_issue,
+            'departure_time_has_issue': driver_check.departure_time_has_issue,
+        }
+    else:
+        connect = DispatchOrderConnect.objects.get(id=id)
+        driver_check = DriverCheck.objects.get(order_id=id)
+        arrival_time_list = []
+        driving_history = DrivingHistory.objects.get(order_connect_id=id)
+        station_list = []
+
+        data = {
         'connect': {
-            'route' : connect.regularly_id.route,
+            'route' : connect.order_id.route,
             'name': connect.driver_id.name,
             'phone': connect.driver_id.phone_num,
             'vehicle_num': connect.bus_id.vehicle_num,
@@ -582,6 +649,7 @@ def roll_call_route_status_data(request):
         'drive_time_has_issue': driver_check.drive_time_has_issue,
         'departure_time_has_issue': driver_check.departure_time_has_issue,
     }
+    
 
     return JsonResponse({
         'result' : True,
