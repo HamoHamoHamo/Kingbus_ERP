@@ -49,6 +49,14 @@ def driver_check_notification():
         ).values_list('driver_id', flat=True)
     )
 
+    # 상태 필터링
+    regularly_dispatch1 = DispatchRegularlyConnect.objects.filter(driver_id__in=data2, departure_date=time_str(time2), status="운행 준비")
+    order_dispatch1 = DispatchOrderConnect.objects.filter(driver_id__in=data2, departure_date=time_str(time2), status="운행 준비")
+    regularly_dispatch2 = DispatchRegularlyConnect.objects.filter(driver_id__in=data3, departure_date=time_str(time3), status="탑승 및 운행 시작")
+    order_dispatch2 = DispatchOrderConnect.objects.filter(driver_id__in=data3, departure_date=time_str(time3), status="탑승 및 운행 시작")
+    regularly_dispatch0 = DispatchRegularlyConnect.objects.filter(departure_date=time_str(time0), status="첫 정류장 도착")
+    order_dispatch0 = DispatchOrderConnect.objects.filter(departure_date=time_str(time0), status="첫 정류장 도착")
+
     # 관리자 및 팀장 정보 조회
     admin_and_team_leads = list(Member.objects.filter(role__in=["관리자", "팀장"], use="사용"))
 
