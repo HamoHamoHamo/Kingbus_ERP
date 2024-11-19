@@ -59,6 +59,16 @@ def driver_check_notification():
             for user_id in data_list:
                 user = drivers.get(user_id)  # 이미 가져온 기사 데이터 사용
                 if user:
+                    # 1시간 30분 전에 status="운행 준비"로 변경
+                    if i == 0:
+                        DispatchRegularlyConnect.objects.filter(
+                            driver_id=user_id, departure_date=time_str(time1)
+                        ).update(status="운행 준비")
+                        DispatchOrderConnect.objects.filter(
+                            driver_id=user_id, departure_date=time_str(time1)
+                        ).update(status="운행 준비")
+
+                    # 알림 전송
                     send_message(title, text, user.token, None)
 
         # 관리자 알림 및 has_issue 업데이트 (1시간 전, 20분 전)
