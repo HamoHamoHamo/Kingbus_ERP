@@ -31,11 +31,13 @@
     height: 5.2rem;
 }
 
-.teamjangStatusTheadTr td:nth-child(1), .teamjangStatusTbodyTr td:nth-child(1), .totalAdd td:nth-child(1) {width: 10%;}
-.teamjangStatusTheadTr td:nth-child(2), .teamjangStatusTbodyTr td:nth-child(2), .totalAdd td:nth-child(2) {width: 22.5%;}
-.teamjangStatusTheadTr td:nth-child(3), .teamjangStatusTbodyTr td:nth-child(3), .totalAdd td:nth-child(3) {width: 22.5%;}
-.teamjangStatusTheadTr td:nth-child(4), .teamjangStatusTbodyTr td:nth-child(4), .totalAdd td:nth-child(4) {width: 22.5%;}
-.teamjangStatusTheadTr td:nth-child(5), .teamjangStatusTbodyTr td:nth-child(5), .totalAdd td:nth-child(5) {width: 22.5%;}
+.teamjangStatusTheadTr td:nth-child(1), .teamjangStatusTbodyTr td:nth-child(1), .totalAdd td:nth-child(1) {width: 9%;}
+.teamjangStatusTheadTr td:nth-child(2), .teamjangStatusTbodyTr td:nth-child(2), .totalAdd td:nth-child(2) {width: 13%;}
+.teamjangStatusTheadTr td:nth-child(3), .teamjangStatusTbodyTr td:nth-child(3), .totalAdd td:nth-child(3) {width: 13%;}
+.teamjangStatusTheadTr td:nth-child(4), .teamjangStatusTbodyTr td:nth-child(4), .totalAdd td:nth-child(4) {width: 13%;}
+.teamjangStatusTheadTr td:nth-child(5), .teamjangStatusTbodyTr td:nth-child(5), .totalAdd td:nth-child(5) {width: 13%;}
+.teamjangStatusTheadTr td:nth-child(6), .teamjangStatusTbodyTr td:nth-child(6), .totalAdd td:nth-child(6) {width: 13%;}
+.teamjangStatusTheadTr td:nth-child(7), .teamjangStatusTbodyTr td:nth-child(7), .totalAdd td:nth-child(7) {width: 13%;}
 
 .totalAdd *{
     border-right: 0.1rem solid white;
@@ -43,4 +45,12 @@
 
 .center * {
     text-align: center !important;
+}
+
+.popupContainerDouble{
+    width: 115rem;
+}
+
+.scrolling_table-list_header{
+    height: 4.5rem;
 }

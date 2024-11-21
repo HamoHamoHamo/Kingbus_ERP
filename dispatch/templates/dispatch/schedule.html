@@ -122,192 +122,201 @@
 {% block popup %}
 
 <div class="popupAreaModules">
-    <div class="popupBgModules"></div>
-    <form class="popupContainer">
+  <div class="popupBgModules"></div>
+  <form class="popupContainer">
+    <div class="popupHeader">
+      <div class="popupTitle">배차일정</div>
+    </div>
 
-        <div class="popupHeader">
-            <div class="popupTitle">배차일정</div>
+    <div class="PopupDataArea">
+      <div class="PopupDataBox">
+        <div class="PopupDataCell">
+          <span class="PopupDataTitle">이름</span>
+          <div class="driverName"></div>
         </div>
-
-        <div class="PopupDataArea">
-            <div class="PopupDataBox">
-                <div class="PopupDataCell">
-                    <span class="PopupDataTitle">이름</span>
-                    <div class="driverName"></div>
-                </div>
-                <div class="PopupDataCell">
-                    <span class="PopupDataTitle">차량번호</span>
-                    <div class="vehicleNum"></div>
-                </div>
-                <div class="PopupDataCell">
-                    <span class="PopupDataTitle">연락처</span>
-                    <div class="driverPhone"></div>
-                </div>
-            </div>
-            
-            
-            <div class="shcedulePopupTableBox">
-                <table class="shcedulePopupTableHeader popupTable">
-                    <thead>
-                        <tr>
-                            <td>구분</td>
-                            <td>운행차량</td>
-                            <td>운행시간</td>
-                            <td>노선</td>
-                            <td>배차확인</td>
-                            <td>운행전</td>
-                            <td>운행준비확인</td>
-                            <td>탑승 및 운행시작</td>
-
-                        </tr>
-                    </thead>
-                </table>
-                <div class="shcedulePopupTableBodyBox">
-                    <table class="shcedulePopupTableBody popupTable">
-                        <tbody>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
+        <div class="PopupDataCell">
+          <span class="PopupDataTitle">차량번호</span>
+          <div class="vehicleNum"></div>
         </div>
-
-        <div class="PopupBtnBox">
-            <div class="btnModules">닫기</div>
+        <div class="PopupDataCell">
+          <span class="PopupDataTitle">연락처</span>
+          <div class="driverPhone"></div>
         </div>
+      </div>
 
-    </form>
+      <div class="shcedulePopupTableBox">
+        <table class="shcedulePopupTableHeader popupTable">
+          <thead>
+            <tr>
+              <td>구분</td>
+              <td>운행차량</td>
+              <td>운행시간</td>
+              <td>노선</td>
+              <td>배차확인</td>
+              <td>운행전</td>
+              <td>운행준비확인</td>
+              <td>탑승 및 운행시작</td>
+            </tr>
+          </thead>
+        </table>
+        <div class="shcedulePopupTableBodyBox">
+          <table class="shcedulePopupTableBody popupTable">
+            <tbody></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div class="PopupBtnBox">
+      <div class="btnModules">닫기</div>
+    </div>
+  </form>
 </div>
 
 <div class="popupAreaModules2">
-    <div class="popupBgModules"></div>
-    <form class="popupContainer">
+  <div class="popupBgModules"></div>
+  <form class="popupContainer">
+    <div class="popupHeader">
+      <div class="popupTitle">노선정보확인</div>
+    </div>
 
-        <div class="popupHeader">
-            <div class="popupTitle">노선정보확인</div>
+    <div class="PopupDataArea">
+      <div class="PopupDataBox">
+        <div class="PopupDataCell">
+          <span class="PopupDataTitle">노선이름</span>
+          <div class="routeName">병점1</div>
         </div>
-
-        <div class="PopupDataArea">
-            <div class="PopupDataBox">
-                <div class="PopupDataCell">
-                    <span class="PopupDataTitle">노선이름</span>
-                    <div class="routeName">병점1</div>
-                </div>
-                <div class="PopupDataCell">
-                    <span class="PopupDataTitle">이름</span>
-                    <div class="driverName">전민철</div>
-                </div>
-                <div class="PopupDataCell">
-                    <span class="PopupDataTitle">차량번호</span>
-                    <div class="vehicleNum">12가1234</div>
-                </div>
-                <div class="PopupDataCell">
-                    <span class="PopupDataTitle">연락처</span>
-                    <div class="driverPhone">010-1234-5678</div>
-                </div>
-            </div>
-            <div>
-                <h3>업무 현황</h3>
-                <div class="progress-bar">
-                <div class="progress-bar-inner"></div>
-            </div>
-            </div>
-            <div class="shcedulePopupTableBox"> 
-                <table class="shcedulePopupTableHeader2 popupTable2">
-                    <thead>
-                        <tr>
-                            <td>순번</td>
-                            <td>업무</td>
-                            <td>현황</td>
-                            <td>완료시간</td>
-                            <td>예상완료시간</td>
-                        </tr>
-                    </thead>
-                </table>
-                <div class="shcedulePopupTableBodyBox">
-                    <table class="shcedulePopupTableBody2 popupTable2">
-                        <tbody>
-                            <tr>
-                                <td>1.</td>
-                                <td>운행 전</td>
-                                <td class="statusCell">완료</td>
-                                <td class="timeCell">07:10</td>
-                                <td>07:00 ~ 07:20</td>
-                            </tr>
-                            <tr>
-                                <td>2.</td>
-                                <td>운행 준비 확인</td>
-                                <td class="statusCell">완료</td>
-                                <td class="timeCell">07:10</td>
-                                <td>07:00 ~ 07:20</td>
-                            </tr>
-                            <tr>
-                                <td>3.</td>
-                                <td>탑승 및 운행 시작</td>
-                                <td class="statusCell">완료</td>
-                                <td class="timeCell">07:10</td>
-                                <td>07:00 ~ 07:20</td>
-                            </tr>
-                            <tr>
-                                <td>4.</td>
-                                <td>운행 일보 작성(출발)</td>
-                                <td class="notDone">미완료</td>
-                                <td class="timeCell">-</td>
-                                <td>07:00 ~ 07:20</td>
-                            </tr>
-                            <tr>
-                                <td>5.</td>
-                                <td>첫 정류장 도착</td>
-                                <td class="notDone">미완료</td>
-                                <td class="timeCell">-</td>
-                                <td>07:00 ~ 07:20</td>
-                            </tr>
-                            <tr>
-                                <td>6.</td>
-                                <td>운행 출발</td>
-                                <td class="notDone">미완료</td>
-                                <td class="timeCell">-</td>
-                                <td>07:00 ~ 07:20</td>
-                            </tr>
-                            <tr> 
-                                <td>7.</td>
-                                <td>정류장</td>
-                                <td class="notDone">미완료</td>
-                                <td class="timeCell">-</td>
-                                <td>07:00 ~ 07:20</td>
-                            </tr>
-                            <tr> 
-                                <td>8.</td>
-                                <td>정류장</td>
-                                <td class="notDone">미완료</td>
-                                <td class="timeCell">-</td>
-                                <td>07:00 ~ 07:20</td>
-                            </tr>
-                            <tr>
-                                <td>9</td>
-                                <td>운행일보 작성(도착)</td>
-                                <td class="notDone">미완료</td>
-                                <td class="timeCell">-</td>
-                                <td>07:00 ~ 07:20</td>
-                            </tr>
-                            <tr>
-                                <td>10</td>
-                                <td>운행 종료</td>
-                                <td class="notDone">미완료</td>
-                                <td class="timeCell">-</td>
-                                <td>07:00 ~ 07:20</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
+        <div class="PopupDataCell">
+          <span class="PopupDataTitle">이름</span>
+          <div class="driverName">전민철</div>
         </div>
-
-        <div class="PopupunderBtnBox">
-            <div class="btncloseModules">닫기</div>
+        <div class="PopupDataCell">
+          <span class="PopupDataTitle">차량번호</span>
+          <div class="vehicleNum">12가1234</div>
         </div>
-
-    </form>
+        <div class="PopupDataCell">
+          <span class="PopupDataTitle">연락처</span>
+          <div class="driverPhone">010-1234-5678</div>
+        </div>
+      </div>
+      <div>
+        <h3>업무 현황</h3>
+        <div class="progress-bar">
+          <div class="progress-bar-inner"></div>
+        </div>
+      </div>
+      <div class="shcedulePopupTableBox">
+        <table class="shcedulePopupTableHeader2 popupTable2">
+          <thead>
+            <tr>
+              <td>순번</td>
+              <td>업무</td>
+              <td>현황</td>
+              <td>완료시간</td>
+              <td>예상완료시간</td>
+            </tr>
+          </thead>
+        </table>
+        <div class="shcedulePopupTableBodyBox">
+          <table class="shcedulePopupTableBody2 popupTable2">
+            <tbody>
+              <tr>
+                <td>1</td>
+                <td>운행 전</td>
+                <td class="statusCell">완료</td>
+                <td class="timeCell">07:10</td>
+                <td>07:00 ~ 07:20</td>
+              </tr>
+              <tr>
+                <td>2</td>
+                <td>운행 준비 확인</td>
+                <td class="statusCell">완료</td>
+                <td class="timeCell">07:10</td>
+                <td>07:00 ~ 07:20</td>
+              </tr>
+              <tr>
+                <td>3</td>
+                <td>탑승 및 운행 시작</td>
+                <td class="statusCell">완료</td>
+                <td class="timeCell">07:10</td>
+                <td>07:00 ~ 07:20</td>
+              </tr>
+              <tr>
+                <td>4</td>
+                <td>첫 정류장 도착</td>
+                <td class="notDone">미완료</td>
+                <td class="timeCell">-</td>
+                <td>07:00 ~ 07:20</td>
+              </tr>
+              <tr>
+                <td>5</td>
+                <td>운행 출발</td>
+                <td class="notDone">미완료</td>
+                <td class="timeCell">-</td>
+                <td>07:00 ~ 07:20</td>
+              </tr>
+              <tr>
+                <td>6</td>
+                <td>정류장</td>
+                <td class="notDone">미완료</td>
+                <td class="timeCell">-</td>
+                <td>07:00 ~ 07:20</td>
+              </tr>
+              <tr>
+                <td>7</td>
+                <td>정류장</td>
+                <td class="notDone">미완료</td>
+                <td class="timeCell">-</td>
+                <td>07:00 ~ 07:20</td>
+              </tr>
+              <tr>
+                <td>7</td>
+                <td>정류장</td>
+                <td class="notDone">미완료</td>
+                <td class="timeCell">-</td>
+                <td>07:00 ~ 07:20</td>
+              </tr>
+              <tr>
+                <td>7</td>
+                <td>정류장</td>
+                <td class="notDone">미완료</td>
+                <td class="timeCell">-</td>
+                <td>07:00 ~ 07:20</td>
+              </tr>
+              <tr>
+                <td>7</td>
+                <td>정류장</td>
+                <td class="notDone">미완료</td>
+                <td class="timeCell">-</td>
+                <td>07:00 ~ 07:20</td>
+              </tr>
+              <tr>
+                <td>8</td>
+                <td>운행일보 작성</td>
+                <td class="notDone">미완료</td>
+                <td class="timeCell">-</td>
+                <td>07:00 ~ 07:20</td>
+              </tr>
+              <tr>
+                <td>9</td>
+                <td>운행 종료</td>
+                <td class="notDone">미완료</td>
+                <td class="timeCell">-</td>
+                <td>07:00 ~ 07:20</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="popupFooter">
+      <div class="PopupunderBtnBox">
+        <div class="btncloseModules">닫기</div>
+      </div>
+    </div>
+    </div>
+  </form>
 </div>
+
 
 {% endblock %}
 

@@ -18,8 +18,7 @@
 <div class="search-Container">
     <form class="search-Form">
         <label for="" class="search-Form_label">날짜 : </label>
-        <input autocomplete="off" name='month' value="{{month}}" type="month"
-            class="search-Form_input search-Form_input-Month">
+        <input autocomplete="off" name="month" value="{{ current_month }}" type="month" class="search-Form_input search-Form_input-Month">
         <label for="" class="search-Form_label">이름 : </label>
         <input autocomplete="off" name="name" value="{{name}}" type="text" class="search-Form_input">
         <select class="inputModules marginLeft2" name="type">
@@ -115,7 +114,7 @@
                     <td class="table-list_body-tr_td  table-list_body-tr_td_teamjang salaryAdditional addComma salaryPopup additionalTd">{{salary.additional}}</td>
                     <td class="table-list_body-tr_td  table-list_body-tr_td_teamjang salaryDeduction addComma salaryPopup deductionTd">{{salary.deduction}}</td>
                     <td class="table-list_body-tr_td  table-list_body-tr_td_teamjang salaryWeeklyDeduction addComma salaryPopup weeklyDeductionTd {% if salary.weekly_holiday_allowance_deduction != '0' %}backgroundGray{% endif %}"></td>
-                    <td class="table-list_body-tr_td  table-list_body-tr_td_teamjang addComma" onclick="openTeamjangStatus()"></td>
+                    <td class="table-list_body-tr_td  table-list_body-tr_td_teamjang addComma" onclick="openTeamjangPopup()"></td>
                     <td class="checkTd table-list_body-tr_td table-list_body-tr_td_teamjang salaryTotal addComma"></td>
 
                 </tr>
@@ -419,7 +418,7 @@
     </div>
 </div>
 
-<div class="popupAreaModules teamjangStatus" id="teamjangStatusPopup">
+ {% comment %} <div class="popupAreaModules teamjangStatus" id="teamjangStatusPopup">
     <div class="popupBgModules popupBgModulesMeal"></div>
     <div class="popupContainer popupContainerDouble">
         <div class="popupHeader">
@@ -461,7 +460,7 @@
                                             <td colspan="6">등록된 데이터가 없습니다.</td>
                                         </tr>
                                     {% endfor %} {% endcomment %}
-                                </tbody>
+                                {% comment %} </tbody>
                             </table>
                         </div>
                         <table class="mealTotalTable popupTotalTable center">
@@ -484,6 +483,94 @@
             </div>
         </div>
     </div>
+ </div>  {% endcomment %} 
+
+<div class="popupAreaModules teamjangStatus" id="teamjangPopup" >
+    <div class="popupBgModules popupBgModulesMeal"></div>
+    <div class="popupContainer popupContainerDouble">
+        <div class="popupHeader">
+            <div class="popupTitle">팀장 시간외 근로</div>
+        </div>
+        <div class="popupBody">
+            <div class="popupSection">
+                <div class="">
+                    {% csrf_token %}
+                    <div class="popupArticleCategori">근로 내역</div>
+                    <div class="popupArticleBoxTable">
+                        <div class="scrolling_table-list_header">
+                            <table class="table-list">
+                                <thead>
+                                    <tr class="table-list_head-tr teamjangStatusTheadTr">
+                                        <td class="table-list_head-tr_td teamjangStatusTr">날짜</td>
+                                        <td class="table-list_head-tr_td teamjangStatusTr">연장근로</td>
+                                        <td class="table-list_head-tr_td teamjangStatusTr">야간근로</td>
+                                        <td class="table-list_head-tr_td teamjangStatusTr">휴일8시간이하</td>
+                                        <td class="table-list_head-tr_td teamjangStatusTr">휴일8시간초과</td>
+                                        <td class="table-list_head-tr_td teamjangStatusTr">근로 계약서 시간과<br> 겹치는 시간</td> 
+                                        <td class="table-list_head-tr_td teamjangStatusTr">근로 계약서 시간과<br> 겹치지 않는 시간</td>  
+                                    </tr>
+                                </thead>
+                            </table>
+                        </div>
+                        <div class="scrolling_table-list_body mealTable mealTableScroll popupTableScroll center">
+                            <table class="table-list">
+                                <tbody>
+                                        <tr class="table-list_body-tr teamjangStatusTbodyTr">
+                                            <td class="table-list_body-tr_td"></td>
+                                            <td class="table-list_body-tr_td"></td>
+                                            <td class="table-list_body-tr_td"></td>
+                                            <td class="table-list_body-tr_td"></td>
+                                            <td class="table-list_body-tr_td"></td>
+                                            <td class="table-list_body-tr_td"></td>
+                                            <td class="table-list_body-tr_td"></td>
+                                        </tr>
+                                        
+                                </tbody>
+                            </table>
+                        </div>
+                        <table class="mealTotalTable popupTotalTable center">
+                            <tr class="totalAdd">
+                                <td>합계</td>
+                                <td class="overTime"></td>
+                                <td class="NightTime"></td>
+                                <td class="Holiday8Less"></td>
+                                <td class="Holiday8Over"></td>
+                                <td class=""></td>
+                                <td class=""></td>
+                            </tr>
+                        </table>
+                    </div>
+                    <input type="hidden" name="order_id" class="deleteAddHidden">
+                </div>
+            </div>
+            <div class="popupFooter">
+                <div class="btnModules mealCloseBtn closeBtn" onclick="closeTeamjangStatus()">닫기</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="popupAreaModules teamjangStatus" id="teamjangMenuPopup" >
+    <div class="popupBgModules popupBgModulesMeal"></div>
+    <div class="popupContainer popupContainerDouble">
+        <div class="popupHeader">
+            <div class="popupTitle">팀장 시간외 근로</div>
+        </div>
+        <div class="popupBody">
+            <div class="popupSection">
+                <div class="">
+                    {% csrf_token %}
+                    <div class="popupArticleCategori">팀장급여 메뉴구조도</div>
+                    
+                    </div>
+                    <input type="hidden" name="order_id" class="deleteAddHidden">
+                </div>
+            </div>
+            <div class="popupFooter">
+                <div class="btnModules mealCloseBtn closeBtn" onclick="closeTeamjangMenu()">닫기</div>
+            </div>
+        </div>
+    </div>
 </div>
 {% endblock %}
 
@@ -494,14 +581,20 @@
 
 {% block script %}
 <script>
-
-    function openTeamjangStatus () {
-        document.getElementById("teamjangStatusPopup").style.display="block"
-    }
+    function openTeamjangPopup () {
+        document.getElementById("teamjangPopup").style.display="block"
+    } 
 
     function closeTeamjangStatus () {
-        document.getElementById("teamjangStatusPopup").style.display="none"
-    }
+        document.getElementById("teamjangPopup").style.display="none"
+    } 
+    function openTeamjangMenuPopup () {
+        document.getElementById("teamjangMenuPopup").style.display="block"
+    } 
+
+    function closeTeamjangMenuStatus () {
+        document.getElementById("teamjangMenuPopup").style.display="none"
+    } 
 
     const amountCheck = document.querySelectorAll(".amountCheck")
     const month = document.querySelector(".search-Form input[type=month]")

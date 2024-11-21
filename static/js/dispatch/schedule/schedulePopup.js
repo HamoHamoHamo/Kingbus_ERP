@@ -207,15 +207,13 @@ window.onload = function () {
 }
 
 
-// 저장 버튼 클릭 시 수정 내용 반영
 document.querySelector('.btnsaveModules').addEventListener('click', function () {
     const timeInputs = document.querySelectorAll('.timeInput');
 
-    // 입력된 값을 업데이트하고 다시 읽기 전용으로 변경
     timeInputs.forEach(input => {
         const newValue = input.value;
         const parentCell = input.parentElement;
-        parentCell.innerText = newValue; // 업데이트된 값으로 셀 교체
+        parentCell.innerText = newValue;
     });
 
     alert('저장되었습니다!');
