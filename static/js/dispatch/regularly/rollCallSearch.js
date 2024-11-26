@@ -1,3 +1,4 @@
+const groupListItem = document.querySelectorAll(".groupOpen")
 const teamCheckAll = document.querySelector("#teamCheckAll")
 const teamCheckboxList = document.querySelectorAll(".teamCheckbox")
 const timeCheckAll = document.querySelector("#timeCheckAll")
@@ -93,3 +94,59 @@ Array.from(timeCheckboxList).map((checkbox) => {
 function timeCheckAllCheckFalse() {
     timeCheckAll.checked = false
 }
+
+// 노선 전체 체크
+const connectCheckAll = document.querySelector('.connectCheckAll')
+const connectCheckList = document.querySelectorAll('.connectCheck')
+connectCheckAll.addEventListener("click", () => {
+    checkboxChecked(connectCheckList, connectCheckAll.checked)
+})
+
+// 사업장 열기
+for (i = 0; i < groupListItem.length; i++) {
+    groupListItem[i].addEventListener("click", openGroup)
+}
+
+function openGroup() {
+    const innerDetailItem = this.parentNode.nextElementSibling
+    const checkboxList = innerDetailItem.querySelectorAll("input")
+    // console.log("TEST", innerDetailItem.querySelectorAll("input"))
+
+    if (this.parentNode.children[1].classList.contains("openGroup")) {
+        this.parentNode.children[1].classList.remove("openGroup")
+        innerDetailItem.style.display = "none"
+        checkboxChecked(checkboxList, false)
+    } else {
+        this.parentNode.children[1].classList.add("openGroup")
+        innerDetailItem.style.display = "flex"
+        checkboxChecked(checkboxList, true)
+    }
+}
+
+const routeInputScan = document.querySelector(".routeInputScan")
+
+routeInputScan.addEventListener('click', () => {
+    const checkboxes = document.querySelectorAll('.connectCheck:checked');
+    const date = document.querySelector('.searchDate').value
+    
+    // 선택된 값들만 배열로 추출
+    const selectedValues = Array.from(checkboxes).map(checkbox => checkbox.value);
+
+
+    // 선택된 값이 없으면 알림
+    if (selectedValues.length === 0) {
+        alert("최소 하나의 노선을 선택해 주세요.");
+        return;
+    }
+
+    // 쿼리 문자열 생성
+    const queryString = `?date=${date}&values=${selectedValues.join(',')}`;
+
+    // URL 생성 (예: "/your-endpoint")
+    const url = `${DISPATCH_PRINT_URL}${queryString}`;
+    
+    // 새 창 열기
+    const popupOptions = "width=1640, height=640,scrollbars=yes";
+    window.open(url, '_blank', popupOptions);
+
+})

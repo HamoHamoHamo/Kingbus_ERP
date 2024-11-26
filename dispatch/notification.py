@@ -5,6 +5,10 @@ from config.custom_logging import logger
 from django.db.models import Q, Prefetch
 from humanresource.views import send_message
 
+ADMIN_AND_TEAMLEADER_ROLE = ["관리자", "팀장"]
+def get_admin_and_team_leader():
+    return Member.objects.filter(role__in=ADMIN_AND_TEAMLEADER_ROLE, use="사용")
+
 def driver_check_notification():
     now = datetime.now()
     time1 = now + timedelta(hours=1.5)
@@ -58,8 +62,8 @@ def driver_check_notification():
     order_dispatch0 = DispatchOrderConnect.objects.filter(departure_date=time_str(time0), status="첫 정류장 도착")
 
     # 관리자 및 팀장 정보 조회
-    # admin_and_team_leads = list(Member.objects.filter(role__in=["관리자", "팀장"], use="사용"))
-    admin_and_team_leads = list(Member.objects.filter(role__in=["관리자", "팀장"], use="사용").filter(name="김원탁"))
+    admin_and_team_leads = get_admin_and_team_leader()
+    # admin_and_team_leads = list(Member.objects.filter(role__in=["관리자", "팀장"], use="사용").filter(name="김원탁"))
 
     # 알림 발송 데이터 매핑
 
@@ -168,10 +172,10 @@ def admin_station_check_problem_notification(date_time=str(datetime.now())[:16])
 
 # 관리자, 팀장에게 알림 보내기
 def send_notification_to_manager(title: str, text: str):
-    # targets = Member.objects.filter(use="사용").filter(Q(role="팀장") | Q(role="관리자"))
-    targets = Member.objects.filter(use="사용").filter(name="김원탁")
+    targets = get_admin_and_team_leader()
+    # targets = Member.objects.filter(use="사용").filter(name="김원탁")
     for target in targets:
-        print("Target: ", target)
+        # print("Target: ", target)
         send_message(title, text, target.token, None)
 
 
@@ -183,8 +187,8 @@ def debug_send_missing_arrival_time_notifications():
     start_time = time.time()
 
     # 함수 실행
-    # admin_station_check_problem_notification("2024-08-01 06:45")
-    driver_check_notification()
+    admin_station_check_problem_notification("2024-08-01 06:45")
+    # driver_check_notification()
     # driver_check_notification()
 
     end_time = time.time()

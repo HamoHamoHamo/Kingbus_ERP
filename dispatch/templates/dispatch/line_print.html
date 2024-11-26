@@ -6,51 +6,77 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width">
-    <title>TRP</title>
+    <title>노선별 배차 지시서</title>
     <link href="{% static 'css/dispatch/line_print.css' %}" rel="stylesheet" type="text/css" />
 </head>
 
 <body>
-    <div class="lineContainer">
-        <div class="pageTitle">
-            <span></span>
-            <span></span>
-            <span></span>
-            <span>노선별 배차지시서</span>
-        </div>
-        <div class="lineContentsArea">
-            {% for regularly in regularly_list %}
-            {% with cnt=forloop.counter0 %}            
-            <ul class="lineContentsBox">
-                {% for r in regularly %}
-                {% if forloop.counter == 1 %} <li class="lineContentsTitle">{{cnt|add:1}}. {{r.group.name}}</li> {% endif %}
-                <li class="lineContentsCell">
-                    <span>■</span>
-                    <b class="lineTime">[{{r.departure_time}}]</b>[{{r.number1}}-{{r.number2}}] <b>{{r.departure}} ▶ {{r.arrival}}</b> ---
-                    {% with connects=connect_list|index:cnt %}
-                    {% with this_connect=connects|index:forloop.counter0 %}
-                    ({% for connect in this_connect %}{% if forloop.counter != 1 %}, {% endif %}{{connect.bus_id.vehicle_num}}-{{connect.driver_id.name}}{% endfor %})
-                    {% if r.references %} ({{r.references}}) {% endif %}
-                    {% endwith %}
-                    {% endwith %}
-                </li>
-                {% endfor %}
-            </ul>
-            {% endwith %}
-            {% endfor %}
-            <ul class="lineContentsBox">
-                <li class="lineContentsTitle">■ 미지정된 출,퇴근</li>
-                {% for r in no_list %}
-                <li class="lineContentsCell">
-                    [{{r.number1}}-{{r.number2}}] {{r.departure}} ▶ {{r.arrival}}
-                </li>
-                {% endfor %}
-            </ul>
-        </div>
-    </div>
-    </div>
-</body>
+    <div class="container">
+        <div class="title">노선별 배차 지시서</div>
 
-<script src="{% static 'js/dispatch/line_print.js' %}"></script>
+        {% for regularly in regularly_list %}
+        {% with cnt=forloop.counter0 %}
+        <div class="section-title">{{ cnt|add:1 }}. {{ regularly.0.group.name }}</div>
+        <table class="section-table">
+            <thead>
+                <tr>
+                    <th>출발시간</th>
+                    <th>순번</th>
+                    <th>출발지 > 도착지</th>
+                    <th>차량</th>
+                    <th>기사</th>
+                    <th>참조</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for r in regularly %}
+                <tr>
+                    <td class="lineTime">[{{ r.departure_time }}]</td>
+                    <td>{{ r.number1 }}-{{ r.number2 }}</td>
+                    <td class="lineRoute">{{ r.departure }} ▶ {{ r.arrival }}</td>
+                    <td>{% with connects=connect_list|index:cnt %}
+                        {% with this_connect=connects|index:forloop.counter0 %}
+                        {% for connect in this_connect %}
+                        {{ connect.bus_id.vehicle_num }}
+                        {% endfor %}
+                        {% endwith %}
+                        {% endwith %}</td>
+                    <td>{% with connects=connect_list|index:cnt %}
+                        {% with this_connect=connects|index:forloop.counter0 %}
+                        {% for connect in this_connect %}
+                        {{ connect.driver_id.name }}
+                        {% endfor %}
+                        {% endwith %}
+                        {% endwith %}</td>
+                    <td>{{ r.references  }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% endwith %}
+        {% endfor %}
+
+        <div class="section-title">ㅁ미지정 된 출,퇴근</div>
+        <table class="section-subtable">
+            <thead>
+                <tr>
+                    <th>출발지 시간</th>
+                    <th>순번</th>
+                    <th>출발지 > 도착지</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for r in no_list %}
+                <tr>
+                    <td>{{ r.departure_time }}</td>
+                    <td>{{ r.number1 }}-{{ r.number2 }}</td>
+                    <td>{{ r.departure }} ▶ {{ r.arrival }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <script src="{% static 'js/dispatch/line_print.js' %}"></script>
+</body>
 
 </html>

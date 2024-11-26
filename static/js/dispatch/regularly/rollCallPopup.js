@@ -18,7 +18,7 @@ Array.from(driverStatusPopupBtn).forEach(item => item.addEventListener("click", 
 
 // 팝업 열기
 function openRouteStatusPopup() {
-    popupAreaModules[0].style.display = "block";
+    popupAreaModules[1].style.display = "block";
     const id = this.parentNode.classList[0]
 
     document.querySelectorAll('.tempTr').forEach(element => element.remove())
@@ -212,7 +212,7 @@ const popupDriverTbody = document.querySelector('#task-list')
 
 
 function openDriverStatusPopup() {
-    popupAreaModules[1].style.display = "block";
+    popupAreaModules[2].style.display = "block";
     const driverId = this.id
     getDriverStatusData(searchDate.value, driverId)
 }
@@ -248,8 +248,8 @@ const createDailyDatas = (datas) => {
 
     // 노선
     datas.tasks.forEach(data => {
-        const departureTime = addMinutes(data.departure_date, -90)
-        const arrivalTime = addMinutes(data.arrival_date, 15)
+        const departureTime = data.departure_date
+        const arrivalTime = data.arrival_date
 
         const tr = document.createElement("tr")
         const has_issue = data.has_issue

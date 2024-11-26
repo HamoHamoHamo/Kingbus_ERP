@@ -1018,7 +1018,7 @@
   .routListSearch {
     position: relative;
     display: flex;
-    justify-content: flex-start;
+    justify-content: space-between;
     align-items: center;
     width: 100%;
     height: 3.6rem;
@@ -1102,6 +1102,10 @@
   .RouteListForm {
     position: relative;
     width: 100%;
+    height: calc(100% - 3.6rem);
+  }
+
+  .RouteListInsideDiv {
     height: 100%;
   }
   
@@ -1113,9 +1117,6 @@
   }
   
   .routeInputScan {
-    position: absolute;
-    top: -3.1rem;
-    right: 1rem;
     background-color: #444;
   }
   
@@ -1124,7 +1125,8 @@
     flex-direction: column;
     align-items: flex-start;
     width: 100%;
-    height: calc(100% - 3.6rem);
+    /* height: calc(100% - 3.6rem); */
+    height: 100%;
     box-sizing: border-box;
     background-color: white;
     border-radius: 0.2rem;
@@ -1277,10 +1279,6 @@
 .groupListBox {
   height: 33.3%;
 }
-  
-.timeListBox {
-  height: 66.7%
-}
 
   /* .groupListBody {
       height: calc(33.3% - 3.6rem);
@@ -1331,7 +1329,7 @@
     background-color: #CDCDCE;
   }
   
-  .openGroup #Icon_awesome-folder{
+  .openGroup .Icon_awesome-folder{
       fill: #0069D9;
   }
   
@@ -1423,9 +1421,20 @@
   }
   
   /* 검색 */
-  
+  .routListSearchDiv {
+    display: flex;
+    align-items: center;
+  }
+
+  .printBtn {
+    background-color: #444;
+    width: 10rem;
+    margin-right: 1rem;
+
+  }
+
   .searchInput {
-      width: 19rem;
+      width: 12rem;
       height: 2.4rem;
       padding-left: 0.3rem;
       border: 0.1rem solid #B5B5B5;
@@ -1435,7 +1444,7 @@
   }
   
   .searchDate {
-      width: 16rem;
+      width: 13rem;
       height: 2.4rem;
       padding-left: 0.3rem;
       margin: 0 0.6rem;
@@ -1520,9 +1529,11 @@
   }  
   
   .routListSearch select{
-    height: 2.5rem;
-    width: 12.2rem;
+    height: 2.4rem;
+    width: 7rem;
     font-size: 1.4rem;
+    margin-left: 1rem;
+    margin-right: 1rem;
   }
   
   .RouteListCheckbox{
@@ -1868,4 +1879,9 @@
 
 .popupTableDriverStatus td:nth-child(4) {
   width: 20%;
+}
+
+.BusinessEntityPopupContainer {
+  width: 50rem;
+  height: auto;
 }

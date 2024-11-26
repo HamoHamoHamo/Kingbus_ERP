@@ -75,7 +75,7 @@ class Member(models.Model):
     creator = models.CharField(verbose_name='작성자 이름', max_length=100, null=False, blank=True)
     updated_at = models.DateTimeField(auto_now=True, verbose_name='수정시간')
     token = models.CharField(verbose_name='fcmtoken', max_length=500, null=False, blank=True)
-    authority = models.IntegerField(verbose_name='권한', null=False, default=4)
+    authority = models.IntegerField(verbose_name='권한', null=False, default=4) # 0=최고관리자, 1=관리자, 3=팀장, 4=기사
     use = models.CharField(verbose_name='사용여부', max_length=30, null=False, default='사용')
     def __str__(self):
         return self.name
