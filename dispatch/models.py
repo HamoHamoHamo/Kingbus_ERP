@@ -71,7 +71,7 @@ class ConnectStatusFieldMapping:
 
 class RouteTeam(models.Model):
     name = models.CharField(verbose_name='팀이름', max_length=100)
-    team_leader = models.ForeignKey(Member, on_delete=models.SET_NULL, limit_choices_to={'role': '팀장'}, related_name='route_teams_leader', null=True, blank=False)
+    team_leader = models.ForeignKey(Member, on_delete=models.SET_NULL, limit_choices_to={'role': '팀장'}, related_name='route_teams_leader', null=True, blank=True)
     pub_date = models.DateTimeField(auto_now_add=True, verbose_name='작성시간')
     updated_at = models.DateTimeField(auto_now=True, verbose_name='수정시간')
     creator = models.ForeignKey(Member, on_delete=models.SET_NULL, related_name="route", db_column="creator_id", null=True)
@@ -79,6 +79,7 @@ class RouteTeam(models.Model):
     def __str__(self):
         return f"{self.name}"
 
+# 사업장
 class BusinessEntity(models.Model):
     name = models.CharField(verbose_name='사업장 이름', max_length=50, null=False, unique=True)
     number = models.IntegerField(verbose_name='순번', null=False, default=999)
