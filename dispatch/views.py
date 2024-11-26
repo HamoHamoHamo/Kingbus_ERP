@@ -8,7 +8,8 @@ import mimetypes
 import requests
 
 from config.settings.base import MEDIA_ROOT
-from django.db.models import Q, Sum
+from django.db.models import Q, Sum, Prefetch, Case, When, Value, IntegerField, Subquery, OuterRef
+from django.db.models.functions import Coalesce
 from django.forms.models import model_to_dict
 from django.core.exceptions import ObjectDoesNotExist, MultipleObjectsReturned, BadRequest
 from django.http import Http404, JsonResponse, HttpResponse, HttpResponseNotAllowed
@@ -501,20 +502,25 @@ class RollCallList(generic.ListView):
             return super().get(request, **kwargs)
 
     def get_queryset(self):
+        group_list = self.request.GET.getlist('group_id', '')
         team_list = self.request.GET.getlist('team', '')
         time_list = self.request.GET.getlist('time', '')
         no_team = self.request.GET.get('no_team', '')
         search = self.request.GET.get('search', '')
         date = self.request.GET.get('date', TODAY)
+        sorting = self.request.GET.get('sorting', '')
+        
 
         if not team_list:
-            connect_list = DispatchRegularlyConnect.objects.filter(departure_date__startswith=date).order_by('regularly_id__num1', 'regularly_id__number1', 'regularly_id__num2', 'regularly_id__number2')
+            connect_list = DispatchRegularlyConnect.objects.filter(departure_date__startswith=date)
         else:
-            connect_list = DispatchRegularlyConnect.objects.filter(regularly_id__regularly_id__team__in=team_list).filter(departure_date__startswith=date).order_by('regularly_id__num1', 'regularly_id__number1', 'regularly_id__num2', 'regularly_id__number2')
+            connect_list = DispatchRegularlyConnect.objects.filter(regularly_id__regularly_id__team__in=team_list).filter(departure_date__startswith=date)
         
         if no_team:
             connect_list = connect_list | DispatchRegularlyConnect.objects.filter(regularly_id__regularly_id__team=None)
 
+        if group_list:
+            connect_list = connect_list.filter(regularly_id__group__id__in=group_list)
         q_objects = Q()
         for time_value in time_list:
             min_time = f'{date} {time_value}:00'
@@ -522,19 +528,31 @@ class RollCallList(generic.ListView):
             q_objects |= (Q(departure_date__lte=max_time) & Q(departure_date__gte=min_time))
         # 기본값 모두 체크
         if not time_list:
-            min_time = f'{date} 05:00'
+            min_time = f'{date} 04:00'
             max_time = f'{date} 24:59'
             q_objects |= (Q(departure_date__lte=max_time) & Q(departure_date__gte=min_time))
 
-        connect_list = connect_list.filter(q_objects)
+        connect_list = connect_list.filter(q_objects).order_by('departure_date')
 
-        if search:
+        if sorting == '노선' and search:
             connect_list = connect_list.filter(regularly_id__route__contains=search)
+        if sorting == '팀':
+            if search:
+                connect_list = connect_list.filter(regularly_id__regularly_id__team__name__contains=search)
+            connect_list = connect_list.order_by('regularly_id__regularly_id__team', 'departure_date')
+        elif sorting == '기사':
+            if search:
+                connect_list = connect_list.filter(driver_id__name__contains=search)
+            connect_list = connect_list.order_by('driver_id__name', 'departure_date')
+        elif sorting == '차량':
+            if search:
+                connect_list = connect_list.filter(bus_id__vehicle_num__contains=search)
+            connect_list = connect_list.order_by('bus_id__vehicle_num', 'departure_date')
 
         return connect_list.values(
             'id',
             'regularly_id__route',
-            'regularly_id__regularly_id__team',
+            'regularly_id__regularly_id__team__name',
             'driver_id__name',
             'driver_id__id',
             'bus_id__vehicle_num',
@@ -551,7 +569,7 @@ class RollCallList(generic.ListView):
         context = super().get_context_data(**kwargs)
 
         time_list = []
-        count = 5
+        count = 4
         for i in range(19):
             if count < 10:
                 time_list.append(f"0{count}")
@@ -561,14 +579,24 @@ class RollCallList(generic.ListView):
 
         context['time_list'] = time_list
 
+        # 사업장
+        business_list = BusinessEntity.objects.all().order_by('number')
+        business_group_data = {}
+        for business in business_list:
+            business_group_data[business.id] = [*business.regularly_groups.values('id', 'name')]
+        context['business_group_data'] = business_group_data
+        context['business_list'] = business_list
+
         context['group_list'] = RegularlyGroup.objects.all().order_by('number')
         context['team_list'] = RouteTeam.objects.order_by('name')
 
+        context['search_group_list'] = self.request.GET.getlist('group_id', [])
         context['search_team_list'] = self.request.GET.getlist('team', [])
         context['search_time_list'] = self.request.GET.getlist('time', [])
         context['no_team'] = self.request.GET.get('no_team', '')
         context['search'] = self.request.GET.get('search', '')
         context['date'] = self.request.GET.get('date', TODAY)
+        context['sorting'] = self.request.GET.get('sorting', '')
         return context
 
 
@@ -964,7 +992,7 @@ class DocumentList(generic.ListView):
         context['date'] = self.request.GET.get('date', TODAY)
         
         return context
-    
+
 class RegularlyDispatchList(generic.ListView):
     template_name = 'dispatch/regularly.html'
     context_object_name = 'order_list'
@@ -981,28 +1009,129 @@ class RegularlyDispatchList(generic.ListView):
         group_id = self.request.GET.get('group', '')
 
         weekday = WEEK2[datetime.strptime(date, FORMAT).weekday()]
-        
+
+        # 조건 구성
+        conditions = Q(week__contains=weekday)
         if search:
-            regularly_list = DispatchRegularlyData.objects.filter(route__contains=search).filter(week__contains=weekday).order_by('num1', 'number1', 'num2', 'number2')
-        else:
-            if group_id:
-                group = RegularlyGroup.objects.get(id=group_id)
-                regularly_list = DispatchRegularlyData.objects.filter(group=group).filter(week__contains=weekday).order_by('num1', 'number1', 'num2', 'number2')
-            else:
-                regularly_list = DispatchRegularlyData.objects.filter(week__contains=weekday).order_by('num1', 'number1', 'num2', 'number2')            
+            conditions &= Q(route__contains=search)
+        if group_id:
+            conditions &= Q(group_id=group_id)
+        conditions &= Q(use='사용')
+
+        # monthly 관계에 대한 prefetch 구성
+        monthly_queryset = DispatchRegularly.objects.filter(
+            use='사용'
+        ).select_related(
+            'regularly_id', 
+            'group'
+        )
+
+        # 한 번에 데이터 가져오기
+        regularly_list = DispatchRegularlyData.objects.filter(
+            conditions
+        ).order_by(
+            'num1', 'number1', 'num2', 'number2'
+        ).prefetch_related(
+            Prefetch(
+                'monthly',
+                queryset=monthly_queryset
+            )
+        )
 
         dispatch_list = []
         for regularly in regularly_list:
-            # first 확인필요
-            dispatch = regularly.monthly.select_related('regularly_id', 'group').filter(edit_date__lte=date).order_by('-edit_date').first()
-            if not dispatch:
-                dispatch = regularly.monthly.select_related('regularly_id', 'group').filter(edit_date__gte=date).order_by('edit_date').first()
+            # prefetch된 데이터에서 필터링
+            dispatches = sorted(
+                [d for d in regularly.monthly.all()],
+                key=lambda x: x.edit_date,
+                reverse=True
+            )
+            
+            if dispatches:
+                # edit_date__lte=date 조건에 맞는 항목 찾기
+                dispatch = next(
+                    (d for d in dispatches if d.edit_date <= date),
+                    next(
+                        (d for d in sorted(dispatches, key=lambda x: x.edit_date) if d.edit_date >= date),
+                        None
+                    )
+                )
+                if dispatch:
+                    dispatch_list.append(dispatch)
+
+        return dispatch_list
+
+    # def get_queryset(self):
+    #     search = self.request.GET.get('search', '')
+    #     date = self.request.GET.get('date', TODAY)
+    #     group_id = self.request.GET.get('group', '')
+
+    #     weekday = WEEK2[datetime.strptime(date, FORMAT).weekday()]
+
+    #     # 기본 필터링 조건 설정
+    #     filters = {'week__contains': weekday}
+    #     if search:
+    #         filters['route__contains'] = search
+    #     if group_id:
+    #         filters['group_id'] = group_id
+
+    #     # DispatchRegularlyData 필터링
+    #     regularly_list = DispatchRegularlyData.objects.filter(**filters)
+
+    #     connect_queryset = DispatchRegularlyConnect.objects.filter(departure_date__startswith=date)
+
+    #     # prefetch_related로 monthly를 가져오되, 필요한 데이터를 필터링
+    #     monthly_queryset = DispatchRegularly.objects.filter(edit_date__lte=date, use='사용').order_by('-edit_date').prefetch_related(
+    #         Prefetch('info_regularly', queryset=connect_queryset),
+    #     )
+        
+
+    #     # 'monthly'에 대한 prefetch
+    #     regularly_list = regularly_list.prefetch_related(
+    #         Prefetch('monthly', queryset=monthly_queryset),
+    #     )
+
+    #     dispatch_list = []
+    #     for regularly in regularly_list:
+    #         # prefetch된 monthly에서 첫 번째 항목을 찾기
+    #         dispatch = regularly.monthly.first()
+
+    #         if not dispatch:
+    #             # 만약 매칭된 dispatch가 없다면, edit_date >= date인 항목 중 첫 번째를 가져옴
+    #             dispatch = regularly.monthly.filter(edit_date__gte=date, use='사용').order_by('edit_date').first()
+
+    #         if dispatch:
+    #             dispatch_list.append(dispatch)
+
+    #     return dispatch_list
+
+    # def get_queryset(self):
+    #     search = self.request.GET.get('search', '')
+    #     date = self.request.GET.get('date', TODAY)
+    #     group_id = self.request.GET.get('group', '')
+
+    #     weekday = WEEK2[datetime.strptime(date, FORMAT).weekday()]
+        
+    #     if search:
+    #         regularly_list = DispatchRegularlyData.objects.filter(route__contains=search).filter(week__contains=weekday).order_by('num1', 'number1', 'num2', 'number2')
+    #     else:
+    #         if group_id:
+    #             group = RegularlyGroup.objects.get(id=group_id)
+    #             regularly_list = DispatchRegularlyData.objects.filter(group=group).filter(week__contains=weekday).order_by('num1', 'number1', 'num2', 'number2')
+    #         else:
+    #             regularly_list = DispatchRegularlyData.objects.filter(week__contains=weekday).order_by('num1', 'number1', 'num2', 'number2')            
+
+    #     dispatch_list = []
+    #     for regularly in regularly_list:
+    #         # first 확인필요
+    #         dispatch = regularly.monthly.select_related('regularly_id', 'group').filter(edit_date__lte=date).order_by('-edit_date').first()
+    #         if not dispatch:
+    #             dispatch = regularly.monthly.select_related('regularly_id', 'group').filter(edit_date__gte=date).order_by('edit_date').first()
                 
 
-            if dispatch.use == '사용':
-                dispatch_list.append(dispatch)
-        # print("TEST", len(dispatch_list))
-        return dispatch_list
+    #         if dispatch.use == '사용':
+    #             dispatch_list.append(dispatch)
+    #     return dispatch_list
 
 
     def get_context_data(self, **kwargs):
@@ -1039,23 +1168,22 @@ class RegularlyDispatchList(generic.ListView):
                 date_list.append(f'{list_date} {WEEK[datetime.strptime(list_date, FORMAT).weekday()]}')
             ##
 
-            regularly_history_list = DispatchRegularlyData.objects.get(monthly=context['detail']).monthly.all()
-            for reg in regularly_history_list:
-                connect_history_list = reg.info_regularly.filter(departure_date__gte=str_start_date).filter(arrival_date__lte=str_end_date).order_by('departure_date')
-                for connect_history in connect_history_list:
-                    date_calculation = (datetime.strptime(connect_history.departure_date[:10], FORMAT) - start_date).days
-                    history_list[date_calculation] = connect_history
-                    # block_list[date_calculation] = ''
+            # 배차내역 2주치 불러오기
+            connect_history_list = DispatchRegularlyConnect.objects.filter(regularly_id__regularly_id=regularly_data, departure_date__gte=str_start_date, arrival_date__lte=str_end_date).order_by('departure_date').values('departure_date', 'driver_id__id', 'bus_id__id', 'driver_id__name', 'bus_id__vehicle_num', 'outsourcing')
+            for connect_history in connect_history_list:
+                date_calculation = (datetime.strptime(connect_history['departure_date'][:10], FORMAT) - start_date).days
+                history_list[date_calculation] = connect_history
+                # block_list[date_calculation] = ''
 
-                    h_driver = connect_history.driver_id
-                    h_bus = connect_history.bus_id
+                h_driver = connect_history['driver_id__id']
+                h_bus = connect_history['bus_id__id']
 
-                    if DispatchRegularlyConnect.objects.filter(driver_id=h_driver).exclude(departure_date__gt=arrival_date).exclude(arrival_date__lt=departure_date).exists():
-                        block_list[date_calculation] = 'y'
-                    elif DispatchRegularlyConnect.objects.filter(bus_id=h_bus).exclude(departure_date__gt=arrival_date).exclude(arrival_date__lt=departure_date).exists():
-                        block_list[date_calculation] = 'y'
-                    else:
-                        block_list[date_calculation] = ''
+                if DispatchRegularlyConnect.objects.filter(driver_id=h_driver).exclude(departure_date__gt=arrival_date).exclude(arrival_date__lt=departure_date).exists():
+                    block_list[date_calculation] = 'y'
+                elif DispatchRegularlyConnect.objects.filter(bus_id=h_bus).exclude(departure_date__gt=arrival_date).exclude(arrival_date__lt=departure_date).exists():
+                    block_list[date_calculation] = 'y'
+                else:
+                    block_list[date_calculation] = ''
             
             context['history_list'] = history_list
             context['date_list'] = date_list
@@ -1079,7 +1207,7 @@ class RegularlyDispatchList(generic.ListView):
         context['dispatch_list'] = get_date_connect_list(date)
         #
 
-        context['vehicles'] = Vehicle.objects.filter(use='사용').order_by('vehicle_num', 'driver__name')
+        context['vehicles'] = list(Vehicle.objects.filter(use='사용').order_by('vehicle_num', 'driver__name').values('id', 'driver__id', 'driver__name', 'vehicle_num0', 'vehicle_num', 'model_year'))
         context['group_list'] = RegularlyGroup.objects.all().order_by('number')
         
         #
@@ -1089,9 +1217,8 @@ class RegularlyDispatchList(generic.ListView):
         departure_time_list = []
         arrival_time_list = []
         for order in context['order_list']:
-            connect = order.info_regularly.filter(departure_date__contains=date)
+            connect = order.info_regularly.filter(departure_date__contains=date).last()
             if connect:
-                connect = connect[0]
                 c_bus = connect.bus_id
                 c_outsourcing = ''
                 c_driver = ''
@@ -2640,7 +2767,8 @@ def route_team_create(request):
         if team_form.is_valid():
             team_form.save(creator=creator)
 
-        return redirect(request.META.get('HTTP_REFERER', 'redirect_if_referer_not_found'))
+            return redirect(request.META.get('HTTP_REFERER', 'redirect_if_referer_not_found'))
+        raise BadRequest(f"{team_form.errors}")
     else:
         return HttpResponseNotAllowed(['POST'])
 
@@ -2826,7 +2954,8 @@ class RegularlyConnectList(generic.ListView):
             business_group_data[business.id] = [*business.regularly_groups.values('id', 'name')]
 
         time_list = []
-        count = 5
+        # 4시부터
+        count = 4
         for i in range(19):
             if count < 10:
                 time_list.append(f"0{count}")
@@ -2878,7 +3007,7 @@ def business_edit(request):
         business.regularly_groups.clear()
         business.regularly_groups.add(*group_list)
 
-        return redirect('dispatch:regularly_connect')
+        return redirect(request.META.get('HTTP_REFERER', 'redirect_if_referer_not_found'))
     else:
         return HttpResponseNotAllowed(['post'])
 
@@ -2893,30 +3022,26 @@ class RegularlyConnectPrintList(generic.ListView):
         return super().get(request, *args, **kwargs)
 
     def get_queryset(self):
-        group_list = self.request.GET.getlist('group_id', '')
-        team_list = self.request.GET.getlist('team', '')
-        time_list = self.request.GET.getlist('time', '')
-        no_team = self.request.GET.get('no_team', '')
-        search = self.request.GET.get('search', '')
+        values = self.request.GET.get('values', '')
         date = self.request.GET.get('date', TODAY)
 
-        connect_list = DispatchRegularlyConnect.objects.filter(driver_id__team__id__in=team_list)
-        if no_team:
-            connect_list = connect_list | DispatchRegularlyConnect.objects.filter(driver_id__team=None)
+        id_list = values.split(',')
 
-        connect_list = connect_list.filter(regularly_id__group__id__in=group_list).filter(departure_date__startswith=date).order_by('regularly_id__num1', 'regularly_id__number1', 'regularly_id__num2', 'regularly_id__number2')
-        q_objects = Q()
-        for time_value in time_list:
-            min_time = f'{date} {time_value}:00'
-            max_time = f'{date} {time_value}:59'
-            q_objects |= (Q(departure_date__lte=max_time) & Q(departure_date__gte=min_time))
+        # id_list로 정렬, alcohol_test 값 가져오기
+        queryset = DispatchRegularlyConnect.objects.filter(id__in=id_list).annotate(
+            custom_ordering=Case(
+                *[When(id=id, then=Value(index)) for index, id in enumerate(id_list)],
+                output_field=IntegerField()
+            ),
+            alcohol_test=Subquery(
+                MorningChecklist.objects.filter(
+                    member=OuterRef('driver_id'),
+                    date__startswith=date
+                ).values('alcohol_test')[:1]
+            )
+        ).order_by('custom_ordering')
 
-        connect_list = connect_list.filter(q_objects)
-
-        if search:
-            connect_list = connect_list.filter(regularly_id__route__contains=search)
-
-        return connect_list
+        return queryset.select_related('regularly_id')
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -3948,10 +4073,6 @@ def line_print(request):
     context = {}
     date = request.GET.get('date')
     week = WEEK[datetime.strptime(date, FORMAT).weekday()][1]
-    
-    
-    
-    
 
     regularly_list = DispatchRegularly.objects.prefetch_related('info_regularly').exclude(info_regularly=None).filter(use='사용').filter(week__contains=week).order_by('group', 'num1', 'number1', 'num2', 'number2')
     
@@ -3981,6 +4102,7 @@ def line_print(request):
     group = ''
     context['regularly_list'] = []
     context['connect_list'] = []
+    r = ''
     for r in regularly_list:
         if r.group.name != group:
             group = r.group.name
@@ -3994,7 +4116,7 @@ def line_print(request):
         regularly_connect = r.info_regularly.filter(departure_date__startswith=date)
         temp2.append(regularly_connect)
 
-    if r == regularly_list[len(regularly_list)-1]:
+    if r and r == regularly_list[len(regularly_list)-1]:
         context['regularly_list'].append(temp)
         context['connect_list'].append(temp2)
 

@@ -1,18 +1,10 @@
-const listItme = document.querySelectorAll(".listItme")
+const auto = document.querySelectorAll('.auto')
+const autoBtn = document.querySelector('.autoBtn')
 
-function sort() {
-    for (i = 0; i < listItme.length; i++) {
-        if(listItme[i].children[1].innerText !== ""){
-            listItme[i].classList.add("haveDispatch")
-        }
-    };
-    for (i = 0; i < listItme.length; i++){
-        if(!listItme[i].classList.contains("haveDispatch")){
-            const copyItme = listItme[i].cloneNode(true)
-            listItme[i].parentNode.appendChild(copyItme)
-            listItme[i].remove()
-        }
-    };
-}
+autoBtn.addEventListener('click', () => {
+    autoBtn.value = autoBtn.value == '자동' ? "수동" : "자동"
 
-sort()
+    Array.from(auto).forEach(item => {
+        item.style.display = autoBtn.value == "자동" ? "none" : "block"
+    })
+})

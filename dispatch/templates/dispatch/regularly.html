@@ -135,8 +135,8 @@
               <div class="hourTd"></div>
               <div class="hourTd"></div>
               <div class="hourTd"></div>
-              <div class="driverTd {{v.id}} d{{v.driver.id}}" title="{{v.vehicle_num0}} {{v.vehicle_num}} ({{v.model_year}})">
-                {{v.vehicle_num}} {% if v.driver %}({{v.driver.name}}){% endif %}</div>
+              <div class="driverTd {{v.id}} d{{v.driver__id}}" title="{{v.vehicle_num0}} {{v.vehicle_num}} ({{v.model_year}})">
+                {{v.vehicle_num}} {% if v.driver__id %}({{v.driver__name}}){% endif %}</div>
             </div>
             {% endfor %}
           </div>
@@ -471,11 +471,11 @@
               {% for connect in history_list %}
               <div class="historyDateBox {% if block_list|index:forloop.counter0 == 'y' %}historyUnable{% endif %}">
                 <div class="historyDate">{{date_list|index:forloop.counter0|slice:'2:'}}</div>
-                <div class="historyBus {{connect.bus_id.id}}">{{connect.bus_id.vehicle_num}}</div>
+                <div class="historyBus {{connect.bus_id__id}}">{{connect.bus_id__vehicle_num}}</div>
                 {% if connect.outsourcing == 'y' %}
-                <div class="historyDriver {{connect.driver_id.id}} typeOutsourcing">{{connect.driver_id.name}}(용역)</div>
+                <div class="historyDriver {{connect.driver_id__id}} typeOutsourcing">{{connect.driver_id__name}}(용역)</div>
                 {% else %}
-                <div class="historyDriver {{connect.driver_id.id}}">{{connect.driver_id.name}}</div>
+                <div class="historyDriver {{connect.driver_id__id}}">{{connect.driver_id__name}}</div>
                 {% endif %}
                 
               </div>
