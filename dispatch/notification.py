@@ -7,7 +7,8 @@ from humanresource.views import send_message
 
 ADMIN_AND_TEAMLEADER_ROLE = ["관리자", "팀장"]
 def get_admin_and_team_leader():
-    return Member.objects.filter(role__in=ADMIN_AND_TEAMLEADER_ROLE, use="사용")
+    # return Member.objects.filter(role__in=ADMIN_AND_TEAMLEADER_ROLE, use="사용")
+    return Member.objects.filter(role__in=ADMIN_AND_TEAMLEADER_ROLE, use="사용").filter(name="김원탁")
 
 def driver_check_notification():
     now = datetime.now()
