@@ -52,6 +52,7 @@ def send_message(title, body, token, topic):
                 body=body,
                 sound='kingbus.wav',  # 알림 소리 지정
                 channel_id='DefaultChannel',
+                click_action='OPEN_APP_ACTION',  # 클릭 시 앱에서 처리할 액션
             )
         )
 
