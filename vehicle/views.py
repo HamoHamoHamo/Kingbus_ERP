@@ -608,11 +608,11 @@ class RefuelingList(generic.ListView):
         search = self.request.GET.get('search', '')
         
         if select == 'vehicle' and search:
-            vehicle = Refueling.objects.filter(vehicle__vehicle_num__contains=search).order_by('refueling_date')
+            vehicle = Refueling.objects.filter(vehicle__vehicle_num__contains=search).order_by('-refueling_date')
         elif select == 'driver' and search:
-            vehicle = Refueling.objects.filter(driver__name__contains=search).order_by('refueling_date')
+            vehicle = Refueling.objects.filter(driver__name__contains=search).order_by('-refueling_date')
         else:
-            vehicle = Refueling.objects.order_by('refueling_date')
+            vehicle = Refueling.objects.order_by('-refueling_date')
         return vehicle
 
     def get_context_data(self, **kwargs):
