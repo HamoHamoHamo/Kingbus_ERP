@@ -1,380 +1,123 @@
+{% load humanize %}
 {% load dispatch_custom_tags %}
 {% load static %}
-<!DOCTYPE html>
 <html lang="ko">
 
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width">
     <title>TRP</title>
-    <link href="{% static 'css/dispatch/daily_driving_print.css' %}" rel="stylesheet" type="text/css" />
+    <link href="{% static 'css/dispatch/daily_driving_print.css' %}" rel="stylesheet" type="text/css">
 </head>
 
 <body>
-    {% for i in "x"|rjust:cnt %}
-    {% with member=member_list|index:forloop.counter0 %}
-    {% with order_l=order_list|index:forloop.counter0 %}
-    {% with e_order_l=e_order_list|index:forloop.counter0 %}
-    {% with c_order_l=c_order_list|index:forloop.counter0 %}
-    {% with accompany=accompany_list|index:forloop.counter0 %}
-    <div class="a4ContainerFor"  style='page-break-before:always'>
-        <div class="a4Container">
-            <div class="drivingPrintHeader">
-                <div class="dayAndDriver">
-                    <div class="dayAndDriverTop">
-                        <div class="dataItemCell">
-                            <span>차량번호 :</span>
-                            <span>{{member.driver.vehicle_num}}</span>
-                        </div>
-                        <div class="dataItemCell">
-                            <span>승무원 :</span>
-                            <span>{{member.name}}</span>
-                        </div>
-                    </div>
-                    <div class="dayAndDriverBottom">
-                        <div class="dataItemCell dataItemCellDate">
-                            <span>{{date|slice:':4'}}년 {{date|slice:'5:7'}}월 {{date|slice:'8:10'}}일</span>
-                            <span></span>
-                            <span></span>
-                            <span></span>
-                        </div>
-                        <div class="dataItemCell">
-                            <span>날씨 :</span>
-                            <span></span>
-                        </div>
-                    </div>
-                </div>
-                <div class="drivingPrintTitle">배차 (운행) 일보</div>
-                <table class="adminTable">
-                    <tr>
-                        <td rowspan="4">결<br>재</td>
-                        <td>담당</td>
-                        <td>대표</td>
-                        <td>비고</td>
+    {% for datas in connect_data %}
+    <!-- 운행일보 개별 페이지 -->
+    <div class="containerfor">
+        <div class="container">
+            <!-- 상단 정보 테이블 -->
+            <table class="info-table">
+                <tr class="headerTr">
+                    <td colspan="4" rowspan="2">
+                        <div class="title">운 행 일 보</div>
+                    </td>
+                    <td class="signLine">담당</td>
+                    <td class="signLine">부장</td>
+                    <td class="signLine">사장</td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <th>운행일자</th>
+                    <td>{{ date|slice:':4' }}.{{ date|slice:'5:7' }}.{{ date|slice:'8:10' }}</td>
+                    <th colspan="2">운행기록 (km)</th>
+                    <th colspan="2">주유 및 요소수 (ℓ)</th>
+                    <th>비고</th>
+                </tr>
+                <tr class="subTr">
+                    <th>차량번호</th>
+                    <td>{{ datas.bus_num }}</td>
+                    <th>출고시</th>
+                    <td><input type="text" value="{{ datas.departure_km|intcomma }}" /></td>
+                    <th>주류량</th>
+                    <td><input type="text" value="{{ datas.refueling.refueling_amount }}" /></td>
+                    <td><input type="text" /></td>
+                </tr>
+                <tr>
+                    <th>승무원명</th>
+                    <td>{{ datas.driver }}</td>
+                    <th>입고시</th>
+                    <td><input type="text" value="{{ datas.arrival_km|intcomma }}" /></td>
+                    <th>요소수</th>
+                    <td><input type="text" value="{{ datas.refueling.urea_solution }}" /></td>
+                    <td><input type="text" /></td>
+                </tr>
+            </table>
+
+            <!-- 운행 정보 테이블 -->
+            <table class="data-table">
+                <thead>
+                    <tr class="data-tablemainth">
+                        <th colspan="3">출 발</th>
+                        <th colspan="3">도 착</th>
+                        <th rowspan="2">탑 승<br />인 원</th>
                     </tr>
-                    <tr>
-                        <td rowspan="3">
-                            <div class="tableHeightBox"></div>
-                        </td>
-                        <td rowspan="3">
-                            <div class="tableHeightBox"></div>
-                        </td>
-                        <td rowspan="3">
-                            <div class="tableHeightBox"></div>
-                        </td>
+                    <tr class="data-tablesubth">
+                        <th>장소</th>
+                        <th>시간</th>
+                        <th>계기km</th>
+                        <th>장소</th>
+                        <th>시간</th>
+                        <th>계기km</th>
                     </tr>
-                </table>
-            </div>
-            <div class="startArea">
-                <div class="startBox">
-                    <div class="startCell">
-                        <div class="tableHeader tableFirst"><span>오전</span>/출근시간</div>
-                        <div class="tableHeader">출발지</div>
-                        <div class="tableHeader">도착지</div>
-                        <div class="tableHeader">비고</div>
-                    </div>
-                    {% for i in "x"|rjust:"4" %}
-                    {% with order=e_order_l|index:forloop.counter0 %}
-
-                    {% if order %}
-                    <div class="startCell">
-                        <div class="tableFirst">{{order.departure_date|slice:"10:"}}</div>
-                        <div class="tableContents">[{{order.bus_id.vehicle_num}}] {{order.regularly_id.departure}}</div>
-                        <div class="tableContents">{{order.regularly_id.arrival}}</div>
-                        <div class="tableContents">{{order.regularly_id.references}}</div>
-                    </div>
-                    {% else %}
-                    <div class="startCell">
-                        <div class="tableFirst"></div>
-                        <div class="tableContents"></div>
-                        <div class="tableContents"></div>
-                        <div class="tableContents"></div>
-                    </div>
-                    {% endif %}
-                    {% endwith %}
-                    {% endfor %}
-
-
-                </div>
-                <div class="dataBox">
-                    <div class="dataCell dataCellFirst">
-                        <div class="dataCellHeader">운행 전 Km</div>
-                        <div class="dataCellContents"></div>
-                    </div>
-                    <div class="dataCell">
-                        <div class="dataCellHeader">운행 후 Km</div>
-                        <div class="dataCellContents"></div>
-                    </div>
-                    <div class="dataCell">
-                        <div class="dataCellHeader">금일 운행 Km</div>
-                        <div class="dataCellContents"></div>
-                    </div>
-                    <div class="dataCell">
-                        <div class="dataCellHeader">주유량</div>
-                        <div class="dataCellContents"></div>
-                    </div>
-                    <div class="dataCell">
-                        <div class="dataCellHeader">연비</div>
-                        <div class="dataCellContents"></div>
-                    </div>
-                </div>
-            </div>
-            <div class="endArea">
-                <div class="endBox">
-                    <div class="endCell">
-                        <div class="tableHeader tableFirst"><span>오후</span>/퇴근시간</div>
-                        <div class="tableHeader">출발지</div>
-                        <div class="tableHeader">도착지</div>
-                        <div class="tableHeader">비고</div>
-                    </div>
-                    {% for i in "x"|rjust:"4" %}
-                    {% with order=c_order_l|index:forloop.counter0 %}
-
-                    {% if order %}
-                    <div class="endCell">
-                        <div class="tableFirst">{{order.departure_date|slice:"10:"}}</div>
-                        <div class="tableContents">[{{order.bus_id.vehicle_num}}] {{order.regularly_id.departure}}</div>
-                        <div class="tableContents">{{order.regularly_id.arrival}}</div>
-                        <div class="tableContents">{{order.regularly_id.references}}</div>
-                    </div>
-                    {% else %}
-                    <div class="endCell">
-                        <div class="tableFirst"></div>
-                        <div class="tableContents"></div>
-                        <div class="tableContents"></div>
-                        <div class="tableContents"></div>
-                    </div>
-                    {% endif %}
-                    {% endwith %}
-                    {% endfor %}
-                </div>
-                <div class="noticeBox">
-                    <div class="noticeBoxTitle">공지사항</div>
-                    <div class="noticeBoxContents"></div>
-                </div>
-            </div>
-
-
-
-            <div class="orderBox">
-                <div class="orderCell">
-                    <div class="tableHeader tableFirst"><span>업무</span>/출발시간</div>
-                    <div class="tableHeader">업무내용</div>
-                    <div class="tableHeader">참고사항</div>
-                    <div class="tableHeader">예약자 정보</div>
-                </div>
-                {% for i in "x"|rjust:"3" %}
-                {% with order=order_l|index:forloop.counter0 %}
-
-                {% if order %}
-                <div class="orderCell">
-                    {% with departure_date=order.departure_date|slice:":10" %}
-                    <div class="tableFirst">{% if date != departure_date %}연속{% else %}{{order.departure_date|slice:"11:"}}{% endif %}</div>
-                    {% endwith %}
-                    <div class="tableContents">[{{order.bus_id.vehicle_num}}] {{order.order_id.departure}} ▶ {{order.order_id.arrival}}</div>
-                    <div class="tableContents">{{order.order_id.references}}</div>
-                    <div class="tableContents">({{order.order_id.customer}}){{order.order_id.customer_phone}}</div>
-                </div>
-                {% else %}
-                <div class="orderCell">
-                    <div class="tableFirst"></div>
-                    <div class="tableContents"></div>
-                    <div class="tableContents"></div>
-                    <div class="tableContents"></div>
-                </div>
-                {% endif %}
-                {% endwith %}
-                {% endfor %}
-
-                <div class="orderCell orderCellTotal">
-                    <div class="tableFirst tableLast">비고</div>
-                    <div class="tableContents tableTotal">
-                        {% if accompany %}
-                        {% for accom in accompany %}
-                            {% for acc in accom %}
-                            
-                            {% if forloop.counter0 == 0 %}    
-                            [{{acc.departure_date|slice:'11:'}} 출발 동반차량] : 
-                            {% endif %}
-
-                            {% if member.name != acc.driver_id__name %}
-                            {{acc.driver_id__name}}({{acc.bus_id__vehicle_num}})
-                            {% endif %}
-                            {% endfor %}
-                        {% endfor %}
+                </thead>
+                <tbody>
+                    <!-- 11번 반복 -->
+                    {% for idx in "12345678901" %}
+                    <tr>
+                        {% if forloop.counter0 < datas.data|length %}
+                        {% with connect=datas.data|index:forloop.counter0 %}
+                        <td>{{ connect.departure }}</td>
+                        <td><input type="text" value="{{ connect.departure_date|slice:'10:' }}" /></td>
+                        <td><input type="text" value="{{ connect.departure_km|intcomma}}"/></td>
+                        <td>{{ connect.arrival }}</td>
+                        <td><input type="text" value="{{ connect.arrival_date|slice:'10:' }}" /></td>
+                        <td><input type="text" value="{{ connect.arrival_km|intcomma}}"/></td>
+                        <td><input type="text" value="{{ connect.passenger_num}}" /></td>
+                        {% endwith %}
+                        {% else %}
+                        <td></td>
+                        <td><input type="text" value="" /></td>
+                        <td><input type="text" value="" /></td>
+                        <td></td>
+                        <td><input type="text" value="" /></td>
+                        <td><input type="text" value="" /></td>
+                        <td><input type="text" value="" /></td>
                         {% endif %}
-                    </div>
-                </div>
-            </div>
-
-
-
-            <div class="drivingPrintrecord">
-                <table class="drivingPrintrecordTable">
-                    <tr>
-                        <td>출발시간</td>
-                        <td>출발지</td>
-                        <td>출발전 Km</td>
-                        <td>인원</td>
-                        <td>도착시간</td>
-                        <td>도착지</td>
-                        <td>도착후 Km</td>
                     </tr>
+                    {% endfor %}
                     <tr>
-                        <td>
-                            <div class="tableHeight"></div>
+                        <td class="references" colspan="7">
+                            <p>※ 안전벨트 착용 등 안내방송 실시여부:
+                                <textarea></textarea>
+                            </p>
+                            <p>※ 운행간 특이사항 (사고/정비/고객사항 등):
+                                <textarea></textarea>
+                            </p>
                         </td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
                     </tr>
-                    <tr>
-                        <td>
-                            <div class="tableHeight"></div>
-                        </td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <div class="tableHeight"></div>
-                        </td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <div class="tableHeight"></div>
-                        </td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <div class="tableHeight"></div>
-                        </td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <div class="tableHeight"></div>
-                        </td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                    </tr>
-                </table>
-                <table class="drivingPrintrecordTable">
-                    <tr>
-                        <td>출발시간</td>
-                        <td>출발지</td>
-                        <td>출발전 Km</td>
-                        <td>인원</td>
-                        <td>도착시간</td>
-                        <td>도착지</td>
-                        <td>도착후 Km</td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <div class="tableHeight"></div>
-                        </td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <div class="tableHeight"></div>
-                        </td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <div class="tableHeight"></div>
-                        </td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <div class="tableHeight"></div>
-                        </td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <div class="tableHeight"></div>
-                        </td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <div class="tableHeight"></div>
-                        </td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                    </tr>
-                </table>
-            </div>
+                </tbody>
+            </table>
         </div>
     </div>
-    {% endwith %}
-    {% endwith %}
-    {% endwith %}
-    {% endwith %}
-    {% endwith %}
     {% endfor %}
 </body>
 
 <script src="{% static 'js/dispatch/driving_Print.js' %}"></script>
-
+<script>
+    console.log("{{connect_data}}")
+</script>
 </html>

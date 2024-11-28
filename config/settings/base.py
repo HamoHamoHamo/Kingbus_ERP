@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django_crontab',
+    'django.contrib.humanize',
 
     'crudmember.apps.CrudmemberConfig',
     'notice.apps.NoticeConfig',

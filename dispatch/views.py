@@ -8,8 +8,7 @@ import mimetypes
 import requests
 
 from config.settings.base import MEDIA_ROOT
-from django.db.models import Q, Sum, Prefetch, Case, When, Value, IntegerField, Subquery, OuterRef
-from django.db.models.functions import Coalesce
+from django.db.models import Q, Sum, Prefetch, Case, When, Value, IntegerField, Subquery, OuterRef, F
 from django.forms.models import model_to_dict
 from django.core.exceptions import ObjectDoesNotExist, MultipleObjectsReturned, BadRequest
 from django.http import Http404, JsonResponse, HttpResponse, HttpResponseNotAllowed
@@ -27,7 +26,7 @@ from crudmember.models import Category, Client
 from humanresource.models import Member, Salary, Team
 from humanresource.views import send_message
 from itertools import chain
-from vehicle.models import Vehicle, DailyChecklist
+from vehicle.models import Vehicle, DailyChecklist, Refueling
 
 from firebase.rpa_p_firebase import RpaPFirebase, TOUR_PATH
 from datetime import datetime, timedelta, date
@@ -4167,7 +4166,7 @@ def daily_driving_list(request):
         member_list = Member.objects.filter(id=request.session.get('user'))
     else:
         # member_list = Member.objects.filter(use='사용').filter(authority__gte=3)
-        member_list = Member.objects.filter(authority__gte=1)
+        member_list = Member.objects.filter(authority__gte=1).order_by('name')
     
     connect_object = {}
     e_connect_object = {}
@@ -4208,39 +4207,136 @@ def daily_driving_print(request):
         id_list = request.GET.get('id').split(',')
 
     date = request.GET.get('date')
+
     context = {}
-    context['member_list'] = []
-    context['order_list'] = []
-    context['e_order_list'] = []
-    context['c_order_list'] = []
-    context['accompany_list'] = []
     context['cnt'] = len(id_list)
     context['date'] = date
 
+
+    # 배차 데이터 불러오기
+    regularly_list = DispatchRegularlyConnect.objects.filter(departure_date__startswith=date).filter(driver_id__in=id_list).order_by('departure_date').annotate(
+        departure_km=F("driving_history_regularly__departure_km"),
+        arrival_km=F("driving_history_regularly__arrival_km"),
+        passenger_num=F("driving_history_regularly__passenger_num"),
+        departure=F('regularly_id__departure'),
+        arrival=F('regularly_id__arrival'),
+        bus_num=F('bus_id__vehicle_num'),
+    ).values(
+        'departure_km',
+        'arrival_km',
+        'passenger_num',
+        'departure_date',
+        'arrival_date',
+        'departure',
+        'arrival',
+        'driver_id',
+        'driver_id__name',
+        'bus_num',
+        'bus_id',
+    )
+    order_list = DispatchOrderConnect.objects.filter(departure_date__lte=f'{date} 24:00').filter(arrival_date__gte=f'{date} 00:00').filter(driver_id__in=id_list).order_by('departure_date').annotate(
+        departure_km=F("driving_history_order__departure_km"),
+        arrival_km=F("driving_history_order__arrival_km"),
+        passenger_num=F("driving_history_order__passenger_num"),
+        departure=F('order_id__departure'),
+        arrival=F('order_id__arrival'),
+        bus_num=F('bus_id__vehicle_num'),
+    ).values(
+        'departure_km',
+        'arrival_km',
+        'passenger_num',
+        'departure_date',
+        'arrival_date',
+        'departure',
+        'arrival',
+        'driver_id',
+        'driver_id__name',
+        'bus_num',
+        'bus_id',
+    )
+    # 두 데이터 리스트 합치기
+    combined_data = list(regularly_list) + list(order_list)
+    # departure_date 기준으로 정렬
+    combined_data = sorted(combined_data, key=lambda x: x["departure_date"])
+    
+    context['connect_data'] = []
     for id in id_list:
-        if id and date:
-            member = get_object_or_404(Member, id=id)
-            context['member_list'].append(member)
-            context['e_order_list'].append(DispatchRegularlyConnect.objects.select_related('regularly_id').filter(departure_date__startswith=date).filter(work_type="출근").filter(driver_id=member).order_by('departure_date'))
-            context['c_order_list'].append(DispatchRegularlyConnect.objects.select_related('regularly_id').filter(departure_date__startswith=date).filter(work_type="퇴근").filter(driver_id=member).order_by('departure_date'))
-            order_list = DispatchOrderConnect.objects.select_related('order_id').filter(departure_date__lte=f'{date} 24:00').filter(arrival_date__gte=f'{date} 00:00').filter(driver_id=member).order_by('departure_date')
-            context['order_list'].append(order_list)
+        # 해당 기사의 데이터 필터링
+        driver_data = [
+            item for item in combined_data 
+            if item['driver_id'] == int(id)
+        ]
+        
+        # 버스 번호로 데이터 분류
+        vehicle_groups = {}
+        for item in driver_data:
+            vehicle_num = item['bus_num']
+            vehicle_id = item['bus_id']
+            
+            # 각 차량별로 별도의 데이터 그룹 생성
+            if vehicle_id not in vehicle_groups:
+                vehicle_groups[vehicle_id] = {
+                    'driver': item['driver_id__name'],
+                    'bus_num': vehicle_num,
+                    'data': [],
+                    'bus_id': vehicle_id
+                }
+            
+            vehicle_groups[vehicle_id]['data'].append(item)
+        
+        # 각 차량 데이터를 context['connect_data']에 추가
+        for vehicle_id, vehicle_data in vehicle_groups.items():
+            # 첫번째와 마지막 데이터의 km 설정
+            if vehicle_data['data']:
+                vehicle_data['departure_km'] = vehicle_data['data'][0]['departure_km']
+                vehicle_data['arrival_km'] = vehicle_data['data'][-1]['arrival_km']
+            
+            context['connect_data'].append(vehicle_data)
+    
+    # test
+    for test in context['connect_data']:
+        print(test)
+            
+        print()
 
-            temp = []
-            for order in order_list:
-                connect_list = order.order_id.info_order.all()
-                if connect_list.count() > 1:
-                    temp.append(connect_list.values('departure_date', 'driver_id__name', 'bus_id__vehicle_num'))
-                else:
-                    temp.append('')
+    # 해당 날짜의 주유 데이터 가져오기
+    refueling_list = Refueling.objects.filter(refueling_date__startswith=date).filter(driver__in=id_list).order_by('refueling_date').values(
+        'refueling_date',
+        'km',
+        'refueling_amount',
+        'urea_solution',
+        'driver_id',
+        'driver__name',
+        'vehicle',
+    )
 
-            context['accompany_list'].append(temp)
+    # context['connect_data']에 주유 데이터 추가
+    for driver_data in context['connect_data']:
+        driver_id = driver_data['data'][0]['driver_id']
+        driver_bus_id = driver_data['data'][0]['bus_id']
+        
+        # 해당 기사, 해당 차량의 주유 데이터 필터링
+        driver_refueling_data = [
+            item for item in refueling_list 
+            if item['driver_id'] == driver_id and item['vehicle'] == driver_bus_id
+        ]
 
-
+        # 주유량과 요소수 합계 계산
+        if driver_refueling_data:
+            # 문자열로 된 값을 숫자로 변환하여 합계 계산
+            total_refueling_amount = sum(int(item['refueling_amount']) for item in driver_refueling_data)
+            total_urea_solution = sum(int(item['urea_solution']) for item in driver_refueling_data)
+            
+            driver_data['refueling'] = {
+                'refueling_amount': total_refueling_amount,
+                'urea_solution': total_urea_solution,
+            }
         else:
-            raise Http404
-
-
+            # 주유 데이터가 없는 경우 0으로 초기화
+            driver_data['refueling'] = {
+                'refueling_amount': 0,
+                'urea_solution': 0
+            }
 
     return render(request, 'dispatch/daily_driving_print.html', context)
 
