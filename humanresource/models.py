@@ -8,6 +8,7 @@ from common.constant import TODAY, WEEK
 from django.apps import apps
 from salary.selectors import SalarySelector
 from salary.models import HourlyWage
+from django.core.exceptions import ValidationError
 
 class Team(models.Model):
     name =models.CharField(verbose_name='팀이름', max_length=100, null=False, blank=False)
@@ -116,6 +117,28 @@ class MemberFile(models.Model):
 #     def __str__(self):
 #         return self.member_id.name
 
+class Notification(models.Model):
+    CATEGORY_CHOCIES = [
+        ('문제발생', '문제발생'),
+        ('일정', '일정'),
+    ]
+
+    member_id = models.ForeignKey(Member, on_delete=models.CASCADE, related_name="notification", null=False)
+    title = models.CharField(verbose_name='제목', max_length=100, null=False)
+    content = models.CharField(verbose_name='내용', max_length=100, null=False)
+    is_read = models.BooleanField(verbose_name='확인 여부', null=False, default=False)
+    category = models.CharField(verbose_name='종류', max_length=100, null=False, choices=CATEGORY_CHOCIES)
+    send_datetime = models.CharField(verbose_name='', max_length=19, null=False)
+    creator = models.ForeignKey(Member, on_delete=models.SET_NULL, related_name="notification_creator", db_column="user_id", null=True)
+    pub_date = models.DateTimeField(verbose_name='작성시간', auto_now_add=True, null=False)
+    updated_at = models.DateTimeField(auto_now=True, verbose_name='수정시간')
+
+    def clean(self):
+        # `yyyy-MM-dd HH:mm:ss` 형식 확인
+        try:
+            datetime.strptime(self.send_datetime, '%Y-%m-%d %H:%M:%S')
+        except ValueError:
+            raise ValidationError("send_datetime must be in 'yyyy-MM-dd HH:mm:ss' format.")
 
 class Salary(models.Model):
     def set_new_annual_allowance(month, member):
