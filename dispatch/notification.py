@@ -4,11 +4,29 @@ from config.settings.base import TODAY, FORMAT
 from config.custom_logging import logger
 from django.db.models import Q, Prefetch
 from humanresource.views import send_message
+from humanresource.models import Notification
 
+def save_notification(member, title, content, category):
+    # 동일한 알림이 이미 저장되어 있는지 확인
+    if not Notification.objects.filter(
+        member_id=member,
+        title=title,
+        content=content,
+        category=category,
+        send_datetime=datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
+    ).exists():
+        Notification.objects.create(
+            member_id=member,
+            title=title,
+            content=content,
+            category=category,
+            send_datetime=datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
+            creator=None
+        )
 ADMIN_AND_TEAMLEADER_ROLE = ["관리자", "팀장"]
 def get_admin_and_team_leader():
-    # return Member.objects.filter(role__in=ADMIN_AND_TEAMLEADER_ROLE, use="사용")
-    return Member.objects.filter(role__in=ADMIN_AND_TEAMLEADER_ROLE, use="사용").filter(name="김원탁")
+    return Member.objects.filter(role__in=ADMIN_AND_TEAMLEADER_ROLE, use="사용").filter(name="관리자")
+    # return Member.objects.filter(role__in=ADMIN_AND_TEAMLEADER_ROLE, use="사용").filter(name="김원탁")
 
 def driver_check_notification():
     now = datetime.now()
@@ -133,6 +151,14 @@ def driver_check_notification():
 
                     send_message(title, text, user.token, None)
 
+                    # 알림 저장
+                    save_notification(
+                        member=user,
+                        title=title,
+                        content=text,
+                        category="일정"
+                    )
+
         if i == 1:
             send_admin_alerts(regularly_dispatch1, order_dispatch1, admin_and_team_leads, "운행 준비 확인 필요", "아직 운행 준비 확인 되지 않았습니다.")
         elif i == 2:
@@ -148,7 +174,15 @@ def send_admin_alerts(regular_dispatches, order_dispatches, admin_and_team_leads
         dispatch.save()
         for admin in admin_and_team_leads:
             send_message(admin_title, f"기사 {dispatch.driver_id} {admin_text}", admin.token, None)
-   
+             
+             # 알림 저장
+            save_notification(
+                member=admin,
+                title=admin_title,
+                content=f"기사 {dispatch.driver_id} {admin_text}",
+                category="문제발생"
+            )  
+            
 # rpad 관리자 알림
 
 # 정류장 체크 시간 맞춰 체크 하지 않을 경우 관리자에게 알림
@@ -205,7 +239,14 @@ def send_notification_to_manager(title: str, text: str):
     for target in targets:
         # print("Target: ", target)
         send_message(title, text, target.token, None)
-
+        
+        # 알림 저장
+        save_notification(
+            member=target,
+            title=title,
+            content=text,
+            category="문제발생"
+        )
 
 from django.db import connection, reset_queries
 import time
