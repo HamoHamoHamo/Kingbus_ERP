@@ -239,7 +239,14 @@ def send_notification_to_manager(title: str, text: str):
     for target in targets:
         # print("Target: ", target)
         send_message(title, text, target.token, None)
-
+        
+        # 알림 저장
+        save_notification(
+            member=target,
+            title=title,
+            content=text,
+            category="문제발생"
+        )
 
 from django.db import connection, reset_queries
 import time
