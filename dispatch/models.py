@@ -490,6 +490,8 @@ class EveningChecklist(models.Model):
     urea_solution_quantity = models.CharField(verbose_name="요소수량", max_length=100, null=False, blank=True)
     suit_gauge = models.CharField(verbose_name="수트게이지", max_length=100, null=False, blank=True)
     special_notes = models.CharField(verbose_name="특이사항", max_length=100, null=False, blank=True)
+    latitude = models.CharField(verbose_name="위도", max_length=100, null=False, blank=True)
+    longitude = models.CharField(verbose_name="경도", max_length=100, null=False, blank=True)
     pub_date = models.DateTimeField(auto_now_add=True, verbose_name='작성시간')
     updated_at = models.DateTimeField(auto_now=True, verbose_name='수정시간')
     creator = models.ForeignKey(Member, on_delete=models.SET_NULL, related_name="evening_checklist_creator", db_column="creator_id", null=True)
