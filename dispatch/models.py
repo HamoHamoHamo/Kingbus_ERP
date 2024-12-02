@@ -201,6 +201,18 @@ class DispatchRegularlyRouteKnow(models.Model):
     def __str__(self):
         return f'{self.regularly_id.route} {self.driver_id.name}'
 
+# 배차 즐겨찾기
+class DispatchRegularlyFavorite(models.Model):
+    regularly_id = models.ForeignKey(DispatchRegularlyData, related_name="regularly_favorite", on_delete=models.CASCADE, null=False)
+    driver_id = models.ForeignKey(Member, related_name="regularly_favorite", on_delete=models.CASCADE, null=False)
+    pub_date = models.DateTimeField(auto_now_add=True, verbose_name='작성시간')
+    updated_at = models.DateTimeField(auto_now=True, verbose_name='수정시간')
+    creator = models.ForeignKey(Member, on_delete=models.SET_NULL, related_name="regularly_favorite_creator", db_column="creator_id", null=True)
+    
+    def __str__(self):
+        return f'{self.regularly_id.route} {self.driver_id.name}'
+
+
 class DispatchOrder(models.Model):
     def get_hour_minute(self):
         return get_hour_minute(int(self.time)) if self.time else ""
