@@ -8,7 +8,7 @@
 
 .orderExcelList {
   display: flex;
-  width: 40rem;
+  width: 25rem;
   justify-content: space-between;
 }
 
@@ -435,8 +435,7 @@
   height: 3.6rem;
 }
 
-.dispatchBtn,
-.tourReservationBtn {
+.dispatchBtn {
   background-color: #0069D9;
 }
 
@@ -748,7 +747,6 @@
 
 .waypoinBtn {
   background-color: #0069D9;
-  width: 5rem;
 }
 
 .popupArticleCategori {
@@ -773,11 +771,11 @@
 }
 
 .scrolling_table-list_body {
-  height: 14.4rem;
+  height: 28.4rem;
 }
 
 .popupContainerDouble {
-  width: 84rem;
+  width: 100rem;
 }
 
 .popupArticleBoxTable td:nth-child(1) {
@@ -822,9 +820,17 @@
   background-color: #444;
 }
 
-.addWaypointBtn {
+.waypointBtn {
   background-color: #0069D9;
-  margin-left: auto;
+  margin-left: 1rem;
+}
+
+.displayNone {
+  display: none;
+}
+
+.cancelWaypointBtn {
+  background-color: #444;
 }
 
 .stationTable input[type=text] {
@@ -856,10 +862,6 @@
 .accountArticle {
   justify-content: flex-start;
   width: 100%;
-}
-
-.popupArticleTriple {
-  width: calc(33% - 2rem);
 }
 
 .popupArticleDouble .accountSelect {
@@ -897,17 +899,8 @@
   margin-right: 1rem;
 }
 
-.accountCloseBtn,
-.waypointCloseBtn,
-.waypointDeleteBtn {
+.accountCloseBtn {
   background-color: #444;
-}
-
-.stationPopupFooter {
-  justify-content: space-between;
-}
-.popupFooterRightBox {
-  display: flex;
 }
 
 .loadAccountBtn {
@@ -920,9 +913,15 @@
   cursor: pointer;
 }
 
+.blockInput {
+  background-color: #CDCDCE;
+  font-size: 1.6rem;
+  border: 0.1rem solid black;
+}
+
 .popupArticleDouble
 .stationSearchInput {
-  width: 19rem;
+  width: 23rem;
 }
 
 .stationSearchButton {
@@ -932,8 +931,14 @@
 .stationSearchBox {
   display: flex;
   justify-content: space-between;
-  width: 27rem;
+  width: 33rem;
   position: relative;
+}
+
+.popupArticleDouble .popupArticleinput {
+  width: 33rem;
+  line-height: 2.4rem;
+  font-size: 1.5rem;
 }
 
 .stationSearchResultBox {
@@ -1088,65 +1093,23 @@
   font-size: 1.2rem;
 }
 
-.waypointBox {
-  display: flex;
+.popupArticleMapDiv {
+  display: none;
 }
 
-
-.popupBodyReservation{
-  height: calc(100% - 3.6rem);
+#map {
+  height: 29.5rem;
 }
 
-.popupContainerReservation{
-  width: 110rem;
-}
-
-.categoriFlex{
-  display: flex;
-  justify-content: space-between;
-}
-
-.reservationTable td:nth-child(1){
-  width: 5%;
-}
-.reservationTable td:nth-child(2){
-  width: 15%;
-}
-.reservationTable td:nth-child(3){
-  width: 15%;
-}
-.reservationTable td:nth-child(4){
-  width: 15%;
-}
-.reservationTable td:nth-child(5){
-  width: 35%;
-}
-.reservationTable td:nth-child(6){
-  width: 15%;
-}
-
-.delete{
+.mapCloseBtn {
   background-color: #444;
-  margin-right: auto;
+  position: relative;
 }
 
-.save{
-  background-color: #0069D9;
-  margin-right: 2rem;
+.table-list_body-tr {
+  cursor: pointer;
 }
 
-.close{
-  background-color: #444;
-}
-
-.datetimeLocal{
-  height: 3rem;
-}
-
-.popupArticleBoxAddBtn {
+.popupStationInfoBtnBox {
   justify-content: right;
-}
-
-.tourReservationAddBtn {
-  background-color: #0069D9;
 }

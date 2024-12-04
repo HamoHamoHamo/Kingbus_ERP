@@ -135,7 +135,6 @@
                 <input type="hidden" name="station_time" value="{{station.time}}">
                 <input type="hidden" name="delegate" value="{{station.delegate}}">
                 <input type="hidden" name="delegate_phone" value="{{station.delegate_phone}}">
-
                 <input type="hidden" name="place_name" value="{{station.place_name}}">
                 <input type="hidden" name="address" value="{{station.address}}">
                 <input type="hidden" name="latitude" value="{{station.latitude}}">
@@ -176,13 +175,21 @@
                         <col style="width: 17%;">
                     </colgroup>
                     <tr>
+                        {% if detail %}
+                        <td class="tdTypeA">*출발지</td>
+                        <td class="tdTypeC">
+                            <input readonly value="{{detail.departure}}" name="departure" type="text" class="inputText inputDeparture length200 essential blockInput openStationPopupBtn">
+                        </td>
+                        <td class="tdTypeA">예상거리</td>
+                        <td class="tdTypeC">
+                            <input readonly value="{{detail.distance}} km" type="text" class="inputText length200 blockInput openTimeDistancePopupBtn">
+                        </td>
+                        {% else %}
                         <td class="tdTypeA">*출발지</td>
                         <td colspan="3" class="tdTypeB">
-                            <div class="waypointBox">
-                                <input autocomplete="off" value="{{detail.departure}}" name="departure" type="text" class="inputText inputTextDeparture length200 essential" tabindex="1">
-                                <div class="btnModules waypoinBtn">+경유지</div>
-                            </div>
+                            <input readonly value="{{detail.departure}}" name="departure" type="text" class="inputText inputDeparture length200 essential blockInput openStationPopupBtn">
                         </td>
+                        {% endif %}
                         <td class="tdTypeA">*계약금액</td>
                         <td class="tdTypeC">
                             <input autocomplete="off" value="{{detail.price}}" name="price" type="text"
@@ -195,10 +202,21 @@
                         </td>
                     </tr>
                     <tr>
+                        {% if detail %}
+                        <td class="tdTypeA">*도착지</td>
+                        <td class="tdTypeC">
+                            <input readonly value="{{detail.arrival}}" name="arrival" type="text" class="inputText inputArrival length200 essential blockInput openStationPopupBtn" tabindex="2">
+                        </td>
+                        <td class="tdTypeA">근무시간</td>
+                        <td class="tdTypeC">
+                            <input readonly value="{{detail.get_hour_minute}}" type="text" class="inputText length200 blockInput openTimeDistancePopupBtn">
+                        </td>
+                        {% else %}
                         <td class="tdTypeA">*도착지</td>
                         <td colspan="3" class="tdTypeB">
-                            <input autocomplete="off" value="{{detail.arrival}}" name="arrival" type="text" class="inputText inputArrival length200 essential" tabindex="2">
+                            <input readonly value="{{detail.arrival}}" name="arrival" type="text" class="inputText inputArrival length200 essential blockInput openStationPopupBtn" tabindex="2">
                         </td>
+                        {% endif %}
                         <td class="tdTypeA">버스옵션</td>
                         <td colspan="3" class="tdTypeB">
                             <input autocomplete="off" {% if detail.option and detail.option|in_check:'음향' %} checked {% endif %} name="option" value="음향" type="checkbox" id="sound">
@@ -554,12 +572,18 @@
                                 </div>
                                 <div class="orderListMainContents orderListMain2">
                                     <div>
+                                        {% if not order.station.all %}
                                         {{order.departure}} ▶
+                                        {% endif %}
                                     </div>
-                                    {% for waypoint in order.station.all %}
-                                    <div>{{waypoint.station_name}}{% if waypoint.time %}({{waypoint.time}}){% endif %}{% if waypoint.delegate or waypoint.delegate_phone %} - {% endif %}{{waypoint.delegate}}{% if waypoint.delegate_phone %}({{waypoint.delegate_phone}}){% endif %}</div>
+                                    {% for station in order.station.all %}
+                                        <div>{{station.station_name}}{% if station.time %}({{station.time}}){% endif %}{% if station.delegate or station.delegate_phone %} - {% endif %}{{station.delegate}}{% if station.delegate_phone %}({{station.delegate_phone}}){% endif %}</div>
                                     {% endfor %}
-                                    <div>{{order.arrival}}</div>
+                                    <div>
+                                        {% if not order.station.all %}
+                                        {{order.arrival}}
+                                        {% endif %}
+                                    </div>
                                 </div>
                             </div>
                             {% endfor %}
@@ -665,19 +689,48 @@
     <div class="popupBgModules"></div>
     <div class="popupContainer popupContainerDouble">
         <div class="popupHeader">
-            <div class="popupTitle">경유지 추가</div>
+            <div class="popupTitle">정류장 추가</div>
         </div>
-        <div class="popupBody">
+        <div class="popupBody stationPopupBody">
             <div class="popupSection">
-                <div class="popupArticleCategori">경유지 정보</div> 
+                <div class="popupArticleCategori">정류장 정보</div>
                 <div class="popupArticleBox">
                     <div class="popupArticleDouble">
-                        <label for="" class="popupArticleLabel"><span class="importantStar">*</span>경유지</label>
-                        <input autocomplete="off" type="text" class="popupArticleinput waypointInput length100">
+                        <label for="" class="popupArticleLabel"><span class="importantStar">*</span>장소 검색</label>
+                        <div class="stationSearchBox">
+                            <input autocomplete="off" type="text" class="popupArticleinput length100 stationSearchInput">
+                            <div class="btnModules backgroundBlue stationSearchButton">검색</div>
+                            <div class="popupSectionDispatch stationSearchResultBox">
+                                <div class="stationSearchLoadingBox">
+                                    <iframe src="https://giphy.com/embed/sSgvbe1m3n93G" width="18" height="18" frameborder="0" class="giphy-embed" allowfullscreen=""></iframe>
+                                </div>
+                                
+                            </div>
+                        </div>
                     </div>
                     <div class="popupArticleDouble">
-                        <label for="" class="popupArticleLabel">시간</label>
-                        <input autocomplete="off" type="number" class="popupArticleinput waypointTimeInput" placeholder="' : '없이 입력해 주세요 ex)1640" maxlength="4">
+                        <label for="" class="popupArticleLabel"><span class="importantStar">*</span>정류장명</label>
+                        <input autocomplete="off" class="popupArticleinput stationInput length100">
+                    </div>
+                </div>
+                <div class="popupArticleBox">
+                    <div class="popupArticleDouble">
+                        <label for="" class="popupArticleLabel"><span class="importantStar">*</span>장소명</label>
+                        <input autocomplete="off" type="text" class="popupArticleinput inputPlace">
+                    </div>
+                    <div class="popupArticleDouble">
+                        <label for="" class="popupArticleLabel"><span class="importantStar">*</span>주소</label>
+                        <input autocomplete="off" type="text" class="popupArticleinput inputAddress">
+                    </div>
+                </div>
+                <div class="popupArticleBox">
+                    <div class="popupArticleDouble">
+                        <label for="" class="popupArticleLabel"><span class="importantStar">*</span>위도</label>
+                        <div autocomplete="off" type="text" class="popupArticleinput blockInput inputLatitude"></div>
+                    </div>
+                    <div class="popupArticleDouble">
+                        <label for="" class="popupArticleLabel"><span class="importantStar">*</span>경도</label>
+                        <div autocomplete="off" type="text" class="popupArticleinput blockInput inputLongitude"></div>
                     </div>
                 </div>
                 <div class="popupArticleBox">
@@ -691,54 +744,76 @@
                     </div>
                 </div>
                 <div class="popupArticleBox">
-                    <div class="btnModules addWaypointBtn">추가</div>
+                    <div class="popupArticleDouble">
+                        <label for="" class="popupArticleLabel">시간</label>
+                        <input autocomplete="off" type="number" class="popupArticleinput stationTimeInput length100" placeholder="' : '없이 입력해 주세요 ex)1640">
+                    </div>
                 </div>
-                <div class="popupArticleCategori">경유지 목록</div>                
-                <div class="popupArticleBoxTable">
-                    <div class="scrolling_table-list_header">
-                        <table class="table-list">
-                          <thead>
-                            <tr class="table-list_head-tr">
-                              <td class="table-list_head-tr_td">선택</td>
-                              <td class="table-list_head-tr_td">경유지</td>
-                              <td class="table-list_head-tr_td">시간</td>
-                              <td class="table-list_head-tr_td">인솔자</td>
-                              <td class="table-list_head-tr_td">전화번호</td>
-                            </tr>
-                          </thead>
-                        </table>
-                      </div>
-                      <div class="scrolling_table-list_body">
-                        <table class="table-list waypointTable">
-                          <tbody>
-                            {% for waypoint in detail.station.all %}
-                            <tr class="table-list_body-tr">
-                                <td class="table-list_body-tr_td">
-                                    <input type="checkbox" calss="waypointCheckbox">
-                                </td>
-                                <td class="table-list_body-tr_td">{{waypoint.station_name}}</td>
-                                <td class="table-list_body-tr_td">{{waypoint.time}}</td>
-                                <td class="table-list_body-tr_td">{{waypoint.delegate}}</td>
-                                <td class="table-list_body-tr_td">{{waypoint.delegate_phone}}</td>
-                            </tr>
-                            {% endfor %}
-                          </tbody>
-                        </table>
-                      </div>
+                <div class="popupArticleBox popupStationInfoBtnBox">
+                    <div class="btnModules waypointBtn displayNone cancelWaypointBtn">취소</div>
+                    <div class="btnModules waypointBtn displayNone editWaypointBtn">수정</div>
+                    <div class="btnModules waypointBtn addWaypointBtn">추가</div>
                 </div>
+                <div class="popupArticleCategoryDiv">
+                    <div class="popupArticleCategori">정류장 목록</div>
+                    <div class="popupArticleBoxTable">
+                        <div class="scrolling_table-list_header">
+                            <table class="table-list">
+                              <thead>
+                                <tr class="table-list_head-tr">
+                                  <td class="table-list_head-tr_td">선택</td>
+                                  <td class="table-list_head-tr_td">정류장</td>
+                                  <td class="table-list_head-tr_td">시간</td>
+                                  <td class="table-list_head-tr_td">인솔자</td>
+                                  <td class="table-list_head-tr_td">전화번호</td>
+                                  <td class="table-list_head-tr_td">장소명</td>
+                                  <td class="table-list_head-tr_td">주소</td>
+                                </tr>
+                              </thead>
+                            </table>
+                          </div>
+                          <div class="scrolling_table-list_body">
+                            <table class="table-list stationTable">
+                              <tbody>
+                                {% for station in detail.station.all %}
+                                <tr class="table-list_body-tr">
+                                    <td class="table-list_body-tr_td">
+                                        <input type="checkbox" calss="stationCheckbox">
+                                    </td>
+                                    <td class="table-list_body-tr_td trStationInfoStationName">{{station.station_name}}</td>
+                                    <td class="table-list_body-tr_td trStationInfoTime">{{station.time}}</td>
+                                    <td class="table-list_body-tr_td trStationInfoDelegate">{{station.delegate}}</td>
+                                    <td class="table-list_body-tr_td trStationInfoDelegatePhone">{{station.delegate_phone}}</td>
+                                    <td class="table-list_body-tr_td trStationInfoPlaceName">{{station.place_name}}</td>
+                                    <td class="table-list_body-tr_td trStationInfoAddress">{{station.address}}</td>
+                                    <td class="trStationInfoLatitude" style="display: none">{{station.latitude}}</td>
+                                    <td class="trStationInfoLongitude" style="display: none">{{station.longitude}}</td>
+                                </tr>
+                                {% endfor %}
+                              </tbody>
+                            </table>
+                          </div>
+                    </div>
+                </div>
+                <div class="popupArticleMapDiv">
+                    <div class="popupArticleCategori">지도</div>
+                    <div class="popupArticleBoxTable">
+                        <div id="map"></div>
+                    </div>
+                    <div class="btnModules mapCloseBtn">지도 닫기</div>
+                </div>
+                
             </div>
-            <div class="popupFooter stationPopupFooter">
-                <div class="popupFooterLeftBox">
-                    <div class="btnModules waypointDeleteBtn">삭제</div>
-                </div>
-                <div class="popupFooterRightBox">
-                    <div class="btnModules addtionalBtn">확인</div>
-                    <div class="btnModules waypointCloseBtn">닫기</div>
-                </div>
+            <div class="popupFooter">
+                <div class="btnModules stationDeleteBtn">삭제</div>
+                <div class="btnModules addtionalBtn">확인</div>
+                <div class="btnModules stationCloseBtn">닫기</div>
             </div>
         </div>
     </div>
 </div>
+
+
 
 <div class="popupAreaModules">
     <div class="popupBgModules"></div>
@@ -856,7 +931,6 @@
         </div>
     </form>
 </div>
-
 <div class="popupAreaModules" id="detailMapCalculatePopup">
     <div class="popupBgModules" id="detailMapCalculatePopupBg"></div>
     <div class="popupContainer popupContainerMap">
@@ -872,8 +946,8 @@
                                 <td>번호</td>
                                 <td>정류장명</td>
                                 <td>시각</td>
-                                <td>거리</td>
-                                <td>시간</td>
+                                <td>예상거리</td>
+                                <td>근무시간</td>
                             </tr>
                         </thead>
                         <tbody class="detailRoutePopupScrollBoxTbody">
@@ -887,7 +961,6 @@
                             </tr>
                             {% endfor %}
                         </tbody>
-
                     </table>
                 </div>
             </div>
@@ -1011,7 +1084,6 @@
   
 
 
-
 {% block script %}
 <script>
     {%  autoescape off %}
@@ -1056,6 +1128,7 @@
     }
 
 </script>
+<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=cfe7bfe4704641eb54a10266d3d3ac7e"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.15.5/xlsx.full.min.js"></script>
 <script src="{% static 'js/lodash.js' %}"></script>
 <script src="{% static 'js/dispatch/order/orderAll.js' %}"></script>
@@ -1074,6 +1147,6 @@
 <script src="{% static 'js/dispatch/order/loadAccount.js' %}"></script>
 <script src="{% static 'js/dispatch/order/excel.js' %}"></script>
 <script src="{% static 'js/dispatch/order/tourReservation.js' %}"></script>
-<!-- <script type="module" src="{% static 'js/dispatch/order/stationPopup.js' %}"></script> -->
-<script type="module" src="{% static 'js/dispatch/order/waypoint.js' %}"></script>
+<script type="module" src="{% static 'js/dispatch/order/stationPopup.js' %}"></script>
+<!-- <script type="module" src="{% static 'js/dispatch/order/waypoint.js' %}"></script> -->
 {% endblock %}

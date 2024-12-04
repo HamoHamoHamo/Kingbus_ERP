@@ -528,7 +528,7 @@ class RollCallList(generic.ListView):
         # 기본값 모두 체크
         if not time_list:
             min_time = f'{date} 04:00'
-            max_time = f'{date} 24:59'
+            max_time = f'{date} 23:59'
             q_objects |= (Q(departure_date__lte=max_time) & Q(departure_date__gte=min_time))
 
         connect_list = connect_list.filter(q_objects).order_by('departure_date')
@@ -569,7 +569,7 @@ class RollCallList(generic.ListView):
 
         time_list = []
         count = 4
-        for i in range(19):
+        for i in range(20):
             if count < 10:
                 time_list.append(f"0{count}")
             else:
@@ -3429,7 +3429,7 @@ def order_create(request):
                 raise BadRequest("정류장 정보를 잘못 입력하셨습니다.", e)
 
             # 노선의 정류장에서 정류장 사이의 거리, 시간 측정해서 저장
-            # get_order_distance_and_time(order)
+            get_order_distance_and_time(order)
 
             return redirect(reverse('dispatch:order') + f'?date1={request.POST.get("departure_date")}&date2={request.POST.get("arrival_date")}')
         else:
@@ -3635,7 +3635,7 @@ def order_edit(request):
                 raise BadRequest("정류장 정보를 잘못 입력하셨습니다.", e)
             
             # 노선의 정류장에서 정류장 사이의 거리, 시간 측정해서 저장
-            # get_order_distance_and_time(order)
+            get_order_distance_and_time(order)
 
             return redirect(request.META.get('HTTP_REFERER', 'redirect_if_referer_not_found'))
         else:
@@ -3644,20 +3644,46 @@ def order_edit(request):
         return HttpResponseNotAllowed(['post'])
 
 def create_order_stations(request, order, creator):
-    waypoint_list = request.POST.getlist('station_name')
-    waypoint_time_list = request.POST.getlist('station_time')
+    station_list = request.POST.getlist('station_name')
+    station_time_list = request.POST.getlist('station_time')
     delegate_list = request.POST.getlist('delegate')
     delegate_phone_list = request.POST.getlist('delegate_phone')
-    for i in range(len(waypoint_list)):
-        waypoint = DispatchOrderStation(
-            order_id=order,
-            station_name=waypoint_list[i],
-            time=waypoint_time_list[i],
-            delegate=delegate_list[i] if delegate_list[i] != " " else '',
-            delegate_phone=delegate_phone_list[i] if delegate_phone_list[i] != " " else '',
-            creator=creator,
+    place_name_list = request.POST.getlist('place_name')
+    address_list = request.POST.getlist('address')
+    longitude_list = request.POST.getlist('longitude')
+    latitude_list = request.POST.getlist('latitude')
+
+    if (len(station_time_list) == len(station_list) and
+    len(delegate_list) == len(station_list) and
+    len(delegate_phone_list) == len(station_list) and
+    len(place_name_list) == len(station_list) and
+    len(address_list) == len(station_list) and
+    len(longitude_list) == len(station_list) and
+    len(latitude_list) == len(station_list)):
+        for i in range(len(station_list)):
+            station = DispatchOrderStation(
+                order_id=order,
+                station_name=station_list[i],
+                place_name=place_name_list[i],
+                address=address_list[i],
+                longitude=longitude_list[i],
+                latitude=latitude_list[i],
+                time=station_time_list[i],
+                delegate=delegate_list[i],
+                delegate_phone=delegate_phone_list[i],
+                creator=creator,
+            )
+            station.save()
+    else:
+        raise Exception("정류장 데이터 개수 다름", 
+            len(station_time_list),
+            len(delegate_list),
+            len(delegate_phone_list),
+            len(place_name_list),
+            len(address_list),
+            len(longitude_list),
+            len(latitude_list), len(station_list)
         )
-        waypoint.save()
 
 def order_delete(request):
     if request.session.get('authority') > 3:
@@ -3932,9 +3958,9 @@ def order_download(request):
         print(e)
         #return JsonResponse({'status': 'fail', 'e': e})
         raise Http404
-    
-def get_place_info_from_kakao(query, page):
-    api_url = 'https://dapi.kakao.com/v2/local/search/keyword.json'
+
+def get_place_info_from_kakao_address_search(query, page):
+    api_url = 'https://dapi.kakao.com/v2/local/search/address.json'
     headers = {
         'Authorization': f"KakaoAK {KAKAO_KEY}"
     }
@@ -3945,22 +3971,56 @@ def get_place_info_from_kakao(query, page):
     }
     
     response = requests.get(api_url, params=params, headers=headers)
-    data = response.json()
+    datas = response.json()
+    data = {}
     
     if response.status_code == 200:
         try:
-            address = data['documents'][0]['address_name']
-            place_name = data['documents'][0]['place_name']
-            latitude = data['documents'][0]['y']
-            longitude = data['documents'][0]['x']
-            pageable_count = data['meta']['pageable_count']
-            return data, 'true'
+            data['address'] = datas['documents'][0]['address_name']
+            data['place_name'] = datas['documents'][0]['address_name'] # place_name 따로 없음
+            data['latitude'] = datas['documents'][0]['y']
+            data['longitude'] = datas['documents'][0]['x']
+            # data['pageable_count'] = datas['meta']['pageable_count']
+            return [data], True
         except Exception as e:
-            logger.error(f"kakao 장소 검색 api fail exception: {e} response : {data}")
-            return data, 'false'
+            # logger.error(f"kakao 장소 검색 api fail exception: {e} response : {data}")
+            return [], False
     else:
-        logger.error(f"kakao 장소 검색 api response code error {response.status_code} response : {data}")
-        return data, 'false'
+        logger.error(f"kakao 장소 검색 api response code error {response.status_code} response : {datas}")
+        return [], False
+
+def get_place_info_from_kakao_keyword_search(query, page):
+    api_url = 'https://dapi.kakao.com/v2/local/search/keyword.json'
+    headers = {
+        'Authorization': f"KakaoAK {KAKAO_KEY}"
+    }
+
+    params = {
+        'query': query,
+        'page': page,
+    }
+    
+    search_response = requests.get(api_url, params=params, headers=headers)
+    search_datas = search_response.json()
+    response = []
+    
+    if search_response.status_code == 200:
+        try:
+            for search_data in search_datas['documents']:
+                data = {}
+                data['address'] = search_data['address_name']
+                data['place_name'] = search_data['place_name']
+                data['latitude'] = search_data['y']
+                data['longitude'] = search_data['x']
+                # data['pageable_count'] = search_data['meta']['pageable_count']
+                response.append(data)
+            return response, True
+        except Exception as e:
+            # logger.error(f"kakao 장소 검색 api fail exception: {e} search_response : {search_data}")
+            return response, False
+    else:
+        logger.error(f"kakao 장소 검색 api response code error {search_response.status_code} search_response : {search_datas}")
+        return response, False
 
 def order_station_search(request):
     if request.session.get('authority') > 2:
@@ -3970,7 +4030,10 @@ def order_station_search(request):
         post_data = json.loads(request.body)
         query = post_data.get('query', '')
         page = post_data.get('page', 1)
-        data, result = get_place_info_from_kakao(query, page)
+        data1, result1 = get_place_info_from_kakao_address_search(query, page)
+        data2, result2 = get_place_info_from_kakao_keyword_search(query, page)
+        data = data1 + data2
+        result = result1 or result2
         return JsonResponse({'data': data, 'result': result, 'page': page})
     else:
         return HttpResponseNotAllowed(['POST'])

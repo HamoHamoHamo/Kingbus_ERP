@@ -5,9 +5,13 @@ const searchButton = document.querySelector(".stationSearchButton");
 const stationSearchResultBox = document.querySelector(".stationSearchResultBox");
 const stationSearchLoadingBox = document.querySelector(".stationSearchLoadingBox");
 const stationPopupBody = document.querySelector(".stationPopupBody");
+const popupArticleCategoryDiv = document.querySelector(".popupArticleCategoryDiv");
+const popupArticleMapDiv = document.querySelector(".popupArticleMapDiv");
+const mapCloseBtn = document.querySelector('.mapCloseBtn')
+
 
 stationPopupBody.addEventListener('click', (event) => {
-    if (event.target === searchInput && stationDatas.page > 1 || searchButton === event.target) {
+    if (event.target === searchInput && stationSearchResultBox.children.length > 1 || searchButton === event.target) {
         stationSearchResultBox.style.display = "block"
     }
     else {
@@ -32,15 +36,64 @@ function onClickSearch() {
     searchStation(searchInput.value, stationDatas.page);
     console.log('station', stationDatas)
 }
+mapCloseBtn.addEventListener('click', closeMap)
+
+function closeMap() {
+    popupArticleMapDiv.style.display = "none"
+    popupArticleCategoryDiv.style.display = "block"
+}
+
+function displayMap(longitude, latitude) {
+    // 지도 표시
+    popupArticleMapDiv.style.display = "block"
+    popupArticleCategoryDiv.style.display = "none"
+
+    // 지도 초기 세팅
+    if (map === null) {
+        // 지도 컨테이너와 옵션 설정
+        var container = document.getElementById('map');
+        var options = {
+            center: new kakao.maps.LatLng(longitude, latitude), // 초기 중심 좌표 (서울)
+            level: 3 // 지도 확대 레벨
+        };
+
+        // 지도 생성
+        map = new kakao.maps.Map(container, options);
+        // 마커 생성 (초기 지도 중심에 마커 표시)
+        var marker = new kakao.maps.Marker({
+            position: map.getCenter(), // 초기 마커 위치: 지도 중심
+            map: map // 마커를 지도에 표시
+        });
+        
+        // 지도 이동 이벤트 리스너 등록
+        kakao.maps.event.addListener(map, 'center_changed', function () {
+            // 지도 중심이 변경될 때 마커 위치 업데이트
+            var newCenter = map.getCenter(); // 새 지도 중심 좌표 가져오기
+            marker.setPosition(newCenter); // 마커 위치를 새 좌표로 업데이트
+            console.log("center", newCenter.La, newCenter.Ma)
+
+            inputLatitude.textContent = newCenter.Ma
+            inputLongitude.textContent = newCenter.La
+        });
+    }
+
+    const position = new kakao.maps.LatLng(latitude, longitude);
+    map.setCenter(position)
+    // setTimeout(() => {
+    //     const position = new kakao.maps.LatLng(latitude, longitude);
+    //     map.setCenter(position)
+    // }, 100);
+
+}
 
 function setStationDatas(data) {
     data.data.documents?.map((info) => {
         // console.log("TEST", info)
         const station = new Station(
-            info.address_name,
+            info.address,
             info.place_name,
-            info.x,
-            info.y,
+            info.longitude,
+            info.latitude,
         )
         stationDatas.addStation(station)
     })
@@ -52,18 +105,24 @@ function onClickInfoBox(e) {
     console.log("E", e)
     const infoBox = e.currentTarget
     console.log("infoBox", infoBox, infoBox.childNode)
-    inputPlace.textContent = infoBox.querySelector('.stationName').textContent
-    inputAddress.textContent = infoBox.querySelector('.stationAddress').textContent
-    inputLatitude.textContent = infoBox.querySelector('.stationLatitude').textContent
-    inputLongitude.textContent = infoBox.querySelector('.stationLongitude').textContent
+    inputPlace.value = infoBox.querySelector('.stationName').textContent
+    inputAddress.value = infoBox.querySelector('.stationAddress').textContent
+    const latitude = infoBox.querySelector('.stationLatitude').textContent
+    const longitude = infoBox.querySelector('.stationLongitude').textContent
+    inputLatitude.textContent = latitude
+    inputLongitude.textContent = longitude
 
+
+    // 지도 표시
+    displayMap(longitude, latitude)
 }
 
 // 검색 결과 만들기
 function createSearchInfoBox(data) {
     stationSearchLoadingBox.style.display = 'none'
     
-    data.data.documents?.map(info => {
+    data.data?.map(info => {
+        if (!info.place_name) return
         const infoBox = document.createElement('div')
         infoBox.setAttribute('class', 'stationSearchInfoBox')
         infoBox.addEventListener('click', onClickInfoBox)
@@ -73,16 +132,16 @@ function createSearchInfoBox(data) {
         name.setAttribute('class', 'stationName')
     
         const address = document.createElement('div')
-        address.textContent = info.address_name
+        address.textContent = info.address
         address.setAttribute('class', 'stationAddress')
 
         const latitude = document.createElement('div')
-        latitude.textContent = info.y
+        latitude.textContent = info.latitude
         latitude.style.display = 'none'
         latitude.setAttribute('class', 'stationLatitude')
 
         const longitude = document.createElement('div')
-        longitude.textContent = info.x
+        longitude.textContent = info.longitude
         longitude.style.display = 'none'
         longitude.setAttribute('class', 'stationLongitude')
 
@@ -110,12 +169,12 @@ function searchStation(query, page) {
             // visibleLoading.style.display = "none"
             uploadState = true
             console.log("API DATA", data)
-            if (data['result'] == 'true') {
+            if (data['result'] == true && data.data.length > 0) {
                 console.log("success data", data);
                 setStationDatas(data);
                 createSearchInfoBox(data);
 
-            } else if (data.data.meta.pageable_count === 0) {
+            } else if (data.data.length === 0) {
                 console.log("ERROR", data);
                 stationSearchResultBox.style.display = "none"
                 stationSearchLoadingBox.style.display = "none"
@@ -176,7 +235,7 @@ const openStationPopupBtn = document.querySelectorAll(".openStationPopupBtn")
 
 openStationPopupBtn.forEach(item => item.addEventListener("click", openStationPopup))
 
-
+let map = null
 function openStationPopup() {
     popupAreaModules[1].style.display = "block"
 }
@@ -213,13 +272,67 @@ const inputPlace = document.querySelector(".inputPlace")
 const inputAddress = document.querySelector(".inputAddress")
 const inputLatitude = document.querySelector(".inputLatitude")
 const inputLongitude = document.querySelector(".inputLongitude")
+let tableListBodyTr = document.querySelectorAll('.table-list_body-tr')
+const editWaypointBtn = document.querySelector(".editWaypointBtn")
+const cancelWaypointBtn = document.querySelector(".cancelWaypointBtn")
+let editIndex = null
+
+// 정류장 수정
+Array.from(tableListBodyTr).forEach(item => item.addEventListener('click', clickCreatedStation))
+
+// 정류장 목록에 있는 항목 클릭 시 정류장 정보에 데이터 보여주고 수정할 수 있게
+function clickCreatedStation(event) {
+    if (event.target.class == "stationCheckbox") return
+
+    // 정류장 정보에 데이터 넣기
+    const infoBox = event.target.parentNode
+    console.log("infoBox", infoBox, infoBox.querySelector('.trStationInfoLatitude').textContent)
+    
+    inputPlace.value = infoBox.querySelector('.trStationInfoPlaceName').textContent
+    inputAddress.value = infoBox.querySelector('.trStationInfoAddress').textContent
+
+    const y = infoBox.querySelector('.trStationInfoLatitude').textContent
+    const x = infoBox.querySelector('.trStationInfoLongitude').textContent
+    inputLatitude.textContent = y
+    inputLongitude.textContent = x
+
+    stationInput.value = infoBox.querySelector('.trStationInfoStationName').textContent
+    stationTimeInput.value = infoBox.querySelector('.trStationInfoTime').textContent
+    delegateInput.value = infoBox.querySelector('.trStationInfoDelegate').textContent
+    delegatePhoneInput.value = infoBox.querySelector('.trStationInfoDelegatePhone').textContent
+
+    // 버튼 변경
+    console.log("btn", editWaypointBtn)
+    editWaypointBtn.style.display = "flex"
+    cancelWaypointBtn.style.display = "flex"
+    addWaypointBtn.style.display = "none"
+    
+    // 수정할 index 저장
+    const parent = infoBox.parentNode
+    editIndex = Array.from(parent.children).indexOf(infoBox)
+    console.log("edit", editIndex)
+
+    displayMap(x, y)
+}
+
+editWaypointBtn.addEventListener('click', createWaypoint)
+
+cancelWaypointBtn.addEventListener('click', resetInfo)
+
+function resetInfo() {
+    editIndex = null
+    resetInput()
+    editWaypointBtn.style.display = "none"
+    cancelWaypointBtn.style.display = "none"
+    addWaypointBtn.style.display = "flex"
+    closeMap()
+}
 
 function createWaypoint() {
-    console.log(stationTimeInput.value.length !== 4 && stationTimeInput.value.length !== 0)
     if (stationInput.value == "") {
         alert("정류장명을 입력해 주세요.")
-    } else if (inputPlace.textContent == '' || 
-        inputAddress.textContent == '' ||
+    } else if (inputPlace.value == '' || 
+        inputAddress.value == '' ||
         inputLatitude.textContent == '' ||
         inputLongitude.textContent == ''
     ) {
@@ -227,7 +340,7 @@ function createWaypoint() {
     } else {
         const stationTr = document.createElement("tr")
         stationTr.setAttribute("class", "table-list_body-tr")
-        createTable.appendChild(stationTr);
+        stationTr.addEventListener('click', clickCreatedStation)
 
         const stationTd1 = document.createElement("td")
         stationTd1.setAttribute("class", "table-list_body-tr_td")
@@ -239,36 +352,49 @@ function createWaypoint() {
         stationTd1.appendChild(stationCheckbox);
 
         const stationTd2 = document.createElement("td")
-        stationTd2.setAttribute("class", "table-list_body-tr_td")
+        stationTd2.setAttribute("class", "table-list_body-tr_td trStationInfoStationName")
         stationTd2.innerText = stationInput.value
         stationTr.appendChild(stationTd2);
 
 
         const stationTd3 = document.createElement("td")
-        stationTd3.setAttribute("class", "table-list_body-tr_td")
+        stationTd3.setAttribute("class", "table-list_body-tr_td trStationInfoTime")
         stationTd3.innerText = `${stationTimeInput.value = stationTimeInput.value.replace(/^(\d{2})(\d{2})$/, `$1:$2`)}`
         stationTr.appendChild(stationTd3);
 
 
         const stationTd4 = document.createElement("td")
-        stationTd4.setAttribute("class", "table-list_body-tr_td")
+        stationTd4.setAttribute("class", "table-list_body-tr_td trStationInfoDelegate")
         stationTd4.innerText = delegateInput.value
         stationTr.appendChild(stationTd4);
 
 
         const stationTd5 = document.createElement("td")
-        stationTd5.setAttribute("class", "table-list_body-tr_td")
+        stationTd5.setAttribute("class", "table-list_body-tr_td trStationInfoDelegatePhone")
         stationTd5.innerText = `${delegatePhoneInput.value = delegatePhoneInput.value.replace(/^(\d{2,3})(\d{3,4})(\d{4})$/, `$1-$2-$3`)}`
         stationTr.appendChild(stationTd5);
 
         
-        stationTr.appendChild(createTableTd('table-list_body-tr_td tablePlace', inputPlace.textContent));
-        stationTr.appendChild(createTableTd('table-list_body-tr_td tableAddres', inputAddress.textContent));
-        stationTr.appendChild(createTableDiv('tableLatitude', inputLatitude.textContent));
-        stationTr.appendChild(createTableDiv('tableLongitude', inputLongitude.textContent));
+        stationTr.appendChild(createTableTd('table-list_body-tr_td tablePlace trStationInfoPlaceName', inputPlace.value));
+        stationTr.appendChild(createTableTd('table-list_body-tr_td tableAddres trStationInfoAddress', inputAddress.value));
+        stationTr.appendChild(createTableDiv('tableLatitude trStationInfoLatitude', inputLatitude.textContent));
+        stationTr.appendChild(createTableDiv('tableLongitude trStationInfoLongitude', inputLongitude.textContent));
         
+        // 수정인지 추가인지 확인
+        if (editIndex != null) {
+            const oldTr = createTable.children[editIndex]
+            createTable.insertBefore(stationTr, createTable.children[editIndex])
+            console.log("TEst", oldTr, editIndex)
+            oldTr.remove()
+        } else {
+            createTable.appendChild(stationTr);
+        }
+
         // 추가하면 입력된 값 지우기
-        resetInput()
+        resetInfo()
+
+        // 지도 닫기
+        closeMap()
     }
 }
 
@@ -277,8 +403,8 @@ function resetInput() {
     stationTimeInput.value = ""
     delegateInput.value = ""
     delegatePhoneInput.value = ""
-    inputPlace.textContent = ""
-    inputAddress.textContent = ""
+    inputPlace.value = ""
+    inputAddress.value = ""
     inputLatitude.textContent = ""
     inputLongitude.textContent = ""
     searchInput.value = ""
