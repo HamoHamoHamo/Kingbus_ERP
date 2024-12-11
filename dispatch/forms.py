@@ -3,13 +3,19 @@ from django.db import models
 import re
 
 
-from .models import DispatchOrder, DispatchOrderConnect, DispatchRegularlyData, Station, DispatchRegularly, DispatchOrderTour, DispatchOrderTourCustomer, RouteTeam
+from .models import DispatchOrder, DispatchOrderConnect, DispatchRegularlyData, Station, DispatchRegularly, DispatchOrderTour, DispatchOrderTourCustomer, RouteTeam, RegularlyGroup
 
 class RegularlyDataForm(forms.ModelForm):
     departure_time1 = forms.CharField(max_length=2, required=True)
     departure_time2 = forms.CharField(max_length=2, required=True)
     arrival_time1 = forms.CharField(max_length=2, required=True)
     arrival_time2 = forms.CharField(max_length=2, required=True)
+    prepare_time1 = forms.CharField(max_length=2, required=True)
+    prepare_time2 = forms.CharField(max_length=2, required=True)
+    boarding_time1 = forms.CharField(max_length=2, required=True)
+    boarding_time2 = forms.CharField(max_length=2, required=True)
+    first_stop_time1 = forms.CharField(max_length=2, required=True)
+    first_stop_time2 = forms.CharField(max_length=2, required=True)
 
 
     class Meta:
@@ -37,6 +43,7 @@ class RegularlyDataForm(forms.ModelForm):
             'arrival_time1',
             'arrival_time2',
             'week',
+            'group',
         ]
 
     def clean(self):
@@ -72,6 +79,17 @@ class RegularlyDataForm(forms.ModelForm):
         driver_allowance2 = cleaned_data.get('driver_allowance2')
         outsourcing_allowance = cleaned_data.get('outsourcing_allowance')
 
+        # 알림시간 처리
+        prepare_time1 = cleaned_data.get('prepare_time1')
+        prepare_time2 = cleaned_data.get('prepare_time2')
+        boarding_time1 = cleaned_data.get('boarding_time1')
+        boarding_time2 = cleaned_data.get('boarding_time2')
+        first_stop_time1 = cleaned_data.get('first_stop_time1')
+        first_stop_time2 = cleaned_data.get('first_stop_time2')
+        
+        cleaned_data['prepare_time'] = int(prepare_time1) * 60 + int(prepare_time2)
+        cleaned_data['boarding_time'] = int(boarding_time1) * 60 + int(boarding_time2)
+        cleaned_data['first_stop_time'] = int(first_stop_time1) * 60 + int(first_stop_time2)
         cleaned_data['price'] = int(price.replace(',', '')) if price else 0
         cleaned_data['driver_allowance'] = int(driver_allowance.replace(',', '')) if driver_allowance else 0
         cleaned_data['driver_allowance2'] = int(driver_allowance2.replace(',', '')) if driver_allowance2 else 0
@@ -89,6 +107,9 @@ class RegularlyDataForm(forms.ModelForm):
         instance.driver_allowance = cleaned_data['driver_allowance']
         instance.driver_allowance2 = cleaned_data['driver_allowance2']
         instance.outsourcing_allowance = cleaned_data['outsourcing_allowance']
+        instance.prepare_time = cleaned_data['prepare_time']
+        instance.boarding_time = cleaned_data['boarding_time']
+        instance.first_stop_time = cleaned_data['first_stop_time']
         instance.departure_time = cleaned_data['departure_time']
         instance.arrival_time = cleaned_data['arrival_time']
         instance.week = ' '.join(self.data.getlist('week', ''))

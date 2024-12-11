@@ -14,9 +14,9 @@
     <div class="container">
         <div class="title">노선별 배차 지시서</div>
 
-        {% for regularly in regularly_list %}
+        {% for connects in connect_list %}
         {% with cnt=forloop.counter0 %}
-        <div class="section-title">{{ cnt|add:1 }}. {{ regularly.0.group.name }}</div>
+        <div class="section-title">{{ cnt|add:1 }}. {{ connects.0.regularly_id__group__name }}</div>
         <table class="section-table">
             <thead>
                 <tr>
@@ -29,26 +29,14 @@
                 </tr>
             </thead>
             <tbody>
-                {% for r in regularly %}
+                {% for connect in connects %}
                 <tr>
-                    <td class="lineTime">[{{ r.departure_time }}]</td>
-                    <td>{{ r.number1 }}-{{ r.number2 }}</td>
-                    <td class="lineRoute">{{ r.departure }} ▶ {{ r.arrival }}</td>
-                    <td>{% with connects=connect_list|index:cnt %}
-                        {% with this_connect=connects|index:forloop.counter0 %}
-                        {% for connect in this_connect %}
-                        {{ connect.bus_id.vehicle_num }}
-                        {% endfor %}
-                        {% endwith %}
-                        {% endwith %}</td>
-                    <td>{% with connects=connect_list|index:cnt %}
-                        {% with this_connect=connects|index:forloop.counter0 %}
-                        {% for connect in this_connect %}
-                        {{ connect.driver_id.name }}
-                        {% endfor %}
-                        {% endwith %}
-                        {% endwith %}</td>
-                    <td>{{ r.references  }}</td>
+                    <td class="lineTime">[{{ connect.regularly_id__departure_time }}]</td>
+                    <td>{{ connect.regularly_id__number1 }}-{{ connect.regularly_id__number2 }}</td>
+                    <td class="lineRoute">{{ connect.regularly_id__departure }} ▶ {{ connect.regularly_id__arrival }}</td>
+                    <td>{{connect.bus_id__vehicle_num}}</td>
+                    <td>{{ connect.driver_id__name }}</td>
+                    <td>{{ connect.regularly_id__references  }}</td>
                 </tr>
                 {% endfor %}
             </tbody>
@@ -56,7 +44,7 @@
         {% endwith %}
         {% endfor %}
 
-        <div class="section-title">ㅁ미지정 된 출,퇴근</div>
+        <!-- <div class="section-title">ㅁ미지정 된 출,퇴근</div>
         <table class="section-subtable">
             <thead>
                 <tr>
@@ -74,7 +62,7 @@
                 </tr>
                 {% endfor %}
             </tbody>
-        </table>
+        </table> -->
     </div>
     <script src="{% static 'js/dispatch/line_print.js' %}"></script>
 </body>

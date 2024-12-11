@@ -1494,39 +1494,43 @@
   }
   
   
-  .RouteList table td:nth-child(1) {
-      width: 3%;
-  }
+.RouteList table td:nth-child(1) {
+    width: 3%;
+}
+
+.RouteList table td:nth-child(2) {
+    width: 4%;
+}
+
+.RouteList table td:nth-child(3) {
+    width: 15%;
+}
+
+.RouteList table td:nth-child(4) {
+    width: 7%;
+}
+
+.RouteList table td:nth-child(5) {
+  width: 7%;
+}
   
-  .RouteList table td:nth-child(2) {
-      width: 4%;
-  }
-  
-  .RouteList table td:nth-child(3) {
-      width: 15%;
-  }
-  
-  .RouteList table td:nth-child(4) {
-      width: 7%;
-  }
-  
-  .RouteList table td:nth-child(5) {
-      width: 7%;
-  }
-  
-  .RouteList table td:nth-child(6) {
-      width: 7%;
-  }
-  .RouteList table td:nth-child(7) {
-    width: 11%;
-  }
-  
-  .RouteList table td:nth-child(8),
-  .RouteList table td:nth-child(9),
-  .RouteList table td:nth-child(10),
-  .RouteList table td:nth-child(11) {
-      width: 9%;
-  }  
+.RouteList table td:nth-child(6) {
+  width: 13%;
+}
+.RouteList table td:nth-child(7) {
+  width: 8%;
+}
+
+.RouteList table td:nth-child(8) {
+  width: 11%;
+}
+
+.RouteList table td:nth-child(9),
+.RouteList table td:nth-child(10),
+.RouteList table td:nth-child(11),
+.RouteList table td:nth-child(12) {
+  width: 8%;
+}  
   
   .routListSearch select{
     height: 2.4rem;
@@ -1884,4 +1888,8 @@
 .BusinessEntityPopupContainer {
   width: 50rem;
   height: auto;
+}
+
+.warning {
+  background-color: rgb(255, 242, 204);
 }
