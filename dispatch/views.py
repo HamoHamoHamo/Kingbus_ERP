@@ -6,9 +6,10 @@ import urllib
 import os
 import mimetypes
 import requests
+import itertools
 
 from config.settings.base import MEDIA_ROOT
-from django.db.models import Q, Sum, Prefetch, Case, When, Value, IntegerField, Subquery, OuterRef, F
+from django.db.models import Q, Sum, Prefetch, Case, When, Value, IntegerField, Subquery, OuterRef, F, Count
 from django.forms.models import model_to_dict
 from django.core.exceptions import ObjectDoesNotExist, MultipleObjectsReturned, BadRequest
 from django.http import Http404, JsonResponse, HttpResponse, HttpResponseNotAllowed
@@ -25,7 +26,6 @@ from accounting.models import Collect, TotalPrice
 from crudmember.models import Category, Client
 from humanresource.models import Member, Salary, Team
 from humanresource.views import send_message
-from itertools import chain
 from vehicle.models import Vehicle, DailyChecklist, Refueling
 
 from firebase.rpa_p_firebase import RpaPFirebase, TOUR_PATH
@@ -548,20 +548,29 @@ class RollCallList(generic.ListView):
                 connect_list = connect_list.filter(bus_id__vehicle_num__contains=search)
             connect_list = connect_list.order_by('bus_id__vehicle_num', 'departure_date')
 
-        return connect_list.values(
+        return connect_list.annotate(
+            total_drive_count=Subquery(
+                DispatchRegularlyConnect.objects.filter(
+                    driver_id=OuterRef('driver_id'),
+                    regularly_id__regularly_id=OuterRef('regularly_id__regularly_id')
+                ).values('driver_id').annotate(
+                    total=Count('id')
+                ).values('total')[:1]
+            )
+        ).values(
             'id',
             'regularly_id__route',
             'regularly_id__regularly_id__team__name',
             'driver_id__name',
             'driver_id__id',
             'bus_id__vehicle_num',
+            'total_drive_count',
             'departure_date',
             'arrival_date',
             'check_regularly_connect__wake_time',
             'check_regularly_connect__drive_time',
             'check_regularly_connect__departure_time',
-            'check_regularly_connect__drive_start_time',
-            'check_regularly_connect__drive_end_time',
+            'check_regularly_connect__connect_check'
         )
 
     def get_context_data(self, **kwargs):
@@ -577,6 +586,8 @@ class RollCallList(generic.ListView):
             count += 1
 
         context['time_list'] = time_list
+
+
 
         # 사업장
         business_list = BusinessEntity.objects.all().order_by('number')
@@ -1617,6 +1628,14 @@ class RegularlyRouteList(generic.ListView):
         elif not self.request.GET.get('new'):
             context['group'] = RegularlyGroup.objects.order_by('number').first()
         
+        # 알림시간 값
+        context['prepare_time1'] = f"{int(context['detail'].prepare_time / 60):02}" if id else "01"
+        context['prepare_time2'] = f"{(context['detail'].prepare_time % 60):02}" if id else "30"
+        context['boarding_time1'] = f"{int(context['detail'].boarding_time / 60):02}" if id else "01"
+        context['boarding_time2'] = f"{(context['detail'].boarding_time % 60):02}" if id else "00"
+        context['first_stop_time1'] = f"{int(context['detail'].first_stop_time / 60):02}" if id else "00"
+        context['first_stop_time2'] = f"{(context['detail'].first_stop_time % 60):02}" if id else "20"
+
         return context
 
 def create_dispatch_regularly_stations(request, regularly, creator):
@@ -1843,14 +1862,14 @@ def regularly_order_create(request):
         regularly_data_form = RegularlyDataForm(request.POST)
         if regularly_data_form.is_valid():
             post_group = request.POST.get('group', None)
-            try:
-                regularly_group = RegularlyGroup.objects.get(pk=post_group)
-            except RegularlyGroup.DoesNotExist:
-                regularly_group = None
+            # try:
+            #     regularly_group = RegularlyGroup.objects.get(pk=post_group)
+            # except RegularlyGroup.DoesNotExist:
+            #     regularly_group = None
 
             regularly_data = regularly_data_form.save(commit=False)
             regularly_data.creator = creator
-            regularly_data.group = regularly_group
+            # regularly_data.group = regularly_group
             regularly_data.save()
 
             regularly_form = RegularlyForm(request.POST)
@@ -1859,7 +1878,7 @@ def regularly_order_create(request):
                 
                 regularly = regularly_form.save(commit=False)
                 regularly.creator = creator
-                regularly.group = regularly_group
+                # regularly.group = regularly_group
                 regularly.regularly_id = regularly_data
                 regularly.edit_date = TODAY
                 regularly.save()
@@ -2054,12 +2073,7 @@ def time_data(request):
                     new_station.save()
                     # logger.info(f"old_regularly{old_regularly} new_station {new_station}")
 
-
-
-
-
-
-    return render(request, 'dispatch/order_print.html', context)
+    # return render(request, 'dispatch/order_print.html', {})
     return JsonResponse({"result": count})
 
 def regularly_order_edit(request):
@@ -2072,9 +2086,7 @@ def regularly_order_edit(request):
         station_edit_date = request.POST.get('station_edit_date')
         regularly_data_form = RegularlyDataForm(request.POST, instance=regularly_data)
         if regularly_data_form.is_valid():
-            group = get_object_or_404(RegularlyGroup, pk=request.POST.get('group'))
             regularly_data = regularly_data_form.save(commit=False)
-            regularly_data.group = group
             regularly_data.creator = creator
             regularly_data.save()
 
@@ -2089,7 +2101,6 @@ def regularly_order_edit(request):
                 regularly = regularly_form.save(commit=False)
                 regularly.regularly_id = regularly_data
                 regularly.edit_date = TODAY
-                regularly.group = group
                 regularly.creator = creator
                 regularly.save()
             else:
@@ -4069,57 +4080,99 @@ def order_tour_customer_delete(request):
 def line_print(request):
     if request.session.get('authority') > 3:
         return render(request, 'authority.html')
+    
     context = {}
     date = request.GET.get('date')
-    week = WEEK[datetime.strptime(date, FORMAT).weekday()][1]
+    week = WEEK2[datetime.strptime(date, FORMAT).weekday()]
 
-    regularly_list = DispatchRegularly.objects.prefetch_related('info_regularly').exclude(info_regularly=None).filter(use='사용').filter(week__contains=week).order_by('group', 'num1', 'number1', 'num2', 'number2')
-    
-    # regularly_data_list를 regularly_list 대신에 쓸 수 있게 수정해야됨
-    # info_regularly = none인것들 빼야됨
-    regulalry_data_list = DispatchRegularlyData.objects.filter(use='사용').filter(week__contains=week).order_by('group','num1', 'number1', 'num2', 'number2')
-    
-    regularly_list = []
-    no_list = []
-    for regularly in regulalry_data_list:
-        # first 확인필요
-        dispatch = regularly.monthly.prefetch_related('info_regularly').filter(edit_date__lte=date).order_by('-edit_date').first()
-        if not dispatch:
-            dispatch = regularly.monthly.prefetch_related('info_regularly').filter(edit_date__gte=date).order_by('edit_date').first()
-            
-        dispatch_connect = dispatch.info_regularly.filter(departure_date__startswith=date).exists()
-        if dispatch.use == '사용' and dispatch_connect:
-            regularly_list.append(dispatch)
+    connect_list = DispatchRegularlyConnect.objects.filter(
+        departure_date__startswith=date
+    ).order_by(
+        'regularly_id__group__number', 'departure_date', 'regularly_id__num1', 'regularly_id__number1', 'regularly_id__num2', 'regularly_id__number2'
+    ).select_related(
+        'regularly_id', 'driver_id', 'bus_id', 'regularly_id__group'
+    ).values(
+        'regularly_id__departure_time',
+        'regularly_id__number1',
+        'regularly_id__number2',
+        'regularly_id__departure',
+        'regularly_id__arrival',
+        'regularly_id__references',
+        'driver_id__name',
+        'bus_id__vehicle_num',
+        'regularly_id__group__name'
+    )
 
-        # 미지정된 노선 목록
-        if not dispatch_connect:
-            no_list.append(dispatch)
-    
+    group = connect_list[0]['regularly_id__group__name']
     temp = []
-    temp2 = []
-    
-    group = ''
-    context['regularly_list'] = []
     context['connect_list'] = []
-    r = ''
-    for r in regularly_list:
-        if r.group.name != group:
-            group = r.group.name
-            if r != regularly_list[0]:
-                context['regularly_list'].append(temp)
-                context['connect_list'].append(temp2)
-                temp = []
-                temp2 = []
-        
-        temp.append(r)
-        regularly_connect = r.info_regularly.filter(departure_date__startswith=date)
-        temp2.append(regularly_connect)
+    for connect in connect_list:
+        if group != connect['regularly_id__group__name']:
+            context['connect_list'].append(temp)
+            group = connect['regularly_id__group__name']
+            temp = [connect]
+        else:
+            temp.append(connect)
+    context['connect_list'].append(temp)
 
-    if r and r == regularly_list[len(regularly_list)-1]:
-        context['regularly_list'].append(temp)
-        context['connect_list'].append(temp2)
 
-    context['no_list'] = no_list
+
+    # 쿼리 최적화
+    # regulalry_data_list = (
+    #     DispatchRegularlyData.objects
+    #     .filter(use='사용', week__contains=week)
+    #     .select_related('group', 'team')
+    #     .order_by('group', 'num1', 'number1', 'num2', 'number2')
+    # )
+
+    # regularly_list = []
+    # no_list = []
+
+    # for regularly_data in regulalry_data_list:
+    #     # 해당 정기 배차 데이터의 monthly 중 가장 적절한 레코드 찾기
+    #     monthly_queryset = DispatchRegularly.objects.filter(
+    #         regularly_id=regularly_data,
+    #         use='사용',
+    #         edit_date__lte=date
+    #     ).order_by('-edit_date')
+
+    #     # 과거 날짜 기준 레코드가 없으면 미래 날짜 중 가장 가까운 레코드 찾기
+    #     dispatch = monthly_queryset.first()
+    #     if not dispatch:
+    #         dispatch = DispatchRegularly.objects.filter(
+    #             regularly_id=regularly_data,
+    #             use='사용',
+    #             edit_date__gte=date
+    #         ).order_by('edit_date').first()
+
+    #     # 해당 날짜에 연결된 노선 확인
+    #     if dispatch:
+    #         dispatch_connect = dispatch.info_regularly.filter(departure_date__startswith=date).exists()
+            
+    #         if dispatch_connect:
+    #             regularly_list.append(dispatch)
+    #         else:
+    #             no_list.append(dispatch)
+
+    # # 그룹핑 처리
+    # context['regularly_list'] = [
+    #     list(group) 
+    #     for _, group in itertools.groupby(regularly_list, key=lambda x: x.group.name)
+    # ]
+
+    
+    # for regularly_list in context['regularly_list']:
+    #     temp = []
+    #     for regularly in regularly_list:
+    #         temp.append(regularly.info_regularly.filter(departure_date__startswith=date).first())
+    #     context['connect_list'].append(temp)
+
+    # context['connect_list'] = [
+    #     list(dispatch.info_regularly.filter(departure_date__startswith=date))
+    #     for dispatch in regularly_list
+    # ]
+
+    # context['no_list'] = no_list
 
     return render(request, 'dispatch/line_print.html', context)
 

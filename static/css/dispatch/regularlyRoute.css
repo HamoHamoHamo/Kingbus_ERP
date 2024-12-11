@@ -434,13 +434,13 @@
   cursor: pointer;
 }
 
-.inputWidthCalc {
-  width: calc(100% - 10rem);
+#detailMapBtn {
+  margin-right: 1rem;
 }
 
 .waypointBox {
   display: flex;
-  justify-content: space-between;
+  justify-content: right;
   width: 100%;
   padding-right: 0.8rem;
   box-sizing: border-box;
@@ -921,4 +921,28 @@ select[name=use]{
 
 .routeStationTime {
   font-size: 1.2rem;
+}
+
+.notificationTimeContainer .popupArticleLabel {
+  width: 12rem;
+}
+
+.notificationTimePopupTimeDiv {
+  width: 20rem;
+  display: flex;
+  align-items: center;
+  justify-content: end;
+}
+
+.notificationTimePopupTimeDiv input {
+  width: 15%;
+  text-align: center;
+}
+
+.notificationTimePopupTimeDivMargin {
+  margin: 0 1rem;
+}
+
+.notificationTimeMinute {
+  margin-right: 1rem;
 }

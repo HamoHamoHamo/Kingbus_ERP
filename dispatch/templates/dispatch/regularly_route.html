@@ -169,7 +169,13 @@
             </div>
             <input type="hidden" name="station_edit_date" class="editDateInput">
             <input type="hidden" id="waypointNumber" value="{{waypoint_number}}">
-            <input autocomplete="off" type="hidden" name="id" value="{{detail.id}}" class="inputHidden">
+            <input type="hidden" name="id" value="{{detail.id}}" class="inputHidden">
+            <input type="hidden" name="prepare_time1" value="{{prepare_time1}}" class="inputHidden">
+            <input type="hidden" name="prepare_time2" value="{{prepare_time2}}" class="inputHidden">
+            <input type="hidden" name="boarding_time1" value="{{boarding_time1}}" class="inputHidden">
+            <input type="hidden" name="boarding_time2" value="{{boarding_time2}}" class="inputHidden">
+            <input type="hidden" name="first_stop_time1" value="{{first_stop_time1}}" class="inputHidden">
+            <input type="hidden" name="first_stop_time2" value="{{first_stop_time2}}" class="inputHidden">
             <div class="routeInputHead">
                 <span>노선등록</span>
                 <div class="routeInputBtnBox">
@@ -276,11 +282,16 @@
                             class="inputText essential length200" tabindex="3">
                     </td>
                     <td class="tdTypeA">상세노선</td>
-                    <td colspan="3" class="tdTypeB">
+                    <td class="tdTypeC">
+                        
+                        <input autocomplete="off" value="{{detail.detailed_route}}" name="detailed_route"
+                            type="text" class="inputText inputWidthCalc" tabindex="15">
+                    
+                    </td>
+                    <td colspan="4" class="tdTypeC">
                         <div class="waypointBox">
-                            <input autocomplete="off" value="{{detail.detailed_route}}" name="detailed_route"
-                                type="text" class="inputText inputWidthCalc" tabindex="15">
                             <div class="btnModules backgroundBlue" id="detailMapBtn">정류장</div>
+                            <div class="btnModules backgroundBlue" id="notificationTimeBtn">알림시간</div>
                         </div>
                     </td>
                 </tr>
@@ -680,6 +691,50 @@
         </div>
     </div>
 </div>
+
+<div class="popupAreaModules">
+    <div class="popupBgModules"></div>
+    <div class="popupContainer referenceeContainer notificationTimeContainer">
+        <div class="popupHeader">
+            <div class="popupTitle">알림시간 수정</div>
+        </div>
+        <div class="popupBody">
+            <div class="popupSection">
+                <div class="popupArticle">
+                    <label for="" class="popupArticleLabel"><span class="importantStar">*</span>운행 준비</label>
+                    <div class="notificationTimePopupTimeDiv">
+                        <input maxlength="2" autocomplete="off" type="" class="notificationTime1 prepare_time1" value="{{prepare_time1}}">
+                        <div class="notificationTimePopupTimeDivMargin">:</div>
+                        <input maxlength="2" autocomplete="off" type="" class="notificationTimeMinute prepare_time2" value="{{prepare_time2}}">
+                        <div>전</div>
+                    </div>
+                </div>
+                <div class="popupArticle">
+                    <label for="" class="popupArticleLabel"><span class="importantStar">*</span>탑승 및 운행 시작</label>
+                    <div class="notificationTimePopupTimeDiv">
+                        <input maxlength="2" autocomplete="off" type="" class="notificationTime1 boarding_time1" value="{{boarding_time1}}">
+                        <div class="notificationTimePopupTimeDivMargin">:</div>
+                        <input maxlength="2" autocomplete="off" type="" class="notificationTimeMinute boarding_time2" value="{{boarding_time2}}">
+                        <div>전</div>
+                    </div>
+                </div>
+                <div class="popupArticle">
+                    <label for="" class="popupArticleLabel"><span class="importantStar">*</span>첫 정류장 도착</label>
+                    <div class="notificationTimePopupTimeDiv">
+                        <input maxlength="2" autocomplete="off" type="" class="notificationTime1 first_stop_time1" value="{{first_stop_time1}}">
+                        <div class="notificationTimePopupTimeDivMargin">:</div>
+                        <input maxlength="2" autocomplete="off" type="" class="notificationTimeMinute first_stop_time2" value="{{first_stop_time2}}">
+                        <div>전</div>
+                    </div>
+                </div>
+            </div>
+            <div class="popupFooter">
+                <div class="btnModules backgroundBlue notificationTimeEditBtn">확인</div>
+                <div class="btnModules popupCloseBtn">취소</div>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}
 
 
@@ -757,5 +812,6 @@
 <script src="{% static 'js/dispatch/regularly_route/lengthBreak.js' %}"></script>
 <script src="{% static 'js/dispatch/regularly_route/createAddComma.js' %}"></script>
 <script src="{% static 'js/dispatch/regularly_route/allowancePopup.js' %}"></script>
+<script type="module" src="{% static 'js/dispatch/regularly_route/notificationTimePopup.js' %}"></script>
 <script type="module" src="{% static 'js/dispatch/regularly_route/detailMap.js' %}"></script>
 {% endblock %}

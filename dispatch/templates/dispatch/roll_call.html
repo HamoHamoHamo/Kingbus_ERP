@@ -184,12 +184,12 @@
                                     <td>기사</td>
                                     <td>차량</td>
                                     <td>팀</td>
+                                    <td>노선 숙지</td>
                                     <td>운행 시간</td>
                                     <td>운행 준비</td>
                                     <td>탑승 및 운행 시작</td>
                                     <td>첫 정류장 도착</td>
-                                    <td>운행 출발</td>
-                                    <td>운행 종료</td>
+                                    <td>배차 확인</td>
                                 </tr>
                             </thead>
                         </table>
@@ -199,7 +199,7 @@
                         <table class="RouteListBody">
                             <tbody>
                                 {% for connect in connect_list %}
-                                <tr class="{{connect.id}} RouteListBodyTr">
+                                <tr class="{{connect.id}} RouteListBodyTr {% if connect.total_drive_count <= 5 %}warning{% endif %}">
                                     <td>
                                         <input class="connectCheck" value="{{connect.id}}" name="id" type="checkbox">
                                     </td>
@@ -212,12 +212,12 @@
                                     </td>
                                     <td>{{connect.bus_id__vehicle_num}}</td>
                                     <td>{% if connect.regularly_id__regularly_id__team__name == None %}{% else %}{{connect.regularly_id__regularly_id__team__name}}{% endif %}</td>
+                                    <td>{{connect.total_drive_count}}</td>
                                     <td>{{connect.departure_date|slice:"11:16"}} ~ {{connect.arrival_date|slice:"11:16"}}</td>
                                     <td>{{connect.check_regularly_connect__wake_time}}</td>
                                     <td>{{connect.check_regularly_connect__drive_time}}</td>
                                     <td>{{connect.check_regularly_connect__departure_time}}</td>
-                                    <td>{{connect.check_regularly_connect__drive_start_time}}</td>
-                                    <td>{{connect.check_regularly_connect__drive_end_time}}</td>
+                                    <td>{% if connect.check_regularly_connect__connect_check == '1' %}O{% else %}X{% endif %}</td>
                                 </tr>
                                 {% endfor %}
                                 <tr class="bl anckTr">

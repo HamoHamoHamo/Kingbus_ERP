@@ -32,6 +32,7 @@
                     <td>기사명</td>
                     <td>용역기사</td>
                     <td>연락처</td>
+                    <td>필수점호</td>
                     <td>시간</td>
                     <td>출근노선</td>
                     <td>정문/후문</td>
@@ -55,6 +56,7 @@
                     <td>{% if connect.outsourcing == 'n' %}{{connect.driver_id}}{% endif %}</td>
                     <td>{% if connect.outsourcing == 'y' %}{{connect.driver_id}}{% endif %}</td>
                     <td>{{connect.driver_id.phone_num}}</td>
+                    <td>{{connect.regularly_id.get_caculated_prepare_time}}</td>
                     <td>{{order.departure_time}}</td>
                     <td>{{order.route}}</td>
                     <td>

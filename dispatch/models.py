@@ -8,7 +8,7 @@ from datetime import datetime
 from uuid import uuid4
 from django.core.exceptions import BadRequest
 
-from common.datetime import get_hour_minute
+from common.datetime import get_hour_minute, calculate_time_with_minutes
 
 class ConnectStatus(str, Enum):
     BEFORE_DRIVE = "운행 전"
@@ -135,6 +135,10 @@ class DispatchRegularlyData(models.Model):
     time = models.CharField(verbose_name='운행시간(분)', max_length=50, null=False, blank=True)
     distance_list = models.CharField(verbose_name="정류장별 거리", max_length=500, null=False, blank=True)
     time_list = models.CharField(verbose_name="정류장별 시간", max_length=500, null=False, blank=True)
+    # 알림시간 설정
+    prepare_time = models.IntegerField(verbose_name="운행 준비", null=False, default=90)
+    boarding_time = models.IntegerField(verbose_name="탑승 및 운행 시작", null=False, default=60)
+    first_stop_time = models.IntegerField(verbose_name="첫 정류장 도착", null=False, default=20)
 
     pub_date = models.DateTimeField(auto_now_add=True, verbose_name='작성시간')
     updated_at = models.DateTimeField(auto_now=True, verbose_name='수정시간')
@@ -146,6 +150,9 @@ class DispatchRegularly(models.Model):
     def get_hour_minute(self):
         return get_hour_minute(int(self.time)) if self.time else ""
     
+    def get_caculated_prepare_time(self):
+        return calculate_time_with_minutes(self.departure_time, self.prepare_time * -1)
+
     regularly_id = models.ForeignKey(DispatchRegularlyData, verbose_name='정기배차 데이터', related_name="monthly", on_delete=models.SET_NULL, null=True)
     edit_date = models.CharField(verbose_name='수정기준일', max_length=50, null=False, blank=True)
     group = models.ForeignKey(RegularlyGroup, verbose_name='그룹', related_name="regularly_monthly", on_delete=models.SET_NULL, null=True)
@@ -174,6 +181,10 @@ class DispatchRegularly(models.Model):
     time = models.CharField(verbose_name='운행시간(분)', max_length=50, null=False, blank=True)
     distance_list = models.CharField(verbose_name="정류장별 거리", max_length=500, null=False, blank=True)
     time_list = models.CharField(verbose_name="정류장별 시간", max_length=500, null=False, blank=True)
+    # 알림시간 설정
+    prepare_time = models.IntegerField(verbose_name="운행 준비", null=False, default=90)
+    boarding_time = models.IntegerField(verbose_name="탑승 및 운행 시작", null=False, default=60)
+    first_stop_time = models.IntegerField(verbose_name="첫 정류장 도착", null=False, default=20)
     
     pub_date = models.DateTimeField(auto_now_add=True, verbose_name='작성시간')
     updated_at = models.DateTimeField(auto_now=True, verbose_name='수정시간')
