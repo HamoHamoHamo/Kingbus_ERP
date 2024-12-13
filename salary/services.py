@@ -867,7 +867,7 @@ class SalaryDataController2:
             datas[member.id]['wage'] = format_number_with_commas(
                 remove_comma_from_number(temp_data['total'])
                 - remove_comma_from_number(temp_data['service_allowance'])
-                - remove_comma_from_number(temp_data['new_annual_allowance'])
+                # - remove_comma_from_number(temp_data['new_annual_allowance'])
                 - remove_comma_from_number(temp_data['team_leader_allowance_roll_call'])
                 - remove_comma_from_number(temp_data['team_leader_allowance_vehicle_management'])
                 - remove_comma_from_number(temp_data['team_leader_allowance_task_management'])
