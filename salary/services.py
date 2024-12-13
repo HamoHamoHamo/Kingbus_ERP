@@ -794,7 +794,7 @@ class SalaryTableDataCollector3(SalaryTableDataCollector):
         #통상급여
         datas['ordinary_salary'] = format_number_with_commas(remove_comma_from_number(datas['ordinary_salary']) - int(self.member_salary['performance_allowance']))
 
-        datas['new_annual_allowance'] = format_number_with_commas(int(self.member_salary['new_annual_allowance']))
+        # datas['new_annual_allowance'] = format_number_with_commas(int(self.member_salary['new_annual_allowance']))
         datas['team_leader_allowance_roll_call'] = format_number_with_commas(int(self.member_salary['team_leader_allowance_roll_call']))
         datas['team_leader_allowance_vehicle_management'] = format_number_with_commas(int(self.member_salary['team_leader_allowance_vehicle_management']))
         datas['team_leader_allowance_task_management'] = format_number_with_commas(int(self.member_salary['team_leader_allowance_task_management']))
@@ -808,7 +808,7 @@ class SalaryTableDataCollector3(SalaryTableDataCollector):
             remove_comma_from_number(datas['statutory_allowance'])
             # - remove_comma_from_number(datas['meal'])
             - remove_comma_from_number(datas['annual_allowance'])
-            + remove_comma_from_number(datas['new_annual_allowance'])
+            # + remove_comma_from_number(datas['new_annual_allowance'])
             + remove_comma_from_number(datas['team_leader_allowance_roll_call'])
             + remove_comma_from_number(datas['team_leader_allowance_vehicle_management'])
             + remove_comma_from_number(datas['team_leader_allowance_task_management'])

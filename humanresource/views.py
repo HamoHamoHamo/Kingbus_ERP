@@ -1276,7 +1276,7 @@ class NewSalaryList(SalaryList):
             context['wage_list'].append(format_number_with_commas(
                 remove_comma_from_number(context['datas'][data_id]['total'])
                 - remove_comma_from_number(context['datas'][data_id]['service_allowance'])
-                - remove_comma_from_number(context['datas'][data_id]['new_annual_allowance'])
+                # - remove_comma_from_number(context['datas'][data_id]['new_annual_allowance'])
                 - remove_comma_from_number(context['datas'][data_id]['team_leader_allowance_roll_call'])
                 - remove_comma_from_number(context['datas'][data_id]['team_leader_allowance_vehicle_management'])
                 - remove_comma_from_number(context['datas'][data_id]['team_leader_allowance_task_management'])
