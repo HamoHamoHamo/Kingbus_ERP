@@ -416,6 +416,8 @@ class StationArrivalTime(models.Model):
     station_id = models.ForeignKey('DispatchRegularlyStation', on_delete=models.CASCADE, related_name="station_arrival_time", null=False)
     arrival_time = models.CharField(verbose_name="정류장 도착 시각", max_length=100, null=False, blank=True)
     has_issue = models.BooleanField(verbose_name='정류장 도착 +-15분에 클릭 안함', null=False, default=False)
+    latitude = models.CharField(verbose_name="위도", max_length=100, null=False, blank=True)
+    longitude = models.CharField(verbose_name="경도", max_length=100, null=False, blank=True)
     pub_date = models.DateTimeField(auto_now_add=True, verbose_name='작성시간')
     updated_at = models.DateTimeField(auto_now=True, verbose_name='수정시간')
     creator = models.ForeignKey(Member, on_delete=models.SET_NULL, related_name="station_arrival_time_crator", db_column="creator_id", null=True)
