@@ -31,8 +31,8 @@ from vehicle.models import Vehicle, DailyChecklist, Refueling
 from firebase.rpa_p_firebase import RpaPFirebase, TOUR_PATH
 from datetime import datetime, timedelta, date
 # from utill.decorator import option_year_deco
-from common.constant import TODAY, FORMAT, WEEK, WEEK2
-from common.datetime import get_hour_minute, get_next_monday, get_mid_time, get_minute_from_colon_time, get_hour_minute_with_colon, calculate_time_with_minutes
+from common.constant import TODAY, FORMAT, WEEK, WEEK2, DATE_TIME_FORMAT
+from common.datetime import get_hour_minute, get_next_monday, get_mid_time, get_minute_from_colon_time, get_hour_minute_with_colon, calculate_time_with_minutes, calculate_time_difference
 from my_settings import KAKAO_KEY
 from config.custom_logging import logger
 
@@ -1308,6 +1308,12 @@ def regularly_connect_create(request):
         )
         r_connect.same_accounting = same_accounting
         r_connect.save()
+
+        # 출발시간 1시간 30분 전 이내에 배차 생성했을면 status 변경해주기 
+        now = datetime.strftime(datetime.now(), DATE_TIME_FORMAT)
+        if calculate_time_difference(now, r_connect.departure_date) <= 90:
+            r_connect.status = ConnectStatus.PREPARE
+            r_connect.save()
         try:
             send_message('배차를 확인해 주세요', f'{order.route}\n{r_connect.departure_date} ~ {r_connect.arrival_date}', driver.token, None)
         except Exception as e:
@@ -3298,6 +3304,11 @@ def order_connect_create(request):
             )
             connect.save()
             count = count + 1
+            # 출발시간 1시간 30분 전 이내에 배차 생성했을면 status 변경해주기 
+            now = datetime.strftime(datetime.now(), DATE_TIME_FORMAT)
+            if calculate_time_difference(now, connect.departure_date) <= 90:
+                connect.status = ConnectStatus.PREPARE
+                connect.save()
             try:
                 send_message('배차를 확인해 주세요', f'{order.route}\n{order.departure_date} ~ {order.arrival_date}', driver.token, None)
             except Exception as e:
