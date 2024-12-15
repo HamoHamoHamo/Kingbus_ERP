@@ -30,7 +30,6 @@
                     <td>순번</td>
                     <td>차량</td>
                     <td>기사명</td>
-                    <td>용역기사</td>
                     <td>연락처</td>
                     <td>필수점호</td>
                     <td>시간</td>
@@ -53,8 +52,7 @@
                 <tr class="listItme">
                     <td>{{order.number1}}{% if order.number2 %}-{{order.number2}} {% endif %}</td>
                     <td>{{connect.bus_id.vehicle_num}}</td>
-                    <td>{% if connect.outsourcing == 'n' %}{{connect.driver_id}}{% endif %}</td>
-                    <td>{% if connect.outsourcing == 'y' %}{{connect.driver_id}}{% endif %}</td>
+                    <td>{{connect.driver_id}}</td>
                     <td>{{connect.driver_id.phone_num}}</td>
                     <td>{{connect.regularly_id.get_caculated_prepare_time}}</td>
                     <td>{{order.departure_time}}</td>
