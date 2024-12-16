@@ -17,7 +17,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
 from django.views import generic, View
 
-from .commons import get_date_connect_list, get_multi_date_connect_list
+from .services import DispatchConnectService
 from .forms import OrderForm, ConnectForm, RegularlyDataForm, StationForm, RegularlyForm, TourForm, RouteTeamForm
 from .models import DispatchRegularlyRouteKnow, DispatchCheck, DispatchRegularlyData, DispatchRegularlyWaypoint, Schedule, DispatchOrderConnect, DispatchOrder, DispatchRegularly, RegularlyGroup, DispatchRegularlyConnect, DispatchOrderStation, ConnectRefusal, MorningChecklist, EveningChecklist, DrivingHistory, BusinessEntity, Station, DispatchRegularlyDataStation, DispatchRegularlyStation, DispatchOrderTourCustomer, DispatchOrderTour, RouteTeam, StationArrivalTime, DriverCheck, ConnectStatusFieldMapping, ConnectStatus
 from .selectors import DispatchSelector
@@ -693,35 +693,6 @@ def roll_call_route_status_data(request):
         'result' : True,
         'data' : data,
     })
-
-class DispatchConnectService:
-    # 현재 해야하는 배차 정보 불러오기
-    @staticmethod
-    def get_current_connect(connects):
-        """
-        운행 완료가 아닌 가장 첫 번째 배차를 찾습니다.
-        
-        Args:
-            connects (list): 배차 정보가 담긴 리스트
-            
-        Returns:
-            dict or None: 조건에 맞는 첫 번째 배차. 없으면 None 반환
-        """
-        
-        for connect in connects:            
-            # 상태가 '운행 완료'가 아닌 첫번째 배차정보 리턴
-            if connect['status'] != ConnectStatus.COMPLETE:
-                return connect
-                
-        return None 
-
-    # 배차 데이터 불러오기
-    @staticmethod
-    def get_daily_connect_list(date, user):
-        regularly_connects = DispatchRegularlyConnect.objects.filter(departure_date__startswith=date, driver_id=user).select_related('regularly_id', 'bus_id')
-        order_connects = DispatchOrderConnect.objects.filter(departure_date__startswith=date, driver_id=user).select_related('order_id', 'bus_id')
-
-        return regularly_connects, order_connects
         
 
 class RollCallDriverStatus(View):
@@ -1214,7 +1185,7 @@ class RegularlyDispatchList(generic.ListView):
         for outsourcing in outsourcing_list:
             context['outsourcing_dict'][outsourcing[0]] = outsourcing[1]
 
-        context['dispatch_list'] = get_date_connect_list(date)
+        context['dispatch_list'] = DispatchConnectService.get_date_connect_list(date)
         #
 
         context['vehicles'] = list(Vehicle.objects.filter(use='사용').order_by('vehicle_num', 'driver__name').values('id', 'driver__id', 'driver__name', 'vehicle_num0', 'vehicle_num', 'model_year'))
@@ -1314,6 +1285,8 @@ def regularly_connect_create(request):
         if calculate_time_difference(now, r_connect.departure_date) <= 90:
             r_connect.status = ConnectStatus.PREPARE
             r_connect.save()
+            DispatchConnectService.prevent_dispatch_check_issues(TODAY, r_connect.driver_id)
+            
         try:
             send_message('배차를 확인해 주세요', f'{order.route}\n{r_connect.departure_date} ~ {r_connect.arrival_date}', driver.token, None)
         except Exception as e:
@@ -3169,7 +3142,7 @@ class OrderList(generic.ListView):
             filter_date2 = date
 
         detail = context['detail'] if detail_id else ''
-        connect_dict = get_multi_date_connect_list(filter_date1, filter_date2, detail)
+        connect_dict = DispatchConnectService.get_multi_date_connect_list(filter_date1, filter_date2, detail)
 
         context['dispatch_list'] = connect_dict['dispatch_list']
         context['dispatch_list2'] = connect_dict['dispatch_list2']
@@ -3309,6 +3282,7 @@ def order_connect_create(request):
             if calculate_time_difference(now, connect.departure_date) <= 90:
                 connect.status = ConnectStatus.PREPARE
                 connect.save()
+                DispatchConnectService.prevent_dispatch_check_issues(TODAY, connect.driver_id)
             try:
                 send_message('배차를 확인해 주세요', f'{order.route}\n{order.departure_date} ~ {order.arrival_date}', driver.token, None)
             except Exception as e:

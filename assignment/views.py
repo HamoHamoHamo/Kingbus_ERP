@@ -13,7 +13,7 @@ from django.views import generic
 from .forms import AssignmentDataForm, AssignmentForm
 from .models import Assignment, AssignmentData, AssignmentConnect, Group
 from dispatch.models import DispatchRegularlyData, DispatchRegularlyWaypoint, DispatchOrderConnect, DispatchOrder, DispatchRegularly, RegularlyGroup, DispatchRegularlyConnect
-from dispatch.commons import get_date_connect_list, get_multi_date_connect_list
+from services import DispatchConnectService
 from accounting.models import Collect, TotalPrice
 from humanresource.models import Member, Salary, Team
 from humanresource.views import send_message
@@ -174,7 +174,7 @@ class AssignmentList(generic.ListView):
 
         
 
-        context['dispatch_list'] = get_date_connect_list(date)
+        context['dispatch_list'] = DispatchConnectService.get_date_connect_list(date)
         context['vehicles'] = Vehicle.objects.filter(use='사용').order_by('vehicle_num', 'driver__name')
         context['members'] = Member.objects.exclude(role='최고관리자').filter(use='사용').order_by('name')
         context['group_list'] = Group.objects.all().order_by('number')
@@ -845,7 +845,7 @@ class TemporaryAssignmentList(generic.ListView):
             filter_date2 = date
         
         detail = context['detail'] if detail_id else ''
-        connect_dict = get_multi_date_connect_list(filter_date1, filter_date2, detail)
+        connect_dict = DispatchConnectService.get_multi_date_connect_list(filter_date1, filter_date2, detail)
         
         context['dispatch_list'] = connect_dict['dispatch_list']
         context['dispatch_list2'] = connect_dict['dispatch_list2']
