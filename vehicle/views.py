@@ -103,88 +103,57 @@ class VehicleList(generic.ListView):
             context['file_count_list'].append(len(files))
 
         return context
+    
+
 
 
 def vehicle_create(request):
     if request.session.get('authority') > 1:
-        return render(request, 'authority.html')
+        return render(request, 'authority.html') #권한이 팀장이거나(3), 기사(4) 일때
     if request.method == 'POST':
         vehicle_form = VehicleForm(request.POST)
         if vehicle_form.is_valid():
-            creator = get_object_or_404(Member, pk=request.session.get('user'))
+            creator = get_object_or_404(Member, pk=request.session.get('user'))#객체가 존제하면 해당 객체를 반환하고 존재하지 않으면 http404 예외 오류 반환
             vehicle = vehicle_form.save(commit=False)
             vehicle.creator = creator
             vehicle.save()
             return redirect(request.META.get('HTTP_REFERER', 'redirect_if_referer_not_found'))
         else:
             raise Http404
-
     else:
         return HttpResponseNotAllowed(['post'])
+
 
 def vehicle_edit(request):
     if request.session.get('authority') > 1:
         return render(request, 'authority.html')
     pk = request.POST.get('id', None)
     vehicle = get_object_or_404(Vehicle, pk=pk)
-
     if request.method == 'POST':
-        vehicle_form = VehicleForm(request.POST, instance=vehicle)
-        #insurance_form = VehicleInsuranceForm(request.POST)
-        #if vehicle_form.is_valid() and insurance_form.is_valid():
+        vehicle_form = VehicleForm(request.POST, instance=vehicle)#instance를 지정하지 않으면 새 객체가 생성됨
         if vehicle_form.is_valid():
             vehicle.save()
-
-            # 파일
-            # vehicle_file = request.FILES.get('vehicle_registration', None)
-            # v_file_name = request.POST.get('vehicle_registration_name', None)
-
-            # cur_files = VehicleDocument.objects.filter(vehicle_id=vehicle)
-            # try:
-            #     cur_vehicle_files = cur_files.get(type='차량등록증')
-            # except:
-            #     cur_vehicle_files = None
-
-            # if vehicle_file:
-            #     if cur_vehicle_files:
-            #         os.remove(cur_vehicle_files.file.path)
-            #         cur_vehicle_files.delete()
-            #     file = VehicleDocument(
-            #         vehicle_id=vehicle,
-            #         file=vehicle_file,
-            #         filename=vehicle_file.name,
-            #         type='차량등록증',
-            #     )
-            #     file.save()
-            # elif not v_file_name and cur_vehicle_files:
-            #     os.remove(cur_vehicle_files.file.path)
-            #     cur_vehicle_files.delete()
-
-                
             return redirect(request.META.get('HTTP_REFERER', 'redirect_if_referer_not_found'))
         else:
             raise BadRequest(f"{vehicle_form.errors}")
     return HttpResponseNotAllowed(['post'])
 
-
 def vehicle_delete(request):
     if request.session.get('authority') > 1:
-        return render(request, 'authority.html')
+        return render(request, 'authoirty.html')
     if request.method == 'POST':
-        pk_list = request.POST.getlist('check',None)
+        pk_list = request.POST.getlist('check', None)
         for pk in pk_list:
             vehicle = get_object_or_404(Vehicle, pk=pk)
-            #insurance = get_object_or_404(VehicleInsurance, vehicle_id=pk)
-            #document = get_object_or_404(VehicleDocument, vehicle_id=pk)
             documents = VehicleDocument.objects.filter(vehicle_id=vehicle)
             for file in documents:
                 os.remove(file.file.path)
             documents.delete()
-            #insurance.delete()
             vehicle.delete()
         return redirect(request.META.get('HTTP_REFERER', 'redirect_if_referer_not_found'))
     else:
         raise Http404
+
 
 def vehicle_download(request):
     if request.session.get('authority') > 1:

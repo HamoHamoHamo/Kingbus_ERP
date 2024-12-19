@@ -5,6 +5,7 @@
 {% block head %}
 <meta http-equiv="Cache-Control" content="private, no-cache, no-store, max-age=0, must-revalidate">
 <link rel="stylesheet" href="{% static 'css/dispatch/dispatchBase.css' %}" type="text/css" />
+<link href="/static/css/crudmember/calender.css?v=0.179" rel="stylesheet" type="text/css" />
 <link rel="stylesheet" href="{% static 'css/dispatch/regularlyRoute.css' %}" type="text/css" />
 <link rel="stylesheet" href="{% static 'css/humanresource/team.css' %}" type="text/css" />
 <link rel="stylesheet" href="{% static 'css/dispatch/regularly_connect_list.css' %}" type="text/css" />
@@ -146,6 +147,22 @@
                 <input type="text" placeholder="노선명" value="{{search}}" name="search" class="searchInput">
                 <input value="{{date}}" autocomplete="off" type="date" name="date" class="searchDate" max="9999-12-31">
                 <input autocomplete="off" type="submit" class="btnModules searchBtn" value="검색">
+                <div class="searchAreaSide">
+                  <div class="printArea">
+                    <div class="prinBtn" onclick="openLinePrint()">
+                      <span>노선별(A4)</span>
+                    </div>
+                    <div class="prinBtn" onclick="openBusPrintA4()">
+                      <span>호수별(A4)</span>
+                    </div>
+                    <div class="prinBtn" onclick="openBusPrintA3()">
+                      <span>호수별(A3)</span>
+                    </div>
+                    <div class="prinBtn morelonger" onclick="openDrivingListPrint()">
+                      <span>운행일보(A4)</span>
+                    </div>
+                  </div>
+                </div>
             </div>
         </div>
         <div class="RouteListForm teamSaveForm">

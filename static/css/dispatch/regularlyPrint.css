@@ -15,10 +15,14 @@ body {
 }
 
 table {
+    width: 100%;
+    table-layout: fixed; /* 고정된 테이블 레이아웃 */
     border-spacing: 0;
 }
 
 td {
+    word-wrap: break-word; /* 텍스트가 셀 너비를 초과하면 줄바꿈 */
+    white-space: normal;
     padding: 0;
     box-sizing: border-box;
 }
@@ -29,7 +33,8 @@ td {
     flex-direction: column;
     justify-content: flex-start;
     align-items: center;
-    width: 420mm;
+    width: 100%;
+    max-width: 420mm;
     height: 293mm;
     margin-left: 0.5cm;
     margin-top: 0.2cm;
@@ -61,10 +66,23 @@ td {
     box-sizing: border-box;
 }
 
+.changeBtn{
+    position: absolute;
+    left: 0.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 10rem;
+    height: 2.4rem;
+    padding-top: 0.4rem;
+    font-size: 1.6rem;
+    box-sizing: border-box;
+}
+
 table {
     width: 100%;
     height: auto;
-    font-size: 1.3rem;
+    font-size: 1.2rem;
 }
 
 thead tr {
@@ -112,13 +130,15 @@ tbody tr:nth-last-child(1) td {
 }
 
 td:nth-child(1),
-td:nth-child(10) {
+td:nth-child(2) {
     width: 3%;
 }
 
-td:nth-child(2),
-td:nth-child(3),
-td:nth-child(4) {
+td:nth-child(3){
+    width: 4%;
+}
+
+td:nth-child(4){
     width: 5%;
 }
 
@@ -126,26 +146,48 @@ td:nth-child(5) {
     width: 8%;
 }
 
-td:nth-child(6),
-td:nth-child(7),
+td:nth-child(6){
+    width: 5%;
+}
+
+td:nth-child(7){
+    width: 3%;
+}
+
 td:nth-child(9) {
-    width: 4%;
+    width: 13%;
+    font-weight: bold;
 }
 
-td:nth-child(8) {
-    width: 15%;
+td:nth-child(10) {
+    width: 5%;
 }
 
-td:nth-child(11),
-td:nth-child(12),
-td:nth-child(13),
-td:nth-child(14),
-td:nth-child(15) {
+
+td:nth-child(8){
     width: 6%;
 }
 
-td:nth-child(16) {
-    width: 14%;
+td:nth-child(11){
+    width:4%;
+}
+
+td:nth-child(12),
+td:nth-child(13),
+td:nth-child(14),
+td:nth-child(16),
+td:nth-child(17){
+    width: 5%;
+}
+
+
+td:nth-child(15){
+    width: 5%;
+}
+
+
+td:nth-child(18) {
+    width: 10%;
 }
 
 td:nth-child(1) {
@@ -153,15 +195,15 @@ td:nth-child(1) {
     border-right: 0.2rem solid black;
 }
 
-td:nth-child(11) {
+td:nth-child(12) {
     border-left: 0.2rem solid black;
 }
 
-td:nth-child(15) {
+td:nth-child(17) {
     border-right: 0.2rem solid black;
 }
 
-td:nth-child(16) {
+td:nth-child(18) {
     border-right: 0.2rem solid black;
 }
 
@@ -177,18 +219,25 @@ td:nth-child(9) {
 .page {
     position: absolute;
     bottom: 0;
-    font-size: 1.6rem;
+    font-size: 1.4rem;
 }
 
 
 @media print {
     @page {
-        width: 420mm;
-        height: 297mm;
-        margin: 0
+        size: A4 landscape;
+        margin: 0.5cm 0; /* 모든 여백을 0.5cm로 설정 */
     }
+    .dispatchTable {
+        margin: 0;
+        padding: 0.5cm; /* 출력 가능한 여백 확보 */
+        box-sizing: border-box;
+    }
+}
 
-    body {
-        margin: 5mm;
-    }
+
+
+
+.auto {
+    display: none;
 }

@@ -180,7 +180,7 @@
 
 .graphContainer{
     width: 100%;
-    height: calc(100% - 6rem);
+    height: auto;
     background-color: white;
     box-shadow: 0rem 0.1rem 0.4rem rgb(0 0 0 / 30%);
 }
@@ -191,4 +191,75 @@
     background-color: #444444;
     font-size: 1.6rem;
     color: white;
+}
+
+#histogramChart { 
+    width: 60% !important;
+    height: 100% !important;
+    box-shadow: 0rem 0.1rem 0.4rem rgb(0 0 0 / 30%);
+}
+
+
+.graphContent{
+    height: 71.9rem;
+    
+}
+
+.statusAverage{
+    width: 40%;
+    height: 100%;
+}
+
+.statusAverage form {
+    height: 100%;
+}
+
+.graphContent{
+    display: flex;
+}
+
+.table-list_head-tr_td_distribution:nth-child(1), .table-list_body-tr_td_distribution:nth-child(1) {width: 15%;}
+.table-list_head-tr_td_distribution:nth-child(2), .table-list_body-tr_td_distribution:nth-child(2) {width: 15%;}
+.table-list_head-tr_td_distribution:nth-child(3), .table-list_body-tr_td_distribution:nth-child(3) {width: 35%;}
+.table-list_head-tr_td_distribution:nth-child(4), .table-list_body-tr_td_distribution:nth-child(4) {width: 35%;}
+
+.searchForm{
+    width: 100%;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+
+}
+
+.averageStatusTime{
+    width: 15rem;
+    color: white;
+    font-size: 1.4rem;
+    height: 2.5rem;
+    background-color: #444444;
+    margin-left: auto;
+    vertical-align: middle;
+    text-align: center;
+    cursor: pointer;
+}
+
+.popupContainerDoubleConfigStatus{
+    width: 25rem;
+}
+
+.popupArticleConfigTime{
+    padding-top: 0.5rem;
+    display: flex;
+    justify-content: space-evenly;
+    margin-bottom: 2rem;
+}
+.popupArticleLabelTime{
+    align-items: center;
+    justify-content: center;
+    display: flex;
+}
+
+.configTime{
+    padding-left: 0.5rem;
+    width: 5rem;
 }

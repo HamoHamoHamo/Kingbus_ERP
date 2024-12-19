@@ -37,6 +37,8 @@
 <form method="post" action="{% url 'HR:salary_new_edit' %}" class="salaryContainer">
     {% csrf_token %}
     <input type="hidden" name="month" value="{{month}}">
+    <div class="btnModules salarySaveBtn teamjangTime" onclick="openTeamjangTimePopup()">팀장 근로시간 설정</div>
+    <div class="btnModules salarySaveBtn menu" onclick="openTeamjangMenuPopup()">메뉴구조도</div>
     <input class="btnModules salarySaveBtn" type="submit" value="저장">
     <div class="btnModules salarySaveBtn salarySaveBtn2" onclick="loadPrevMonthlyBase()">불러오기</div>
     <div class="scrolling_table-list_header teamjang_height">
@@ -487,7 +489,7 @@
 
 <div class="popupAreaModules teamjangStatus" id="teamjangPopup" >
     <div class="popupBgModules popupBgModulesMeal"></div>
-    <div class="popupContainer popupContainerDouble">
+    <div class="popupContainer popupContainerDouble popupContainerDoubleStatus">
         <div class="popupHeader">
             <div class="popupTitle">팀장 시간외 근로</div>
         </div>
@@ -495,17 +497,17 @@
             <div class="popupSection">
                 <div class="">
                     {% csrf_token %}
-                    <div class="popupArticleCategori">근로 내역</div>
+                    <div class="popupArticleCategori">추가 근로 내역</div>
                     <div class="popupArticleBoxTable">
                         <div class="scrolling_table-list_header">
                             <table class="table-list">
                                 <thead>
                                     <tr class="table-list_head-tr teamjangStatusTheadTr">
                                         <td class="table-list_head-tr_td teamjangStatusTr">날짜</td>
-                                        <td class="table-list_head-tr_td teamjangStatusTr">연장근로</td>
+                                        <td class="table-list_head-tr_td teamjangStatusTr">평일 연장 근무</td>
                                         <td class="table-list_head-tr_td teamjangStatusTr">야간근로</td>
-                                        <td class="table-list_head-tr_td teamjangStatusTr">휴일8시간이하</td>
-                                        <td class="table-list_head-tr_td teamjangStatusTr">휴일8시간초과</td>
+                                        <td class="table-list_head-tr_td teamjangStatusTr">휴일 연장 근무<br>(휴일8시간이하)</td>
+                                        <td class="table-list_head-tr_td teamjangStatusTr">휴일 연장 근무<br>(휴일8시간초과)</td>
                                         <td class="table-list_head-tr_td teamjangStatusTr">근로 계약서 시간과<br> 겹치는 시간</td> 
                                         <td class="table-list_head-tr_td teamjangStatusTr">근로 계약서 시간과<br> 겹치지 않는 시간</td>  
                                     </tr>
@@ -554,24 +556,76 @@
     <div class="popupBgModules popupBgModulesMeal"></div>
     <div class="popupContainer popupContainerDouble">
         <div class="popupHeader">
-            <div class="popupTitle">팀장 시간외 근로</div>
+            <div class="popupTitle">메뉴구조도</div>
         </div>
         <div class="popupBody">
             <div class="popupSection">
                 <div class="">
                     {% csrf_token %}
                     <div class="popupArticleCategori">팀장급여 메뉴구조도</div>
-                    
+                    <div class="popupArticleBoxTable">
+                        <img src="{% static 'images/menu.png' %}">
+                    </div>
                     </div>
                     <input type="hidden" name="order_id" class="deleteAddHidden">
                 </div>
             </div>
-            <div class="popupFooter">
-                <div class="btnModules mealCloseBtn closeBtn" onclick="closeTeamjangMenu()">닫기</div>
+            <div class="popupFooter teamjangMenuFooter">
+                <div class="btnModules mealCloseBtn closeBtn" onclick="closeTeamjangMenuPopup()">닫기</div>
             </div>
         </div>
     </div>
 </div>
+
+<div class="popupAreaModules teamjangStatus" id="teamjangTimePopup" >
+    <div class="popupBgModules popupBgModulesMeal"></div>
+    <div class="popupContainer popupContainerDouble teamjangTimeConfig">
+        <div class="popupHeader">
+            <div class="popupTitle">팀장 근로계약서 시간 설정</div>
+        </div>
+        <div class="popupBody">
+            <div class="popupSection">
+                <div class="">
+                    {% csrf_token %}
+                    <div class="popupArticleCategori">팀장 근무시간</div>
+                    <div class="popupArticleBox popupArticleBoxTeamjang">
+                        <label for="" class="popupArticleLabel popupArticleLabelTime">팀장 이름 :</label>
+                        <select class="">
+                            {% for member in members %}
+                                <option value="{{ member.id }}">{{ member.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                        <div id="time-rows">
+                            <div class="popupArticleBox popupArticleBoxTimeConfig time-row">
+                                <div class="number">1</div>
+                                <div class="popupArticleDouble addSalaryPriceBox">
+                                    <label for="" class="popupArticleLabel popupArticleLabelTime">시작</label>
+                                    <input autocomplete="off" name="start-time[]" type="time" class="popupArticleinput configTime">
+                                </div>
+                                <div class="popupArticleDouble addSalaryPriceBox">
+                                    <label for="" class="popupArticleLabel popupArticleLabelTime">끝</label>
+                                    <input autocomplete="off" name="end-time[]" type="time" class="popupArticleinput configTime">
+                                </div>
+                                <button type="button" class="">기본</button>
+                                
+                            </div>
+                        </div>
+                    
+                    <input type="hidden" name="order_id" class="deleteAddHidden">
+                </div>
+            </div>
+            <div class="addBtn">
+                <button type="button" id="add-time-btn" class="btnModules addTimeBtn">추가</button>
+            </div>
+            
+            <div class="popupFooter">
+                <div class="btnModules mealCloseBtn closeBtn" onclick="closeTeamjangTimePopup()">닫기</div>
+            </div>
+        </div>
+    </div>
+</div>
+
 {% endblock %}
 
 
@@ -580,6 +634,70 @@
 
 
 {% block script %}
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        const timeRowsContainer = document.getElementById("time-rows");
+        const addTimeBtn = document.getElementById("add-time-btn");
+    
+        // 시간대 추가 기능
+        addTimeBtn.addEventListener("click", () => {
+            const rowCount = timeRowsContainer.querySelectorAll(".time-row").length;
+    
+            // 최대 10줄 제한
+            if (rowCount >= 10) {
+                alert("최대 10개의 시간대만 추가할 수 있습니다.");
+                return;
+            }
+    
+            const newRow = document.createElement("div");
+            newRow.className = "popupArticleBox popupArticleBoxTimeConfig time-row";
+            newRow.innerHTML = `
+                <div class="number">${rowCount + 1}</div>
+                <div class="popupArticleDouble addSalaryPriceBox">
+                    <label for="" class="popupArticleLabel popupArticleLabelTime">시작</label>
+                    <input autocomplete="off" name="start-time[]" type="time" class="popupArticleinput configTime">
+                </div>
+                <div class="popupArticleDouble addSalaryPriceBox">
+                    <label for="" class="popupArticleLabel popupArticleLabelTime">끝</label>
+                    <input autocomplete="off" name="end-time[]" type="time" class="popupArticleinput configTime">
+                </div>
+                <button type="button" class="remove-btn">삭제</button>
+            `;
+            timeRowsContainer.appendChild(newRow);
+    
+            // 삭제 버튼 이벤트 추가
+            newRow.querySelector(".remove-btn").addEventListener("click", () => {
+                newRow.remove();
+                updateRowNumbers();
+            });
+        });
+    
+        // 행 번호 업데이트
+        const updateRowNumbers = () => {
+            const rows = timeRowsContainer.querySelectorAll(".time-row");
+            rows.forEach((row, index) => {
+                // 번호 업데이트
+                row.querySelector(".number").textContent = index + 1;
+    
+                // 1번 줄 삭제 버튼 제거
+                const removeBtn = row.querySelector(".remove-btn");
+                if (index === 0 && removeBtn) {
+                    removeBtn.remove();
+                }
+            });
+        };
+    
+        // 초기 삭제 버튼 이벤트 확인
+        timeRowsContainer.addEventListener("click", (event) => {
+            if (event.target.classList.contains("remove-btn")) {
+                const parentRow = event.target.parentElement;
+                parentRow.remove();
+                updateRowNumbers();
+            }
+        });
+    });
+</script>
+
 <script>
     function openTeamjangPopup () {
         document.getElementById("teamjangPopup").style.display="block"
@@ -592,8 +710,16 @@
         document.getElementById("teamjangMenuPopup").style.display="block"
     } 
 
-    function closeTeamjangMenuStatus () {
+    function closeTeamjangMenuPopup () {
         document.getElementById("teamjangMenuPopup").style.display="none"
+    } 
+
+    function openTeamjangTimePopup () {
+        document.getElementById("teamjangTimePopup").style.display="block"
+    } 
+
+    function closeTeamjangTimePopup () {
+        document.getElementById("teamjangTimePopup").style.display="none"
     } 
 
     const amountCheck = document.querySelectorAll(".amountCheck")

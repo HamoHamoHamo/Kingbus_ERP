@@ -246,3 +246,13 @@
 .RouteList table td:nth-child(8) {
     width: 8%;
 }
+
+.printArea {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+    width: 75rem;
+    margin-right: 0rem;
+    justify-content: right;
+    font-size: 1.4rem;
+}

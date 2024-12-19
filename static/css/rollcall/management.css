@@ -1,1049 +1,696 @@
-.routeLayout {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  width: 100%;
-  height: 78rem;
-}
-
-
-
-
-
-
-
-
-.groupLayout {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: center;
-  width: 36rem;
-  height: 100%;
-}
-
-/* 그룹목록 */
-.groupList {
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  height: calc(100% - 19.6rem);
-  box-sizing: border-box;
-  background-color: white;
-  border-radius: 0.2rem;
-  box-shadow: 0.1rem 0.1rem 0.6rem rgba(0, 0, 0, 0.3);
-}
-
-.groupListHead {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  width: 100%;
-  height: 3.6rem;
-  padding: 0 1rem;
-  background-color: #444;
-  box-sizing: border-box;
-  border-radius: 0.2rem 0.2rem 0 0;
-}
-
-.groupListTitle {
-  font-size: 1.4rem;
-  color: white;
-}
-
-.groupLock {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 2.4rem;
-  height: 2.2rem;
-  margin: 0 1rem 0 auto;
-  border-radius: 0.2rem;
-  font-size: 1.4rem;
-  background-color: white;
-  cursor: pointer;
-}
-
-.lockOpen {
-  display: none;
-}
-
-.groupListHead svg {
-  cursor: pointer;
-}
-
-.groupListBody {
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  height: calc(100% - 3.6rem);
-  overflow-y: scroll;
-}
-
-.groupListBody::-webkit-scrollbar {
-  width: 0.6rem;
-}
-
-.groupListBody::-webkit-scrollbar-thumb {
-  height: 17%;
-  background-color: #444444;
-  border-radius: 1rem;
-}
-
-.groupListBody::-webkit-scrollbar-track {
-  background-color: #D2D2D2;
-}
-
-.groupListItem {
-  display: flex;
-  align-items: center;
-  width: 100%;
-  height: 3.6rem;
-  order: 2;
-}
-
-.fixedGroup {
-  order: 1;
-}
-
-.groupNum {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 3.6rem;
-  height: 3.6rem;
-  font-size: 1.4rem;
-  font-weight: 700;
-  box-sizing: border-box;
-  border-right: 0.1rem solid #CDCDCE;
-  border-bottom: 0.1rem solid #CDCDCE;
-}
-
-.groupName {
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-  width: calc(100% - 3.6rem);
-  height: 100%;
-  padding-left: 1rem;
-  box-sizing: border-box;
-  font-size: 1.4rem;
-  border-bottom: 0.1rem solid #CDCDCE;
-  cursor: pointer;
-}
-
-.groupFixe {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 3.6rem;
-  height: 3.6rem;
-  box-sizing: border-box;
-  border-bottom: 0.1rem solid #CDCDCE;
-  cursor: pointer;
-}
-
-.groupListItem:hover .groupNum,
-.groupListItem:hover .groupName {
-  background-color: #CDCDCE;
-}
-
-
-
-
-
-
-
-
-
-/* 그룹등록 */
-
-.groupCreate {
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  height: 17.6rem;
-  box-sizing: border-box;
-  background-color: white;
-  border-radius: 0.2rem;
-  box-shadow: 0.1rem 0.1rem 0.6rem rgba(0, 0, 0, 0.3);
-}
-
-.groupCreateHead {
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-  width: 100%;
-  height: 3.6rem;
-  padding-left: 1rem;
-  background-color: #444;
-  box-sizing: border-box;
-  font-size: 1.4rem;
-  color: white;
-  border-radius: 0.2rem 0.2rem 0 0;
-}
-
-.groupCreateBody {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-around;
-  width: 100%;
-  height: calc(100% - 3.6rem);
-  padding: 1rem;
-  box-sizing: border-box;
-}
-
-.groupCreateinput {
-  display: flex;
-  justify-content: space-between;
-  width: 100%;
-  height: 2.8rem;
-}
-
-.groupCreateinput input {
-  height: 100%;
-  padding-left: 0.6rem;
-  border: 0.1rem solid #CDCDCE;
-  border-radius: 0.2rem;
-  outline: none;
-  box-sizing: border-box;
-}
-
-.groupNameCreate {
+.searchAreaBox form{
   width: 100%;
 }
 
-.groupCalculateinput {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  width: 100%;
-  height: 2.8rem;
-  font-size: 1.4rem;
+.searchName {
+  font-size: 1.6rem;
+  font-weight: 500;
 }
 
-.groupCalculateinput span:nth-child(1) {
-  margin-right: 2rem;
-}
-
-.tilde {
-  margin: 0 0.4rem;
-}
-
-.groupCalculateinput input {
-  width: 3rem;
-  height: 100%;
-  border: 0.1rem solid #CDCDCE;
-  border-radius: 0.2rem;
-  padding-left: 0.6rem;
-  outline: none;
-  box-sizing: border-box;
-}
-
-.groupCalculateinput div {
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-  width: 5rem;
-  height: 100%;
-  padding-left: 1rem;
-  border: 0.1rem solid #CDCDCE;
-  border-radius: 0.2rem;
-  outline: none;
-  box-sizing: border-box;
-  font-size: 1.4rem;
-  background-color: #D2D2D2;
-}
-
-
-.groupCreateBtnBox {
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
-  width: 100%;
-}
-
-.groupCreateBtnBox a {
-  margin-right: auto;
-}
-
-.groupCreateNew {
-  background-color: #0069D9;
-}
-
-.groupCreateSave {
-  background-color: #0069D9;
-  margin-right: 1rem;
-}
-
-.groupCreateDelete {
-  background-color: #444;
-}
-
-
-
-
-/* 그룹 접기 */
-.foldGroup {
-  display: none;
-  justify-content: center;
-  align-items: center;
-  width: 6rem;
-  height: 100%;
-  background-color: white;
-  border-radius: 0 0.2rem 0.2rem 0;
-  box-shadow: 0.1rem 0.1rem 0.6rem rgba(0, 0, 0, 0.3);
-}
-
-.foldGroup svg {
-  cursor: pointer;
-}
-
-
-
-
-
-
-
-
-.mainLayout {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: center;
-  width: calc(100% - 38rem);
-  height: 100%;
-}
-
-
-/* 노선등록 */
-.routeinput {
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  height: 24rem;
-  box-sizing: border-box;
-  background-color: white;
-  border-radius: 0.2rem;
-  box-shadow: 0.1rem 0.1rem 0.6rem rgba(0, 0, 0, 0.3);
-}
-
-.routeInputHead {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  width: 100%;
-  height: 3.6rem;
-  padding: 0 1rem;
-  box-sizing: border-box;
-}
-
-.routeInputHead span {
-  font-size: 1.4rem;
-}
-
-.routeInputBtnBox {
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
-  width: 21.5rem;
-}
-
-.routeInputNew {
-  background-color: #0069D9;
-  margin-right: 1rem;
-}
-
-.dispatcTable {
-  width: 100%;
-  height: 15.4rem;
-  table-layout: fixed;
-}
-
-.dispatcTable tr {
-  width: 100%;
-  height: 3.1rem;
-  box-sizing: border-box;
-}
-
-.dispatcTable tr:nth-child(1) td:nth-child(2),
-.dispatcTable tr:nth-child(1) td:nth-child(4),
-.dispatcTable tr:nth-child(1) td:nth-child(6) {
-  border-top: 0.1rem solid #CDCDCE;
-}
-
-.dispatcTable td {
-  padding: 0;
-  font-size: 1.4rem;
-  border-bottom: 0.1rem solid #CDCDCE;
-}
-
-.tdTypeA {
-  text-align: center;
-  background-color: #444;
-  color: white;
-  font-size: 1.4rem;
-  width: 7%;
-}
-
-.tdTypeB {
-  width: 43%;
-  font-size: 1.4rem;
-}
-
-.tdTypeC {
-  width: 18%;
-  font-size: 1.4rem;
-}
-
-.routeWeek {
-  align-items: center;
-  width: 100%;
-  height: 100%;
-}
-
-.routeWeek input:nth-child(1) {
-  margin-left: 1rem;
-}
-
-.routeWeek label:nth-child(2) {
-  margin-right: 1.6rem;
-}
-
-.routeWeek,
-.routeNumber,
-.routeTime {
-  display: flex;
-}
-
-.inputSelect {
-  width: calc(100% - 1.6rem);
-  height: 2.4rem;
-  margin: 0 0.8rem;
-}
-
-.tdTypeC input[type=radio]{
-  margin-left: 2rem;
-}
-
-.tdTypeC label{
-  cursor: pointer;
-}
-
-.inputWidthCalc {
-  width: calc(100% - 10rem);
-}
-
-.waypointBox {
-  display: flex;
-  justify-content: space-between;
-  width: 100%;
-  padding-right: 0.8rem;
-  box-sizing: border-box;
-  align-items: center;
-}
-
-/* 노선목록 검색 */
-.routListSearch {
-  position: relative;
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-  width: 100%;
-  height: 3.6rem;
-  padding: 0 1rem;
-  box-sizing: border-box;
-  background-color: white;
-  border-radius: 0.2rem;
-  box-shadow: 0.1rem 0.1rem 0.6rem rgba(0, 0, 0, 0.3);
-}
-
-.routListSearch label {
-  font-size: 1.4rem;
-}
-
-#routeListsearch {
-  width: 30%;
-  height: 2.6rem;
-  margin: 0 2rem;
-  border: 0.1rem solid #CDCDCE;
-  border-radius: 0.2rem;
-  outline: none;
-  box-sizing: border-box;
-}
-
-.routeListSearchBtn {
-  background-color: #444;
-}
-
-.popupFooter {
-  position: relative;
-}
-
-.excelUpload {
-  position: absolute;
-  right: 13.4rem;
-  width: 10.4rem;
-  background-color: #444;
-}
-
-.excelDownload {
-  position: absolute;
-  right: 1rem;
-  width: 11.4rem;
-  background-color: #444;
-}
-
-.popupCloseBtn {
-  background-color: #444;
-  margin-left: 1rem;
-}
-
-.popupDeleteBtn {
-  background-color: #444;
-  position: absolute;
-  left: 0;
-}
-
-.popupFooter a {
-  margin-right: auto;
-}
-
-.downloadFormat {
-  background-color: #444;
-}
-
-select[name=use]{
-  width: 10rem;
-  height: 2.4rem;
-  padding-left: 0.3rem;
-  border: 0.1rem solid #B5B5B5;
-  border-radius: 0.2rem;
-  font-size: 1.5rem;
-  box-sizing: border-box;
-}
-
-.SearchName{
-    font-size:1.4rem;
-    margin-right: 1rem;
-}
-
-
-/* 노선목록 */
-.RouteListForm {
-  position: relative;
-  width: 100%;
-  height: 100%;
-}
-
-.routeInputSave {
-  position: absolute;
-  top: -3.3rem;
-  right: 8rem;
-  background-color: #444;
-}
-
-.routeInputScan {
-  position: absolute;
-  top: -3.3rem;
-  right: 1rem;
-  background-color: #444;
-}
-
-.RouteList {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  width: 100%;
-  height: 100%;
-  box-sizing: border-box;
-  background-color: white;
-  border-radius: 0.2rem;
-  box-shadow: 0.1rem 0.1rem 0.6rem rgba(0, 0, 0, 0.3);
-}
-
-.RouteList table td {
-  text-align: center;
-  box-sizing: border-box;
-}
-
-.RouteListHeadScroll {
-  width: calc(100% - 0.6rem);
-  height: 3.6rem;
-  overflow-x: scroll;
-}
-
-.RouteListHeadScroll::-webkit-scrollbar {
-  display: none;
-}
-
-.RouteListHeader {
-  width: 100%;
-  height: 3.6rem;
-}
-
-.RouteListHeader tr {
-  background-color: #444;
-  color: white;
-  font-size: 1.4rem;
-}
-
-.RouteListScroll {
-  width: 100%;
-  height: calc(100% - 3.6rem);
-  overflow-y: scroll;
-}
-
-.RouteListScroll::-webkit-scrollbar {
-  width: 0.6rem;
-  height: 1rem;
-}
-
-.RouteListScroll::-webkit-scrollbar-thumb {
-  height: 17%;
-  background-color: #444444;
-  border-radius: 1rem;
-}
-
-.RouteListScroll::-webkit-scrollbar-track {
-  background-color: #D2D2D2;
-}
-
-.RouteListBody {
-  width: 100%;
-  height: 100%;
-}
-
-.RouteListBodyTr {
-  width: 100%;
-  height: 3.6rem;
-}
-
-.RouteListBodyTr:hover {
-  background-color: #CDCDCE;
-  cursor: pointer;
-}
-
-.RouteListBodyTr:hover td {
-  border-right: 0.1rem solid white;
-  border-bottom: 0.1rem solid white;
-}
-
-.RouteListBody td {
-  font-size: 1.4rem;
-  border-right: 0.1rem solid #CDCDCE;
-  border-bottom: 0.1rem solid #CDCDCE;
-  padding: 0.6rem 0;
-  word-break: keep-all;
-}
-
-.blanckTr {
-  width: 100%;
-  height: 100%;
-}
-
-
-/* 팝업 */
-.popupBody {
-  height: 100%;
-}
-
-.popupArticletitle {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 9rem;
-  height: 2.6rem;
-  border-radius: 0.3rem 0 0 0.3rem;
-  background-color: #444444;
-  color: white;
-  font-size: 1.3rem;
-  box-sizing: border-box;
-}
-
-.popupArticleTitle {
-  width: 100%;
-  padding-bottom: 0.4rem;
-  margin-top: 2rem;
-  font-size: 1.4rem;
-  font-weight: bold;
-  border-bottom: 0.1rem solid black;
-}
-
-.popupSection {
-  height: calc(100% - 7.2rem);
-}
-
-.popupContainer {
-  width: 113.9rem;
-  height: 60.1rem;
-}
-
-.popupContainerMap {
-  width: 100rem;
-  height: auto;
-}
-
-
-.popupArticleFileDouble {
-  width: 100%;
-  height: 2.6rem;
-}
-
-.popupArticleInput {
-  width: 100%;
-  height: 2.6rem;
-  margin-bottom: 2rem;
-  display: flex;
-  position: relative;
-}
-
-.popupFooterMinibox {
+.routeFilterBox {
   display: flex;
   justify-content: space-between;
   align-items: center;
   width: 32rem;
-  margin-right: auto;
+  height: 100%;
+  margin-left: 2rem;
+  margin-right: 4rem;
 }
 
-.visibleLoadingBox {
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-  padding-left: 1rem;
-  width: calc(100% - 8rem);
-  box-sizing: border-box;
+.routeFilterBox select {
+  width: 11rem;
 }
 
-.visibleLoading {
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
+.routeFilterBox input:nth-child(4) {
   display: none;
+}
+
+.dateFilterBox {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 18rem;
+  height: 100%;
+  margin-right: 2rem;
+}
+
+.dateFilterBox span {
+  width: 5rem;
   font-size: 1.6rem;
-}
-
-.visibleLoading span {
-  margin-right: 0.6rem;
-}
-
-.popupArticleCategory {
-  width: 100%;
-  padding-bottom: 0.4rem;
-  font-size: 1.4rem;
-  font-weight: bold;
-  border-bottom: 0.1rem solid black;
-}
-
-
-/* 기준날짜 선택 */
-.pricePopupArea {
-  text-align: right;
-  width: calc(100% - 1.4rem);
-  height: 2.2rem;
-  margin: 0 0.8rem;
-  padding: 0 0.6rem;
-  border: 0.1rem solid black;
-  box-sizing: border-box;
-  border-radius: 0.2rem;
-  cursor: pointer;
-  background-color: #CDCDCE;
-}
-
-.referenceeContainer {
-  width: 36rem;
-  min-height: 22.4rem;
-}
-
-.referenceDateInput {
-  width: 20rem
-}
-
-.fixedDate {
-  text-align: center;
-  font-size: 1.4rem;
-  width: 6rem;
-  height: 2.2rem;
-  margin: 0 0.8rem;
-  padding: 0 0.6rem;
-  border: 0.1rem solid black;
-  box-sizing: border-box;
-  border-radius: 0.2rem;
-  background-color: #CDCDCE;
-}
-
-.referenceEditBtn {
-  background-color: #0069D9;
   margin-right: 1rem;
 }
 
-.referenceCloseBtn {
-  background-color: #444;
-}
-
-.detailMapLinkInput {
-  width: calc(100% - 10rem);
-  outline: none;
-}
-
-.detailMapPopupHeader {
-  width: calc(100% - 0.6rem);
+.searchTool input[type=submit] {
+  background-color: #444444;
 }
 
 
-.detailMapPopupHeader td {
-  background-color: #444;
-  color: white;
-  text-align: center;
-  position: sticky;
-  top: 0;
-}
 
-.popupArticleStation td:nth-child(1),
-.popupArticleStation td:nth-child(2) {
-  width: 5%;
-}
 
-.detailMapPopupScrollBox {
+
+.scheduleTableBox {
   width: 100%;
-  overflow: auto;
-  height: 22.4rem;
-
-  flex-direction: column;
-  justify-content: flex-start;
-  align-items: flex-start;
+  height: 76rem;
+  position: relative;
 }
 
-.detailMapPopupScrollBox::-webkit-scrollbar {
+.scheduleTableHeader {
+  width: 100%;
+  height: 3.6rem;
+  padding-right: 0.6rem;
+  border: 0.1rem solid #CDCDCE;
+  border-radius: 0.5rem 0.5rem 0 0;
+  box-sizing: border-box;
+  border-spacing: 0;
+}
+
+.scheduleTableHeader td:nth-child(15) {
+  text-align: left;
+  width: 3.5%;
+}
+
+.scheduleTableHeader td {
+  text-align: center;
+  width: 7%;
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: #7A7A7A;
+}
+
+.scheduleTableHeader td:nth-child(13) {
+  text-align: right;
+  width: 3.48%;
+}
+
+.scheduleTableHeader td:nth-child(2) {
+  width: 8%;
+}
+
+.scheduleTableHeader td:nth-child(1) {
+  width: 8.48%;
+}
+
+
+.scheduleTableCell {
+  position: relative;
+  width: 100%;
+  height: calc(100% - 4.6rem);
+  overflow-y: scroll;
+  border: 0.1rem solid #CDCDCE;
+  border-radius: 0 0 0.5rem 0.5rem;
+  box-sizing: border-box;
+}
+
+.scheduleTableCell::-webkit-scrollbar {
   width: 0.6rem;
-  height: 1rem;
 }
 
-.detailMapPopupScrollBox::-webkit-scrollbar-thumb {
+.scheduleTableCell::-webkit-scrollbar-thumb {
   height: 17%;
   background-color: #444444;
   border-radius: 1rem;
 }
 
-.detailMapPopupScrollBox::-webkit-scrollbar-track {
+.scheduleTableCell::-webkit-scrollbar-track {
   background-color: #F5F5F5;
 }
 
-.detailMapPopupScrollBox table {
-  min-width: 100%;
-}
-
-.detailMapPopupScrollBox tr {
+.scheduleTableBody {
   width: 100%;
-  height: 3rem;
+  border-spacing: 0;
 }
 
-.detailMapPopupHeader tr {
+.table {
   width: 100%;
-  height: 3rem;
-  text-align: center;
-  font-size: 1.4rem;
+  height: auto;
 }
 
-.detailMapPopupScrollBox td {
-  text-align: center;
-  font-size: 1.4rem;
-  border-left: 0.1rem solid #D4D4D4;
-  border-bottom: 0.1rem solid #D4D4D4;
-  white-space: nowrap;
-  padding: 0 2rem;
-}
-
-.popupArticleSearch {
+.tbody {
+  display: flex;
+  flex-direction: column;
   justify-content: flex-start;
+  width: 100%;
+  height: auto;
 }
 
-.stationSearchInput {
-  margin-right: 2rem;
+.tr {
+  position: relative;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  height: 3.2rem;
 }
 
-.stationSearchBtn {
-  background-color: #444;
-  margin-left: 3rem;
+.tr:hover {
+  background-color: #929292;
+}
+.tr:hover .tdDriver{
+  color: white;
 }
 
-.stationSearchInputText {
-  margin-right: 1rem;
+.td {
+  width: 3.48%;
+  height: 100%;
+  border-right: 0.1rem solid #CDCDCE;
+  border-bottom: 0.1rem solid #CDCDCE;
+  box-sizing: border-box;
 }
 
-.popupSectionFirst {
-  padding-bottom: 0rem;
-}
-
-
-.detailMapPopupScrollBoxTr:hover {
+.tdStatus {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  width: 8%;
+  height: 100%;
+  border-right: 0.1rem solid #CDCDCE;
+  border-bottom: 0.1rem solid #CDCDCE;
+  font-size: 1.4rem;
+  color: #7A7A7A;
   cursor: pointer;
+  box-sizing: border-box;
+}
+
+.tdDriver {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  width: 8.48%;
+  height: 100%;
+  border-right: none;
+  border-bottom: 0.1rem solid #CDCDCE;
+  border-right: 0.1rem solid #CDCDCE;
+  font-size: 1.4rem;
+  color: #7A7A7A;
+  cursor: pointer;
+  box-sizing: border-box;
+}
+
+.regularlyLine {
+  position: absolute;
+  top: 50%;
+  left: 10rem;
+  height: 2.6rem;
+  background-color: #399DDF;
+  transform: translate(0, -50%);
+}
+
+.orderLine {
+  position: absolute;
+  top: 50%;
+  height: 2.6rem;
+  background-color: #FEBE01;
+  transform: translate(0, -50%);
+}
+
+
+
+
+
+
+
+
+
+.popupContainer {
+  position: fixed;
+  top: 50%;
+  left: calc(50% + 11rem);
+  z-index: 100;
+  display: block;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  width: 64rem;
+  min-height: 19.6rem;
+  background-color: white;
+  box-shadow: 0 0.2rem 0.4rem rgb(0 0 0 / 16%);
+  transform: translate(-50%, -50%);
+}
+
+.popupContainer {
+  width: 100rem;
+  height: 62rem;
+}
+
+.PopupTitle {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 4.8rem;
+  font-size: 1.6rem;
+  font-weight: 500;
+  border-bottom: 0.1rem solid #191919;
+}
+
+.PopupDataArea {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 100%;
+  height: calc(100% - 10.8rem);
+  padding: 3rem 2rem 3rem 2rem;
+  box-sizing: border-box;
+}
+
+.PopupDataBox {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.PopupDataCell {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  align-items: flex-start;
+  width: 21rem;
+  height: 6rem;
+}
+
+.PopupDataTitle {
+  font-size: 1.4rem;
+  color: #7A7A7A;
+}
+
+.PopupDataCell div {
+  width: 100%;
+  font-size: 1.4rem;
+  border-bottom: 0.1rem solid #191919;
+}
+
+.shcedulePopupTableBox {
+  width: 100%;
+  height: 50rem;
+  padding-bottom: 3rem;
+}
+
+.shcedulePopupTableHeader {
+  width: 100%;
+  height: 3.6rem;
+  border: 0.1rem solid #CDCDCE;
+  border-radius: 0.5rem 0.5rem 0 0;
+  box-sizing: border-box;
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: #7A7A7A;
+  border-spacing: 0;
+}
+
+.shcedulePopupTableBodyBox {
+  width: 100%;
+  height: calc(100% - 3.6rem);
+  border: 0.1rem solid #CDCDCE;
+  overflow-y: auto;
+  box-sizing: border-box;
+}
+
+.shcedulePopupTableBodyBox::-webkit-scrollbar {
+  width: 0.6rem;
+}
+
+.shcedulePopupTableBodyBox::-webkit-scrollbar-thumb {
+  height: 17%;
+  background-color: #444444;
+  border-radius: 1rem;
+}
+
+.shcedulePopupTableBodyBox::-webkit-scrollbar-track {
+  background-color: #F5F5F5;
+}
+
+.shcedulePopupTableBody {
+  width: 100%;
+  box-sizing: border-box;
+  font-size: 1.4rem;
+  border-spacing: 0;
+}
+
+.shcedulePopupTableBody tr {
+  height: 3.6rem;
+}
+
+.shcedulePopupTableBody tr:nth-child(odd) {
+  background-color: white;
+}
+
+.shcedulePopupTableBody tr:nth-child(even) {
   background-color: #EFEFEF;
 }
 
-.stationNumberInputText {
-  margin-left: 2rem;
+.shcedulePopupTableBody td {
+  border-bottom: 0.1rem solid #CDCDCE;
 }
 
-.waypointNumberInput {
-  width: 8rem;
+.popupTable td:nth-child(1),
+.popupTable td:nth-child(2),
+.popupTable td:nth-child(5),
+.popupTable td:nth-child(6),
+.popupTable td:nth-child(7),
+.popupTable td:nth-child(8) {
+  text-align: center;
 }
 
-.routeStationTime {
-  font-size: 1.2rem;
-}
-
-.mainTeamroute{
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  width: 77%;
-  height: 100%;
+.popupTable td:nth-child(1) {
+  width: 5%;
+  padding-left: 1rem;
   box-sizing: border-box;
-  border-radius: 0.2rem;
 }
 
-.mainTeamScroll{
+.popupTable td:nth-child(2) {
+  width: 8%;
+}
+
+.popupTable td:nth-child(3) {
+  width: 15%;
+}
+.popupTable td:nth-child(4) {
+  width: 37%;
+}
+
+.popupTable td:nth-child(8),
+.popupTable td:nth-child(6),
+.popupTable td:nth-child(7){
+  width: 9%;
+}
+
+.popupTable td:nth-child(5) {
+  width: 8%;
+}
+
+
+
+
+.PopupBtnBox {
+  display: flex;
+  justify-content: right;
+  align-items: center;
+  width: 100%;
+  height: 4.8rem;
+  box-sizing: border-box;
+  padding: 0 3rem;
+}
+
+.PopupunderBtnBox{
+  display: flex;
+  justify-content: right;
+  align-items: center;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.btnModules{
+  background-color: #0069D9;
+}
+
+.timeline {
+  z-index: 30;
+  position: absolute;
+  top: 3.6rem;
+  width: 0.1rem;
+  height: calc(100% - 4.6rem);
+  border-left: 0.5rem solid #1C1A4E;
+}
+
+.btncloseModules{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-width: 6rem;
+  height: 2.5rem;
+  padding: 0 1.2rem;
+  border: none;
+  border-radius: 0.2rem;
+  font-size: 1.4rem;
+  color: white;
+  cursor: pointer;
+  box-sizing: border-box;
+  outline: none;
+  background-color: #444444;
+}
+
+.btnsaveModules{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-width: 6rem;
+  height: 2.5rem;
+  padding: 0 1.2rem;
+  border: none;
+  border-radius: 0.2rem;
+  font-size: 1.4rem;
+  color: white;
+  cursor: pointer;
+  box-sizing: border-box;
+  outline: none;
+  background-color: #0069D9;
+}
+
+.popupAreaModules2{
+  display: none;
+}
+
+.shcedulePopupTableBody2 td{
+  border-bottom: 0.1rem solid #CDCDCE;
+  height: 3.6rem;
+}
+
+.popupTable2 td:nth-child(1){
+  width: 5%;
+}
+.popupTable2 td:nth-child(2){
+  width: 20%;
+}
+.popupTable2 td:nth-child(3),
+.popupTable2 td:nth-child(4),
+.popupTable2 td:nth-child(5),
+.popupTable2 td:nth-child(6),
+.popupTable2 td:nth-child(7){
+  width: 15%;
+}
+
+
+
+.shcedulePopupTableHeader2,
+.driverPopupTableHeader {
+  width: 100%;
+  height: 3.6rem;
+  border-radius: 0.5rem 0.5rem 0 0;
+  box-sizing: border-box;
+  font-size: 1.4rem;
+  background-color: #444444;
+  color: white;
+  border-spacing: 0;
+  text-align: center;
+}
+
+.shcedulePopupTableBody2{
+  width: 100%;
+  box-sizing: border-box;
+  font-size: 1.4rem;
+  border-spacing: 0;
+  text-align: center;
+}
+
+.PopupBtnBox2 {
+  display: flex;
+  justify-content: right;
+  align-items: center;
+  width: 100%;
+  height: 4.8rem;
+  box-sizing: border-box;
+}
+
+.editbtnModules{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-width: 6rem;
+  height: 2.5rem;
+  padding: 0 1.2rem;
+  border: none;
+  border-radius: 0.2rem;
+  font-size: 1.4rem;
+  color: white;
+  cursor: pointer;
+  box-sizing: border-box;
+  outline: none;
+  background-color: #0069D9;
+}
+
+
+
+
+.completionRate {
+  font-size: 1.8rem;
+  font-weight: bold;
+  color: #4caf50;
+  margin-top: 1rem;
+}
+
+.PopupDataArea {
+  display: block !important;
+  visibility: visible !important;
+}
+
+.progress-bar {
+      width: 100%;
+  background-color: #e0e0e0;
+  border-radius: 0.5rem;
+  overflow: hidden;
+  height: 2.5rem;
+  margin: 1rem 0;
+  font-size: 1.3rem;
+}
+
+.progress-bar-inner {
+  height: 100%;
+  text-align: center;
+  color: white;
+  font-weight: bold;
+  font-size: 1.4rem;
+  line-height: 2.5rem; /* Match the height for vertical centering */
+  border-radius: 0.5rem;
+  transition: width 0.3s ease;
+  background-color: rgb(243, 156, 18);
+  width: 0%;
+}
+
+.notDone{
+  color: #ff0000
+}
+
+.check {
+  text-decoration: none;
+  color: #0069D9;
+}
+
+/*  */
+
+.routeLayout {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    width: 100%;
+    height: 78rem;
+  }
+  
+  
+  
+  
+  
+  
+  
+  
+  .groupLayout {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     align-items: center;
-    width: 100%;
-    height: 90%;
-    overflow-x: hidden;
-    margin-top: 0.8rem;
-}
-
-.btnModule {
-    width: 100%;
-    text-align: right;
-    margin-top: 1.2rem;
-}
-
-.groupCreates{
+    width: 26rem;
+    height: 100%;
+  }
+  
+  /* 그룹목록 */
+  .groupList {
     display: flex;
     flex-direction: column;
     width: 100%;
+    height: calc(100% - 19.6rem);
     box-sizing: border-box;
     background-color: white;
     border-radius: 0.2rem;
     box-shadow: 0.1rem 0.1rem 0.6rem rgba(0, 0, 0, 0.3);
-    height: 15rem;
-}
-
-.inputTeamJang{
-    height: 2.5rem;
-    padding-left: 0.5rem;
-    padding-right: 0.5rem;
-    background-color: white;
-    border: 0.1rem solid #D2D2D2;
-    border-radius: 0.2rem;
-    box-sizing: border-box;
-    font-size: 1.4rem;
-    color: #191919;
-    width: 80%;
-}
-
-.excelUploads{
-    background-color: #444;
-    color: white;
-    width: 12.8rem;
-    height: 2.5rem;
-    border-radius: 0.2rem;
-}
-
-.excelDownloads{
-    background-color: #444;
-    color: white;
-    width: 12.8rem;
-    height: 2.5rem;
-    border-radius: 0.2rem;
-}
-
-.routeScan{
-  background-color: #0069D9;
-    color: white;
-    width: 6.5rem;
-    height: 2.5rem;
-    border-radius: 0.2rem;
-}
-
-.searchName{
-  margin-left: 1.5rem;
-}
-
-
-
-.groupList {
-    height: 100%;
-}
-
-.groupListBox {
-    height: 33.3%;
-}
-
-/* .groupListBody {
-    height: calc(33.3% - 3.6rem);
-} */
-
-.groupAddBtn {
-    background-color: #EFEFEF;
-    color: #444;
-    display: flex;
-    align-items: center;
-}
-
-.detailItemBox {
-    display: none;
-    flex-direction: column;
-}
-
-.detailItem {
-    display: flex;
-    align-items: center;
-    width: 100%;
-    height: 3.2rem;
-}
-
-.detailItem:hover {
-  background-color: #EFEFEF;
-}
-
-.groupListItemBox {
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: center;
-    width: 100%;
-    height: auto;
-}
+  }
   
-.groupListItem {
+  .groupListHead {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    height: 3.6rem;
+    padding: 0 1rem;
+    background-color: #444;
+    box-sizing: border-box;
+    border-radius: 0.2rem 0.2rem 0 0;
+  }
+  
+  .groupListTitle {
+    font-size: 1.4rem;
+    color: white;
+  }
+  
+  .groupLock {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 2.4rem;
+    height: 2.2rem;
+    margin: 0 1rem 0 auto;
+    border-radius: 0.2rem;
+    font-size: 1.4rem;
+    background-color: white;
+    cursor: pointer;
+  }
+  
+  .lockOpen {
+    display: none;
+  }
+  
+  .groupListHead svg {
+    cursor: pointer;
+  }
+  
+  .groupListBody {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: calc(100% - 3.6rem);
+    overflow-y: scroll;
+  }
+  
+  .groupListBody::-webkit-scrollbar {
+    width: 0.6rem;
+  }
+  
+  .groupListBody::-webkit-scrollbar-thumb {
+    height: 17%;
+    background-color: #444444;
+    border-radius: 1rem;
+  }
+  
+  .groupListBody::-webkit-scrollbar-track {
+    background-color: #D2D2D2;
+  }
+  
+  .groupListItem {
     display: flex;
     align-items: center;
     width: 100%;
     height: 3.6rem;
-    background-color: #EFEFEF;
-    order: initial;
-}
-
-.groupListItem:hover {
-  background-color: #CDCDCE;
-}
-
-.openGroup #Icon_awesome-folder{
-    fill: #0069D9;
-}
-
-.routeGap {
+    order: 2;
+  }
+  
+  .fixedGroup {
+    order: 1;
+  }
+  
+  .groupNum {
+    display: flex;
+    justify-content: center;
+    align-items: center;
     width: 3.6rem;
-    height: 100%;
+    height: 3.6rem;
+    font-size: 1.4rem;
+    font-weight: 700;
     box-sizing: border-box;
+    border-right: 0.1rem solid #CDCDCE;
     border-bottom: 0.1rem solid #CDCDCE;
-}
-
-
-.routeNameBox {
+  }
+  
+  .groupName {
     display: flex;
     justify-content: flex-start;
     align-items: center;
@@ -1054,456 +701,1191 @@ select[name=use]{
     font-size: 1.4rem;
     border-bottom: 0.1rem solid #CDCDCE;
     cursor: pointer;
-}
-
-.routeName{
+  }
+  
+  .groupFixe {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 3.6rem;
+    height: 3.6rem;
+    box-sizing: border-box;
+    border-bottom: 0.1rem solid #CDCDCE;
+    cursor: pointer;
+  }
+  
+  .groupListItem:hover .groupNum,
+  .groupListItem:hover .groupName {
+    background-color: #CDCDCE;
+  }
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  /* 그룹등록 */
+  
+  .groupCreate {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 17.6rem;
+    box-sizing: border-box;
+    background-color: white;
+    border-radius: 0.2rem;
+    box-shadow: 0.1rem 0.1rem 0.6rem rgba(0, 0, 0, 0.3);
+  }
+  
+  .groupCreateHead {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    width: 100%;
+    height: 3.6rem;
+    padding-left: 1rem;
+    background-color: #444;
+    box-sizing: border-box;
+    font-size: 1.4rem;
+    color: white;
+    border-radius: 0.2rem 0.2rem 0 0;
+  }
+  
+  .groupCreateBody {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    width: 100%;
+    height: calc(100% - 3.6rem);
+    padding: 1rem;
+    box-sizing: border-box;
+  }
+  
+  .groupCreateinput {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    height: 2.8rem;
+  }
+  
+  .groupCreateinput input {
+    height: 100%;
+    padding-left: 0.6rem;
+    border: 0.1rem solid #CDCDCE;
+    border-radius: 0.2rem;
+    outline: none;
+    box-sizing: border-box;
+  }
+  
+  .groupNameCreate {
+    width: 100%;
+  }
+  
+  .groupCalculateinput {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    height: 2.8rem;
+    font-size: 1.4rem;
+  }
+  
+  .groupCalculateinput span:nth-child(1) {
+    margin-right: 2rem;
+  }
+  
+  .tilde {
+    margin: 0 0.4rem;
+  }
+  
+  .groupCalculateinput input {
+    width: 3rem;
+    height: 100%;
+    border: 0.1rem solid #CDCDCE;
+    border-radius: 0.2rem;
+    padding-left: 0.6rem;
+    outline: none;
+    box-sizing: border-box;
+  }
+  
+  .groupCalculateinput div {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    width: 5rem;
+    height: 100%;
+    padding-left: 1rem;
+    border: 0.1rem solid #CDCDCE;
+    border-radius: 0.2rem;
+    outline: none;
+    box-sizing: border-box;
+    font-size: 1.4rem;
+    background-color: #D2D2D2;
+  }
+  
+  
+  .groupCreateBtnBox {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    width: 100%;
+  }
+  
+  .groupCreateBtnBox a {
+    margin-right: auto;
+  }
+  
+  .groupCreateNew {
+    background-color: #0069D9;
+  }
+  
+  .groupCreateSave {
+    background-color: #0069D9;
+    margin-right: 1rem;
+  }
+  
+  .groupCreateDelete {
+    background-color: #444;
+  }
+  
+  
+  
+  
+  /* 그룹 접기 */
+  .foldGroup {
+    display: none;
+    justify-content: center;
+    align-items: center;
+    width: 6rem;
+    height: 100%;
+    background-color: white;
+    border-radius: 0 0.2rem 0.2rem 0;
+    box-shadow: 0.1rem 0.1rem 0.6rem rgba(0, 0, 0, 0.3);
+  }
+  
+  .foldGroup svg {
+    cursor: pointer;
+  }
+  
+  
+  
+  
+  
+  
+  
+  
+  .mainLayout {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    width: calc(100% - 28rem);
+    height: 100%;
+  }
+  
+  
+  /* 노선등록 */
+  .routeinput {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 24rem;
+    box-sizing: border-box;
+    background-color: white;
+    border-radius: 0.2rem;
+    box-shadow: 0.1rem 0.1rem 0.6rem rgba(0, 0, 0, 0.3);
+  }
+  
+  .routeInputHead {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    height: 3.6rem;
+    padding: 0 1rem;
+    box-sizing: border-box;
+  }
+  
+  .routeInputHead span {
+    font-size: 1.4rem;
+  }
+  
+  .routeInputBtnBox {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    width: 21.5rem;
+  }
+  
+  .routeInputNew {
+    background-color: #0069D9;
+    margin-right: 1rem;
+  }
+  
+  .dispatcTable {
+    width: 100%;
+    height: 15.4rem;
+    table-layout: fixed;
+  }
+  
+  .dispatcTable tr {
+    width: 100%;
+    height: 3.1rem;
+    box-sizing: border-box;
+  }
+  
+  .dispatcTable tr:nth-child(1) td:nth-child(2),
+  .dispatcTable tr:nth-child(1) td:nth-child(4),
+  .dispatcTable tr:nth-child(1) td:nth-child(6) {
+    border-top: 0.1rem solid #CDCDCE;
+  }
+  
+  .dispatcTable td {
+    padding: 0;
+    font-size: 1.4rem;
+    border-bottom: 0.1rem solid #CDCDCE;
+  }
+  
+  .tdTypeA {
+    text-align: center;
+    background-color: #444;
+    color: white;
+    font-size: 1.4rem;
+    width: 7%;
+  }
+  
+  .tdTypeB {
+    width: 43%;
+    font-size: 1.4rem;
+  }
+  
+  .tdTypeC {
+    width: 18%;
+    font-size: 1.4rem;
+  }
+  
+  .routeWeek {
+    align-items: center;
+    width: 100%;
+    height: 100%;
+  }
+  
+  .routeWeek input:nth-child(1) {
     margin-left: 1rem;
-}
-/*   
-.popupContainer {
-    width: 80rem;
-} */
+  }
+  
+  .routeWeek label:nth-child(2) {
+    margin-right: 1.6rem;
+  }
+  
+  .routeWeek,
+  .routeNumber,
+  .routeTime {
+    display: flex;
+  }
+  
+  .inputSelect {
+    width: calc(100% - 1.6rem);
+    height: 2.4rem;
+    margin: 0 0.8rem;
+  }
+  
+  .tdTypeC input[type=radio]{
+    margin-left: 2rem;
+  }
+  
+  .tdTypeC label{
+    cursor: pointer;
+  }
+  
+  .inputWidthCalc {
+    width: calc(100% - 10rem);
+  }
+  
+  .waypointBox {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    padding-right: 0.8rem;
+    box-sizing: border-box;
+    align-items: center;
+  }
+  
+  /* 노선목록 검색 */
+  .routListSearch {
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    height: 3.6rem;
+    padding: 0 1rem;
+    box-sizing: border-box;
+    background-color: white;
+    border-radius: 0.2rem;
+    box-shadow: 0.1rem 0.1rem 0.6rem rgba(0, 0, 0, 0.3);
+  }
+  
+  .routListSearch label {
+    font-size: 1.4rem;
+  }
+  
+  #routeListsearch {
+    width: 30%;
+    height: 2.6rem;
+    margin: 0 2rem;
+    border: 0.1rem solid #CDCDCE;
+    border-radius: 0.2rem;
+    outline: none;
+    box-sizing: border-box;
+  }
+  
+  .routeListSearchBtn {
+    background-color: #444;
+  }
+  
 
-.popupArticleCategory {
+  .excelUpload {
+    position: absolute;
+    right: 13.4rem;
+    width: 10.4rem;
+    background-color: #444;
+  }
+  
+  .excelDownload {
+    position: absolute;
+    right: 1rem;
+    width: 11.4rem;
+    background-color: #444;
+  }
+  
+  .popupCloseBtn {
+    background-color: #444;
+    margin-left: 1rem;
+  }
+  
+  .popupDeleteBtn {
+    background-color: #444;
+    position: absolute;
+    left: 0;
+  }
+
+  
+  .popupFooter a {
+    margin-right: auto;
+  }
+  
+  .downloadFormat {
+    background-color: #444;
+  }
+  
+  select[name=use]{
+    width: 10rem;
+    height: 2.4rem;
+    padding-left: 0.3rem;
+    border: 0.1rem solid #B5B5B5;
+    border-radius: 0.2rem;
+    font-size: 1.5rem;
+    box-sizing: border-box;
+  }
+  
+  .SearchName{
+      font-size:1.4rem;
+      margin-right: 1rem;
+  }
+  
+  
+  /* 노선목록 */
+  .RouteListForm {
+    position: relative;
+    width: 100%;
+    height: calc(100% - 3.6rem);
+  }
+
+  .RouteListInsideDiv {
+    height: 100%;
+  }
+  
+  .routeInputSave {
+    position: absolute;
+    top: -3.1rem;
+    right: 8rem;
+    background-color: #444;
+  }
+  
+  .routeInputScan {
+    background-color: #444;
+  }
+  
+  .RouteList {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    width: 100%;
+    /* height: calc(100% - 3.6rem); */
+    height: 100%;
+    box-sizing: border-box;
+    background-color: white;
+    border-radius: 0.2rem;
+    box-shadow: 0.1rem 0.1rem 0.6rem rgba(0, 0, 0, 0.3);
+  }
+  
+  .RouteList table td {
+    text-align: center;
+    box-sizing: border-box;
+  }
+  
+  .RouteListHeadScroll {
+    width: calc(100% - 0.6rem);
+    height: 3.6rem;
+    overflow-x: scroll;
+  }
+  
+  .RouteListHeadScroll::-webkit-scrollbar {
+    display: none;
+  }
+  
+  .RouteListHeader {
+    width: 100%;
+    height: 3.6rem;
+  }
+  
+  .RouteListHeader tr {
+    background-color: #444;
+    color: white;
+    font-size: 1.4rem;
+  }
+  
+  .RouteListScroll {
+    width: 100%;
+    height: calc(100% - 3.6rem);
+    overflow-y: auto;
+  }
+  
+  .RouteListScroll::-webkit-scrollbar {
+    width: 0.6rem;
+    height: 1rem;
+  }
+  
+  .RouteListScroll::-webkit-scrollbar-thumb {
+    height: 17%;
+    background-color: #444444;
+    border-radius: 1rem;
+  }
+  
+  .RouteListScroll::-webkit-scrollbar-track {
+    background-color: #D2D2D2;
+  }
+  
+  .RouteListBody {
+    width: 100%;
+    height: 100%;
+  }
+  
+  .RouteListBodyTr {
+    width: 100%;
+    height: 3.6rem;
+  }
+  
+  .RouteListBodyTr:hover {
+    background-color: #CDCDCE;
+    cursor: pointer;
+  }
+  
+  .RouteListBodyTr:hover td {
+    border-right: 0.1rem solid white;
+    border-bottom: 0.1rem solid white;
+  }
+  
+  .RouteListBody td {
+    font-size: 1.4rem;
+    border-right: 0.1rem solid #CDCDCE;
+    border-bottom: 0.1rem solid #CDCDCE;
+    padding: 0.6rem 0;
+    word-break: keep-all;
+  }
+  
+  .blanckTr {
+    width: 100%;
+    height: 100%;
+  }
+  
+  
+  /* 팝업 */
+  .popupBody {
+    height: 100%;
+  }
+  
+  .popupArticletitle {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 9rem;
+    height: 2.6rem;
+    border-radius: 0.3rem 0 0 0.3rem;
+    background-color: #444444;
+    color: white;
+    font-size: 1.3rem;
+    box-sizing: border-box;
+  }
+  
+  .popupArticleTitle {
     width: 100%;
     padding-bottom: 0.4rem;
     margin-top: 2rem;
     font-size: 1.4rem;
     font-weight: bold;
     border-bottom: 0.1rem solid black;
+  }
+  
+  .popupSection {
+    height: calc(100% - 7.2rem);
+  }
+  
+  .popupContainer {
+    width: 100rem;
+    height: 80rem;
+  }
+
+  
+  
+  .mainTeamScroll{
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+      height: 90%;
+      overflow-x: hidden;
+      margin-top: 0.8rem;
+  }
+  
+  .btnModule {
+      width: 100%;
+      text-align: right;
+      margin-top: 1.2rem;
+  }
+
+  
+  
+  
+  .groupList {
+      height: 100%;
+  }
+  
+.groupListBox {
+  height: 33.3%;
 }
 
-.popupArticleCategory:nth-child(1) {
-    margin-top: 0;
-}
+  /* .groupListBody {
+      height: calc(33.3% - 3.6rem);
+  } */
+  
+  .groupAddBtn {
+      background-color: #EFEFEF;
+      color: #444;
+      display: flex;
+      align-items: center;
+  }
+  
+  .detailItemBox {
+      display: none;
+      flex-direction: column;
+  }
+  
+  .detailItem {
+      display: flex;
+      align-items: center;
+      width: 100%;
+      height: 3.2rem;
+  }
+  
+  .detailItem:hover {
+    background-color: #EFEFEF;
+  }
+  
+  .groupListItemBox {
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: center;
+      width: 100%;
+      height: auto;
+  }
+    
+  .groupListItem {
+      display: flex;
+      align-items: center;
+      width: 100%;
+      height: 3.6rem;
+      background-color: #EFEFEF;
+      order: initial;
+  }
+  
+  .groupListItem:hover {
+    background-color: #CDCDCE;
+  }
+  
+  .openGroup .Icon_awesome-folder{
+      fill: #0069D9;
+  }
+  
+  .routeGap {
+      width: 3.6rem;
+      height: 100%;
+      box-sizing: border-box;
+      border-bottom: 0.1rem solid #CDCDCE;
+  }
+  
+  
+  .routeNameBox {
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+      width: calc(100% - 3.6rem);
+      height: 100%;
+      padding-left: 1rem;
+      box-sizing: border-box;
+      font-size: 1.4rem;
+      border-bottom: 0.1rem solid #CDCDCE;
+      cursor: pointer;
+  }
+  
+  /*   
+  .popupContainer {
+      width: 80rem;
+  } */
+  
+  .popupArticleCategory {
+      width: 100%;
+      padding-bottom: 0.4rem;
+      margin-top: 2rem;
+      font-size: 1.4rem;
+      font-weight: bold;
+      border-bottom: 0.1rem solid black;
+  }
+  
+  .popupArticleCategory:nth-child(1) {
+      margin-top: 0;
+  }
+  
+  .scrolling_table-list_body {
+      height: 14.4rem;
+  }
+  
+  .addWaypointBtn {
+      background-color: #0069D9;
+      margin-left: auto;
+  }
+  
+  
+  .waypointDeleteBtn {
+      position: absolute;
+      left: 0;
+      background-color: #444;
+  }
+  
+  .addtionalBtn {
+      background-color: #0069D9;
+      margin-right: 1rem;
+  }
+  
+  .waypointCloseBtn {
+      background-color: #444;
+  }
+  
+  .popupArticleDouble {
+      width: 100%;
+  }
+  
+  .popupArticleBoxTable {
+      margin-top: 2rem;
+  }
+  
+  .popupArticleBoxTable td:nth-child(1) {
+      width: 10%;
+  }
+  
+  .businessGroupEditBtn {
+      margin-left: auto;
+      margin-right: 1rem;
+  }
+  
+  .tableLabel {
+      display: block;
+      width: 100%;
+      height: 100%;
+  }
+  
+  /* 검색 */
+  .routListSearchDiv {
+    display: flex;
+    align-items: center;
+  }
 
-.scrolling_table-list_body {
-    height: 14.4rem;
-}
-
-.addWaypointBtn {
-    background-color: #0069D9;
-    margin-left: auto;
-}
-
-.popupFooter {
-    position: relative;
-}
-
-.waypointDeleteBtn {
-    position: absolute;
-    left: 0;
+  .printBtn {
     background-color: #444;
-}
-
-.addtionalBtn {
-    background-color: #0069D9;
+    width: 11rem;
     margin-right: 1rem;
-}
 
-.waypointCloseBtn {
-    background-color: #444;
-}
+  }
 
-.popupArticleDouble {
-    width: 100%;
-}
+  .searchInput {
+      width: 12rem;
+      height: 2.4rem;
+      padding-left: 0.3rem;
+      border: 0.1rem solid #B5B5B5;
+      border-radius: 0.2rem;
+      font-size: 1.4rem;
+      box-sizing: border-box;
+  }
+  
+  .searchDate {
+      width: 13rem;
+      height: 2.4rem;
+      padding-left: 0.3rem;
+      margin: 0 0.6rem;
+      border: 0.1rem solid #B5B5B5;
+      border-radius: 0.2rem;
+      font-size: 1.5rem;
+      box-sizing: border-box;
+      outline: none;
+  }
+  
+  .dateControllBtnBox {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 10rem;
+      margin-left: 1.2rem;
+  }
+  
+  .dateToday {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 4.2rem;
+      height: 2.4rem;
+      background-color: #444;
+      color: white;
+      font-size: 1.4rem;
+      border-radius: 0.3rem;
+      cursor: pointer;
+  }
+  
+  .dateControllBtn {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 2.4rem;
+      height: 2.4rem;
+      border-radius: 100%;
+      background-color: #444;
+      font-size: 1.6rem;
+      color: white;
+      cursor: pointer;
+  }
+  
+  .dateControllBtn svg {
+      width: 40%;
+  }
+  
+  
+  .RouteList table td:nth-child(1) {
+      width: 3%;
+  }
+  
+  .RouteList table td:nth-child(2) {
+      width: 4%;
+  }
+  
+  .RouteList table td:nth-child(3) {
+      width: 15%;
+  }
+  
+  .RouteList table td:nth-child(4) {
+      width: 7%;
+  }
+  
+  .RouteList table td:nth-child(5) {
+      width: 7%;
+  }
+  
+  .RouteList table td:nth-child(6) {
+      width: 7%;
+  }
+  .RouteList table td:nth-child(7) {
+    width: 11%;
+  }
+  
+  .RouteList table td:nth-child(8),
+  .RouteList table td:nth-child(9),
+  .RouteList table td:nth-child(10),
+  .RouteList table td:nth-child(11) {
+      width: 9%;
+  }
 
-.popupArticleBoxTable {
-    margin-top: 2rem;
-}
-
-.popupArticleBoxTable td:nth-child(1) {
-    width: 10%;
-}
-
-.businessGroupEditBtn {
-    margin-left: auto;
+    .RouteList table td:nth-child(12){
+      width: 9%;
+    }
+  
+  .routListSearch select{
+    height: 2.4rem;
+    width: 7rem;
+    font-size: 1.4rem;
+    margin-left: 1rem;
     margin-right: 1rem;
-}
-
-.tableLabel {
-    display: block;
-    width: 100%;
-    height: 100%;
-}
-
-/* 검색 */
-
-.searchInput {
-    width: 19rem;
-    height: 2.4rem;
-    padding-left: 0.3rem;
-    border: 0.1rem solid #B5B5B5;
-    border-radius: 0.2rem;
-    font-size: 1.4rem;
-    box-sizing: border-box;
-}
-
-.searchDate {
-    width: 16rem;
-    height: 2.4rem;
-    padding-left: 0.3rem;
-    margin: 0 0.6rem;
-    border: 0.1rem solid #B5B5B5;
-    border-radius: 0.2rem;
-    font-size: 1.5rem;
-    box-sizing: border-box;
-    outline: none;
-}
-
-.dateControllBtnBox {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: 10rem;
-    margin-left: 1.2rem;
-}
-
-.dateToday {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 4.2rem;
-    height: 2.4rem;
-    background-color: #444;
-    color: white;
-    font-size: 1.4rem;
-    border-radius: 0.3rem;
-    cursor: pointer;
-}
-
-.dateControllBtn {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 2.4rem;
-    height: 2.4rem;
-    border-radius: 100%;
-    background-color: #444;
-    font-size: 1.6rem;
-    color: white;
-    cursor: pointer;
-}
-
-.dateControllBtn svg {
-    width: 40%;
-}
-
-
-.RouteList table td:nth-child(1) {
-    width: 3%;
-}
-
-.RouteList table td:nth-child(2) {
-    width: 3%;
-}
-
-.RouteList table td:nth-child(3) {
-    width: 10%;
-}
-
-.RouteList table td:nth-child(4) {
-    width: 6%;
-}
-
-.RouteList table td:nth-child(5) {
-    width: 10%;
-}
-
-.RouteList table td:nth-child(6) {
-    width: 10%;
-}
-
-.RouteList table td:nth-child(7) {
-    width: 10%;
-}
-
-.RouteList table td:nth-child(8) {
-    width: 10%;
-}
-.RouteList table td:nth-child(9) {
-    width: 10%;
-}
-.RouteList table td:nth-child(10) {
-    width: 10%;
-}
-
-
-
-.routListSearch select{
-    height: 2.5rem;
-    width: 12.2rem;
-}
-
-.RouteListCheckbox{
+  }
+  
+  .RouteListCheckbox{
     height: 2.4rem;
     width: 9.6rem;
+  }
+  
+  .transaction-table{
+    width: 96.8rem;
+    height: 24.7rem;
+    border-collapse: collapse;
+    margin-bottom: 2rem;
+    border: 0.15rem solid #575757;
+    font-size: 1.4rem;
+    text-align: center;
+    margin-left: 8rem;
+    margin-top: 3rem;
+  }
+  
+  .transaction-table thead tr:last-child th {
+      border-bottom: 0.15rem solid #575757;
+  }
+  
+  
+  .transaction-table th {
+    height: 4.7rem;
+  }
+  
+  .transaction-table td {
+    height: 2rem;
+  }
+  
+  .buttons {
+      text-align: left;
+      margin-bottom: 2rem;
+      width: 96.8rem;
+      margin-left: 8rem;
+      background-color: #DEDEDE;
+      overflow: scroll;
+  }
+  
+  .popupArticleSub{
+    display: flex;
+  }
+  
+  .popupArticleBoxs{
+      display: flex;
+      width: 100%;
+      height: 2.8rem;
+      margin-top: 2rem;
+  }
+  
+  .PopupData{
+    width: 12.8rem;
+    height: 2.6rem;
+    margin-right: 5.4rem;
+  }
+  
+  .popupArticleFont{
+    font-size: 1.4rem;
+    text-align: center;
+    margin-right: 2.1rem;
+    width: 6rem;
+  }
+  
+  .popupFooterBox{
+    margin-left: 8rem;
+  }
+  
+  .popupSubTitle{
+    font-size: 1.4rem;
+    margin-bottom: 3rem;
+  }
+  
+  .SubButton{
+    width: 21rem;
+    margin-left: 1rem;
+  }
+  
+  .PopupColor{
+    color:#0069D9;
+  }
+  
+  
+  .popupFooters{
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      width: 100%;
+      height: 7.2rem;
+      box-sizing: border-box;
+  }
+  
+  
+  .closeBtn{
+      position: static;
+      background-color: #444;
+      margin-left: 1rem;
+  }
+  
+  /* 팝업 컨테이너 스타일 */
+  .popup-container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: #fff;
+    width: 70rem;
+    height: 86rem;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+    font-size: 1.4rem;
+  }
+  
+  .popup-header {
+    font-size: 1.5rem;
+    text-align: center;
+    margin-bottom: 2rem;
+    background-color: #444444;
+    color: white;
+    padding: 1rem;
+  }
+  
+  .popup-section {
+    margin-bottom: 2rem;
+    padding: 0 2rem;
+  }
+  
+  .popup-section table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .popup-section th,
+  .popup-section td {
+    height: 3rem;
+    text-align: center;
+  }
+  
+  .popup-section td {
+    border: 0.1rem solid #e9e9e9;
+  }
+  
+  .popup-section th {
+    background-color: #444444;
+    color: white;
+  }
+  
+  .popup-footer {
+    padding: 0 2rem;
+  }
+  
+  .popup-btn {
+    display: flex;
+    width: 100%;
+    justify-content: right;
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+    gap: 1rem;
+  }
+  
+  .btn {
+    padding: 1rem 2rem;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .btn-close {
+    background-color: #444444;
+    color: white;
+  }
+  
+  .btn-save {
+    background-color: #0069D9;
+    color: white;
+  }
+  
+  /* 팝업 열림 상태 */
+  .popup-bg.active {
+    display: block;
+  }
+  
+  .popupAreaModules2{
+    display:none;
+  }
+  
+  .main-TaskBoard {
+      display: flex;
+      padding: 0 2rem;
+      height: 62rem;
+  }
+  
+  
+  .task-board {
+    width: 80rem;
+    border-radius: 5px;
+  }
+  
+  .header {
+    background-color: #333;
+    color: #fff;
+    text-align: center;
+    padding: 1rem;
+    font-size: 1.5rem;
+  }
+  
+  .table {
+    width: 100%;
+    border-collapse: collapse;
+    
+  }
+  
+  .table th,
+  .table td {
+    height: 3rem;
+    text-align: center;
+    border: 1px solid #ddd;
+    font-size: 1.4rem;
+  }
+  
+  .table th,
+  .popupTableRouteStatusHeader td {
+    background-color: #444444;
+    color: white;
+  }
+  
+  .button-clear {
+    background-color: #ddd;
+    color: #333;
+    border: none;
+    padding: 5px 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .button-clear.completed {
+    background-color: #333;
+    color: white;
+    cursor: default;
+  }
+  
+  .button-clear[disabled] {
+    background-color: #f0f0f0;
+    color: #aaa;
+    cursor: not-allowed;
+  }
+  
+  .time-cell.completed {
+    color: #333;
+  }
+  
+  .incomplete {
+    color: red;
+  }
+  
+  .time-cell {
+    color: gray;
+  }
+  
+  .inputImgbtn {
+    background-color: #ddd;
+    color: #333;
+    border: none;
+    padding: 5px 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  #fileInfoContainer {
+      margin-top: 1rem;
+      font-size: 1.6rem;
+      color: #555;
+  }
+  
+
+
+  .popupTableBox {
+    margin-top: 2rem;
+    display: flex;
+    width: 100%;
+    height: 22.4rem;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
 }
 
-.transaction-table{
-  width: 96.8rem;
-  height: 24.7rem;
-  border-collapse: collapse;
-  margin-bottom: 2rem;
-  border: 0.15rem solid #575757;
+
+.popupArticleCategory {
+  width: 100%;
+  padding-bottom: 0.4rem;
   font-size: 1.4rem;
-  text-align: center;
-  margin-left: 8rem;
+  font-weight: bold;
+  border-bottom: 0.1rem solid black;
   margin-top: 3rem;
 }
 
-.transaction-table thead tr:last-child th {
-    border-bottom: 0.15rem solid #575757;
-}
-
-
-.transaction-table th {
-  height: 4.7rem;
-}
-
-.transaction-table td {
-  height: 2rem;
-}
-
-.buttons {
-    text-align: left;
-    margin-bottom: 2rem;
-    width: 96.8rem;
-    margin-left: 8rem;
-    background-color: #DEDEDE;
-    overflow: scroll;
-}
-
-.popupArticleSub{
-  display: flex;
-}
-
-.popupArticleBoxs{
-    display: flex;
-    width: 100%;
-    height: 2.8rem;
-    margin-top: 2rem;
-}
-
-.PopupData{
-  width: 12.8rem;
-  height: 2.6rem;
-  margin-right: 5.4rem;
-}
-
-.popupArticleFont{
-  font-size: 1.4rem;
-  text-align: center;
-  margin-right: 2.1rem;
-  width: 6rem;
-}
-
-.popupFooterBox{
-  margin-left: 8rem;
-}
-
-.popupSubTitle{
-  font-size: 1.4rem;
-  margin-bottom: 3rem;
-}
-
-.SubButton{
-  width: 21rem;
-  margin-left: 1rem;
-}
-
-.PopupColor{
-  color:#0069D9;
-}
-
-
-.popupFooters{
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
-    width: 100%;
-    height: 7.2rem;
-    box-sizing: border-box;
-}
-
-
-.closeBtn{
-    position: static;
-    background-color: #444;
-    margin-left: 1rem;
-}
-
-/* 팝업 컨테이너 스타일 */
-.popup-container {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background: #fff;
-  width: 60rem;
-  box-shadow: 0 0.4rem 0.8rem rgba(0, 0, 0, 0.2);
-  z-index: 1000;
-  font-size: 1.2rem;
-}
-
-.popup-header {
-  font-size: 1.5rem;
-  font-weight: bold;
-  text-align: center;
-  margin-bottom: 2rem;
-  background-color: #444444;
-  color: white;
-  padding: 1rem;
-}
-
-.popup-section {
-  margin-bottom: 2rem;
-  padding: 0 2rem;
-}
-
-.popup-section table {
-  width: 100%;
-  border-collapse: collapse;
-}
-
-.popup-section th,
-.popup-section td {
-  padding: 0.8rem;
-  text-align: center;
-}
-
-.popup-section td {
-  border: 0.1rem solid #e9e9e9;
-}
-
-.popup-section th {
-  background-color: #444444;
-  color: white;
-  font-weight: 100;
-}
-
-.popup-footer {
-  padding: 0 2rem;
-}
-
-.popup-btn {
-  display: flex;
-  width: 100%;
-  justify-content: right;
+.popup-section-title {
   margin-top: 2rem;
-  margin-bottom: 2rem;
-  gap: 1rem;
-}
-
-.btn {
-  padding: 1rem 2rem;
-  border: none;
-  border-radius: 0.5rem;
-  cursor: pointer;
-}
-
-.btn-close {
-  background-color: #444444;
-  color: white;
-}
-
-.btn-save {
-  background-color: #3d7afd;
-  color: white;
-}
-
-/* 팝업 열림 상태 */
-.popup-bg.active {
-  display: block;
-}
-
-.popupAreaModules2{
-  display:none;
-}
-
-.main-TaskBoard {
-    display: flex;
-    padding: 0 2rem;
-}
-
-
-.task-board {
-  width: 80rem;
-  border-radius: 0.5rem;
-}
-
-.header {
-  background-color: #333;
-  color: #fff;
-  text-align: center;
-  padding: 1rem;
+  margin-bottom: 1rem;
+  font-weight: bold;
   font-size: 1.5rem;
 }
 
-.table {
-  width: 100%;
-  border-collapse: collapse;
-  
+.popupTableScroll {
+  overflow-y: scroll;
+  height: 45rem;
 }
 
-.table th,
-.table td {
-  padding: 0.8rem;
-  text-align: center;
-  border: 0.1rem solid #ddd;
-  font-size: 1.2rem;
+.popupTableRouteStatus td:nth-child(1) {
+  width: 10%;
 }
 
-.table th {
-  background-color: #444444;
-  color: white;
+.popupTableRouteStatus td:nth-child(2) {
+  width: 50%;
 }
 
-.button-clear {
-  background-color: #ddd;
-  color: #333;
-  border: none;
-  padding: 0.5rem 1rem;
-  cursor: pointer;
-  transition: background-color 0.3s;
+.popupTableRouteStatus td:nth-child(3) {
+  width: 20%;
 }
 
-.button-clear.completed {
-  background-color: #333;
-  color: white;
-  cursor: default;
+.popupTableRouteStatus td:nth-child(4) {
+  width: 20%;
 }
 
-.button-clear[disabled] {
-  background-color: #f0f0f0;
-  color: #aaa;
-  cursor: not-allowed;
+.progressBarHeader {
+  font-size: 1.4rem;
+  margin-top: 2rem;
+  font-weight: bold;
 }
 
-.time-cell.completed {
-  color: #333;
+.popupTableDriverStatus td:nth-child(1) {
+  width: 30%;
 }
 
-.incomplete {
-  color: red;
+.popupTableDriverStatus td:nth-child(2) {
+  width: 30%;
 }
 
-.time-cell {
-  color: gray;
+.popupTableDriverStatus td:nth-child(3) {
+  width: 20%;
 }
 
-.inputImgbtn {
-  background-color: #ddd;
-  color: #333;
-  border: none;
-  padding: 0.5rem 1rem;
-  cursor: pointer;
-  transition: background-color 0.3s;
+.popupTableDriverStatus td:nth-child(4) {
+  width: 20%;
 }
 
-#fileInfoContainer {
-    margin-top: 1rem;
-    font-size: 1.6rem;
-    color: #555;
+.BusinessEntityPopupContainer {
+  width: 50rem;
+  height: auto;
 }

@@ -1,6 +1,7 @@
 {% load dispatch_custom_tags %}
 {% load static %}
 <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ko">
 
 <head>
@@ -8,7 +9,6 @@
     <meta name="viewport" content="width=device-width">
     <title>TRP</title>
     <link href="{% static 'css/dispatch/bus_print.css' %}" rel="stylesheet" type="text/css" />
-    <link href="" id="printSizeCss" rel="stylesheet" type="text/css" />
 </head>
 
 <body>
@@ -20,92 +20,53 @@
             <span></span>
             <span>배차지시서 (호수별)</span>
         </div>
-        <div class="headerCell">
-            <div>차량번호</div>
-            <div>기사명</div>
-            <div>출근</div>
-            <div>업무</div>
-            <div>퇴근</div>
-        </div>
-        
-        <div class="tableBorder">
-            <table class="contentsCell">
-                <tbody>
-                    {% for vehicle in vehicle_list %}
-                    <tr class="{{vehicle.id}}">
-                        <td>{{vehicle.vehicle_num}}</td>
-                        <td>{{vehicle.driver.name}}</td>
-                        {% with e_connect=e_connect_object|obj:vehicle.id %}
-                        {% with connect=connect_object|obj:vehicle.id %}
-                        {% with c_connect=c_connect_object|obj:vehicle.id %}
-                        <td>
-                            {% for con in e_connect %}
-                                {% if forloop.counter != 1 %},{% endif %}
-                                ({{con.departure_date|slice:"11:"}}) [{{con.regularly_id.departure}} ▶ {{con.regularly_id.arrival}}]
-                                {% if con.regularly_id.references %} -- ({{con.regularly_id.references}}) {% endif %}
-                            {% endfor %}
-                        </td>
-                        
-                        <td>
-                            {% for con in connect %}
-                                {% if forloop.counter != 1 %},{% endif %}
-                                {% if date != con.departure_date|slice:":10" %} {% endif %}
-                                ({{con.departure_date|slice:"11:"}}) [{{con.order_id.departure}} ▶ {{con.order_id.arrival}}]
-                                {% if con.order_id.references %} -- ({{con.order_id.references}}) {% endif %}
-                            {% endfor %}
-                        </td>
-                        
-                        <td>
-                            {% for con in c_connect %}
-                                {% if forloop.counter != 1 %},{% endif %}
-                                ({{con.departure_date|slice:"11:"}}) [{{con.regularly_id.departure}} ▶ {{con.regularly_id.arrival}}]
-                                {% if con.regularly_id.references %} -- ({{con.regularly_id.references}}) {% endif %}
-                            {% endfor %}
-                        </td>
-                        {% endwith %}
-                        {% endwith %}
-                        {% endwith %}
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-        </div>
-        <!-- {% for vehicle in vehicle_list %}
-        <div class="contentsCell">
-            <div>{{vehicle.vehicle_num}}</div>
-            <div>{{vehicle.driver_name}}</div>
-            {% with e_connect=e_connect_object|obj:vehicle.id %}
-            {% with connect=connect_object|obj:vehicle.id %}
-            {% with c_connect=c_connect_object|obj:vehicle.id %}
-            <div>
-                {% for con in e_connect %}
-                {% if forloop.counter != 1 %},{% endif %}
-                ({{con.departure_date|slice:"11:"}}) [{{con.regularly_id.departure}} ▶ {{con.regularly_id.arrival}}]
-                {% if con.regularly_id.references %} -- ({{con.regularly_id.references}}) {% endif %}
-                {% endfor %}
-            </div>
 
-            <div>
-                {% for con in connect %}
-                {% if forloop.counter != 1 %},{% endif %}
-                {% if date != con.departure_date|slice:":10" %} {% endif %}
-                ({{con.departure_date|slice:"11:"}}) [{{con.order_id.departure}} ▶ {{con.order_id.arrival}}]
-                {% if con.order_id.references %} -- ({{con.order_id.references}}) {% endif %}
+        <table class="tableBorder">
+            <thead class="headerCell">
+                <tr>
+                    <th>차량</th>
+                    <th>기사</th>
+                    <th>출근</th>
+                    <th>업무</th>
+                    <th>퇴근</th>
+                </tr>
+            </thead>
+            <tbody class="contentsCell">
+                {% for vehicle in vehicle_list %}
+                <tr>
+                    <td>{{ vehicle.vehicle_num }}</td>
+                    <td>{{ vehicle.driver.name }}</td>
+                    {% with e_connect=e_connect_object|obj:vehicle.id %}
+                    {% with connect=connect_object|obj:vehicle.id %}
+                    {% with c_connect=c_connect_object|obj:vehicle.id %}
+                    <td>
+                        {% for con in e_connect %}
+                        {% if forloop.counter != 1 %}<br><hr>{% endif %}
+                        ({{ con.departure_date|slice:"11:" }}) [{{ con.regularly_id.departure }} ▶ {{ con.regularly_id.arrival }}]
+                        {% if con.regularly_id.references %} -- ({{ con.regularly_id.references }}){% endif %}
+                        {% endfor %}
+                    </td>
+                    <td>
+                        {% for con in connect %}
+                        {% if forloop.counter != 1 %}<br><hr>{% endif %}
+                        ({{ con.departure_date|slice:"11:" }}) [{{ con.order_id.departure }} ▶ {{ con.order_id.arrival }}]
+                        {% if con.order_id.references %} -- ({{ con.order_id.references }}){% endif %}
+                        {% endfor %}
+                    </td>
+                    <td>
+                        {% for con in c_connect %}
+                        {% if forloop.counter != 1 %}<br><hr>{% endif %}
+                        ({{ con.departure_date|slice:"11:" }}) [{{ con.regularly_id.departure }} ▶ {{ con.regularly_id.arrival }}]
+                        {% if con.regularly_id.references %} -- ({{ con.regularly_id.references }}){% endif %}
+                        {% endfor %}
+                    </td>
+                    {% endwith %}
+                    {% endwith %}
+                    {% endwith %}
+                </tr>
                 {% endfor %}
-            </div>
-
-            <div>
-                {% for con in c_connect %}
-                {% if forloop.counter != 1 %},{% endif %}
-                ({{con.departure_date|slice:"11:"}}) [{{con.regularly_id.departure}} ▶ {{con.regularly_id.arrival}}]
-                {% if con.regularly_id.references %} -- ({{con.regularly_id.references}}) {% endif %}
-                {% endfor %}
-            </div>
-            {% endwith %}
-            {% endwith %}
-            {% endwith %}
-        </div>
-        {% endfor %} -->
+            </tbody>
+        </table>
     </div>
 </body>
 

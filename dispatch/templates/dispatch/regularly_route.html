@@ -271,9 +271,29 @@
                 </tr>
                 <tr>
                     <td class="tdTypeA">*출발지</td>
-                    <td colspan="3" class="tdTypeB">
+                    <td  class="tdTypeB">
                         <input autocomplete="off" value="{{detail.departure}}" name="departure" type="text"
                             class="inputText essential length200" tabindex="3">
+                    </td>
+                    <td rowspan="2" class="tdTypeA">*알림시간</td>
+                    <td rowspan="2" class="tdTypeC">
+                       <div class="NotificationPopupArea">
+                        <div class="arimTime-top">
+                            <div class="arimName">운행준비</div>
+                            <div class="ariminput">
+                                <input autocomplete="off" value=""  type="text" class="inputText essential" maxlength="2">:
+                                <input autocomplete="off" value=""  type="text" class="inputText essential" maxlength="2">
+                            </div>
+                        </div>
+                        <div class="arimTime">
+                            <div class="arimName">탑승</div>
+                            <div class="ariminput">
+                                <input autocomplete="off" value=""  type="text" class="inputText essential" maxlength="2">:
+                                <input autocomplete="off" value=""  type="text" class="inputText essential" maxlength="2">
+                            </div>
+                        </div>
+                            
+                        </div>
                     </td>
                     <td class="tdTypeA">상세노선</td>
                     <td colspan="3" class="tdTypeB">
@@ -286,7 +306,7 @@
                 </tr>
                 <tr>
                     <td class="tdTypeA">*도착지</td>
-                    <td colspan="3" class="tdTypeB">
+                    <td class="tdTypeB">
                         <input autocomplete="off" value="{{detail.arrival}}" name="arrival" type="text"
                             class="inputText essential length200" tabindex="4">
                     </td>

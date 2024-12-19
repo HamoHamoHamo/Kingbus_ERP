@@ -1,11 +1,14 @@
 * {
     list-style: none;
     text-decoration: none;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
 html {
     font-size: 62.5%;
-    font-family: "Noto Sans CJK KR";
+    font-family: "Noto Sans CJK KR", sans-serif;
     overflow-x: hidden;
 }
 
@@ -14,148 +17,61 @@ body {
     background-color: white;
 }
 
-
+/* 페이지 제목 스타일 */
 .pageTitle {
     display: flex;
     justify-content: center;
     align-items: center;
     font-size: 1.8rem;
-    font-weight: 700;
+    font-weight: bold;
     border-bottom: 0.1rem solid black;
     margin-bottom: 1rem;
     letter-spacing: 0.1rem;
 }
 
-.pageTitle span {
-    margin: 0 0.4rem;
+
+/* 테이블 스타일 */
+.tableBorder {
+    width: 99%;
+    border-collapse: collapse;
+    margin: 0 auto;
+    font-size: 1.1rem;
 }
 
-.headerCell {
-    display: flex;
-    width: 100%;
-    height: 2.4rem;
+.tableBorder thead {
     background-color: #ddd;
+    font-weight: bold;
+}
+
+.tableBorder th,
+.tableBorder td {
     border: 0.1rem solid black;
 }
 
-.headerCell div {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 1.4rem;
-    box-sizing: border-box;
-}
-
-.headerCell div:nth-child(1),
-.headerCell div:nth-child(2) {
-    width: 8%;
-    border-right: 0.1rem solid black;
-}
-
-.headerCell div:nth-child(3) {
-    width: 28%;
-    border-right: 0.1rem solid black;
-}
-
-.headerCell div:nth-child(4) {
-    width: 28%;
-    border-right: 0.1rem solid black;
-}
-
-.headerCell div:nth-child(5) {
-    width: 28%;
-}
-
-.contentsCell {
-    width: 100%;
-    height: auto;
-    border: 0.1rem solid black;
-    border-bottom: none;
-    border-top: none;
-}
-
-.contentsCell div {
-    height: 100%;
-    box-sizing: border-box;
-    font-size: 1.1rem;
-}
-
-.contentsCell div:nth-child(1),
-.contentsCell div:nth-child(2) {
+.tableBorder td:nth-child(1){
+    width:4%;
     text-align: center;
-    padding: 0.1rem;
-    width: 8%;
-    border-right: 0.1rem solid black;
 }
 
-.contentsCell div:nth-child(3) {
-    padding: 0.1rem;
-    width: 28%;
-    border-right: 0.1rem solid black;
-}
-
-.contentsCell div:nth-child(4) {
-    padding: 0.1rem;
-    width: 28%;
-    border-right: 0.1rem solid black;
-}
-
-.contentsCell div:nth-child(5) {
-    padding: 0.1rem;
-    width: 28%;
-}
-
-
-.tableBorder{
-    width: calc(100% + 0.2rem);
-    box-sizing: border-box;
-}
-.contentsCell {
-    width: 100%;
-    min-height: 2.4rem;
-    height: auto;
-    border-spacing: 0;
-}
-
-.contentsCell tbody{
-    width: 100%;
-}
-.contentsCell tr{
-    width: 100%;
-}
-
-.contentsCell td {
-    height: 100%;
-    box-sizing: border-box;
-    font-size: 1.1rem;
-    border-bottom: 0.1rem solid black;
-    border-right: 0.1rem solid black;
-}
-.contentsCell td:nth-child(1),
-.contentsCell td:nth-child(2) {
+.tableBorder td:nth-child(2){
+    width:5%;
     text-align: center;
-    padding: 0.1rem;
-    width: 8%;
 }
 
-.contentsCell td:nth-child(3) {
-    padding: 0.1rem;
-    width: 28%;
+.tableBorder td:nth-child(3){
+    width:30%;
 }
 
-.contentsCell td:nth-child(4) {
-    padding: 0.1rem;
-    width: 28%;
+.tableBorder td:nth-child(4){
+    width:30%;
 }
 
-.contentsCell td:nth-child(5) {
-    padding: 0.1rem;
-    width: 28%;
-    border-right: none;
+.tableBorder td:nth-child(5){
+    width:30%;
 }
 
 @media print {
-    .headerCell {
+    .tableBorder thead {
         background-color: #ddd !important;
         -webkit-print-color-adjust: exact;
     }

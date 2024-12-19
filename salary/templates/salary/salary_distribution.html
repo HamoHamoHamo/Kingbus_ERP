@@ -130,6 +130,7 @@
                 <label for="" class="searchFormLabel">날짜 :</label>
                 <input type="month" name="month" value="{{month}}" class="searchFormInput searchFormInputMonth">
                 <input type="submit" class="searchFormSearchBtn" value="검색">
+                <div class="averageStatusTime" onclick="openConfigStatusTimePopup()">한달 평균 근로일 설정</div>
             </form>
             <!--검색폼 done-->
         </div>
@@ -139,6 +140,41 @@
             <div class="graphHeader personalFlex">급여 분포 그래프</div>
             <div class="graphContent">
                 <canvas id="histogramChart"></canvas>
+                <div class="statusAverage">
+                    <form method="post" action="" class="salaryContainer">
+                        {% csrf_token %}
+                        <input type="hidden" name="month" value="{{month}}">
+                        <div class="scrolling_table-list_header teamjang_height">
+                            <table class="table-list">
+                                <thead>
+                                    <tr class="table-list_head-tr table-list_head-tr_td_distribution">
+                                        <td class="table-list_head-tr_td table-list_head-tr_td_distribution">번호</td>
+                                        <td class="table-list_head-tr_td table-list_head-tr_td_distribution">이름</td>
+                                        <td class="table-list_head-tr_td table-list_head-tr_td_distribution">한달 총 시간</td>
+                                        <td class="table-list_head-tr_td table-list_head-tr_td_distribution">하루 평균 근로시간</td>
+
+                                    </tr>
+                                <thead>
+                            </table>
+                        </div>
+                            
+                        <div class="scrolling_table-list_body table-list_body-tr_td_variation">
+                            <table class="table-list">
+                                <tbody>
+                                    <tr class="table-list_body-tr salaryList curqsor">
+                                        
+                                        <td class="checkTd table-list_body-tr_td table-list_body-tr_td_distribution">1</td>
+                                        <td class="checkTd table-list_body-tr_td table-list_body-tr_td_distribution">김원탁</td>
+                                        <td class="checkTd table-list_body-tr_td table-list_body-tr_td_distribution">255시간 55분</td>
+                                        <td class="checkTd table-list_body-tr_td table-list_body-tr_td_distribution">8시간 23분</td>
+                                        
+                                        
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
     </div>
@@ -190,10 +226,36 @@
             </div>
         </div>
     </div>
+    <div class="popupAreaModules mealPopup" id="configStatusTime">
+        <div class="popupBgModules popupBgModulesMeal"></div>
+        <div class="popupContainer popupContainerDouble popupContainerDoubleConfigStatus">
+            <div class="popupHeader">
+                <div class="popupTitle">하루 평균 근로일 설정</div>
+            </div>
+            <div class="popupBody">
+                <div class="popupSection">
+                    <div class="">
+                        {% csrf_token %}
+                        <div class="popupArticleCategori">하루 평균 근로일 설정</div>
+                        <div class="popupArticleBox popupArticleConfigTime">
+                            <label for="" class="popupArticleLabel popupArticleLabelTime">평균 근로일 :</label>
+                            <select class="configTime">
+                                <option value="21">21</option>
+                                <option value="22">22</option>
+                            </select>
+                        <input type="hidden" name="order_id" class="deleteAddHidden">
+                    </div>
+                </div>
+                <div class="popupFooter">
+                    <div class="btnModules mealCloseBtn closeBtn" onclick="closeConfigStatusTimePopup()">닫기</div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
+{% endblock %}
 
-
-
+{% block script %}
 <script>
     document.addEventListener('DOMContentLoaded', (event) => {
         const ctx = document.getElementById('histogramChart').getContext('2d');
@@ -212,9 +274,20 @@
                 y: {
                     beginAtZero: true,
                     ticks: {
-                        stepSize: 10
-                        
-                    }
+                        stepSize: 10,
+                        font: {
+                            size: 14 // Y축 글자 크기
+                        }
+                    },
+                    
+                },
+                x: {
+                    ticks: {
+                        font: {
+                            size: 16 // X축 글자 크기
+                        }
+                    },
+                    
                 }
             },
             plugins: {
@@ -244,6 +317,16 @@
     
     function closeMealPopup() {
         const popup = document.getElementById('mealPopup');
+        popup.style.display = 'none';   // 팝업 닫기
+    }
+
+    function openConfigStatusTimePopup() {
+        const popup = document.getElementById('configStatusTime');
+        popup.style.display = 'block';  // 팝업 열기
+    }
+    
+    function closeConfigStatusTimePopup() {
+        const popup = document.getElementById('configStatusTime');
         popup.style.display = 'none';   // 팝업 닫기
     }
 

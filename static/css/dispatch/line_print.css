@@ -1,95 +1,136 @@
 * {
     list-style: none;
     text-decoration: none;
-}
-
-html {
+  }
+  
+  html {
     font-size: 62.5%;
     font-family: "Noto Sans CJK KR";
     overflow-x: hidden;
-}
-
-body {
+  }
+  
+  body {
+    font-family: "Noto Sans CJK KR", sans-serif;
+    font-size: 1.4rem;
     margin: 0;
-    background-color: white;
-}
-
-.lineContainer {
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: center;
-    width: 72rem;
-    height: auto;
-    padding: 2rem 4rem;
-}
-
-.pageTitle {
+    padding: 0;
+    box-sizing: border-box;
+    background-color: #f9f9f9;
+    color: #333;
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: 2.4rem;
-    font-weight: bold;
-    border-bottom: 0.2rem solid black;
-    margin-bottom: 1rem;
-    letter-spacing: 0.2rem;
-}
-
-.pageTitle span {
-    margin: 0 0.4rem;
-}
-
-.lineContentsArea {
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: flex-start;
+    min-height: 100vh;
+  }
+  
+  .container {
     width: 100%;
-}
-
-.lineContentsTitle {
+    max-width: 210mm; /* A4 width */
+    padding: 2rem;
+    background-color: #fff;
+    border-radius: 0.8rem;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .title {
+    text-align: center;
     font-size: 2.4rem;
     font-weight: bold;
-    letter-spacing: 0.2rem;
-    margin-bottom: 0.6rem;
-}
-
-.lineContentsBox {
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: flex-start;
-    padding: 0;
-}
-
-.lineContentsBox li:nth-child(1) {
-    list-style: none;
-}
-
-.lineContentsCell {
-    font-size: 1.6rem;
-    letter-spacing: 0.1rem;
-    word-wrap: break-word;
-    word-break: break-all;
-    padding-left: 2.4rem;
-}
-.lineContentsCell span{
-    width: 2rem;
-    margin-left: -2.4rem;
-}
-
-.lineTime {
-    color: blue;
-}
-
-.lineContentsCell b {
-    font-size: 1.6rem;
+    margin: 0 auto;
+    border-bottom: 0.2rem solid #000;
+    padding-bottom: 0.5rem;
+    width: 30rem;
+    margin-bottom: 1rem;
+  }
+  
+  
+  .section-title {
+    font-size: 2.4rem;
+      font-weight: bold;
+      letter-spacing: 0.2rem;
+      margin-bottom: 0.6rem;
+  }
+  
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 2rem;
+  }
+  
+  th,
+  td {
+    border: 0.1rem solid #ddd;
+    padding: 0.8rem;
+    text-align: center;
+  }
+  
+  th {
+    background-color: #f2f2f2;
     font-weight: bold;
-    word-wrap: break-word;
-    word-break: break-all;
-}
-
-@page {
-    size: A4 portrait;
-    margin: 0;
-}
+  }
+  
+  .lineTime,
+  .lineRoute {
+      font-size: 1.4rem;
+      font-weight: bold;
+      word-wrap: break-word;
+      word-break: break-all;
+  }
+  
+  .lineTime {
+      color: blue;
+  }
+  
+  
+  
+  .important {
+    color: red;
+    font-weight: bold;
+  }
+  
+  .notes {
+    font-size: 1.2rem;
+    color: #555;
+  }
+  
+  @page {
+    size: A4; /* Set the page size to A4 */
+    margin: 0rem; /* Set the margin for printing */
+  }
+  
+  .section-table td:nth-child(1){
+      width: 9%;
+  }
+  
+  .section-table td:nth-child(2){
+      width: 12%;
+  }
+  
+  .section-table td:nth-child(3){
+      width: 30%;
+  }
+  
+  .section-table td:nth-child(4){
+      width: 15%;
+  }
+  
+  .section-table td:nth-child(5){
+      width: 10%;
+  }
+  
+  .section-table td:nth-child(6){
+      width: 23%;
+  }
+  
+  
+  
+  
+  .section-subtable td:nth-child(1){
+      width: 10%;
+  }
+  .section-subtable td:nth-child(2){
+      width: 10%;
+  }
+  .section-subtable td:nth-child(3){
+      width: 60%;
+  }

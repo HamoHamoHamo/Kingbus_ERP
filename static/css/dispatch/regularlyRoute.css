@@ -922,3 +922,33 @@ select[name=use]{
 .routeStationTime {
   font-size: 1.2rem;
 }
+
+
+.arimName {
+  width: 30%;
+  text-align: center;
+}
+
+.NotificationPopupArea{
+  display: flex;
+  flex-direction: column;
+}
+
+.arimTime-top {
+  display: flex;
+  align-items: center;
+  margin: 0.1rem 0;
+  padding: 0.2rem;
+  border-bottom: 0.1rem solid #CDCDCE;
+}
+
+ .arimTime {
+  display: flex;
+  align-items: center;
+  margin: 0.2rem 0; 
+}
+
+.ariminput {
+  width: 70%;
+  display: flex;
+}

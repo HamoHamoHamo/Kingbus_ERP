@@ -47,10 +47,80 @@
     text-align: center !important;
 }
 
-.popupContainerDouble{
-    width: 115rem;
+.popupContainerDoubleStatus{
+    width: 105rem;
 }
 
 .scrolling_table-list_header{
     height: 4.5rem;
 }
+
+.menu{
+    background-color: #444444;
+    right: 27rem
+}
+
+.teamjangMenuFooter{
+    width: calc(100% - 3rem);
+}
+
+.popupArticleBoxTable img{width: 100%;}
+
+.teamjangTime{
+    right: 38rem;
+    background-color: #444444;
+}
+
+.teamjangTimeConfig{
+    width: 60rem;
+    height: 73.6rem; 
+}
+
+.popupArticleBoxTeamjang{
+    justify-content: flex-start;
+    margin-bottom: 2rem;
+}
+
+.popupArticleBoxTimeConfig{
+    justify-content: space-around;
+}
+
+.configTime{
+    margin-right: 3rem;
+    width: 15rem !important;
+
+}
+
+.popupArticleLabelTime{
+    width: 7rem !important;
+}
+.number{
+    font-size: 1.4rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.addTimeBtn{
+    width: 5rem;
+    margin-bottom: 1rem;
+    background-color: #444444;
+}
+
+.addBtn{
+    width: 100%;
+    display: flex;
+    justify-content: right;
+    align-items: center;
+
+}
+
+#time-rows{
+    height: 45rem;
+}
+
+.time-row div:nth-child(1){width: 10% !important;}
+.time-row div:nth-child(2){width: 40% !important;}
+.time-row div:nth-child(3){width: 40% !important;}
+.time-row button{width: 10% !important;}
+

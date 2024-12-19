@@ -54,10 +54,28 @@
 
 .printArea {
     display: flex;
-    justify-content: space-between;
+    gap: 0.5rem;
     align-items: center;
-    width: 42rem;
-    margin-right: 2rem;
+    width: 90rem;
+    margin-right: 0rem;
+    justify-content: right;
+    font-size: 1.4rem;
+}
+
+.printArea select {
+    height: 2.5rem;
+    width: 12.2rem;
+    font-size: 1.4rem;
+}
+
+.searchInput {
+    width: 19rem;
+    height: 2.4rem;
+    padding-left: 0.3rem;
+    border: 0.1rem solid #B5B5B5;
+    border-radius: 0.2rem;
+    font-size: 1.4rem;
+    box-sizing: border-box;
 }
 
 .addSchedule {
@@ -92,7 +110,8 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    width: 9rem;
+    width: 10rem;
+    margin-left: 1rem;
 }
 
 .vhicleCheck {

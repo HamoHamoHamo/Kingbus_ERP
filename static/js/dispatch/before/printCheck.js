@@ -11,7 +11,7 @@ function openDrivingPrint(url) {
     if (targetLink == `${url}${window.location.search}&id=`) {
         alert("인쇄할 차량을 선택해 주세요.")
     } else {
-        window.open(targetLink, "노선별A4", "width=1200, height=640")
+        window.open(targetLink, "노선별A4", "width=1200, height=1600")
     }
 }
 

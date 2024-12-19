@@ -8,14 +8,15 @@
     <meta name="viewport" content="width=device-width">
     <title>TRP</title>
     <link href="{% static 'css/dispatch/regularlyPrint.css' %}" rel="stylesheet" type="text/css" />
-    <link href="" id="printSizeCss" rel="stylesheet" type="text/css" />
 </head>
 
 <body>
-
     <div class="dispatchTable">
         <div class="dispatchTableHeader">
-            <div class="tilte">{{date|slice:':4'}}년 {{date|slice:'5:7'}}월 {{date|slice:'8:10'}}일 {{weekday}} - {{group.name}}</div>
+            <div class="changeBtn">
+                <input type="button" class="autoBtn" value="자동"/>
+            </div>
+            <div class="tilte"> {{date|slice:'5:7'}}월 {{date|slice:'8:10'}}일 {{weekday}} - {{group.name}}</div>
             <!-- 2022년 10월 18일 (화요일) - 한국 쓰리엠 출근 배차표 -->
             <div class="adminCheck">
                 <div class="checkLable">관리자 확인</div>
@@ -30,16 +31,18 @@
                     <td>기사명</td>
                     <td>용역기사</td>
                     <td>연락처</td>
+                    <td>필수점호</td>
                     <td>시간</td>
                     <td>출근노선</td>
                     <td>점호</td>
                     <td>정문/후문</td>
                     <td>셔틀</td>
-                    <td>서명</td>
-                    <td>출근시간</td>
+                    <td>기상</td>
+                    <td>차고지</td>
+                    <td>첫정류장</td>
                     <td>음주측정</td>
-                    <td>체온측정</td>
                     <td>제복</td>
+                    <td>배차확인</td>
                     <td>비고</td>
                 </tr>
             </thead>
@@ -52,6 +55,7 @@
                     <td>{% if connect.outsourcing == 'n' %}{{connect.driver_id}}{% endif %}</td>
                     <td>{% if connect.outsourcing == 'y' %}{{connect.driver_id}}{% endif %}</td>
                     <td>{{connect.driver_id.phone_num}}</td>
+                    <td>{{oder.departrue}}</td>
                     <td>{{order.departure_time}}</td>
                     <td>{{order.route}}</td>
                     <td>{{order.departure}}</td>
@@ -63,19 +67,32 @@
                         {% endif %}
                     </td>
                     <td>{% if '셔틀' in order.location %}O{% else %}X{% endif %}</td>
+                    <td>
+                        <span class="auto">{{connect.check_regularly_connect.wake_time}}</span>
+                    </td>
+                    <td>
+                        <span class="auto">{{connect.check_regularly_connect.drive_time}}</span>
+                    </td>
+                    <td>
+                        <span class="auto">{{connect.check_regularly_connect.departure_time}}</span>
+                    </td>
+                    <td>
+                        <span class="auto">{% if connect.alcohol_test != None %}{{connect.alcohol_test}}{% endif %}</span>
+                    </td>
+                    <td>
+                        <span class="auto"></span>
+                    </td>
+                    <td>
+                        <span class="auto">{% if connect.check_regularly_connect.connect_check == "1" %}O{% else %}X{% endif %}</span>
+                    </td>
                     <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td>{{order.references}}</td>
                 </tr>
                 {% endwith %}
                 {% endfor %}
                 <!-- 1페이지에 25줄 -->
             </tbody>
         </table>
-        <div class="page">1/2</div>
+        <div class="page"></div>
     </div>
 
 
