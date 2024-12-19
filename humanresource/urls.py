@@ -13,6 +13,7 @@ urlpatterns = [
     path('member/download', views.member_download, name='member_download'),
     path('member/efficiency', views.MemberEfficiencyList.as_view(), name='member_efficiency'),
     path('member/route', views.member_route, name='member_route'),
+    path('member/schedule', views.member_schedule, name='member_schedule'),
     #path('member/upload', views.member_upload, name='member_upload'),
     path('team', views.TeamList.as_view(), name='team'),
     path('team/create', views.team_create, name='team_create'),

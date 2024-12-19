@@ -1792,3 +1792,6 @@ class SalaryTeamjangView(ListView):
         current_month = datetime.now().strftime('%Y-%m')
         context['current_month'] = current_month
         return context
+
+def member_schedule(request):
+    return render(request, 'HR/administrator_schedule.html')
