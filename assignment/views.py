@@ -11,11 +11,11 @@ from django.urls import reverse
 from django.views import generic
 
 from .forms import AssignmentDataForm, AssignmentForm
-from .models import Assignment, AssignmentData, AssignmentConnect, Group
+from .models import OldAssignment, OldAssignmentData, OldAssignmentConnect, Group, TemporaryAssignment, FixedAssignment, FixedAssignmentHistory
 from dispatch.models import DispatchRegularlyData, DispatchRegularlyWaypoint, DispatchOrderConnect, DispatchOrder, DispatchRegularly, RegularlyGroup, DispatchRegularlyConnect
 from services import DispatchConnectService
 from accounting.models import Collect, TotalPrice
-from humanresource.models import Member, Salary, Team
+from humanresource.models import Member, Salary, Team, Department
 from humanresource.views import send_message
 from vehicle.models import Vehicle
 from datetime import datetime, timedelta, date
@@ -25,10 +25,71 @@ FORMAT = "%Y-%m-%d"
 WEEK = ['(월)', '(화)', '(수)', '(목)', '(금)', '(토)', '(일)', ]
 WEEK2 = ['월', '화', '수', '목', '금', '토', '일', ]
 
-class AssignmentDataList(generic.ListView):
-    template_name = 'assignment/assignment_data.html'
+class TemporaryAssignmentList(generic.ListView):
+    template_name = 'assignment/temporary_assignment.html'
     context_object_name = 'assignment_list'
-    model = AssignmentData
+    model = TemporaryAssignment
+
+    def get(self, request, *args, **kwargs):
+        if request.session.get('authority') > 1:
+            return render(request, 'authority.html')
+        return super().get(request, *args, **kwargs)
+
+    def get_queryset(self):
+        user = get_object_or_404(Member, pk=self.request.session.get('user'))
+        department = self.request.GET.get('department', '전체') if self.request.session.get('authority') == 0 else user.department
+        date1 = self.request.GET.get('date1', TODAY)
+        date2 = self.request.GET.get('date2', TODAY)
+        search = self.request.GET.get('search', '')
+
+        queryset = TemporaryAssignment.objects.exclude(start_date__gt=date2, end_date__lt=date1)
+        if department != "전체":
+            queryset = queryset.filter(department_id__name=department)
+        if search:
+            queryset = queryset.filter(
+                Q(primary_manager_id__name__contains=search) |
+                Q(secondary_manager_id__name__contains=search) |
+                Q(assignment__contains=search) |
+                Q(notes__contains=search)
+            )
+        return queryset.values()
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        user = get_object_or_404(Member, pk=self.request.session.get('user'))
+        context['department'] = self.request.GET.get('department', '전체') if self.request.session.get('authority') == 0 else user.department
+        context['date1'] = self.request.GET.get('date1', TODAY)
+        context['date2'] = self.request.GET.get('date2', TODAY)
+        context['search'] = self.request.GET.get('search', '')
+        context['manager_list'] = Member.objects.filter(use='사용', department_id__name=context['department'])
+
+        context['department_list'] = Department.objects.all().values('name', 'id')
+
+        return context
+
+
+class FixedAssignmentList(generic.ListView):
+    template_name = 'assignment/fixed_assignment.html'
+    context_object_name = 'assignment_list'
+    model = FixedAssignment
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        context['department_list'] = Department.objects.all().values('name', 'id')
+        return context
+
+
+
+
+
+
+# 예전 버전
+class AssignmentDataList(generic.ListView):
+    template_name = 'assignment/old_assignment_data.html'
+    context_object_name = 'assignment_list'
+    model = OldAssignmentData
 
     def get(self, request, *args, **kwargs):
         if request.session.get('authority') > 1:
@@ -42,13 +103,13 @@ class AssignmentDataList(generic.ListView):
 
         if not group_id:
             group = Group.objects.order_by('number').first()
-            return AssignmentData.objects.exclude(use='삭제').filter(group=group).order_by('num1', 'number1', 'num2', 'number2')
+            return OldAssignmentData.objects.exclude(use='삭제').filter(group=group).order_by('num1', 'number1', 'num2', 'number2')
         else:
             group = get_object_or_404(Group, id=group_id)
             if search_use:
-                return AssignmentData.objects.exclude(use='삭제').filter(use=search_use).filter(group=group).filter(Q(assignment__contains=search) | Q(location__contains=search)).order_by('num1', 'number1', 'num2', 'number2')
+                return OldAssignmentData.objects.exclude(use='삭제').filter(use=search_use).filter(group=group).filter(Q(assignment__contains=search) | Q(location__contains=search)).order_by('num1', 'number1', 'num2', 'number2')
             else:
-                return AssignmentData.objects.exclude(use='삭제').filter(group=group).filter(Q(assignment__contains=search) | Q(location__contains=search)).order_by('num1', 'number1', 'num2', 'number2')
+                return OldAssignmentData.objects.exclude(use='삭제').filter(group=group).filter(Q(assignment__contains=search) | Q(location__contains=search)).order_by('num1', 'number1', 'num2', 'number2')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -58,7 +119,7 @@ class AssignmentDataList(generic.ListView):
         context['search_use'] = self.request.GET.get('use', '')
 
         if id:
-            context['detail'] = get_object_or_404(AssignmentData, id=id)
+            context['detail'] = get_object_or_404(OldAssignmentData, id=id)
         context['group_list'] = Group.objects.all().order_by('number', 'name')
         group_id = self.request.GET.get('group', '')
         if group_id:
@@ -69,9 +130,9 @@ class AssignmentDataList(generic.ListView):
         return context
 
 class AssignmentList(generic.ListView):
-    template_name = 'assignment/assignment.html'
+    template_name = 'assignment/old_assignment.html'
     context_object_name = 'assignment_list'
-    model = Assignment
+    model = OldAssignment
 
     def get(self, request, *args, **kwargs):
         if request.session.get('authority') > 3:
@@ -86,13 +147,13 @@ class AssignmentList(generic.ListView):
         weekday = WEEK2[datetime.strptime(date, FORMAT).weekday()]
         
         if search:
-            data_list = AssignmentData.objects.filter(assignment__contains=search).filter(week__contains=weekday).order_by('num1', 'number1', 'num2', 'number2')
+            data_list = OldAssignmentData.objects.filter(assignment__contains=search).filter(week__contains=weekday).order_by('num1', 'number1', 'num2', 'number2')
         else:
             if group_id:
                 group = Group.objects.get(id=group_id)
-                data_list = AssignmentData.objects.filter(group=group).filter(week__contains=weekday).order_by('num1', 'number1', 'num2', 'number2')
+                data_list = OldAssignmentData.objects.filter(group=group).filter(week__contains=weekday).order_by('num1', 'number1', 'num2', 'number2')
             else:
-                data_list = AssignmentData.objects.filter(week__contains=weekday).order_by('num1', 'number1', 'num2', 'number2')
+                data_list = OldAssignmentData.objects.filter(week__contains=weekday).order_by('num1', 'number1', 'num2', 'number2')
         assignment_list = []
         for data in data_list:
             # first 확인필요
@@ -112,7 +173,7 @@ class AssignmentList(generic.ListView):
         selected_group = self.request.GET.get('group', '')
         detail_id = self.request.GET.get('id')
         if detail_id:
-            assignment_data = get_object_or_404(AssignmentData, id=detail_id)
+            assignment_data = get_object_or_404(OldAssignmentData, id=detail_id)
             context['detail'] = assignment_data.assignment_id.filter(edit_date__lte=date).order_by('-edit_date').first()
             if not context['detail']:
                 context['detail'] = assignment_data.assignment_id.filter(edit_date__gte=date).order_by('edit_date').first()
@@ -287,7 +348,7 @@ def assignment_edit(request):
         return render(request, 'authority.html')
     if request.method == 'POST':
         id = request.POST.get('id', None)
-        assignment_data = get_object_or_404(AssignmentData, pk=id)
+        assignment_data = get_object_or_404(OldAssignmentData, pk=id)
         creator = get_object_or_404(Member, pk=request.session.get('user'))
         assignment_form = AssignmentDataForm(request.POST)
         if assignment_form.is_valid():
@@ -348,7 +409,7 @@ def assignment_edit(request):
             assignment_data.save()
 
             try:
-                assignment = Assignment.objects.filter(assignment_id=assignment_data).get(edit_date=TODAY)
+                assignment = OldAssignment.objects.filter(assignment_id=assignment_data).get(edit_date=TODAY)
                 assignment.group = group
                 assignment.edit_date = TODAY
                 assignment.assignment = assignment_data.assignment
@@ -366,8 +427,8 @@ def assignment_edit(request):
                 assignment.week = assignment_data.week
                 assignment.use = assignment_data.use
                 assignment.creator = assignment_data.creator
-            except Assignment.DoesNotExist:
-                assignment = Assignment(
+            except OldAssignment.DoesNotExist:
+                assignment = OldAssignment(
                     group = group,
                     assignment_id = assignment_data,
                     assignment = assignment_data.assignment,
@@ -394,7 +455,7 @@ def assignment_edit(request):
             post_month = request.POST.get('month')
             if post_month:
                 day = "01"
-                connect_list = AssignmentConnect.objects.filter(assignment_id__assignment_id=assignment_data).filter(start_date__gte=f'{post_month}-{day} 00:00').order_by('start_date')
+                connect_list = OldAssignmentConnect.objects.filter(assignment_id__assignment_id=assignment_data).filter(start_date__gte=f'{post_month}-{day} 00:00').order_by('start_date')
                 for connect in connect_list:
                     month = connect.start_date[:7]
                     member = connect.member_id
@@ -417,14 +478,14 @@ def assignment_edit(request):
                     connect.save()
 
                 # post_month 기간의 Assignment 수정
-                old_assignment_list = Assignment.objects.filter(assignment_id=assignment_data).filter(edit_date__gte=f'{post_month}-{day} 00:00')
+                old_assignment_list = OldAssignment.objects.filter(assignment_id=assignment_data).filter(edit_date__gte=f'{post_month}-{day} 00:00')
                 for assignment in old_assignment_list:
                     assignment.price = price
                     assignment.allowance = allowance
                     assignment.save()
                 
                     
-            connects = AssignmentConnect.objects.filter(assignment_id__assignment_id=assignment_data).filter(start_date__gte=f'{TODAY} 00:00')
+            connects = OldAssignmentConnect.objects.filter(assignment_id__assignment_id=assignment_data).filter(start_date__gte=f'{TODAY} 00:00')
             for connect in connects:
                 connect.assignment_id = assignment
                 connect.start_date = f'{connect.start_date[:10]} {assignment.start_time}'
@@ -450,12 +511,12 @@ def assignment_edit_check(request):
     pk = request.POST.get('id')
     # 일반업무
     if current_page == 'assignment_data':
-        assignment_data = get_object_or_404(AssignmentData, pk=pk)
+        assignment_data = get_object_or_404(OldAssignmentData, pk=pk)
         assignment = assignment_data.assignment_id.order_by('-edit_date').first()
         connect_list = assignment.assignment_connect.filter(start_date__gte=TODAY)
     # 고정업무
     else:
-        assignment = Assignment.objects.get(id=pk)
+        assignment = OldAssignment.objects.get(id=pk)
         connect_list = assignment.assignment_connect.all()
 
     for connect in connect_list:
@@ -470,7 +531,7 @@ def assignment_edit_check(request):
             end_date = post_end_time
 
         if bus:
-            connect_bus = AssignmentConnect.objects.filter(bus_id=bus).exclude(end_date__lt=start_date).exclude(start_date__gt=end_date).exclude(id__in=connect_list)
+            connect_bus = OldAssignmentConnect.objects.filter(bus_id=bus).exclude(end_date__lt=start_date).exclude(start_date__gt=end_date).exclude(id__in=connect_list)
             if connect_bus:
                 return JsonResponse({
                     "status": "fail",
@@ -481,7 +542,7 @@ def assignment_edit_check(request):
                     'arrival_date': connect_bus[0].end_date,
                 })
             
-        connect_member = AssignmentConnect.objects.filter(member_id=member).exclude(end_date__lt=start_date).exclude(start_date__gt=end_date).exclude(id__in=connect_list)
+        connect_member = OldAssignmentConnect.objects.filter(member_id=member).exclude(end_date__lt=start_date).exclude(start_date__gt=end_date).exclude(id__in=connect_list)
         if connect_member:
             vehicle_num = connect_member[0].bus_id.vehicle_num if connect_member[0].assignment_id.use_vehicle == '사용' else ''
             return JsonResponse({
@@ -548,12 +609,12 @@ def assignment_delete(request):
         group = Group.objects.get(id=group_id)
         
         for pk in id_list:
-            assignment_data = get_object_or_404(AssignmentData, pk=pk)
+            assignment_data = get_object_or_404(OldAssignmentData, pk=pk)
             assignment_data.use = '삭제'
             assignment_data.save()
 
             try:
-                assignment = Assignment.objects.filter(assignment_id=assignment_data).get(edit_date=TODAY)
+                assignment = OldAssignment.objects.filter(assignment_id=assignment_data).get(edit_date=TODAY)
                 
                 assignment.group = group
                 assignment.edit_date = TODAY
@@ -572,8 +633,8 @@ def assignment_delete(request):
                 assignment.week = assignment_data.week
                 assignment.use = assignment_data.use
                 assignment.creator = assignment_data.creator
-            except Assignment.DoesNotExist:
-                assignment = Assignment(
+            except OldAssignment.DoesNotExist:
+                assignment = OldAssignment(
                     group = group,
                     assignment_id = assignment_data,
                     assignment = assignment_data.assignment,
@@ -597,7 +658,7 @@ def assignment_delete(request):
             assignment.save()
 
             # 오늘부터 미래의 배차 전부 삭제
-            connects = AssignmentConnect.objects.filter(assignment_id__assignment_id=assignment_data).filter(start_date__gte=f'{TODAY} 00:00')
+            connects = OldAssignmentConnect.objects.filter(assignment_id__assignment_id=assignment_data).filter(start_date__gte=f'{TODAY} 00:00')
             for connect in connects:
                 connect.delete()
 
@@ -612,7 +673,7 @@ def connect_create(request):
         assignment_type = request.POST.get('type', '고정업무')
         creator = get_object_or_404(Member, id=request.session.get('user'))
         pk = request.POST.get('id', None)
-        assignment = get_object_or_404(Assignment, id=pk)
+        assignment = get_object_or_404(OldAssignment, id=pk)
         bus = request.POST.get('bus')
         member_id = request.POST.get('member')
         
@@ -638,7 +699,7 @@ def connect_create(request):
         start_date = f'{date} {assignment.start_time}' if assignment_type == '고정업무' else assignment.start_time
         end_date = f'{date} {assignment.end_time}' if assignment_type == '고정업무' else assignment.end_time
 
-        connect = AssignmentConnect(
+        connect = OldAssignmentConnect(
             assignment_id = assignment,
             member_id = member,
             bus_id = vehicle,
@@ -671,13 +732,13 @@ def connect_delete(request):
 
         for order_id in check_list:
             try:
-                order = Assignment.objects.prefetch_related('assignment_connect').get(id=order_id)
+                order = OldAssignment.objects.prefetch_related('assignment_connect').get(id=order_id)
 
                 assignment_data = order.assignment_id
-                connects = AssignmentConnect.objects.filter(assignment_id__assignment_id=assignment_data).filter(start_date__startswith=date)
+                connects = OldAssignmentConnect.objects.filter(assignment_id__assignment_id=assignment_data).filter(start_date__startswith=date)
                 connects.delete()
             
-            except AssignmentConnect.DoesNotExist:
+            except OldAssignmentConnect.DoesNotExist:
                 continue
 
         return redirect(request.META.get('HTTP_REFERER', 'redirect_if_referer_not_found'))
@@ -692,8 +753,8 @@ def temporary_connect_delete(request):
         id = request.POST.get('id')
         date = request.POST.get('date')
 
-        assignment = Assignment.objects.prefetch_related('assignment_connect').get(id=id)
-        connects = AssignmentConnect.objects.filter(assignment_id=assignment).filter(start_date__startswith=date)
+        assignment = OldAssignment.objects.prefetch_related('assignment_connect').get(id=id)
+        connects = OldAssignmentConnect.objects.filter(assignment_id=assignment).filter(start_date__startswith=date)
         connects.delete()
 
         return redirect(request.META.get('HTTP_REFERER', 'redirect_if_referer_not_found'))
@@ -779,8 +840,8 @@ def group_fix(request):
     else:
         return HttpResponseNotAllowed(['POST'])
 
-class TemporaryAssignmentList(generic.ListView):
-    template_name = 'assignment/temporary_assignment.html'
+class OldTemporaryAssignmentList(generic.ListView):
+    template_name = 'assignment/old_temporary_assignment.html'
     context_object_name = 'assignment_list'
     model = DispatchOrder
 
@@ -796,7 +857,7 @@ class TemporaryAssignmentList(generic.ListView):
         search_type = self.request.GET.get('type')
 
         if start_date or end_date or search:
-            assignment_list = Assignment.objects.prefetch_related('assignment_connect').filter(type='일반업무').exclude(end_time__lt=f'{start_date} 00:00').exclude(start_time__gt=f'{end_date} 24:00').order_by('start_time')
+            assignment_list = OldAssignment.objects.prefetch_related('assignment_connect').filter(type='일반업무').exclude(end_time__lt=f'{start_date} 00:00').exclude(start_time__gt=f'{end_date} 24:00').order_by('start_time')
             if search_type == 'assignment' and search:
                 assignment_list = assignment_list.filter(assignment__contains=search).order_by('start_time')
 
@@ -804,7 +865,7 @@ class TemporaryAssignmentList(generic.ListView):
                 assignment_list = assignment_list.filter(assignment_connect__bus_id__vehicle_num__contains=search).order_by('start_time')
 
         else:            
-            assignment_list = Assignment.objects.prefetch_related('assignment_connect').filter(type='일반업무').exclude(end_time__lt=f'{TODAY} 00:00').exclude(start_time__gt=f'{TODAY} 24:00').order_by('start_time')
+            assignment_list = OldAssignment.objects.prefetch_related('assignment_connect').filter(type='일반업무').exclude(end_time__lt=f'{TODAY} 00:00').exclude(start_time__gt=f'{TODAY} 24:00').order_by('start_time')
         
         return assignment_list
 
@@ -822,7 +883,7 @@ class TemporaryAssignmentList(generic.ListView):
         # weekday = WEEK2[datetime.strptime(date, FORMAT).weekday()]
         detail_id = self.request.GET.get('id')
         if detail_id:
-            context['detail'] = get_object_or_404(Assignment, id=detail_id)
+            context['detail'] = get_object_or_404(OldAssignment, id=detail_id)
             date = context['detail'].start_time[:10]
             date2 = context['detail'].end_time[:10]
             context['detail_connect_list'] = context['detail'].assignment_connect.all()
@@ -986,7 +1047,7 @@ def temporary_assignment_edit(request):
     
     if request.method == "POST":
         creator = get_object_or_404(Member, pk=request.session.get('user'))
-        post_assignment = get_object_or_404(Assignment, id=request.POST.get('id'))
+        post_assignment = get_object_or_404(OldAssignment, id=request.POST.get('id'))
         assignment_form = AssignmentForm(request.POST, instance=post_assignment)
 
         if assignment_form.is_valid():
@@ -1062,7 +1123,7 @@ def temporary_assignment_delete(request):
         date2 = request.POST.get('date2')
 
         for id in id_list:
-            order = get_object_or_404(Assignment, id=id)
+            order = get_object_or_404(OldAssignment, id=id)
             order.delete()
 
         return redirect(reverse('assignment:temporary_assignment') + f'?date1={date1}&date2={date2}')

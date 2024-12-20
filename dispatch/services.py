@@ -1,5 +1,5 @@
 from dispatch.models import DispatchRegularlyConnect, DispatchOrderConnect, DispatchOrder, ConnectStatus, DriverCheck
-from assignment.models import AssignmentConnect, Assignment
+from assignment.models import OldAssignmentConnect, OldAssignment
 from datetime import datetime, timedelta
 from common.constant import DATE_TIME_FORMAT
 
@@ -100,7 +100,7 @@ class DispatchConnectService:
             }
             dispatch_list.append(data)
 
-        a_connect_list = list(AssignmentConnect.objects.select_related('assignment_id', 'member_id', 'bus_id').exclude(start_date__gt=f'{date} 24:00').exclude(end_date__lt=f'{date} 00:00').values('start_date', 'end_date', 'bus_id__id', 'bus_id__vehicle_num', 'member_id__id', 'member_id__name', 'assignment_id__assignment', 'type'))
+        a_connect_list = list(OldAssignmentConnect.objects.select_related('assignment_id', 'member_id', 'bus_id').exclude(start_date__gt=f'{date} 24:00').exclude(end_date__lt=f'{date} 00:00').values('start_date', 'end_date', 'bus_id__id', 'bus_id__vehicle_num', 'member_id__id', 'member_id__name', 'assignment_id__assignment', 'type'))
         for cc in a_connect_list:
             data = {
                 'work_type': cc['type'],
@@ -118,7 +118,7 @@ class DispatchConnectService:
 
     @staticmethod
     def get_multi_date_connect_list(date1, date2, detail):
-        if detail and type(detail) == Assignment:
+        if detail and type(detail) == OldAssignment:
             detail_start_date = detail.start_time
             detail_end_date = detail.end_time
         elif detail and type(detail) == DispatchOrder:
@@ -173,7 +173,7 @@ class DispatchConnectService:
             
             dispatch_data_list.append(data)
 
-        a_connect_list = list(AssignmentConnect.objects.select_related('assignment_id', 'member_id', 'bus_id').exclude(start_date__gt=f'{date2} 24:00').exclude(end_date__lt=f'{date1} 00:00').values('start_date', 'end_date', 'bus_id__id', 'bus_id__vehicle_num', 'member_id__id', 'member_id__name', 'assignment_id__assignment', 'type'))
+        a_connect_list = list(OldAssignmentConnect.objects.select_related('assignment_id', 'member_id', 'bus_id').exclude(start_date__gt=f'{date2} 24:00').exclude(end_date__lt=f'{date1} 00:00').values('start_date', 'end_date', 'bus_id__id', 'bus_id__vehicle_num', 'member_id__id', 'member_id__name', 'assignment_id__assignment', 'type'))
         for cc in a_connect_list:
             data = {
                 # 왼쪽 표에 배차 스케줄 표시할 때 assignment에 type 추가해야됨

@@ -3,13 +3,14 @@
 {% load custom_tags %}
 {% block head %}
 <meta http-equiv="Cache-Control" content="private, no-cache, no-store, max-age=0, must-revalidate">
+
+<!-- <link rel="stylesheet" href="{% static 'css/vehicle/list.css' %}" type="text/css" /> -->
 <link rel="stylesheet" href="{% static 'css/assignment/assignment.css' %}" type="text/css" />
-<link rel="stylesheet" href="{% static 'css/assignment/temporaryAssignment.css' %}" type="text/css" />
 {% endblock %}
 
 {% block content-header %}
 <div class="HeaderTitle">
-    일반업무관리
+    고정업무관리
 </div>
 {% endblock %}
 
@@ -28,17 +29,9 @@
                 </select>
             </div>
             
-            <div class="filterBox">
+            <div class="">
                 <span class="searchName">검색</span>
                 <input autocomplete="off" value="{{search}}" name="search" type="text" class="searchInput inputModules" placeholder="담당자 또는 업무명을 입력해주세요">
-            </div>
-            <div class="searchDateDiv">
-                <span class="searchName">날짜</span>
-                <div>
-                    <input class="searchDate" type="date">
-                    <span>~</span>
-                    <input class="searchDate" type="date">
-                </div>
             </div>
             <input autocomplete="off" type="submit" value="검색" class="btnModules">
         </div>
@@ -61,7 +54,9 @@
                     <td>참고사항</td>
                     <td>주 담당자</td>
                     <td>보조 담당자</td>
-                    <td>기간</td>
+                    <td>요일</td>
+                    <td>시간</td>
+                    <td>사용여부</td>
                 </tr>
             </thead>
         </table>
@@ -75,10 +70,50 @@
                         <td>요구사항 파악 및 만족도 조사</td>
                         <td>신태환</td>
                         <td>김원탁</td>
-                        <td>2024. 12. 15 (16:30) ~ 2024. 12. 19 (18 : 30)</td>
+                        <td>월 화 수 목 금 토 일</td>
+                        <td>16:50 ~ 20:30</td>
+                        <td></td>
                     </tr>
-
-
+                    <tr class="tr">
+                        <td>10</td>
+                        <td>경영관리부서</td>
+                        <td>남양연구소 미팅</td>
+                        <td>요구사항 파악 및 만족도 조사</td>
+                        <td>신태환</td>
+                        <td>김원탁</td>
+                        <td>월 화 수 목 금 토 일</td>
+                        <td>16:50 ~ 20:30</td>
+                        <td></td>
+                    </tr>
+                    <tr class="tr">
+                        <td>10</td>
+                        <td>경영관리부서</td>
+                        <td>남양연구소 미팅</td>
+                        <td>요구사항 파악 및 만족도 조사</td>
+                        <td>신태환</td>
+                        <td>김원탁</td>
+                        <td>월 화 수 목 금 토 일</td>
+                        <td>16:50 ~ 20:30</td>
+                        <td></td>
+                    </tr>
+                    <tr class="tr">
+                        <td>10</td>
+                        <td>경영관리부서</td>
+                        <td>남양연구소 미팅</td>
+                        <td>요구사항 파악 및 만족도 조사</td>
+                        <td>신태환</td>
+                        <td>김원탁</td>
+                        <td>월 화 수 목 금 토 일</td>
+                        <td>16:50 ~ 20:30</td>
+                        <td>
+                            <div class="toggle-div">
+                                <label class="toggle-container">
+                                    <input checked="true" type="checkbox" class="toggle-input">
+                                    <span class="toggle-slider"></span>
+                                </label>
+                            </div>
+                        </td>
+                    </tr>
                     <tr class="blankTr"></tr>
                 </tbody>
             </table>
@@ -94,58 +129,71 @@
         enctype="multipart/form-data">
         {% csrf_token %}
         <div class="popupHeader">
-            <div class="popupTitle">일반업무등록</div>
+            <div class="popupTitle">고정업무등록</div>
         </div>
         <div class="popupBody vehiclePopupBody">
             <div class="popupSection popupSectionEdit">
-                <div class="popupArticleCategory popupArticleCategoryFirst">일반업무</div>
+                <div class="popupArticleCategory popupArticleCategoryFirst">고정업무</div>
                 <div class="popupArticleBox">
-                    <div class="popupArticleDouble">
-                        <label for="" class="popupArticleLabel"><span class="importantStar">*</span>부서</label>
-                        <select name="driver" class="popupArticleinput driver_name">
-                            {% for department in department_list %}
-                            <option value="{{department.id}}">{{department.name}}</option>
-                            {% endfor %}
-                        </select>
-                    </div>
                     <div class="popupArticleDouble">
                         <label for="" class="popupArticleLabel"><span class="importantStar">*</span>주 담당자</label>
                         <select name="driver" class="popupArticleinput driver_name">
-                            {% for manager in manager_list %}
-                            <option value="{{manager.id}}">{{manager.name}}</option>
+                            <option></option>
+                            {% for driver in driver_list %}
+                            <option value="{{driver.id}}">{{driver.name}}{% if driver.role == '용역' %}(용역){% endif %}</option>
                             {% endfor %}
                         </select>
                     </div>
-                </div>
-                <div class="popupArticleBox">
                     <div class="popupArticleDouble">
                         <label for="" class="popupArticleLabel">보조 담당자</label>
                         <select name="driver" class="popupArticleinput driver_name">
-                            {% for manager in manager_list %}
-                            <option value="{{manager.id}}">{{manager.name}}</option>
+                            <option></option>
+                            {% for driver in driver_list %}
+                            <option value="{{driver.id}}">{{driver.name}}{% if driver.role == '용역' %}(용역){% endif %}</option>
                             {% endfor %}
                         </select>
                     </div>
+                </div>
+                <div class="popupArticleBox">
                     <div class="popupArticleDouble">
-                        <label for="" class="popupArticleLabel"><span class="importantStar">*</span>기간</label>
+                        <label for="" class="popupArticleLabel"><span class="importantStar">*</span>요일</label>
+                        <div class="weekCheckbox">
+                            <input type="checkbox" id="weekAll" name="week" value="매일">
+                            <label for="weekAll">매일</label>
+                            <input type="checkbox" id="mon" name="week" value="월">
+                            <label for="mon">월</label>
+                            <input type="checkbox" id="tue" name="week" value="화">
+                            <label for="tue">화</label>
+                            <input type="checkbox" id="wed" name="week" value="수">
+                            <label for="wed">수</label>
+                            <input type="checkbox" id="thu" name="week" value="목">
+                            <label for="thu">목</label>
+                            <input type="checkbox" id="fri" name="week" value="금">
+                            <label for="fri">금</label>
+                            <input type="checkbox" id="sat" name="week" value="토">
+                            <label for="sat">토</label>
+                            <input type="checkbox" id="sun" name="week" value="일">
+                            <label for="sun">일</label>
+                        </div>
+                    </div>
+                    <div class="popupArticleDouble">
+                        <label for="" class="popupArticleLabel">업무시간</label>
                         <div class="popupArticleDoubleTimeDiv">
-                            <input autocomplete="off" name="vehicle_num0" type="date" class="popupArticleinputTwice vehicleNum1 length100 essential">
-                            <input autocomplete="off" name="vehicle_num" type="text" class="popupArticleinputTwice inputTime vehicleNum2 length100 essential">
+                            <input autocomplete="off" name="vehicle_num0" type="text" class="popupArticleinputTwice vehicleNum1 length100 essential">
                             <span class="popupArticleDoubleTimeDivSeparator">:</span>
-                            <input autocomplete="off" name="vehicle_num" type="text" class="popupArticleinputTwice inputTime vehicleNum2 length100 essential">
+                            <input autocomplete="off" name="vehicle_num" type="text" class="popupArticleinputTwice vehicleNum2 length100 essential">
                         </div>
                         <span class="popupArticleDoubleTimeDivSeparator">~</span>
                         <div class="popupArticleDoubleTimeDiv">
-                            <input autocomplete="off" name="vehicle_num0" type="date" class="popupArticleinputTwice vehicleNum1 length100 essential">
-                            <input autocomplete="off" name="vehicle_num" type="text" class="popupArticleinputTwice inputTime vehicleNum2 length100 essential">
+                            <input autocomplete="off" name="vehicle_num0" type="text" class="popupArticleinputTwice vehicleNum1 length100 essential">
                             <span class="popupArticleDoubleTimeDivSeparator">:</span>
-                            <input autocomplete="off" name="vehicle_num" type="text" class="popupArticleinputTwice inputTime vehicleNum2 length100 essential">
+                            <input autocomplete="off" name="vehicle_num" type="text" class="popupArticleinputTwice vehicleNum2 length100 essential">
                         </div>
                     </div>
                 </div>
                 <div class="popupArticleBox">
                     <div class="popupArticleDouble">
-                        <label for="" class="popupArticleLabel"><span class="importantStar">*</span>업무</label>
+                        <label for="" class="popupArticleLabel">업무</label>
                         <input autocomplete="off "name="vehicle_type" type="text" class="popupArticleinput vehicle_type length100">
                     </div>
                     <div class="popupArticleDouble">

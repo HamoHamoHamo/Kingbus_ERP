@@ -1,8 +1,8 @@
 from django.contrib import admin
-from .models import Group, Assignment, AssignmentConnect, AssignmentData
+from .models import Group, OldAssignment, OldAssignmentConnect, OldAssignmentData
     
 
 admin.site.register(Group)
-admin.site.register(Assignment)
-admin.site.register(AssignmentConnect)
-admin.site.register(AssignmentData)
+admin.site.register(OldAssignment)
+admin.site.register(OldAssignmentConnect)
+admin.site.register(OldAssignmentData)

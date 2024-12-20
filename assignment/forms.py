@@ -1,12 +1,12 @@
 from django import forms 
 from django.db import models
 
-from .models import AssignmentData, Assignment
+from .models import OldAssignmentData, OldAssignment
 
 
 class AssignmentDataForm(forms.ModelForm):
     class Meta:
-        model = AssignmentData
+        model = OldAssignmentData
         fields = [
             'assignment',
             'references',
@@ -20,7 +20,7 @@ class AssignmentDataForm(forms.ModelForm):
         
 class AssignmentForm(forms.ModelForm):
     class Meta:
-        model = Assignment
+        model = OldAssignment
         fields = [
             'assignment',
             'references',

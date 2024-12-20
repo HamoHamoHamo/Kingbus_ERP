@@ -21,7 +21,7 @@ from .services import DispatchConnectService
 from .forms import OrderForm, ConnectForm, RegularlyDataForm, StationForm, RegularlyForm, TourForm, RouteTeamForm
 from .models import DispatchRegularlyRouteKnow, DispatchCheck, DispatchRegularlyData, DispatchRegularlyWaypoint, Schedule, DispatchOrderConnect, DispatchOrder, DispatchRegularly, RegularlyGroup, DispatchRegularlyConnect, DispatchOrderStation, ConnectRefusal, MorningChecklist, EveningChecklist, DrivingHistory, BusinessEntity, Station, DispatchRegularlyDataStation, DispatchRegularlyStation, DispatchOrderTourCustomer, DispatchOrderTour, RouteTeam, StationArrivalTime, DriverCheck, ConnectStatusFieldMapping, ConnectStatus
 from .selectors import DispatchSelector
-from assignment.models import AssignmentConnect
+from assignment.models import OldAssignmentConnect
 from accounting.models import Collect, TotalPrice
 from crudmember.models import Category, Client
 from humanresource.models import Member, Salary, Team
@@ -1940,7 +1940,7 @@ def regularly_order_edit_check(request):
                 'departure_date': connect_driver[0].departure_date,
             })
         
-        a_connect = AssignmentConnect.objects.filter(assignment_id__use_vehicle='사용').filter(bus_id=bus).exclude(end_date__lt=departure_date).exclude(start_date__gt=arrival_date)
+        a_connect = OldAssignmentConnect.objects.filter(assignment_id__use_vehicle='사용').filter(bus_id=bus).exclude(end_date__lt=departure_date).exclude(start_date__gt=arrival_date)
         if a_connect:
             return JsonResponse({
                 "status": "fail",
@@ -1950,7 +1950,7 @@ def regularly_order_edit_check(request):
                 'departure_date': a_connect[0].start_date,
                 'arrival_date': a_connect[0].end_date,
             })
-        a_connect_driver = AssignmentConnect.objects.filter(member_id=driver).exclude(end_date__lt=departure_date).exclude(start_date__gt=arrival_date)
+        a_connect_driver = OldAssignmentConnect.objects.filter(member_id=driver).exclude(end_date__lt=departure_date).exclude(start_date__gt=arrival_date)
         if a_connect_driver:
             vehicle_num = a_connect_driver[0].bus_id.vehicle_num if a_connect_driver[0].assignment_id.use_vehicle == '사용' else ''
             return JsonResponse({
@@ -3495,7 +3495,7 @@ def order_edit_check(request):
                 'departure_date': r_connect_driver[0].departure_date,
             })
 
-        a_connect = AssignmentConnect.objects.filter(assignment_id__use_vehicle='사용').filter(bus_id=bus).exclude(end_date__lt=post_departure_date).exclude(start_date__gt=post_arrival_date)
+        a_connect = OldAssignmentConnect.objects.filter(assignment_id__use_vehicle='사용').filter(bus_id=bus).exclude(end_date__lt=post_departure_date).exclude(start_date__gt=post_arrival_date)
         if a_connect:
             return JsonResponse({
                 "status": "fail",
@@ -3505,7 +3505,7 @@ def order_edit_check(request):
                 'departure_date': a_connect[0].start_date,
                 'arrival_date': a_connect[0].end_date,
             })
-        a_connect_driver = AssignmentConnect.objects.filter(member_id=driver).exclude(end_date__lt=post_departure_date).exclude(start_date__gt=post_arrival_date)
+        a_connect_driver = OldAssignmentConnect.objects.filter(member_id=driver).exclude(end_date__lt=post_departure_date).exclude(start_date__gt=post_arrival_date)
         if a_connect_driver:
             vehicle_num = a_connect_driver[0].bus_id.vehicle_num if a_connect_driver[0].assignment_id.use_vehicle == '사용' else ''
             return JsonResponse({

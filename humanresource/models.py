@@ -54,6 +54,7 @@ class Member(models.Model):
     allowance_type = models.CharField(verbose_name='수당지급기준', max_length=100, null=False, blank=True, default="기사수당(현재)")
     license = models.CharField(verbose_name='버스기사자격증', max_length=100, null=False, blank=True)
     can_parking_outside = models.BooleanField(verbose_name='외부주차가능여부', null=False, default=False)
+    department_id = models.ForeignKey("Department", on_delete=models.SET_NULL, related_name="member", null=True)
 
     base = models.CharField(verbose_name='기본급', max_length=20, null=False, default=0)
     service_allowance = models.CharField(verbose_name='근속수당', max_length=20, null=False, default=0)
@@ -116,6 +117,13 @@ class MemberFile(models.Model):
 #     pub_date = models.DateTimeField(verbose_name='작성시간', auto_now_add=True, null=False)
 #     def __str__(self):
 #         return self.member_id.name
+
+class Department(models.Model):
+    name = models.CharField(verbose_name='부서 이름', max_length=50, null=False, unique=True)
+
+    pub_date = models.DateTimeField(auto_now_add=True, verbose_name='작성시간')
+    updated_at = models.DateTimeField(auto_now=True, verbose_name='수정시간')
+    creator = models.ForeignKey(Member, on_delete=models.SET_NULL, related_name="department_creator", db_column="creator_id", null=True)
 
 class Notification(models.Model):
     CATEGORY_CHOCIES = [

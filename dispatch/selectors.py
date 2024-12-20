@@ -1,7 +1,7 @@
 from django.db.models import Value, F, Prefetch
 
 from .models import DispatchRegularly, DispatchOrderConnect, DispatchRegularlyConnect, MorningChecklist, EveningChecklist, DispatchRegularlyStation
-from assignment.models import AssignmentConnect
+from assignment.models import OldAssignmentConnect
 
 class DispatchSelector:
 
@@ -100,7 +100,7 @@ class DispatchSelector:
         )
 
         assignment = list(
-            AssignmentConnect.objects.filter(start_date__gte=f'{start_date} 00:00', end_date__lte=f'{end_date} 23:59')
+            OldAssignmentConnect.objects.filter(start_date__gte=f'{start_date} 00:00', end_date__lte=f'{end_date} 23:59')
             .annotate(
                 night_work_time=Value(""),
                 route_time=Value(""),

@@ -2,7 +2,7 @@ from django.test import TestCase
 from common.test_setting import AuthenticatedUserTestCase
 from django.urls import reverse
 
-from assignment.models import Assignment, AssignmentConnect
+from assignment.models import OldAssignment, OldAssignmentConnect
 from dispatch.models import RegularlyGroup, DispatchRegularlyData, DispatchRegularly, DispatchRegularlyConnect, DispatchOrder, DispatchOrderConnect
 from humanresource.models import Member
 from vehicle.models import Vehicle
@@ -123,8 +123,8 @@ class RegularlyEditCheckViewTest(AuthenticatedUserTestCase):
 
     # 업무배차 중복인 경우 확인
     def test_regularly_edit_check_overlap_with_assignment(self):
-        assignment = Assignment.objects.create()
-        assignment_connect = AssignmentConnect.objects.create(assignment_id=assignment, start_date=self.DEPARTURE_DATE3, end_date=self.ARRIVAL_DATE3, bus_id=self.bus, member_id=self.member)
+        assignment = OldAssignment.objects.create()
+        assignment_connect = OldAssignmentConnect.objects.create(assignment_id=assignment, start_date=self.DEPARTURE_DATE3, end_date=self.ARRIVAL_DATE3, bus_id=self.bus, member_id=self.member)
 
         response = self.client.post(self.test_url, self.false_data)
         json_data = response.json()
@@ -135,8 +135,8 @@ class RegularlyEditCheckViewTest(AuthenticatedUserTestCase):
 
     # 업무배차(차량 미사용) 중복인 경우 확인
     def test_regularly_edit_check_overlap_with_assignment_no_bus(self):
-        no_bus_assignment = Assignment.objects.create(use_vehicle='미사용')
-        no_bus_assignment_connect = AssignmentConnect.objects.create(assignment_id=no_bus_assignment, start_date=self.DEPARTURE_DATE3, end_date=self.ARRIVAL_DATE3, member_id=self.member)
+        no_bus_assignment = OldAssignment.objects.create(use_vehicle='미사용')
+        no_bus_assignment_connect = OldAssignmentConnect.objects.create(assignment_id=no_bus_assignment, start_date=self.DEPARTURE_DATE3, end_date=self.ARRIVAL_DATE3, member_id=self.member)
 
         response = self.client.post(self.test_url, self.false_data)
         json_data = response.json()
@@ -173,8 +173,8 @@ class RegularlyEditCheckViewTest(AuthenticatedUserTestCase):
 
     # 업무배차 edit_check 통과하는 경우 확인
     def test_regularly_edit_check_pass_with_assignment(self):
-        assignment = Assignment.objects.create()
-        assignment_connect = AssignmentConnect.objects.create(assignment_id=assignment, start_date=self.DEPARTURE_DATE3, end_date=self.ARRIVAL_DATE3, bus_id=self.bus, member_id=self.member)
+        assignment = OldAssignment.objects.create()
+        assignment_connect = OldAssignmentConnect.objects.create(assignment_id=assignment, start_date=self.DEPARTURE_DATE3, end_date=self.ARRIVAL_DATE3, bus_id=self.bus, member_id=self.member)
 
         response = self.client.post(self.test_url, self.true_data)
         json_data = response.json()
@@ -185,8 +185,8 @@ class RegularlyEditCheckViewTest(AuthenticatedUserTestCase):
 
     # 업무배차(차량 미사용) edit_check 통과하는 경우 확인
     def test_regularly_edit_check_pass_with_assignment_no_bus(self):
-        no_bus_assignment = Assignment.objects.create(use_vehicle='미사용')
-        no_bus_assignment_connect = AssignmentConnect.objects.create(assignment_id=no_bus_assignment, start_date=self.DEPARTURE_DATE3, end_date=self.ARRIVAL_DATE3, member_id=self.member)
+        no_bus_assignment = OldAssignment.objects.create(use_vehicle='미사용')
+        no_bus_assignment_connect = OldAssignmentConnect.objects.create(assignment_id=no_bus_assignment, start_date=self.DEPARTURE_DATE3, end_date=self.ARRIVAL_DATE3, member_id=self.member)
 
         response = self.client.post(self.test_url, self.true_data)
         json_data = response.json()

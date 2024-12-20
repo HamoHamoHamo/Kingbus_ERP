@@ -1,0 +1,32 @@
+.contentsAreaBox td:nth-child(7) {
+    width: 30%;
+}
+
+.contentsAreaBox td:nth-child(8) {
+    width: 8%;
+}
+
+.searchDateDiv {
+    display: flex;
+    align-items: center;
+}
+
+.searchDate {
+    height: 2.4rem;
+    box-sizing: border-box;
+    border: 0.1rem solid #B5B5B5;
+    width: 13rem;
+}
+
+.popupArticleinputTwice {
+    width: 55%;
+}
+
+.inputTime {
+    width: 17%;
+    text-align: center;
+}
+
+.popupArticleDoubleTimeDivSeparator {
+    width: 1rem;
+}

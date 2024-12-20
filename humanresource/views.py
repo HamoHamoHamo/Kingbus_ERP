@@ -20,9 +20,9 @@ from config.settings.base import BASE_DIR
 from crudmember.models import Category
 from vehicle.models import Vehicle
 from .forms import MemberForm, SalaryForm
-from .models import Member, MemberFile, Salary, AdditionalSalary, DeductionSalary, Team, WeeklyHolidayAllowanceDeductionSalary
+from .models import Member, MemberFile, Salary, AdditionalSalary, DeductionSalary, Team, WeeklyHolidayAllowanceDeductionSalary, Department
 from accounting.models import TotalPrice
-from assignment.models import AssignmentConnect
+from assignment.models import OldAssignmentConnect
 import math
 from my_settings import CRED_PATH, CLOUD_MEDIA_PATH
 from common.constant import TODAY, WEEK
@@ -995,7 +995,7 @@ def salary_detail(request):
             total_list[c_date] += int(leave['driver_allowance'])
 
         # 업무 급여 데이터
-        assignments = AssignmentConnect.objects.filter(start_date__range=(f'{month}-01 00:00', f'{month}-{last_date} 24:00')).filter(type='일반업무').filter(member_id=member)
+        assignments = OldAssignmentConnect.objects.filter(start_date__range=(f'{month}-01 00:00', f'{month}-{last_date} 24:00')).filter(type='일반업무').filter(member_id=member)
         assignment_cnt = assignments.count()
         for assignment in list(assignments.values('assignment_id__assignment', 'start_date', 'allowance')):
             c_date = int(assignment['start_date'][8:10]) - 1
@@ -1007,7 +1007,7 @@ def salary_detail(request):
         # if assignments:
             assignment_total_list[c_date] += int(assignment['allowance'])
         
-        regularly_assignments = AssignmentConnect.objects.filter(start_date__range=(f'{month}-01 00:00', f'{month}-{last_date} 24:00')).filter(type='고정업무').filter(member_id=member)
+        regularly_assignments = OldAssignmentConnect.objects.filter(start_date__range=(f'{month}-01 00:00', f'{month}-{last_date} 24:00')).filter(type='고정업무').filter(member_id=member)
         regularly_assignment_cnt = regularly_assignments.count()
         for regularly_assignment in list(regularly_assignments.values('assignment_id__assignment', 'start_date', 'allowance')):
             c_date = int(regularly_assignment['start_date'][8:10]) - 1
@@ -1155,7 +1155,7 @@ def salary_detail_hourly(request):
             total_list[c_date] += 1
 
         # 업무 급여 데이터
-        assignments = AssignmentConnect.objects.filter(start_date__range=(f'{month}-01 00:00', f'{month}-{last_date} 24:00')).filter(type='일반업무').filter(member_id=member)
+        assignments = OldAssignmentConnect.objects.filter(start_date__range=(f'{month}-01 00:00', f'{month}-{last_date} 24:00')).filter(type='일반업무').filter(member_id=member)
         assignment_cnt = assignments.count()
         for assignment in list(assignments.values('assignment_id__assignment', 'start_date', 'allowance')):
             c_date = int(assignment['start_date'][8:10]) - 1
@@ -1165,7 +1165,7 @@ def salary_detail_hourly(request):
 
             assignment_total_list[c_date] += 1
         
-        regularly_assignments = AssignmentConnect.objects.filter(start_date__range=(f'{month}-01 00:00', f'{month}-{last_date} 24:00')).filter(type='고정업무').filter(member_id=member)
+        regularly_assignments = OldAssignmentConnect.objects.filter(start_date__range=(f'{month}-01 00:00', f'{month}-{last_date} 24:00')).filter(type='고정업무').filter(member_id=member)
         regularly_assignment_cnt = regularly_assignments.count()
         for regularly_assignment in list(regularly_assignments.values('assignment_id__assignment', 'start_date', 'allowance')):
             c_date = int(regularly_assignment['start_date'][8:10]) - 1
