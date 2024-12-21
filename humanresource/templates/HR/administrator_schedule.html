@@ -34,10 +34,13 @@
             </div>
             
             <div class="pagination">
-                <a href="#" id="prev" >&lt; &nbsp&nbsp</a>
-                <span id="current-date"></span>
-                <a href="#" id="next" >&nbsp&nbsp &gt;</a>
-            </div>  
+                <!-- 이전 날짜로 이동 -->
+                <a href="#" id="prev">&lt; &nbsp</a>
+                <!-- 날짜 선택 (달력) -->
+                <input type="date" id="datePicker" />
+                <!-- 다음 날짜로 이동 -->
+                <a href="#" id="next">&nbsp&nbsp&gt;</a>
+            </div>
                 
             </div>
 
@@ -73,9 +76,10 @@
                                 </div>
                             </div>
                         </div>
+                        
 
                         
-                        <a href="{% url 'assignment:temporary_assignment' %}" class="addTodo" id="addTodoButton">+ 할 일 추가</a>
+                        <a href="#" class="addTodo" id="addTodoButton">+ 할 일 추가</a>
                     </div>
                 </div>
 
@@ -111,6 +115,7 @@
                                 </div>
                             </div>
                         </div>
+                        
                     </div>
                 </div>
 
@@ -163,33 +168,9 @@
 
 <!-- Script Block -->
 {% block script %}
+<script src="{% static 'js/hr/administratorSchedule/administratorSchedule.js' %}"></script>
+<script src="{% static 'js/hr/administratorSchedule/date.js' %}"></script>
 <script>
-    let currentDate = new Date();
-
-        // 날짜를 포맷팅하는 함수
-        function formatDate(date) {
-            const year = date.getFullYear();
-            const month = String(date.getMonth() + 1).padStart(2, '0'); 
-            const day = String(date.getDate()).padStart(2, '0');
-            return `${year}.${month}.${day}`;
-        }
-
-        // 초기 날짜 표시
-        const dateElement = document.getElementById("current-date");
-        dateElement.textContent = formatDate(currentDate);
-
-        // 이전 날짜 버튼 클릭 이벤트
-        document.getElementById("prev").addEventListener("click", () => {
-            currentDate.setDate(currentDate.getDate() - 1); 
-            dateElement.textContent = formatDate(currentDate);
-        });
-
-        // 다음 날짜 버튼 클릭 이벤트
-        document.getElementById("next").addEventListener("click", () => {
-            currentDate.setDate(currentDate.getDate() + 1); 
-            dateElement.textContent = formatDate(currentDate);
-        });
-
         document.querySelectorAll(".progressBtnJs").forEach(button => {
             button.addEventListener("click", () => {
                 const action = button.textContent.trim();
