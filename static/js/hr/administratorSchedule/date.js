@@ -61,9 +61,7 @@ function updateUrlWithDate(date) {
 
 // "할 일 추가" 버튼 링크 업데이트 함수
 function updateAddTodoLink() {
-    const baseUrl = "http://35.232.200.138/dispatch/order"; // 루트 URL
-    const type = "route"; // 고정된 파라미터 값
-    const search = ""; // 검색어 기본값
+    const baseUrl = "http://35.232.200.138/assignment/temporary"; // 루트 URL
     const date = formatDate(currentDate); // 현재 선택된 날짜
     const newUrl = `${baseUrl}?date1=${date}&date2=${date}`;
     addTodoButton.setAttribute("href", newUrl); // "할 일 추가" 버튼의 href 설정
