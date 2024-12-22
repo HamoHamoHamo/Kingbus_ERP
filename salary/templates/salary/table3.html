@@ -100,11 +100,11 @@
                 <div class="theadNormal">통상시급</div>
 
 
-                <div class="theadCountTime">
+                <div class="theadCountTime borderRightNone">
                     <div class="theadCountTimeTitle personalFlex">산정시간</div>
-                    <div class="theadCountTimeData">
+                    <div class="theadCountTimeData borderRightNone">
                         <div class="theadCountTimeTh personalFlex th">소정근로</div>
-                        <div class="theadCountTimeThDouble th">
+                        <div class="theadCountTimeThDouble th borderRightNone">
                             <div class="theadCountTimeThTitle personalFlex">연장근로</div>
                             <div class="theadCountTimeThContent th flex">
                                 <div class="theadCountTimeThTh personalFlex th">법내</div>
@@ -113,8 +113,8 @@
                         </div>
                         <div class="theadCountTimeTh personalFlex">야간</div>
                         <div class="theadCountTimeThDouble">
-                            <div class="theadCountTimeThTitle personalFlex">휴일근로</div>
-                            <div class="theadCountTimeThContent flex">
+                            <div class="theadCountTimeThTitle personalFlex borderRightNone">휴일근로</div>
+                            <div class="theadCountTimeThContent flex borderRightNone">
                                 <div class="theadCountTimeThTh personalFlex ">8시간이하</div>
                                 <div class="theadCountTimeThTh personalFlex  last">8시간초과</div>
                             </div>
@@ -157,7 +157,7 @@
                             <div class="theadLegalAllowanceContentDoubleContent">
                                 <div class="theadLegalAllowanceContentDoubleContentFirst">휴일기본임금</div>
                                 <div class="theadLegalAllowanceContentDoubleContentFirst">휴일50%가산임금</div>
-                                <div class="theadLegalAllowanceContentDoubleContentFirst">휴일100%가산임금</div>
+                                <div class="theadLegalAllowanceContentDoubleContentFirst borderRightNone">휴일100%가산임금</div>
                             </div>
                         </div>
                         
@@ -166,13 +166,12 @@
                             <div class="theadLegalAllowanceContentDoubleContent">
                                 <div class="theadLegalAllowanceContentDoubleContentFirst">점호관리</div>
                                 <div class="theadLegalAllowanceContentDoubleContentFirst">차량관리</div>
-                                <div class="theadLegalAllowanceContentDoubleContentFirst">업무관리</div>
+                                <div class="theadLegalAllowanceContentDoubleContentFirst borderRightNone">업무관리</div>
                             </div>
                         </div>
                         <div>성실수당</div>
                         <div>만근수당</div>
                         <div>무사고수당</div>
-                        <div>연차수당</div>
                         <div class="theadLegalAllowanceContentLast">소계</div>
                     </div>
                 </div>
@@ -281,8 +280,8 @@
                         <div class="addCommaToInnerText">{{current_data.full_attendance_allowance}}</div>
                         <!-- 무사고수당 -->
                         <div class="addCommaToInnerText">{{current_data.accident_free_allowance}}</div>
-                        <!-- 연차수당 -->
-                        <div class="addCommaToInnerText">{{current_data.new_annual_allowance}}</div>
+                        {% comment %} <!-- 연차수당 -->
+                        <div class="addCommaToInnerText">{{current_data.new_annual_allowance}}</div> {% endcomment %}
                         <!-- 계 -->
                         <div class="addCommaToInnerText">{{current_data.statutory_allowance}}</div>
                     </div>
@@ -364,7 +363,7 @@
                     <div class="diligence_allowance">성실수당</div>
                     <div class="full_attendance_allowance">만근수당</div>
                     <div class="accident_free_allowance">무사고수당</div>
-                    <div class="annual_allowance">연차수당</div>
+                    {% comment %} <div class="annual_allowance">연차수당</div> {% endcomment %}
                     <div class="statutory_allowance">소계</div>
                     
                 </div>
