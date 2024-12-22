@@ -86,7 +86,7 @@ class FixedAssignmentList(generic.ListView):
 
 
 # 예전 버전
-class AssignmentDataList(generic.ListView):
+class OldAssignmentDataList(generic.ListView):
     template_name = 'assignment/old_assignment_data.html'
     context_object_name = 'assignment_list'
     model = OldAssignmentData
@@ -129,7 +129,7 @@ class AssignmentDataList(generic.ListView):
         
         return context
 
-class AssignmentList(generic.ListView):
+class OldAssignmentList(generic.ListView):
     template_name = 'assignment/old_assignment.html'
     context_object_name = 'assignment_list'
     model = OldAssignment
@@ -262,7 +262,7 @@ class AssignmentList(generic.ListView):
         return context
 
 
-def assignment_create(request):
+def old_assignment_create(request):
     if request.session.get('authority') > 1:
         return render(request, 'authority.html')
     
@@ -343,7 +343,7 @@ def assignment_create(request):
     else:
         return HttpResponseNotAllowed(['post'])
 
-def assignment_edit(request):
+def old_assignment_edit(request):
     if request.session.get('authority') > 1:
         return render(request, 'authority.html')
     if request.method == 'POST':
@@ -500,7 +500,7 @@ def assignment_edit(request):
     else:
         return HttpResponseNotAllowed(['post'])
 
-def assignment_edit_check(request):
+def old_assignment_edit_check(request):
     if request.session.get('authority') > 1:
         return render(request, 'authority.html')
     
@@ -600,7 +600,7 @@ def assignment_edit_check(request):
             })
     return JsonResponse({'status': 'success'})
 
-def assignment_delete(request):
+def old_assignment_delete(request):
     if request.session.get('authority') > 1:
         return render(request, 'authority.html')
     if request.method == "POST":
@@ -666,7 +666,7 @@ def assignment_delete(request):
     else:
         return HttpResponseNotAllowed(['post'])
 
-def connect_create(request):
+def old_old_old_connect_create(request):
     if request.session.get('authority') > 3:
         return render(request, 'authority.html')
     if request.method == "POST":
@@ -722,7 +722,7 @@ def connect_create(request):
         return HttpResponseNotAllowed(['post'])
 
 
-def connect_delete(request):
+def old_old_connect_delete(request):
     if request.session.get('authority') > 3:
         return render(request, 'authority.html')
 
@@ -745,7 +745,7 @@ def connect_delete(request):
     else:
         return HttpResponseNotAllowed(['post'])
 
-def temporary_connect_delete(request):
+def old_temporary_connect_delete(request):
     if request.session.get('authority') > 3:
         return render(request, 'authority.html')
 
@@ -761,7 +761,7 @@ def temporary_connect_delete(request):
     else:
         return HttpResponseNotAllowed(['post'])
 
-def group_create(request):
+def old_group_create(request):
     if request.session.get('authority') > 1:
         return render(request, 'authority.html')
 
@@ -776,7 +776,7 @@ def group_create(request):
     else:
         return HttpResponseNotAllowed(['POST'])
 
-def group_edit(request):
+def old_group_edit(request):
     if request.session.get('authority') > 1:
         return render(request, 'authority.html')
 
@@ -791,7 +791,7 @@ def group_edit(request):
     else:
         return HttpResponseNotAllowed(['POST'])
 
-def group_delete(request):
+def old_group_delete(request):
     if request.session.get('authority') > 1:
         return render(request, 'authority.html')
 
@@ -812,7 +812,7 @@ def group_delete(request):
     else:
         return HttpResponseNotAllowed(['POST'])
 
-def group_fix(request):
+def old_group_fix(request):
     if request.session.get('authority') > 1:
         return render(request, 'authority.html')
 
@@ -982,7 +982,7 @@ class OldTemporaryAssignmentList(generic.ListView):
         context['selected_date2'] = self.request.GET.get('date2')
         return context
 
-def temporary_assignment_create(request):
+def old_temporary_assignment_create(request):
     if request.session.get('authority') > 1:
         return render(request, 'authority.html')
     
@@ -1041,7 +1041,7 @@ def temporary_assignment_create(request):
     else:
         return HttpResponseNotAllowed(['post'])
 
-def temporary_assignment_edit(request):
+def old_temporary_assignment_edit(request):
     if request.session.get('authority') > 1:
         return render(request, 'authority.html')
     
@@ -1113,7 +1113,7 @@ def temporary_assignment_edit(request):
     else:
         return HttpResponseNotAllowed(['post'])
 
-def temporary_assignment_delete(request):
+def old_temporary_assignment_delete(request):
     if request.session.get('authority') > 3:
         return render(request, 'authority.html')
         
