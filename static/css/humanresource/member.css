@@ -176,12 +176,12 @@ td:nth-child(13) {
 
 /*popup*/
 
-.popupContainer {
-    max-height: 80rem;
+.memberForm {
+    height: 80rem;
 }
 
 .popupBodyMember {
-    height: 100%;
+    height: calc(100% - 3.6rem);
     overflow: scroll;
     display: block;
 }
@@ -246,7 +246,7 @@ td:nth-child(13) {
 }
 
 .popupIdBox .idchecker {
-    width: 9rem;
+    width: 7rem;
     margin-left: 2rem;
     height: 2.4rem;
     margin-top: 0;
@@ -338,4 +338,12 @@ td:nth-child(13) {
     /* .tableHead tr{
         font-size: 1.4rem;
     } */
+}
+
+.popupArticleDouble .createID {
+    width: 15rem;
+}
+
+.popupArticleDouble select {
+    padding-left: 0.5rem;
 }

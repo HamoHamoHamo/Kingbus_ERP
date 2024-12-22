@@ -36,6 +36,11 @@ const memberForm = document.querySelector(".memberForm")
 const btnModulesCreate = document.querySelectorAll(".btnModulesCreate")
 const PopupDataInputLicense = document.querySelector(".PopupDataInputLicense")
 const hrRoleSelect = document.querySelector(".hrRole")
+
+const popupArticleBoxDepartment = document.querySelector(".popupArticleBoxDepartment")
+const department = document.querySelector("#department")
+const departmentOptions = document.querySelectorAll("#department option")
+
 const popupArticleBoxAllowanceType = document.querySelector(".popupArticleBoxAllowanceType")
 const allowanceType = document.querySelector("#allowanceType")
 const allowanceTypeOptions = document.querySelectorAll("#allowanceType option")
@@ -64,12 +69,10 @@ const renewal_reason = document.querySelector("#renewal_reason")
 const apply_path = document.querySelector("#apply_path")
 const career = document.querySelector("#career")
 const careerOptions = document.querySelectorAll("#career option")
-const position_option = document.querySelectorAll("#position option")
+const positionOption = document.querySelectorAll("#position option")
 const apprenticeship_note = document.querySelector("#apprenticeship_note")
 const leave_reason = document.querySelector("#leave_reason")
 const company = document.querySelector("#company")
-const team = document.querySelector("#team")
-const teamOptions = document.querySelectorAll("#team option")
 const final_opinion = document.querySelector("#final_opinion")
 const interviewer = document.querySelector("#interviewer")
 const end_date = document.querySelector("#end_date")
@@ -93,9 +96,13 @@ function openDetailPopup() {
 
   popupAreaModules[0].style.display = 'block'
   
+  // 입력창 숨기기
   popupArticleBoxAllowanceType.style.display = 'none'
+  popupArticleBoxDepartment.style.display = 'none'
+
   hrAllowanceTypeMonthDiv.style.display = 'flex'
   allowanceType.setAttribute('name', '')
+  department.setAttribute('name', '')
   
   popupTitle.innerText = "직원수정"
   memberForm.action = "/HR/member/edit"
@@ -113,6 +120,10 @@ function openDetailPopup() {
         popupArticleBoxAllowanceType.style.display = 'flex'
         allowanceType.setAttribute('name', 'allowance_type')
       }
+      else if (hrRole[i].innerText == '관리자' || hrRole[i].innerText == '최고관리자') {
+        popupArticleBoxDepartment.style.display = 'flex'
+        department.setAttribute('name', 'department_id')
+      }
     }
   }
 
@@ -123,6 +134,13 @@ function openDetailPopup() {
     }
   }
 
+  departmentOptions[0].selected = true;
+  for (i = 0; i < departmentOptions.length; i++) {
+    if (departmentOptions[i].innerText == data.department) {
+      departmentOptions[i].selected = true;
+    }
+  }
+
   careerOptions[0].selected = true;
   for (i = 0; i < careerOptions.length; i++) {
     if (careerOptions[i].innerText == data.career) {
@@ -130,17 +148,10 @@ function openDetailPopup() {
     }
   }
 
-  teamOptions[0].selected = true;
-  for (i = 0; i < teamOptions.length; i++) {
-    if (teamOptions[i].innerText == data.team) {
-      teamOptions[i].selected = true;
-    }
-  }
-
-  position_option[0].selected = true;
-  for (i = 0; i < position_option.length; i++) {
-    if (position_option[i].innerText == data.position) {
-      position_option[i].selected = true;
+  positionOption[0].selected = true;
+  for (i = 0; i < positionOption.length; i++) {
+    if (positionOption[i].innerText == data.position) {
+      positionOption[i].selected = true;
     }
   }
   
@@ -196,9 +207,14 @@ function hrRegistration() {
   memberPopupStatus = 'create'
   popupAreaModules[0].style.display = 'block'
 
+  // 수당기준 안보이게 하기
   popupArticleBoxAllowanceType.style.display = 'none'
   hrAllowanceTypeMonthDiv.style.display = 'none'
   allowanceType.setAttribute('name', '')
+
+  // 부서 안보이게 하기
+  popupArticleBoxDepartment.style.display = 'none'
+  department.setAttribute('name', '')
 
   popupTitle.innerText = "직원등록"
   memberForm.action = "/HR/member/create"
@@ -211,11 +227,11 @@ function hrRegistration() {
 
   hrRole[0].selected = true;
   careerOptions[0].selected = true;
-  teamOptions[0].selected = true;
-  position_option[0].selected = true;
+  positionOption[0].selected = true;
   
   hrAllowanceTypeMonth.value = "";
   allowanceTypeOptions[0].selected = true
+  departmentOptions[0].selected = true
 
   hrName.value = "";
   hrEntering.value = "";
@@ -251,13 +267,22 @@ function hrRegistration() {
 
 // 담당업무 운전원일 경우만 기사수당 기준 입력창 보이게 
 hrRoleSelect.addEventListener('change', () => {
-  if (hrRoleSelect.options[hrRoleSelect.selectedIndex].value == '운전원' || hrRoleSelect.options[hrRoleSelect.selectedIndex].value == '팀장') {
+  // 수당기준, 수당변경기준일 입력 보이게 하기
+  if (hrRoleSelect.value == '운전원' || hrRoleSelect.value == '팀장') {
     popupArticleBoxAllowanceType.style.display = 'flex'
     allowanceType.setAttribute('name', 'allowance_type')
   }
   else {
     popupArticleBoxAllowanceType.style.display = 'none'
     allowanceType.setAttribute('name', '')
+  }
+  // 부서 입력 보이게 하기
+  if (hrRoleSelect.value == '관리자' || hrRoleSelect.value == '최고관리자') {
+    popupArticleBoxDepartment.style.display = 'flex'
+    department.setAttribute('name', 'department_id')
+  } else {
+    popupArticleBoxDepartment.style.display = 'none'
+    department.setAttribute('name', '')
   }
 })
 

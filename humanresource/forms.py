@@ -26,7 +26,7 @@ class MemberForm(forms.ModelForm):
             'leave_reason',
             'resident_number1',
             'resident_number2',
-            #'company',
+            'company',
             #'team',
             'final_opinion',
             'interviewer',
@@ -34,6 +34,7 @@ class MemberForm(forms.ModelForm):
             'leave_date',
             'allowance_type',
             'license',
+            'department_id',
         ]
 
 # class HRForm(forms.ModelForm):

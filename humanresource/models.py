@@ -54,7 +54,7 @@ class Member(models.Model):
     allowance_type = models.CharField(verbose_name='수당지급기준', max_length=100, null=False, blank=True, default="기사수당(현재)")
     license = models.CharField(verbose_name='버스기사자격증', max_length=100, null=False, blank=True)
     can_parking_outside = models.BooleanField(verbose_name='외부주차가능여부', null=False, default=False)
-    department_id = models.ForeignKey("Department", on_delete=models.SET_NULL, related_name="member", null=True)
+    department_id = models.ForeignKey("Department", on_delete=models.SET_NULL, related_name="member", null=True, blank=True)
 
     base = models.CharField(verbose_name='기본급', max_length=20, null=False, default=0)
     service_allowance = models.CharField(verbose_name='근속수당', max_length=20, null=False, default=0)

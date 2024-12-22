@@ -172,6 +172,7 @@ tbody td:nth-child(14) {
     border: 0.1rem solid #CDCDCE;
     border-radius: 0.3rem;
     outline: none;
+    box-sizing: border-box;
 }
 
 

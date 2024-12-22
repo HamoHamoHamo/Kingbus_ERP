@@ -124,7 +124,7 @@ class MemberList(generic.ListView):
         #     member_list.order_by('entering_date')
         #     print(member_list)
         
-        return member_list
+        return member_list.select_related('department_id')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -175,20 +175,20 @@ class MemberList(generic.ListView):
                 'resident_number1' : member.resident_number1,
                 'resident_number2' : member.resident_number2,
                 'company' : member.company,
-                'team' : member.team.name if member.team else '',
                 'final_opinion' : member.final_opinion,
                 'interviewer' : member.interviewer,
                 'end_date' : member.end_date,
                 'leave_date' : member.leave_date,
                 'allowance_type' : member.allowance_type,
                 'license' : member.license,
+                'department': member.department_id.name if member.department_id else '',
             })
             data_count = 0
             for key, value in data_list[-1].items():
                 if key != 'birthdate' and key != 'allowance_type' and value != '' and value != " ":
                     data_count += 1
-            # id, user_id, use 개수 빼줌
-            data_count -= 3
+            # id, user_id, use 개수, 수당기준, 부서 빼줌
+            data_count -= 5
             data_count_list.append(data_count)
 
             files = list(MemberFile.objects.filter(member_id=member).order_by('type').values('id', 'type', 'filename'))
@@ -205,7 +205,7 @@ class MemberList(generic.ListView):
         context['age'] = self.request.GET.get('age', '나이')
         context['req_order_by'] = self.request.GET.get('order_by', 'name')
         context['member_all'] = Member.objects.order_by('name')
-        context['team_list'] = Team.objects.all().order_by('name')
+        context['department_list'] = Department.objects.all()
         return context
 
 def calculate_birthdate_by_resident_number(number):
@@ -213,8 +213,10 @@ def calculate_birthdate_by_resident_number(number):
     # 주민번호 앞에 19를 붙일지 20을 붙일지 확인
     if number > TODAY[2:4] + "0000":
         birthdate = "19" + birthdate
-    else:
+    elif number:
         birthdate = "20" + birthdate
+    else:
+        birthdate = ""
     return birthdate
 
 def member_create(request):
@@ -245,13 +247,6 @@ def member_create(request):
             creator = Member.objects.get(pk=request.session.get('user'))
             member = member_form.save(commit=False)
             member.birthdate = calculate_birthdate_by_resident_number(member.resident_number1)
-            member.company = request.POST.get('company', '')
-            request_team = request.POST.get('team', '')
-            try:
-                team =Team.objects.get(id=request_team)
-            except:
-                team = None
-            member.team = team
             member.creator = creator
             member.authority = req_auth
             user_id = request.POST.get('user_id', None)
@@ -266,7 +261,7 @@ def member_create(request):
             member.save()
             return redirect(request.META.get('HTTP_REFERER', 'redirect_if_referer_not_found'))
         print("ERRRRRRRRRRRR", member_form.errors)
-        return HttpResponseBadRequest()
+        return HttpResponseBadRequest(f"{member_form.errors}")
     else:
         return HttpResponseNotAllowed(['post'])
 
@@ -291,8 +286,9 @@ def member_edit(request):
         pk = request.POST.get('id', None)
         member = get_object_or_404(Member, pk=pk)
 
-        member_form = MemberForm(request.POST)
+        member_form = MemberForm(request.POST, instance=member)
         if member_form.is_valid():
+            member_data = member_form.save(commit=False)
             role = request.POST.get('role')
             if role == '임시':
                 req_auth = 5
@@ -307,47 +303,14 @@ def member_edit(request):
             elif role == '최고관리자':
                 req_auth = 0
 
-            cur_auth = member.authority
+            cur_auth = member_data.authority
             if user_auth != 0 and (req_auth == 0 or cur_auth == 0):
                 return HttpResponseBadRequest('수정 권한이 없습니다')
 
-            member.name = member_form.cleaned_data['name']
-            member.role = member_form.cleaned_data['role']
-            member.entering_date = member_form.cleaned_data['entering_date']
-            member.phone_num = member_form.cleaned_data['phone_num']
-            member.address = member_form.cleaned_data['address']
-            member.note = member_form.cleaned_data['note']
-            member.interview_date = member_form.cleaned_data['interview_date']
-            member.contract_date = member_form.cleaned_data['contract_date']
-            member.contract_renewal_date = member_form.cleaned_data['contract_renewal_date']
-            member.contract_condition = member_form.cleaned_data['contract_condition']
-            member.renewal_reason = member_form.cleaned_data['renewal_reason']
-            member.apply_path = member_form.cleaned_data['apply_path']
-            member.career = member_form.cleaned_data['career']
-            member.position = member_form.cleaned_data['position']
-            member.apprenticeship_note = member_form.cleaned_data['apprenticeship_note']
-            member.leave_reason = member_form.cleaned_data['leave_reason']
-            member.license = member_form.cleaned_data['license']
-            member.emergency = request.POST.get('emergency1', '') + ' ' + request.POST.get('emergency2', '')
-            member.use = request.POST.get('use')
-            member.authority = req_auth
-            
-            member.resident_number1 = request.POST.get('resident_number1')
-            member.resident_number2 = request.POST.get('resident_number2')
-            member.company = request.POST.get('company')
-            request_team = request.POST.get('team', '')
-            try:
-                team =Team.objects.get(id=request_team)
-            except:
-                team = None
-            member.team = team
-            member.final_opinion = request.POST.get('final_opinion')
-            member.interviewer = request.POST.get('interviewer')
-            member.end_date = request.POST.get('end_date')
-            member.leave_date = request.POST.get('leave_date')
-            member.birthdate = calculate_birthdate_by_resident_number(member.resident_number1)
-            member.allowance_type = request.POST.get('allowance_type', '기사수당(현재)')
-            
+            member_data.emergency = request.POST.get('emergency1', '') + ' ' + request.POST.get('emergency2', '')
+            member_data.use = request.POST.get('use')
+            member_data.authority = req_auth
+            member_data.birthdate = calculate_birthdate_by_resident_number(member_data.resident_number1)
             member.save()
 
             #### 금액, 기사수당 수정 시 입력한 월 이후 배차들 금액, 기사수당 수정
@@ -381,7 +344,7 @@ def member_edit(request):
             return redirect(request.META.get('HTTP_REFERER', 'redirect_if_referer_not_found'))
         else:
             print(member_form.errors)
-            return HttpResponseBadRequest()
+            return HttpResponseBadRequest(f"{member_form.errors}")
     else:
         return HttpResponseNotAllowed(['post'])
 
