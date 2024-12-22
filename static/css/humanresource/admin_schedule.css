@@ -1,0 +1,184 @@
+.borderNone{
+    border: none;
+    box-shadow: none;
+    margin-bottom: 0;
+}
+
+.searchAreaBox{
+    font-size: 1.6rem
+}
+
+
+.searchAreaBoxDepartment{
+    height: 2.2rem;
+    width: 15rem;
+}
+
+.selectBox{
+    justify-content: flex-start;
+    display: flex;
+    height: 100%;
+    align-items: center;
+    margin-right: auto;
+    width: 45%;
+}
+
+.searchTool{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.pagination{
+    width: 55%;
+    display: flex;
+    justify-content: flex-start;
+}
+
+.contentsAreaBox{
+    height: 75rem;
+}
+
+.canbanBoard {
+    display: flex;
+    border: none;
+    padding: 0;
+    width: 100%;
+}
+
+.canbanBoard > div{
+    background-color: #f2f2f2;
+    height: 100%;
+    border:0.1rem solid #bfbfbf;
+    width: calc(100%/3)
+}
+.pagination{
+    font-size: 1.6rem;
+}
+
+.canbanHeader{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 3rem;
+    background-color: white;
+    font-size: 1.6rem;
+}
+
+.canbanContents{
+    height: 100%;
+    padding: 0rem 1rem;
+}
+
+.canbanBox{
+    width: 100%;
+    height: 15rem;
+    background-color: white;
+    font-size: 1.4rem;
+}
+
+.addTodo{
+    height: 4rem;
+    display: flex;
+    justify-content: center;
+    font-size: 1.6rem;
+    color: #797979;
+    cursor: pointer;
+    align-items: center;
+}
+.canbanHeaderHeader{
+    display: flex;
+    justify-content: space-between;
+    height: 2.5rem;
+    
+    border-bottom: 0.1rem solid #b7b2b2 ;
+    align-items: center;
+    padding: 0 1rem;
+}
+
+.canbanContents{
+    height: calc(100% - 2.5rem);
+    padding: 0 1rem;
+    flex-direction: column;
+    display: flex;
+}
+
+.align{
+    justify-content: space-between;
+}
+
+.canbanHeaderDepartment{
+    color: #767676;
+}
+
+.boardHeader{
+    margin-top: 0.5rem;
+    font-size: 1.4rem;
+}
+
+.flex{
+    display: flex;
+    justify-content: space-between;
+}
+
+.progressBtn{
+    background-color: #0069d9;
+    color: white;
+    border-radius: 0.2rem;
+    border: none;
+}
+
+
+.flexWidth{
+    width: 50%;
+    align-items: center;
+}
+
+.progressBtn{
+    width: 4rem;
+    height: 2rem;
+    cursor: pointer;
+}
+
+.white{
+    color: white;
+}
+
+.scrollingdiv {
+    padding-top: 1rem;
+    height: calc(100% - 3rem);
+    overflow-y: auto;
+    overflow-x: hidden;
+    box-sizing: border-box;
+}
+
+.doneBtn{
+    background-color: #bcbcbb;
+    cursor:default ;
+}
+
+/* 기본 스타일 */
+#datePicker {
+    font-size: 1.6rem;
+    border: 0.1rem solid #ccc;
+    border-radius: 0.4rem;
+    cursor: pointer;
+    border: none;
+}
+
+.searchName{
+    font-size: 1.6rem;
+}
+
+#none{
+    display: none;
+}
+
+.boldText{
+    font-weight: bold;
+}
+
+.lastContent{
+    padding-bottom: 1rem;
+}

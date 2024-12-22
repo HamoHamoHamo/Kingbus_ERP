@@ -1,0 +1,186 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load custom_tags %}
+{% block head %}
+<meta http-equiv="Cache-Control" content="private, no-cache, no-store, max-age=0, must-revalidate">
+<link rel="stylesheet" href="{% static 'css/humanresource/member.css' %}" type="text/css" />
+<link rel="stylesheet" href="{% static 'css/pagination.css' %}" type="text/css" />
+<link href="{% static 'css/humanresource/admin_schedule.css' %}" rel="stylesheet" type="text/css" />
+
+{% endblock %}
+
+{% block content-header %}
+<div class="HeaderTitle">
+    관리자 일정
+</div>
+{% endblock %}
+
+<!-- Content Block -->
+{% block content %} 
+<div class="searchAreaBox borderNone">
+        <div class="searchTool">
+            <div class="selectBox">
+                <span class="searchName">부서</span>
+            
+                {% comment %} <input autocomplete="off" value="{{name}}" name="name" type="text" class="inputModules" list="hrFilter"
+                    placeholder="직원이름" autocomplete="off"> {% endcomment %}
+            <select id="hrFilter" class="searchAreaBoxDepartment">
+                    {% comment %} {% for member in member_all %}
+                    <option value="{{member.name}}"></option>
+                    {% endfor %} {% endcomment %}
+                <option value="경영관리부서">경영관리부서</option>
+                <option value="배차담당부서">배차담당부서</option>
+            </select>
+            </div>
+            
+            <div class="pagination">
+                <!-- 이전 날짜로 이동 -->
+                <a href="#" id="prev">&lt; &nbsp</a>
+                <!-- 날짜 선택 (달력) -->
+                <input type="date" id="datePicker" />
+                <!-- 다음 날짜로 이동 -->
+                <a href="#" id="next">&nbsp&nbsp&gt;</a>
+            </div>
+                
+            </div>
+
+        </div>
+
+        
+        <div class="contentsAreaBox canbanBoard">
+            <!--할일 시작-->
+            <div class="canban">
+                <div class="canbanHeader">할 일</div>
+                <div class="scrollingdiv">
+                    <div class="canbanContents">
+                        <div class="canbanBox">
+                            <div class="canbanHeaderHeader">
+                                <div class="canbanHeaderDepartment">경영 관리과</div>
+                                <div>고정 업무</div>
+                            </div>
+                            <div class="canbanContents align">
+                                <div>
+                                    <div class="boardHeader">남양연구소 미팅</div>
+                                    <div class="boardcontet "><span class="boldText">참고사항</span class="boldText"> : 요구사항 분석 및 만족도 조사</div>
+                                </div>
+                                <div>                               
+                                    <div class="boardcontet flex">
+                                        <div class="flexWidth"><span class="boldText">담당자</span class="boldText"> : 신태환(김원탁)</div>
+                                        <div class="flexWidth">시작 : </div>
+                                    </div>
+                                    <div class="boardcontet flex lastContent">
+                                        <div class="flexWidth"><span class="boldText">기간</span class="boldText"> : 24.12.15</div>
+                                        <div class="btnMargin flex flexWidth">
+                                            <span class="flexWidth">완료 : </span>
+                                            <button class="progressBtn flexWidth progressBtnJs">진행</button>
+                                        </div>
+                                            
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+
+                        
+                        <a href="#" class="addTodo" id="addTodoButton">+ 할 일 추가</a>
+                    </div>
+                </div>
+
+
+            </div>
+            <!--할일 끝-->
+
+            <!--진행 중 시작-->
+            <div class="canban">
+                <div class="canbanHeader">진행 중</div>
+                <div class="scrollingdiv">
+                    <div class="canbanContents">
+                        <div class="canbanBox">
+                            <div class="canbanHeaderHeader">
+                                <div class="canbanHeaderDepartment">경영 관리과</div>
+                                <div>고정 업무</div>
+                            </div>
+                            <div class="canbanContents align">
+                                <div>
+                                    <div class="boardHeader">남양연구소 미팅</div>
+                                    <div class="boardcontet "><span class="boldText">참고사항</span class="boldText"> : 요구사항 분석 및 만족도 조사</div>
+                                </div>
+                                <div>                               
+                                    <div class="boardcontet flex">
+                                        <div class="flexWidth"><span class="boldText">담당자</span class="boldText"> : 신태환(김원탁)</div>
+                                        <div class="flexWidth">시작 : </div>
+                                    </div>
+                                    <div class="boardcontet flex lastContent">
+                                        <div class="flexWidth"><span class="boldText">기간</span class="boldText"> : 24.12.15</div>
+                                        <div class="btnMargin flex flexWidth">
+                                            <span class="flexWidth">완료 : </span>
+                                            <button class="progressBtn flexWidth progressBtnJs">완료</button>
+                                        </div>
+                                            
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                    </div>
+                </div>
+
+
+            </div>
+            <!--진행중 끝-->
+
+            <!--완료 시작-->
+            <div class="canban">
+                <div class="canbanHeader">완료</div>
+                <div class="scrollingdiv">
+                    <div class="canbanContents">
+                        <div class="canbanBox">
+                            <div class="canbanHeaderHeader">
+                                <div class="canbanHeaderDepartment">경영 관리과</div>
+                                <div>고정 업무</div>
+                            </div>
+                            <div class="canbanContents align">
+                                <div>
+                                    <div class="boardHeader">남양연구소 미팅</div>
+                                    <div class="boardcontet "><span class="boldText">참고사항</span class="boldText"> : 요구사항 분석 및 만족도 조사</div>
+                                </div>
+                                <div>                               
+                                    <div class="boardcontet flex">
+                                        <div class="flexWidth"><span class="boldText">담당자</span class="boldText"> : 신태환(김원탁)</div>
+                                        <div class="flexWidth">시작 : </div>
+                                    </div>
+                                    <div class="boardcontet flex lastContent">
+                                        <div class="flexWidth"><span class="boldText">기간</span class="boldText"> : 24.12.15</div>
+                                        <div class="btnMargin flex flexWidth">
+                                            <span class="flexWidth">완료 : </span>
+                                            <button class="progressBtn flexWidth progressBtnJs doneBtn">진행</button>
+                                        </div>
+                                            
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+            <!--완료 끝-->
+        </div>
+        
+
+
+{% endblock %}
+
+<!-- Popup Block -->
+{% block popup %}
+{% endblock %}
+
+<!-- Script Block -->
+{% block script %}
+<script src="{% static 'js/hr/adminSchedule/adminSchedule.js' %}"></script>
+<script src="{% static 'js/hr/adminSchedule/date.js' %}"></script>
+        
+
+{% endblock %} 
+

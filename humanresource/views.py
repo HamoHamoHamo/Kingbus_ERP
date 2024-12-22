@@ -1794,4 +1794,4 @@ class SalaryTeamjangView(ListView):
         return context
 
 def member_schedule(request):
-    return render(request, 'HR/administrator_schedule.html')
+    return render(request, 'HR/admin_schedule.html')
