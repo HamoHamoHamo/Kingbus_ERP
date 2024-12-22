@@ -435,7 +435,8 @@
   height: 3.6rem;
 }
 
-.dispatchBtn {
+.dispatchBtn,
+.tourReservationBtn {
   background-color: #0069D9;
 }
 
@@ -864,6 +865,10 @@
   width: 100%;
 }
 
+.popupArticleTriple {
+  width: calc(33% - 2rem);
+}
+
 .popupArticleDouble .accountSelect {
   width: 10rem;
   margin-right: 1rem;
@@ -1112,4 +1117,60 @@
 
 .popupStationInfoBtnBox {
   justify-content: right;
+}
+
+.popupBodyReservation{
+  height: calc(100% - 3.6rem);
+}
+
+.popupContainerReservation{
+  width: 110rem;
+}
+
+.categoryFlex{
+  display: flex;
+  justify-content: space-between;
+}
+
+.reservationTable td:nth-child(1){
+  width: 5%;
+}
+.reservationTable td:nth-child(2){
+  width: 15%;
+}
+.reservationTable td:nth-child(3){
+  width: 15%;
+}
+.reservationTable td:nth-child(4){
+  width: 15%;
+}
+.reservationTable td:nth-child(5){
+  width: 35%;
+}
+.reservationTable td:nth-child(6){
+  width: 15%;
+}
+.delete{
+  background-color: #444;
+  margin-right: auto;
+}
+
+.save{
+  background-color: #0069D9;
+  margin-right: 2rem;
+}
+
+.close{
+  background-color: #444;
+}
+
+.datetimeLocal{
+  height: 3rem;
+}
+
+.popupArticleBoxAddBtn {
+  justify-content: right;
+}
+.tourReservationAddBtn {
+  background-color: #0069D9;
 }
