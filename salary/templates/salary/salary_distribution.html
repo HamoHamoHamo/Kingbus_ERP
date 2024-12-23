@@ -1,0 +1,399 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load dispatch_custom_tags %}
+{% block head %}
+<meta http-equiv="Cache-Control" content="private, no-cache, no-store, max-age=0, must-revalidate">
+<link rel="stylesheet" href="{% static 'css/humanresource/salaryNew.css' %}" type="text/css" />
+<link rel="stylesheet" href="{% static 'css/salary/salary_distribution.css' %}" type="text/css" />
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+{% endblock %}
+
+{% block content-header %}
+<div class="HeaderTitle">
+    급여 분포도2
+</div>
+{% endblock %}
+
+{% block content %}
+<div class="flexBox">
+    <div class="firstSection">
+        <div class="indicator">
+            <div class="salaryIndicatorHeader personalFlex">6월급여</div>
+            <div class="salaryIndicator">
+                <div class="salarySum">
+                    <div class="salarySumTitle personalFlex">급여 총합</div>
+                    <div class="salarySumPrice personalFlex">280,000,000 원</div>
+                    {% comment %} <div class="salarySumPrice personalFlex">{{ total_salary|floatformat:"0" }} 원</div> {% endcomment %}
+                </div>
+                <div class="salaryAvg">
+                    <div class="salaryAvgTitle personalFlex">급여 평균</div>
+                    <div class="salaryAvgPrice personalFlex">2,450,428 원</div>
+                    {% comment %} <div class="salaryAvgPrice personalFlex">{{ average_salary|floatformat:"0" }} 원</div> {% endcomment %}
+                </div>
+                <div class="salaryEvaluation flex">
+                    <div class="salaryMin">
+                        <div class="salaryMinTitle personalFlex">최소 급여</div>
+                        <div class="salaryMinPrice personalFlex">2,450,428 원</div>
+                        {% comment %} <div class="salaryMinPrice personalFlex">{{ min_salary|floatformat:"0" }} 원</div> {% endcomment %}
+
+                        <div class="salaryMinLast personalFlex">고경근</div>
+                    </div>
+                    <div class="salaryMax">
+                        <div class="salaryMaxTitle personalFlex">최대 급여</div>
+                        <div class="salaryMaxPrice personalFlex">4,200,200 원</div>
+                        {% comment %} <div class="salaryMaxPrice personalFlex">{{ max_salary|floatformat:"0" }} 원</div> {% endcomment %}
+                        <div class="salaryMaxLast personalFlex">전민철</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="indicatorTable">
+            <div class="indicatorTableHeader personalFlex">급여 분포 표</div>
+            <table class="indicatorTableContent">
+                <thead class="indicatorTableContentThead">
+                    <tr>
+                        <td>급여</td>
+                        <td>총 110명</td>
+                    </tr>
+                </thead>
+                <tbody class="indicatorTableContentTbody">
+                    <tr onclick="openMealPopup()">
+                        <td>0</td>
+                        <td>1명</td>
+                    </tr>
+                    <tr  onclick="openMealPopup()">
+                        <td>0 ~ 50</td>
+                        <td>35명</td>
+                    </tr>
+                    <tr  onclick="openMealPopup()">
+                        <td>50 ~ 100</td>
+                        <td>15명</td>
+                    </tr>
+                    <tr onclick="openMealPopup()">
+                        <td>100 ~ 150</td>
+                        <td>8명</td>
+                    </tr>
+                    <tr onclick="openMealPopup()">
+                        <td>150 ~ 200</td>
+                        <td>2명</td>
+                    </tr>
+                    <tr onclick="openMealPopup()">
+                        <td>200 ~ 250</td>
+                        <td>6명</td>
+                    </tr>
+                    <tr onclick="openMealPopup()">
+                        <td>250 ~ 300</td>
+                        <td>12명</td>
+                    </tr>
+                    <tr onclick="openMealPopup()">
+                        <td>300 ~ 350</td>
+                        <td>6명</td>
+                    </tr>
+                    <tr onclick="openMealPopup()">
+                        <td>350 ~ 400</td>
+                        <td>6명</td>
+                    </tr>
+                    <tr onclick="openMealPopup()">
+                        <td>400 ~ 450</td>
+                        <td>6명</td>
+                    </tr>
+                    <tr onclick="openMealPopup()">
+                        <td>450 ~ 500</td>
+                        <td>6명</td>
+                    </tr>
+                    <tr onclick="openMealPopup()">
+                        <td>500 ~ 550</td>
+                        <td>6명</td>
+                    </tr>
+                    <tr onclick="openMealPopup()">
+                        <td>550 ~ 600</td>
+                        <td>0명</td>
+                    </tr>
+                    <tr onclick="openMealPopup()">
+                        <td>600 ~ 650</td>
+                        <td>6명</td>
+                    </tr>
+                    <tr onclick="openMealPopup()">
+                        <td>650 ~ 700</td>
+                        <td>6명</td>
+                    </tr>
+                    <tr onclick="openMealPopup()">
+                        <td>700 ~ 750</td>
+                        <td>6명</td>
+                    </tr>
+                </tbody>
+                {% comment %} <tbody class="indicatorTableContentTbody">
+                    {% if distribution %}
+                        {% for range, count in distribution.items %}
+                        <tr onclick="openMealPopup()">
+                            <td>{{ range }}</td>
+                            <td>{{ count }}명</td>
+                        </tr>
+                        {% endfor %}
+                    {% else %}
+                        <tr>
+                            <td colspan="2">데이터가 없습니다.</td>
+                        </tr>
+                    {% endif %}
+                </tbody> {% endcomment %}
+            </table>
+        </div>
+    </div>
+
+    <div class="SecondSection">
+        <!--검색창-->
+        <div class="searchContainer">
+            <!--검색폼-->
+            <form action="" class="searchForm">
+                <label for="" class="searchFormLabel">날짜 :</label>
+                
+                
+                <input type="month" name="month" value="{{month}}" class="searchFormInput searchFormInputMonth">
+                {% comment %} <input type="hidden" name="year" value="{{ current_year }}">
+                <select name="month" class="searchFormInput">
+                    {% for m in month_list %}
+                    <option value="{{ m }}" {% if m == month %}selected{% endif %}>{{ m }}월</option>
+                    {% endfor %}
+                </select> {% endcomment %}
+                
+                
+                <input type="submit" class="searchFormSearchBtn" value="검색">
+                <div class="averageStatusTime" onclick="openConfigStatusTimePopup()">한달 평균 근로일 설정</div>
+            </form>     
+            <!--검색폼 done-->
+        </div>
+        <!--검색창 끝-->
+
+        <div class="graphContainer">
+            <div class="graphHeader personalFlex">급여 분포 그래프</div>
+            <div class="graphContent">
+                <canvas id="histogramChart"></canvas>
+                <div class="statusAverage">
+                    <form method="post" action="" class="salaryContainer">
+                        {% csrf_token %}
+                        <input type="hidden" name="month" value="{{month}}">
+                        <div class="scrolling_table-list_header teamjang_height">
+                            <table class="table-list">
+                                <thead>
+                                    <tr class="table-list_head-tr table-list_head-tr_td_distribution">
+                                        <td class="table-list_head-tr_td table-list_head-tr_td_distribution">번호</td>
+                                        <td class="table-list_head-tr_td table-list_head-tr_td_distribution">이름</td>
+                                        <td class="table-list_head-tr_td table-list_head-tr_td_distribution">한달 총 시간</td>
+                                        <td class="table-list_head-tr_td table-list_head-tr_td_distribution">하루 평균 근로시간</td>
+
+                                    </tr>
+                                <thead>
+                            </table>
+                        </div>
+                            
+                        <div class="scrolling_table-list_body table-list_body-tr_td_variation">
+                            <table class="table-list">
+                                <tbody>
+                                    <tr class="table-list_body-tr salaryList curqsor">
+                                        
+                                        <td class="checkTd table-list_body-tr_td table-list_body-tr_td_distribution">1</td>
+                                        <td class="checkTd table-list_body-tr_td table-list_body-tr_td_distribution">김원탁</td>
+                                        <td class="checkTd table-list_body-tr_td table-list_body-tr_td_distribution">255시간 55분</td>
+                                        <td class="checkTd table-list_body-tr_td table-list_body-tr_td_distribution">8시간 23분</td>
+                                        
+                                        
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="popupAreaModules mealPopup" id="mealPopup">
+        <div class="popupBgModules popupBgModulesMeal"></div>
+        <div class="popupContainer popupContainerDouble">
+            <div class="popupHeader">
+                <div class="popupTitle">해당 시간대 인원</div>
+            </div>
+            <div class="popupBody">
+                <div class="popupSection">
+                    <div class="">
+                        {% csrf_token %}
+                        <div class="popupArticleCategori">인원</div>
+                        <div class="popupArticleBoxTable">
+                            <div class="scrolling_table-list_header mealTable">
+                                <table class="table-list">
+                                    <thead>
+                                        <tr class="table-list_head-tr">
+                                            <td class="table-list_head-tr_td">순번</td>
+                                            <td class="table-list_head-tr_td">이름</td>
+                                            <td class="table-list_head-tr_td">근무시간</td>
+                                            <td class="table-list_head-tr_td">금액</td>
+                                        </tr>
+                                    </thead>
+                                </table>
+                            </div>
+                            <div class="scrolling_table-list_body mealTable mealTableScroll popupTableScroll">
+                                <table class="table-list">
+                                    <tbody>
+                                        <td></td>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <table class="mealTotalTable popupTotalTable">
+                                <tr>
+                                    <td>합계</td>
+                                    <td class="totalAddSalaryPrice"></td>
+                                </tr>
+                            </table>
+                        </div>
+                        <input type="hidden" name="order_id" class="deleteAddHidden">
+                    </div>
+                </div>
+                <div class="popupFooter">
+                    <div class="btnModules mealCloseBtn closeBtn" onclick="closeMealPopup()">닫기</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="popupAreaModules mealPopup" id="configStatusTime">
+        <div class="popupBgModules popupBgModulesMeal"></div>
+        <div class="popupContainer popupContainerDouble popupContainerDoubleConfigStatus">
+            <div class="popupHeader">
+                <div class="popupTitle">하루 평균 근로일 설정</div>
+            </div>
+            <div class="popupBody">
+                <div class="popupSection">
+                    <div class="">
+                        {% csrf_token %}
+                        <div class="popupArticleCategori">하루 평균 근로일 설정</div>
+                        <div class="popupArticleBox popupArticleConfigTime">
+                            <label for="" class="popupArticleLabel popupArticleLabelTime">평균 근로일 :</label>
+                            <select class="configTime">
+                                <option value="21">21</option>
+                                <option value="22">22</option>
+                            </select>
+                        <input type="hidden" name="order_id" class="deleteAddHidden">
+                    </div>
+                </div>
+                <div class="popupFooter">
+                    <div class="btnModules mealCloseBtn closeBtn" onclick="closeConfigStatusTimePopup()">닫기</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block script %}
+<script>
+    document.addEventListener('DOMContentLoaded', (event) => {
+        const ctx = document.getElementById('histogramChart').getContext('2d');
+        const data = {
+            labels: ['0', '0 ~ 50', '50 ~ 100', '100 ~ 150', '150 ~ 200', '200 ~ 250', '250 ~ 300', '300 ~ 350', '350 ~ 400', '400 ~ 450', '450 ~ 500', '500 ~ 550', '550 ~ 600', '600 ~ 650', '650 ~ 700', '700 ~ 750'],
+            datasets: [{
+                label: 'People Count',
+                data: [1, 35, 15, 8, 2, 6, 12, 6, 6, 6, 6, 6, 0, 6, 4, 1],
+                backgroundColor: 'rgba(54, 162, 235, 0.7)', // 부드러운 파란색
+                borderColor: 'rgba(54, 162, 235, 1)',
+                borderWidth: 1
+            }]
+        };
+        const options = {
+            responsive: true,
+            maintainAspectRatio: false, // 비율 유지 비활성화
+            plugins: {
+                legend: {
+                    display: false // 범례 비활성화
+                },
+                tooltip: {
+                    callbacks: {
+                        label: function(tooltipItem) {
+                            return tooltipItem.raw + '명';
+                        }
+                    },
+                    backgroundColor: '#4c6ef5',
+                    titleFont: { size: 14 },
+                    bodyFont: { size: 12 },
+                    borderColor: '#000',
+                    borderWidth: 1
+                },
+                title: {
+                    display: true,
+                    text: '급여 분포 그래프',
+                    font: {
+                        size: 20
+                    },
+                    color: '#333'
+                }
+            },
+            scales: {
+                x: {
+                    grid: {
+                        display: false // X축 그리드 비활성화
+                    },
+                    ticks: {
+                        font: {
+                            size: 14 // X축 글자 크기
+                        },
+                        color: '#333'
+                    }
+                },
+                y: {
+                    grid: {
+                        color: '#ddd' // Y축 그리드 색상 변경
+                    },
+                    ticks: {
+                        font: {
+                            size: 18 // Y축 글자 크기
+                        },
+                        color: '#333'
+                    },
+                    title: {
+                        display: true,
+
+                        font: {
+                            size: 18
+                        },
+                        color: '#333'
+                    }
+                }
+            },
+            elements: {
+                bar: {
+                    borderRadius: 4, // 막대 모서리 둥글게
+                    barPercentage: 0.8,
+                    categoryPercentage: 0.8
+                }
+            }
+        };
+        const histogramChart = new Chart(ctx, {
+            type: 'bar',
+            data: data,
+            options: options
+        });
+    });
+
+    function openMealPopup() {
+        const popup = document.getElementById('mealPopup');
+        popup.style.display = 'block';  // 팝업 열기
+    }
+    
+    function closeMealPopup() {
+        const popup = document.getElementById('mealPopup');
+        popup.style.display = 'none';   // 팝업 닫기
+    }
+
+    function openConfigStatusTimePopup() {
+        const popup = document.getElementById('configStatusTime');
+        popup.style.display = 'block';  // 팝업 열기
+    }
+    
+    function closeConfigStatusTimePopup() {
+        const popup = document.getElementById('configStatusTime');
+        popup.style.display = 'none';   // 팝업 닫기
+    }
+
+
+    
+</script>
+{% endblock %}  

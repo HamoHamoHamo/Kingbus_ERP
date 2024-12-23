@@ -804,6 +804,9 @@ class SalaryList(generic.ListView):
         context['weekly_deduction_list'] = weekly_deduction_list
         context['salary_list'] = salary_list
         context['year_list'] = year_list
+        print("get data")
+        print(context)
+        print()
         return context
 
     def get_context_data(self, **kwargs):
@@ -817,6 +820,7 @@ class SalaryList(generic.ListView):
         context['month'] = month
         context['name'] = name
         context['search_type'] = self.request.GET.get('type')
+        print(context)
         return context
 ## 확인 필요
 # month의 출근 퇴근 일반 요금 계산해서 Salary 생성

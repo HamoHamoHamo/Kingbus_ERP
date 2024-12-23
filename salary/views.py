@@ -20,6 +20,9 @@ from common.constant import TODAY
 from common.datetime import *
 from common.views import AuthorityCheckView
 from common.formatter import format_number_with_commas, remove_comma_from_number
+from django.views.generic import TemplateView
+from django.db.models import Sum, Min, Max
+from django.shortcuts import render
 
 class SalaryStatus(AuthorityCheckView, generic.ListView):
     template_name = 'salary/status.html'
@@ -369,3 +372,37 @@ def test(request):
             
 
     return JsonResponse({"test": result, "length": len(result2), "result2": result2})
+
+
+class SalaryDistributionView(TemplateView):
+    template_name = 'salary/salary_distribution.html'
+
+    def get_queryset(self):
+        # 지연 로딩으로 SalaryList 가져오기
+        from humanresource.views import SalaryList
+        return SalaryList.get_queryset(self)
+
+    def get_context_data(self, **kwargs):
+        # 부모 클래스의 context 가져오기
+        context = super().get_context_data(**kwargs)
+
+        # year와 month 가져오기
+        year = self.request.GET.get('year', datetime.now().strftime('%Y'))
+        month = self.request.GET.get('month', datetime.now().strftime('%m'))
+        selected_date = f"{year}-{month}"
+
+        # SalaryList에서 데이터 처리
+        from humanresource.views import SalaryList
+        member_list = SalaryList.get_queryset(self)
+        context = SalaryList.get_datas(self, member_list, context, selected_date)
+
+        # 추가 데이터 계산
+        total_salary = sum(
+            salary['base'] for salary in context['salary_list']
+            if isinstance(salary['base'], (int, float))
+        )
+        context['total_salary'] = total_salary
+        context['year'] = year
+        context['month'] = month
+
+        return context

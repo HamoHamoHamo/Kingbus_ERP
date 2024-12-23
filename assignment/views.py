@@ -13,7 +13,7 @@ from django.views import generic
 from .forms import AssignmentDataForm, AssignmentForm
 from .models import Assignment, AssignmentData, AssignmentConnect, Group
 from dispatch.models import DispatchRegularlyData, DispatchRegularlyWaypoint, DispatchOrderConnect, DispatchOrder, DispatchRegularly, RegularlyGroup, DispatchRegularlyConnect
-from services import DispatchConnectService
+# from services import DispatchConnectService
 from accounting.models import Collect, TotalPrice
 from humanresource.models import Member, Salary, Team
 from humanresource.views import send_message

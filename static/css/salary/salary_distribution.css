@@ -1,0 +1,267 @@
+.flex, .personalFlex{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.flexBox {
+    display: flex;
+    width: 160rem;
+    height: 100%;
+}
+
+.firstSection{
+    width: 20%;
+}
+
+.indicator{
+    width: 33rem;
+    height: 35rem;
+    box-shadow: 0rem 0.1rem 0.4rem rgb(0 0 0 / 30%);
+}
+
+.SecondSection{
+    width: 80%;
+    margin-left: 3rem;
+}
+
+.salaryIndicatorHeader{
+    font-size: 1.6rem;
+    color: white;
+    width: 100%;
+    height: 4.2rem;
+    background-color: #444444;
+}
+
+.salaryIndicator{
+    width: 100%;
+    background-color: white;
+
+}
+
+.salarySum, .salaryAvg{
+    width: 29rem;
+
+    margin-left: 1.5rem;
+    margin-top: 1.5rem;
+    box-shadow: 0rem 0.1rem 0.4rem rgb(0 0 0 / 30%);
+}
+
+.salarySumTitle, .salaryAvgTitle{
+    font-size: 2rem;
+    height: 20%;
+    color: #B3B3B3;
+}
+
+.salarySumPrice, .salaryAvgPrice{
+    height: 30%;
+    font-size: 3rem;
+    font-weight: bold;
+    text-align:start;
+}
+
+.salaryEvaluation{
+    width: 29rem;
+    height: 10.6rem;
+    margin-left: 1.5rem;
+    margin-top: 1.5rem;
+}
+.salaryMin, .salaryMax {
+    width: 50%;
+    height: 100%;
+    box-shadow: 0rem 0.1rem 0.4rem rgb(0 0 0 / 30%);
+    background-color: white;
+}
+
+.salaryMax > *,
+.salaryMin > *{
+    height: 33.3%;
+}
+
+.salaryMaxLast, .salaryMinLast {
+    border-top: 0.1rem solid #cdcdce;
+    font-size: 1.4rem;
+    color: black;
+}
+
+.salaryMinPrice, .salaryMaxPrice{
+    font-size: 2rem;
+    color: black;
+}
+
+.salaryMaxTitle, .salaryMinTitle {
+    font-size: 1.4rem;
+    color: #B3B3B3;
+}
+
+.indicatorTable {
+    margin-top: 2rem;
+    width: 33rem;
+    height: 45rem;
+    box-shadow: 0rem 0.1rem 0.4rem rgb(0 0 0 / 30%);
+    background-color: white;
+}
+
+.indicatorTableHeader{
+    width: 100%;
+    height: 4.2rem;
+    background-color: #444444;
+    font-size: 1.6rem;
+    color: white;
+}
+
+.indicatorTableContent{
+    text-align: center;
+    font-size: 1.4rem;
+    margin-top: 1.5rem;
+    margin-left: 1.5rem;
+    width: 90%;
+    height: 38rem;
+    box-shadow: 0rem 0.1rem 0.4rem rgb(0 0 0 / 30%);
+}
+
+.indicatorTableContentThead{
+    height: 2rem;
+}
+
+.indicatorTableContentThead{
+    background-color: #c1c1c1;
+}
+.indicatorTableContentThead tr td:nth-child(1) {
+    width: 50%;
+    border-right: 0.1rem solid black;
+}
+
+.indicatorTableContentTbody tr td:nth-child(1){
+    width: 50%;
+    border-right: 0.1rem solid black;
+}
+
+.indicatorTableContentTbody tr td{
+    border-bottom: 0.1rem solid black;
+}
+
+.indicatorTableContentTbody{
+    font-size: 1.4rem;
+}
+
+.searchContainer{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;    
+    width: 100%;
+    height: 4rem;
+    margin-bottom: 2rem;
+    padding: 0 1rem;
+    border-radius: 0.2rem;
+    box-shadow: 0rem 0.1rem 0.4rem rgb(0 0 0 / 30%);
+    background-color: white;
+    box-sizing: border-box;
+
+}
+
+.searchFormLabel{
+    font-size: 1.4rem;
+    color: black;
+}
+.searchFormInput{
+    width: 15rem;
+    height: 2.5rem;
+    margin-left: 2rem;
+}
+
+.searchFormSearchBtn{
+    width: 5rem;
+    margin-left: 2rem;
+    background-color: #444444;
+    color: white;
+    border: none;
+    height: 2.5rem;
+}
+
+.graphContainer{
+    width: 100%;
+    height: auto;
+    background-color: white;
+    box-shadow: 0rem 0.1rem 0.4rem rgb(0 0 0 / 30%);
+}
+
+.graphHeader{
+    width: 100%;
+    height: 4.2rem;
+    background-color: #444444;
+    font-size: 1.6rem;
+    color: white;
+}
+
+#histogramChart { 
+    font-size: 1.4rem;
+    width: 60% !important;
+    height: 100% !important;
+    box-shadow: 0rem 0.1rem 0.4rem rgb(0 0 0 / 30%);
+}
+
+
+.graphContent{
+    height: 71.9rem;
+    
+}
+
+.statusAverage{
+    width: 40%;
+    height: 100%;
+}
+
+.statusAverage form {
+    height: 100%;
+}
+
+.graphContent{
+    display: flex;
+}
+
+.table-list_head-tr_td_distribution:nth-child(1), .table-list_body-tr_td_distribution:nth-child(1) {width: 15%;}
+.table-list_head-tr_td_distribution:nth-child(2), .table-list_body-tr_td_distribution:nth-child(2) {width: 15%;}
+.table-list_head-tr_td_distribution:nth-child(3), .table-list_body-tr_td_distribution:nth-child(3) {width: 35%;}
+.table-list_head-tr_td_distribution:nth-child(4), .table-list_body-tr_td_distribution:nth-child(4) {width: 35%;}
+
+.searchForm{
+    width: 100%;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+
+}
+
+.averageStatusTime{
+    width: 15rem;
+    color: white;
+    font-size: 1.4rem;
+    height: 2.5rem;
+    background-color: #444444;
+    margin-left: auto;
+    vertical-align: middle;
+    text-align: center;
+    cursor: pointer;
+}
+
+.popupContainerDoubleConfigStatus{
+    width: 25rem;
+}
+
+.popupArticleConfigTime{
+    padding-top: 0.5rem;
+    display: flex;
+    justify-content: space-evenly;
+    margin-bottom: 2rem;
+}
+.popupArticleLabelTime{
+    align-items: center;
+    justify-content: center;
+    display: flex;
+}
+
+.configTime{
+    padding-left: 0.5rem;
+    width: 5rem;
+}
