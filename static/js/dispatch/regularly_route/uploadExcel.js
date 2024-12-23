@@ -140,7 +140,7 @@ function dateFormat(e) {
                 work_type: excelData[i]["출/퇴근"],
                 location: excelData[i]["위치"] == undefined ? "" : excelData[i]["위치"],
                 week: excelData[i]['운행요일'],
-                distance: excelData[i]['거리'],
+                distance: excelData[i]['거리'] == undefined ? "" : excelData[i]["거리"],
                 detailed_route: excelData[i]["상세노선"] == undefined ? "" : excelData[i]["상세노선"],
                 maplink: excelData[i]["카카오맵"] == undefined ? "" : excelData[i]["카카오맵"],
                 waypoint: excelData[i]["경유지"] == undefined ? "" : excelData[i]["경유지"],
