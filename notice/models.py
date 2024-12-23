@@ -12,6 +12,9 @@ class Notice(models.Model): #장고에서 제공하는 models.Model를 상속받
     pub_date = models.DateTimeField(auto_now_add=True,verbose_name='등록시간')
     creator = models.ForeignKey(Member, related_name="notice_user", verbose_name='작성자', db_column="user_id", null=True, on_delete=models.SET_NULL)
     #저장되는 시점의 시간을 자동으로 삽입해준다.
+    is_urgency = models.BooleanField(verbose_name='긴급 여부', null=False, default=False) # 긴급 여부
+    is_important = models.BooleanField(verbose_name='중요 여부', null=False, default=False) # 중요 여부
+    is_read = models.BooleanField(verbose_name='읽음 여부', null=False, default=False) # 읽음 여부
 
     def __str__(self):
         return self.title
