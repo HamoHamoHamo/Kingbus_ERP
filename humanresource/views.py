@@ -1434,7 +1434,6 @@ def salary_new_edit(request):
             return render(request, 'authority.html')
 
         service_allowance = request.POST.getlist("service")
-        annual_allowance = request.POST.getlist("annual")
         team_leader_allowance_roll_call = request.POST.getlist('team_leader_allowance_roll_call')
         team_leader_allowance_vehicle_management = request.POST.getlist('team_leader_allowance_vehicle_management')
         team_leader_allowance_task_management = request.POST.getlist('team_leader_allowance_task_management')
@@ -1445,7 +1444,7 @@ def salary_new_edit(request):
         id_list = request.POST.getlist('id')
         month = request.POST.get('month')
 
-        for service_allowance, annual_allowance, team_leader_allowance_roll_call, team_leader_allowance_vehicle_management, team_leader_allowance_task_management, full_attendance_allowance, diligence_allowance, accident_free_allowance, welfare_fuel_allowance, id in zip(service_allowance, annual_allowance, team_leader_allowance_roll_call, team_leader_allowance_vehicle_management, team_leader_allowance_task_management, full_attendance_allowance, diligence_allowance, accident_free_allowance, welfare_fuel_allowance, id_list):
+        for service_allowance, team_leader_allowance_roll_call, team_leader_allowance_vehicle_management, team_leader_allowance_task_management, full_attendance_allowance, diligence_allowance, accident_free_allowance, welfare_fuel_allowance, id in zip(service_allowance, team_leader_allowance_roll_call, team_leader_allowance_vehicle_management, team_leader_allowance_task_management, full_attendance_allowance, diligence_allowance, accident_free_allowance, welfare_fuel_allowance, id_list):
             member = get_object_or_404(Member, id=id)
 
 
@@ -1454,7 +1453,6 @@ def salary_new_edit(request):
             
             salary_data = {
                 'service_allowance': service_allowance.replace(',', ''),
-                'new_annual_allowance': annual_allowance.replace(',', ''),
                 'team_leader_allowance_roll_call': team_leader_allowance_roll_call.replace(',', ''),
                 'team_leader_allowance_vehicle_management': team_leader_allowance_vehicle_management.replace(',', ''),
                 'team_leader_allowance_task_management': team_leader_allowance_task_management.replace(',', ''),
@@ -1471,7 +1469,6 @@ def salary_new_edit(request):
                 raise BadRequest(f"{form.errors}")
             if TODAY[:7] <= month:
                 member.service_allowance = service_allowance.replace(',','')
-                member.new_annual_allowance = annual_allowance.replace(',','')
                 member.team_leader_allowance_roll_call = team_leader_allowance_roll_call.replace(',','')
                 member.team_leader_allowance_vehicle_management = team_leader_allowance_vehicle_management.replace(',','')
                 member.team_leader_allowance_task_management = team_leader_allowance_task_management.replace(',','')
