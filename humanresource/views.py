@@ -740,6 +740,13 @@ class SalaryList(generic.ListView):
     context_object_name = 'member_list'
     model = Member
 
+    # 기사 급여 막기
+    def get(self, request, **kwargs):
+        if request.session.get('authority') >= 3:
+            return render(request, 'authority.html')
+        else:
+            return super().get(request, **kwargs)
+
     def get_queryset(self):
         month = self.request.GET.get('month', TODAY[:7])
         name = self.request.GET.get('name', '')
@@ -895,6 +902,10 @@ class SalaryList(generic.ListView):
 #    return salary
 
 def salary_detail(request):
+    # 기사 급여 막기
+    if request.session.get('authority') >= 3:
+        return render(request, 'authority.html')
+    
     user_auth = request.session.get('authority')
     if user_auth >= 3:
         member_id_list = [request.session.get('user')]
@@ -1072,6 +1083,10 @@ def salary_detail(request):
     return render(request, 'HR/salary_detail.html', context)
 
 def salary_detail_hourly(request):
+    # 기사 급여 막기
+    if request.session.get('authority') >= 3:
+        return render(request, 'authority.html')
+    
     user_auth = request.session.get('authority')
     if user_auth >= 3:
         member_id_list = [request.session.get('user')]
