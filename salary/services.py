@@ -806,7 +806,7 @@ class SalaryTableDataCollector3(SalaryTableDataCollector):
         #법정수당 합계
         datas['statutory_allowance'] = format_number_with_commas(
             remove_comma_from_number(datas['statutory_allowance'])
-            # - remove_comma_from_number(datas['meal'])
+            - remove_comma_from_number(datas['meal'])
             - remove_comma_from_number(datas['annual_allowance'])
             # + remove_comma_from_number(datas['new_annual_allowance'])
             + remove_comma_from_number(datas['team_leader_allowance_roll_call'])
@@ -821,7 +821,8 @@ class SalaryTableDataCollector3(SalaryTableDataCollector):
         datas['sum_ordinary_salary_and_statutory_allowance'] = format_number_with_commas(
             remove_comma_from_number(datas['ordinary_salary']) + \
             remove_comma_from_number(datas['statutory_allowance']) + \
-            remove_comma_from_number(datas['welfare_fuel_allowance'])
+            remove_comma_from_number(datas['welfare_fuel_allowance']) + \
+            remove_comma_from_number(datas['meal'])
         )
         datas['total'] = format_number_with_commas(remove_comma_from_number(datas['sum_ordinary_salary_and_statutory_allowance']) + remove_comma_from_number(datas['additional']) - remove_comma_from_number(datas['deduction']))
         
