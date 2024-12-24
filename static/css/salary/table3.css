@@ -13,7 +13,10 @@
     width: 100%;
     height: calc(100% - 10.1rem);
     overflow-y: scroll;
+    overflow-x: hidden;
 }
+
+
 
 .orderListSubScroll::-webkit-scrollbar {
     width: 0rem;
@@ -261,7 +264,7 @@ background-color: #444444;
     justify-content: center;
     align-items: center;
     border-right: 0.1rem solid #CDCDCE;
-    width: 33%;
+    width: calc(100% /3);
     height: 100%;
 }
 
@@ -318,7 +321,7 @@ background-color: #444444;
     border-right: 0.1rem solid #CDCDCE;;
 }
 .theadLegalAllowanceContentDoubleContentFirst{
-    width: 33.3%;
+    width: calc(100% / 3);
 }
 
 .theadAnother{
@@ -327,11 +330,11 @@ background-color: #444444;
 
 
 .theadLegalAllowanceContent > *{
-    width: 5.882352941176471%;
+    width: 6.25%;
 }
 
 .theadLegalAllowanceContentOne{
-    width: 5.882352941176471%;
+    width: 6.25%;
 }
 
 .theadLegalAllowanceContentOneTitle,
@@ -344,11 +347,11 @@ background-color: #444444;
 }
 
 .theadLegalAllowanceContentDouble{
-    width: 17.64705882352941%;
+    width: 18.75%;
 }
 
 .theadDouble{
-    width: 11.76470588235294%;
+    width: 12.5%;
 }
 
 .theadWeeklyExtension {
@@ -397,7 +400,7 @@ background-color: #444444;
 }
 
 .tbodyOrdinarySalary > *{
-    width: 33%;
+    width: calc(100% / 3);
     border-right: 0.1rem solid #CDCDCE;
 }
 
@@ -413,7 +416,7 @@ background-color: #444444;
 
 .tbodyLegalAllowance > *{
     
-    width: 5.882352941176471%;
+    width: 6.25%;
     border-right: 0.1rem solid #CDCDCE;
 }
 
@@ -434,7 +437,7 @@ background-color: #444444;
 }
 
 .tbodyDeductionDetails > *{
-    width: calc(12.5% - 0.1rem);
+    width: calc(100% / 8);
     border-right: 0.1rem solid #CDCDCE;
 }
 
@@ -458,11 +461,13 @@ background-color: #444444;
 }
 
 .sumAreaBox {
+    padding-right: 1rem; /* 스크롤바 공간 확보 */
+    border: 0.1rem solid #CDCDCE;
     display: flex;
     justify-content: flex-start;
     font-size: 1.4rem;
     margin-top: 2rem;
-    width: calc(100% - 1rem);
+    width: 100%;
     height: 4rem;
     box-shadow: 0 0.2rem 0.4rem rgba(0, 0, 0, 0.16);
     box-sizing: border-box;
@@ -512,7 +517,6 @@ background-color: #444444;
 
 .countTimeSum{
     width: 42%;
-    border-right: 0.1rem solid #CDCDCE;
     display: flex;
 }
 
@@ -529,7 +533,7 @@ background-color: #444444;
 }
 
 .sumOrdinarySalary > *{
-    width: 33%;
+    width: calc(100% / 3);
     border-right: 0.1rem solid #CDCDCE;
 }
 
@@ -540,7 +544,7 @@ background-color: #444444;
 
 .sumLegalAllowance > *{
     
-    width: 5.882352941176471%;
+    width: 6.25%;
     border-right: 0.1rem solid #CDCDCE;
 }
 
@@ -561,7 +565,7 @@ background-color: #444444;
 }
 
 .sumDeductionDetails > *{
-    width: 12.5%;
+    width: calc(100% / 8);
     border-right: 0.1rem solid #CDCDCE;
 }
 
@@ -733,7 +737,7 @@ background-color: #444444;
     width: 16.66666666666667%;
 }
 .theadCountTimeThDouble{
-    width: 33.33%;
+    width: calc(100% / 3);
 }
 
 .theadCountTime *{
@@ -752,16 +756,14 @@ background-color: #444444;
     border-bottom: 0.1rem solid #CDCDCE;
 }
 
-.last{
-    border-right: none;
-}
+
 
 .theadCountTimeThContent {
     height: 60%;
 }
 
 .tbodyCountTimeTd{
-    width: 16.66%;
+    width: calc(100% / 6);
     height: 100%;
     border-right: 0.1rem solid #CDCDCE;
 }
@@ -779,3 +781,12 @@ background-color: #444444;
 }
 
 .theadCountTime{display: block;}
+
+
+
+.borderRightNone{
+    border-right: none;
+}
+
+* { overflow-wrap: break-word; /* 현대 브라우저용 */}
+
