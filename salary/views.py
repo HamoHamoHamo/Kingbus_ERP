@@ -1,5 +1,5 @@
 from config.settings.base import MEDIA_ROOT
-from django.db.models import Q, Sum
+from django.db.models import Q, Sum, Avg
 from django.core.exceptions import ObjectDoesNotExist, MultipleObjectsReturned, BadRequest
 from django.http import Http404, JsonResponse, HttpResponse, HttpResponseNotAllowed
 from django.shortcuts import render, redirect, get_object_or_404
@@ -232,7 +232,7 @@ class SalaryDataController(AuthorityCheckView):
                 datas[member_id]['member__entering_date'] = member.entering_date
                 self.member_list.append(member)
 
-                datas[member_id]['meal_list'] = time_datas['meal_list']
+                datas[member_id]['meal_list'] = time_datas['meal_list']          
 
         return datas
 
@@ -377,32 +377,112 @@ def test(request):
 class SalaryDistributionView(TemplateView):
     template_name = 'salary/salary_distribution.html'
 
-    def get_queryset(self):
-        # 지연 로딩으로 SalaryList 가져오기
-        from humanresource.views import SalaryList
-        return SalaryList.get_queryset(self)
-
     def get_context_data(self, **kwargs):
-        # 부모 클래스의 context 가져오기
         context = super().get_context_data(**kwargs)
 
-        # year와 month 가져오기
-        year = self.request.GET.get('year', datetime.now().strftime('%Y'))
-        month = self.request.GET.get('month', datetime.now().strftime('%m'))
-        selected_date = f"{year}-{month}"
+        # 선택된 월 가져오기
+        month = self.request.GET.get('month', datetime.now().strftime('%Y-%m'))
+        average_work_days = int(self.request.GET.get('average_work_days', 21))  # 기본 평균 근로일 21일
 
-        # SalaryList에서 데이터 처리
-        from humanresource.views import SalaryList
-        member_list = SalaryList.get_queryset(self)
-        context = SalaryList.get_datas(self, member_list, context, selected_date)
-
-        # 추가 데이터 계산
-        total_salary = sum(
-            salary['base'] for salary in context['salary_list']
-            if isinstance(salary['base'], (int, float))
+        # 필터링: 운전원, 사용 중인 멤버, 해당 월
+        member_list = Member.objects.filter(
+            role='운전원',
+            use='사용',
+            entering_date__lte=f"{month}-31",
         )
-        context['total_salary'] = total_salary
-        context['year'] = year
-        context['month'] = month
 
+        # 데이터 수집 로직 (운전원만)
+        data_controller = SalaryDataController()
+        mondays = get_mondays_from_last_week_of_previous_month(month)
+        first_date = f"{month}-01"
+        date_list = get_date_range_list(first_date, last_date_of_month(first_date))
+        connect_time_list = DispatchSelector().get_driving_time_list(first_date, get_next_sunday_after_last_day(month))
+        holiday_data = get_holiday_list(month)
+
+        # 운전원들의 근무 시간 계산 (근무 시간이 0인 사람 제외)
+        member_work_times = []
+        valid_member_list = []  # 근무 시간이 0이 아닌 멤버만 포함
+        for member in member_list:
+            collector = SalaryTableDataCollector3(
+                member=member,
+                month=month,
+                mondays=mondays,
+                connect_time_list=connect_time_list,
+                holiday_data=holiday_data,
+                date_list=date_list,
+            )
+            work_data = collector.get_calculate_times()
+            total_minutes = work_data['total_work_minute']  # 총 근무 시간 (분 단위)
+
+            if total_minutes > 0:  # 근무 시간이 0인 사람 제외
+                valid_member_list.append(member)  # 유효한 멤버만 추가
+                work_data['adjusted_night_shift'] = work_data.get('total_night_shift_minute', 0) * 1.5
+
+                # 평균 근로일 설정값을 기준으로 하루 평균 계산
+                daily_average = self.calculate_daily_average(total_minutes, average_work_days)
+                member_work_times.append({
+                    "name": member.name,
+                    "total_work_hour_minute": work_data['total_work_hour_minute'],
+                    "daily_average_work_hour_minute": daily_average,
+                })
+
+        # 급여 계산
+        salary_data = data_controller.get_datas(
+            valid_member_list,  # 필터링된 멤버만 전달
+            SalaryTableDataCollector3,
+            month,
+            mondays,
+            connect_time_list,
+            holiday_data,
+            date_list,
+        )
+
+        # 급여 관련 계산
+        total_salary = sum(int(data['total'].replace(',', '')) for data in salary_data.values())
+        salary_values = [
+            (int(data['total'].replace(',', '')), data['member__name']) for data in salary_data.values()
+        ]
+
+        if salary_values:
+            min_salary, min_salary_name = min(salary_values, key=lambda x: x[0])
+            max_salary, max_salary_name = max(salary_values, key=lambda x: x[0])
+        else:
+            min_salary, min_salary_name = 0, "없음"
+            max_salary, max_salary_name = 0, "없음"
+
+        # 10개의 급여 범위 생성
+        range_step = max((max_salary - min_salary) // 10, 1)  # 최소 단위 1로 설정
+        salary_ranges = [(min_salary + i * range_step, min_salary + (i + 1) * range_step - 1) for i in range(10)]
+
+        # 범위별 급여 분포 계산
+        distribution = {f"{start:,} ~ {end:,}": 0 for start, end in salary_ranges}
+        for salary, _ in salary_values:
+            for start, end in salary_ranges:
+                if start <= salary <= end:
+                    distribution[f"{start:,} ~ {end:,}"] += 1
+                    break
+
+        context.update({
+            'month': month,
+            'average_work_days': average_work_days,
+            'total_salary': total_salary,
+            'average_salary': sum(x[0] for x in salary_values) // len(salary_values) if salary_values else 0,
+            'min_salary': min_salary,
+            'max_salary': max_salary,
+            'min_salary_name': min_salary_name,
+            'max_salary_name': max_salary_name,
+            'distribution': distribution,
+            'member_work_times': member_work_times,
+        })
         return context
+
+    @staticmethod
+    def calculate_daily_average(total_minutes, average_work_days):
+        """총 시간을 설정된 평균 근로일로 나누어 하루 평균 계산"""
+        average_minutes = total_minutes // average_work_days
+        return f"{average_minutes // 60}시간 {average_minutes % 60}분"
+
+
+
+
+

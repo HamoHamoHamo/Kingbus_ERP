@@ -1,6 +1,8 @@
 {% extends 'base.html' %}
 {% load static %}
 {% load dispatch_custom_tags %}
+{% load humanize %} 
+
 {% block head %}
 <meta http-equiv="Cache-Control" content="private, no-cache, no-store, max-age=0, must-revalidate">
 <link rel="stylesheet" href="{% static 'css/humanresource/salaryNew.css' %}" type="text/css" />
@@ -19,31 +21,36 @@
 <div class="flexBox">
     <div class="firstSection">
         <div class="indicator">
-            <div class="salaryIndicatorHeader personalFlex">6월급여</div>
+            <div class="salaryIndicatorHeader personalFlex">
+                {{ month }}월 급여
+            </div>            
             <div class="salaryIndicator">
                 <div class="salarySum">
                     <div class="salarySumTitle personalFlex">급여 총합</div>
-                    <div class="salarySumPrice personalFlex">280,000,000 원</div>
-                    {% comment %} <div class="salarySumPrice personalFlex">{{ total_salary|floatformat:"0" }} 원</div> {% endcomment %}
+                    {% comment %} <div class="salarySumPrice personalFlex">280,000,000 원</div> {% endcomment %}
+                    <div class="salarySumPrice personalFlex">{{ total_salary|intcomma }} 원</div>
                 </div>
                 <div class="salaryAvg">
                     <div class="salaryAvgTitle personalFlex">급여 평균</div>
-                    <div class="salaryAvgPrice personalFlex">2,450,428 원</div>
-                    {% comment %} <div class="salaryAvgPrice personalFlex">{{ average_salary|floatformat:"0" }} 원</div> {% endcomment %}
+                    {% comment %} <div class="salaryAvgPrice personalFlex">2,450,428 원</div> {% endcomment %}
+                    <div class="salaryAvgPrice personalFlex">{{ average_salary|intcomma }} 원</div>
                 </div>
                 <div class="salaryEvaluation flex">
                     <div class="salaryMin">
                         <div class="salaryMinTitle personalFlex">최소 급여</div>
-                        <div class="salaryMinPrice personalFlex">2,450,428 원</div>
-                        {% comment %} <div class="salaryMinPrice personalFlex">{{ min_salary|floatformat:"0" }} 원</div> {% endcomment %}
+                        {% comment %} <div class="salaryMinPrice personalFlex">2,450,428 원</div> {% endcomment %}
+                        <div class="salaryMinPrice personalFlex">{{ min_salary|intcomma }} 원</div>
+                        {% comment %} <div class="salaryMinLast personalFlex">고경근</div> {% endcomment %}
+                        <div class="salaryMinLast personalFlex">{{ min_salary_name }}</div>
 
-                        <div class="salaryMinLast personalFlex">고경근</div>
                     </div>
                     <div class="salaryMax">
                         <div class="salaryMaxTitle personalFlex">최대 급여</div>
-                        <div class="salaryMaxPrice personalFlex">4,200,200 원</div>
-                        {% comment %} <div class="salaryMaxPrice personalFlex">{{ max_salary|floatformat:"0" }} 원</div> {% endcomment %}
-                        <div class="salaryMaxLast personalFlex">전민철</div>
+                        {% comment %} <div class="salaryMaxPrice personalFlex">4,200,200 원</div> {% endcomment %}
+                        <div class="salaryMaxPrice personalFlex" style="font-size: 1.2em;">{{ max_salary|intcomma }} 원</div>
+                        {% comment %} <div class="salaryMaxLast personalFlex">전민철</div> {% endcomment %}
+                        <div class="salaryMaxLast personalFlex">{{ max_salary_name }}</div>
+
                     </div>
                 </div>
             </div>
@@ -54,11 +61,12 @@
                 <thead class="indicatorTableContentThead">
                     <tr>
                         <td>급여</td>
-                        <td>총 110명</td>
+                        {% comment %} <td>총 110명</td> {% endcomment %}
+                        <td>명 수</td>
                     </tr>
                 </thead>
-                <tbody class="indicatorTableContentTbody">
-                    <tr onclick="openMealPopup()">
+                {% comment %} <tbody class="indicatorTableContentTbody"> {% endcomment %}
+                    {% comment %} <tr onclick="openMealPopup()">
                         <td>0</td>
                         <td>1명</td>
                     </tr>
@@ -122,7 +130,7 @@
                         <td>700 ~ 750</td>
                         <td>6명</td>
                     </tr>
-                </tbody>
+                </tbody> {% endcomment %}
                 {% comment %} <tbody class="indicatorTableContentTbody">
                     {% if distribution %}
                         {% for range, count in distribution.items %}
@@ -137,6 +145,14 @@
                         </tr>
                     {% endif %}
                 </tbody> {% endcomment %}
+                <tbody class="indicatorTableContentTbody">
+                    {% for range, count in distribution.items %}
+                        <tr>
+                            <td>{{ range }}</td>
+                            <td>{{ count }}명</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
             </table>
         </div>
     </div>
@@ -189,7 +205,7 @@
                             
                         <div class="scrolling_table-list_body table-list_body-tr_td_variation">
                             <table class="table-list">
-                                <tbody>
+                                {% comment %} <tbody>
                                     <tr class="table-list_body-tr salaryList curqsor">
                                         
                                         <td class="checkTd table-list_body-tr_td table-list_body-tr_td_distribution">1</td>
@@ -199,6 +215,16 @@
                                         
                                         
                                     </tr>
+                                </tbody> {% endcomment %}
+                                <tbody>
+                                    {% for member in member_work_times %}
+                                    <tr class="table-list_body-tr salaryList cursor">
+                                        <td class="checkTd table-list_body-tr_td table-list_body-tr_td_distribution">{{ forloop.counter }}</td>
+                                        <td class="checkTd table-list_body-tr_td table-list_body-tr_td_distribution">{{ member.name }}</td>
+                                        <td class="checkTd table-list_body-tr_td table-list_body-tr_td_distribution">{{ member.total_work_hour_minute }}</td>
+                                        <td class="checkTd table-list_body-tr_td table-list_body-tr_td_distribution">{{ member.daily_average_work_hour_minute }}</td>
+                                    </tr>
+                                    {% endfor %}
                                 </tbody>
                             </table>
                         </div>
@@ -261,7 +287,7 @@
             <div class="popupHeader">
                 <div class="popupTitle">하루 평균 근로일 설정</div>
             </div>
-            <div class="popupBody">
+            {% comment %} <div class="popupBody">
                 <div class="popupSection">
                     <div class="">
                         {% csrf_token %}
@@ -278,7 +304,28 @@
                 <div class="popupFooter">
                     <div class="btnModules mealCloseBtn closeBtn" onclick="closeConfigStatusTimePopup()">닫기</div>
                 </div>
+            </div> {% endcomment %}
+            <div class="popupBody">
+                <div class="popupSection">
+                    <form method="get" action="">
+                        {% csrf_token %}
+                        <div class="popupArticleCategori">하루 평균 근로일 설정</div>
+                        <div class="popupArticleBox popupArticleConfigTime">
+                            <label for="average_work_days" class="popupArticleLabel popupArticleLabelTime">평균 근로일 :</label>
+                            <select name="average_work_days" class="configTime">
+                                <option value="21" {% if average_work_days == 21 %}selected{% endif %}>21</option>
+                                <option value="22" {% if average_work_days == 22 %}selected{% endif %}>22</option>
+                            </select>
+                            <input type="hidden" name="month" value="{{ month }}">
+                        </div>
+                        <div class="popupFooter">
+                            <button type="submit" class="btnModules mealCloseBtn closeBtn">설정</button>
+                        </div>
+                    </form>
+                </div>
             </div>
+
+            
         </div>
     </div>
 </div>
