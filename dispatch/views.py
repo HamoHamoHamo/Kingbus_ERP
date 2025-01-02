@@ -4143,6 +4143,7 @@ def line_print(request):
         'regularly_id__departure_time',
         'regularly_id__number1',
         'regularly_id__number2',
+        'regularly_id__route',
         'regularly_id__departure',
         'regularly_id__arrival',
         'regularly_id__references',
@@ -4151,17 +4152,18 @@ def line_print(request):
         'regularly_id__group__name'
     )
 
-    group = connect_list[0]['regularly_id__group__name']
-    temp = []
-    context['connect_list'] = []
-    for connect in connect_list:
-        if group != connect['regularly_id__group__name']:
-            context['connect_list'].append(temp)
-            group = connect['regularly_id__group__name']
-            temp = [connect]
-        else:
-            temp.append(connect)
-    context['connect_list'].append(temp)
+    if connect_list:
+        group = connect_list[0]['regularly_id__group__name']
+        temp = []
+        context['connect_list'] = []
+        for connect in connect_list:
+            if group != connect['regularly_id__group__name']:
+                context['connect_list'].append(temp)
+                group = connect['regularly_id__group__name']
+                temp = [connect]
+            else:
+                temp.append(connect)
+        context['connect_list'].append(temp)
 
 
 
