@@ -1,0 +1,58 @@
+.popupDataTableScroll {
+    height: 80rem;
+    overflow: auto;
+}
+.popupDataTable {
+    width: 100%;
+}
+
+.popupSection td:nth-child(1) {
+    width: 10%;
+}
+.popupSection td:nth-child(4) {
+    width: 20%;
+}
+.popupSection td:nth-child(3) {
+    width: 5%;
+}
+.popupSection td:nth-child(2) {
+    width: 5%;
+}
+.popupSection td:nth-child(5) {
+    width: 10%;
+}
+.popupSection td:nth-child(6) {
+    width: 10%;
+}
+.popupSection td:nth-child(7) {
+    width: 10%;
+}
+.popupSection td:nth-child(8) {
+    width: 10%;
+}
+
+.popupSection td:nth-child(9) {
+    width: 10%;
+}
+
+
+.popupContainerDouble {
+    width: 150rem;
+}
+
+
+.cantDrive {
+    background-color: #c59e9e !important;
+}
+
+.popupThead {
+    position: sticky;   /* 헤더 고정 */
+    top: 0;            /* 최상단에 고정 */
+    background-color: #444444;
+    z-index: 1;        /* 다른 콘텐츠 위에 표시 */
+    color: white;
+}
+.contentsAreaBox td:nth-child(3),
+.contentsAreaBox td:nth-child(4) {
+    width: 8%;
+}

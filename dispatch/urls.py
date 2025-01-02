@@ -1,5 +1,6 @@
 from django.urls import path
 from . import views
+from . import find_connects
 
 app_name = 'dispatch'
 
@@ -85,4 +86,7 @@ urlpatterns = [
     path('print/daily', views.daily_driving_print, name='daily_driving_print'),
     path('print/estimate', views.print_estimate, name='estimate_print'),
 
+    path('dispatch/test', find_connects.find_connecting_dispatches_view, name='dispatch_test'),
+    path('find-connects', views.find_connects, name='find_connects'),
+    path('find-connects/detail', views.find_connects_detail, name='find_connects_detail'),
 ]

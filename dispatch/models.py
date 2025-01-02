@@ -617,3 +617,13 @@ class DispatchRegularlyStation(models.Model):
     # def __str__(self):
     #     return f'{self.regularly.route} {self.station.name} {self.index} {self.station_type} {self.time}'
 
+class EmptyRunTimeCalculation(models.Model):
+    regularly_data_id = models.ForeignKey(DispatchRegularlyData, on_delete=models.CASCADE, related_name="empty_run_time_calculation", null=False)
+    regulalry_data_station_id = models.ForeignKey(Station, on_delete=models.CASCADE, related_name="empty_run_time_calculation", null=False)
+    arrival_data_id = models.ForeignKey(DispatchRegularlyData, on_delete=models.CASCADE, related_name="empty_run_time_calculation_arrival", null=False)
+    arrival_data_station_id = models.ForeignKey(Station, on_delete=models.CASCADE, related_name="empty_run_time_calculation_arrival", null=False)
+    duration = models.CharField(verbose_name="소요시간", max_length=100, null=False)
+    distance = models.CharField(verbose_name="거리", max_length=100, null=False)
+    can_drive = models.BooleanField(verbose_name="운행가능여부", null=False, default=True)
+
+    pub_date = models.DateTimeField(auto_now_add=True, verbose_name='작성시간')

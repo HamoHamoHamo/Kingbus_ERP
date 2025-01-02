@@ -19,7 +19,7 @@ from django.views import generic, View
 
 from .services import DispatchConnectService
 from .forms import OrderForm, ConnectForm, RegularlyDataForm, StationForm, RegularlyForm, TourForm, RouteTeamForm
-from .models import DispatchRegularlyRouteKnow, DispatchCheck, DispatchRegularlyData, DispatchRegularlyWaypoint, Schedule, DispatchOrderConnect, DispatchOrder, DispatchRegularly, RegularlyGroup, DispatchRegularlyConnect, DispatchOrderStation, ConnectRefusal, MorningChecklist, EveningChecklist, DrivingHistory, BusinessEntity, Station, DispatchRegularlyDataStation, DispatchRegularlyStation, DispatchOrderTourCustomer, DispatchOrderTour, RouteTeam, StationArrivalTime, DriverCheck, ConnectStatusFieldMapping, ConnectStatus
+from .models import DispatchRegularlyRouteKnow, DispatchCheck, DispatchRegularlyData, DispatchRegularlyWaypoint, Schedule, DispatchOrderConnect, DispatchOrder, DispatchRegularly, RegularlyGroup, DispatchRegularlyConnect, DispatchOrderStation, ConnectRefusal, MorningChecklist, EveningChecklist, DrivingHistory, BusinessEntity, Station, DispatchRegularlyDataStation, DispatchRegularlyStation, DispatchOrderTourCustomer, DispatchOrderTour, RouteTeam, StationArrivalTime, DriverCheck, ConnectStatusFieldMapping, ConnectStatus, EmptyRunTimeCalculation
 from .selectors import DispatchSelector
 from assignment.models import OldAssignmentConnect
 from accounting.models import Collect, TotalPrice
@@ -4164,66 +4164,6 @@ def line_print(request):
             else:
                 temp.append(connect)
         context['connect_list'].append(temp)
-
-
-
-    # 쿼리 최적화
-    # regulalry_data_list = (
-    #     DispatchRegularlyData.objects
-    #     .filter(use='사용', week__contains=week)
-    #     .select_related('group', 'team')
-    #     .order_by('group', 'num1', 'number1', 'num2', 'number2')
-    # )
-
-    # regularly_list = []
-    # no_list = []
-
-    # for regularly_data in regulalry_data_list:
-    #     # 해당 정기 배차 데이터의 monthly 중 가장 적절한 레코드 찾기
-    #     monthly_queryset = DispatchRegularly.objects.filter(
-    #         regularly_id=regularly_data,
-    #         use='사용',
-    #         edit_date__lte=date
-    #     ).order_by('-edit_date')
-
-    #     # 과거 날짜 기준 레코드가 없으면 미래 날짜 중 가장 가까운 레코드 찾기
-    #     dispatch = monthly_queryset.first()
-    #     if not dispatch:
-    #         dispatch = DispatchRegularly.objects.filter(
-    #             regularly_id=regularly_data,
-    #             use='사용',
-    #             edit_date__gte=date
-    #         ).order_by('edit_date').first()
-
-    #     # 해당 날짜에 연결된 노선 확인
-    #     if dispatch:
-    #         dispatch_connect = dispatch.info_regularly.filter(departure_date__startswith=date).exists()
-            
-    #         if dispatch_connect:
-    #             regularly_list.append(dispatch)
-    #         else:
-    #             no_list.append(dispatch)
-
-    # # 그룹핑 처리
-    # context['regularly_list'] = [
-    #     list(group) 
-    #     for _, group in itertools.groupby(regularly_list, key=lambda x: x.group.name)
-    # ]
-
-    
-    # for regularly_list in context['regularly_list']:
-    #     temp = []
-    #     for regularly in regularly_list:
-    #         temp.append(regularly.info_regularly.filter(departure_date__startswith=date).first())
-    #     context['connect_list'].append(temp)
-
-    # context['connect_list'] = [
-    #     list(dispatch.info_regularly.filter(departure_date__startswith=date))
-    #     for dispatch in regularly_list
-    # ]
-
-    # context['no_list'] = no_list
-
     return render(request, 'dispatch/line_print.html', context)
 
 def bus_print(request):
@@ -4678,4 +4618,49 @@ def regularly_station_download(request):
         print(e)
         #return JsonResponse({'status': 'fail', 'e': e})
         raise Http404
-    
+
+
+def find_connects(request):
+    week = request.GET.get('week', '')
+    data_list = DispatchRegularlyData.objects.filter(use='사용').order_by('departure_time').select_related('group')
+    if week:
+        data_list = data_list.filter(week__contains=week)
+
+    context = {
+        'data_list': data_list,
+        'week': week,
+
+    }
+    return render(request, 'dispatch/find_connects.html', context)
+
+def find_connects_detail(request):
+    if request.session.get('authority') > 1:
+        return render(request, 'authority.html')
+
+    if request.method == "POST":
+        return HttpResponseNotAllowed(['get'])
+    try:
+        data_list = list(EmptyRunTimeCalculation.objects.filter(regularly_data_id__id=request.GET.get('id')).order_by('-can_drive', 'arrival_data_id__departure_time', 'duration').values(
+            'regularly_data_id__arrival_time',
+            'arrival_data_id__route',
+            'arrival_data_id__departure_time',
+            'arrival_data_id__departure',
+            'arrival_data_id__arrival_time',
+            'arrival_data_id__arrival',
+            'arrival_data_id__week',
+            'duration',
+            'distance',
+            'can_drive',
+        ))
+
+        return JsonResponse({
+            'result' : True,
+            'data' : data_list,
+            'test': "test",
+        })
+    except Exception as e:
+        return JsonResponse({
+            'result' : False,
+            'data' : "404",
+            'error' : f"{request.GET.get('id')}, {e}"
+        })

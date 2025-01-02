@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="csrf-token" content="{{ csrf_token }}">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>기준 노선과 연결 가능한 노선</title>
+    <script>
+        function selectRoute() {
+            const routeSelect = document.getElementById('base_route_select');
+            const selectedRouteId = routeSelect.value;
+
+            if (selectedRouteId) {
+                fetch('', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value,
+                    },
+                    body: JSON.stringify({ route_id: selectedRouteId }),
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        updateResults(data.results);
+                    } else {
+                        alert(`오류: ${data.error}`);
+                    }
+                })
+                .catch(error => console.error('Error:', error));
+            } else {
+                alert("기준 노선을 선택해주세요.");
+            }
+        }
+
+        function updateResults(results) {
+            const resultsContainer = document.getElementById('results_container');
+            resultsContainer.innerHTML = ""; // 기존 결과 삭제
+
+            if (results.length === 0) {
+                resultsContainer.innerHTML = "<p>연결 가능한 노선이 없습니다.</p>";
+                return;
+            }
+
+            results.forEach(result => {
+                const baseRoute = `
+                    <h3>기준 노선: ${result.route_name}</h3>
+                    <p>도착 정류장: ${result.arrival_station.station__name}</p>
+                `;
+                resultsContainer.innerHTML += baseRoute;
+
+                const connectingRoutes = `
+                    <p>출발 정류장: ${result.departure_station.station__name}</p>
+                `;
+                resultsContainer.innerHTML += connectingRoutes;
+            });
+        }
+    </script>
+</head>
+<body>
+    <h1>기준 노선과 연결 가능한 노선</h1>
+
+    <label for="base_route_select">기준 노선 선택:</label>
+    <select id="base_route_select">
+        <option value="" disabled selected>선택</option>
+        {% for route in routes %}
+            <option value="{{ route.id }}">{{ route.route }}</option>
+        {% endfor %}
+    </select>
+    <button onclick="selectRoute()">선택</button>
+
+    <div id="results_container"></div>
+</body>
+</html>
