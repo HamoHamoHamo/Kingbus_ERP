@@ -47,7 +47,7 @@
                     <div class="salaryMax">
                         <div class="salaryMaxTitle personalFlex">최대 급여</div>
                         {% comment %} <div class="salaryMaxPrice personalFlex">4,200,200 원</div> {% endcomment %}
-                        <div class="salaryMaxPrice personalFlex" style="font-size: 1.2em;">{{ max_salary|intcomma }} 원</div>
+                        <div class="salaryMaxPrice personalFlex">{{ max_salary|intcomma }} 원</div>
                         {% comment %} <div class="salaryMaxLast personalFlex">전민철</div> {% endcomment %}
                         <div class="salaryMaxLast personalFlex">{{ max_salary_name }}</div>
 
@@ -335,84 +335,49 @@
 <script>
     document.addEventListener('DOMContentLoaded', (event) => {
         const ctx = document.getElementById('histogramChart').getContext('2d');
+
+        // JSON 문자열로 전달된 데이터를 파싱
+        const distributionData = JSON.parse('{{ distribution_json|escapejs }}');
+
+        const labels = Object.keys(distributionData);  // 급여 범위
+        const dataValues = Object.values(distributionData);  // 명 수
+
         const data = {
-            labels: ['0', '0 ~ 50', '50 ~ 100', '100 ~ 150', '150 ~ 200', '200 ~ 250', '250 ~ 300', '300 ~ 350', '350 ~ 400', '400 ~ 450', '450 ~ 500', '500 ~ 550', '550 ~ 600', '600 ~ 650', '650 ~ 700', '700 ~ 750'],
+            labels: labels,
             datasets: [{
                 label: 'People Count',
-                data: [1, 35, 15, 8, 2, 6, 12, 6, 6, 6, 6, 6, 0, 6, 4, 1],
-                backgroundColor: 'rgba(54, 162, 235, 0.7)', // 부드러운 파란색
+                data: dataValues,
+                backgroundColor: 'rgba(54, 162, 235, 0.7)',
                 borderColor: 'rgba(54, 162, 235, 1)',
                 borderWidth: 1
             }]
         };
+
         const options = {
             responsive: true,
-            maintainAspectRatio: false, // 비율 유지 비활성화
+            maintainAspectRatio: false,
             plugins: {
-                legend: {
-                    display: false // 범례 비활성화
-                },
+                legend: { display: false },
                 tooltip: {
                     callbacks: {
                         label: function(tooltipItem) {
                             return tooltipItem.raw + '명';
                         }
-                    },
-                    backgroundColor: '#4c6ef5',
-                    titleFont: { size: 14 },
-                    bodyFont: { size: 12 },
-                    borderColor: '#000',
-                    borderWidth: 1
-                },
-                title: {
-                    display: true,
-                    text: '급여 분포 그래프',
-                    font: {
-                        size: 20
-                    },
-                    color: '#333'
+                    }
                 }
             },
             scales: {
                 x: {
-                    grid: {
-                        display: false // X축 그리드 비활성화
-                    },
-                    ticks: {
-                        font: {
-                            size: 14 // X축 글자 크기
-                        },
-                        color: '#333'
-                    }
+                    grid: { display: false },
+                    ticks: { font: { size: 14 } }
                 },
                 y: {
-                    grid: {
-                        color: '#ddd' // Y축 그리드 색상 변경
-                    },
-                    ticks: {
-                        font: {
-                            size: 18 // Y축 글자 크기
-                        },
-                        color: '#333'
-                    },
-                    title: {
-                        display: true,
-
-                        font: {
-                            size: 18
-                        },
-                        color: '#333'
-                    }
-                }
-            },
-            elements: {
-                bar: {
-                    borderRadius: 4, // 막대 모서리 둥글게
-                    barPercentage: 0.8,
-                    categoryPercentage: 0.8
+                    grid: { color: '#ddd' },
+                    ticks: { font: { size: 14 } }
                 }
             }
         };
+
         const histogramChart = new Chart(ctx, {
             type: 'bar',
             data: data,
