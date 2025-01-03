@@ -555,8 +555,10 @@ class SalaryDistributionView(TemplateView):
             max_salary, max_salary_name = 0, "없음"
 
         # 급여 분포 계산
-        range_step = max((max_salary - min_salary) // 10, 1)  # 최소 단위 1로 설정
-        salary_ranges = [(min_salary + i * range_step, min_salary + (i + 1) * range_step - 1) for i in range(10)]
+        range_step = (max_salary - min_salary) // 10
+        salary_ranges = [(min_salary + i * range_step, min_salary + (i + 1) * range_step - 1) for i in range(9)]
+        salary_ranges.append((min_salary + 9 * range_step, max_salary))  # 마지막 구간에 max_salary 포함
+
         distribution = {f"{start:,} ~ {end:,}": 0 for start, end in salary_ranges}
         for salary, _ in salary_values:
             for start, end in salary_ranges:
